@@ -7,7 +7,7 @@ export default function Header(){
   <div className="mr-[1%] ml-[1%] flex">
     <img src={logo}/>
     <div className="flex w-[100%] justify-end self-end">
-    <button className="bg-[#21345b] text-white h-[40px] w-[80px] rounded outline" onClick={()=>navigate('/Dashboard')}>Log in</button>
+    <button className="bg-[#21345b] text-white h-[40px] w-[80px] rounded outline" onClick={()=>navigate('/Login')}>Log in</button>
     </div>
   </div>
   )

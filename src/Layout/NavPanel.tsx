@@ -1,7 +1,10 @@
 import { useNavigate } from "react-router-dom"
+import { useAppSelector } from "../Store/Hooks"
+import { selectCurrentUser } from "../Store/UserSlice"
 
 export default function NavPanel(){
   const navigate = useNavigate()
+  const currentuser = useAppSelector(selectCurrentUser);
   return(
     <div className="m-[2%] space-y-3">
       <text className="text-3xl w-[100%]">Nav Panel</text>

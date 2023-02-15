@@ -11,6 +11,7 @@ import { store } from './Store/Store';
 import WelcomePage from './Pages/WelcomePage';
 import AdminPage from './Pages/AdminPage';
 import ProfilePage from './Pages/ProfilePage';
+import LoginPage from './Pages/LoginPage';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -25,6 +26,11 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <WelcomePage/>,
+        errorElement: <ErrorPage/>,
+      },
+      {
+        path: '/Login',
+        element: <LoginPage/>,
         errorElement: <ErrorPage/>,
       },
       {
