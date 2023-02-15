@@ -8,6 +8,7 @@ import DashboardPage from './Pages/DashboardPage';
 import ErrorPage from './Pages/ErrorPage';
 import { Provider } from 'react-redux';
 import { store } from './Store/Store';
+import WelcomePage from './Pages/WelcomePage';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -22,8 +23,13 @@ const router = createBrowserRouter([
       { index: true, element: <></>},
       {
         index: true,
-        element: <DashboardPage/>,
+        element: <WelcomePage/>,
         errorElement: <ErrorPage/>,
+      },
+      {
+        path: '/Dashboard',
+        element: <DashboardPage/>,
+        errorElement: <ErrorPage/>
       }
     ]
   }
