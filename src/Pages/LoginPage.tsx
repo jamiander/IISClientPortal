@@ -22,15 +22,15 @@ export default function LoginPage(){
   return(
     <div className="m-[2%] grid grid-cols-4">
       <div className="col-span-4">
-        <text className="text-5xl">Login</text>
+        <p className="text-5xl">Login</p>
         <button className="bg-[#21345b] h-[40px] w-[80px] rounded" onClick={() => {dispatch(getUserData())}}></button>
       </div>
       <div className="col-span-4">
-        <text>Email:</text>
+        <p>Email:</p>
         <input onChange={(e)=>setUserEmail(e.target.value)} className="outline rounded h-[40px]"/>
       </div>
       <div className="col-span-4">
-        <text>Password</text>
+        <p>Password</p>
         <input onChange={(e)=>setPassword(e.target.value)} className="outline rounded h-[40px]"/>
       </div>
       <div className="col-span-4">

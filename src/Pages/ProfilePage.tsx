@@ -6,19 +6,27 @@ export default function ProfilePage(){
   return(
     <div className="m-[2%] grid grid-cols-4">
       <div className="col-span-4">
-        <text className="text-5xl">Profile</text>
+        <p className="text-5xl">Profile</p>
       </div>
-      <div>
-        <text>{user?.companyId}</text>
-      </div>
-      <div>
-        <text>{user?.name}</text>
-      </div>
-      <div>
-        <text>{user?.email}</text>
-      </div>
-      <div>
-        <text>{user?.password}</text>
+      <div className="col-span-4">
+      <table className="table-auto w-[100%] outline">
+          <thead>
+            <tr>
+              <th>Company</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Password</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td className="outline"><p className="flex justify-center">{user?.companyId}</p></td>
+              <td className="outline"><p className="flex justify-center">{user?.name}</p></td>
+              <td className="outline"><p className="flex justify-center">{user?.email}</p></td>
+              <td className="outline"><p className="flex justify-center">{user?.password}</p></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   )

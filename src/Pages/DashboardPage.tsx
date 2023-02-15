@@ -6,7 +6,7 @@ export default function DashboardPage(){
     
   return(
     <div className="m-[2%]">
-      <text className="text-5xl">DashBoard</text>
+      <p className="text-5xl">DashBoard</p>
       <button className="bg-[#21345b] h-[40px] w-[80px] rounded" onClick={() => {dispatch(getUserData())}}></button>
     </div>
   )

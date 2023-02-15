@@ -27,7 +27,7 @@ export default function AdminPage(){
   <>
     <div className="m-[2%] grid grid-cols-4">
       <div className="col-span-3">
-        <text className="text-5xl">Admin Page</text>
+        <p className="text-5xl">Admin Page</p>
       </div>
       <div className="flex justify-end">
           <button onClick={openModal} className="outline bg-[#21345b] text-white h-[40px] w-[80%] rounded">Add User</button>
@@ -37,15 +37,15 @@ export default function AdminPage(){
               style={modalStyle}
           >
             <div className="space-x-3">
-              <text className="text-3xl">Add User</text>
+              <p className="text-3xl">Add User</p>
               <br/>
-              <text>Company:</text>
+              <p>Company:</p>
               <input className="outline rounded"/>
-              <text>Name:</text>
+              <p>Name:</p>
               <input className="outline rounded"/>
-              <text>Email:</text>
+              <p>Email:</p>
               <input className="outline rounded"/>
-              <text>Password:</text>
+              <p>Password:</p>
               <input className="outline rounded"/>
               <button className="rounded h-[40px] w-[80px] bg-lime-600">Submit</button>
               <button className="rounded h-[40px] w-[80px] bg-red-600" onClick={closeModal}>Close</button> 
@@ -53,7 +53,7 @@ export default function AdminPage(){
           </Modal>
       </div>
       <div className="col-span-4">
-          <text className="text-3xl">Users</text>
+          <p className="text-3xl">Users</p>
       </div>
       <div className="col-span-4">
         <table className="table-auto w-[100%] outline">
@@ -69,10 +69,10 @@ export default function AdminPage(){
             {userlist.map((user, index)=>{
               return(
                 <tr key={index}>
-                  <td className="outline"><text className="flex justify-center">{user.companyId}</text></td>
-                  <td className="outline"><text className="flex justify-center">{user.name}</text></td>
-                  <td className="outline"><text className="flex justify-center">{user.email}</text></td>
-                  <td className="outline"><text className="flex justify-center">{user.password}</text></td>
+                  <td className="outline"><p className="flex justify-center">{user.companyId}</p></td>
+                  <td className="outline"><p className="flex justify-center">{user.name}</p></td>
+                  <td className="outline"><p className="flex justify-center">{user.email}</p></td>
+                  <td className="outline"><p className="flex justify-center">{user.password}</p></td>
                 </tr>
               )
             })}
