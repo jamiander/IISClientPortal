@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import DashboardPage from './Pages/DashboardPage';
 import ErrorPage from './Pages/ErrorPage';
+import WelcomePage from './Pages/WelcomePage';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -18,8 +19,13 @@ const router = createBrowserRouter([
     children:[
       {
         index: true,
-        element: <DashboardPage/>,
+        element: <WelcomePage/>,
         errorElement: <ErrorPage/>,
+      },
+      {
+        path: '/Dashboard',
+        element: <DashboardPage/>,
+        errorElement: <ErrorPage/>
       }
     ]
   }
