@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { GetAllUsers } from "../Services/UserService";
 import { RootState } from "./Store";
 
@@ -13,10 +13,12 @@ export interface User {
 
 export interface UserState{
     users: User[]
+    currentUserId: number
 }
 
 const initialState: UserState = {
-    users: []
+    users: [],
+    currentUserId: -1
 }
 
 export const getUserData = createAsyncThunk(
@@ -31,7 +33,13 @@ export const userSlice = createSlice({
     name: "users",
     initialState: initialState,
     reducers: {
-
+        setCurrentUserId: (state, action: PayloadAction<number>) => {
+            let id = action.payload;
+            if(state.users.find((user: User) => user.id === id))
+                state.currentUserId = action.payload;
+            else
+                state.currentUserId = -1;
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -41,8 +49,9 @@ export const userSlice = createSlice({
     },
 });
 
-export const { } = userSlice.actions;
+export const { setCurrentUserId } = userSlice.actions;
 
 export const selectAllUsers = (state: RootState) => state.users.users;
+export const selectCurrentUser = (state: RootState) => state.users.users.find((user: User) => user.id === state.users.currentUserId);
 
 export default userSlice.reducer;
