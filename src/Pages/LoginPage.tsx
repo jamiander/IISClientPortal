@@ -30,7 +30,7 @@ export default function LoginPage(){
         <input onChange={(e)=>setUserEmail(e.target.value)} className="outline rounded h-[40px]"/>
       </div>
       <div className="col-span-4">
-        <p>Password</p>
+        <p>Password:</p>
         <input onChange={(e)=>setPassword(e.target.value)} className="outline rounded h-[40px]"/>
       </div>
       <div className="col-span-4">
