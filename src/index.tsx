@@ -7,6 +7,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import DashboardPage from './Pages/DashboardPage';
 import ErrorPage from './Pages/ErrorPage';
 import WelcomePage from './Pages/WelcomePage';
+import AdminPage from './Pages/AdminPage';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -25,8 +26,13 @@ const router = createBrowserRouter([
       {
         path: '/Dashboard',
         element: <DashboardPage/>,
-        errorElement: <ErrorPage/>
-      }
+        errorElement: <ErrorPage/>,
+      },
+      {
+        path: '/Admin',
+        element: <AdminPage/>,
+        errorElement: <ErrorPage/>,
+      },
     ]
   }
 ])
