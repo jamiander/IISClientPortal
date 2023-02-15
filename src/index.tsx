@@ -10,6 +10,7 @@ import { Provider } from 'react-redux';
 import { store } from './Store/Store';
 import WelcomePage from './Pages/WelcomePage';
 import AdminPage from './Pages/AdminPage';
+import ProfilePage from './Pages/ProfilePage';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -36,6 +37,11 @@ const router = createBrowserRouter([
         element: <AdminPage/>,
         errorElement: <ErrorPage/>,
       },
+      {
+        path:'/Profile',
+        element:<ProfilePage/>,
+        errorElement: <ErrorPage/>,
+      }
     ]
   }
 ])
