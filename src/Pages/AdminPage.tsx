@@ -1,5 +1,7 @@
 import { useState } from "react"
 import Modal from 'react-modal'
+import { useAppSelector } from "../Store/Hooks";
+import { selectAllUsers } from "../Store/UserSlice";
 
 const modalStyle = {
   content: {
@@ -14,6 +16,7 @@ const modalStyle = {
 
 export default function AdminPage(){
   const [modalIsOpen, setIsOpen] = useState(false);
+  const userlist = useAppSelector(selectAllUsers);
   function openModal(){
     setIsOpen(true);
   }
@@ -63,12 +66,16 @@ export default function AdminPage(){
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>user.company</td>
-              <td>user.name</td>
-              <td>user.email</td>
-              <td>user.password</td>
-            </tr>
+            {userlist.map((user, index)=>{
+              return(
+                <tr key={index}>
+                  <td className="outline"><text className="flex justify-center">{user.companyId}</text></td>
+                  <td className="outline"><text className="flex justify-center">{user.name}</text></td>
+                  <td className="outline"><text className="flex justify-center">{user.email}</text></td>
+                  <td className="outline"><text className="flex justify-center">{user.password}</text></td>
+                </tr>
+              )
+            })}
           </tbody>
         </table>
       </div>
