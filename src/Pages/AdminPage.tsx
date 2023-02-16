@@ -15,6 +15,10 @@ const modalStyle = {
 }
 
 export default function AdminPage(){
+  const [company, setCompany] = useState('');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [modalIsOpen, setIsOpen] = useState(false);
   const userlist = useAppSelector(selectAllUsers);
   function openModal(){
@@ -23,6 +27,7 @@ export default function AdminPage(){
   function closeModal(){
     setIsOpen(false);
   }
+
   return(
   <>
     <div className="m-[2%] grid grid-cols-4">
@@ -40,13 +45,13 @@ export default function AdminPage(){
               <p className="text-3xl">Add User</p>
               <br/>
               <p>Company:</p>
-              <input className="outline rounded"/>
+              <input onChange={(e)=>setCompany(e.target.value)} className="outline rounded"/>
               <p>Name:</p>
-              <input className="outline rounded"/>
+              <input onChange={(e)=>setName(e.target.value)} className="outline rounded"/>
               <p>Email:</p>
-              <input className="outline rounded"/>
+              <input onChange={(e)=>setEmail(e.target.value)} className="outline rounded"/>
               <p>Password:</p>
-              <input className="outline rounded"/>
+              <input onChange={(e)=>setPassword(e.target.value)} className="outline rounded"/>
               <button className="rounded h-[40px] w-[80px] bg-lime-600">Submit</button>
               <button className="rounded h-[40px] w-[80px] bg-red-600" onClick={closeModal}>Close</button> 
             </div>
