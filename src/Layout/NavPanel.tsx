@@ -11,7 +11,7 @@ export default function NavPanel(){
       <p className="text-3xl w-[100%]">Nav Panel</p>
       <button disabled={!isLoggedIn} className="outline disabled:opacity-75 bg-[#21345b] text-white h-[40px] w-[100%] rounded" onClick={()=>navigate('/Dashboard')}>Dashboard</button>
       {currentuser?.companyId === 0 && <button disabled={!isLoggedIn} className="outline disabled:opacity-75 bg-[#21345b] text-white h-[40px] w-[100%] rounded" onClick={()=>navigate('/Admin')}>Admin</button>}
-      <button disabled={!isLoggedIn} className="outline disabled:opacity-75 bg-[#21345b] text-white h-[40px] w-[100%] rounded" onClick={()=>navigate('/Profile')}>Proflie</button>
+      <button disabled={!isLoggedIn} className="outline disabled:opacity-75 bg-[#21345b] text-white h-[40px] w-[100%] rounded" onClick={()=>navigate('/Profile')}>Profile</button>
     </div>  
   )
 }
