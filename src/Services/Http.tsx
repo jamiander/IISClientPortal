@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from "axios";
 
-export const BASE_URL = "https://clientportaltestfunction.azurewebsites.net";//"https://localhost:7000/api/";
+export const BASE_URL = "https://clientportaltestfunction.azurewebsites.net/api/";//"https://localhost:7000/api/";
 
 /*enum StatusCode {
     Unauthorized = 401,
