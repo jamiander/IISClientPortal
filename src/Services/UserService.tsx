@@ -25,7 +25,7 @@ interface AddUserResponse {
 
 export async function AddUser(request: AddUserRequest): Promise<number>
 {
-    let baseUrl = BASE_URL + "";
+    let baseUrl = BASE_URL + "AddUserBlob?code=tZd1SRgatu5UuLWMBqPXMVH6xqqnu7bgWjQ-tyWqxq6uAzFustCzjw==";
     
     let response = await axios.post(baseUrl,request);
     return response.data;
