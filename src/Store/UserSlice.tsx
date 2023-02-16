@@ -17,7 +17,7 @@ export interface UserState{
 }
 
 const initialState: UserState = {
-    users: [],
+    users: [{id: 99, email: "johnny@test.com", password: "1234", companyId: 0}],
     currentUserId: -1
 }
 
