@@ -8,9 +8,9 @@ export default function Header(){
   const dispatch = useAppDispatch();
   const isLoggedIn = useAppSelector(selectIsLoggedIn);
   return(
-  <div className="mr-[1%] ml-[1%] h-80px flex">
+  <div className="mr-[1%] ml-[1%] flex">
     <div className="flex min-h-[100%] h-auto justify-start self-start">
-      <img className="min-h-full h-auto" src={logo}/>
+      <img className="min-h-full h-auto" src={logo} alt='Integrity Inspired Solutions Logo'/>
     </div>
     <div className="flex w-[100%] justify-end self-end">
     {!isLoggedIn && <button className="bg-[#21345b] text-white h-[40px] w-[80px] my-[5px] rounded outline" onClick={()=>navigate('/Login')}>Log In</button>}
