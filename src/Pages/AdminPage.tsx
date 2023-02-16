@@ -1,7 +1,7 @@
 import { useState } from "react"
 import Modal from 'react-modal'
-import { useAppSelector } from "../Store/Hooks";
-import { selectAllUsers } from "../Store/UserSlice";
+import { useAppDispatch, useAppSelector } from "../Store/Hooks";
+import { addUser, selectAllUsers, User } from "../Store/UserSlice";
 
 const modalStyle = {
   content: {
@@ -15,6 +15,7 @@ const modalStyle = {
 }
 
 export default function AdminPage(){
+  const dispatch = useAppDispatch();
   const [company, setCompany] = useState('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -26,6 +27,27 @@ export default function AdminPage(){
   }
   function closeModal(){
     setIsOpen(false);
+  }
+
+  function Submit()
+  {
+    let newUser: User = {
+      id: -1,
+      companyId: parseInt(company),
+      email: email,
+      password: password
+    }
+    if(name)
+      newUser.name = name;
+
+    //dispatch(addUser(newUser));
+
+    setCompany('');
+    setName('');
+    setEmail('');
+    setPassword('');
+
+    closeModal();
   }
 
   return(
@@ -52,7 +74,7 @@ export default function AdminPage(){
               <input onChange={(e)=>setEmail(e.target.value)} className="outline rounded"/>
               <p>Password:</p>
               <input onChange={(e)=>setPassword(e.target.value)} className="outline rounded"/>
-              <button className="rounded h-[40px] w-[80px] bg-lime-600">Submit</button>
+              <button className="rounded h-[40px] w-[80px] bg-lime-600" onClick={() => Submit()}>Submit</button>
               <button className="rounded h-[40px] w-[80px] bg-red-600" onClick={closeModal}>Close</button> 
             </div>
           </Modal>
