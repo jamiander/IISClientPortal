@@ -39,6 +39,9 @@ export const userSlice = createSlice({
                 state.currentUserId = action.payload;
             else
                 state.currentUserId = -1;
+        },
+        signOut:(state)=>{
+            state.currentUserId = -1;
         }
     },
     extraReducers: (builder) => {
@@ -49,9 +52,10 @@ export const userSlice = createSlice({
     },
 });
 
-export const { setCurrentUserId } = userSlice.actions;
+export const { setCurrentUserId, signOut } = userSlice.actions;
 
 export const selectAllUsers = (state: RootState) => state.users.users;
 export const selectCurrentUser = (state: RootState) => state.users.users.find((user: User) => user.id === state.users.currentUserId);
+export const selectIsLoggedIn = (state:RootState) => state.users.currentUserId !== -1;
 
 export default userSlice.reducer;
