@@ -1,10 +1,18 @@
+import { useEffect } from 'react';
 import './App.css';
 import Content from './Layout/Content';
 import Footer from './Layout/Footer';
 import Header from './Layout/Header';
 import NavPanel from './Layout/NavPanel';
+import { useAppDispatch } from './Store/Hooks';
+import { getUserData } from './Store/UserSlice';
 
 function App() {
+  const dispatch = useAppDispatch();
+
+  useEffect(()=>{
+    dispatch(getUserData())
+  })
   return (
     <div className='grid grid-cols-5 gap-[.5vh] bg-[#2ed7c3]'>
       <div className='col-span-5 bg-white h-30px'><Header/></div>

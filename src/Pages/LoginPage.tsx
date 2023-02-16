@@ -23,7 +23,6 @@ export default function LoginPage(){
     <div className="m-[2%] grid grid-cols-4">
       <div className="col-span-4">
         <p className="text-5xl">Login</p>
-        <button className="bg-[#21345b] h-[40px] w-[80px] rounded" onClick={() => {dispatch(getUserData())}}></button>
       </div>
       <div className="col-span-4">
         <p>Email:</p>
