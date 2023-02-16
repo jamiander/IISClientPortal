@@ -10,9 +10,9 @@ import { getUserData } from './Store/UserSlice';
 function App() {
   const dispatch = useAppDispatch();
 
-  useEffect(()=>{
-    dispatch(getUserData())
-  })
+  //useEffect(()=>{
+  //  dispatch(getUserData())
+  //})
   return (
     <div className='grid grid-cols-5 gap-[.5vh] bg-[#2ed7c3]'>
       <div className='col-span-5 bg-white h-30px'><Header/></div>
