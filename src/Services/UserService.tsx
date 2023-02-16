@@ -50,6 +50,6 @@ export async function AddUser(request: AddUserRequest): Promise<number>
 {
     let baseUrl = BASE_URL + "AddUserBlob?code=tZd1SRgatu5UuLWMBqPXMVH6xqqnu7bgWjQ-tyWqxq6uAzFustCzjw==";
     
-    let response = await axios.post(baseUrl,request);
+    let response = await axios.post(baseUrl,request.user);
     return response.data;
 }
