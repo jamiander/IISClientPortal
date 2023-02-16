@@ -27,15 +27,16 @@ export default function LoginPage(){
       </div>
       <div className="col-span-4">
         <p>Email:</p>
-        <input onChange={(e)=>setUserEmail(e.target.value)} className="outline rounded h-[40px]"/>
+        <input autoFocus onChange={(e)=>setUserEmail(e.target.value)} onKeyDown={(e)=> {if (e.key === 'Enter') Login()}} className="outline rounded h-[40px]"/>
       </div>
       <div className="col-span-4">
         <p>Password:</p>
-        <input onChange={(e)=>setPassword(e.target.value)} className="outline rounded h-[40px]"/>
+        <input onChange={(e)=>setPassword(e.target.value)} onKeyDown={(e)=> {if (e.key === 'Enter') Login()}} className="outline rounded h-[40px]"/>
       </div>
       <div className="col-span-4">
         <button onClick={()=>Login()} className="outline rounded bg-[#21345b] text-white h-[40px] w-[80px]">Submit</button>
       </div>
     </div>
+    
   )
 }
