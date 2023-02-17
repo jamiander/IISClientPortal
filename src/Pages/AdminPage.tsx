@@ -31,7 +31,7 @@ export default function AdminPage(){
 
   function ValidateInput()
   {
-    if(parseInt(company) && email && password)
+    if(!Number.isNaN(parseInt(company)) && email && password)
       return true;
     
     return false;
