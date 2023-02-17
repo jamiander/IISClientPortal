@@ -1,13 +1,13 @@
 import { useState } from "react";
-import Modal from 'react-modal';
 import AddCompanyModal from "../Components/AddCompanyModal";
+import AddUserModal from "../Components/AddUserModal";
 import CompaniesTable from "../Components/CompaniesTable";
 import UsersTable from "../Components/UsersTable";
 import { addCompany, Company, selectAllCompanies } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
 import { addUser, selectAllUsers, User } from "../Store/UserSlice";
 
-const modalStyle = {
+export const modalStyle = {
   content: {
     top: '50%',
     left: '50%',
@@ -110,52 +110,31 @@ export default function AdminPage(){
   return(
   <>
     <div className="m-[2%] grid grid-cols-4">
+  
       <div className="col-span-3">
         <p className="text-5xl py-[10px]">Admin Page</p>
       </div>
-    <div className="col-span-3">
-      <p className="text-3xl bg-[#2ed7c3] text-white rounded">Users</p>
+  
+      <div className="col-span-3">
+        <p className="text-3xl bg-[#2ed7c3] text-white rounded h-[90%]">Users</p>
+      </div>
+  
+      <AddUserModal userModalIsOpen={userModalIsOpen} closeUserModal={closeUserModal} openUserModal={openUserModal} setCompany={setCompany} setEmail={setEmail} setName={setName} setPassword={setPassword} companyList={companyList} validateUser={ValidateUser} submitNewUser={SubmitNewUser} />
+  
+      <div className="col-span-4 py-[10px]">
+        <UsersTable userList={userList} companyList={companyList}/>
+      </div>
+  
+      <div className="col-span-3">
+        <p className="text-3xl bg-[#2ed7c3] text-white rounded my-1 h-[75%]">Companies</p>
+      </div>
+  
+      <AddCompanyModal companyModalIsOpen={companyModalIsOpen} closeCompanyModal={closeCompanyModal} openCompanyModal={openCompanyModal} validateCompany={ValidateCompany} setCompanyName={setCompanyName} submitNewCompany={SubmitNewCompany} />
+  
+      <div className="col-span-4 py-[10px]">
+        <CompaniesTable/>
+      </div>
     </div>
-    <div className="flex justify-end">
-    <button onClick={openUserModal} className="outline bg-[#21345b] text-white h-[40px] w-[80%] rounded">Add User</button>
-      <Modal
-            isOpen={userModalIsOpen}
-            onRequestClose={closeUserModal}
-            style={modalStyle}
-        >
-        <div className="space-x-3">
-          <p className="text-3xl">Add User</p>
-          <br/>
-          <p>Company:</p>
-          <select className="outline rounded" onChange={(e)=>setCompany(e.target.value)}>
-            <option value={-1}></option>
-              {companyList.map((company,index) => {
-                return (
-                  <option key={index} value={company.id}>{company.name}</option>
-                )
-              })}
-          </select><p>Name:</p>
-          <input onChange={(e)=>setName(e.target.value)} className="outline rounded"/>
-          <p>Email:</p>
-          <input onChange={(e)=>setEmail(e.target.value)} className="outline rounded"/>
-          <p>Password:</p>
-          <input onChange={(e)=>setPassword(e.target.value)} className="outline rounded"/>
-          <button disabled={!ValidateUser()} className="rounded h-[40px] w-[80px] bg-lime-600" onClick={() => SubmitNewUser()}>Submit</button>
-          <button className="rounded h-[40px] w-[80px] bg-red-600" onClick={closeUserModal}>Close</button> 
-        </div>
-      </Modal>
-    </div>
-    <div className="col-span-4 py-[10px]">
-      <UsersTable userList={userList} companyList={companyList}/>
-    </div>
-    <div className="col-span-3">
-      <p className="text-3xl bg-[#2ed7c3] text-white rounded my-1 h-[75%]">Companies</p>
-    </div>
-    <AddCompanyModal modalStyle={modalStyle} companyModalIsOpen={companyModalIsOpen} closeCompanyModal={closeCompanyModal} openCompanyModal={openCompanyModal} validateCompany={ValidateCompany} setCompanyName={setCompanyName} submitNewCompany={SubmitNewCompany} />
-    <div className="col-span-4 py-[10px]">
-      <CompaniesTable/>
-    </div>
-  </div>
   </>
   )
 }
