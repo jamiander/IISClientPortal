@@ -9,7 +9,6 @@ export default function LoginPage(){
   const [userEmail, setUserEmail] = useState('info@integrityinspired.com');
   const [password, setPassword] = useState('crowmonitorteam');
   const userlist = useAppSelector(selectAllUsers);
-  var currentuser = -1
   const [passwordShown,setPasswordShown]=useState(false);
 
   const togglePasswordVisibility = () => {
@@ -17,9 +16,9 @@ export default function LoginPage(){
   };
 
   function Login(){
-    if(userlist.find(user=>(user.email === userEmail)&&(user.password === password))){
-      currentuser = (userlist.find(user=>(user.email === userEmail)&&(user.password === password)))?.id ?? -1
-      dispatch(setCurrentUserId(currentuser))
+    let currentUser = userlist.find(user => (user.email === userEmail) && (user.password === password));
+    if(currentUser){
+      dispatch(setCurrentUserId(currentUser.id))
       navigate('/DashBoard')
     }
   }
