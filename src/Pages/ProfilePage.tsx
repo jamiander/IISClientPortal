@@ -52,10 +52,14 @@ export default function ProfilePage(){
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td className="outline"><p className="flex justify-center">placeholder</p></td>
-              <td className="outline"><p className="flex justify-center">placeholder</p></td>
-            </tr>
+            {company?.initiatives?.map((initiative, index)=>{
+              return(
+                <tr key={index}>
+                  <td className="outline"><p className="flex justify-center">{initiative}</p></td>
+                  <td className="outline"><p className="flex justify-center">placeholder</p></td>
+                </tr>
+              )
+            })}
           </tbody>
         </table>
       </div>
