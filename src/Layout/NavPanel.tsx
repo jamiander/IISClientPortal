@@ -8,7 +8,7 @@ export default function NavPanel(){
   const currentuser = useAppSelector(selectCurrentUser);
   return(
     <div className="m-[2%] space-y-3">
-      <p className="text-3xl w-[100%]">Nav Panel</p>
+      <p className="text-3xl w-[100%]">Navigation</p>
       <button disabled={!isLoggedIn} className="outline disabled:opacity-75 bg-[#21345b] text-white h-[40px] w-[100%] rounded" onClick={()=>navigate('/Dashboard')}>Dashboard</button>
       {currentuser?.companyId === 0 && <button disabled={!isLoggedIn} className="outline disabled:opacity-75 bg-[#21345b] text-white h-[40px] w-[100%] rounded" onClick={()=>navigate('/Admin')}>Admin</button>}
       <button disabled={!isLoggedIn} className="outline disabled:opacity-75 bg-[#21345b] text-white h-[40px] w-[100%] rounded" onClick={()=>navigate('/Profile')}>Profile</button>
