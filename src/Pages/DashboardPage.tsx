@@ -23,7 +23,7 @@ export default function DashboardPage(){
           })}
         </select>
       </div>
-      <div className="col-span-4 h-[60vh] py-[10px] outline">
+      <div className="col-span-4 h-[60vh] py-[10px] outline-dotted">
         this is where the data will go.
         the outline is there so we know how much space it takes up
       </div>
