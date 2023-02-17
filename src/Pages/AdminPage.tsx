@@ -89,7 +89,7 @@ export default function AdminPage(){
     </div>
     <div className="flex justify-end">
     <button onClick={openUserModal} className="outline bg-[#21345b] text-white h-[40px] w-[80%] rounded">Add User</button>
-        <Modal
+      <Modal
             isOpen={userModalIsOpen}
             onRequestClose={closeUserModal}
             style={modalStyle}
@@ -116,15 +116,15 @@ export default function AdminPage(){
         </div>
       </Modal>
     </div>
-    <div className="col-span-4">
+    <div className="col-span-4 py-[5px]">
       <UsersTable companyList={companyList}/>
     </div>
     <div className="col-span-3">
       <p className="text-3xl">Companies</p>
     </div>
     <div className="flex justify-end">
-    <button onClick={openCompanyModal} className="outline bg-[#21345b] text-white h-[40px] w-[80%] rounded">Add Company</button>
-    <Modal
+      <button onClick={openCompanyModal} className="outline bg-[#21345b] text-white h-[40px] w-[80%] rounded">Add Company</button>
+      <Modal
             isOpen={companyModalIsOpen}
             onRequestClose={closeCompanyModal}
             style={modalStyle}
@@ -137,7 +137,7 @@ export default function AdminPage(){
         </div>  
       </Modal>
     </div>
-    <div className="col-span-4">
+    <div className="col-span-4 py-[5px]">
       <CompaniesTable/>
     </div>
   </div>
