@@ -10,6 +10,11 @@ export default function LoginPage(){
   const [password, setPassword] = useState('');
   const userlist = useAppSelector(selectAllUsers);
   var currentuser = -1
+  const [passwordShown,setPasswordShown]=useState(false);
+
+  const togglePasswordVisibility = () => {
+    setPasswordShown(passwordShown ? false : true);
+  };
 
   function Login(){
     if(userlist.find(user=>(user.email === userEmail)&&(user.password === password))){
@@ -30,7 +35,11 @@ export default function LoginPage(){
       </div>
       <div className="col-span-4">
         <p>Password:</p>
-        <input type={'password'} onChange={(e)=>setPassword(e.target.value)} onKeyDown={(e)=> {if (e.key === 'Enter') Login()}} className="outline rounded h-[40px]"/>
+        <input type={passwordShown ? 'text' : 'password'} onChange={(e)=>setPassword(e.target.value)} onKeyDown={(e)=> {if (e.key === 'Enter') Login()}} className="outline rounded h-[40px]"/>
+        
+      </div>
+      <div className="col-span-4">
+        <input type={'checkbox'} onClick={togglePasswordVisibility}/> Show Password
       </div>
       <div className="col-span-4 py-[2%]">
         <button onClick={()=>Login()} className="outline rounded bg-[#21345b] text-white h-[40px] w-[80px]">Submit</button>
