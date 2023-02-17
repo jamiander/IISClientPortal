@@ -1,5 +1,6 @@
-import { useState } from "react"
-import Modal from 'react-modal'
+import { useState } from "react";
+import Modal from 'react-modal';
+import { AddCompanyModal } from "../Components/AddCompanyModal";
 import CompaniesTable from "../Components/CompaniesTable";
 import UsersTable from "../Components/UsersTable";
 import { addCompany, Company, selectAllCompanies } from "../Store/CompanySlice";
@@ -148,23 +149,11 @@ export default function AdminPage(){
       <UsersTable userList={userList} companyList={companyList}/>
     </div>
     <div className="col-span-3">
-      <p className="text-3xl">Companies</p>
+      <p className="text-3xl ">Companies</p>
     </div>
     <div className="flex justify-end">
       <button onClick={openCompanyModal} className="outline bg-[#21345b] text-white h-[40px] w-[80%] rounded">Add Company</button>
-      <Modal
-            isOpen={companyModalIsOpen}
-            onRequestClose={closeCompanyModal}
-            style={modalStyle}
-        >
-        <div className="space-x-3">
-          <p className="text-3xl">Add Company</p>
-          <br/>
-          <input onChange={(e)=>setCompanyName(e.target.value)} className="outline rounded"></input>
-          <button disabled={!ValidateCompany()} className="rounded h-[40px] w-[80px] bg-lime-600" onClick={() => SubmitNewCompany()}>Submit</button>
-          <button className="rounded h-[40px] w-[80px] bg-red-600" onClick={closeCompanyModal}>Close</button> 
-        </div>  
-      </Modal>
+      <AddCompanyModal modalStyle={modalStyle} companyModalIsOpen={companyModalIsOpen} closeCompanyModal={closeCompanyModal} validateCompany={ValidateCompany} setCompanyName={setCompanyName} submitNewCompany={SubmitNewCompany} />
     </div>
     <div className="col-span-4 py-[5px]">
       <CompaniesTable/>
