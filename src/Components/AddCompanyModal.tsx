@@ -18,7 +18,8 @@ interface AddCompanyProps {
   submitNewCompany: () => void
 }
 
-export function AddCompanyModal(props: AddCompanyProps) {
+export default function AddCompanyModal(props: AddCompanyProps) {
+  
   return (
     <Modal
       isOpen={props.companyModalIsOpen}
@@ -27,7 +28,7 @@ export function AddCompanyModal(props: AddCompanyProps) {
     >
       <div className="space-x-3">
         <p className="text-3xl my-3">Add Company</p>
-        <input onChange={(e)=>props.setCompanyName(e.target.value)} className="outline rounded"></input>
+        <input placeholder='Company Name' onChange={(e)=>props.setCompanyName(e.target.value)} className="outline rounded"></input>
         <button disabled={!props.validateCompany()} className="rounded h-[40px] w-[80px] bg-lime-600" onClick={() => props.submitNewCompany()}>Submit</button>
 
         <button className="rounded h-[40px] w-[80px] bg-red-600" onClick={props.closeCompanyModal}>Close</button>

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Modal from 'react-modal';
-import { AddCompanyModal } from "../Components/AddCompanyModal";
+import AddCompanyModal from "../Components/AddCompanyModal";
 import CompaniesTable from "../Components/CompaniesTable";
 import UsersTable from "../Components/UsersTable";
 import { addCompany, Company, selectAllCompanies } from "../Store/CompanySlice";
