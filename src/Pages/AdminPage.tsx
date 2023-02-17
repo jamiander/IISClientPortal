@@ -116,8 +116,8 @@ export default function AdminPage(){
         </div>
       </Modal>
     </div>
-    <div className="col-span-4 py-[5px]">
-      <UsersTable companyList={companyList}/>
+    <div className="col-span-4">
+      <UsersTable userList={userList} companyList={companyList}/>
     </div>
     <div className="col-span-3">
       <p className="text-3xl">Companies</p>
