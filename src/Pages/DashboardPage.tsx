@@ -15,7 +15,7 @@ export default function DashboardPage(){
         </select>
       </div>
       <div className="col-span-4 h-[60vh] outline">
-        this is where the data will go
+        this is where the data will go.
         the outline is there so we know how much space it takes up
       </div>
     </div>

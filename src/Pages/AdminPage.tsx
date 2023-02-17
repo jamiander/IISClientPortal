@@ -22,6 +22,9 @@ export default function AdminPage(){
   const [password, setPassword] = useState('');
   const [modalIsOpen, setIsOpen] = useState(false);
   const userlist = useAppSelector(selectAllUsers);
+
+  
+
   function openModal(){
     setIsOpen(true);
   }
@@ -62,6 +65,19 @@ export default function AdminPage(){
     setPassword('');
 
     closeModal();
+  }
+
+  function PasswordDisplay(user:User){
+    const [passwordShown, setPasswordShown] = useState(false);
+    const togglePasswordVisibility = () => {
+      setPasswordShown(passwordShown ? false:true);
+    };
+    return(
+      <>
+      <input disabled type={passwordShown ? 'text' : 'password'} value={user.password} className="flex justify-center"/>
+      <input type={'checkbox'} onClick={togglePasswordVisibility}/> Show Password
+      </>
+    )
   }
 
   return(
@@ -108,12 +124,15 @@ export default function AdminPage(){
           </thead>
           <tbody>
             {userlist.map((user, index)=>{
+              
               return(
                 <tr key={index}>
                   <td className="outline"><p className="flex justify-center">{user.companyId}</p></td>
                   <td className="outline"><p className="flex justify-center">{user.name}</p></td>
                   <td className="outline"><p className="flex justify-center">{user.email}</p></td>
-                  <td className="outline"><p className="flex justify-center">{user.password}</p></td>
+                  <td className="outline">
+                    <PasswordDisplay {...(user)}/>
+                  </td>
                 </tr>
               )
             })}
