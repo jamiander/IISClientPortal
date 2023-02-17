@@ -24,7 +24,7 @@ export async function GetAllCompanies(request?: GetAllCompaniesRequest) : Promis
     return response.data;
 }
 
-interface AddCompanyRequest {
+export interface AddCompanyRequest {
     company: Company,
     isTest: boolean
 }
@@ -34,6 +34,9 @@ interface AddCompanyResponse {
     status: string
 }
 
-// export async function AddCompany(request?: AddCompanyRequest) : Promise<AddCompanyResponse> {
+export async function AddCompany(request?: AddCompanyRequest) : Promise<AddCompanyResponse> {
+    let baseUrl = BASE_URL + "https://clientportaltestfunction.azurewebsites.net/api/AddCompanyBlob?code=20f81kJNWLkzF8bRRY5tUMOYggSA2iEWB1kgUZE_reYfAzFu-V801Q==";
 
-// }
+    let response = await axios.post(baseUrl, request);
+    return response.data;
+}
