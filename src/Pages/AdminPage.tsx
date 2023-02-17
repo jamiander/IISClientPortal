@@ -29,6 +29,14 @@ export default function AdminPage(){
     setIsOpen(false);
   }
 
+  function ValidateInput()
+  {
+    if(parseInt(company) && email && password)
+      return true;
+    
+    return false;
+  }
+
   function Submit()
   {
     let newUser: User = {
@@ -39,8 +47,14 @@ export default function AdminPage(){
     }
     if(name)
       newUser.name = name;
+    
+    let isTest = false;
+    if((window as any).Cypress)//process.env.CYPRESS)
+      isTest = true;
+    
+    console.log('cypress: ' + isTest)
 
-    //dispatch(addUser(newUser));
+    dispatch(addUser({user: newUser,isTest: isTest}));
 
     setCompany('');
     setName('');
@@ -74,7 +88,7 @@ export default function AdminPage(){
               <input onChange={(e)=>setEmail(e.target.value)} className="outline rounded"/>
               <p>Password:</p>
               <input onChange={(e)=>setPassword(e.target.value)} className="outline rounded"/>
-              <button className="rounded h-[40px] w-[80px] bg-lime-600" onClick={() => Submit()}>Submit</button>
+              <button disabled={!ValidateInput()} className="rounded h-[40px] w-[80px] bg-lime-600" onClick={() => Submit()}>Submit</button>
               <button className="rounded h-[40px] w-[80px] bg-red-600" onClick={closeModal}>Close</button> 
             </div>
           </Modal>

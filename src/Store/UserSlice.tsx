@@ -29,18 +29,24 @@ export const getUserData = createAsyncThunk(
     }
 )
 
+interface AddUserArgs {
+    user: User,
+    isTest: boolean
+}
+
 export const addUser = createAsyncThunk(
     'users/addUser',
-    async (user: User) : Promise<User> => {
-        const newId = await AddUser({user:user});
-        return {
-            id: newId,
-            email: user.email,
-            password: user.password,
-            companyId: user.companyId,
-            name: user.name,
-            phoneNumber: user.phoneNumber
-        };
+    async (args: AddUserArgs) : Promise<User> => {
+        const response = await AddUser({user: args.user, isTest: args.isTest});
+        const status = response.status;
+        console.log(status);
+        //if(status.toUpperCase().includes('SUCCESS'))
+        {
+            let newUser = JSON.parse(JSON.stringify(args.user));
+            newUser.id = response.id;
+            return newUser;
+        }
+        //throw Error();
     }
 )
 

@@ -40,16 +40,18 @@ export async function GetAllUsers(request?: GetAllUsersRequest): Promise<User[]>
 
 interface AddUserRequest {
     user: User
+    isTest: boolean
 }
 
 interface AddUserResponse {
     id: number
+    status: string
 }
 
-export async function AddUser(request: AddUserRequest): Promise<number>
+export async function AddUser(request: AddUserRequest): Promise<AddUserResponse>
 {
     let baseUrl = BASE_URL + "AddUserBlob?code=tZd1SRgatu5UuLWMBqPXMVH6xqqnu7bgWjQ-tyWqxq6uAzFustCzjw==";
     
-    let response = await axios.post(baseUrl,request.user);
+    let response = await axios.post(baseUrl,request);
     return response.data;
 }
