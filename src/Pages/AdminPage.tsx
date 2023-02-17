@@ -1,5 +1,6 @@
 import { useState } from "react"
 import Modal from 'react-modal'
+import { Company } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
 import { addUser, selectAllUsers, User } from "../Store/UserSlice";
 
@@ -21,9 +22,8 @@ export default function AdminPage(){
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [modalIsOpen, setIsOpen] = useState(false);
-  const userlist = useAppSelector(selectAllUsers);
-
-  
+  const userList = useAppSelector(selectAllUsers);
+  const companyList: Company[] = [{id: 0, name: "Integrity Inspired Solutions"},{id: 1, name:"Fake Company"}]//useAppSelector(selectAllCompanies);
 
   function openModal(){
     setIsOpen(true);
@@ -34,7 +34,8 @@ export default function AdminPage(){
 
   function ValidateInput()
   {
-    if(!Number.isNaN(parseInt(company)) && email && password)
+    let companyId = parseInt(company);
+    if(!Number.isNaN(companyId) && companyId >= 0 && email && password)
       return true;
     
     return false;
@@ -97,7 +98,14 @@ export default function AdminPage(){
               <p className="text-3xl">Add User</p>
               <br/>
               <p>Company:</p>
-              <input onChange={(e)=>setCompany(e.target.value)} className="outline rounded"/>
+              <select className="outline rounded" onChange={(e)=>setCompany(e.target.value)}>
+                <option value={-1}></option>
+                {companyList.map((company,index) => {
+                  return (
+                    <option key={index} value={company.id}>{company.name}</option>
+                  )
+                })}
+              </select>
               <p>Name:</p>
               <input onChange={(e)=>setName(e.target.value)} className="outline rounded"/>
               <p>Email:</p>
@@ -123,11 +131,11 @@ export default function AdminPage(){
             </tr>
           </thead>
           <tbody>
-            {userlist.map((user, index)=>{
+            {userList.map((user, index)=>{
               
               return(
                 <tr key={index}>
-                  <td className="outline"><p className="flex justify-center">{user.companyId}</p></td>
+                  <td className="outline"><p className="flex justify-center">{companyList.find(company => company.id === user.companyId)?.name}</p></td>
                   <td className="outline"><p className="flex justify-center">{user.name}</p></td>
                   <td className="outline"><p className="flex justify-center">{user.email}</p></td>
                   <td className="outline">
