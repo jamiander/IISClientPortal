@@ -33,12 +33,13 @@ export const addCompany = createAsyncThunk(
         const response = await AddCompany(args);
         console.log(response.status);
 
-        if (response.status.toUpperCase().includes('SUCCESS')){
-            let newCompany = JSON.parse(JSON.stringify(args.company));
-            newCompany.id = response.id;
-            return newCompany;
-        }
-        throw Error;
+        if (response.status.toUpperCase().includes('FAILED'))
+            throw Error;
+            
+        let newCompany = JSON.parse(JSON.stringify(args.company));
+        newCompany.id = response.id;
+        return newCompany;
+        
     }
 )
 

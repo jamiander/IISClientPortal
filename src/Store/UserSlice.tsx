@@ -37,16 +37,15 @@ interface AddUserArgs {
 export const addUser = createAsyncThunk(
     'users/addUser',
     async (args: AddUserArgs) : Promise<User> => {
-        const response = await AddUser({user: args.user, isTest: args.isTest});
+        const response = await AddUser(args);
         const status = response.status;
         console.log(status);
-        if(status.toUpperCase().includes('SUCCESS'))
-        {
-            let newUser = JSON.parse(JSON.stringify(args.user));
-            newUser.id = response.id;
-            return newUser;
-        }
-        throw Error
+        if(status.toUpperCase().includes('FAILED'))
+            throw Error;
+        
+        let newUser = JSON.parse(JSON.stringify(args.user));
+        newUser.id = response.id;
+        return newUser;
     }
 )
 
