@@ -1,16 +1,7 @@
 import Modal from 'react-modal';
+import { modalStyle } from '../Pages/AdminPage';
 
 interface AddCompanyProps {
-  modalStyle: {
-    content: {
-      top: string,
-      left: string,
-      right: string,
-      bottom: string,
-      marginRight: string,
-      transform: string,
-    }
-  },
   companyModalIsOpen: boolean,
   openCompanyModal: () => void,
   closeCompanyModal: () => void,
@@ -27,7 +18,7 @@ export default function AddCompanyModal(props: AddCompanyProps) {
       <Modal
         isOpen={props.companyModalIsOpen}
         onRequestClose={props.closeCompanyModal}
-        style={{...props.modalStyle}}
+        style={modalStyle}
       >
         <div className="space-x-3">
           <p className="text-3xl">Add Company</p>
