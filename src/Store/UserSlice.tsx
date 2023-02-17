@@ -40,13 +40,13 @@ export const addUser = createAsyncThunk(
         const response = await AddUser({user: args.user, isTest: args.isTest});
         const status = response.status;
         console.log(status);
-        //if(status.toUpperCase().includes('SUCCESS'))
+        if(status.toUpperCase().includes('SUCCESS'))
         {
             let newUser = JSON.parse(JSON.stringify(args.user));
             newUser.id = response.id;
             return newUser;
         }
-        //throw Error();
+        throw Error
     }
 )
 
