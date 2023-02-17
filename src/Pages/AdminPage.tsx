@@ -116,7 +116,7 @@ export default function AdminPage(){
       </div>
   
       <div className="col-span-3">
-        <p className="text-3xl bg-[#2ed7c3] text-white rounded h-[90%]">Users</p>
+        <p className="text-3xl bg-[#2ed7c3] rounded h-[90%]">Users</p>
       </div>
   
       <AddUserModal userModalIsOpen={userModalIsOpen} closeUserModal={closeUserModal} openUserModal={openUserModal} setCompany={setCompany} setEmail={setEmail} setName={setName} setPassword={setPassword} companyList={companyList} validateUser={ValidateUser} submitNewUser={SubmitNewUser} />
@@ -126,7 +126,7 @@ export default function AdminPage(){
       </div>
   
       <div className="col-span-3">
-        <p className="text-3xl bg-[#2ed7c3] text-white rounded my-1 h-[75%]">Companies</p>
+        <p className="text-3xl bg-[#2ed7c3] rounded my-1 h-[75%]">Companies</p>
       </div>
   
       <AddCompanyModal companyModalIsOpen={companyModalIsOpen} closeCompanyModal={closeCompanyModal} openCompanyModal={openCompanyModal} validateCompany={ValidateCompany} setCompanyName={setCompanyName} submitNewCompany={SubmitNewCompany} />
