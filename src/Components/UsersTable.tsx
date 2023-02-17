@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Company } from "../Store/CompanySlice";
-import { useAppSelector } from "../Store/Hooks"
-import { selectAllUsers, User } from "../Store/UserSlice"
+import { User } from "../Store/UserSlice"
 
 interface UsersTableProps {
   userList: User[]

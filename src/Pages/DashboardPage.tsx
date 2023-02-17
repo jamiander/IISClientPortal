@@ -1,9 +1,8 @@
 import { selectAllCompanies } from "../Store/CompanySlice";
-import { useAppDispatch, useAppSelector } from "../Store/Hooks"
+import { useAppSelector } from "../Store/Hooks"
 import { selectCurrentUser } from "../Store/UserSlice";
 
 export default function DashboardPage(){
-  const dispatch = useAppDispatch();
   const user = useAppSelector(selectCurrentUser);
   const companyList = useAppSelector(selectAllCompanies);
   const company = companyList.find(e=>e.id === user?.companyId);
@@ -11,7 +10,7 @@ export default function DashboardPage(){
   return(
     <div className="m-[2%] grid grid-cols-4">
       <div className="col-span-2">
-        <p className="text-5xl ">DashBoard</p>
+        <p className="text-5xl py-[10px]">Dashboard</p>
       </div>
       <div className="flex justify-end col-span-2">
         <select className="outline rounded w-[200px] h-[40px]">
