@@ -117,7 +117,7 @@ export default function AdminPage(){
       </Modal>
     </div>
     <div className="col-span-4">
-      <UsersTable/>
+      <UsersTable companyList={companyList}/>
     </div>
     <div className="col-span-3">
       <p className="text-3xl">Companies</p>

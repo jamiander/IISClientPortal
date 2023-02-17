@@ -1,9 +1,14 @@
 import { useState } from "react";
+import { Company } from "../Store/CompanySlice";
 import { useAppSelector } from "../Store/Hooks"
 import { selectAllUsers, User } from "../Store/UserSlice"
 
-export default function UsersTable(){
-    const userlist = useAppSelector(selectAllUsers);
+interface UsersTableProps {
+  companyList: Company[]
+}
+
+export default function UsersTable(props: UsersTableProps){
+    const userList = useAppSelector(selectAllUsers);
 
     function PasswordDisplay(user:User){
         const [passwordShown, setPasswordShown] = useState(false);
@@ -29,10 +34,10 @@ export default function UsersTable(){
           </tr>
         </thead>
         <tbody>
-          {userlist.map((user, index)=>{
+          {userList.map((user, index)=>{
             return(
               <tr key={index}>
-                <td className="outline"><p className="flex justify-center">{user.companyId}</p></td>
+                <td className="outline"><p className="flex justify-center">{props.companyList.find(company => company.id === user.companyId)?.name}</p></td>
                 <td className="outline"><p className="flex justify-center">{user.name}</p></td>
                 <td className="outline"><p className="flex justify-center">{user.email}</p></td>
                 <td className="outline">
