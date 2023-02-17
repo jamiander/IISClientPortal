@@ -15,7 +15,7 @@ export default function ProfilePage(){
   return(
     <div className="m-[2%] grid grid-cols-4">
       <div className="col-span-4">
-        <p className="text-5xl">Profile</p>
+        <p className="text-5xl py-[10px]">Profile</p>
       </div>
       <div className="col-span-4 py-[5px]">
         <table className="table-auto w-[100%] outline">
@@ -41,7 +41,7 @@ export default function ProfilePage(){
         </table>
       </div>
       <div className="col-span-4">
-        <p className="text-5xl">Company Initiatives</p>
+        <p className="text-5xl py-[10px]">Company Initiatives</p>
       </div>
       <div className="col-span-4 py-[5px]">
         <table className="table-auto w-[100%] outline">
