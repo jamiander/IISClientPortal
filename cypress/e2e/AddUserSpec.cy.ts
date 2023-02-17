@@ -4,8 +4,8 @@ describe('add user spec', () => {
   })
 
   specify('add a new user', () => {
-    cy.get('.m-\\[2\\%\\] > :nth-child(2) > .outline').type('info@integrityinspired.com');
-    cy.get(':nth-child(3) > .outline').type('crowmonitorteam');
+    cy.get('.m-\\[2\\%\\] > :nth-child(2) > .outline').clear().type('info@integrityinspired.com');
+    cy.get(':nth-child(3) > .outline').clear().type('crowmonitorteam');
     cy.get('button').contains('Submit').click();
 
     cy.get(':nth-child(2) > .m-\\[2\\%\\] > :nth-child(3)').click();
@@ -22,8 +22,8 @@ describe('add user spec', () => {
   })
 
   specify('clients cannot access admin page', () => {
-    cy.get('.m-\\[2\\%\\] > :nth-child(2) > .outline').type('dummy@fakecompany.com');
-    cy.get(':nth-child(3) > .outline').type('password');
+    cy.get('.m-\\[2\\%\\] > :nth-child(2) > .outline').clear().type('dummy@fakecompany.com');
+    cy.get(':nth-child(3) > .outline').clear().type('password');
     cy.get('button').contains('Submit').click();
 
     cy.get('button').contains('Admin').should('not.exist');
