@@ -1,5 +1,7 @@
 import { useState } from "react"
 import Modal from 'react-modal'
+import CompaniesTable from "../Components/CompaniesTable";
+import UsersTable from "../Components/UsersTable";
 import { Company } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
 import { addUser, selectAllUsers, User } from "../Store/UserSlice";
@@ -21,15 +23,23 @@ export default function AdminPage(){
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [modalIsOpen, setIsOpen] = useState(false);
+  const [userModalIsOpen, setUserIsOpen] = useState(false);
+  const [companyModalIsOpen, setCompanyIsOpen] = useState(false);
   const userList = useAppSelector(selectAllUsers);
   const companyList: Company[] = [{id: 0, name: "Integrity Inspired Solutions"},{id: 1, name:"Fake Company"}]//useAppSelector(selectAllCompanies);
-
-  function openModal(){
-    setIsOpen(true);
+  
+  function openCompanyModal(){
+    setCompanyIsOpen(true);
   }
-  function closeModal(){
-    setIsOpen(false);
+  function closeCompanyModal(){
+    setCompanyIsOpen(false);
+  }
+
+  function openUserModal(){
+    setUserIsOpen(true);
+  }
+  function closeUserModal(){
+    setUserIsOpen(false);
   }
 
   function ValidateInput()
@@ -65,20 +75,7 @@ export default function AdminPage(){
     setEmail('');
     setPassword('');
 
-    closeModal();
-  }
-
-  function PasswordDisplay(user:User){
-    const [passwordShown, setPasswordShown] = useState(false);
-    const togglePasswordVisibility = () => {
-      setPasswordShown(passwordShown ? false:true);
-    };
-    return(
-      <>
-      <input disabled type={passwordShown ? 'text' : 'password'} value={user.password} className="flex justify-center"/>
-      <input type={'checkbox'} onClick={togglePasswordVisibility}/> Show Password
-      </>
-    )
+    closeUserModal();
   }
 
   return(
@@ -87,66 +84,62 @@ export default function AdminPage(){
       <div className="col-span-3">
         <p className="text-5xl">Admin Page</p>
       </div>
-      <div className="flex justify-end">
-          <button onClick={openModal} className="outline bg-[#21345b] text-white h-[40px] w-[80%] rounded">Add User</button>
-          <Modal
-              isOpen={modalIsOpen}
-              onRequestClose={closeModal}
-              style={modalStyle}
-          >
-            <div className="space-x-3">
-              <p className="text-3xl">Add User</p>
-              <br/>
-              <p>Company:</p>
-              <select className="outline rounded" onChange={(e)=>setCompany(e.target.value)}>
-                <option value={-1}></option>
-                {companyList.map((company,index) => {
-                  return (
-                    <option key={index} value={company.id}>{company.name}</option>
-                  )
-                })}
-              </select>
-              <p>Name:</p>
-              <input onChange={(e)=>setName(e.target.value)} className="outline rounded"/>
-              <p>Email:</p>
-              <input onChange={(e)=>setEmail(e.target.value)} className="outline rounded"/>
-              <p>Password:</p>
-              <input onChange={(e)=>setPassword(e.target.value)} className="outline rounded"/>
-              <button disabled={!ValidateInput()} className="rounded h-[40px] w-[80px] bg-lime-600" onClick={() => Submit()}>Submit</button>
-              <button className="rounded h-[40px] w-[80px] bg-red-600" onClick={closeModal}>Close</button> 
-            </div>
-          </Modal>
-      </div>
-      <div className="col-span-4">
-          <p className="text-3xl">Users</p>
-      </div>
-      <div className="col-span-4">
-        <table className="table-auto w-[100%] outline">
-          <thead>
-            <tr>
-              <th>Company</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Password</th>
-            </tr>
-          </thead>
-          <tbody>
-            {userList.map((user, index)=>{
-              
-              return(
-                <tr key={index}>
-                  <td className="outline"><p className="flex justify-center">{companyList.find(company => company.id === user.companyId)?.name}</p></td>
-                  <td className="outline"><p className="flex justify-center">{user.name}</p></td>
-                  <td className="outline"><p className="flex justify-center">{user.email}</p></td>
-                  <td className="outline">
-                    <PasswordDisplay {...(user)}/>
-                  </td>
-                </tr>
-              )
-            })}
-          </tbody>
-        </table>
-      </div>
+    <div className="col-span-3">
+      <p className="text-3xl">Users</p>
+    </div>
+    <div className="flex justify-end">
+    <button onClick={openUserModal} className="outline bg-[#21345b] text-white h-[40px] w-[80%] rounded">Add User</button>
+        <Modal
+            isOpen={userModalIsOpen}
+            onRequestClose={closeUserModal}
+            style={modalStyle}
+        >
+        <div className="space-x-3">
+          <p className="text-3xl">Add User</p>
+          <br/>
+          <p>Company:</p>
+          <select className="outline rounded" onChange={(e)=>setCompany(e.target.value)}>
+            <option value={-1}></option>
+              {companyList.map((company,index) => {
+                return (
+                  <option key={index} value={company.id}>{company.name}</option>
+                )
+              })}
+          </select><p>Name:</p>
+          <input onChange={(e)=>setName(e.target.value)} className="outline rounded"/>
+          <p>Email:</p>
+          <input onChange={(e)=>setEmail(e.target.value)} className="outline rounded"/>
+          <p>Password:</p>
+          <input onChange={(e)=>setPassword(e.target.value)} className="outline rounded"/>
+          <button disabled={!ValidateInput()} className="rounded h-[40px] w-[80px] bg-lime-600" onClick={() => Submit()}>Submit</button>
+          <button className="rounded h-[40px] w-[80px] bg-red-600" onClick={closeUserModal}>Close</button> 
+        </div>
+      </Modal>
+    </div>
+    <div className="col-span-4">
+      <UsersTable/>
+    </div>
+    <div className="col-span-3">
+      <p className="text-3xl">Companies</p>
+    </div>
+    <div className="flex justify-end">
+    <button onClick={openCompanyModal} className="outline bg-[#21345b] text-white h-[40px] w-[80%] rounded">Add Company</button>
+    <Modal
+            isOpen={companyModalIsOpen}
+            onRequestClose={closeCompanyModal}
+            style={modalStyle}
+        >
+        <div className="space-x-3">
+          <p className="text-3xl">Add Company</p>
+          <br/>
+          <button disabled={!ValidateInput()} className="rounded h-[40px] w-[80px] bg-lime-600">Submit</button>
+          <button className="rounded h-[40px] w-[80px] bg-red-600" onClick={closeCompanyModal}>Close</button> 
+        </div>  
+      </Modal>
+    </div>
+    <div className="col-span-4">
+      <CompaniesTable/>
+    </div>
   </div>
   </>
   )
