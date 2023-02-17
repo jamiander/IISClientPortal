@@ -113,7 +113,7 @@ export default function AdminPage(){
         <p className="text-5xl">Admin Page</p>
       </div>
     <div className="col-span-3">
-      <p className="text-3xl">Users</p>
+      <p className="text-3xl bg-[#2ed7c3] text-white rounded">Users</p>
     </div>
     <div className="flex justify-end">
     <button onClick={openUserModal} className="outline bg-[#21345b] text-white h-[40px] w-[80%] rounded">Add User</button>
@@ -144,11 +144,11 @@ export default function AdminPage(){
         </div>
       </Modal>
     </div>
-    <div className="col-span-4">
+    <div className="col-span-4 py-[5px]">
       <UsersTable userList={userList} companyList={companyList}/>
     </div>
     <div className="col-span-3">
-      <p className="text-3xl">Companies</p>
+      <p className="text-3xl bg-[#2ed7c3] text-white rounded">Companies</p>
     </div>
     <div className="flex justify-end">
       <button onClick={openCompanyModal} className="outline bg-[#21345b] text-white h-[40px] w-[80%] rounded">Add Company</button>
