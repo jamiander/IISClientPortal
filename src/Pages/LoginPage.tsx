@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks"
-import { getUserData, selectAllUsers, setCurrentUserId } from "../Store/UserSlice";
+import { selectAllUsers, setCurrentUserId } from "../Store/UserSlice";
 
 export default function LoginPage(){
   const dispatch = useAppDispatch();

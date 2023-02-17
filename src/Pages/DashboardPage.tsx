@@ -1,9 +1,8 @@
 import { selectAllCompanies } from "../Store/CompanySlice";
-import { useAppDispatch, useAppSelector } from "../Store/Hooks"
+import { useAppSelector } from "../Store/Hooks"
 import { selectCurrentUser } from "../Store/UserSlice";
 
 export default function DashboardPage(){
-  const dispatch = useAppDispatch();
   const user = useAppSelector(selectCurrentUser);
   const companyList = useAppSelector(selectAllCompanies);
   const company = companyList.find(e=>e.id === user?.companyId);
