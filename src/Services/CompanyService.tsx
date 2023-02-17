@@ -1,3 +1,4 @@
+import axios from "axios";
 import { Company } from "../Store/CompanySlice";
 import { BASE_URL, http } from "./Http";
 
@@ -6,12 +7,8 @@ interface GetAllCompaniesRequest {
     name?: string
 }
 
-interface GetAllCompaniesResponse {
-    companies: Company[]
-}
-
-export async function GetAllCompanies(request?: GetAllCompaniesRequest) : Promise<GetAllCompaniesResponse> {
-    let baseUrl = BASE_URL + "GetCompanyBlob?code=_OCKRgqpoHjkLRhEKxfkRfVOqLJOFNt-XHIoRbcNQL4VAzFuOb5VlA==&clientId=blobs_extension";
+export async function GetAllCompanies(request?: GetAllCompaniesRequest) : Promise<Company[]> {
+    let baseUrl = BASE_URL + "GetCompanyBlob?code=_8QdLaD5ssAgZt0-H4e7K4WgEI-RVxuTQ3qeMMSRq-PiAzFu39mM2Q==";
 
     let query = [];
     if (request)
@@ -22,9 +19,9 @@ export async function GetAllCompanies(request?: GetAllCompaniesRequest) : Promis
         if (query.length > 0) baseUrl += "&" + query.join("&");
     }
 
-    let response = await http.get(baseUrl);
-    console.log(response.data);
-    return response.data.data;
+    let response = await axios.get(baseUrl);
+    // console.log("service", response.data);
+    return response.data;
 }
 
 interface AddCompanyRequest {
