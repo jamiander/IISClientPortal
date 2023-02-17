@@ -111,7 +111,7 @@ export default function AdminPage(){
   <>
     <div className="m-[2%] grid grid-cols-4">
       <div className="col-span-3">
-        <p className="text-5xl">Admin Page</p>
+        <p className="text-5xl py-[10px]">Admin Page</p>
       </div>
     <div className="col-span-3">
       <p className="text-3xl bg-[#2ed7c3] text-white rounded">Users</p>
@@ -145,7 +145,7 @@ export default function AdminPage(){
         </div>
       </Modal>
     </div>
-    <div className="col-span-4 py-[5px]">
+    <div className="col-span-4 py-[10px]">
       <UsersTable userList={userList} companyList={companyList}/>
     </div>
     <div className="col-span-3">
@@ -155,7 +155,7 @@ export default function AdminPage(){
       <button onClick={openCompanyModal} className="outline bg-[#21345b] text-white h-[40px] w-[80%] rounded">Add Company</button>
       <AddCompanyModal modalStyle={modalStyle} companyModalIsOpen={companyModalIsOpen} closeCompanyModal={closeCompanyModal} validateCompany={ValidateCompany} setCompanyName={setCompanyName} submitNewCompany={SubmitNewCompany} />
     </div>
-    <div className="col-span-4 py-[5px]">
+    <div className="col-span-4 py-[10px]">
       <CompaniesTable/>
     </div>
   </div>
