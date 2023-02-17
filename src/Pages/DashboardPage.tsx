@@ -11,7 +11,7 @@ export default function DashboardPage(){
   return(
     <div className="m-[2%] grid grid-cols-4">
       <div className="col-span-2">
-        <p className="text-5xl ">Dashboard</p>
+        <p className="text-5xl py-[10px]">Dashboard</p>
       </div>
       <div className="flex justify-end col-span-2">
         <select className="outline rounded w-[200px] h-[40px]">
@@ -23,7 +23,7 @@ export default function DashboardPage(){
           })}
         </select>
       </div>
-      <div className="col-span-4 h-[60vh] py-[10px] outline">
+      <div className="col-span-4 h-[60vh] py-[10px] outline-dotted">
         this is where the data will go.
         the outline is there so we know how much space it takes up
       </div>
