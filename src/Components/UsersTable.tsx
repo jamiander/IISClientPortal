@@ -16,16 +16,16 @@ export default function UsersTable(props: UsersTableProps){
           setPasswordShown(passwordShown ? false:true);
         };
         return(
-          <>
-          <input disabled type={passwordShown ? 'text' : 'password'} value={user.password} className="flex justify-center"/>
-          <input type={'checkbox'} onClick={togglePasswordVisibility}/> Show Password
-          </>
+          <div className="px-4 w-4/5">
+            <input disabled type={passwordShown ? 'text' : 'password'} value={user.password} className="flex justify-center"/>
+            <input type={'checkbox'} onClick={togglePasswordVisibility}/> Show Password
+          </div>
         )
       }
 
     return(
-        <table className="table-auto w-[100%] outline">
-        <thead>
+        <table className="table-auto w-[100%] outline outline-3">
+        <thead className="outline outline-1">
           <tr>
             <th>Company</th>
             <th>Name</th>
@@ -37,10 +37,10 @@ export default function UsersTable(props: UsersTableProps){
           {props.userList.map((user, index)=>{
             return(
               <tr key={index}>
-                <td className="outline"><p className="flex justify-center">{props.companyList.find(company => company.id === user.companyId)?.name}</p></td>
-                <td className="outline"><p className="flex justify-center">{user.name}</p></td>
-                <td className="outline"><p className="flex justify-center">{user.email}</p></td>
-                <td className="outline">
+                <td className="outline outline-1"><p className="flex justify-center">{props.companyList.find(company => company.id === user.companyId)?.name}</p></td>
+                <td className="outline outline-1"><p className="flex justify-center">{user.name}</p></td>
+                <td className="outline outline-1"><p className="flex justify-center">{user.email}</p></td>
+                <td className="outline outline-1">
                   <PasswordDisplay {...(user)}/>
                 </td>
               </tr>
