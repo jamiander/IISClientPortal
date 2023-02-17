@@ -149,12 +149,9 @@ export default function AdminPage(){
       <UsersTable userList={userList} companyList={companyList}/>
     </div>
     <div className="col-span-3">
-      <p className="text-3xl bg-[#2ed7c3] text-white rounded">Companies</p>
+      <p className="text-3xl bg-[#2ed7c3] text-white rounded my-1 h-[75%]">Companies</p>
     </div>
-    <div className="flex justify-end">
-      <button onClick={openCompanyModal} className="outline bg-[#21345b] text-white h-[40px] w-[80%] rounded">Add Company</button>
-      <AddCompanyModal modalStyle={modalStyle} companyModalIsOpen={companyModalIsOpen} closeCompanyModal={closeCompanyModal} validateCompany={ValidateCompany} setCompanyName={setCompanyName} submitNewCompany={SubmitNewCompany} />
-    </div>
+    <AddCompanyModal modalStyle={modalStyle} companyModalIsOpen={companyModalIsOpen} closeCompanyModal={closeCompanyModal} openCompanyModal={openCompanyModal} validateCompany={ValidateCompany} setCompanyName={setCompanyName} submitNewCompany={SubmitNewCompany} />
     <div className="col-span-4 py-[5px]">
       <CompaniesTable/>
     </div>
