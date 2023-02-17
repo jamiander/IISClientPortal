@@ -2,7 +2,7 @@ import { useState } from "react"
 import Modal from 'react-modal'
 import CompaniesTable from "../Components/CompaniesTable";
 import UsersTable from "../Components/UsersTable";
-import { Company } from "../Store/CompanySlice";
+import { Company, selectAllCompanies } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
 import { addUser, selectAllUsers, User } from "../Store/UserSlice";
 
@@ -26,7 +26,7 @@ export default function AdminPage(){
   const [userModalIsOpen, setUserIsOpen] = useState(false);
   const [companyModalIsOpen, setCompanyIsOpen] = useState(false);
   const userList = useAppSelector(selectAllUsers);
-  const companyList: Company[] = [{id: 0, name: "Integrity Inspired Solutions"},{id: 1, name:"Fake Company"}]//useAppSelector(selectAllCompanies);
+  const companyList = useAppSelector(selectAllCompanies);
   
   function openCompanyModal(){
     setCompanyIsOpen(true);
