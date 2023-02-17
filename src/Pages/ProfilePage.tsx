@@ -1,9 +1,12 @@
 import { useState } from "react";
+import { selectAllCompanies } from "../Store/CompanySlice";
 import { useAppSelector } from "../Store/Hooks"
 import { selectCurrentUser } from "../Store/UserSlice"
 
 export default function ProfilePage(){
   const user = useAppSelector(selectCurrentUser);
+  const companyList = useAppSelector(selectAllCompanies);
+  const company = companyList.find(e=>e.id === user?.companyId);
   const [passwordShown, setPasswordShown] = useState(false);
   const togglePasswordVisibility = () => {
     setPasswordShown(passwordShown ? false : true);
@@ -26,7 +29,7 @@ export default function ProfilePage(){
           </thead>
           <tbody>
             <tr>
-              <td className="outline"><p className="flex justify-center">{user?.companyId}</p></td>
+              <td className="outline"><p className="flex justify-center">{company?.name}</p></td>
               <td className="outline"><p className="flex justify-center">{user?.name}</p></td>
               <td className="outline"><p className="flex justify-center">{user?.email}</p></td>
               <td className="outline">
