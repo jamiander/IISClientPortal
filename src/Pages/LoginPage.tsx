@@ -9,7 +9,6 @@ export default function LoginPage(){
   const [userEmail, setUserEmail] = useState('');
   const [password, setPassword] = useState('');
   const userlist = useAppSelector(selectAllUsers);
-  var currentuser = -1
   const [passwordShown,setPasswordShown]=useState(false);
 
   const togglePasswordVisibility = () => {
@@ -17,9 +16,9 @@ export default function LoginPage(){
   };
 
   function Login(){
-    if(userlist.find(user=>(user.email === userEmail)&&(user.password === password))){
-      currentuser = (userlist.find(user=>(user.email === userEmail)&&(user.password === password)))?.id ?? -1
-      dispatch(setCurrentUserId(currentuser))
+    let currentUser = userlist.find(user => (user.email === userEmail) && (user.password === password));
+    if(currentUser){
+      dispatch(setCurrentUserId(currentUser.id))
       navigate('/DashBoard')
     }
   }
@@ -36,7 +35,6 @@ export default function LoginPage(){
       <div className="col-span-4">
         <p>Password:</p>
         <input type={passwordShown ? 'text' : 'password'} onChange={(e)=>setPassword(e.target.value)} onKeyDown={(e)=> {if (e.key === 'Enter') Login()}} className="outline rounded h-[40px]"/>
-        
       </div>
       <div className="col-span-4">
         <input type={'checkbox'} onClick={togglePasswordVisibility}/> Show Password
