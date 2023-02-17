@@ -8,14 +8,14 @@ export default function ProfilePage(){
   const togglePasswordVisibility = () => {
     setPasswordShown(passwordShown ? false : true);
   };
-  
+
   return(
     <div className="m-[2%] grid grid-cols-4">
       <div className="col-span-4">
         <p className="text-5xl">Profile</p>
       </div>
       <div className="col-span-4">
-      <table className="table-auto w-[100%] outline">
+        <table className="table-auto w-[100%] outline">
           <thead>
             <tr>
               <th>Company</th>
@@ -33,8 +33,25 @@ export default function ProfilePage(){
                 <input disabled type={passwordShown ? 'text' : 'password'} value={user?.password} className="flex justify-center"/>
                 <input type={'checkbox'} onClick={togglePasswordVisibility}/> Show Password
               </td>
-              {//<td className="outline"><p className="flex justify-center">{user?.password}</p></td>
-}
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div className="col-span-4">
+        <p className="text-5xl">Company Initiatives</p>
+      </div>
+      <div className="col-span-4">
+        <table className="table-auto w-[100%] outline">
+          <thead>
+            <tr>
+              <th>Initiative</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td className="outline"><p className="flex justify-center">placeholder</p></td>
+              <td className="outline"><p className="flex justify-center">placeholder</p></td>
             </tr>
           </tbody>
         </table>
