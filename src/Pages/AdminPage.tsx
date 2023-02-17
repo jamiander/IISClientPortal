@@ -2,7 +2,7 @@ import { useState } from "react"
 import Modal from 'react-modal'
 import CompaniesTable from "../Components/CompaniesTable";
 import UsersTable from "../Components/UsersTable";
-import { Company, selectAllCompanies } from "../Store/CompanySlice";
+import { addCompany, Company, selectAllCompanies } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
 import { addUser, selectAllUsers, User } from "../Store/UserSlice";
 
@@ -25,6 +25,7 @@ export default function AdminPage(){
   const [password, setPassword] = useState('');
   const [userModalIsOpen, setUserIsOpen] = useState(false);
   const [companyModalIsOpen, setCompanyIsOpen] = useState(false);
+  const [companyName, setCompanyName] = useState('');
   const userList = useAppSelector(selectAllUsers);
   const companyList = useAppSelector(selectAllCompanies);
   
@@ -42,7 +43,7 @@ export default function AdminPage(){
     setUserIsOpen(false);
   }
 
-  function ValidateInput()
+  function ValidateUser()
   {
     let companyId = parseInt(company);
     if(!Number.isNaN(companyId) && companyId >= 0 && email && password)
@@ -51,7 +52,7 @@ export default function AdminPage(){
     return false;
   }
 
-  function Submit()
+  function SubmitNewUser()
   {
     let newUser: User = {
       id: -1,
@@ -76,6 +77,33 @@ export default function AdminPage(){
     setPassword('');
 
     closeUserModal();
+  }
+
+  function ValidateCompany()
+  {
+    if(companyName)
+      return true;
+    return false;
+  }
+
+  function SubmitNewCompany()
+  {
+    let newCompany: Company = {
+      id: -1,
+      name: companyName,
+    }
+      
+    let isTest = false;
+    if((window as any).Cypress)
+      isTest = true;
+      
+    console.log('cypress: ' + isTest)
+  
+    dispatch(addCompany({company: newCompany, isTest: isTest}));
+  
+    setCompanyName('');
+  
+    closeCompanyModal();
   }
 
   return(
@@ -111,7 +139,7 @@ export default function AdminPage(){
           <input onChange={(e)=>setEmail(e.target.value)} className="outline rounded"/>
           <p>Password:</p>
           <input onChange={(e)=>setPassword(e.target.value)} className="outline rounded"/>
-          <button disabled={!ValidateInput()} className="rounded h-[40px] w-[80px] bg-lime-600" onClick={() => Submit()}>Submit</button>
+          <button disabled={!ValidateUser()} className="rounded h-[40px] w-[80px] bg-lime-600" onClick={() => SubmitNewUser()}>Submit</button>
           <button className="rounded h-[40px] w-[80px] bg-red-600" onClick={closeUserModal}>Close</button> 
         </div>
       </Modal>
@@ -132,7 +160,7 @@ export default function AdminPage(){
         <div className="space-x-3">
           <p className="text-3xl">Add Company</p>
           <br/>
-          <button disabled={!ValidateInput()} className="rounded h-[40px] w-[80px] bg-lime-600">Submit</button>
+          <button disabled={!ValidateCompany()} className="rounded h-[40px] w-[80px] bg-lime-600" onClick={() => SubmitNewCompany()}>Submit</button>
           <button className="rounded h-[40px] w-[80px] bg-red-600" onClick={closeCompanyModal}>Close</button> 
         </div>  
       </Modal>
