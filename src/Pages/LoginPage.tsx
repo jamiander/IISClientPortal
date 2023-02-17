@@ -6,8 +6,8 @@ import { getUserData, selectAllUsers, setCurrentUserId } from "../Store/UserSlic
 export default function LoginPage(){
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [userEmail, setUserEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [userEmail, setUserEmail] = useState('info@integrityinspired.com');
+  const [password, setPassword] = useState('crowmonitorteam');
   const userlist = useAppSelector(selectAllUsers);
   const [passwordShown,setPasswordShown]=useState(false);
 
@@ -30,11 +30,12 @@ export default function LoginPage(){
       </div>
       <div className="col-span-4">
         <p>Email:</p>
-        <input autoFocus onChange={(e)=>setUserEmail(e.target.value)} onKeyDown={(e)=> {if (e.key === 'Enter') Login()}} className="outline rounded h-[40px]"/>
+        <input autoFocus value={userEmail} onChange={(e)=>setUserEmail(e.target.value)} onKeyDown={(e)=> {if (e.key === 'Enter') Login()}} className="outline rounded h-[40px]"/>
       </div>
       <div className="col-span-4">
         <p>Password:</p>
-        <input type={passwordShown ? 'text' : 'password'} onChange={(e)=>setPassword(e.target.value)} onKeyDown={(e)=> {if (e.key === 'Enter') Login()}} className="outline rounded h-[40px]"/>
+        <input value={password} type={passwordShown ? 'text' : 'password'} onChange={(e)=>setPassword(e.target.value)} onKeyDown={(e)=> {if (e.key === 'Enter') Login()}} className="outline rounded h-[40px]"/>
+        
       </div>
       <div className="col-span-4">
         <input type={'checkbox'} onClick={togglePasswordVisibility}/> Show Password
