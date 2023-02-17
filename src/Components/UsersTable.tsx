@@ -4,11 +4,11 @@ import { useAppSelector } from "../Store/Hooks"
 import { selectAllUsers, User } from "../Store/UserSlice"
 
 interface UsersTableProps {
+  userList: User[]
   companyList: Company[]
 }
 
 export default function UsersTable(props: UsersTableProps){
-    const userList = useAppSelector(selectAllUsers);
 
     function PasswordDisplay(user:User){
         const [passwordShown, setPasswordShown] = useState(false);
@@ -34,7 +34,7 @@ export default function UsersTable(props: UsersTableProps){
           </tr>
         </thead>
         <tbody>
-          {userList.map((user, index)=>{
+          {props.userList.map((user, index)=>{
             return(
               <tr key={index}>
                 <td className="outline"><p className="flex justify-center">{props.companyList.find(company => company.id === user.companyId)?.name}</p></td>
