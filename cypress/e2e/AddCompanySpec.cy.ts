@@ -11,6 +11,11 @@ describe('template spec', () => {
     cy.get('button').contains('Admin').click();
     cy.get('button').contains('Add Company').click();
 
+    cy.get('.space-x-3 > .outline').clear().type('Test Company');
+
+    cy.get('button').contains('Submit').click();
+
+    cy.contains('Test Company');
   })
 })
 
