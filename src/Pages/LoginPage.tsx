@@ -20,7 +20,7 @@ export default function LoginPage(){
     let currentUser = userlist.find(user => (user.email === userEmail) && (user.password === password));
     if(currentUser){
       dispatch(setCurrentUserId(currentUser.id));
-      dispatch(getCompanyInfo({userId: currentUser.id}));
+      dispatch(getCompanyInfo({employeeId: currentUser.id}));
       navigate('/DashBoard');
     }
   }

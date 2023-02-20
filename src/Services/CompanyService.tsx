@@ -48,7 +48,7 @@ interface EmployeeInfo {
 }
 
 export interface CompanyInfo {
-    id: number,             //TODO: modify the azure function to return this as part of the response object
+    companyId: number,
     companyName: string,
     employeeInfo: EmployeeInfo,
     //initiatives: any[]
@@ -56,7 +56,7 @@ export interface CompanyInfo {
 
 export interface GetCompanyInfoRequest {
     companyId?: number,
-    userId?: number
+    employeeId?: number
 }
 
 interface GetCompanyInfoResponse {
@@ -64,13 +64,13 @@ interface GetCompanyInfoResponse {
 }
 
 export async function GetCompanyInfo(request?: GetCompanyInfoRequest) : Promise<GetCompanyInfoResponse> {
-    let baseUrl = BASE_URL// + "GetCompanyBlob?code=_8QdLaD5ssAgZt0-H4e7K4WgEI-RVxuTQ3qeMMSRq-PiAzFu39mM2Q==";
+    let baseUrl = BASE_URL + "GetCompanyData?code=1HsP_rZR0qd4PKt7Z7NyV7RQxSQWpMq9mirkMKg3ZNBcAzFuCCfxTQ==";
 
     let query = [];
     if (request)
     {
         if (request.companyId !== undefined) query.push(`companyId=${request.companyId}`);
-        if (request.userId !== undefined) query.push(`userId=${request.userId}`);
+        if (request.employeeId !== undefined) query.push(`employeeId=${request.employeeId}`);
         //if (request.name !== undefined) query.push(`name=${request.name}`);
 
         if (query.length > 0) baseUrl += "&" + query.join("&");

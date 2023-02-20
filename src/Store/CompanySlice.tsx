@@ -53,7 +53,7 @@ export const getCompanyInfo = createAsyncThunk(
         let companies: Company[] = [];
         for(const info of companyInfo)
         {
-            let company: Company = {id: info.id, name: info.companyName};
+            let company: Company = {id: info.companyId, name: info.companyName};
             companies.push(company);
 
             let employee = info.employeeInfo;
