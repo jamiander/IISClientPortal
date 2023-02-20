@@ -7,6 +7,18 @@ export default function DashboardPage(){
   const companyList = useAppSelector(selectAllCompanies);
   const company = companyList.find(e=>e.id === user?.companyId);
     
+  function Dashboard(){
+    if(company?.initiatives?.length === 0){
+      return(
+        <p className="text-4xl">No Current Initiatives</p>
+      )
+    }else{
+      return(
+        <p>this is where initiatives will go when we have them</p>
+      )
+    }
+  }
+
   return(
     <div className="m-[2%] grid grid-cols-4">
       <div className="col-span-2">
@@ -23,8 +35,7 @@ export default function DashboardPage(){
         </select>
       </div>
       <div className="col-span-4 h-[60vh] py-[10px] outline-dotted">
-        this is where the data will go.
-        the outline is there so we know how much space it takes up
+        <Dashboard/>
       </div>
     </div>
   )
