@@ -60,7 +60,8 @@ export interface GetCompanyInfoRequest {
 }
 
 interface GetCompanyInfoResponse {
-    info: CompanyInfo[]
+    info: CompanyInfo[],
+    status: string
 }
 
 export async function GetCompanyInfo(request?: GetCompanyInfoRequest) : Promise<GetCompanyInfoResponse> {
