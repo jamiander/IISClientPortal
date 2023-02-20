@@ -65,7 +65,7 @@ export const userSlice = createSlice({
         },
         addUsersToStore: (state, action: PayloadAction<User[]>) => {
             let newUsers = action.payload;
-            state.users = action.payload;
+            state.users = newUsers;
             //for(const user of newUsers)
             //    state.users.push(user);
         }

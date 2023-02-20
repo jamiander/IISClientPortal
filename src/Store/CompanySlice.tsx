@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { Action } from "@remix-run/router"
-import { AddCompany, AddCompanyRequest, GetAllCompanies, GetCompanyInfo, GetCompanyInfoRequest } from "../Services/CompanyService"
+import { AddCompany, AddCompanyRequest, GetAllCompanies, GetCompanyInfo, GetCompanyInfoRequest, UpdateCompanyInfo, UpdateCompanyInfoRequest } from "../Services/CompanyService"
 import { RootState } from "./Store"
 import { addUsersToStore, User } from "./UserSlice"
 
@@ -67,7 +67,27 @@ export const getCompanyInfo = createAsyncThunk(
         }
         dispatch(addUsersToStore(users));
 
-        return {companies: companies};
+        return companies;
+    }
+)
+
+export const updateCompanyInfo = createAsyncThunk(
+    'companies/updateCompanyInfo',
+    async (args: UpdateCompanyInfoRequest, {dispatch, getState}) => {
+        const response = await UpdateCompanyInfo(args);
+        
+        if (response.status.toUpperCase().includes('FAILED'))
+            throw Error;
+        
+        let newCompany = JSON.parse(JSON.stringify(args.company));
+        newCompany.id = response.id;
+        
+        let newUser = JSON.parse(JSON.stringify(args.employee));
+        newUser.id = response.id;
+
+        dispatch(addUsersToStore([newUser]));
+
+        return newCompany;
     }
 )
 
@@ -87,7 +107,10 @@ export const companySlice = createSlice({
                 state.companies.push(action.payload);
             })
             .addCase(getCompanyInfo.fulfilled, (state, action) => {
-                state.companies = action.payload.companies;
+                state.companies = action.payload;
+            })
+            .addCase(updateCompanyInfo.fulfilled, (state, action) => {
+                state.companies = action.payload;
             })
     }
 });

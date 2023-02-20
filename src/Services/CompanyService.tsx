@@ -80,3 +80,34 @@ export async function GetCompanyInfo(request?: GetCompanyInfoRequest) : Promise<
     return response.data;
 }
 
+export interface UpdateCompanyInfoRequest {
+    company: Company,
+    employee: User,
+    isTest: boolean
+}
+
+interface UpdateCompanyInfoResponse {
+    id: number,
+    status: string
+}
+
+export async function UpdateCompanyInfo(request: UpdateCompanyInfoRequest) : Promise<UpdateCompanyInfoResponse> {
+    const company = request.company;
+    const employee = request.employee;
+    
+    let info: CompanyInfo = {
+        companyId: company.id,
+        companyName: company.name,
+        employeeInfo: {
+            employeeId: employee.id,
+            employeeEmail: employee.email,
+            employeePassword: employee.password
+        }
+    }
+    
+    let baseUrl = BASE_URL// + "AddCompanyBlob?code=20f81kJNWLkzF8bRRY5tUMOYggSA2iEWB1kgUZE_reYfAzFu-V801Q==";
+
+    let response = await axios.post(baseUrl, info);
+    return response.data;
+}
+
