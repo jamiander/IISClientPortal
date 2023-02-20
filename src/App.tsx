@@ -11,9 +11,9 @@ import { getUserData } from './Store/UserSlice';
 function App() {
   const dispatch = useAppDispatch();
 
-  useEffect(()=>{
+  useEffect(() => {
     dispatch(getUserData());
-    dispatch(getCompanyData());
+    //dispatch(getCompanyData());
   })
   return (
     <div className='grid grid-cols-5 gap-[.5vh] bg-[#2ed7c3]'>

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getCompanyInfo } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks"
 import { selectAllUsers, setCurrentUserId } from "../Store/UserSlice";
 
@@ -18,8 +19,9 @@ export default function LoginPage(){
   function Login(){
     let currentUser = userlist.find(user => (user.email === userEmail) && (user.password === password));
     if(currentUser){
-      dispatch(setCurrentUserId(currentUser.id))
-      navigate('/DashBoard')
+      dispatch(setCurrentUserId(currentUser.id));
+      dispatch(getCompanyInfo({userId: currentUser.id}));
+      navigate('/DashBoard');
     }
   }
 

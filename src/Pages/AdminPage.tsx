@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AddCompanyModal from "../Components/AddCompanyModal";
 import AddUserModal from "../Components/AddUserModal";
 import CompaniesTable from "../Components/CompaniesTable";
 import UsersTable from "../Components/UsersTable";
-import { addCompany, Company, selectAllCompanies } from "../Store/CompanySlice";
+import { addCompany, Company, getCompanyInfo, selectAllCompanies } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
 import { addUser, selectAllUsers, User } from "../Store/UserSlice";
 
@@ -106,6 +106,10 @@ export default function AdminPage(){
   
     closeCompanyModal();
   }
+
+  useEffect(() => {
+    dispatch(getCompanyInfo({})); //no args; admins get all companies/users
+  },[])
 
   return(
   <>

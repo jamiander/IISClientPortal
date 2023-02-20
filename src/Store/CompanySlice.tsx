@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { Action } from "@remix-run/router"
-import { AddCompany, AddCompanyRequest, GetAllCompanies } from "../Services/CompanyService"
+import { AddCompany, AddCompanyRequest, GetAllCompanies, GetCompanyInfo, GetCompanyInfoRequest } from "../Services/CompanyService"
 import { RootState } from "./Store"
+import { addUsersToStore, User } from "./UserSlice"
 
 export interface Company {
     id: number,
@@ -39,7 +40,34 @@ export const addCompany = createAsyncThunk(
         let newCompany = JSON.parse(JSON.stringify(args.company));
         newCompany.id = response.id;
         return newCompany;
-        
+    }
+)
+
+export const getCompanyInfo = createAsyncThunk(
+    'companies/getCompanyInfo',
+    async (args: GetCompanyInfoRequest, {dispatch, getState}) => {
+        const response = await GetCompanyInfo(args);
+        const companyInfo = response.info;
+
+        let users: User[] = [];
+        let companies: Company[] = [];
+        for(const info of companyInfo)
+        {
+            let company: Company = {id: info.id, name: info.companyName};
+            companies.push(company);
+
+            let employee = info.employeeInfo;
+            let user: User = {
+                id: employee.employeeId,
+                email: employee.employeeEmail,
+                password: employee.employeePassword,
+                companyId: company.id
+            }
+            users.push(user);
+        }
+        dispatch(addUsersToStore(users));
+
+        return {companies: companies};
     }
 )
 
@@ -57,6 +85,9 @@ export const companySlice = createSlice({
             })
             .addCase(addCompany.fulfilled, (state, action) => {
                 state.companies.push(action.payload);
+            })
+            .addCase(getCompanyInfo.fulfilled, (state, action) => {
+                state.companies = action.payload.companies;
             })
     }
 });

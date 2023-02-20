@@ -62,6 +62,11 @@ export const userSlice = createSlice({
         },
         signOut:(state)=>{
             state.currentUserId = -1;
+        },
+        addUsersToStore: (state, action: PayloadAction<User[]>) => {
+            let newUsers = action.payload;
+            for(const user of newUsers)
+                state.users.push(user);
         }
     },
     extraReducers: (builder) => {
@@ -79,7 +84,7 @@ export const userSlice = createSlice({
     },
 });
 
-export const { setCurrentUserId, signOut } = userSlice.actions;
+export const { setCurrentUserId, signOut, addUsersToStore } = userSlice.actions;
 
 export const selectAllUsers = (state: RootState) => state.users.users;
 export const selectCurrentUser = (state: RootState) => state.users.users.find((user: User) => user.id === state.users.currentUserId);
