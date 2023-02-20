@@ -105,7 +105,7 @@ export async function UpdateCompanyInfo(request: UpdateCompanyInfoRequest) : Pro
         }
     }
     
-    let baseUrl = BASE_URL// + "AddCompanyBlob?code=20f81kJNWLkzF8bRRY5tUMOYggSA2iEWB1kgUZE_reYfAzFu-V801Q==";
+    let baseUrl = BASE_URL + "AddCompanyData?code=WkVKzojbAuWrWSmQVvYWKiG_iD9R4S_-7wp3xsE1SuOhAzFuEJk5oQ==";
 
     let response = await axios.post(baseUrl, info);
     return response.data;
