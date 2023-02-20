@@ -65,9 +65,17 @@ export const userSlice = createSlice({
         },
         addUsersToStore: (state, action: PayloadAction<User[]>) => {
             let newUsers = action.payload;
-            state.users = newUsers;
-            //for(const user of newUsers)
-            //    state.users.push(user);
+            for(const user of newUsers)
+            {
+                let userIndex = state.users.findIndex(u => u.id === user.id);
+                if(userIndex > -1)
+                    state.users.splice(userIndex, 1);
+
+                state.users.push(user);
+            }
+        },
+        setUsersInStore: (state, action: PayloadAction<User[]>) => {
+            state.users = action.payload;
         }
     },
     extraReducers: (builder) => {

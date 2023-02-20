@@ -59,9 +59,9 @@ export const getCompanyInfo = createAsyncThunk(
             let employee = info.employeeInfo;
             let user: User = {
                 id: employee.employeeId,
+                companyId: company.id,
                 email: employee.employeeEmail,
-                password: employee.employeePassword,
-                companyId: company.id
+                password: employee.employeePassword
             }
             users.push(user);
         }
@@ -100,7 +100,6 @@ export const companySlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(getCompanyData.fulfilled, (state, action) => {
-                // console.log("thunk reducer", action.payload);
                 state.companies = action.payload;
             })
             .addCase(addCompany.fulfilled, (state, action) => {
