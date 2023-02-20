@@ -18,8 +18,8 @@ export default function ProfilePage(){
         <p className="text-5xl py-[10px]">Profile</p>
       </div>
       <div className="col-span-4 py-[5px]">
-        <table className="table-auto w-[100%] outline">
-          <thead>
+        <table className="table-auto w-[100%] outline outline-3">
+          <thead className="outline outline-1">
             <tr>
               <th>Company</th>
               <th>Name</th>
@@ -29,10 +29,10 @@ export default function ProfilePage(){
           </thead>
           <tbody>
             <tr>
-              <td className="outline"><p className="flex justify-center">{company?.name}</p></td>
-              <td className="outline"><p className="flex justify-center">{user?.name}</p></td>
-              <td className="outline"><p className="flex justify-center">{user?.email}</p></td>
-              <td className="outline">
+              <td className="outline outline-1"><p className="flex justify-center">{company?.name}</p></td>
+              <td className="outline outline-1"><p className="flex justify-center">{user?.name}</p></td>
+              <td className="outline outline-1"><p className="flex justify-center">{user?.email}</p></td>
+              <td className="outline outline-1">
                 <input disabled type={passwordShown ? 'text' : 'password'} value={user?.password} className="flex justify-center"/>
                 <input type={'checkbox'} onClick={togglePasswordVisibility}/> Show Password
               </td>
