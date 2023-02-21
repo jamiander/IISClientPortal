@@ -31,7 +31,7 @@ export default function Header(){
       <img className="min-h-full h-auto" src={logo} alt='Integrity Inspired Solutions Logo'/>
       
     </div>
-    <div className="flex w-[50%] justify-center self-end">
+    <div className="flex w-[50%] justify-center">
       {isLoggedIn && <p className="text-2xl self-center">{greet}</p>}
     </div>
     <div className="flex w-[50%] justify-end self-end">
