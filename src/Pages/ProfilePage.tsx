@@ -22,7 +22,7 @@ export default function ProfilePage(){
           <thead className="outline outline-1">
             <tr>
               <th>Company</th>
-              <th>Name</th>
+              {/*<th>Name</th>*/}
               <th>Email</th>
               <th>Password</th>
             </tr>
@@ -30,7 +30,7 @@ export default function ProfilePage(){
           <tbody>
             <tr>
               <td className="outline outline-1"><p className="flex justify-center">{company?.name}</p></td>
-              <td className="outline outline-1"><p className="flex justify-center">{user?.name}</p></td>
+              {/*<td className="outline outline-1"><p className="flex justify-center">{user?.name}</p></td>*/}
               <td className="outline outline-1"><p className="flex justify-center">{user?.email}</p></td>
               <td className="outline outline-1">
                 <input disabled type={passwordShown ? 'text' : 'password'} value={user?.password} className="flex justify-center"/>

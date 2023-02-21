@@ -27,7 +27,7 @@ export default function UsersTable(props: UsersTableProps){
         <thead className="outline outline-1">
           <tr>
             <th>Company</th>
-            <th>Name</th>
+            {/*<th>Name</th>*/}
             <th>Email</th>
             <th>Password</th>
           </tr>
@@ -37,7 +37,7 @@ export default function UsersTable(props: UsersTableProps){
             return(
               <tr key={index}>
                 <td className="outline outline-1"><p className="flex justify-center">{props.companyList.find(company => company.id === user.companyId)?.name}</p></td>
-                <td className="outline outline-1"><p className="flex justify-center">{user.name}</p></td>
+                {/*<td className="outline outline-1"><p className="flex justify-center">{user.name}</p></td>*/}
                 <td className="outline outline-1"><p className="flex justify-center">{user.email}</p></td>
                 <td className="outline outline-1">
                   <PasswordDisplay {...(user)}/>
