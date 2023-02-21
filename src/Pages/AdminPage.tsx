@@ -6,6 +6,7 @@ import CompaniesTable from "../Components/CompaniesTable";
 import EditUserModal from "../Components/EditUserModal";
 import { ToastDetails } from "../Components/Toast";
 import UsersTable from "../Components/UsersTable";
+import { UpdateCompanyInfo } from "../Services/CompanyService";
 import { /*addCompany,*/ Company, getCompanyInfo, selectAllCompanies, updateCompanyInfo } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
 import { /*addUser,*/ selectAllUsers, User } from "../Store/UserSlice";
@@ -34,7 +35,6 @@ export default function AdminPage(){
   const companyList = useAppSelector(selectAllCompanies);
   // const ShowToast : (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void = useOutletContext();
   
-  // ShowToast('testing outlet', 'Info');
   
   /*function openCompanyModal(){
     setCompanyIsOpen(true);
@@ -130,6 +130,7 @@ export default function AdminPage(){
 
   const fakeUser : User = {id: -1, email: 'fake@fake', password: 'fake', companyId: -1};
   const [selectedUser, setSelectedUser] = useState(fakeUser);
+
   const fakeCompany : Company = {id: -1, name: "N/A"}
   const [selectedCompany, setSelectedCompany] = useState(fakeCompany);
   const [EditUserIsOpen, setEditUserIsOpen] = useState(false);
@@ -143,6 +144,50 @@ export default function AdminPage(){
     }
     else
       console.log("Couldn't find company for user " + user.id + "in handleClick (adminpage)")
+  }
+
+  function SubmitUpdateUser(companyName: string, email: string, password: string) {
+
+    let company;
+    let user;
+
+    if (companyName !== 'N/A')
+      company = {...selectedCompany, name: companyName};
+    else company = selectedCompany;
+
+    if (email !== 'fake@fake')
+      user = {...selectedUser, email: email}
+    if (password !== 'fake')
+      user = {...selectedUser, password: password}
+    else user = selectedUser
+
+    console.log(user);
+    console.log(company);
+
+    if (ValidateEdit(company, user)) {
+      dispatch(updateCompanyInfo({ company: company, employee: user, isTest: false}));
+
+      setSelectedCompany(fakeCompany); setSelectedUser(fakeUser);
+    }
+    setEditUserIsOpen(false);
+  }
+
+  function ValidateEdit(company: Company, user: User)
+  {
+      if(company.name && email && password && user.id !== -1 && company.id !== -1)
+      {
+          let matchingUser = userList.find(user => user.email === email && user.id !== user.id);
+          if(matchingUser)
+              return false;
+
+          let matchingCompany = companyList.find(company => company.name === companyName && company.id !== company.id)
+          if(matchingCompany)
+              return false;
+
+          return true;
+      }
+      console.log('validate failed')
+      return false;
   }
 
   return(
@@ -178,7 +223,7 @@ export default function AdminPage(){
         </div>
       </div>
   
-      <EditUserModal EditUserIsOpen={EditUserIsOpen} setEditUserIsOpen={setEditUserIsOpen} user={selectedUser} company={selectedCompany} userList={userList} companyList={companyList} />
+      <EditUserModal EditUserIsOpen={EditUserIsOpen} setEditUserIsOpen={setEditUserIsOpen} user={selectedUser} company={selectedCompany} SubmitUpdateUser={SubmitUpdateUser} />
 
       {/* <div className="col-span-3">
         <p className="text-3xl bg-[#2ed7c3] rounded my-1 h-[75%]">Companies</p>
