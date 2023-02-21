@@ -157,15 +157,18 @@ export default function AdminPage(){
       <div className="col-span-4 py-[10px] flex">
         <UsersTable userList={userList} companyList={companyList}/>
         <div className="w-[10%]">
+        <div className="h-[25px]"></div>
           {
             userList.map((user, index) => {
               const companyName = companyList.find(company => company.id === user.companyId)?.name ?? "n/a";
               return (
-              <button className="my-5 mx-2 bg-[#21345b] text-white w-[100%] h-[10%] rounded-md"
-                onClick={() => handleClick(user, companyName)}
-              >  
-                  Edit User
-              </button>
+                <div key={index} className={'py-[10px] my-[10px] flex self-end'}>
+                  <button className="my-5 mx-2 bg-[#21345b] text-sm text-white w-[100%] h-[10%] rounded-md outline"
+                    onClick={() => handleClick(user, companyName)}
+                  >  
+                      Edit User
+                  </button>
+                </div>
               )
             })
           }
