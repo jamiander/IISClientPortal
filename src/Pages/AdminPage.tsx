@@ -130,14 +130,19 @@ export default function AdminPage(){
 
   const fakeUser : User = {id: -1, email: 'fake@fake', password: 'fake', companyId: -1};
   const [selectedUser, setSelectedUser] = useState(fakeUser);
-  const [selectedCompany, setSelectedCompany] = useState('company');
+  const fakeCompany : Company = {id: -1, name: "N/A"}
+  const [selectedCompany, setSelectedCompany] = useState(fakeCompany);
   const [EditUserIsOpen, setEditUserIsOpen] = useState(false);
 
-  function handleClick(user: User, company: string) {
-    console.log('handle click', user)
-    setEditUserIsOpen(true);
-    setSelectedCompany(company);
-    setSelectedUser(user);
+  function handleClick(user: User, company?: Company) {
+    if(company)
+    {
+      setEditUserIsOpen(true);
+      setSelectedCompany(company);
+      setSelectedUser(user);
+    }
+    else
+      console.log("Couldn't find company for user " + user.id + "in handleClick (adminpage)")
   }
 
   return(
@@ -159,10 +164,11 @@ export default function AdminPage(){
         <div className="w-[10%]">
           {
             userList.map((user, index) => {
-              const companyName = companyList.find(company => company.id === user.companyId)?.name ?? "n/a";
+              //const companyName = companyList.find(company => company.id === user.companyId)?.name ?? "n/a";
+              const company = companyList.find(company => company.id === user.companyId);
               return (
               <button className="my-5 mx-2 bg-[#21345b] text-white w-[100%] h-[10%] rounded-md"
-                onClick={() => handleClick(user, companyName)}
+                onClick={() => handleClick(user, company)}
               >  
                   Edit User
               </button>
@@ -172,7 +178,7 @@ export default function AdminPage(){
         </div>
       </div>
   
-      <EditUserModal EditUserIsOpen={EditUserIsOpen} setEditUserIsOpen={setEditUserIsOpen} user={selectedUser} companyName={selectedCompany} />
+      <EditUserModal EditUserIsOpen={EditUserIsOpen} setEditUserIsOpen={setEditUserIsOpen} user={selectedUser} company={selectedCompany} userList={userList} companyList={companyList} />
 
       {/* <div className="col-span-3">
         <p className="text-3xl bg-[#2ed7c3] rounded my-1 h-[75%]">Companies</p>
