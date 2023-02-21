@@ -1,15 +1,11 @@
 import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
-import AddCompanyModal from "../Components/AddCompanyModal";
 import AddUserModal from "../Components/AddUserModal";
-import CompaniesTable from "../Components/CompaniesTable";
 import EditUserModal from "../Components/EditUserModal";
-import { ToastDetails } from "../Components/Toast";
 import UsersTable from "../Components/UsersTable";
-import { UpdateCompanyInfo } from "../Services/CompanyService";
-import { /*addCompany,*/ Company, getCompanyInfo, selectAllCompanies, updateCompanyInfo } from "../Store/CompanySlice";
+import { Company, getCompanyInfo, selectAllCompanies, updateCompanyInfo } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
-import { /*addUser,*/ selectAllUsers, User } from "../Store/UserSlice";
+import { selectAllUsers, User } from "../Store/UserSlice";
 
 export const modalStyle = {
   content: {
