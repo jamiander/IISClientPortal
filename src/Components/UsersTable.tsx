@@ -45,9 +45,9 @@ export default function UsersTable(props: UsersTableProps){
                 <td className="outline outline-1">
                   <PasswordDisplay {...(user)}/>
                 </td>
-                <td className="outline outline-1">
+                {/* <td className="outline outline-1">
                   <EditUserModal EditUserIsOpen={EditUserIsOpen} setEditUserIsOpen={setEditUserIsOpen} user={user} companyName={companyName}/>
-                </td>
+                </td> */}
               </tr>
             )
           })}
