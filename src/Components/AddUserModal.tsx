@@ -34,13 +34,13 @@ export default function AddUserModal(props: AddUserProps) {
 
             <p className='my-1'>Company:</p>
             <input list="companies" type="text" className="outline rounded outline-1 p-2" onChange={(e) => props.setCompanyName(e.target.value)}/>
-            <datalist id="companies">
+            {/*<datalist id="companies">
                 {props.companyList.map((company,index) => {
                   return (
                     <option key={index} value={company.name}>{company.name}</option>
                   )
                 })}
-            </datalist>
+              </datalist>*/}
           
             <p className='my-1'>Name:</p>
             <input onChange={(e)=>props.setName(e.target.value)} className="outline rounded outline-1 p-2"/>

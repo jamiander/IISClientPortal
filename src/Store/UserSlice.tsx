@@ -21,7 +21,7 @@ const initialState: UserState = {
     currentUserId: -1
 }
 
-export const getUserData = createAsyncThunk(
+/*export const getUserData = createAsyncThunk(
     'users/getUserData',
     async () => {
         const response = await GetAllUsers();
@@ -34,7 +34,7 @@ interface AddUserArgs {
     isTest: boolean
 }
 
-/*export const addUser = createAsyncThunk(
+export const addUser = createAsyncThunk(
     'users/addUser',
     async (args: AddUserArgs) : Promise<User> => {
         const response = await AddUser(args);
@@ -79,11 +79,11 @@ export const userSlice = createSlice({
         }
     },
     extraReducers: (builder) => {
-        builder
-            .addCase(getUserData.fulfilled, (state, action) => {
+        //builder
+            /*.addCase(getUserData.fulfilled, (state, action) => {
                 state.users = action.payload;
             })
-            /*.addCase(addUser.fulfilled, (state, action) => {
+            .addCase(addUser.fulfilled, (state, action) => {
                 let existingUser = state.users.find(user => user.id === action.payload.id);
                 if(!existingUser)
                     state.users.push(action.payload);

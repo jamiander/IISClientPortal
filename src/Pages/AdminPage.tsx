@@ -46,6 +46,10 @@ export default function AdminPage(){
 
   function ValidateUser()
   {
+    let matchingCompany = companyList.find(company => company.name === companyName);
+    if(matchingCompany)
+      return false;
+
     if(companyName && email && password)
       return true;
     
@@ -55,10 +59,7 @@ export default function AdminPage(){
   function SubmitNewUser()
   {
     let newCompanyId = -1;
-    let matchingCompany = companyList.find(company => company.name === companyName);
-    if(matchingCompany)
-      newCompanyId = matchingCompany.id;
-
+  
     let newUser: User = {
       id: -1,
       companyId: newCompanyId,
