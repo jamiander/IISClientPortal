@@ -6,9 +6,10 @@ export default function DashboardPage(){
   const user = useAppSelector(selectCurrentUser);
   const companyList = useAppSelector(selectAllCompanies);
   const company = companyList.find(e=>e.id === user?.companyId);
-    
+
   function Dashboard(){
-    if(company?.initiatives?.length === 0){
+    if(company?.initiatives === undefined || company.initiatives.length === 0){
+      
       return(
         <p className="text-4xl">No Current Initiatives</p>
       )
