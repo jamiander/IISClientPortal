@@ -29,15 +29,18 @@ export default function Toast(props: ToastProps) {
     }, [props.toastList, list]);
 
     function deleteToast() {
-        const id = props.toastList[0].id;
+        if(props.toastList.length)
+        {
+            const id = props.toastList[0].id;
 
-        const listItemIndex = list.findIndex(e => e.id === id);
-        list.splice(listItemIndex, 1);
+            const listItemIndex = list.findIndex(e => e.id === id);
+            list.splice(listItemIndex, 1);
 
-        const toastListItem = props.toastList.findIndex(e => e.id === id);
-        props.toastList.splice(toastListItem, 1);
+            const toastListItem = props.toastList.findIndex(e => e.id === id);
+            props.toastList.splice(toastListItem, 1);
 
-        setList([...list]);
+            setList([...list]);
+        }
     }
 
     return (
