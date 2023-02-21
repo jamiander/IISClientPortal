@@ -11,7 +11,7 @@ describe('add company spec', () => {
 
   specify('add new company', () => {
     cy.get('input[id="modalCompany"]').clear().type('Test Company');
-    cy.get('input[id="modalUsername"]').clear().type('Mr. Test');
+    //cy.get('input[id="modalUsername"]').clear().type('Mr. Test');
     cy.get('input[id="modalEmail"]').clear().type('test@test.com');
     cy.get('input[id="modalPassword"]').clear().type('test');
     cy.get('button').contains('Submit').click();
@@ -21,7 +21,7 @@ describe('add company spec', () => {
 
   specify('cannot add a company that already exists', () => {
     cy.get('input[id="modalCompany"]').clear().type('Integrity Inspired Solutions');
-    cy.get('input[id="modalUsername"]').clear().type('Mr. Test');
+    //cy.get('input[id="modalUsername"]').clear().type('Mr. Test');
     cy.get('input[id="modalEmail"]').clear().type('test@test.com');
     cy.get('input[id="modalPassword"]').clear().type('test');
 
@@ -30,7 +30,7 @@ describe('add company spec', () => {
 
   specify('cannot add a company with invalid input', () => {
     cy.get('input[id="modalCompany"]').clear();
-    cy.get('input[id="modalUsername"]').clear();
+    //cy.get('input[id="modalUsername"]').clear();
     cy.get('input[id="modalEmail"]').clear();
     cy.get('input[id="modalPassword"]').clear();
 
