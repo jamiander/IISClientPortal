@@ -110,7 +110,14 @@ export const companySlice = createSlice({
                 state.companies.push(action.payload);
             })*/
             .addCase(getCompanyInfo.fulfilled, (state, action) => {
-                state.companies = action.payload;
+                let newCompanies = action.payload;
+                for(const company of newCompanies)
+                {
+                    let companyIndex = state.companies.findIndex(c => c.id === company.id);
+                    if(companyIndex > -1)
+                        state.companies.splice(companyIndex,1);
+                    state.companies.push(company);
+                }
             })
             .addCase(updateCompanyInfo.fulfilled, (state, action) => {
                 const newCompany = action.payload;
