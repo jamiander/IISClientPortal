@@ -8,7 +8,7 @@ export default function LoginPage(){
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [userEmail, setUserEmail] = useState('info@integrityinspired.com');
-  const [password, setPassword] = useState('crowmonitorteam');
+  const [password, setPassword] = useState('password');
   const userlist = useAppSelector(selectAllUsers);
   const [passwordShown,setPasswordShown]=useState(false);
 
