@@ -1,6 +1,4 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom"
-import Toast, { ToastDetails } from "../Components/Toast";
 import { useAppSelector } from "../Store/Hooks"
 import { selectCurrentUser, selectIsLoggedIn } from "../Store/UserSlice"
 
@@ -15,7 +13,7 @@ export default function NavPanel(props: NavProps){
 
   function navHandler(path: string) {
     if (!isLoggedIn) {
-      // props.ShowToast('Must Login', 'Error');
+      props.ShowToast('You must login to leave this page', 'Error');
     }
     else navigate(path);
   }

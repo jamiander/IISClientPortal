@@ -19,6 +19,7 @@ export const modalStyle = {
     bottom: 'auto',
     marginRight: '-50%',
     transform: 'translate(-50%, -50%)',
+    outline : '3px solid #2ed7c3',
   }
 }
 
@@ -33,7 +34,7 @@ export default function AdminPage(){
   const [companyName, setCompanyName] = useState('');
   const userList = useAppSelector(selectAllUsers);
   const companyList = useAppSelector(selectAllCompanies);
-  // const ShowToast : (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void = useOutletContext();
+  const ShowToast : (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void = useOutletContext();
   
   
   /*function openCompanyModal(){
@@ -161,16 +162,13 @@ export default function AdminPage(){
       user = {...selectedUser, password: password}
     else user = selectedUser
 
-    console.log(user);
-    console.log(company);
-
     let isTest = false;
     if((window as any).Cypress)
       isTest = true;
 
     if (ValidateEdit(companyName, selectedCompany.id, email, password, selectedUser.id)) {
       dispatch(updateCompanyInfo({ company: company, employee: user, isTest: isTest}));
-
+      ShowToast('User Update Dispatched', 'Success');
       setSelectedCompany(fakeCompany); setSelectedUser(fakeUser);
     }
     setEditUserIsOpen(false);
@@ -201,8 +199,8 @@ export default function AdminPage(){
         <p className="text-5xl py-[10px]">Admin Page</p>
       </div>
   
-      <div className="col-span-3">
-        <p className="text-3xl bg-[#2ed7c3] rounded h-[90%]">Users</p>
+      <div className="col-span-3 bg-[#2ed7c3] rounded-md p-2 pl-5">
+        <p className="text-3xl h-[90%]">Users</p>
       </div>
   
       <AddUserModal userModalIsOpen={userModalIsOpen} closeUserModal={closeUserModal} openUserModal={openUserModal} setCompanyName={setCompanyName} setEmail={setEmail} setName={setName} setPassword={setPassword} companyList={companyList} validateUser={ValidateUser} submitNewUser={SubmitNewUser} />
@@ -217,7 +215,7 @@ export default function AdminPage(){
               const company = companyList.find(company => company.id === user.companyId);
               return (
                 <div key={index} className={'py-[10px] my-[10px] flex self-end'}>
-                  <button className="my-5 mx-2 bg-[#21345b] text-sm text-white w-[100%] h-[10%] rounded-md outline"
+                  <button className="my-5 mx-2 bg-[#21345b] text-sm text-white w-[100%] h-[25px] rounded-md outline"
                     onClick={() => handleClick(user, company)}
                   >  
                       Edit User

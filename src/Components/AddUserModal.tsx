@@ -20,18 +20,18 @@ export default function AddUserModal(props: AddUserProps) {
     return (
       <div className="flex justify-end">
 
-        <button onClick={props.openUserModal} className="outline bg-[#21345b] text-white h-[90%] w-[80%] rounded-md">Add User</button>
+        <button onClick={props.openUserModal} className="outline bg-[#21345b] text-white h-[100%] w-[80%] rounded-md">Add User</button>
 
         <Modal
             isOpen={props.userModalIsOpen}
             onRequestClose={props.closeUserModal}
-            style={modalStyle}
+            style={{'content': {...modalStyle.content}}}
             appElement={document.getElementById('root') as HTMLElement}
         >
           <div className="space-x-3">
             <p className="text-3xl">Add User</p>
             
-            <div className='outline outline-2 w-[120%] my-3 outline-[#2ed7c3] -translate-x-10' />
+            {/* <div className='outline outline-2 w-[120%] my-3 outline-[#2ed7c3] -translate-x-10' /> */}
 
             <p className='my-1'>Company Name:</p>
             <input id='modalCompany' list="companies" type="text" className="outline rounded outline-1 p-2" onChange={(e) => props.setCompanyName(e.target.value)}/>
