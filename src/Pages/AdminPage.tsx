@@ -34,7 +34,7 @@ export default function AdminPage(){
   const [companyName, setCompanyName] = useState('');
   const userList = useAppSelector(selectAllUsers);
   const companyList = useAppSelector(selectAllCompanies);
-  // const ShowToast : (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void = useOutletContext();
+  const ShowToast : (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void = useOutletContext();
   
   
   /*function openCompanyModal(){
@@ -164,7 +164,7 @@ export default function AdminPage(){
 
     if (ValidateEdit(company, user)) {
       dispatch(updateCompanyInfo({ company: company, employee: user, isTest: false}));
-
+      ShowToast('User Update Dispatched', 'Success');
       setSelectedCompany(fakeCompany); setSelectedUser(fakeUser);
     }
     setEditUserIsOpen(false);

@@ -7,6 +7,6 @@ interface ContentProps {
 
 export default function Content(props: ContentProps){
   return(
-    <Outlet />
+    <Outlet context={props.ShowToast} />
   )
 }
