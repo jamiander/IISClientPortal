@@ -26,6 +26,7 @@ export default function AddUserModal(props: AddUserProps) {
             isOpen={props.userModalIsOpen}
             onRequestClose={props.closeUserModal}
             style={modalStyle}
+            appElement={document.getElementById('root') as HTMLElement}
         >
           <div className="space-x-3">
             <p className="text-3xl">Add User</p>
