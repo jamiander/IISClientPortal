@@ -37,7 +37,7 @@ export async function GetAllUsers(request?: GetAllUsersRequest): Promise<User[]>
     //console.log(response)
     return response.data;
 }
-
+/*
 interface AddUserRequest {
     user: User
     isTest: boolean
@@ -54,4 +54,4 @@ export async function AddUser(request: AddUserRequest): Promise<AddUserResponse>
     
     let response = await axios.post(baseUrl,request);
     return response.data;
-}
+}*/

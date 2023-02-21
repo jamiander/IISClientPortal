@@ -3,9 +3,9 @@ import AddCompanyModal from "../Components/AddCompanyModal";
 import AddUserModal from "../Components/AddUserModal";
 import CompaniesTable from "../Components/CompaniesTable";
 import UsersTable from "../Components/UsersTable";
-import { addCompany, Company, getCompanyInfo, selectAllCompanies } from "../Store/CompanySlice";
+import { /*addCompany,*/ Company, getCompanyInfo, selectAllCompanies, updateCompanyInfo } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
-import { addUser, selectAllUsers, User } from "../Store/UserSlice";
+import { /*addUser,*/ selectAllUsers, User } from "../Store/UserSlice";
 
 export const modalStyle = {
   content: {
@@ -20,22 +20,22 @@ export const modalStyle = {
 
 export default function AdminPage(){
   const dispatch = useAppDispatch();
-  const [company, setCompany] = useState('');
+  //const [companyId, setCompanyId] = useState('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [userModalIsOpen, setUserIsOpen] = useState(false);
-  const [companyModalIsOpen, setCompanyIsOpen] = useState(false);
+  //const [companyModalIsOpen, setCompanyIsOpen] = useState(false);
   const [companyName, setCompanyName] = useState('');
   const userList = useAppSelector(selectAllUsers);
   const companyList = useAppSelector(selectAllCompanies);
   
-  function openCompanyModal(){
+  /*function openCompanyModal(){
     setCompanyIsOpen(true);
   }
   function closeCompanyModal(){
     setCompanyIsOpen(false);
-  }
+  }*/
 
   function openUserModal(){
     setUserIsOpen(true);
@@ -46,8 +46,7 @@ export default function AdminPage(){
 
   function ValidateUser()
   {
-    let companyId = parseInt(company);
-    if(!Number.isNaN(companyId) && companyId >= 0 && email && password)
+    if(companyName && email && password)
       return true;
     
     return false;
@@ -55,24 +54,35 @@ export default function AdminPage(){
 
   function SubmitNewUser()
   {
+    let newCompanyId = -1;
+    let matchingCompany = companyList.find(company => company.name === companyName);
+    if(matchingCompany)
+      newCompanyId = matchingCompany.id;
+
     let newUser: User = {
       id: -1,
-      companyId: parseInt(company),
+      companyId: newCompanyId,
       email: email,
       password: password
     }
     if(name)
       newUser.name = name;
     
-    let isTest = false;
-    if((window as any).Cypress)//process.env.CYPRESS)
+    let newCompany: Company = {
+      id: newCompanyId,
+      name: companyName
+    }
+
+    let isTest = true//false; //TODO: re-enable this when the azure function is working
+    if((window as any).Cypress)
       isTest = true;
     
     console.log('cypress: ' + isTest)
 
-    dispatch(addUser({user: newUser,isTest: isTest}));
+    //dispatch(addUser({user: newUser,isTest: isTest}));
+    dispatch(updateCompanyInfo({company: newCompany, employee: newUser, isTest: isTest}));
 
-    setCompany('');
+    setCompanyName('');
     setName('');
     setEmail('');
     setPassword('');
@@ -80,7 +90,7 @@ export default function AdminPage(){
     closeUserModal();
   }
 
-  function ValidateCompany()
+  /*function ValidateCompany()
   {
     if(companyName)
       return true;
@@ -100,12 +110,12 @@ export default function AdminPage(){
       
     console.log('cypress: ' + isTest)
   
-    dispatch(addCompany({company: newCompany, isTest: isTest}));
+    //dispatch(addCompany({company: newCompany, isTest: isTest}));
   
     setCompanyName('');
   
     closeCompanyModal();
-  }
+  }*/
 
   useEffect(() => {
     dispatch(getCompanyInfo({})); //no args; admins get all companies/users
@@ -123,7 +133,7 @@ export default function AdminPage(){
         <p className="text-3xl bg-[#2ed7c3] rounded h-[90%]">Users</p>
       </div>
   
-      <AddUserModal userModalIsOpen={userModalIsOpen} closeUserModal={closeUserModal} openUserModal={openUserModal} setCompany={setCompany} setEmail={setEmail} setName={setName} setPassword={setPassword} companyList={companyList} validateUser={ValidateUser} submitNewUser={SubmitNewUser} />
+      <AddUserModal userModalIsOpen={userModalIsOpen} closeUserModal={closeUserModal} openUserModal={openUserModal} setCompanyName={setCompanyName} setEmail={setEmail} setName={setName} setPassword={setPassword} companyList={companyList} validateUser={ValidateUser} submitNewUser={SubmitNewUser} />
   
       <div className="col-span-4 py-[10px]">
         <UsersTable userList={userList} companyList={companyList}/>
@@ -133,8 +143,9 @@ export default function AdminPage(){
         <p className="text-3xl bg-[#2ed7c3] rounded my-1 h-[75%]">Companies</p>
       </div>
   
-      <AddCompanyModal companyModalIsOpen={companyModalIsOpen} closeCompanyModal={closeCompanyModal} openCompanyModal={openCompanyModal} validateCompany={ValidateCompany} setCompanyName={setCompanyName} submitNewCompany={SubmitNewCompany} />
-  
+      {/*<AddCompanyModal companyModalIsOpen={companyModalIsOpen} closeCompanyModal={closeCompanyModal} openCompanyModal={openCompanyModal} validateCompany={ValidateCompany} setCompanyName={setCompanyName} submitNewCompany={SubmitNewCompany} />
+      */}
+
       <div className="col-span-4 py-[10px]">
         <CompaniesTable/>
       </div>

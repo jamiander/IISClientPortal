@@ -4,7 +4,7 @@ import Content from './Layout/Content';
 import Footer from './Layout/Footer';
 import Header from './Layout/Header';
 import NavPanel from './Layout/NavPanel';
-import { getCompanyData } from './Store/CompanySlice';
+//import { getCompanyData } from './Store/CompanySlice';
 import { useAppDispatch } from './Store/Hooks';
 import { getUserData } from './Store/UserSlice';
 

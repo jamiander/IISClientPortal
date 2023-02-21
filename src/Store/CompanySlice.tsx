@@ -20,7 +20,7 @@ const initialState: CompanyState = {
     currentCompanyId: -1
 }
 
-export const getCompanyData = createAsyncThunk(
+/*export const getCompanyData = createAsyncThunk(
     'companies/getCompanyData',
     async () => {
         const response = await GetAllCompanies();
@@ -41,7 +41,7 @@ export const addCompany = createAsyncThunk(
         newCompany.id = response.id;
         return newCompany;
     }
-)
+)*/
 
 export const getCompanyInfo = createAsyncThunk(
     'companies/getCompanyInfo',
@@ -102,12 +102,12 @@ export const companySlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(getCompanyData.fulfilled, (state, action) => {
+            /*.addCase(getCompanyData.fulfilled, (state, action) => {
                 state.companies = action.payload;
             })
             .addCase(addCompany.fulfilled, (state, action) => {
                 state.companies.push(action.payload);
-            })
+            })*/
             .addCase(getCompanyInfo.fulfilled, (state, action) => {
                 state.companies = action.payload;
             })

@@ -95,8 +95,9 @@ interface UpdateCompanyInfoResponse {
 export async function UpdateCompanyInfo(request: UpdateCompanyInfoRequest) : Promise<UpdateCompanyInfoResponse> {
     const company = request.company;
     const employee = request.employee;
+    const isTest = request.isTest;
     
-    let info: CompanyInfo = {
+    const info: CompanyInfo = {
         companyId: company.id,
         companyName: company.name,
         employeeInfo: {
@@ -108,7 +109,7 @@ export async function UpdateCompanyInfo(request: UpdateCompanyInfoRequest) : Pro
     
     let baseUrl = BASE_URL + "AddCompanyData?code=WkVKzojbAuWrWSmQVvYWKiG_iD9R4S_-7wp3xsE1SuOhAzFuEJk5oQ==";
 
-    let response = await axios.post(baseUrl, info);
+    let response = await axios.post(baseUrl, {company: info, isTest: isTest});
     return response.data;
 }
 

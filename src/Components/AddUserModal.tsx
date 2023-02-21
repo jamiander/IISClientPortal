@@ -6,7 +6,7 @@ interface AddUserProps {
   userModalIsOpen: boolean,
   openUserModal: () => void,
   closeUserModal: () => void,
-  setCompany: (value: string) => void,
+  setCompanyName: (value: string) => void,
   companyList: Company[],
   setName: (value: string) => void,
   setEmail: (value: string) => void,
@@ -33,14 +33,14 @@ export default function AddUserModal(props: AddUserProps) {
             <div className='outline outline-2 w-[120%] my-3 outline-[#2ed7c3] -translate-x-10' />
 
             <p className='my-1'>Company:</p>
-            <select className="outline rounded outline-1 p-2" onChange={(e)=>props.setCompany(e.target.value)}>
-              <option value={-1}></option>
+            <input list="companies" type="text" className="outline rounded outline-1 p-2" onChange={(e) => props.setCompanyName(e.target.value)}/>
+            <datalist id="companies">
                 {props.companyList.map((company,index) => {
                   return (
-                    <option key={index} value={company.id}>{company.name}</option>
+                    <option key={index} value={company.name}>{company.name}</option>
                   )
                 })}
-            </select>
+            </datalist>
           
             <p className='my-1'>Name:</p>
             <input onChange={(e)=>props.setName(e.target.value)} className="outline rounded outline-1 p-2"/>

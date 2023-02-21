@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AddUser, GetAllUsers } from "../Services/UserService";
+import { /*AddUser,*/ GetAllUsers } from "../Services/UserService";
 import { RootState } from "./Store";
 
 export interface User {
@@ -34,7 +34,7 @@ interface AddUserArgs {
     isTest: boolean
 }
 
-export const addUser = createAsyncThunk(
+/*export const addUser = createAsyncThunk(
     'users/addUser',
     async (args: AddUserArgs) : Promise<User> => {
         const response = await AddUser(args);
@@ -47,7 +47,7 @@ export const addUser = createAsyncThunk(
         newUser.id = response.id;
         return newUser;
     }
-)
+)*/
 
 export const userSlice = createSlice({
     name: "users",
@@ -83,13 +83,13 @@ export const userSlice = createSlice({
             .addCase(getUserData.fulfilled, (state, action) => {
                 state.users = action.payload;
             })
-            .addCase(addUser.fulfilled, (state, action) => {
+            /*.addCase(addUser.fulfilled, (state, action) => {
                 let existingUser = state.users.find(user => user.id === action.payload.id);
                 if(!existingUser)
                     state.users.push(action.payload);
                 else
                     existingUser = action.payload;
-            })
+            })*/
     },
 });
 
