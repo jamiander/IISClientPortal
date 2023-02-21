@@ -80,7 +80,7 @@ export default function AdminPage(){
       name: companyName
     }
 
-    let isTest = true//false; //TODO: re-enable this when the azure function is working
+    let isTest = false;
     if((window as any).Cypress)
       isTest = true;
     

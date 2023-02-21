@@ -1,4 +1,4 @@
-describe('template spec', () => {
+describe('add company spec', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/Login')
     cy.get('input[id="email"]').clear().type('info@integrityinspired.com');
