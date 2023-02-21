@@ -1,15 +1,22 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom"
+import Toast, { ToastDetails } from "../Components/Toast";
 import { useAppSelector } from "../Store/Hooks"
 import { selectCurrentUser, selectIsLoggedIn } from "../Store/UserSlice"
 
-export default function NavPanel(){
+interface NavProps {
+  ShowToast: (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void
+}
+
+export default function NavPanel(props: NavProps){
   const navigate = useNavigate()
   const isLoggedIn = useAppSelector(selectIsLoggedIn);
   const currentuser = useAppSelector(selectCurrentUser);
 
-  function navHandler(path: string) : void {
+  function navHandler(path: string) {
+    console.log('clicked')
     if (!isLoggedIn) {
-      //displayToast for not logged in
+      props.ShowToast('Must Login', 'Error');
     }
     else navigate(path);
   }
@@ -19,7 +26,7 @@ export default function NavPanel(){
       <p className="text-3xl w-[100%]">Navigation</p>
       
       <button className="outline disabled:opacity-75 bg-[#21345b] text-white h-[40px] w-[100%] rounded" 
-        disabled={!isLoggedIn} onClick={() => navHandler('/Dashboard')}>
+          onClick={() => navHandler('/Dashboard')}>
           Dashboard
       </button>
       
@@ -32,10 +39,10 @@ export default function NavPanel(){
       }
       
       <button className="outline disabled:opacity-75 bg-[#21345b] text-white h-[40px] w-[100%] rounded" 
-        disabled={!isLoggedIn} onClick={() => navHandler('/Profile')}>
+         onClick={() => navHandler('/Profile')}>
           Profile
       </button>
-    
+
     </div>  
   )
 }

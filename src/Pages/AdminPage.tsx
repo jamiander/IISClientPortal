@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import { useOutletContext } from "react-router-dom";
 import AddCompanyModal from "../Components/AddCompanyModal";
 import AddUserModal from "../Components/AddUserModal";
 import CompaniesTable from "../Components/CompaniesTable";
+import { ToastDetails } from "../Components/Toast";
 import UsersTable from "../Components/UsersTable";
 import { /*addCompany,*/ Company, getCompanyInfo, selectAllCompanies, updateCompanyInfo } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
@@ -29,6 +31,9 @@ export default function AdminPage(){
   const [companyName, setCompanyName] = useState('');
   const userList = useAppSelector(selectAllUsers);
   const companyList = useAppSelector(selectAllCompanies);
+  // const ShowToast : (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void = useOutletContext();
+  
+  // ShowToast('testing outlet', 'Info');
   
   /*function openCompanyModal(){
     setCompanyIsOpen(true);
