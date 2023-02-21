@@ -1,7 +1,9 @@
 import userEvent from "@testing-library/user-event";
 import { useState } from "react";
 import Modal from "react-modal";
+import { useDispatch } from "react-redux";
 import { modalStyle } from "../Pages/AdminPage";
+import { UpdateCompanyInfo } from "../Services/CompanyService";
 import { Company } from "../Store/CompanySlice";
 import { User } from "../Store/UserSlice";
 
@@ -10,32 +12,14 @@ interface EditUserProps {
     setEditUserIsOpen: (value: boolean) => void,
     user: User,
     company: Company,
-    userList: User[],
-    companyList: Company[]
+    SubmitUpdateUser: (companyName: string, email: string, password: string) => void
 }
 
 export default function EditUserModal(props: EditUserProps) {
-    const [companyName, setCompanyName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-
-    function ValidateEdit()
-    {
-        if(companyName && email && password && props.user.id !== -1 && props.company.id !== -1)
-        {
-            let matchingUser = props.userList.find(user => user.email === email && user.id !== props.user.id);
-            if(matchingUser)
-                return false;
-
-            let matchingCompany = props.companyList.find(company => company.name === companyName && company.id !== props.company.id)
-            if(matchingCompany)
-                return false;
-
-            return true;
-        }
-        console.log('validate failed')
-        return false;
-    }
+    const dispatch = useDispatch();
+    const [companyName, setCompanyName] = useState(props.company.name);
+    const [email, setEmail] = useState(props.user.email);
+    const [password, setPassword] = useState(props.user.password);
 
     return (
         <div>
@@ -48,6 +32,7 @@ export default function EditUserModal(props: EditUserProps) {
                 isOpen={props.EditUserIsOpen}
                 onRequestClose={() => props.setEditUserIsOpen(false)}
                 style={modalStyle}
+                appElement={document.getElementById('root') as HTMLElement}
             >
                 <h4 className="mb-3">Edit User</h4>
 
@@ -60,7 +45,7 @@ export default function EditUserModal(props: EditUserProps) {
                 <p className='my-1'>Password:</p>
                 <input defaultValue={props.user.password} onChange={(e) => setPassword(e.target.value)}  id="modalPassword" className="outline rounded outline-1 p-2"/>
 
-                <button disabled={!ValidateEdit()} className="m-2 mr-1 rounded-md h-[40px] w-[80px] bg-lime-600" >Submit</button>
+                <button className="m-2 mr-1 rounded-md h-[40px] w-[80px] bg-lime-600" onClick={() => props.SubmitUpdateUser(companyName, email, password)}>Submit</button>
                 <button className="m-2 ml-1 rounded-md h-[40px] w-[80px] bg-red-600" onClick={() => props.setEditUserIsOpen(false)}>Close</button> 
 
             </Modal>
