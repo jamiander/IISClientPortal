@@ -165,29 +165,29 @@ export default function AdminPage(){
     console.log(company);
 
     if (ValidateEdit(company, user)) {
-      dispatch(updateCompanyInfo({ company: company, employee: user, isTest: false}));
+      dispatch(updateCompanyInfo({ company: company, employee: user, isTest: true}));
 
       setSelectedCompany(fakeCompany); setSelectedUser(fakeUser);
     }
     setEditUserIsOpen(false);
   }
 
-  function ValidateEdit(company: Company, user: User)
+  function ValidateEdit(newCompanyInfo: Company, newUserInfo: User)
   {
-      if(company.name && email && password && user.id !== -1 && company.id !== -1)
-      {
-          let matchingUser = userList.find(user => user.email === email && user.id !== user.id);
-          if(matchingUser)
-              return false;
+    if(newCompanyInfo.name && newUserInfo.email && newUserInfo.password && newUserInfo.id !== -1 && newCompanyInfo.id !== -1)
+    {
+      let matchingUser = userList.find(indexedUser => indexedUser.email === newUserInfo.email && indexedUser.id !== newUserInfo.id);
+      if(matchingUser)
+        return false;
 
-          let matchingCompany = companyList.find(company => company.name === companyName && company.id !== company.id)
-          if(matchingCompany)
-              return false;
+      let matchingCompany = companyList.find(indexedCompany => indexedCompany.name === newCompanyInfo.name && indexedCompany.id !== newCompanyInfo.id)
+      if(matchingCompany)
+        return false;
 
-          return true;
-      }
-      console.log('validate failed')
-      return false;
+      return true;
+    }
+    console.log('validate failed')
+    return false;
   }
 
   return(
