@@ -19,6 +19,7 @@ export const modalStyle = {
     bottom: 'auto',
     marginRight: '-50%',
     transform: 'translate(-50%, -50%)',
+    outline : '3px solid #2ed7c3',
   }
 }
 
