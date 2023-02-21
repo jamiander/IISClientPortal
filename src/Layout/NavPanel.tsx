@@ -14,7 +14,6 @@ export default function NavPanel(props: NavProps){
   const currentuser = useAppSelector(selectCurrentUser);
 
   function navHandler(path: string) {
-    console.log('clicked')
     if (!isLoggedIn) {
       // props.ShowToast('Must Login', 'Error');
     }
