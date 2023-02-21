@@ -27,16 +27,16 @@ export default function LoginPage(){
 
   return(
     <div className="m-[2%] grid grid-cols-4">
-      <div className="col-span-4">
+      <div className="col-span-4 mb-5">
         <p className="text-5xl">Login</p>
       </div>
-      <div className="col-span-4">
+      <div className="col-span-4 my-2">
         <p>Email:</p>
-        <input id="email" autoFocus value={userEmail} onChange={(e)=>setUserEmail(e.target.value)} onKeyDown={(e)=> {if (e.key === 'Enter') Login()}} className="outline rounded h-[40px] w-[220px]"/>
+        <input id="email" autoFocus value={userEmail} onChange={(e)=>setUserEmail(e.target.value)} onKeyDown={(e)=> {if (e.key === 'Enter') Login()}} className="outline outline-1 rounded-md h-[40px] w-[220px] p-2"/>
       </div>
-      <div className="col-span-4">
+      <div className="col-span-4 my-2">
         <p>Password:</p>
-        <input id="password" value={password} type={passwordShown ? 'text' : 'password'} onChange={(e)=>setPassword(e.target.value)} onKeyDown={(e)=> {if (e.key === 'Enter') Login()}} className="outline rounded h-[40px] w-[220px]"/>
+        <input id="password" value={password} type={passwordShown ? 'text' : 'password'} onChange={(e)=>setPassword(e.target.value)} onKeyDown={(e)=> {if (e.key === 'Enter') Login()}} className="outline outline-1 rounded-md h-[40px] w-[220px] p-2"/>
         
       </div>
       <div className="col-span-4">
