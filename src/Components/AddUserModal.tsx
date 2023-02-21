@@ -33,7 +33,7 @@ export default function AddUserModal(props: AddUserProps) {
             <div className='outline outline-2 w-[120%] my-3 outline-[#2ed7c3] -translate-x-10' />
 
             <p className='my-1'>Company:</p>
-            <input list="companies" type="text" className="outline rounded outline-1 p-2" onChange={(e) => props.setCompanyName(e.target.value)}/>
+            <input id='modalCompany' list="companies" type="text" className="outline rounded outline-1 p-2" onChange={(e) => props.setCompanyName(e.target.value)}/>
             {/*<datalist id="companies">
                 {props.companyList.map((company,index) => {
                   return (
@@ -43,13 +43,13 @@ export default function AddUserModal(props: AddUserProps) {
               </datalist>*/}
           
             <p className='my-1'>Name:</p>
-            <input onChange={(e)=>props.setName(e.target.value)} className="outline rounded outline-1 p-2"/>
+            <input id="modalUsername" onChange={(e)=>props.setName(e.target.value)} className="outline rounded outline-1 p-2"/>
 
             <p className='my-1'>Email:</p>            
-            <input onChange={(e)=>props.setEmail(e.target.value)} className="outline rounded outline-1 p-2"/>
+            <input id="modalEmail" onChange={(e)=>props.setEmail(e.target.value)} className="outline rounded outline-1 p-2"/>
 
             <p className='my-1'>Password:</p>
-            <input onChange={(e)=>props.setPassword(e.target.value)} className="outline rounded outline-1 p-2"/>
+            <input id="modalPassword" onChange={(e)=>props.setPassword(e.target.value)} className="outline rounded outline-1 p-2"/>
 
             <button disabled={!props.validateUser()} className="rounded h-[40px] w-[80px] bg-lime-600" onClick={() => props.submitNewUser()}>Submit</button>
             <button className="rounded h-[40px] w-[80px] bg-red-600" onClick={props.closeUserModal}>Close</button> 

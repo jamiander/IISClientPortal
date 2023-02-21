@@ -73,9 +73,6 @@ export const userSlice = createSlice({
 
                 state.users.push(user);
             }
-        },
-        setUsersInStore: (state, action: PayloadAction<User[]>) => {
-            state.users = action.payload;
         }
     },
     extraReducers: (builder) => {

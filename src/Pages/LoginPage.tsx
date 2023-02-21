@@ -8,7 +8,7 @@ export default function LoginPage(){
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [userEmail, setUserEmail] = useState('info@integrityinspired.com');
-  const [password, setPassword] = useState('crowmonitorteam');
+  const [password, setPassword] = useState('password');
   const userlist = useAppSelector(selectAllUsers);
   const [passwordShown,setPasswordShown]=useState(false);
 
@@ -32,11 +32,11 @@ export default function LoginPage(){
       </div>
       <div className="col-span-4">
         <p>Email:</p>
-        <input autoFocus value={userEmail} onChange={(e)=>setUserEmail(e.target.value)} onKeyDown={(e)=> {if (e.key === 'Enter') Login()}} className="outline rounded h-[40px] w-[220px]"/>
+        <input id="email" autoFocus value={userEmail} onChange={(e)=>setUserEmail(e.target.value)} onKeyDown={(e)=> {if (e.key === 'Enter') Login()}} className="outline rounded h-[40px] w-[220px]"/>
       </div>
       <div className="col-span-4">
         <p>Password:</p>
-        <input value={password} type={passwordShown ? 'text' : 'password'} onChange={(e)=>setPassword(e.target.value)} onKeyDown={(e)=> {if (e.key === 'Enter') Login()}} className="outline rounded h-[40px] w-[220px]"/>
+        <input id="password" value={password} type={passwordShown ? 'text' : 'password'} onChange={(e)=>setPassword(e.target.value)} onKeyDown={(e)=> {if (e.key === 'Enter') Login()}} className="outline rounded h-[40px] w-[220px]"/>
         
       </div>
       <div className="col-span-4">

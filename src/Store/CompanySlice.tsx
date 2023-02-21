@@ -76,17 +76,18 @@ export const getCompanyInfo = createAsyncThunk(
 
 export const updateCompanyInfo = createAsyncThunk(
     'companies/updateCompanyInfo',
-    async (args: UpdateCompanyInfoRequest, {dispatch, getState}) => {
+    async (args: UpdateCompanyInfoRequest, {dispatch, getState}): Promise<Company> => {
         const response = await UpdateCompanyInfo(args);
         
         if (response.status.toUpperCase().includes('FAILED'))
             throw Error;
         
-        let newCompany = JSON.parse(JSON.stringify(args.company));
+        let newCompany: Company = JSON.parse(JSON.stringify(args.company));
         newCompany.id = response.id;
         
-        let newUser = JSON.parse(JSON.stringify(args.employee));
-        newUser.id = response.id;
+        let newUser: User = JSON.parse(JSON.stringify(args.employee));
+        newUser.companyId = response.id;
+        newUser.id = response.id;   //this stinks; consider having just one id property if they're just going to be identical
 
         dispatch(addUsersToStore([newUser]));
 
@@ -112,7 +113,11 @@ export const companySlice = createSlice({
                 state.companies = action.payload;
             })
             .addCase(updateCompanyInfo.fulfilled, (state, action) => {
-                state.companies = action.payload;
+                const newCompany = action.payload;
+                const companyIndex = state.companies.findIndex(company => company.id === newCompany.id)
+                if(companyIndex > -1)
+                    state.companies.splice(companyIndex, 1);
+                state.companies.push(newCompany);
             })
     }
 });

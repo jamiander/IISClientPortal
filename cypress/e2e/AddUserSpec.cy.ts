@@ -3,7 +3,11 @@ describe('add user spec', () => {
     cy.visit('http://localhost:3000/Login');
   })
 
-  specify('add a new user', () => {
+  specify('this spec is currently unused; come back when users are no longer synonymous with companies', () => {
+
+  })
+
+  /*specify('add a new user', () => {
     cy.get('.m-\\[2\\%\\] > :nth-child(2) > .outline').clear().type('info@integrityinspired.com');
     cy.get(':nth-child(3) > .outline').clear().type('crowmonitorteam');
     cy.get('button').contains('Submit').click();
@@ -28,7 +32,7 @@ describe('add user spec', () => {
 
     cy.get('button').contains('Admin').should('not.exist');
   });
-
+*/
 })
 
 export {}
