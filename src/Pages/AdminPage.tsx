@@ -164,29 +164,32 @@ export default function AdminPage(){
     console.log(user);
     console.log(company);
 
-    if (ValidateEdit(company, user)) {
-      dispatch(updateCompanyInfo({ company: company, employee: user, isTest: true}));
+    let isTest = false;
+    if((window as any).Cypress)
+      isTest = true;
+
+    if (ValidateEdit(companyName, selectedCompany.id, email, password, selectedUser.id)) {
+      dispatch(updateCompanyInfo({ company: company, employee: user, isTest: isTest}));
 
       setSelectedCompany(fakeCompany); setSelectedUser(fakeUser);
     }
     setEditUserIsOpen(false);
   }
 
-  function ValidateEdit(newCompanyInfo: Company, newUserInfo: User)
+  function ValidateEdit(companyName: string, companyId: number, userEmail: string, userPassword: string, userId: number)
   {
-    if(newCompanyInfo.name && newUserInfo.email && newUserInfo.password && newUserInfo.id !== -1 && newCompanyInfo.id !== -1)
+    if(companyName && userEmail && userPassword && userId !== -1 && companyId !== -1)
     {
-      let matchingUser = userList.find(indexedUser => indexedUser.email === newUserInfo.email && indexedUser.id !== newUserInfo.id);
+      let matchingUser = userList.find(indexedUser => indexedUser.email === userEmail && indexedUser.id !== userId);
       if(matchingUser)
         return false;
 
-      let matchingCompany = companyList.find(indexedCompany => indexedCompany.name === newCompanyInfo.name && indexedCompany.id !== newCompanyInfo.id)
+      let matchingCompany = companyList.find(indexedCompany => indexedCompany.name === companyName && indexedCompany.id !== companyId)
       if(matchingCompany)
         return false;
 
       return true;
     }
-    console.log('validate failed')
     return false;
   }
 
@@ -226,7 +229,7 @@ export default function AdminPage(){
         </div>
       </div>
   
-      <EditUserModal EditUserIsOpen={EditUserIsOpen} setEditUserIsOpen={setEditUserIsOpen} user={selectedUser} company={selectedCompany} SubmitUpdateUser={SubmitUpdateUser} />
+      <EditUserModal EditUserIsOpen={EditUserIsOpen} setEditUserIsOpen={setEditUserIsOpen} user={selectedUser} company={selectedCompany} SubmitUpdateUser={SubmitUpdateUser} ValidateEdit={ValidateEdit} />
 
       {/* <div className="col-span-3">
         <p className="text-3xl bg-[#2ed7c3] rounded my-1 h-[75%]">Companies</p>
