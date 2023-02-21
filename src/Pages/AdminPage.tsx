@@ -165,7 +165,7 @@ export default function AdminPage(){
     console.log(company);
 
     if (ValidateEdit(company, user)) {
-      dispatch(updateCompanyInfo({ company: company, employee: user, isTest: true}));
+      dispatch(updateCompanyInfo({ company: company, employee: user, isTest: false}));
 
       setSelectedCompany(fakeCompany); setSelectedUser(fakeUser);
     }
