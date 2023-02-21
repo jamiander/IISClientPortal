@@ -162,9 +162,6 @@ export default function AdminPage(){
       user = {...selectedUser, password: password}
     else user = selectedUser
 
-    console.log(user);
-    console.log(company);
-
     if (ValidateEdit(company, user)) {
       dispatch(updateCompanyInfo({ company: company, employee: user, isTest: false}));
 
