@@ -1,5 +1,6 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
+import Toast, { ToastDetails } from './Components/Toast';
 import Content from './Layout/Content';
 import Footer from './Layout/Footer';
 import Header from './Layout/Header';
@@ -12,6 +13,15 @@ import { useAppDispatch } from './Store/Hooks';
 function App() {
   const dispatch = useAppDispatch();
 
+  const emptyToast : ToastDetails[] = []
+  const [toastList, setToastList] = useState(emptyToast);
+
+  function ShowToast(message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') {
+    const id = Math.floor((Math.random() * 101) + 1);
+    const toastDetails : ToastDetails = {message: message, id: id, type: type};
+    setToastList([...toastList, toastDetails]);
+  }
+
   useEffect(() => {
     //dispatch(getUserData());
     //dispatch(getCompanyData());
@@ -20,8 +30,11 @@ function App() {
   return (
     <div className='grid grid-cols-5 gap-[.5vh] bg-[#2ed7c3]'>
       <div className='col-span-5 bg-white h-30px'><Header/></div>
-      <div className='bg-white h-auto'><NavPanel/></div>
-      <div className='col-span-4 bg-white min-h-[85vh] h-auto'><Content/></div>
+      <div className='bg-white h-auto'><NavPanel ShowToast={ShowToast}/></div>
+      <div className='col-span-4 bg-white min-h-[85vh] h-auto'>
+        <Content ShowToast={ShowToast}/>
+        <Toast toastList={toastList} />
+      </div>
       <div className='col-span-5 bg-[#21345b] text-white h-[9vh]'><Footer/></div>
     </div>
   );
