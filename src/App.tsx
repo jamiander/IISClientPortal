@@ -33,7 +33,7 @@ function App() {
       <div className='bg-white h-auto'><NavPanel ShowToast={ShowToast}/></div>
       <div className='col-span-4 bg-white min-h-[85vh] h-auto'>
         <Content ShowToast={ShowToast}/>
-        <Toast toastList={toastList} />
+        {/* <Toast toastList={toastList} /> */}
       </div>
       <div className='col-span-5 bg-[#21345b] text-white h-[9vh]'><Footer/></div>
     </div>

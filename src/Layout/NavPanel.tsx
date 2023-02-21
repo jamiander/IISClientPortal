@@ -16,7 +16,7 @@ export default function NavPanel(props: NavProps){
   function navHandler(path: string) {
     console.log('clicked')
     if (!isLoggedIn) {
-      props.ShowToast('Must Login', 'Error');
+      // props.ShowToast('Must Login', 'Error');
     }
     else navigate(path);
   }
