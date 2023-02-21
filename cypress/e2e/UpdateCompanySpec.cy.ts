@@ -34,7 +34,7 @@ describe('template spec', () => {
   })
 
   specify('cannot rename a user the name of another user', () => {
-    cy.get('input[id="modalEmail"]').clear().type('info@company');
+    cy.get('input[id="modalEmail"]').clear().type('info@company.com');
 
     cy.get('button').should('be.disabled');
   })
