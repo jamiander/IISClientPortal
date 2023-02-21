@@ -17,11 +17,11 @@ export default function EditUserModal(props: EditUserProps) {
 
     return (
         <div>
-            <button className="ml-1 bg-[#21345b] text-white w-[90%] h-[90%] rounded-md"
+            {/* <button className="m-1 bg-[#21345b] text-white w-[90%] h-[90%] rounded-md"
                 onClick={() => props.setEditUserIsOpen(true)}
             >  
                 Edit User
-            </button>
+            </button> */}
             <Modal
                 isOpen={props.EditUserIsOpen}
                 onRequestClose={() => props.setEditUserIsOpen(false)}

@@ -3,6 +3,7 @@ import { useOutletContext } from "react-router-dom";
 import AddCompanyModal from "../Components/AddCompanyModal";
 import AddUserModal from "../Components/AddUserModal";
 import CompaniesTable from "../Components/CompaniesTable";
+import EditUserModal from "../Components/EditUserModal";
 import { ToastDetails } from "../Components/Toast";
 import UsersTable from "../Components/UsersTable";
 import { /*addCompany,*/ Company, getCompanyInfo, selectAllCompanies, updateCompanyInfo } from "../Store/CompanySlice";
@@ -30,7 +31,6 @@ export default function AdminPage(){
   //const [companyModalIsOpen, setCompanyIsOpen] = useState(false);
   const [companyName, setCompanyName] = useState('');
   const userList = useAppSelector(selectAllUsers);
-  console.log("userList", userList);
   const companyList = useAppSelector(selectAllCompanies);
   // const ShowToast : (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void = useOutletContext();
   
@@ -128,6 +128,18 @@ export default function AdminPage(){
     dispatch(getCompanyInfo({})); //no args; admins get all companies/users
   },[])
 
+  const fakeUser : User = {id: -1, email: 'fake@fake', password: 'fake', companyId: -1};
+  const [selectedUser, setSelectedUser] = useState(fakeUser);
+  const [selectedCompany, setSelectedCompany] = useState('company');
+  const [EditUserIsOpen, setEditUserIsOpen] = useState(false);
+
+  function handleClick(user: User, company: string) {
+    console.log('handle click', user)
+    setEditUserIsOpen(true);
+    setSelectedCompany(company);
+    setSelectedUser(user);
+  }
+
   return(
   <>
     <div className="m-[2%] grid grid-cols-4">
@@ -142,10 +154,26 @@ export default function AdminPage(){
   
       <AddUserModal userModalIsOpen={userModalIsOpen} closeUserModal={closeUserModal} openUserModal={openUserModal} setCompanyName={setCompanyName} setEmail={setEmail} setName={setName} setPassword={setPassword} companyList={companyList} validateUser={ValidateUser} submitNewUser={SubmitNewUser} />
   
-      <div className="col-span-4 py-[10px]">
+      <div className="col-span-4 py-[10px] flex">
         <UsersTable userList={userList} companyList={companyList}/>
+        <div className="w-[10%]">
+          {
+            userList.map((user, index) => {
+              const companyName = companyList.find(company => company.id === user.companyId)?.name ?? "n/a";
+              return (
+              <button className="my-5 mx-2 bg-[#21345b] text-white w-[100%] h-[10%] rounded-md"
+                onClick={() => handleClick(user, companyName)}
+              >  
+                  Edit User
+              </button>
+              )
+            })
+          }
+        </div>
       </div>
   
+      <EditUserModal EditUserIsOpen={EditUserIsOpen} setEditUserIsOpen={setEditUserIsOpen} user={selectedUser} companyName={selectedCompany} />
+
       {/* <div className="col-span-3">
         <p className="text-3xl bg-[#2ed7c3] rounded my-1 h-[75%]">Companies</p>
       </div>
