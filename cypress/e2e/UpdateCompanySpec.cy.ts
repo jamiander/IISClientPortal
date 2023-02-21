@@ -6,19 +6,27 @@ describe('template spec', () => {
     cy.get('button').contains('Submit').click();
 
     cy.get('button').contains('Admin').click();
+    cy.get('button').contains('Edit User').click();
   });
 
   specify('update a company', () => {
-    cy.get('button').contains('Edit User').click();
-
     cy.get('input[id="modalCompany"]').clear().type('Test Company');
-    //cy.get('input[id="modalUsername"]').clear().type('Mr. Test');
     cy.get('input[id="modalEmail"]').clear().type('test@test.com');
     cy.get('input[id="modalPassword"]').clear().type('test');
     cy.get('button').contains('Submit').click();
+
+    //cy.get('Test Company');
   })
 
   specify('cannot update with invalid input', () => {
+    cy.get('input[id="modalCompany"]').clear();
+    cy.get('input[id="modalEmail"]').clear();
+    cy.get('input[id="modalPassword"]').clear();
+
+    cy.get('button').should('be.disabled');
+  })
+
+  specify('cannot rename a company the name of another company', () => {
 
   })
 })

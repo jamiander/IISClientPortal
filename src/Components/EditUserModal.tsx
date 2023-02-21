@@ -30,7 +30,7 @@ export default function EditUserModal(props: EditUserProps) {
                 <h4 className="mb-3">Edit User</h4>
 
                 <p className='my-1'>Company Name:</p>
-                <input defaultValue={props.companyName} onChange={(e) => setCompanyName(e.target.value)} id="modalUsername"  className="outline rounded outline-1 p-2"/>
+                <input defaultValue={props.companyName} onChange={(e) => setCompanyName(e.target.value)} id="modalCompany"  className="outline rounded outline-1 p-2"/>
 
                 <p className='my-1'>Email:</p>            
                 <input defaultValue={props.user.email} onChange={(e) => setEmail(e.target.value)}  id="modalEmail"  className="outline rounded outline-1 p-2"/>
