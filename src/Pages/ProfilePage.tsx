@@ -7,13 +7,13 @@ export default function ProfilePage(){
       <div className="col-span-4">
         <p className="text-5xl py-[10px]">Profile</p>
       </div>
-      <div className="col-span-4 bg-[#2ed7c3] rounded-md">
+      <div className="col-span-4 bg-[#2ed7c3] rounded-md p-2 pl-5 my-2">
         <p className="text-3xl h-[90%]">User Information</p>
       </div>
       <div className="col-span-4 py-[5px]">
         <ProfileTable/>
       </div>
-      <div className="col-span-4 bg-[#2ed7c3] rounded-md">
+      <div className="col-span-4 bg-[#2ed7c3] rounded-md p-2 pl-5 my-2">
         <p className="text-3xl h-[90%]">Company Initiatives</p>
       </div>
       <div className="col-span-4 py-[5px]">

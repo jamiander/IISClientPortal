@@ -199,8 +199,8 @@ export default function AdminPage(){
         <p className="text-5xl py-[10px]">Admin Page</p>
       </div>
   
-      <div className="col-span-3">
-        <p className="text-3xl bg-[#2ed7c3] rounded h-[90%]">Users</p>
+      <div className="col-span-3 bg-[#2ed7c3] rounded-md p-2 pl-5">
+        <p className="text-3xl h-[90%]">Users</p>
       </div>
   
       <AddUserModal userModalIsOpen={userModalIsOpen} closeUserModal={closeUserModal} openUserModal={openUserModal} setCompanyName={setCompanyName} setEmail={setEmail} setName={setName} setPassword={setPassword} companyList={companyList} validateUser={ValidateUser} submitNewUser={SubmitNewUser} />
