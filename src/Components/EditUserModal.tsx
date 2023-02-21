@@ -48,6 +48,7 @@ export default function EditUserModal(props: EditUserProps) {
                 isOpen={props.EditUserIsOpen}
                 onRequestClose={() => props.setEditUserIsOpen(false)}
                 style={modalStyle}
+                appElement={document.getElementById('root') as HTMLElement}
             >
                 <h4 className="mb-3">Edit User</h4>
 
