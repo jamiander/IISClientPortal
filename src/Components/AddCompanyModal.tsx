@@ -14,7 +14,7 @@ export default function AddCompanyModal(props: AddCompanyProps) {
   
   return (
     <div className="flex justify-end">
-      <button onClick={props.openCompanyModal} className="outline bg-[#21345b] text-white h-[75%] w-[80%] rounded my-1">Add Company</button>
+      <button onClick={props.openCompanyModal} className="outline bg-[#21345b] text-white h-[75%] w-[80%] rounded-md my-1">Add Company</button>
       <Modal
         isOpen={props.companyModalIsOpen}
         onRequestClose={props.closeCompanyModal}

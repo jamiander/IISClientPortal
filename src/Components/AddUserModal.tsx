@@ -20,7 +20,7 @@ export default function AddUserModal(props: AddUserProps) {
     return (
       <div className="flex justify-end">
 
-        <button onClick={props.openUserModal} className="outline bg-[#21345b] text-white h-[90%] w-[80%] rounded">Add User</button>
+        <button onClick={props.openUserModal} className="outline bg-[#21345b] text-white h-[90%] w-[80%] rounded-md">Add User</button>
 
         <Modal
             isOpen={props.userModalIsOpen}
