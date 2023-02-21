@@ -30,6 +30,7 @@ export default function AdminPage(){
   //const [companyModalIsOpen, setCompanyIsOpen] = useState(false);
   const [companyName, setCompanyName] = useState('');
   const userList = useAppSelector(selectAllUsers);
+  console.log("userList", userList);
   const companyList = useAppSelector(selectAllCompanies);
   // const ShowToast : (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void = useOutletContext();
   
@@ -145,16 +146,15 @@ export default function AdminPage(){
         <UsersTable userList={userList} companyList={companyList}/>
       </div>
   
-      <div className="col-span-3">
+      {/* <div className="col-span-3">
         <p className="text-3xl bg-[#2ed7c3] rounded my-1 h-[75%]">Companies</p>
       </div>
   
-      {/*<AddCompanyModal companyModalIsOpen={companyModalIsOpen} closeCompanyModal={closeCompanyModal} openCompanyModal={openCompanyModal} validateCompany={ValidateCompany} setCompanyName={setCompanyName} submitNewCompany={SubmitNewCompany} />
-      */}
-
+      <AddCompanyModal companyModalIsOpen={companyModalIsOpen} closeCompanyModal={closeCompanyModal} openCompanyModal={openCompanyModal} validateCompany={ValidateCompany} setCompanyName={setCompanyName} submitNewCompany={SubmitNewCompany} />
+      
       <div className="col-span-4 py-[10px]">
         <CompaniesTable/>
-      </div>
+      </div> */}
     </div>
   </>
   )

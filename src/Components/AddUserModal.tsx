@@ -32,7 +32,7 @@ export default function AddUserModal(props: AddUserProps) {
             
             <div className='outline outline-2 w-[120%] my-3 outline-[#2ed7c3] -translate-x-10' />
 
-            <p className='my-1'>Company:</p>
+            <p className='my-1'>Company Name:</p>
             <input id='modalCompany' list="companies" type="text" className="outline rounded outline-1 p-2" onChange={(e) => props.setCompanyName(e.target.value)}/>
             {/*<datalist id="companies">
                 {props.companyList.map((company,index) => {
@@ -42,8 +42,8 @@ export default function AddUserModal(props: AddUserProps) {
                 })}
               </datalist>*/}
           
-            <p className='my-1'>Name:</p>
-            <input id="modalUsername" onChange={(e)=>props.setName(e.target.value)} className="outline rounded outline-1 p-2"/>
+            {/* <p className='my-1'>Name:</p>
+            <input id="modalUsername" onChange={(e)=>props.setName(e.target.value)} className="outline rounded outline-1 p-2"/> */}
 
             <p className='my-1'>Email:</p>            
             <input id="modalEmail" onChange={(e)=>props.setEmail(e.target.value)} className="outline rounded outline-1 p-2"/>
