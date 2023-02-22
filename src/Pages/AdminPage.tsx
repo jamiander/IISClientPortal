@@ -3,6 +3,7 @@ import { useOutletContext } from "react-router-dom";
 import AddUserModal from "../Components/AddUserModal";
 import EditUserModal from "../Components/EditUserModal";
 import UsersTable from "../Components/UsersTable";
+import Sorter from "../Services/Sorter";
 import { Company, getCompanyInfo, selectAllCompanies, updateCompanyInfo } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
 import { selectAllUsers, User } from "../Store/UserSlice";
@@ -202,11 +203,11 @@ export default function AdminPage(){
       <AddUserModal userModalIsOpen={userModalIsOpen} closeUserModal={closeUserModal} openUserModal={openUserModal} setCompanyName={setCompanyName} setEmail={setEmail} setName={setName} setPassword={setPassword} companyList={companyList} validateUser={ValidateUser} submitNewUser={SubmitNewUser} />
   
       <div className="col-span-4 py-[10px] flex">
-        <UsersTable userList={userList} companyList={companyList}/>
+        <UsersTable userList={Sorter({users:userList})} companyList={companyList}/>
         <div className="w-[10%]">
         <div className="h-[25px]"></div>
           {
-            userList.map((user, index) => {
+            Sorter({users:userList}).map((user, index) => {
               //const companyName = companyList.find(company => company.id === user.companyId)?.name ?? "n/a";
               const company = companyList.find(company => company.id === user.companyId);
               return (
