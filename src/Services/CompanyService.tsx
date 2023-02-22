@@ -53,18 +53,6 @@ export interface DateInfo {
     year: string
 }
 
-export interface InitiativeInfo {
-    title: string,
-    targetDate: DateInfo,
-    totalItems: number,
-    itemsCompletedOnDate: [
-        {
-            date: DateInfo,
-            itemsCompleted: number
-        }
-    ]
-}
-
 export interface CompanyInfo {
     companyId: number,
     companyName: string,
@@ -129,6 +117,25 @@ export async function UpdateCompanyInfo(request: UpdateCompanyInfoRequest) : Pro
     let baseUrl = BASE_URL + "AddCompanyData?code=WkVKzojbAuWrWSmQVvYWKiG_iD9R4S_-7wp3xsE1SuOhAzFuEJk5oQ==";
 
     let response = await axios.post(baseUrl, {company: info, isTest: isTest});
+    return response.data;
+}
+
+export interface UpdateInitiativeInfoRequest {
+    initiative: Initiative,
+    companyId: number,
+    isTest: boolean
+}
+
+interface UpdateInitiativeInfoResponse {
+    id: number,
+    status: string
+}
+
+export async function UpdateInitiativeInfo(request: UpdateInitiativeInfoRequest) : Promise<UpdateInitiativeInfoResponse> { 
+
+    let baseUrl = BASE_URL;
+
+    let response = await axios.post(baseUrl, {initiative: request.initiative, companyId: request.companyId, isTest: request.isTest});
     return response.data;
 }
 

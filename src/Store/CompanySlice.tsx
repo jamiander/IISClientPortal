@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import { DateInfo, GetCompanyInfo, GetCompanyInfoRequest, InitiativeInfo, UpdateCompanyInfo, UpdateCompanyInfoRequest } from "../Services/CompanyService"
+import { DateInfo, GetCompanyInfo, GetCompanyInfoRequest, UpdateCompanyInfo, UpdateCompanyInfoRequest, UpdateInitiativeInfo, UpdateInitiativeInfoRequest } from "../Services/CompanyService"
 import { RootState } from "./Store"
 import { addUsersToStore, User } from "./UserSlice"
 
@@ -14,8 +14,17 @@ export interface CompanyState {
     currentCompanyId: number
 }
 
-export interface Initiative extends InitiativeInfo {
-    id: number
+export interface Initiative {
+    id: number,
+    title: string,
+    targetDate: DateInfo,
+    totalItems: number,
+    itemsCompletedOnDate: [
+        {
+            date: DateInfo,
+            itemsCompleted: number
+        }
+    ]
 }
 
 const initialState: CompanyState = {
@@ -73,10 +82,9 @@ export const getCompanyInfo = createAsyncThunk(
 
             if(info.initiatives)
             {
-                const initiativeInfoMap = info.initiatives;
                 for(const [key,value] of Object.entries(info.initiatives))
                 {
-                    let initiative: Initiative = {...value as InitiativeInfo,id: parseInt(key)};
+                    let initiative: Initiative = {...value as Initiative,id: parseInt(key)};
                     company.initiatives.push(initiative);
                 }
             }
@@ -108,6 +116,20 @@ export const updateCompanyInfo = createAsyncThunk(
     }
 )
 
+export const updateInitiativeInfo = createAsyncThunk(
+    'companies/updateInitiativesInfo',
+    async (args: UpdateInitiativeInfoRequest, {dispatch, getState}): Promise<{initiative: Initiative, companyId: number}> => {
+        const response = await UpdateInitiativeInfo(args);
+
+        if(response.status.toUpperCase().includes('FAILED'))
+            throw Error;
+        
+        let newInitiative: Initiative = JSON.parse(JSON.stringify(args.initiative));
+        newInitiative.id = response.id;
+        return {initiative: newInitiative, companyId: args.companyId};
+    }
+)
+
 export const companySlice = createSlice({
     name: "companies",
     initialState: initialState,
@@ -123,7 +145,7 @@ export const companySlice = createSlice({
                 state.companies.push(action.payload);
             })*/
             .addCase(getCompanyInfo.fulfilled, (state, action) => {
-                let newCompanies = action.payload;
+                const newCompanies = action.payload;
                 for(const company of newCompanies)
                 {
                     let companyIndex = state.companies.findIndex(c => c.id === company.id);
@@ -138,6 +160,18 @@ export const companySlice = createSlice({
                 if(companyIndex > -1)
                     state.companies.splice(companyIndex, 1);
                 state.companies.push(newCompany);
+            })
+            .addCase(updateInitiativeInfo.fulfilled, (state, action) => {
+                const newInitiative = action.payload.initiative;
+                const companyId = action.payload.companyId;
+                const matchingCompany = state.companies.find(company => company.id === companyId);
+                if(matchingCompany)
+                {
+                    const initIndex = matchingCompany.initiatives.findIndex(init => init.id === newInitiative.id);
+                    if(initIndex > -1)
+                        matchingCompany.initiatives.splice(initIndex,1);
+                    matchingCompany.initiatives.push(newInitiative);
+                }
             })
     }
 });
