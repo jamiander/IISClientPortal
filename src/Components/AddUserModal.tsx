@@ -1,5 +1,5 @@
 import Modal from 'react-modal';
-import { inputStyle, modalStyle } from '../Styles';
+import { cancelButtonStyle, inputStyle, modalStyle, submitButtonStyle } from '../Styles';
 import { Company } from '../Store/CompanySlice';
 
 interface AddUserProps {
@@ -24,10 +24,10 @@ export default function AddUserModal(props: AddUserProps) {
         <Modal
             isOpen={props.userModalIsOpen}
             onRequestClose={props.closeUserModal}
-            style={{'content': {...modalStyle.content}}}
+            style={{'content': {...modalStyle.content, 'width': '25%'}}}
             appElement={document.getElementById('root') as HTMLElement}
         >
-          <div className="space-x-3">
+          <div className="w-full">
             <p className="text-3xl">Add User</p>
             
             {/* <div className='outline outline-2 w-[120%] my-3 outline-[#2ed7c3] -translate-x-10' /> */}
@@ -50,9 +50,11 @@ export default function AddUserModal(props: AddUserProps) {
 
             <p className='my-1'>Password:</p>
             <input id="modalPassword" onChange={(e)=>props.setPassword(e.target.value)} className={inputStyle}/>
+          </div>
+          <div className='mt-2 h-10'>
 
-            <button className="rounded h-[40px] w-[80px] bg-lime-600" onClick={() => props.submitNewUser()}>Submit</button>
-            <button className="rounded h-[40px] w-[80px] bg-red-600" onClick={props.closeUserModal}>Close</button> 
+            <button className={submitButtonStyle} onClick={() => props.submitNewUser()}>Submit</button>
+            <button className={cancelButtonStyle} onClick={props.closeUserModal}>Close</button> 
 
           </div>
         </Modal>
