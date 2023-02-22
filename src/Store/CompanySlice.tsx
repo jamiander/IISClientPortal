@@ -11,7 +11,6 @@ export interface Company {
 
 export interface CompanyState {
     companies: Company[]
-    currentCompanyId: number
 }
 
 export interface Initiative {
@@ -29,7 +28,6 @@ export interface Initiative {
 
 const initialState: CompanyState = {
     companies: [{id: -1, name: "default", initiatives: []}],
-    currentCompanyId: -1
 }
 
 /*export const getCompanyData = createAsyncThunk(
