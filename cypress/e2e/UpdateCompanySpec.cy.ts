@@ -22,15 +22,23 @@ describe('template spec', () => {
 
   specify('cannot update with invalid input', () => {
     cy.get('#modalCompany').clear();
+
+    cy.get('button').contains('Submit').click();
+    cy.get('#toast-default').contains('Validation Failed');
+    cy.get('#modalCompany').type('Test Company');
+
     cy.get('#modalEmail').clear();
+    cy.get('button').contains('Submit').click();
+    cy.get('#toast-default').contains('Validation Failed');
+    cy.get('#modalEmail').type('test@test.com');
+
     cy.get('#modalPassword').clear();
     cy.get('button').contains('Submit').click();
-
     cy.get('#toast-default').contains('Validation Failed');
   })
 
   specify('cannot rename a company the name of another company', () => {
-    cy.get('input[id="modalCompany"]').clear().type('Fake Company');
+    cy.get('input[id="modalCompany"]').clear().type('Integrity Inspired Solutions');
 
     cy.get('button').contains('Submit').click();
 
@@ -38,7 +46,7 @@ describe('template spec', () => {
   })
 
   specify('cannot rename a user the name of another user', () => {
-    cy.get('input[id="modalEmail"]').clear().type('info@company.com');
+    cy.get('input[id="modalEmail"]').clear().type('info@integrityinspired.com');
 
     cy.get('button').contains('Submit').click();
 

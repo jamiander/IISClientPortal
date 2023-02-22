@@ -147,7 +147,7 @@ export default function AdminPage(){
   function SubmitUpdateUser(companyName: string, email: string, password: string) {
 
     const company = {...selectedCompany, name: companyName};
-    let user = {...selectedUser, email: email, password: password};
+    const user = {...selectedUser, email: email, password: password};
 
     let isTest = false;
     if((window as any).Cypress)
@@ -162,25 +162,23 @@ export default function AdminPage(){
     }
     else
       ShowToast('Validation Failed: ' + validation.message, 'Error');
-    
   }
 
   function ValidateEdit(companyName: string, companyId: number, userEmail: string, userPassword: string, userId: number) : {message: string, success: boolean}
   {
-    let success = false;
     if(companyName && userEmail && userPassword && userId !== -1 && companyId !== -1)
     {
       let matchingUser = userList.find(indexedUser => indexedUser.email.toUpperCase() === userEmail.toUpperCase() && indexedUser.id !== userId);
       if(matchingUser)
-        return {success: success, message: "Cannot use the email of an existing user."};
+        return {success: false, message: "Cannot use the email of an existing user."};
 
       let matchingCompany = companyList.find(indexedCompany => indexedCompany.name.toUpperCase() === companyName.toUpperCase() && indexedCompany.id !== companyId)
       if(matchingCompany)
-        return {success: success, message: "Cannot use the name of an existing company."};
+        return {success: false, message: "Cannot use the name of an existing company."};
 
       return {success: true, message: "Successfully validated; all good!"};
     }
-    return {success: success, message: "Cannot leave any fields blank."};
+    return {success: false, message: "Cannot leave any fields blank."};
   }
 
   return(
