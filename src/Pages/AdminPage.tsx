@@ -7,7 +7,7 @@ import InitiativesTable from "../Components/InitiativesTable";
 import UsersTable from "../Components/UsersTable";
 import { DateInfo, UpdateCompanyInfoRequest } from "../Services/CompanyService";
 import Sorter from "../Services/Sorter";
-import { Company, getCompanyInfo, Initiative, selectAllCompanies, updateCompanyInfo } from "../Store/CompanySlice";
+import { Company, getCompanyInfo, Initiative, selectAllCompanies, updateCompanyInfo, updateInitiativeInfo } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
 import { selectAllUsers, User } from "../Store/UserSlice";
 
@@ -185,36 +185,43 @@ export default function AdminPage(){
     return {success: false, message: "Cannot leave any fields blank."};
   }
 
-  function SubmitNewInitiative(title: string, targetDate: string, totalItems: number, companyId: number)
+  function SubmitNewInitiative(title: string, targetDate: DateInfo, totalItems: number, companyId: number)
   {
-    let newDate = targetDate.split('/');  //TODO: change this when the target date input is changed to something other than a string
-
     const initiative: Initiative = {
       id: -1,
       title: title,
-      targetDate: {month: newDate[0], day: newDate[1], year: newDate[2]},
+      targetDate: targetDate,
       totalItems: totalItems,
       itemsCompletedOnDate: []
     }
+
+    console.log(initiative);
 
     let isTest = false;
     if((window as any).Cypress)
       isTest = true;
 
-    let validation = ValidateNewInitiative();
+    let validation = ValidateNewInitiative(initiative);
     if(validation.success)
     {
-      //TODO: add to the modal the option to select the company
-      dispatch(updateInitiativeInfo({initiative: initiative, companyId: companyId,isTest: isTest}))
-
-      setInitiativeIsOpen(false);
+      dispatch(updateInitiativeInfo({initiative: initiative, companyId: companyId, isTest: isTest}))
     }
-    else
-      ShowToast(validation.message,'Error');
+    else ShowToast(validation.message,'Error');
+
+    setInitiativeIsOpen(false);
   }
 
-  function ValidateNewInitiative() : {success: boolean, message: string}
+  function ValidateNewInitiative(initiative: Initiative) : {success: boolean, message: string}
   {
+    // let initiativeList = companyList.map((company) => company.initiatives).flat();
+    // console.log('initiative list', initiativeList);
+
+    if (initiative.title && initiative.totalItems > -1 &&
+      initiative.targetDate.month && initiative.targetDate.day && initiative.targetDate.year){
+        return {success: true, message: "Successfully validated; all good!"};
+    } else {
+      return {success: false, message: "Cannot leave any fields blank"};
+    }
     return {success: false, message: ""}
   }
 
