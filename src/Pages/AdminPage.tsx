@@ -160,7 +160,7 @@ export default function AdminPage(){
       setEditUserIsOpen(false);
     }
     else
-      ShowToast('Validation failed: ' + validation.message, 'Error');
+      ShowToast('Validation Failed: ' + validation.message, 'Error');
     
   }
 

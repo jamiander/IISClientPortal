@@ -6,8 +6,8 @@ describe('template spec', () => {
     cy.get('button').contains('Submit').click();
 
     cy.get('button').contains('Admin').click();
-    cy.get('button').contains('Edit User').click();
     cy.get('table').contains('Integrity Inspired Solutions');
+    cy.get('button').contains('Edit User').click();
   });
 
   specify('update a company', () => {
@@ -26,7 +26,7 @@ describe('template spec', () => {
     cy.get('#modalPassword').clear();
     cy.get('button').contains('Submit').click();
 
-    cy.get('#toast-default').contains('Validation failed');
+    cy.get('#toast-default').contains('Validation Failed');
   })
 
   specify('cannot rename a company the name of another company', () => {
@@ -34,7 +34,7 @@ describe('template spec', () => {
 
     cy.get('button').contains('Submit').click();
 
-    cy.get('#toast-default').contains('Validation failed');
+    cy.get('#toast-default').contains('Validation Failed');
   })
 
   specify('cannot rename a user the name of another user', () => {
@@ -42,7 +42,7 @@ describe('template spec', () => {
 
     cy.get('button').contains('Submit').click();
 
-    cy.get('#toast-default').contains('Validation failed');
+    cy.get('#toast-default').contains('Validation Failed');
   })
 })
 
