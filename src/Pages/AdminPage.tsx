@@ -146,46 +146,41 @@ export default function AdminPage(){
 
   function SubmitUpdateUser(companyName: string, email: string, password: string) {
 
-    let company;
-    let user;
-
-    if (companyName !== 'N/A')
-      company = {...selectedCompany, name: companyName};
-    else company = selectedCompany;
-
-    if (email !== 'fake@fake')
-      user = {...selectedUser, email: email}
-    if (password !== 'fake')
-      user = {...selectedUser, password: password}
-    else user = selectedUser
+    const company = {...selectedCompany, name: companyName};
+    let user = {...selectedUser, email: email, password: password};
 
     let isTest = false;
     if((window as any).Cypress)
       isTest = true;
 
-    if (ValidateEdit(companyName, selectedCompany.id, email, password, selectedUser.id)) {
+    let validation = ValidateEdit(company.name, company.id, user.email, user.password, user.id)
+    if(validation.success) {
       dispatch(updateCompanyInfo({ company: company, employee: user, isTest: isTest}));
       ShowToast('User Update Dispatched', 'Success');
       setSelectedCompany(fakeCompany); setSelectedUser(fakeUser);
+      setEditUserIsOpen(false);
     }
-    setEditUserIsOpen(false);
+    else
+      ShowToast('Validation Failed: ' + validation.message, 'Error');
+    
   }
 
-  function ValidateEdit(companyName: string, companyId: number, userEmail: string, userPassword: string, userId: number)
+  function ValidateEdit(companyName: string, companyId: number, userEmail: string, userPassword: string, userId: number) : {message: string, success: boolean}
   {
+    let success = false;
     if(companyName && userEmail && userPassword && userId !== -1 && companyId !== -1)
     {
-      let matchingUser = userList.find(indexedUser => indexedUser.email === userEmail && indexedUser.id !== userId);
+      let matchingUser = userList.find(indexedUser => indexedUser.email.toUpperCase() === userEmail.toUpperCase() && indexedUser.id !== userId);
       if(matchingUser)
-        return false;
+        return {success: success, message: "Cannot use the email of an existing user."};
 
-      let matchingCompany = companyList.find(indexedCompany => indexedCompany.name === companyName && indexedCompany.id !== companyId)
+      let matchingCompany = companyList.find(indexedCompany => indexedCompany.name.toUpperCase() === companyName.toUpperCase() && indexedCompany.id !== companyId)
       if(matchingCompany)
-        return false;
+        return {success: success, message: "Cannot use the name of an existing company."};
 
-      return true;
+      return {success: true, message: "Successfully validated; all good!"};
     }
-    return false;
+    return {success: success, message: "Cannot leave any fields blank."};
   }
 
   return(
@@ -224,7 +219,7 @@ export default function AdminPage(){
         </div>
       </div>
   
-      <EditUserModal EditUserIsOpen={EditUserIsOpen} setEditUserIsOpen={setEditUserIsOpen} user={selectedUser} company={selectedCompany} SubmitUpdateUser={SubmitUpdateUser} ValidateEdit={ValidateEdit} />
+      <EditUserModal EditUserIsOpen={EditUserIsOpen} setEditUserIsOpen={setEditUserIsOpen} user={selectedUser} company={selectedCompany} SubmitUpdateUser={SubmitUpdateUser} />
 
       {/* <div className="col-span-3">
         <p className="text-3xl bg-[#2ed7c3] rounded my-1 h-[75%]">Companies</p>
