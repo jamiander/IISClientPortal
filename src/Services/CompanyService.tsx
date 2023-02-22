@@ -132,8 +132,7 @@ interface UpdateInitiativeInfoResponse {
 }
 
 export async function UpdateInitiativeInfo(request: UpdateInitiativeInfoRequest) : Promise<UpdateInitiativeInfoResponse> { 
-
-    let baseUrl = BASE_URL;
+    let baseUrl = BASE_URL + "AddInitiativeData?code=j8g7WVHgX7VVQXnN6__iUKZptpUbmZfdiBjmm9K2aRDpAzFuBMcYaw==";
 
     let response = await axios.post(baseUrl, {initiative: request.initiative, companyId: request.companyId, isTest: request.isTest});
     return response.data;
