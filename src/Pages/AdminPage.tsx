@@ -1,24 +1,14 @@
 import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
+import AddInitiativeModal from "../Components/AddInitiativeModal";
 import AddUserModal from "../Components/AddUserModal";
 import EditUserModal from "../Components/EditUserModal";
+import InitiativesTable from "../Components/InitiativesTable";
 import UsersTable from "../Components/UsersTable";
 import Sorter from "../Services/Sorter";
 import { Company, getCompanyInfo, selectAllCompanies, updateCompanyInfo } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
 import { selectAllUsers, User } from "../Store/UserSlice";
-
-export const modalStyle = {
-  content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
-    outline : '3px solid #2ed7c3',
-  }
-}
 
 export default function AdminPage(){
   const dispatch = useAppDispatch();
@@ -134,6 +124,8 @@ export default function AdminPage(){
   const [selectedCompany, setSelectedCompany] = useState(fakeCompany);
   const [EditUserIsOpen, setEditUserIsOpen] = useState(false);
 
+  const [AddInitiativeIsOpen, setInitiativeIsOpen] = useState(false);
+
   function handleClick(user: User, company?: Company) {
     if(company)
     {
@@ -216,9 +208,18 @@ export default function AdminPage(){
             })
           }
         </div>
+        <EditUserModal EditUserIsOpen={EditUserIsOpen} setEditUserIsOpen={setEditUserIsOpen} user={selectedUser} company={selectedCompany} SubmitUpdateUser={SubmitUpdateUser} />
       </div>
-  
-      <EditUserModal EditUserIsOpen={EditUserIsOpen} setEditUserIsOpen={setEditUserIsOpen} user={selectedUser} company={selectedCompany} SubmitUpdateUser={SubmitUpdateUser} />
+
+      <div className="col-span-3 bg-[#2ed7c3] rounded-md p-2 pl-5">
+        <p className="text-3xl h-[90%]">Initiatives</p>
+      </div>
+      <AddInitiativeModal addInitiativeIsOpen={AddInitiativeIsOpen} setInitiativeIsOpen={setInitiativeIsOpen} />
+        
+      <div className="col-span-4 py-[10px] flex">
+        <InitiativesTable />
+
+      </div>
 
       {/* <div className="col-span-3">
         <p className="text-3xl bg-[#2ed7c3] rounded my-1 h-[75%]">Companies</p>

@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import './App.css';
 import Toast, { ToastDetails } from './Components/Toast';
 import Content from './Layout/Content';
 import Footer from './Layout/Footer';
