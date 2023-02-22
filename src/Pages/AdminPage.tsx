@@ -75,7 +75,8 @@ export default function AdminPage(){
     
     let newCompany: Company = {
       id: newCompanyId,
-      name: companyName
+      name: companyName,
+      initiatives: []
     }
 
     let isTest = false;
@@ -129,7 +130,7 @@ export default function AdminPage(){
   const fakeUser : User = {id: -1, email: 'fake@fake', password: 'fake', companyId: -1};
   const [selectedUser, setSelectedUser] = useState(fakeUser);
 
-  const fakeCompany : Company = {id: -1, name: "N/A"}
+  const fakeCompany : Company = {id: -1, name: "N/A", initiatives: []}
   const [selectedCompany, setSelectedCompany] = useState(fakeCompany);
   const [EditUserIsOpen, setEditUserIsOpen] = useState(false);
 

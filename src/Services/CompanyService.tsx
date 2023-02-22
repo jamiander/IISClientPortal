@@ -1,9 +1,9 @@
 import axios from "axios";
-import { Company } from "../Store/CompanySlice";
+import { Company, Initiative } from "../Store/CompanySlice";
 import { User } from "../Store/UserSlice";
 import { BASE_URL, http } from "./Http";
 
-interface GetAllCompaniesRequest {
+/*interface GetAllCompaniesRequest {
     id?: number,
     name?: string
 }
@@ -39,7 +39,7 @@ export async function AddCompany(request?: AddCompanyRequest) : Promise<AddCompa
 
     let response = await axios.post(baseUrl, request);
     return response.data;
-}
+}*/
 
 interface EmployeeInfo {
     employeeId: number,
@@ -47,11 +47,29 @@ interface EmployeeInfo {
     employeePassword: string
 }
 
+export interface DateInfo {
+    month: string,
+    day: string,
+    year: string
+}
+
+export interface InitiativeInfo {
+    title: string,
+    targetDate: DateInfo,
+    totalItems: number,
+    itemsCompletedOnDate: [
+        {
+            date: DateInfo,
+            itemsCompleted: number
+        }
+    ]
+}
+
 export interface CompanyInfo {
     companyId: number,
     companyName: string,
     employeeInfo: EmployeeInfo,
-    //initiatives: any[]
+    initiatives?: any //not sure how to represent this, since the key is dynamic { "<id string>": InitiativeObject{} }
 }
 
 export interface GetCompanyInfoRequest {
@@ -104,7 +122,8 @@ export async function UpdateCompanyInfo(request: UpdateCompanyInfoRequest) : Pro
             employeeId: employee.id,
             employeeEmail: employee.email,
             employeePassword: employee.password
-        }
+        },
+        //no initiatives; this shoulbe be handled by the UpdateInitiativeInfo() method
     }
 
     let baseUrl = BASE_URL + "AddCompanyData?code=WkVKzojbAuWrWSmQVvYWKiG_iD9R4S_-7wp3xsE1SuOhAzFuEJk5oQ==";

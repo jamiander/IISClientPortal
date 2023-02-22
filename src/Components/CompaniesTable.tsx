@@ -16,7 +16,11 @@ export default function CompaniesTable(){
           return(
             <tr key={index}>
               <td className="outline outline-1"><p className="flex justify-center">{company.name}</p></td>
-              <td className="outline outline-1"><p className="flex justify-center">{company.initiatives}</p></td>
+              {company.initiatives.map((init, jndex) => {
+                return (
+                  <td className="outline outline-1"><p className="flex justify-center">{init.title}</p></td>
+                )})
+              }
             </tr>
           )
         })}

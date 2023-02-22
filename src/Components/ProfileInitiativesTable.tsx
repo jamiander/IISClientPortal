@@ -16,10 +16,10 @@ export default function ProfileInitiativesTable(){
             </tr>
           </thead>
           <tbody>
-            {company?.initiatives?.map((initiative, index)=>{
+            {company?.initiatives.map((initiative, index)=>{
               return(
                 <tr key={index}>
-                  <td className="outline"><p className="flex justify-center">{initiative}</p></td>
+                  <td className="outline"><p className="flex justify-center">{initiative.title}</p></td>
                   <td className="outline"><p className="flex justify-center">placeholder</p></td>
                 </tr>
               )
