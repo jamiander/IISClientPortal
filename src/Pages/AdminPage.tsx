@@ -204,7 +204,7 @@ export default function AdminPage(){
     if(validation.success)
     {
       //TODO: add to the modal the option to select the company
-      dispatch(updateInitiativeInfo({initiative: initiative, companyId: 0,isTest: isTest}))
+      dispatch(updateInitiativeInfo({initiative: initiative, companyId: companyId,isTest: isTest}))
 
       setInitiativeIsOpen(false);
     }
@@ -257,7 +257,7 @@ export default function AdminPage(){
       <div className="col-span-3 bg-[#2ed7c3] rounded-md p-2 pl-5">
         <p className="text-3xl h-[90%]">Initiatives</p>
       </div>
-      <AddInitiativeModal addInitiativeIsOpen={AddInitiativeIsOpen} setInitiativeIsOpen={setInitiativeIsOpen} Submit={SubmitNewInitiative}/>
+      <AddInitiativeModal addInitiativeIsOpen={AddInitiativeIsOpen} setInitiativeIsOpen={setInitiativeIsOpen} Submit={SubmitNewInitiative} companyList={companyList}/>
         
       <div className="col-span-4 py-[10px] flex">
         <InitiativesTable companyList={companyList}/>
