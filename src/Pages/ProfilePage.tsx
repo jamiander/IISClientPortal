@@ -1,7 +1,14 @@
-import ProfileInitiativesTable from "../Components/ProfileInitiativesTable";
+import InitiativesTable from "../Components/InitiativesTable";
 import ProfileTable from "../Components/ProfileTable";
+import { getCompanyInfo, selectAllCompanies } from "../Store/CompanySlice";
+import { useAppDispatch, useAppSelector } from "../Store/Hooks";
+import { selectCurrentUser } from "../Store/UserSlice";
 
 export default function ProfilePage(){
+  const dispatch = useAppDispatch();
+  const currentUser = useAppSelector(selectCurrentUser);
+  const companyList = useAppSelector(selectAllCompanies).filter((company) => company.id === currentUser?.companyId);
+
   return(
     <div className="m-[2%] grid grid-cols-4">
       <div className="col-span-4">
@@ -17,7 +24,7 @@ export default function ProfilePage(){
         <p className="text-3xl h-[90%]">Company Initiatives</p>
       </div>
       <div className="col-span-4 py-[5px]">
-        <ProfileInitiativesTable/>
+        <InitiativesTable companyList={companyList}/>
       </div>
     </div>
   )
