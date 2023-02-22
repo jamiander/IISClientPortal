@@ -1,30 +1,22 @@
+import { Company } from "../Store/CompanySlice";
+import { useAppDispatch } from "../Store/Hooks";
+
 interface InitiativesProps {
-  // initiatives: 
+  companyList: Company[]
 }
 
 export default function InitiativesTable(props: InitiativesProps) {
-  var initiatives = [{
-    id: 1,
-    Title: "IIS Client Portal",
-    TargetDate: {
-      Month: 12,
-      Day: 15,
-      Year: 2023
-    },
-    TotalItems:"12",
-    ItemsCompletedOnDate:
-    [
-      {Month:2, Day:17, Year:2023, ItemsCompleted: 2},
-      {Month:2, Day:20, Year:2023, ItemsCompleted: 1},
-      {Month:2, Day:25, Year:2023, ItemsCompleted: 4}
-    ],
-    ItemsRemaining: 9
-  }]
+  const dispatch = useAppDispatch();
+  const initiatives = props.companyList.map((company) => 
+    company.initiatives
+  ).flat();
+  console.log(initiatives);
+  
   return (
     <table className="table-auto w-[100%] outline outline-3">
       <thead className="outline outline-1">
         <tr>
-          <th className="w-[5%]">Status</th>
+          <th>Initiative Id</th>
           <th>Title</th>
           <th>Target Date</th>
           <th>Total Items</th>
@@ -37,11 +29,12 @@ export default function InitiativesTable(props: InitiativesProps) {
             const style = "outline outline-1 text-center ";
             return (
               <tr key={index}>
+                {/* <td className={style}>Company Name</td> */}
                 <td className={style}>{init.id}</td>
-                <td className={style}>{init.Title}</td>
-                <td className={style}>{init.TargetDate.Month + "/" + init.TargetDate.Day + "/" + init.TargetDate.Year}</td>
-                <td className={style}>{init.TotalItems}</td>
-                <td className={style}>{init.ItemsRemaining}</td>
+                <td className={style}>{init.title}</td>
+                <td className={style}>{init.targetDate.month + "/" + init.targetDate.day + "/" + init.targetDate.year}</td>
+                <td className={style}>{init.totalItems}</td>
+                {/* <td className={style}>{init.ItemsRemaining}</td> */}
               </tr>
             )
           })

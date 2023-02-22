@@ -217,7 +217,7 @@ export default function AdminPage(){
       <AddInitiativeModal addInitiativeIsOpen={AddInitiativeIsOpen} setInitiativeIsOpen={setInitiativeIsOpen} />
         
       <div className="col-span-4 py-[10px] flex">
-        <InitiativesTable />
+        <InitiativesTable companyList={companyList}/>
 
       </div>
 
