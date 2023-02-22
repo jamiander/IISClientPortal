@@ -198,7 +198,7 @@ export default function AdminPage(){
               const company = companyList.find(company => company.id === user.companyId);
               return (
                 <div key={index} className={'py-[10px] my-[10px] flex self-end'}>
-                  <button className="my-5 mx-2 bg-[#21345b] text-sm text-white w-[100%] h-[25px] rounded-md outline"
+                  <button className=" mx-2 bg-[#21345b] text-sm text-white w-[100%] h-10 rounded-md outline"
                     onClick={() => handleClick(user, company)}
                   >  
                       Edit User
