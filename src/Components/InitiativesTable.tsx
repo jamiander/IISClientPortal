@@ -30,6 +30,9 @@ export default function InitiativesTable(props: InitiativesProps) {
           companies.map((company, index) => {
             return (
               company.init.map((initiative, index) => {
+                const itemsCompleted = initiative.itemsCompletedOnDate.map((item) => item.itemsCompleted);
+                var total = 0;
+                itemsCompleted.forEach((num) => total += num);
                 return (
                   <tr key={index}>
                     <td className={tableDataStyle}>{company.name}</td>
@@ -37,7 +40,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                     <td className={tableDataStyle}>{initiative.title}</td>
                     <td className={tableDataStyle}>{initiative.targetDate.month + "/" + initiative.targetDate.day + "/" + initiative.targetDate.year}</td>
                     <td className={tableDataStyle}>{initiative.totalItems}</td>
-                    {/* <td className={tableDataStyle}>{initiative.ItemsRemaining}</td> */}
+                    <td className={tableDataStyle}>{initiative.totalItems - total}</td>
                   </tr>
                 )
               })
