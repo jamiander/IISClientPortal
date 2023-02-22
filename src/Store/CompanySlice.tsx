@@ -1,17 +1,21 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import { GetCompanyInfo, GetCompanyInfoRequest, UpdateCompanyInfo, UpdateCompanyInfoRequest } from "../Services/CompanyService"
+import { DateInfo, GetCompanyInfo, GetCompanyInfoRequest, InitiativeInfo, UpdateCompanyInfo, UpdateCompanyInfoRequest } from "../Services/CompanyService"
 import { RootState } from "./Store"
 import { addUsersToStore, User } from "./UserSlice"
 
 export interface Company {
     id: number,
     name: string,
-    initiatives?: number[]
+    initiatives: Initiative[]
 }
 
 export interface CompanyState {
     companies: Company[]
     currentCompanyId: number
+}
+
+export interface Initiative extends InitiativeInfo {
+    id: number
 }
 
 const initialState: CompanyState = {
@@ -55,7 +59,7 @@ export const getCompanyInfo = createAsyncThunk(
         let companies: Company[] = [];
         for(const info of companyInfo)
         {
-            let company: Company = {id: info.companyId, name: info.companyName};
+            let company: Company = {id: info.companyId, name: info.companyName, initiatives: []};
             companies.push(company);
 
             let employee = info.employeeInfo;
@@ -66,6 +70,16 @@ export const getCompanyInfo = createAsyncThunk(
                 password: employee.employeePassword
             }
             users.push(user);
+
+            if(info.initiatives)
+            {
+                const initiativeInfoMap = info.initiatives;
+                for(const [key,value] of Object.entries(info.initiatives))
+                {
+                    let initiative: Initiative = {...value as InitiativeInfo,id: parseInt(key)};
+                    company.initiatives.push(initiative);
+                }
+            }
         }
         dispatch(addUsersToStore(users));
 

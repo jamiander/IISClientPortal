@@ -28,9 +28,9 @@ export default function DashboardPage(){
       <div className="flex justify-end col-span-2">
         <select className="outline rounded w-[200px] h-[40px]">
           <option>Select Initiative</option>
-          {company?.initiatives?.map((initiative)=>{
+          {company?.initiatives.map((initiative,index)=>{
             return(
-              <option>{initiative}</option>
+              <option>{initiative.title}</option>
             )
           })}
         </select>
