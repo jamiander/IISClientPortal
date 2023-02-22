@@ -25,7 +25,17 @@ describe('add company spec', () => {
     cy.get('input[id="modalEmail"]').clear().type('test@test.com');
     cy.get('input[id="modalPassword"]').clear().type('test');
 
-    cy.get('button').contains('Submit').should('be.disabled');
+    cy.get('button').contains('Submit').click();
+    cy.get('#toast-default').contains('Validation Failed');
+  })
+
+  specify('cannot add a company with the same email as another company', () => {
+    cy.get('#modalCompany').clear().type('Test Company');
+    cy.get('#modalEmail').clear().type('info@integrityinspired.com');
+    cy.get('#modalPassword').clear().type('test');
+
+    cy.get('button').contains('Submit').click();
+    cy.get('#toast-default').contains('Validation Failed');
   })
 
   specify('cannot add a company with invalid input', () => {
@@ -34,7 +44,8 @@ describe('add company spec', () => {
     cy.get('input[id="modalEmail"]').clear();
     cy.get('input[id="modalPassword"]').clear();
 
-    cy.get('button').contains('Submit').should('be.disabled');
+    cy.get('button').contains('Submit').click();
+    cy.get('#toast-default').contains('Validation Failed');
   })
 
 })

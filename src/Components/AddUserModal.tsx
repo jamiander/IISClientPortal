@@ -11,7 +11,6 @@ interface AddUserProps {
   setName: (value: string) => void,
   setEmail: (value: string) => void,
   setPassword: (value: string) => void,
-  validateUser: () => boolean,
   submitNewUser: () => void
 }
 
@@ -52,7 +51,7 @@ export default function AddUserModal(props: AddUserProps) {
             <p className='my-1'>Password:</p>
             <input id="modalPassword" onChange={(e)=>props.setPassword(e.target.value)} className={inputStyle}/>
 
-            <button disabled={!props.validateUser()} className="rounded h-[40px] w-[80px] bg-lime-600" onClick={() => props.submitNewUser()}>Submit</button>
+            <button className="rounded h-[40px] w-[80px] bg-lime-600" onClick={() => props.submitNewUser()}>Submit</button>
             <button className="rounded h-[40px] w-[80px] bg-red-600" onClick={props.closeUserModal}>Close</button> 
 
           </div>

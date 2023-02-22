@@ -38,16 +38,20 @@ export default function AdminPage(){
     setUserIsOpen(false);
   }
 
-  function ValidateUser()
+  function ValidateUser() : {success: boolean, message: string}
   {
-    let matchingCompany = companyList.find(company => company.name === companyName);
+    let matchingCompany = companyList.find(company => company.name.toUpperCase() === companyName.toUpperCase());
     if(matchingCompany)
-      return false;
+      return {success: false, message: "Cannot use the name of an existing company."};
+
+    let matchingUser = userList.find(user => user.email.toUpperCase() === email.toUpperCase());
+    if(matchingUser)
+      return {success: false, message: "Cannot use the email of an existing user."};
 
     if(companyName && email && password)
-      return true;
+      return {success: true, message: "Successfully validated new user!"}
     
-    return false;
+    return {success: false, message: "Cannot leave any fields blank."};
   }
 
   function SubmitNewUser()
@@ -76,14 +80,19 @@ export default function AdminPage(){
     console.log('cypress: ' + isTest)
 
     //dispatch(addUser({user: newUser,isTest: isTest}));
-    dispatch(updateCompanyInfo({company: newCompany, employee: newUser, isTest: isTest}));
+    const validation = ValidateUser();
+    if(validation.success)
+    {
+      dispatch(updateCompanyInfo({company: newCompany, employee: newUser, isTest: isTest}));
+      setCompanyName('');
+      setName('');
+      setEmail('');
+      setPassword('');
 
-    setCompanyName('');
-    setName('');
-    setEmail('');
-    setPassword('');
-
-    closeUserModal();
+      closeUserModal();
+    }
+    else
+      ShowToast('Validation Failed: ' + validation.message, 'Error');
   }
 
   /*function ValidateCompany()
@@ -186,7 +195,7 @@ export default function AdminPage(){
         <p className="text-3xl h-[90%]">Users</p>
       </div>
   
-      <AddUserModal userModalIsOpen={userModalIsOpen} closeUserModal={closeUserModal} openUserModal={openUserModal} setCompanyName={setCompanyName} setEmail={setEmail} setName={setName} setPassword={setPassword} companyList={companyList} validateUser={ValidateUser} submitNewUser={SubmitNewUser} />
+      <AddUserModal userModalIsOpen={userModalIsOpen} closeUserModal={closeUserModal} openUserModal={openUserModal} setCompanyName={setCompanyName} setEmail={setEmail} setName={setName} setPassword={setPassword} companyList={companyList} submitNewUser={SubmitNewUser} />
   
       <div className="col-span-4 py-[10px] flex">
         <UsersTable userList={Sorter({users:userList})} companyList={companyList}/>
