@@ -106,7 +106,7 @@ export async function UpdateCompanyInfo(request: UpdateCompanyInfoRequest) : Pro
             employeePassword: employee.password
         }
     }
-    
+
     let baseUrl = BASE_URL + "AddCompanyData?code=WkVKzojbAuWrWSmQVvYWKiG_iD9R4S_-7wp3xsE1SuOhAzFuEJk5oQ==";
 
     let response = await axios.post(baseUrl, {company: info, isTest: isTest});

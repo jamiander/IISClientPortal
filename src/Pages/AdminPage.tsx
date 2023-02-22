@@ -145,24 +145,14 @@ export default function AdminPage(){
 
   function SubmitUpdateUser(companyName: string, email: string, password: string) {
 
-    let company;
-    let user;
-
-    if (companyName !== 'N/A')
-      company = {...selectedCompany, name: companyName};
-    else company = selectedCompany;
-
-    if (email !== 'fake@fake')
-      user = {...selectedUser, email: email}
-    if (password !== 'fake')
-      user = {...selectedUser, password: password}
-    else user = selectedUser
+    const company = {...selectedCompany, name: companyName};
+    let user = {...selectedUser, email: email, password: password};
 
     let isTest = false;
     if((window as any).Cypress)
       isTest = true;
 
-    if (ValidateEdit(companyName, selectedCompany.id, email, password, selectedUser.id)) {
+    if (ValidateEdit(company.name, company.id, user.email, user.password, user.id)) {
       dispatch(updateCompanyInfo({ company: company, employee: user, isTest: isTest}));
       ShowToast('User Update Dispatched', 'Success');
       setSelectedCompany(fakeCompany); setSelectedUser(fakeUser);
