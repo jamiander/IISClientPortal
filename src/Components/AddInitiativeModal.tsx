@@ -1,12 +1,21 @@
+import { useState } from 'react';
 import Modal from 'react-modal';
+import { Company, Initiative } from '../Store/CompanySlice';
 import { cancelButtonStyle, inputStyle, modalStyle, submitButtonStyle } from '../Styles';
+import { DateInfo } from "../Services/CompanyService";
 
 interface AddInitiativeProps {
   addInitiativeIsOpen: boolean,
-  setInitiativeIsOpen: (value: boolean) => void
+  setInitiativeIsOpen: (value: boolean) => void,
+  companyList: Company[]
+
 }
 
 export default function AddInitiativeModal(props: AddInitiativeProps) {
+  const [company, setCompany] = useState(String);
+  const [initiativeTitle, setInitiativeTitle] = useState(String);
+  const [initiativeTargetDate, setInitiativeTargetDate] = useState<DateInfo>({ month: "0", day: "0", year: "0000" });
+  const [initiativeTotalItems, setInitiativeTotalItems] = useState(Number);
 
   return (
     <div className="flex justify-end">
@@ -26,17 +35,46 @@ export default function AddInitiativeModal(props: AddInitiativeProps) {
         <div className='w-full'>
 
           <p className='my-1'>Title:</p>
-          <input className={inputStyle}/>
-          
-          <p className='my-1'>Target Date:</p>
-          <input className={inputStyle}/>
+          <select onChange={(e) => setCompany(e.target.value)} 
+            className='outline outline-1 rounded p-2'
+          >
+            <option>Select Company</option>
+            {
+              props.companyList.map((company, index) => {
+                return (
+                  <option className='my-5' key={index}>{company.name}</option>
+                )
+              })
+            }
+          </select>
 
-          <p className='my-1'>Total Items:</p>
-          <input className={inputStyle}/>
+          <p className='my-1'>Title</p>
+          <input className={inputStyle} onChange={(e) => {setInitiativeTitle(e.target.value)}}/>
+          
+          <p className='mt-2'>Target Completion</p>
+          <div className='flex mb-2'>
+            <div>
+              <p>Month </p>
+              <input className={inputStyle + ' w-20 mx-1'} onChange={(e) => {setInitiativeTargetDate({...initiativeTargetDate, month: e.target.value})}}/>
+            </div>
+            
+            <div>
+              <p>Day </p>
+              <input className={inputStyle + ' w-20 mx-1'} onChange={(e) => {setInitiativeTargetDate({...initiativeTargetDate, day: e.target.value})}}/>
+            </div>
+
+            <div>
+              <p>Year </p>        
+              <input className={inputStyle + ' w-20 mx-1'} onChange={(e) => {setInitiativeTargetDate({...initiativeTargetDate, year: e.target.value})}}/>
+            </div>
+          </div>
+
+          <p className='my-1'>Total Items</p>
+          <input type={'number'} className={inputStyle + ' w-20'}/>
 
         </div>
         
-        <div className='mt-2 h-10'>
+        <div className='mt-4 h-10'>
 
           <button className={submitButtonStyle} >Submit</button>
           <button className={cancelButtonStyle} onClick={() => props.setInitiativeIsOpen(false)}>Close</button> 

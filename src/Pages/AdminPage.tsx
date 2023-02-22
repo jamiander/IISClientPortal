@@ -5,8 +5,9 @@ import AddUserModal from "../Components/AddUserModal";
 import EditUserModal from "../Components/EditUserModal";
 import InitiativesTable from "../Components/InitiativesTable";
 import UsersTable from "../Components/UsersTable";
+import { DateInfo, UpdateCompanyInfoRequest } from "../Services/CompanyService";
 import Sorter from "../Services/Sorter";
-import { Company, getCompanyInfo, selectAllCompanies, updateCompanyInfo } from "../Store/CompanySlice";
+import { Company, getCompanyInfo, Initiative, selectAllCompanies, updateCompanyInfo } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
 import { selectAllUsers, User } from "../Store/UserSlice";
 
@@ -183,6 +184,16 @@ export default function AdminPage(){
     return {success: false, message: "Cannot leave any fields blank."};
   }
 
+  function ValidateInitiative() {
+
+  }
+
+  function SubmitAddInitiative(title: string, targetDate: DateInfo, totalItems: number) {
+    // const newInitiative: UpdateCompanyInfoRequest;
+    
+    // dispatch(updateCompanyInfo())
+  }
+
   return(
   <>
     <div className="my-[1%] mx-[2%] grid grid-cols-4">
@@ -223,7 +234,7 @@ export default function AdminPage(){
       <div className="col-span-3 bg-[#2ed7c3] rounded-md p-2 pl-5">
         <p className="text-3xl h-[90%]">Initiatives</p>
       </div>
-      <AddInitiativeModal addInitiativeIsOpen={AddInitiativeIsOpen} setInitiativeIsOpen={setInitiativeIsOpen} />
+      <AddInitiativeModal addInitiativeIsOpen={AddInitiativeIsOpen} setInitiativeIsOpen={setInitiativeIsOpen} companyList={companyList} />
         
       <div className="col-span-4 py-[10px] flex">
         <InitiativesTable companyList={companyList}/>
