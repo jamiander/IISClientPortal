@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Modal from "react-modal";
-import { modalStyle } from "../Pages/AdminPage";
+import { modalStyle } from "../App";
 import { Company } from "../Store/CompanySlice";
 import { User } from "../Store/UserSlice";
 
