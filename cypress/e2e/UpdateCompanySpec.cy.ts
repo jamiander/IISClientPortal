@@ -24,7 +24,8 @@ describe('template spec', () => {
     cy.get('input[id="modalEmail"]').clear();
     cy.get('input[id="modalPassword"]').clear();
 
-    cy.get('button').should('be.disabled');
+    //cy.get('button').should('be.disabled');
+    cy.get('toast').contains('Validation failed');
   })
 
   specify('cannot rename a company the name of another company', () => {
