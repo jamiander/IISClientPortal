@@ -17,9 +17,9 @@ export default function InitiativesTable(props: InitiativesProps) {
     <table className="table-auto w-[100%] outline outline-3">
       <thead className="outline outline-1">
         <tr>
-          <th>Company Name</th>
-          <th>Initiative Id</th>
+          <th>Id</th>
           <th>Title</th>
+          <th>Company</th>
           <th>Target Date</th>
           <th>Total Items</th>
           <th>Items Remaining</th>
@@ -35,9 +35,9 @@ export default function InitiativesTable(props: InitiativesProps) {
                 itemsCompleted.forEach((num) => total += num);
                 return (
                   <tr key={index}>
-                    <td className={tableDataStyle}>{company.name}</td>
                     <td className={tableDataStyle}>{initiative.id}</td>
                     <td className={tableDataStyle}>{initiative.title}</td>
+                    <td className={tableDataStyle}>{company.name}</td>
                     <td className={tableDataStyle}>{initiative.targetDate.month + "/" + initiative.targetDate.day + "/" + initiative.targetDate.year}</td>
                     <td className={tableDataStyle}>{initiative.totalItems}</td>
                     <td className={tableDataStyle}>{initiative.totalItems - total}</td>
