@@ -17,27 +17,32 @@ describe('template spec', () => {
     cy.get('button').contains('Submit').click();
 
     cy.get('table').contains('Test Company');
+    cy.get('#toast-default').contains('User Update Dispatched');
   })
 
   specify('cannot update with invalid input', () => {
-    cy.get('input[id="modalCompany"]').clear();
-    cy.get('input[id="modalEmail"]').clear();
-    cy.get('input[id="modalPassword"]').clear();
+    cy.get('#modalCompany').clear();
+    cy.get('#modalEmail').clear();
+    cy.get('#modalPassword').clear();
+    cy.get('button').contains('Submit').click();
 
-    //cy.get('button').should('be.disabled');
-    cy.get('toast').contains('Validation failed');
+    cy.get('#toast-default').contains('Validation failed');
   })
 
   specify('cannot rename a company the name of another company', () => {
     cy.get('input[id="modalCompany"]').clear().type('Fake Company');
 
-    cy.get('button').should('be.disabled');
+    cy.get('button').contains('Submit').click();
+
+    cy.get('#toast-default').contains('Validation failed');
   })
 
   specify('cannot rename a user the name of another user', () => {
     cy.get('input[id="modalEmail"]').clear().type('info@company.com');
 
-    cy.get('button').should('be.disabled');
+    cy.get('button').contains('Submit').click();
+
+    cy.get('#toast-default').contains('Validation failed');
   })
 })
 
