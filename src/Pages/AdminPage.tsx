@@ -164,11 +164,11 @@ export default function AdminPage(){
   {
     if(companyName && userEmail && userPassword && userId !== -1 && companyId !== -1)
     {
-      let matchingUser = userList.find(indexedUser => indexedUser.email === userEmail && indexedUser.id !== userId);
+      let matchingUser = userList.find(indexedUser => indexedUser.email.toUpperCase() === userEmail.toUpperCase() && indexedUser.id !== userId);
       if(matchingUser)
         return false;
 
-      let matchingCompany = companyList.find(indexedCompany => indexedCompany.name === companyName && indexedCompany.id !== companyId)
+      let matchingCompany = companyList.find(indexedCompany => indexedCompany.name.toUpperCase() === companyName.toUpperCase() && indexedCompany.id !== companyId)
       if(matchingCompany)
         return false;
 
