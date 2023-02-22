@@ -1,5 +1,5 @@
 import Modal from 'react-modal';
-import { inputStyle, modalStyle } from '../Styles';
+import { cancelButtonStyle, inputStyle, modalStyle, submitButtonStyle } from '../Styles';
 
 interface AddInitiativeProps {
   addInitiativeIsOpen: boolean,
@@ -20,20 +20,29 @@ export default function AddInitiativeModal(props: AddInitiativeProps) {
         style={{'content': {...modalStyle.content, 'width' : '25%'}}}
         appElement={document.getElementById('root') as HTMLElement}     
       >
-        <div className='space-x-3'>
-          <p className='text-3xl'>Add Initiative</p>
 
-          <div className='w-full'>
-            <p>Title:</p>
-            <input className={inputStyle}/>
-            
-            <p>Target Date:</p>
-            <input className={inputStyle}/>
-            
-            <p>Total Items:</p>
-            <input className={inputStyle}/>
-          </div>
+        <p className='text-3xl'>Add Initiative</p>
+
+        <div className='w-full'>
+
+          <p className='my-1'>Title:</p>
+          <input className={inputStyle}/>
+          
+          <p className='my-1'>Target Date:</p>
+          <input className={inputStyle}/>
+
+          <p className='my-1'>Total Items:</p>
+          <input className={inputStyle}/>
+
         </div>
+        
+        <div className='mt-2 h-10'>
+
+          <button className={submitButtonStyle} >Submit</button>
+          <button className={cancelButtonStyle} onClick={() => props.setInitiativeIsOpen(false)}>Close</button> 
+
+        </div>
+
       </Modal>
     </div>
   )
