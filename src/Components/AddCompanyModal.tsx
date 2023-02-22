@@ -1,5 +1,5 @@
 import Modal from 'react-modal';
-import { modalStyle } from '../Styles';
+import { modalStyle } from '../App';
 
 interface AddCompanyProps {
   companyModalIsOpen: boolean,
