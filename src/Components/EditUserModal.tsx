@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Modal from "react-modal";
-import { modalStyle } from "../Styles";
+import { inputStyle, modalStyle } from "../Styles";
 import { Company } from "../Store/CompanySlice";
 import { User } from "../Store/UserSlice";
 
@@ -31,17 +31,17 @@ export default function EditUserModal(props: EditUserProps) {
                 style={{'content': {...modalStyle.content, 'width' : '25%'}}}
                 appElement={document.getElementById('root') as HTMLElement}
             >
-                <h4 className="mb-3">Edit User</h4>
+                <h4 className="text-3xl mb-3">Edit User</h4>
 
                 <div className="w-full">
                     <p className='my-1'>Company Name:</p>
-                    <input defaultValue={props.company.name} onChange={(e) => setCompanyName(e.target.value)} id="modalCompany"  className="outline rounded outline-1 p-2 w-full"/>
+                    <input defaultValue={props.company.name} onChange={(e) => setCompanyName(e.target.value)} id="modalCompany"  className={inputStyle + " w-full"}/>
 
                     <p className='my-1'>Email:</p>            
-                    <input defaultValue={props.user.email} onChange={(e) => setEmail(e.target.value)}  id="modalEmail"  className="outline rounded outline-1 p-2 w-full"/>
+                    <input defaultValue={props.user.email} onChange={(e) => setEmail(e.target.value)}  id="modalEmail"  className={inputStyle + " w-full"}/>
 
                     <p className='my-1'>Password:</p>
-                    <input defaultValue={props.user.password} onChange={(e) => setPassword(e.target.value)}  id="modalPassword" className="outline rounded outline-1 p-2 w-full"/>
+                    <input defaultValue={props.user.password} onChange={(e) => setPassword(e.target.value)}  id="modalPassword" className={inputStyle + " w-full"}/>
                 </div>
 
                 <div className='mt-2'>

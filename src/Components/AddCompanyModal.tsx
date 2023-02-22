@@ -1,5 +1,5 @@
 import Modal from 'react-modal';
-import { modalStyle } from '../Styles';
+import { inputStyle, modalStyle } from '../Styles';
 
 interface AddCompanyProps {
   companyModalIsOpen: boolean,
@@ -22,7 +22,7 @@ export default function AddCompanyModal(props: AddCompanyProps) {
       >
         <div className="space-x-3">
           <p className="text-3xl">Add Company</p>
-          <input placeholder='Company Name' onChange={(e)=>props.setCompanyName(e.target.value)} className="outline rounded outline-1 p-2"></input>
+          <input placeholder='Company Name' onChange={(e)=>props.setCompanyName(e.target.value)} className={inputStyle}></input>
           <button disabled={!props.validateCompany()} className="rounded h-[40px] w-[80px] bg-lime-600" onClick={() => props.submitNewCompany()}>Submit</button>
 
           <button className="rounded h-[40px] w-[80px] bg-red-600" onClick={props.closeCompanyModal}>Close</button>
