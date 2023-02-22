@@ -7,8 +7,8 @@ import { DateInfo } from "../Services/CompanyService";
 interface AddInitiativeProps {
   addInitiativeIsOpen: boolean,
   setInitiativeIsOpen: (value: boolean) => void,
+  Submit: (title: string, targetDate: string, totalItems: number, companyId: number) => void
   companyList: Company[]
-
 }
 
 export default function AddInitiativeModal(props: AddInitiativeProps) {
@@ -34,6 +34,15 @@ export default function AddInitiativeModal(props: AddInitiativeProps) {
 
         <div className='w-full'>
 
+          <p className='my-1'>Company:</p>
+          <select id='modalCompany' onChange={(e) => setCompanyId(parseInt(e.target.value))}>
+            {props.companyList.map((company,index) => {
+              return(
+                <option key={index} value={company.id}>{company.name}</option>
+              )
+            })}
+          </select>
+
           <p className='my-1'>Title:</p>
           <select onChange={(e) => setCompany(e.target.value)} 
             className='outline outline-1 rounded p-2'
@@ -49,7 +58,7 @@ export default function AddInitiativeModal(props: AddInitiativeProps) {
           </select>
 
           <p className='my-1'>Title</p>
-          <input className={inputStyle} onChange={(e) => {setInitiativeTitle(e.target.value)}}/>
+          <input className={inputStyle} onChange={(e) => {setInitiativeTitle(e.target.value)}} id='modalTitle'/>
           
           <p className='mt-2'>Target Completion</p>
           <div className='flex mb-2'>
@@ -70,13 +79,13 @@ export default function AddInitiativeModal(props: AddInitiativeProps) {
           </div>
 
           <p className='my-1'>Total Items</p>
-          <input type={'number'} className={inputStyle + ' w-20'}/>
+          <input type={'number'} className={inputStyle + ' w-20'} />
 
         </div>
         
         <div className='mt-4 h-10'>
 
-          <button className={submitButtonStyle} >Submit</button>
+          <button className={submitButtonStyle} onClick={() => props.Submit(title,targetDate,totalItems,companyId)}>Submit</button>
           <button className={cancelButtonStyle} onClick={() => props.setInitiativeIsOpen(false)}>Close</button> 
 
         </div>

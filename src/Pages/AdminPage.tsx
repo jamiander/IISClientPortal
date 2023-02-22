@@ -39,7 +39,7 @@ export default function AdminPage(){
     setUserIsOpen(false);
   }
 
-  function ValidateUser() : {success: boolean, message: string}
+  function ValidateNewUser() : {success: boolean, message: string}
   {
     let matchingCompany = companyList.find(company => company.name.toUpperCase() === companyName.toUpperCase());
     if(matchingCompany)
@@ -81,10 +81,11 @@ export default function AdminPage(){
     console.log('cypress: ' + isTest)
 
     //dispatch(addUser({user: newUser,isTest: isTest}));
-    const validation = ValidateUser();
+    const validation = ValidateNewUser();
     if(validation.success)
     {
       dispatch(updateCompanyInfo({company: newCompany, employee: newUser, isTest: isTest}));
+      ShowToast('New User Dispatched', 'Success');
       setCompanyName('');
       setName('');
       setEmail('');
@@ -147,10 +148,10 @@ export default function AdminPage(){
       console.log("Couldn't find company for user " + user.id + "in handleClick (adminpage)")
   }
 
-  function SubmitUpdateUser(companyName: string, email: string, password: string) {
-
-    const company = {...selectedCompany, name: companyName};
-    const user = {...selectedUser, email: email, password: password};
+  function SubmitUpdateUser(companyName: string, email: string, password: string)
+  {
+    const company: Company = {...selectedCompany, name: companyName};
+    const user: User = {...selectedUser, email: email, password: password};
 
     let isTest = false;
     if((window as any).Cypress)
@@ -184,14 +185,37 @@ export default function AdminPage(){
     return {success: false, message: "Cannot leave any fields blank."};
   }
 
-  function ValidateInitiative() {
+  function SubmitNewInitiative(title: string, targetDate: string, totalItems: number, companyId: number)
+  {
+    let newDate = targetDate.split('/');  //TODO: change this when the target date input is changed to something other than a string
 
+    const initiative: Initiative = {
+      id: -1,
+      title: title,
+      targetDate: {month: newDate[0], day: newDate[1], year: newDate[2]},
+      totalItems: totalItems,
+      itemsCompletedOnDate: []
+    }
+
+    let isTest = false;
+    if((window as any).Cypress)
+      isTest = true;
+
+    let validation = ValidateNewInitiative();
+    if(validation.success)
+    {
+      //TODO: add to the modal the option to select the company
+      dispatch(updateInitiativeInfo({initiative: initiative, companyId: companyId,isTest: isTest}))
+
+      setInitiativeIsOpen(false);
+    }
+    else
+      ShowToast(validation.message,'Error');
   }
 
-  function SubmitAddInitiative(title: string, targetDate: DateInfo, totalItems: number) {
-    // const newInitiative: UpdateCompanyInfoRequest;
-    
-    // dispatch(updateCompanyInfo())
+  function ValidateNewInitiative() : {success: boolean, message: string}
+  {
+    return {success: false, message: ""}
   }
 
   return(
@@ -234,7 +258,7 @@ export default function AdminPage(){
       <div className="col-span-3 bg-[#2ed7c3] rounded-md p-2 pl-5">
         <p className="text-3xl h-[90%]">Initiatives</p>
       </div>
-      <AddInitiativeModal addInitiativeIsOpen={AddInitiativeIsOpen} setInitiativeIsOpen={setInitiativeIsOpen} companyList={companyList} />
+      <AddInitiativeModal addInitiativeIsOpen={AddInitiativeIsOpen} setInitiativeIsOpen={setInitiativeIsOpen} Submit={SubmitNewInitiative} companyList={companyList}/>
         
       <div className="col-span-4 py-[10px] flex">
         <InitiativesTable companyList={companyList}/>
