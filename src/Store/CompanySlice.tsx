@@ -24,7 +24,7 @@ export interface Initiative {
             date: DateInfo,
             itemsCompleted: number
         }
-    ]
+    ] | []
 }
 
 const initialState: CompanyState = {
