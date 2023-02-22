@@ -20,7 +20,7 @@ export default function InitiativesTable(props: InitiativesProps) {
           <th>Id</th>
           <th>Title</th>
           <th>Company</th>
-          <th>Target Date</th>
+          <th>Target Completion</th>
           <th>Total Items</th>
           <th>Items Remaining</th>
         </tr>
