@@ -1,5 +1,5 @@
 import Modal from 'react-modal';
-import { modalStyle } from '../App';
+import { modalStyle } from '../Styles';
 import { Company } from '../Store/CompanySlice';
 
 interface AddUserProps {
