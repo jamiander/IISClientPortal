@@ -185,10 +185,10 @@ export default function AdminPage(){
 
   return(
   <>
-    <div className="m-[2%] grid grid-cols-4">
+    <div className="my-[1%] mx-[2%] grid grid-cols-4">
   
-      <div className="col-span-3">
-        <p className="text-5xl py-[10px]">Admin Page</p>
+      <div className="col-span-3 mb-4">
+        <p className="text-5xl">Admin Page</p>
       </div>
   
       <div className="col-span-3 bg-[#2ed7c3] rounded-md p-2 pl-5">
