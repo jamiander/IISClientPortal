@@ -7,15 +7,17 @@ interface InitiativesProps {
 
 export default function InitiativesTable(props: InitiativesProps) {
   const dispatch = useAppDispatch();
-  const initiatives = props.companyList.map((company) => 
-    company.initiatives
-  ).flat();
-  console.log(initiatives);
+  const tableDataStyle = "outline outline-1 text-center ";
+  const companies = props.companyList.map((company) => {
+      return {'init': company.initiatives, 'name': company.name };
+    }
+  );
   
   return (
     <table className="table-auto w-[100%] outline outline-3">
       <thead className="outline outline-1">
         <tr>
+          <th>Company Name</th>
           <th>Initiative Id</th>
           <th>Title</th>
           <th>Target Date</th>
@@ -25,17 +27,20 @@ export default function InitiativesTable(props: InitiativesProps) {
       </thead>
       <tbody>
         {
-          initiatives.map((init, index) => {
-            const style = "outline outline-1 text-center ";
+          companies.map((company, index) => {
             return (
-              <tr key={index}>
-                {/* <td className={style}>Company Name</td> */}
-                <td className={style}>{init.id}</td>
-                <td className={style}>{init.title}</td>
-                <td className={style}>{init.targetDate.month + "/" + init.targetDate.day + "/" + init.targetDate.year}</td>
-                <td className={style}>{init.totalItems}</td>
-                {/* <td className={style}>{init.ItemsRemaining}</td> */}
-              </tr>
+              company.init.map((initiative, index) => {
+                return (
+                  <tr key={index}>
+                    <td className={tableDataStyle}>{company.name}</td>
+                    <td className={tableDataStyle}>{initiative.id}</td>
+                    <td className={tableDataStyle}>{initiative.title}</td>
+                    <td className={tableDataStyle}>{initiative.targetDate.month + "/" + initiative.targetDate.day + "/" + initiative.targetDate.year}</td>
+                    <td className={tableDataStyle}>{initiative.totalItems}</td>
+                    {/* <td className={tableDataStyle}>{initiative.ItemsRemaining}</td> */}
+                  </tr>
+                )
+              })
             )
           })
         }
