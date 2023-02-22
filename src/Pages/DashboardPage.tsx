@@ -30,7 +30,7 @@ export default function DashboardPage(){
           <option>Select Initiative</option>
           {company?.initiatives.map((initiative,index)=>{
             return(
-              <option>{initiative.title}</option>
+              <option key={index}>{initiative.title}</option>
             )
           })}
         </select>
