@@ -7,6 +7,7 @@ import EditUserModal from "../Components/EditUserModal";
 import InitiativesTable from "../Components/InitiativesTable";
 import UsersTable from "../Components/UsersTable";
 import { DateInfo, UpdateCompanyInfoRequest } from "../Services/CompanyService";
+import InitiativesFilter from "../Services/InitiativesFilter";
 import Sorter from "../Services/Sorter";
 import { Company, getCompanyInfo, Initiative, selectAllCompanies, updateCompanyInfo, updateInitiativeInfo } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
@@ -289,14 +290,6 @@ export default function AdminPage(){
   
       <AddUserModal userModalIsOpen={userModalIsOpen} closeUserModal={closeUserModal} openUserModal={openUserModal} setCompanyName={setCompanyName} setEmail={setEmail} setName={setName} setPassword={setPassword} companyList={companyList} submitNewUser={SubmitNewUser} />
   
-      <div>
-        <input type='radio' id='showAll' value='all' name='clientDisplay'/>
-        <label htmlFor='showAll'>Show All</label>
-        <input type='radio' id='showActive' value='active' name='clientDisplay' defaultChecked/>
-        <label htmlFor='showActive'>Only Active</label>
-        <input type='radio' id='showInactive' value='inactive' name='clientDisplay'/>
-        <label htmlFor='showInactive'>Only Inactive</label>
-      </div>
       <div className="col-span-4 py-[10px] flex">
         <UsersTable userList={Sorter({users:userList})} companyList={companyList}/>
         <div className="w-[10%]">
@@ -323,7 +316,16 @@ export default function AdminPage(){
         <p className="text-3xl h-[90%]">Initiatives</p>
       </div>
       <AddInitiativeModal addInitiativeIsOpen={AddInitiativeIsOpen} setInitiativeIsOpen={setAddInitiativeIsOpen} Submit={SubmitUpdateInitiative} companyList={companyList}/>
-        
+      
+      <div>
+        <input type='radio' id='showAll' value='all' name='clientDisplay'/>
+        <label htmlFor='showAll'>Show All</label>
+        <input type='radio' id='showActive' value='active' name='clientDisplay' defaultChecked/>
+        <label htmlFor='showActive'>Only Active</label>
+        <input type='radio' id='showInactive' value='inactive' name='clientDisplay'/>
+        <label htmlFor='showInactive'>Only Inactive</label>
+      </div>
+
       <div className="col-span-4 py-[10px] flex">
         <InitiativesTable companyList={companyList}/>
         <div className="w-[10%]">
@@ -331,7 +333,8 @@ export default function AdminPage(){
           {
             companyList.map((company, index) => {
               return (
-                company.initiatives.map((initiative, index) => {
+                InitiativesFilter(company.initiatives).map((initiative, index) => {
+                //company.initiatives.map((initiative, index) => {
                   return (
                     <div key={index} className={'py-1 flex self-end'}>
                       <button className=" mx-2 bg-[#21345b] text-sm text-white w-full h-8 rounded-md outline"
