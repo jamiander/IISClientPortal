@@ -45,20 +45,23 @@ export default function EditInitiativeModal(props: EditInitiativeProps) {
           <div className='flex'>
             <div className='w-24 mx-2'>
               <p>Month </p>
-              <input defaultValue={props.initiative.targetDate.month} id='modalMonth' className={inputStyle} 
-                onChange={(e) => setInitiativeTargetDate({...initiativeTargetDate, month: e.target.value})}/>
+              <input defaultValue={props.initiative.targetDate.month} id='modalMonth' className={inputStyle} maxLength={2}
+                onChange={(e) => setInitiativeTargetDate({...initiativeTargetDate, month: e.target.value})}
+                placeholder='MM'/>
             </div>
             
             <div className='w-24 mx-2'>
               <p>Day </p>
-              <input defaultValue={props.initiative.targetDate.day} id='modalDay' className={inputStyle} 
-                onChange={(e) => setInitiativeTargetDate({...initiativeTargetDate, day: e.target.value})}/>
+              <input defaultValue={props.initiative.targetDate.day} id='modalDay' className={inputStyle} maxLength={2}
+                onChange={(e) => setInitiativeTargetDate({...initiativeTargetDate, day: e.target.value})}
+                placeholder='DD'/>
             </div>
 
             <div className='w-24 mx-2'>
               <p>Year </p>        
-              <input defaultValue={props.initiative.targetDate.year} id='modalYear' className={inputStyle} 
-                onChange={(e) => setInitiativeTargetDate({...initiativeTargetDate, year: e.target.value})}/>
+              <input defaultValue={props.initiative.targetDate.year} id='modalYear' className={inputStyle} maxLength={4} 
+                onChange={(e) => setInitiativeTargetDate({...initiativeTargetDate, year: e.target.value})}
+                placeholder='YYYY'/>
             </div>
           </div>
         </div>
@@ -79,7 +82,6 @@ export default function EditInitiativeModal(props: EditInitiativeProps) {
               totalItems: initiativeTotalItems,
               itemsCompletedOnDate: props.initiative.itemsCompletedOnDate
             }
-            console.log(`${initiativeTitle}`)
             props.submitUpdateInitiative(initiative, props.company.id);
           }}>Submit</button>
           <button className={cancelButtonStyle} onClick={() => props.setEditInitiativeIsOpen(false)}>Cancel</button>
