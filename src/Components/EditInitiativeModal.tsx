@@ -67,13 +67,13 @@ export default function EditInitiativeModal(props: EditInitiativeProps) {
         </div>
       </div>
       
-      <div className='mt-2 h-10 justify-between flex'>
-        <div>
+      <div className='mt-2 justify-between flex'>
+        <div className='w-24'>
           <p>Total Items</p>
-          <input defaultValue={props.initiative.totalItems} id='modalTotalItems' type={'number'} className={inputStyle + ' w-24'} 
+          <input defaultValue={props.initiative.totalItems} id='modalTotalItems' type={'number'} className={inputStyle} 
             onChange={(e) => setInitiativeTotalItems(parseInt(e.target.value))}/>
         </div>
-        <div>
+        <div className='h-10'>
           <button className={submitButtonStyle + ' mt-6'} onClick={() => {
             let initiative: Initiative = {
               id: props.initiative.id,

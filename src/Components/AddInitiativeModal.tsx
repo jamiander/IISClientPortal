@@ -51,7 +51,7 @@ export default function AddInitiativeModal(props: AddInitiativeProps) {
           <p className='my-1'>Title</p>
           <input id='modalTitle' className={inputStyle + ' w-3/4'} onChange={(e) => {setInitiativeTitle(e.target.value)}}/>
           
-          <div className='outline outline-offset-4 outline-[#879794] rounded'>
+          <div className='my-[15px] outline outline-2 outline-offset-4 outline-[#879794] rounded'>
             <p className='mt-2'>Target Completion</p>
             <div className='flex mb-2 space-x-[5px]'>
               <div>
@@ -78,7 +78,7 @@ export default function AddInitiativeModal(props: AddInitiativeProps) {
           </div>
 
           <p className='my-1'>Total Items</p>
-          <input id='modalTotalItems' type={'number'} className={inputStyle + ' w-20'} onChange={(e) => {setInitiativeTotalItems(parseInt(e.target.value))}}/>
+          <input id='modalTotalItems' type={'number'} className={inputStyle + ' w-[150px]'} onChange={(e) => {setInitiativeTotalItems(parseInt(e.target.value))}}/>
 
         </div>
         
