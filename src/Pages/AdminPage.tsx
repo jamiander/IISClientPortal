@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useOutletContext } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import AddInitiativeModal from "../Components/AddInitiativeModal";
 import AddUserModal from "../Components/AddUserModal";
 import EditInitiativeModal from "../Components/EditInitiativeModal";
@@ -10,7 +10,7 @@ import { DateInfo, UpdateCompanyInfoRequest } from "../Services/CompanyService";
 import Sorter from "../Services/Sorter";
 import { Company, getCompanyInfo, Initiative, selectAllCompanies, updateCompanyInfo, updateInitiativeInfo } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
-import { selectAllUsers, User } from "../Store/UserSlice";
+import { selectAllUsers, selectCurrentUser, User } from "../Store/UserSlice";
 
 export default function AdminPage(){
   const dispatch = useAppDispatch();
@@ -24,8 +24,23 @@ export default function AdminPage(){
   const userList = useAppSelector(selectAllUsers);
   const companyList = useAppSelector(selectAllCompanies);
   const ShowToast : (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void = useOutletContext();
+  const currentUser = useAppSelector(selectCurrentUser);
+  const navigate = useNavigate();
   
-  
+  useEffect(() => {
+    let kickThemOut = true;
+    if(currentUser)
+    {
+      if(currentUser.companyId === 0)
+      {
+        kickThemOut = false;
+      }
+    }
+    if(kickThemOut)
+      navigate('/Login');
+  }, [currentUser])
+
+
   /*function openCompanyModal(){
     setCompanyIsOpen(true);
   }
