@@ -289,6 +289,14 @@ export default function AdminPage(){
   
       <AddUserModal userModalIsOpen={userModalIsOpen} closeUserModal={closeUserModal} openUserModal={openUserModal} setCompanyName={setCompanyName} setEmail={setEmail} setName={setName} setPassword={setPassword} companyList={companyList} submitNewUser={SubmitNewUser} />
   
+      <div>
+        <input type='radio' id='showAll' value='all' name='clientDisplay'/>
+        <label htmlFor='showAll'>Show All</label>
+        <input type='radio' id='showActive' value='active' name='clientDisplay' checked/>
+        <label htmlFor='showActive'>Only Active</label>
+        <input type='radio' id='showInactive' value='inactive' name='clientDisplay'/>
+        <label htmlFor='showInactive'>Only Inactive</label>
+      </div>
       <div className="col-span-4 py-[10px] flex">
         <UsersTable userList={Sorter({users:userList})} companyList={companyList}/>
         <div className="w-[10%]">
