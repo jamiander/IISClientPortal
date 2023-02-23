@@ -51,7 +51,7 @@ export default function AddInitiativeModal(props: AddInitiativeProps) {
           <p className='my-1'>Title</p>
           <input id='modalTitle' className={inputStyle + ' w-3/4'} onChange={(e) => {setInitiativeTitle(e.target.value)}}/>
           
-          <div className='outline'>
+          <div className='outline outline-offset-4 outline-[#879794] rounded'>
             <p className='mt-2'>Target Completion</p>
             <div className='flex mb-2 space-x-[5px]'>
               <div>
