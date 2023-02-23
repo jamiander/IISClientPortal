@@ -204,7 +204,7 @@ export default function AdminPage(){
       setSelectedCompany(fakeCompany); setSelectedInitiative(fakeInitiative);
     }
     else
-      ShowToast(validation.message,'Error');
+      ShowToast('Validation Failed: ' + validation.message,'Error');
   }
 
   function ValidateNewInitiative(initiative: Initiative, companyId: number) : {success: boolean, message: string}
@@ -216,7 +216,7 @@ export default function AdminPage(){
     if(!matchingCompany)
       return {success: false, message: "A company must be selected."}
 
-    if (initiative.title && initiative.targetDate.month && initiative.targetDate.day && initiative.targetDate.year){
+    if (initiative.title && initiative.targetDate.month && initiative.targetDate.day && initiative.targetDate.year && initiative.totalItems){
         return {success: true, message: "Successfully validated; all good!"};
     }
 
