@@ -123,7 +123,7 @@ export const updateInitiativeInfo = createAsyncThunk(
             throw Error;
         
         let newInitiative: Initiative = JSON.parse(JSON.stringify(args.initiative));
-        newInitiative.id = response.id;
+        newInitiative.id = response.initiativeId;
         return {initiative: newInitiative, companyId: args.companyId};
     }
 )

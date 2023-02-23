@@ -5,6 +5,8 @@ describe('update company spec', () => {
     password: "test"
   }
 
+  const failMessage = 'Validation Failed';
+
   beforeEach(() => {
     cy.visit('http://localhost:3000/Login')
     cy.get('input[id="email"]').clear().type('info@integrityinspired.com');
@@ -30,17 +32,17 @@ describe('update company spec', () => {
     cy.get('#modalCompany').clear();
 
     cy.get('button').contains('Submit').click();
-    cy.get('#toast-default').contains('Validation Failed');
+    cy.get('#toast-default').contains(failMessage);
     cy.get('#modalCompany').type(company.name);
 
     cy.get('#modalEmail').clear();
     cy.get('button').contains('Submit').click();
-    cy.get('#toast-default').contains('Validation Failed');
+    cy.get('#toast-default').contains(failMessage);
     cy.get('#modalEmail').type(company.email);
 
     cy.get('#modalPassword').clear();
     cy.get('button').contains('Submit').click();
-    cy.get('#toast-default').contains('Validation Failed');
+    cy.get('#toast-default').contains(failMessage);
   })
 
   specify('cannot rename a company the name of another company', () => {
@@ -48,7 +50,7 @@ describe('update company spec', () => {
 
     cy.get('button').contains('Submit').click();
 
-    cy.get('#toast-default').contains('Validation Failed');
+    cy.get('#toast-default').contains(failMessage);
   })
 
   specify('cannot rename a user the name of another user', () => {
@@ -56,7 +58,7 @@ describe('update company spec', () => {
 
     cy.get('button').contains('Submit').click();
 
-    cy.get('#toast-default').contains('Validation Failed');
+    cy.get('#toast-default').contains(failMessage);
   })
 })
 

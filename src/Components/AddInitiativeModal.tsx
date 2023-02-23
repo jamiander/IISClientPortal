@@ -35,7 +35,7 @@ export default function AddInitiativeModal(props: AddInitiativeProps) {
         <div className='w-full'>
 
           <p className='my-1'>Company</p>
-          <select onChange={(e) => setInitiativeCompanyId(parseInt(e.target.value))} 
+          <select id='modalCompany' onChange={(e) => setInitiativeCompanyId(parseInt(e.target.value))} 
             className='outline outline-1 rounded p-2'
           >
             <option>Select Company</option>
@@ -49,28 +49,28 @@ export default function AddInitiativeModal(props: AddInitiativeProps) {
           </select>
 
           <p className='my-1'>Title</p>
-          <input className={inputStyle + ' w-3/4'} onChange={(e) => {setInitiativeTitle(e.target.value)}} id='modalTitle'/>
+          <input id='modalTitle' className={inputStyle + ' w-3/4'} onChange={(e) => {setInitiativeTitle(e.target.value)}}/>
           
           <p className='mt-2'>Target Completion</p>
           <div className='flex mb-2'>
             <div>
               <p>Month </p>
-              <input className={inputStyle + ' w-20 mx-1'} onChange={(e) => {setInitiativeTargetDate({...initiativeTargetDate, month: e.target.value})}}/>
+              <input id='modalMonth' className={inputStyle + ' w-20 mx-1'} onChange={(e) => {setInitiativeTargetDate({...initiativeTargetDate, month: e.target.value})}}/>
             </div>
             
             <div>
               <p>Day </p>
-              <input className={inputStyle + ' w-20 mx-1'} onChange={(e) => {setInitiativeTargetDate({...initiativeTargetDate, day: e.target.value})}}/>
+              <input id='modalDay' className={inputStyle + ' w-20 mx-1'} onChange={(e) => {setInitiativeTargetDate({...initiativeTargetDate, day: e.target.value})}}/>
             </div>
 
             <div>
               <p>Year </p>        
-              <input className={inputStyle + ' w-20 mx-1'} onChange={(e) => {setInitiativeTargetDate({...initiativeTargetDate, year: e.target.value})}}/>
+              <input id='modalYear' className={inputStyle + ' w-20 mx-1'} onChange={(e) => {setInitiativeTargetDate({...initiativeTargetDate, year: e.target.value})}}/>
             </div>
           </div>
 
           <p className='my-1'>Total Items</p>
-          <input type={'number'} className={inputStyle + ' w-20'} id='modalTotalItems' onChange={(e) => {setInitiativeTotalItems(parseInt(e.target.value))}}/>
+          <input id='modalTotalItems' type={'number'} className={inputStyle + ' w-20'} onChange={(e) => {setInitiativeTotalItems(parseInt(e.target.value))}}/>
 
         </div>
         

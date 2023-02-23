@@ -197,13 +197,14 @@ export default function AdminPage(){
 
     console.log(initiative);
 
-    let isTest = true//false;
+    let isTest = false;
     if((window as any).Cypress)
       isTest = true;
 
     let validation = ValidateNewInitiative(initiative, companyId);
     if(validation.success)
     {
+      ShowToast('New Initiative Dispatched', 'Success');
       dispatch(updateInitiativeInfo({initiative: initiative, companyId: companyId, isTest: isTest}))
       setInitiativeIsOpen(false);
     }

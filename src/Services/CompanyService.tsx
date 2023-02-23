@@ -127,7 +127,7 @@ export interface UpdateInitiativeInfoRequest {
 }
 
 interface UpdateInitiativeInfoResponse {
-    id: number,
+    initiativeId: number,
     status: string
 }
 
