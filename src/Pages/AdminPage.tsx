@@ -162,7 +162,6 @@ export default function AdminPage(){
     let validation = ValidateEdit(company.name, company.id, user.email, user.password, user.id)
     if(validation.success) {
       dispatch(updateCompanyInfo({ company: company, employee: user, isTest: isTest}));
-      ShowToast('User Update Dispatched', 'Success');
       setSelectedCompany(fakeCompany); setSelectedUser(fakeUser);
       setEditUserIsOpen(false);
     }
