@@ -42,7 +42,7 @@ export default function AddInitiativeModal(props: AddInitiativeProps) {
             {
               props.companyList.map((company, index) => {
                 return (
-                  <option className='my-5' key={index}>{company.name}</option>
+                  <option value={company.id} className='my-5' key={index}>{company.name}</option>
                 )
               })
             }

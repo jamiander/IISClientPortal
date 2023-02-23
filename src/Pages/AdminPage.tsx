@@ -197,32 +197,37 @@ export default function AdminPage(){
 
     console.log(initiative);
 
-    let isTest = false;
+    let isTest = true//false;
     if((window as any).Cypress)
       isTest = true;
 
-    let validation = ValidateNewInitiative(initiative);
+    let validation = ValidateNewInitiative(initiative, companyId);
     if(validation.success)
     {
       dispatch(updateInitiativeInfo({initiative: initiative, companyId: companyId, isTest: isTest}))
+      setInitiativeIsOpen(false);
     }
-    else ShowToast(validation.message,'Error');
-
-    setInitiativeIsOpen(false);
+    else
+      ShowToast(validation.message,'Error');
   }
 
-  function ValidateNewInitiative(initiative: Initiative) : {success: boolean, message: string}
+  function ValidateNewInitiative(initiative: Initiative, companyId: number) : {success: boolean, message: string}
   {
     // let initiativeList = companyList.map((company) => company.initiatives).flat();
     // console.log('initiative list', initiativeList);
+    if(initiative.totalItems < 0)
+      return {success: false, message: "Total items must be a positive value."}
 
-    if (initiative.title && initiative.totalItems > -1 &&
-      initiative.targetDate.month && initiative.targetDate.day && initiative.targetDate.year){
+    const matchingCompany = companyList.find(company => company.id === companyId);
+    if(!matchingCompany)
+      return {success: false, message: "A company must be selected."}
+
+    if (initiative.title && initiative.targetDate.month && initiative.targetDate.day && initiative.targetDate.year){
         return {success: true, message: "Successfully validated; all good!"};
-    } else {
-      return {success: false, message: "Cannot leave any fields blank"};
     }
-    return {success: false, message: ""}
+
+    return {success: false, message: "Cannot leave any fields blank."};
+
   }
 
   return(
