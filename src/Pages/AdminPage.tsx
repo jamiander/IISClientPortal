@@ -222,13 +222,17 @@ export default function AdminPage(){
     if(!matchingCompany)
       return {success: false, message: "A company must be selected."};
 
+      console.log(`title: ${initiative.title}`)
+    const matchingInitiative = matchingCompany.initiatives.find(init => init.title === initiative.title && init.id !== initiative.id);
+    if(matchingInitiative)
+      return {success: false, message: "Initiative names must be unique."}
+
     return {success: true, message: "Successfully validated; all good!"};
   }
 
   function ValidateDate(date: DateInfo) : {success: boolean, message: string}
   {
     let month = parseInt(date.month);
-    console.log(month)
     if(month < 1 || month > 12 || Number.isNaN(month))
       return {success: false, message: "Month must be between 1 and 12"};
 
@@ -236,8 +240,8 @@ export default function AdminPage(){
     if(day < 1 || day > 31 || Number.isNaN(day))
       return {success: false, message: "Day must be between 1 and 31"};
 
-    let year = parseInt(date.year);    //TODO: there's probably a better way to validate this
-    if(year < 0 || Number.isNaN(year))
+    let year = parseInt(date.year);    //TODO: there's probably a better way to validate years
+    if(year < 0 || year > 9999 || Number.isNaN(year))
       return {success: false, message: "Year must be a positive value."};
 
       return {success: true, message: "Date is all good!"}
