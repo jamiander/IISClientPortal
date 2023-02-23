@@ -51,27 +51,29 @@ export default function AddInitiativeModal(props: AddInitiativeProps) {
           <p className='my-1'>Title</p>
           <input id='modalTitle' className={inputStyle + ' w-3/4'} onChange={(e) => {setInitiativeTitle(e.target.value)}}/>
           
-          <p className='mt-2'>Target Completion</p>
-          <div className='flex mb-2'>
-            <div>
-              <p>Month </p>
-              <input id='modalMonth' className={inputStyle + ' w-20 mx-1'} maxLength={2}
+          <div className='outline outline-offset-4 outline-[#879794] rounded'>
+            <p className='mt-2'>Target Completion</p>
+            <div className='flex mb-2 space-x-[5px]'>
+              <div>
+                <p>Month </p>
+                <input id='modalMonth' className={inputStyle + ' w-20 mx-1'} maxLength={2}
               onChange={(e) => {setInitiativeTargetDate({...initiativeTargetDate, month: e.target.value})}}
               placeholder='MM'/>
-            </div>
-            
-            <div>
-              <p>Day </p>
-              <input id='modalDay' className={inputStyle + ' w-20 mx-1'} maxLength={2}
+              </div>
+
+              <div>
+                <p>Day </p>
+                <input id='modalDay' className={inputStyle + ' w-20 mx-1'} maxLength={2}
                onChange={(e) => {setInitiativeTargetDate({...initiativeTargetDate, day: e.target.value})}}
                placeholder='DD'/>
-            </div>
+              </div>
 
-            <div>
-              <p>Year </p>        
-              <input id='modalYear' className={inputStyle + ' w-20 mx-1'} maxLength={4}
+              <div>
+                <p>Year </p>        
+                <input id='modalYear' className={inputStyle + ' w-20 mx-1'} maxLength={4}
               onChange={(e) => {setInitiativeTargetDate({...initiativeTargetDate, year: e.target.value})}}
               placeholder='YYYY'/>
+              </div>
             </div>
           </div>
 
