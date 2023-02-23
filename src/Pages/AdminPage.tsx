@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useOutletContext } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import AddInitiativeModal from "../Components/AddInitiativeModal";
 import AddUserModal from "../Components/AddUserModal";
 import EditInitiativeModal from "../Components/EditInitiativeModal";
@@ -10,7 +10,7 @@ import { DateInfo, UpdateCompanyInfoRequest } from "../Services/CompanyService";
 import Sorter from "../Services/Sorter";
 import { Company, getCompanyInfo, Initiative, selectAllCompanies, updateCompanyInfo, updateInitiativeInfo } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
-import { selectAllUsers, User } from "../Store/UserSlice";
+import { selectAllUsers, selectCurrentUser, selectIsLoggedIn, User } from "../Store/UserSlice";
 
 export default function AdminPage(){
   const dispatch = useAppDispatch();
@@ -24,8 +24,23 @@ export default function AdminPage(){
   const userList = useAppSelector(selectAllUsers);
   const companyList = useAppSelector(selectAllCompanies);
   const ShowToast : (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void = useOutletContext();
+  const currentUser = useAppSelector(selectCurrentUser);
+  const navigate = useNavigate();
   
-  
+  useEffect(() => {
+    let kickThemOut = true;
+    if(currentUser)
+    {
+      if(currentUser.companyId === 0)
+      {
+        kickThemOut = false;
+      }
+    }
+    if(kickThemOut)
+      navigate('/Login');
+  }, [currentUser])
+
+
   /*function openCompanyModal(){
     setCompanyIsOpen(true);
   }
@@ -263,7 +278,7 @@ export default function AdminPage(){
 
   return(
     <div className="my-[1%] mx-[2%] grid grid-cols-4">
-  
+    
       <div className="col-span-3 mb-4">
         <p className="text-5xl">Admin Page</p>
       </div>
@@ -274,9 +289,16 @@ export default function AdminPage(){
   
       <AddUserModal userModalIsOpen={userModalIsOpen} closeUserModal={closeUserModal} openUserModal={openUserModal} setCompanyName={setCompanyName} setEmail={setEmail} setName={setName} setPassword={setPassword} companyList={companyList} submitNewUser={SubmitNewUser} />
   
+      <div>
+        <input type='radio' id='showAll' value='all' name='clientDisplay'/>
+        <label htmlFor='showAll'>Show All</label>
+        <input type='radio' id='showActive' value='active' name='clientDisplay' defaultChecked/>
+        <label htmlFor='showActive'>Only Active</label>
+        <input type='radio' id='showInactive' value='inactive' name='clientDisplay'/>
+        <label htmlFor='showInactive'>Only Inactive</label>
+      </div>
       <div className="col-span-4 py-[10px] flex">
         <UsersTable userList={Sorter({users:userList})} companyList={companyList}/>
-
         <div className="w-[10%]">
           <div className="h-[25px]" />
           {
@@ -297,7 +319,6 @@ export default function AdminPage(){
         </div>
         <EditUserModal EditUserIsOpen={EditUserIsOpen} setEditUserIsOpen={setEditUserIsOpen} user={selectedUser} company={selectedCompany} SubmitUpdateUser={SubmitUpdateUser} />
       </div>
-
       <div className="col-span-3 bg-[#2ed7c3] rounded-md p-2 pl-5">
         <p className="text-3xl h-[90%]">Initiatives</p>
       </div>
@@ -305,7 +326,6 @@ export default function AdminPage(){
         
       <div className="col-span-4 py-[10px] flex">
         <InitiativesTable companyList={companyList}/>
-
         <div className="w-[10%]">
           <div className="h-[25px]" />
           {
@@ -328,17 +348,15 @@ export default function AdminPage(){
         </div>
         <EditInitiativeModal editInitiativeIsOpen={EditInitiativeIsOpen} setEditInitiativeIsOpen={setEditInitiativeIsOpen} initiative={selectedInitiative} company={selectedCompany} submitUpdateInitiative={SubmitUpdateInitiative}/>
       </div>
-
       {/* <div className="col-span-3">
         <p className="text-3xl bg-[#2ed7c3] rounded my-1 h-[75%]">Companies</p>
       </div>
-  
+        
       <AddCompanyModal companyModalIsOpen={companyModalIsOpen} closeCompanyModal={closeCompanyModal} openCompanyModal={openCompanyModal} validateCompany={ValidateCompany} setCompanyName={setCompanyName} submitNewCompany={SubmitNewCompany} />
-      
+        
       <div className="col-span-4 py-[10px]">
         <CompaniesTable/>
       </div> */}
-
     </div>
   )
 }
