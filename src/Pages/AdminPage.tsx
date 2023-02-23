@@ -139,7 +139,7 @@ export default function AdminPage(){
   const [AddInitiativeIsOpen, setAddInitiativeIsOpen] = useState(false);
   const [EditInitiativeIsOpen, setEditInitiativeIsOpen] = useState(false);
 
-  function handleClick(user: User, company?: Company) {
+  function handleEditClient(user: User, company?: Company) {
     if(company)
     {
       setEditUserIsOpen(true);
@@ -147,7 +147,7 @@ export default function AdminPage(){
       setSelectedUser(user);
     }
     else
-      console.log("Couldn't find company for user " + user.id + "in handleClick (adminpage)")
+      console.log("Couldn't find company for user " + user.id + "in handleEditClient (adminpage)")
   }
 
   function SubmitUpdateUser(companyName: string, email: string, password: string)
@@ -187,17 +187,9 @@ export default function AdminPage(){
     return {success: false, message: "Cannot leave any fields blank."};
   }
 
-  function SubmitNewInitiative(title: string, targetDate: DateInfo, totalItems: number, companyId: number)
+  function SubmitUpdateInitiative(initiative: Initiative, companyId: number)
   {
-    const initiative: Initiative = {
-      id: -1,
-      title: title,
-      targetDate: targetDate,
-      totalItems: totalItems,
-      itemsCompletedOnDate: []
-    }
-
-    console.log(initiative);
+    console.log('initiative @ submitUpdateInitiative', initiative);
 
     let isTest = false;
     if((window as any).Cypress)
@@ -208,7 +200,8 @@ export default function AdminPage(){
     {
       ShowToast('New Initiative Dispatched', 'Success');
       dispatch(updateInitiativeInfo({initiative: initiative, companyId: companyId, isTest: isTest}))
-      setAddInitiativeIsOpen(false);
+      setAddInitiativeIsOpen(false); setEditInitiativeIsOpen(false);
+      setSelectedCompany(fakeCompany); setSelectedInitiative(fakeInitiative);
     }
     else
       ShowToast('Validation Failed: ' + validation.message,'Error');
@@ -248,7 +241,21 @@ export default function AdminPage(){
     if(year < 0 || Number.isNaN(year))
       return {success: false, message: "Year must be a positive value."};
 
-    return {success: true, message: "Date is all good!"}
+      return {success: true, message: "Date is all good!"}
+  }
+
+  const fakeInitiative : Initiative = {id: -1, title: "N/A", totalItems: 0, targetDate: {month: "0", day: "0", year: "0000"}, itemsCompletedOnDate: []}
+  const [selectedInitiative, setSelectedInitiative] = useState(fakeInitiative);
+
+    
+  function handleEditInitiative(company: Company, initiative: Initiative) {
+    if (company) 
+    {
+      setEditInitiativeIsOpen(true);
+      setSelectedInitiative(initiative);
+      setSelectedCompany(company);
+    } else
+      console.log("Couldn't find company at handleEditInitiative (adminpage)")
   }
 
   return(
@@ -266,16 +273,17 @@ export default function AdminPage(){
   
       <div className="col-span-4 py-[10px] flex">
         <UsersTable userList={Sorter({users:userList})} companyList={companyList}/>
+
         <div className="w-[10%]">
-        <div className="h-[25px]"></div>
+          <div className="h-[25px]" />
           {
             Sorter({users:userList}).map((user, index) => {
               //const companyName = companyList.find(company => company.id === user.companyId)?.name ?? "n/a";
               const company = companyList.find(company => company.id === user.companyId);
               return (
                 <div key={index} className={'py-[10px] my-[10px] flex self-end'}>
-                  <button className=" mx-2 bg-[#21345b] text-sm text-white w-[100%] h-10 rounded-md outline"
-                    onClick={() => handleClick(user, company)}
+                  <button className=" mx-2 bg-[#21345b] text-sm text-white w-full h-10 rounded-md outline"
+                    onClick={() => handleEditClient(user, company)}
                   >  
                       Edit Client
                   </button>
@@ -290,11 +298,32 @@ export default function AdminPage(){
       <div className="col-span-3 bg-[#2ed7c3] rounded-md p-2 pl-5">
         <p className="text-3xl h-[90%]">Initiatives</p>
       </div>
-      <AddInitiativeModal addInitiativeIsOpen={AddInitiativeIsOpen} setInitiativeIsOpen={setAddInitiativeIsOpen} Submit={SubmitNewInitiative} companyList={companyList}/>
+      <AddInitiativeModal addInitiativeIsOpen={AddInitiativeIsOpen} setInitiativeIsOpen={setAddInitiativeIsOpen} Submit={SubmitUpdateInitiative} companyList={companyList}/>
         
       <div className="col-span-4 py-[10px] flex">
         <InitiativesTable companyList={companyList}/>
 
+        <div className="w-[10%]">
+          <div className="h-[25px]" />
+          {
+            companyList.map((company, index) => {
+              return (
+                company.initiatives.map((initiative, index) => {
+                  return (
+                    <div key={index} className={'py-1 flex self-end'}>
+                      <button className=" mx-2 bg-[#21345b] text-sm text-white w-full h-8 rounded-md outline"
+                        onClick={() => handleEditInitiative(company, initiative)}
+                      >
+                        Edit Initiative
+                      </button>
+                    </div>
+                  )
+                })
+              )
+            })
+          }
+        </div>
+        <EditInitiativeModal editInitiativeIsOpen={EditInitiativeIsOpen} setEditInitiativeIsOpen={setEditInitiativeIsOpen} initiative={selectedInitiative} company={selectedCompany} submitUpdateInitiative={SubmitUpdateInitiative}/>
       </div>
 
       {/* <div className="col-span-3">
@@ -307,8 +336,6 @@ export default function AdminPage(){
         <CompaniesTable/>
       </div> */}
 
-      <button className={'outline'} onClick={() => setEditInitiativeIsOpen(true)}>Edit Initiative</button>
-      <EditInitiativeModal editInitiativeIsOpen={EditInitiativeIsOpen} setEditInitiativeIsOpen={setEditInitiativeIsOpen} />
     </div>
   )
 }
