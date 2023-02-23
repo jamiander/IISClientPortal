@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useOutletContext } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import AddInitiativeModal from "../Components/AddInitiativeModal";
 import AddUserModal from "../Components/AddUserModal";
 import EditInitiativeModal from "../Components/EditInitiativeModal";
@@ -10,7 +10,7 @@ import { DateInfo, UpdateCompanyInfoRequest } from "../Services/CompanyService";
 import Sorter from "../Services/Sorter";
 import { Company, getCompanyInfo, Initiative, selectAllCompanies, updateCompanyInfo, updateInitiativeInfo } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
-import { selectAllUsers, selectIsLoggedIn, User } from "../Store/UserSlice";
+import { selectAllUsers, selectCurrentUser, selectIsLoggedIn, User } from "../Store/UserSlice";
 
 export default function AdminPage(){
   const dispatch = useAppDispatch();
@@ -24,9 +24,23 @@ export default function AdminPage(){
   const userList = useAppSelector(selectAllUsers);
   const companyList = useAppSelector(selectAllCompanies);
   const ShowToast : (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void = useOutletContext();
-  const isLoggedIn = useAppSelector(selectIsLoggedIn);
+  const currentUser = useAppSelector(selectCurrentUser);
+  const navigate = useNavigate();
   
-  
+  useEffect(() => {
+    let kickThemOut = true;
+    if(currentUser)
+    {
+      if(currentUser.companyId === 0)
+      {
+        kickThemOut = false;
+      }
+    }
+    if(kickThemOut)
+      navigate('/Login');
+  }, [currentUser])
+
+
   /*function openCompanyModal(){
     setCompanyIsOpen(true);
   }
@@ -262,91 +276,79 @@ export default function AdminPage(){
       console.log("Couldn't find company at handleEditInitiative (adminpage)")
   }
 
-
-  if(isLoggedIn){
-    return(
-      <div className="my-[1%] mx-[2%] grid grid-cols-4">
-      
-        <div className="col-span-3 mb-4">
-          <p className="text-5xl">Admin Page</p>
-        </div>
+  return(
+    <div className="my-[1%] mx-[2%] grid grid-cols-4">
     
-        <div className="col-span-3 bg-[#2ed7c3] rounded-md p-2 pl-5">
-          <p className="text-3xl h-[90%]">Clients</p>
-        </div>
-    
-        <AddUserModal userModalIsOpen={userModalIsOpen} closeUserModal={closeUserModal} openUserModal={openUserModal} setCompanyName={setCompanyName} setEmail={setEmail} setName={setName} setPassword={setPassword} companyList={companyList} submitNewUser={SubmitNewUser} />
-    
-        <div className="col-span-4 py-[10px] flex">
-          <UsersTable userList={Sorter({users:userList})} companyList={companyList}/>
-
-          <div className="w-[10%]">
-            <div className="h-[25px]" />
-            {
-              Sorter({users:userList}).map((user, index) => {
-                //const companyName = companyList.find(company => company.id === user.companyId)?.name ?? "n/a";
-                const company = companyList.find(company => company.id === user.companyId);
-                return (
-                  <div key={index} className={'py-[10px] my-[10px] flex self-end'}>
-                    <button className=" mx-2 bg-[#21345b] text-sm text-white w-full h-10 rounded-md outline"
-                      onClick={() => handleEditClient(user, company)}
-                    >  
-                        Edit Client
-                    </button>
-                  </div>
-                )
-              })
-            }
-          </div>
-          <EditUserModal EditUserIsOpen={EditUserIsOpen} setEditUserIsOpen={setEditUserIsOpen} user={selectedUser} company={selectedCompany} SubmitUpdateUser={SubmitUpdateUser} />
-        </div>
-
-        <div className="col-span-3 bg-[#2ed7c3] rounded-md p-2 pl-5">
-          <p className="text-3xl h-[90%]">Initiatives</p>
-        </div>
-        <AddInitiativeModal addInitiativeIsOpen={AddInitiativeIsOpen} setInitiativeIsOpen={setAddInitiativeIsOpen} Submit={SubmitUpdateInitiative} companyList={companyList}/>
-          
-        <div className="col-span-4 py-[10px] flex">
-          <InitiativesTable companyList={companyList}/>
-
-          <div className="w-[10%]">
-            <div className="h-[25px]" />
-            {
-              companyList.map((company, index) => {
-                return (
-                  company.initiatives.map((initiative, index) => {
-                    return (
-                      <div key={index} className={'py-1 flex self-end'}>
-                        <button className=" mx-2 bg-[#21345b] text-sm text-white w-full h-8 rounded-md outline"
-                          onClick={() => handleEditInitiative(company, initiative)}
-                        >
-                          Edit Initiative
-                        </button>
-                      </div>
-                    )
-                  })
-                )
-              })
-            }
-          </div>
-          <EditInitiativeModal editInitiativeIsOpen={EditInitiativeIsOpen} setEditInitiativeIsOpen={setEditInitiativeIsOpen} initiative={selectedInitiative} company={selectedCompany} submitUpdateInitiative={SubmitUpdateInitiative}/>
-        </div>
-
-        {/* <div className="col-span-3">
-          <p className="text-3xl bg-[#2ed7c3] rounded my-1 h-[75%]">Companies</p>
-        </div>
-          
-        <AddCompanyModal companyModalIsOpen={companyModalIsOpen} closeCompanyModal={closeCompanyModal} openCompanyModal={openCompanyModal} validateCompany={ValidateCompany} setCompanyName={setCompanyName} submitNewCompany={SubmitNewCompany} />
-          
-        <div className="col-span-4 py-[10px]">
-          <CompaniesTable/>
-        </div> */}
-
+      <div className="col-span-3 mb-4">
+        <p className="text-5xl">Admin Page</p>
       </div>
-    )
-  } else {
-    return(
-      <></>
-    )
-  }
+  
+      <div className="col-span-3 bg-[#2ed7c3] rounded-md p-2 pl-5">
+        <p className="text-3xl h-[90%]">Clients</p>
+      </div>
+  
+      <AddUserModal userModalIsOpen={userModalIsOpen} closeUserModal={closeUserModal} openUserModal={openUserModal} setCompanyName={setCompanyName} setEmail={setEmail} setName={setName} setPassword={setPassword} companyList={companyList} submitNewUser={SubmitNewUser} />
+  
+      <div className="col-span-4 py-[10px] flex">
+        <UsersTable userList={Sorter({users:userList})} companyList={companyList}/>
+        <div className="w-[10%]">
+          <div className="h-[25px]" />
+          {
+            Sorter({users:userList}).map((user, index) => {
+              //const companyName = companyList.find(company => company.id === user.companyId)?.name ?? "n/a";
+              const company = companyList.find(company => company.id === user.companyId);
+              return (
+                <div key={index} className={'py-[10px] my-[10px] flex self-end'}>
+                  <button className=" mx-2 bg-[#21345b] text-sm text-white w-full h-10 rounded-md outline"
+                    onClick={() => handleEditClient(user, company)}
+                  >  
+                      Edit Client
+                  </button>
+                </div>
+              )
+            })
+          }
+        </div>
+        <EditUserModal EditUserIsOpen={EditUserIsOpen} setEditUserIsOpen={setEditUserIsOpen} user={selectedUser} company={selectedCompany} SubmitUpdateUser={SubmitUpdateUser} />
+      </div>
+      <div className="col-span-3 bg-[#2ed7c3] rounded-md p-2 pl-5">
+        <p className="text-3xl h-[90%]">Initiatives</p>
+      </div>
+      <AddInitiativeModal addInitiativeIsOpen={AddInitiativeIsOpen} setInitiativeIsOpen={setAddInitiativeIsOpen} Submit={SubmitUpdateInitiative} companyList={companyList}/>
+        
+      <div className="col-span-4 py-[10px] flex">
+        <InitiativesTable companyList={companyList}/>
+        <div className="w-[10%]">
+          <div className="h-[25px]" />
+          {
+            companyList.map((company, index) => {
+              return (
+                company.initiatives.map((initiative, index) => {
+                  return (
+                    <div key={index} className={'py-1 flex self-end'}>
+                      <button className=" mx-2 bg-[#21345b] text-sm text-white w-full h-8 rounded-md outline"
+                        onClick={() => handleEditInitiative(company, initiative)}
+                      >
+                        Edit Initiative
+                      </button>
+                    </div>
+                  )
+                })
+              )
+            })
+          }
+        </div>
+        <EditInitiativeModal editInitiativeIsOpen={EditInitiativeIsOpen} setEditInitiativeIsOpen={setEditInitiativeIsOpen} initiative={selectedInitiative} company={selectedCompany} submitUpdateInitiative={SubmitUpdateInitiative}/>
+      </div>
+      {/* <div className="col-span-3">
+        <p className="text-3xl bg-[#2ed7c3] rounded my-1 h-[75%]">Companies</p>
+      </div>
+        
+      <AddCompanyModal companyModalIsOpen={companyModalIsOpen} closeCompanyModal={closeCompanyModal} openCompanyModal={openCompanyModal} validateCompany={ValidateCompany} setCompanyName={setCompanyName} submitNewCompany={SubmitNewCompany} />
+        
+      <div className="col-span-4 py-[10px]">
+        <CompaniesTable/>
+      </div> */}
+    </div>
+  )
 }
