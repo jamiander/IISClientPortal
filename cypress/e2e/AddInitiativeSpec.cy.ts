@@ -65,6 +65,17 @@ describe('add initiative spec', () => {
     cy.get('#toast-default').contains(failMessage);
     cy.get('#modalTotalItems').type(init.totalItems);
   })
+
+  specify('cannot add when total items are negative', () => {
+    cy.get('#modalTotalItems').clear().type("-3");
+    cy.get('button').contains('Submit').click();
+
+    cy.get('#toast-default').contains(failMessage);
+  })
+
+  specify('cannot add when a date is not in a valid format', () => {
+
+  })
 })
 
 export {}

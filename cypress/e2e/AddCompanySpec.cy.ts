@@ -6,7 +6,7 @@ describe('add company spec', () => {
     cy.get('button').contains('Submit').click();
 
     cy.get('button').contains('Admin').click();
-    cy.get('button').contains('Add User').click();
+    cy.get('button').contains('Add Client').click();
   });
 
   specify('add new company', () => {

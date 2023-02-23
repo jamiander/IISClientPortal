@@ -15,7 +15,7 @@ describe('update company spec', () => {
 
     cy.get('button').contains('Admin').click();
     cy.get('table').contains('Integrity Inspired Solutions');
-    cy.get('button').contains('Edit User').click();
+    cy.get('button').contains('Edit Client').click();
   });
 
   specify('update a company', () => {
