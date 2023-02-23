@@ -13,6 +13,7 @@ export default function NavPanel(props: NavProps){
 
   function navHandler(path: string) {
     if (!isLoggedIn) {
+      
       props.ShowToast('You must login to leave this page', 'Error');
     }
     else navigate(path);
@@ -20,25 +21,25 @@ export default function NavPanel(props: NavProps){
 
   return(
     <div className="m-[2%] space-y-3">
-      <p className="text-3xl w-[100%]">Navigation</p>
+      {isLoggedIn && <p className="text-3xl w-[100%]">Navigation</p>}
       
-      <button className="outline disabled:opacity-75 bg-[#21345b] text-white h-[40px] w-[100%] rounded-md" 
+      {isLoggedIn && <button className="outline bg-[#21345b] text-white h-[40px] w-[100%] rounded-md" 
           onClick={() => navHandler('/Dashboard')}>
           Dashboard
-      </button>
+      </button>}
       
       {
         currentuser?.companyId === 0 && 
-          <button className="outline disabled:opacity-75 bg-[#21345b] text-white h-[40px] w-[100%] rounded-md"
+          <button className="outline bg-[#21345b] text-white h-[40px] w-[100%] rounded-md"
             disabled={!isLoggedIn} onClick={() => navHandler('/Admin')}>
               Admin
           </button>
       }
       
-      <button className="outline disabled:opacity-75 bg-[#21345b] text-white h-[40px] w-[100%] rounded-md" 
+      {isLoggedIn && <button className="outline bg-[#21345b] text-white h-[40px] w-[100%] rounded-md" 
          onClick={() => navHandler('/Profile')}>
           Profile
-      </button>
+      </button>}
 
     </div>  
   )
