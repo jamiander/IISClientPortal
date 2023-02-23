@@ -187,16 +187,8 @@ export default function AdminPage(){
     return {success: false, message: "Cannot leave any fields blank."};
   }
 
-  function SubmitUpdateInitiative(title: string, targetDate: DateInfo, totalItems: number, companyId: number)
+  function SubmitUpdateInitiative(initiative: Initiative, companyId: number)
   {
-    const initiative: Initiative = {
-      id: -1,
-      title: title,
-      targetDate: targetDate,
-      totalItems: totalItems,
-      itemsCompletedOnDate: []
-    }
-
     console.log(initiative);
 
     let isTest = false;
@@ -208,7 +200,8 @@ export default function AdminPage(){
     {
       ShowToast('New Initiative Dispatched', 'Success');
       dispatch(updateInitiativeInfo({initiative: initiative, companyId: companyId, isTest: isTest}))
-      setAddInitiativeIsOpen(false);
+      setAddInitiativeIsOpen(false); setEditInitiativeIsOpen(false);
+      setSelectedCompany(fakeCompany); setSelectedInitiative(fakeInitiative);
     }
     else
       ShowToast(validation.message,'Error');
@@ -308,7 +301,7 @@ export default function AdminPage(){
             })
           }
         </div>
-        <EditInitiativeModal editInitiativeIsOpen={EditInitiativeIsOpen} setEditInitiativeIsOpen={setEditInitiativeIsOpen} initiative={selectedInitiative} companyName={selectedCompany.name} />
+        <EditInitiativeModal editInitiativeIsOpen={EditInitiativeIsOpen} setEditInitiativeIsOpen={setEditInitiativeIsOpen} initiative={selectedInitiative} company={selectedCompany} submitUpdateInitiative={SubmitUpdateInitiative}/>
       </div>
 
       {/* <div className="col-span-3">

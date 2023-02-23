@@ -7,7 +7,7 @@ import { DateInfo } from "../Services/CompanyService";
 interface AddInitiativeProps {
   addInitiativeIsOpen: boolean,
   setInitiativeIsOpen: (value: boolean) => void,
-  Submit: (title: string, targetDate: DateInfo, totalItems: number, companyId: number) => void
+  Submit: (initiative: Initiative, companyId: number) => void
   companyList: Company[]
 }
 
@@ -76,7 +76,16 @@ export default function AddInitiativeModal(props: AddInitiativeProps) {
         
         <div className='mt-4 h-10'>
 
-          <button className={submitButtonStyle} onClick={() => props.Submit(initiativeTitle,initiativeTargetDate,initiativeTotalItems,initiativeCompanyId)}>Submit</button>
+          <button className={submitButtonStyle} onClick={() => {
+            let initiative : Initiative = {
+              id: -1,
+              title: initiativeTitle,
+              targetDate: initiativeTargetDate,
+              totalItems: initiativeTotalItems,
+              itemsCompletedOnDate: []
+            }
+            props.Submit(initiative,initiativeCompanyId)
+          }}>Submit</button>
           <button className={cancelButtonStyle} onClick={() => props.setInitiativeIsOpen(false)}>Close</button> 
 
         </div>
