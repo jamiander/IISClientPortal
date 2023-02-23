@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import AddInitiativeModal from "../Components/AddInitiativeModal";
 import AddUserModal from "../Components/AddUserModal";
+import EditInitiativeModal from "../Components/EditInitiativeModal";
 import EditUserModal from "../Components/EditUserModal";
 import InitiativesTable from "../Components/InitiativesTable";
 import UsersTable from "../Components/UsersTable";
@@ -135,7 +136,8 @@ export default function AdminPage(){
   const [selectedCompany, setSelectedCompany] = useState(fakeCompany);
   const [EditUserIsOpen, setEditUserIsOpen] = useState(false);
 
-  const [AddInitiativeIsOpen, setInitiativeIsOpen] = useState(false);
+  const [AddInitiativeIsOpen, setAddInitiativeIsOpen] = useState(false);
+  const [EditInitiativeIsOpen, setEditInitiativeIsOpen] = useState(false);
 
   function handleClick(user: User, company?: Company) {
     if(company)
@@ -206,7 +208,7 @@ export default function AdminPage(){
     {
       ShowToast('New Initiative Dispatched', 'Success');
       dispatch(updateInitiativeInfo({initiative: initiative, companyId: companyId, isTest: isTest}))
-      setInitiativeIsOpen(false);
+      setAddInitiativeIsOpen(false);
     }
     else
       ShowToast('Validation Failed: ' + validation.message,'Error');
@@ -232,7 +234,6 @@ export default function AdminPage(){
   }
 
   return(
-  <>
     <div className="my-[1%] mx-[2%] grid grid-cols-4">
   
       <div className="col-span-3 mb-4">
@@ -240,7 +241,7 @@ export default function AdminPage(){
       </div>
   
       <div className="col-span-3 bg-[#2ed7c3] rounded-md p-2 pl-5">
-        <p className="text-3xl h-[90%]">Users</p>
+        <p className="text-3xl h-[90%]">Clients</p>
       </div>
   
       <AddUserModal userModalIsOpen={userModalIsOpen} closeUserModal={closeUserModal} openUserModal={openUserModal} setCompanyName={setCompanyName} setEmail={setEmail} setName={setName} setPassword={setPassword} companyList={companyList} submitNewUser={SubmitNewUser} />
@@ -258,7 +259,7 @@ export default function AdminPage(){
                   <button className=" mx-2 bg-[#21345b] text-sm text-white w-[100%] h-10 rounded-md outline"
                     onClick={() => handleClick(user, company)}
                   >  
-                      Edit User
+                      Edit Client
                   </button>
                 </div>
               )
@@ -271,7 +272,7 @@ export default function AdminPage(){
       <div className="col-span-3 bg-[#2ed7c3] rounded-md p-2 pl-5">
         <p className="text-3xl h-[90%]">Initiatives</p>
       </div>
-      <AddInitiativeModal addInitiativeIsOpen={AddInitiativeIsOpen} setInitiativeIsOpen={setInitiativeIsOpen} Submit={SubmitNewInitiative} companyList={companyList}/>
+      <AddInitiativeModal addInitiativeIsOpen={AddInitiativeIsOpen} setInitiativeIsOpen={setAddInitiativeIsOpen} Submit={SubmitNewInitiative} companyList={companyList}/>
         
       <div className="col-span-4 py-[10px] flex">
         <InitiativesTable companyList={companyList}/>
@@ -287,7 +288,9 @@ export default function AdminPage(){
       <div className="col-span-4 py-[10px]">
         <CompaniesTable/>
       </div> */}
+
+      <button className={'outline'} onClick={() => setEditInitiativeIsOpen(true)}>Edit Initiative</button>
+      <EditInitiativeModal editInitiativeIsOpen={EditInitiativeIsOpen} setEditInitiativeIsOpen={setEditInitiativeIsOpen} />
     </div>
-  </>
   )
 }
