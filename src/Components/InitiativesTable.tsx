@@ -1,5 +1,7 @@
+import { useEffect, useState } from "react";
 import { Company } from "../Store/CompanySlice";
-import { useAppDispatch } from "../Store/Hooks";
+import { useAppDispatch, useAppSelector } from "../Store/Hooks";
+import { selectCurrentUser, User } from "../Store/UserSlice";
 
 interface InitiativesProps {
   companyList: Company[]
@@ -12,6 +14,17 @@ export default function InitiativesTable(props: InitiativesProps) {
       return {'init': company.initiatives, 'name': company.name };
     }
   );
+
+  const [isCompanyHidden, setCompanyHidden] = useState(false);
+
+  let currentUser : User = useAppSelector(selectCurrentUser) ?? {id: -1, email: 'fake@fake', password: 'fake', companyId: -1};
+  useEffect(() => {
+    if (currentUser.id === 0) {
+      setCompanyHidden(false);
+    } else {
+      setCompanyHidden(true);
+    }
+  }, []);
   
   return (
     <table className="table-auto w-[100%] outline outline-3">
@@ -19,10 +32,11 @@ export default function InitiativesTable(props: InitiativesProps) {
         <tr>
           <th>Id</th>
           <th>Title</th>
-          <th>Company</th>
+          <th hidden={isCompanyHidden}>Company</th>
           <th>Target Completion</th>
           <th>Total Items</th>
           <th>Items Remaining</th>
+          <th>Probability</th>
         </tr>
       </thead>
       <tbody>
@@ -37,10 +51,11 @@ export default function InitiativesTable(props: InitiativesProps) {
                   <tr key={index}>
                     <td className={tableDataStyle}>{initiative.id}</td>
                     <td className={tableDataStyle}>{initiative.title}</td>
-                    <td className={tableDataStyle}>{company.name}</td>
+                    <td className={tableDataStyle} hidden={isCompanyHidden}>{company.name}</td>
                     <td className={tableDataStyle}>{initiative.targetDate.month + "/" + initiative.targetDate.day + "/" + initiative.targetDate.year}</td>
                     <td className={tableDataStyle}>{initiative.totalItems}</td>
                     <td className={tableDataStyle}>{initiative.totalItems - total}</td>
+                    <td></td>
                   </tr>
                 )
               })
