@@ -216,21 +216,39 @@ export default function AdminPage(){
 
   function ValidateNewInitiative(initiative: Initiative, companyId: number) : {success: boolean, message: string}
   {
-    // let initiativeList = companyList.map((company) => company.initiatives).flat();
-    // console.log('initiative list', initiativeList);
+    if (!initiative.title || !initiative.targetDate.month || !initiative.targetDate.day || !initiative.targetDate.year || !initiative.totalItems)
+      return {success: false, message: "Cannot leave any fields blank."};
+
+    let dateValidation = ValidateDate(initiative.targetDate)
+    if(!dateValidation.success)
+      return dateValidation;
+
     if(initiative.totalItems < 0)
-      return {success: false, message: "Total items must be a positive value."}
+      return {success: false, message: "Total items must be a positive value."};
 
     const matchingCompany = companyList.find(company => company.id === companyId);
     if(!matchingCompany)
-      return {success: false, message: "A company must be selected."}
+      return {success: false, message: "A company must be selected."};
 
-    if (initiative.title && initiative.targetDate.month && initiative.targetDate.day && initiative.targetDate.year && initiative.totalItems){
-        return {success: true, message: "Successfully validated; all good!"};
-    }
+    return {success: true, message: "Successfully validated; all good!"};
+  }
 
-    return {success: false, message: "Cannot leave any fields blank."};
+  function ValidateDate(date: DateInfo) : {success: boolean, message: string}
+  {
+    let month = parseInt(date.month);
+    console.log(month)
+    if(month < 1 || month > 12 || Number.isNaN(month))
+      return {success: false, message: "Month must be between 1 and 12"};
 
+    let day = parseInt(date.day);
+    if(day < 1 || day > 31 || Number.isNaN(day))
+      return {success: false, message: "Day must be between 1 and 31"};
+
+    let year = parseInt(date.year);    //TODO: there's probably a better way to validate this
+    if(year < 0 || Number.isNaN(year))
+      return {success: false, message: "Year must be a positive value."};
+
+    return {success: true, message: "Date is all good!"}
   }
 
   return(
