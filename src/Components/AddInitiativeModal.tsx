@@ -42,7 +42,7 @@ export default function AddInitiativeModal(props: AddInitiativeProps) {
             {
               props.companyList.map((company, index) => {
                 return (
-                  <option value={company.id} className='my-5' key={index}>{company.name}</option>
+                  <option value={company.id} key={index}>{company.name}</option>
                 )
               })
             }
@@ -51,51 +51,57 @@ export default function AddInitiativeModal(props: AddInitiativeProps) {
           <p className='my-1'>Title</p>
           <input id='modalTitle' className={inputStyle + ' w-3/4'} onChange={(e) => {setInitiativeTitle(e.target.value)}}/>
           
-          <div className='my-[15px] outline outline-2 outline-offset-4 outline-[#879794] rounded'>
-            <p className='mt-2'>Target Completion</p>
-            <div className='flex mb-2 space-x-[5px]'>
-              <div>
+          <div className='my-2 p-2 outline outline-1 outline-[#879794] rounded'>
+            <p className=''>Target Completion</p>
+            <div className='flex'>
+              <div className='w-24 mx-2'>
                 <p>Month </p>
-                <input id='modalMonth' className={inputStyle + ' w-20 mx-1'} maxLength={2}
-              onChange={(e) => {setInitiativeTargetDate({...initiativeTargetDate, month: e.target.value})}}
-              placeholder='MM'/>
+                <input id='modalMonth' className={inputStyle} maxLength={2} placeholder='MM'
+                  onChange={(e) => {setInitiativeTargetDate({...initiativeTargetDate, month: e.target.value})}}
+                />
               </div>
 
-              <div>
+              <div className='w-24 mx-2'>
                 <p>Day </p>
-                <input id='modalDay' className={inputStyle + ' w-20 mx-1'} maxLength={2}
-               onChange={(e) => {setInitiativeTargetDate({...initiativeTargetDate, day: e.target.value})}}
-               placeholder='DD'/>
+                <input id='modalDay' className={inputStyle} maxLength={2} placeholder='DD'
+                  onChange={(e) => {setInitiativeTargetDate({...initiativeTargetDate, day: e.target.value})}}
+                />
               </div>
 
-              <div>
+              <div className='w-24 mx-2'>
                 <p>Year </p>        
-                <input id='modalYear' className={inputStyle + ' w-20 mx-1'} maxLength={4}
-              onChange={(e) => {setInitiativeTargetDate({...initiativeTargetDate, year: e.target.value})}}
-              placeholder='YYYY'/>
+                <input id='modalYear' className={inputStyle} maxLength={4} placeholder='YYYY'
+                  onChange={(e) => {setInitiativeTargetDate({...initiativeTargetDate, year: e.target.value})}}
+                />
               </div>
             </div>
           </div>
 
-          <p className='my-1'>Total Items</p>
-          <input id='modalTotalItems' type={'number'} className={inputStyle + ' w-[150px]'} onChange={(e) => {setInitiativeTotalItems(parseInt(e.target.value))}}/>
 
         </div>
-        
-        <div className='mt-4 h-10'>
-
-          <button className={submitButtonStyle} onClick={() => {
-            let initiative : Initiative = {
-              id: -1,
-              title: initiativeTitle,
-              targetDate: initiativeTargetDate,
-              totalItems: initiativeTotalItems,
-              itemsCompletedOnDate: []
-            }
-            props.Submit(initiative,initiativeCompanyId)
-          }}>Submit</button>
-          <button className={cancelButtonStyle} onClick={() => props.setInitiativeIsOpen(false)}>Close</button> 
-
+    
+        <div className='mt-2 justify-between flex'>
+          <div className='w-24'>
+            <p>Total Items</p>
+            <input id='modalTotalItems' type={'number'} className={inputStyle} onChange={(e) => {setInitiativeTotalItems(parseInt(e.target.value))}}/>
+          </div>
+  
+          <div className='h-10'>
+            <button className={submitButtonStyle + ' mt-6'} 
+              onClick={() => {
+                let initiative : Initiative = {
+                  id: -1,
+                  title: initiativeTitle,
+                  targetDate: initiativeTargetDate,
+                  totalItems: initiativeTotalItems,
+                  itemsCompletedOnDate: []
+                }
+                props.Submit(initiative,initiativeCompanyId)
+              }}> Submit
+            </button>
+            <button className={cancelButtonStyle} onClick={() => props.setInitiativeIsOpen(false)}>Close</button> 
+          
+          </div>
         </div>
 
       </Modal>
