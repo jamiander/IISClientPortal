@@ -1,4 +1,7 @@
 describe('add company spec', () => {
+
+  const failMessage = 'Validation Failed';
+
   beforeEach(() => {
     cy.visit('http://localhost:3000/Login')
     cy.get('input[id="email"]').clear().type('info@integrityinspired.com');
@@ -26,7 +29,7 @@ describe('add company spec', () => {
     cy.get('input[id="modalPassword"]').clear().type('test');
 
     cy.get('button').contains('Submit').click();
-    cy.get('#toast-default').contains('Validation Failed');
+    cy.get('#toast-default').contains(failMessage);
   })
 
   specify('cannot add a company with the same email as another company', () => {
@@ -35,7 +38,7 @@ describe('add company spec', () => {
     cy.get('#modalPassword').clear().type('test');
 
     cy.get('button').contains('Submit').click();
-    cy.get('#toast-default').contains('Validation Failed');
+    cy.get('#toast-default').contains(failMessage);
   })
 
   specify('cannot add a company with invalid input', () => {
@@ -45,7 +48,7 @@ describe('add company spec', () => {
     cy.get('input[id="modalPassword"]').clear();
 
     cy.get('button').contains('Submit').click();
-    cy.get('#toast-default').contains('Validation Failed');
+    cy.get('#toast-default').contains(failMessage);
   })
 
 })
