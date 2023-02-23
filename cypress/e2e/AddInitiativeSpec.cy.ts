@@ -74,6 +74,43 @@ describe('add initiative spec', () => {
   })
 
   specify('cannot add when a date is not in a valid format', () => {
+    cy.get('#modalMonth').clear().type("-3");
+    cy.get('button').contains('Submit').click();
+    cy.get('#toast-default').contains(failMessage);
+
+    cy.get('#modalMonth').clear().type("ab");
+    cy.get('button').contains('Submit').click();
+    cy.get('#toast-default').contains(failMessage);
+
+    cy.get('#modalMonth').clear().type("13");
+    cy.get('button').contains('Submit').click();
+    cy.get('#toast-default').contains(failMessage);
+
+    cy.get('#modalMonth').clear().type(init.month);
+
+
+    cy.get('#modalDay').clear().type("-3");
+    cy.get('button').contains('Submit').click();
+    cy.get('#toast-default').contains(failMessage);
+
+    cy.get('#modalDay').clear().type("ab");
+    cy.get('button').contains('Submit').click();
+    cy.get('#toast-default').contains(failMessage);
+
+    cy.get('#modalDay').clear().type("32");
+    cy.get('button').contains('Submit').click();
+    cy.get('#toast-default').contains(failMessage);
+
+    cy.get('#modalDay').clear().type(init.day);
+
+
+    cy.get('#modalYear').clear().type("-3");
+    cy.get('button').contains('Submit').click();
+    cy.get('#toast-default').contains(failMessage);
+
+    cy.get('#modalYear').clear().type("abcd");
+    cy.get('button').contains('Submit').click();
+    cy.get('#toast-default').contains(failMessage);
 
   })
 })

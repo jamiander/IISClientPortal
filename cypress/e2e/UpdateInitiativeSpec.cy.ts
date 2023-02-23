@@ -20,14 +20,15 @@ describe('update initiative spec', () => {
     cy.get('button').contains('Admin').click();
     cy.get('table').contains('Integrity Inspired Solutions');
     cy.get('button').contains('Edit Initiative').click();
-  });
 
-  specify('update an initiative', () => {
     cy.get('#modalTitle').clear().type(init.title);
     cy.get('#modalMonth').clear().type(init.month);
     cy.get('#modalDay').clear().type(init.day);
     cy.get('#modalYear').clear().type(init.year);
     cy.get('#modalTotalItems').clear().type(init.totalItems);
+  });
+
+  specify('update an initiative', () => {
     cy.get('button').contains('Submit').click();
 
     cy.get('table').contains(init.title);
