@@ -31,24 +31,28 @@ export default function EditInitiativeModal(props: EditInitiativeProps) {
         <p className='my-1'>Company: {props.company.name}</p>
 
         <p className='my-1'>Title</p>
-        <input defaultValue={props.initiative.title} id='modalTitle' className={inputStyle + ' w-3/4'}/>
+        <input defaultValue={props.initiative.title} id='modalTitle' className={inputStyle + ' w-3/4'}
+          onChange={(e) => setInitiativeTitle(e.target.value)}/>
         
         <div className='my-2 p-2 outline outline-1 outline-gray-500 rounded'>
           <span className=''>Target Completion</span>
           <div className='flex'>
             <div className='w-24 mx-2'>
               <p>Month </p>
-              <input defaultValue={props.initiative.targetDate.month} id='modalMonth' className={inputStyle} />
+              <input defaultValue={props.initiative.targetDate.month} id='modalMonth' className={inputStyle} 
+                onChange={(e) => setInitiativeTargetDate({...initiativeTargetDate, month: e.target.value})}/>
             </div>
             
             <div className='w-24 mx-2'>
               <p>Day </p>
-              <input defaultValue={props.initiative.targetDate.day} id='modalDay' className={inputStyle} />
+              <input defaultValue={props.initiative.targetDate.day} id='modalDay' className={inputStyle} 
+                onChange={(e) => setInitiativeTargetDate({...initiativeTargetDate, day: e.target.value})}/>
             </div>
 
             <div className='w-24 mx-2'>
               <p>Year </p>        
-              <input defaultValue={props.initiative.targetDate.year} id='modalYear' className={inputStyle} />
+              <input defaultValue={props.initiative.targetDate.year} id='modalYear' className={inputStyle} 
+                onChange={(e) => setInitiativeTargetDate({...initiativeTargetDate, year: e.target.value})}/>
             </div>
           </div>
         </div>
@@ -57,7 +61,8 @@ export default function EditInitiativeModal(props: EditInitiativeProps) {
       <div className='mt-2 h-10 justify-between flex'>
         <div>
           <p>Total Items</p>
-          <input defaultValue={props.initiative.totalItems} id='modalTotalItems' type={'number'} className={inputStyle + ' w-24'} />
+          <input defaultValue={props.initiative.totalItems} id='modalTotalItems' type={'number'} className={inputStyle + ' w-24'} 
+            onChange={(e) => setInitiativeTotalItems(parseInt(e.target.value))}/>
         </div>
         <div>
           <button className={submitButtonStyle + ' mt-6'} onClick={() => {

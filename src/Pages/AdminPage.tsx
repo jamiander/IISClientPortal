@@ -189,7 +189,7 @@ export default function AdminPage(){
 
   function SubmitUpdateInitiative(initiative: Initiative, companyId: number)
   {
-    console.log(initiative);
+    console.log('initiative @ submitUpdateInitiative', initiative);
 
     let isTest = false;
     if((window as any).Cypress)
