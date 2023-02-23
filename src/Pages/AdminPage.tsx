@@ -292,7 +292,7 @@ export default function AdminPage(){
       <div>
         <input type='radio' id='showAll' value='all' name='clientDisplay'/>
         <label htmlFor='showAll'>Show All</label>
-        <input type='radio' id='showActive' value='active' name='clientDisplay' checked/>
+        <input type='radio' id='showActive' value='active' name='clientDisplay' defaultChecked/>
         <label htmlFor='showActive'>Only Active</label>
         <input type='radio' id='showInactive' value='inactive' name='clientDisplay'/>
         <label htmlFor='showInactive'>Only Inactive</label>

@@ -25,7 +25,8 @@ function App() {
     //dispatch(getUserData());
     //dispatch(getCompanyData());
     dispatch(getCompanyInfo({})); //TODO: remove this when we add logging in
-  })
+  },[])
+  
   return (
     <div className='grid grid-cols-5 gap-[.5vh] bg-[#2ed7c3]'>
       <div className='col-span-5 bg-white h-30px'><Header/></div>
