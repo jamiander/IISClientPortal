@@ -18,38 +18,36 @@ export default function DashboardPage(){
     }else{
       return(
         <table className="table-auto w-[100%] outline outline-3">
-      <thead className="outline outline-1">
-        <tr>
-          <th>Id</th>
-          <th>Title</th>
-          <th>Company</th>
-          <th>Target Completion</th>
-          <th>Total Items</th>
-          <th>Items Remaining</th>
-          <th>Probability</th>
-        </tr>
-      </thead>
-      <tbody>
-        {
-          company.initiatives.map((initiative, index) => {
-            const itemsCompleted = initiative.itemsCompletedOnDate.map((item) => item.itemsCompleted);
-            var total = 0;
-            itemsCompleted.forEach((num) => total += num);
-            return (
-              <tr key={index}>
-                <td className={tableDataStyle}>{initiative.id}</td>
-                <td className={tableDataStyle}>{initiative.title}</td>
-                <td className={tableDataStyle}>{company.name}</td>
-                <td className={tableDataStyle}>{initiative.targetDate.month + "/" + initiative.targetDate.day + "/" + initiative.targetDate.year}</td>
-                <td className={tableDataStyle}>{initiative.totalItems}</td>
-                <td className={tableDataStyle}>{initiative.totalItems - total}</td>
-                <td></td>
-              </tr>
-            )
-          })
-        }
-      </tbody>
-    </table>
+          <thead className="outline outline-1">
+            <tr>
+              <th>Id</th>
+              <th>Title</th>
+              <th>Target Completion</th>
+              <th>Total Items</th>
+              <th>Items Remaining</th>
+              <th>Probability</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              company.initiatives.map((initiative, index) => {
+                const itemsCompleted = initiative.itemsCompletedOnDate.map((item) => item.itemsCompleted);
+                var total = 0;
+                itemsCompleted.forEach((num) => total += num);
+                return (
+                  <tr key={index}>
+                    <td className={tableDataStyle}>{initiative.id}</td>
+                    <td className={tableDataStyle}>{initiative.title}</td>
+                    <td className={tableDataStyle}>{initiative.targetDate.month + "/" + initiative.targetDate.day + "/" + initiative.targetDate.year}</td>
+                    <td className={tableDataStyle}>{initiative.totalItems}</td>
+                    <td className={tableDataStyle}>{initiative.totalItems - total}</td>
+                    <td></td>
+                  </tr>
+                )
+              })
+            }
+          </tbody>
+        </table>
       )
     }
   }
@@ -69,7 +67,7 @@ export default function DashboardPage(){
           })}
         </select>
       </div>
-      <div className="col-span-4 h-[60vh] py-[10px] outline-dotted">
+      <div className="col-span-4 h-[60vh] py-[10px]">
         <Dashboard/>
       </div>
     </div>
