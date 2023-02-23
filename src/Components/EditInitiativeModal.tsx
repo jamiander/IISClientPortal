@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import { Company, Initiative } from '../Store/CompanySlice';
 import { cancelButtonStyle, inputStyle, modalStyle, submitButtonStyle } from '../Styles';
@@ -15,6 +15,12 @@ export default function EditInitiativeModal(props: EditInitiativeProps) {
   const [initiativeTitle, setInitiativeTitle] = useState(props.initiative.title);
   const [initiativeTargetDate, setInitiativeTargetDate] = useState(props.initiative.targetDate);
   const [initiativeTotalItems, setInitiativeTotalItems] = useState(props.initiative.totalItems);
+
+  useEffect(() => {
+    setInitiativeTitle(props.initiative.title);
+    setInitiativeTargetDate(props.initiative.targetDate);
+    setInitiativeTotalItems(props.initiative.totalItems);
+  }, [props.initiative,props.company])
 
   return (
     <Modal
@@ -73,6 +79,7 @@ export default function EditInitiativeModal(props: EditInitiativeProps) {
               totalItems: initiativeTotalItems,
               itemsCompletedOnDate: props.initiative.itemsCompletedOnDate
             }
+            console.log(`${initiativeTitle}`)
             props.submitUpdateInitiative(initiative, props.company.id);
           }}>Submit</button>
           <button className={cancelButtonStyle} onClick={() => props.setEditInitiativeIsOpen(false)}>Cancel</button>
