@@ -23,6 +23,7 @@ export default function InitiativesTable(props: InitiativesProps) {
           <th>Target Completion</th>
           <th>Total Items</th>
           <th>Items Remaining</th>
+          <th>Probability</th>
         </tr>
       </thead>
       <tbody>
@@ -41,6 +42,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                     <td className={tableDataStyle}>{initiative.targetDate.month + "/" + initiative.targetDate.day + "/" + initiative.targetDate.year}</td>
                     <td className={tableDataStyle}>{initiative.totalItems}</td>
                     <td className={tableDataStyle}>{initiative.totalItems - total}</td>
+                    <td></td>
                   </tr>
                 )
               })
