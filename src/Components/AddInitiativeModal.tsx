@@ -20,7 +20,7 @@ export default function AddInitiativeModal(props: AddInitiativeProps) {
 
   return (
     <div className="flex justify-end">
-      <button onClick={() => props.setInitiativeIsOpen(true)} className="outline bg-[#21345b] text-white h-[100%] w-[80%] rounded-md">
+      <button onClick={() => props.setInitiativeIsOpen(true)} className="outline bg-[#21345b] text-white h-full w-32 rounded-md">
         Add Initiative
       </button>
 

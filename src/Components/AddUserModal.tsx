@@ -17,9 +17,9 @@ interface AddUserProps {
 export default function AddUserModal(props: AddUserProps) {
 
     return (
-      <div className="flex justify-end">
+      <div>
 
-        <button onClick={props.openUserModal} className="outline bg-[#21345b] text-white h-[100%] w-[80%] rounded-md">Add Client</button>
+        <button onClick={props.openUserModal} className="outline bg-[#21345b] text-white h-full w-28 rounded-md">Add Client</button>
 
         <Modal
             isOpen={props.userModalIsOpen}
