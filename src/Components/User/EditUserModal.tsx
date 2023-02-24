@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import Modal from "react-modal";
-import { cancelButtonStyle, inputStyle, modalStyle, submitButtonStyle } from "../Styles";
-import { Company } from "../Store/CompanySlice";
-import { User } from "../Store/UserSlice";
+import { cancelButtonStyle, inputStyle, modalStyle, submitButtonStyle } from "../../Styles";
+import { Company } from "../../Store/CompanySlice";
+import { User } from "../../Store/UserSlice";
 import { EnumDeclaration } from "typescript";
 
 interface EditUserProps {

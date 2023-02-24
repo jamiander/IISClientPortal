@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useOutletContext } from "react-router-dom";
-import { DateInfo } from "../Services/CompanyService";
-import { Company, Initiative, selectAllCompanies, updateInitiativeInfo } from "../Store/CompanySlice"
-import { useAppDispatch, useAppSelector } from "../Store/Hooks";
+import { DateInfo } from "../../Services/CompanyService";
+import { Company, Initiative, selectAllCompanies, updateInitiativeInfo } from "../../Store/CompanySlice"
+import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
 import EditInitiativeModal from "./EditInitiativeModal";
-import ActiveInitiativesFilter from "../Services/ActiveInitiativesFilter";
-import InactiveInitiativesFilter from "../Services/InactiveInitiativesFilter";
+import ActiveInitiativesFilter from "../../Services/ActiveInitiativesFilter";
+import InactiveInitiativesFilter from "../../Services/InactiveInitiativesFilter";
 import InitiativeModal from "./InitiativeModal";
 
 interface InitiativesButtonProps{

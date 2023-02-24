@@ -1,9 +1,9 @@
 import { SetStateAction, useState } from 'react';
 import Modal from 'react-modal';
-import { Company, Initiative } from '../Store/CompanySlice';
-import { cancelButtonStyle, inputStyle, modalStyle, submitButtonStyle } from '../Styles';
-import { DateInfo } from "../Services/CompanyService";
-import { DateInput } from './DateInput';
+import { Company, Initiative } from '../../Store/CompanySlice';
+import { cancelButtonStyle, inputStyle, modalStyle, submitButtonStyle } from '../../Styles';
+import { DateInfo } from "../../Services/CompanyService";
+import { DateInput } from '../DateInput';
 
 interface AddInitiativeProps {
   addInitiativeIsOpen: boolean,

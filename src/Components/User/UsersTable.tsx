@@ -1,7 +1,7 @@
 import { useState } from "react";
-import ActiveCompaniesFilter from "../Services/ActiveCompaniesFilter";
-import { Company } from "../Store/CompanySlice";
-import { User } from "../Store/UserSlice"
+import ActiveCompaniesFilter from "../../Services/ActiveCompaniesFilter";
+import { Company } from "../../Store/CompanySlice";
+import { User } from "../../Store/UserSlice";
 import EditUserModal from "./EditUserModal";
 
 interface UsersTableProps {

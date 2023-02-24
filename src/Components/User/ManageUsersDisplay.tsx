@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useOutletContext } from "react-router-dom";
-import Sorter from "../Services/Sorter";
-import { Company, selectAllCompanies, updateCompanyInfo } from "../Store/CompanySlice";
-import { useAppDispatch, useAppSelector } from "../Store/Hooks";
-import { selectAllUsers, User } from "../Store/UserSlice";
+import Sorter from "../../Services/Sorter";
+import { Company, selectAllCompanies, updateCompanyInfo } from "../../Store/CompanySlice";
+import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
+import { selectAllUsers, User } from "../../Store/UserSlice";
 import EditUserModal from "./EditUserModal";
 import UsersTable from "./UsersTable";
 
