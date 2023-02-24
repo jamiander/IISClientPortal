@@ -1,4 +1,4 @@
-import InitiativesTable from "../Components/InitiativesTable";
+import InitiativesTable from "../Components/Initiative/InitiativesTable";
 import { selectAllCompanies } from "../Store/CompanySlice";
 import { useAppSelector } from "../Store/Hooks"
 import { selectCurrentUser } from "../Store/UserSlice";

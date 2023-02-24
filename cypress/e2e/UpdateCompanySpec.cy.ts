@@ -1,4 +1,5 @@
-import { EditUserModalIds } from "../../src/Components/EditUserModal";
+
+import { EditUserModalIds } from "../../src/Components/User/EditUserModal";
 import { AddHash } from "./TestHelpers";
 
 describe('update company spec', () => {

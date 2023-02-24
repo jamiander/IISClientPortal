@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { useOutletContext } from "react-router-dom";
-import { DateInfo } from "../Services/CompanyService";
-import { Company, Initiative, selectAllCompanies, updateInitiativeInfo } from "../Store/CompanySlice"
-import { useAppDispatch, useAppSelector } from "../Store/Hooks";
-import ActiveInitiativesFilter from "../Services/ActiveInitiativesFilter";
-import InactiveInitiativesFilter from "../Services/InactiveInitiativesFilter";
+import { DateInfo } from "../../Services/CompanyService";
+import { Company, Initiative, selectAllCompanies, updateInitiativeInfo } from "../../Store/CompanySlice"
+import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
+import EditInitiativeModal from "./EditInitiativeModal";
+import ActiveInitiativesFilter from "../../Services/ActiveInitiativesFilter";
+import InactiveInitiativesFilter from "../../Services/InactiveInitiativesFilter";
 import InitiativeModal from "./InitiativeModal";
 
 interface InitiativesButtonProps{
@@ -78,8 +79,7 @@ export default function InitiativesButton(props:InitiativesButtonProps){
                 );
             })}
         </div>
-        <InitiativeModal title='Edit Initiative' initiativeIsOpen={EditInitiativeIsOpen} setInitiativeIsOpen={setEditInitiativeIsOpen} initiative={selectedInitiative} company={selectedCompany} Submit={SubmitUpdateInitiative} />
-        </>
+        <InitiativeModal title='Edit Initiative' initiativeIsOpen={EditInitiativeIsOpen} setInitiativeIsOpen={setEditInitiativeIsOpen} initiative={selectedInitiative} company={selectedCompany} Submit={SubmitUpdateInitiative} /></>
     )
   }
   else if(props.radioStatus === 'inactive'){
@@ -104,8 +104,7 @@ export default function InitiativesButton(props:InitiativesButtonProps){
                 );
             })}
         </div>
-        <InitiativeModal title='Edit Initiative' initiativeIsOpen={EditInitiativeIsOpen} setInitiativeIsOpen={setEditInitiativeIsOpen} initiative={selectedInitiative} company={selectedCompany} Submit={SubmitUpdateInitiative} />
-        </>
+        <EditInitiativeModal editInitiativeIsOpen={EditInitiativeIsOpen} setEditInitiativeIsOpen={setEditInitiativeIsOpen} initiative={selectedInitiative} company={selectedCompany} submitUpdateInitiative={SubmitUpdateInitiative} /></>
     )
   }
    else{
@@ -129,8 +128,7 @@ export default function InitiativesButton(props:InitiativesButtonProps){
                 );
             })}
         </div>
-        <InitiativeModal title='Edit Initiative' initiativeIsOpen={EditInitiativeIsOpen} setInitiativeIsOpen={setEditInitiativeIsOpen} initiative={selectedInitiative} company={selectedCompany} Submit={SubmitUpdateInitiative} />
-        </>
+        <EditInitiativeModal editInitiativeIsOpen={EditInitiativeIsOpen} setEditInitiativeIsOpen={setEditInitiativeIsOpen} initiative={selectedInitiative} company={selectedCompany} submitUpdateInitiative={SubmitUpdateInitiative} /></>
     )
    } 
 }

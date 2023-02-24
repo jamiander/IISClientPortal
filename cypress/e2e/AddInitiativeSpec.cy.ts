@@ -1,4 +1,5 @@
-import { initiativeModalIds } from "../../src/Components/InitiativeModal";
+
+import { InitiativeModalIds } from "../../src/Components/Initiative/InitiativeModal";
 import { AddHash } from "./TestHelpers";
 
 describe('add initiative spec', () => {
@@ -14,7 +15,7 @@ describe('add initiative spec', () => {
   }
 
   const failMessage = 'Validation Failed';
-  const modalIds = AddHash(initiativeModalIds);
+  const modalIds = AddHash(InitiativeModalIds);
 
   beforeEach(() => {
     cy.visit('http://localhost:3000/Login')

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import ManageUsersDisplay from "../Components/ManageUsersDisplay";
-import ManageInitiativesDisplay from "../Components/ManageInitiativesDisplay";
+import ManageUsersDisplay from "../Components/User/ManageUsersDisplay";
+import ManageInitiativesDisplay from "../Components/Initiative/ManageInitiativesDisplay";
 import { getCompanyInfo } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
 import { selectCurrentUser } from "../Store/UserSlice";

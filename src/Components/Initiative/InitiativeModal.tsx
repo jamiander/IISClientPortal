@@ -1,10 +1,10 @@
-import { Company, Initiative, selectAllCompanies } from "../Store/CompanySlice"
-import { cancelButtonStyle, inputStyle, modalStyle, submitButtonStyle } from "../Styles"
+import { Company, Initiative, selectAllCompanies } from "../../Store/CompanySlice"
+import { cancelButtonStyle, inputStyle, modalStyle, submitButtonStyle } from "../../Styles"
 import Modal from 'react-modal';
 import { useEffect, useState } from "react";
-import { DateInput } from "./DateInput";
-import { DateInfo } from "../Services/CompanyService";
-import { useAppSelector } from "../Store/Hooks";
+import { DateInput } from "./../DateInput";
+import { DateInfo } from "../../Services/CompanyService";
+import { useAppSelector } from "../../Store/Hooks";
 
 interface InitiativeModalProps {
 	title: string
@@ -15,7 +15,7 @@ interface InitiativeModalProps {
 	company?: Company
 }
 
-export const initiativeModalIds = {
+export const InitiativeModalIds = {
 	company: "initModalCompany",
 	title: "initModalTitle",
 	date: {
@@ -52,7 +52,7 @@ export default function InitiativeModal(props: InitiativeModalProps){
 
 			<div className='w-full'>
 				<p className='my-1'>Company{props.company ? ": " + props.company.name : 
-					<select id={initiativeModalIds.company} onChange={(e) => setInitiativeCompanyId(parseInt(e.target.value))} 
+					<select id={InitiativeModalIds.company} onChange={(e) => setInitiativeCompanyId(parseInt(e.target.value))} 
 					className='outline outline-1 rounded p-2'
 					>
 						<option>Select Company</option>
@@ -67,16 +67,16 @@ export default function InitiativeModal(props: InitiativeModalProps){
 				</p>
 
 				<p className='my-1'>Title</p>
-				<input defaultValue={props.initiative?.title} id={initiativeModalIds.title} className={inputStyle + ' w-3/4'}
+				<input defaultValue={props.initiative?.title} id={InitiativeModalIds.title} className={inputStyle + ' w-3/4'}
           onChange={(e) => {setInitiativeTitle(e.target.value)}}/>
 				
-				<DateInput heading={'Target Completion'} initiativeTargetDate={initiativeTargetDate} setInitiativeTargetDate={setInitiativeTargetDate} inputIds={initiativeModalIds.date}/>
+				<DateInput heading={'Target Completion'} initiativeTargetDate={initiativeTargetDate} setInitiativeTargetDate={setInitiativeTargetDate} inputIds={InitiativeModalIds.date}/>
 			</div>
       
       <div className='mt-2 justify-between flex'>
           <div className='w-24'>
             <p>Total Items</p>
-            <input id={initiativeModalIds.totalItems} type={'number'} className={inputStyle} onChange={(e) => {setInitiativeTotalItems(parseInt(e.target.value))}}/>
+            <input id={InitiativeModalIds.totalItems} type={'number'} className={inputStyle} onChange={(e) => {setInitiativeTotalItems(parseInt(e.target.value))}}/>
           </div>
   
           <div className='h-10'>
