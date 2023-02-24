@@ -29,7 +29,7 @@ export const InitiativeModalIds = {
 export default function InitiativeModal(props: InitiativeModalProps){
   const emptyDate: DateInfo = {month: "", day: "", year: ""}
   const companyList = useAppSelector(selectAllCompanies);
-  const [initiativeCompanyId, setInitiativeCompanyId] = useState(Number);
+  const [initiativeCompanyId, setInitiativeCompanyId] = useState(props.company?.id ?? -1);
   const [initiativeTitle, setInitiativeTitle] = useState(props.initiative?.title ?? "");
   const [initiativeTargetDate, setInitiativeTargetDate] = useState<DateInfo>(props.initiative?.targetDate ?? emptyDate);
   const [initiativeTotalItems, setInitiativeTotalItems] = useState(props.initiative?.totalItems ?? 0);
@@ -38,6 +38,7 @@ export default function InitiativeModal(props: InitiativeModalProps){
     setInitiativeTitle(props.initiative?.title ?? "");
     setInitiativeTargetDate(props.initiative?.targetDate ?? emptyDate);
     setInitiativeTotalItems(props.initiative?.totalItems ?? 0);
+	setInitiativeCompanyId(props.company?.id ?? -1);
   }, [props.initiative,props.company])
 
 	return (
@@ -70,13 +71,13 @@ export default function InitiativeModal(props: InitiativeModalProps){
 				<input defaultValue={props.initiative?.title} id={InitiativeModalIds.title} className={inputStyle + ' w-3/4'}
           onChange={(e) => {setInitiativeTitle(e.target.value)}}/>
 				
-				<DateInput heading={'Target Completion'} initiativeTargetDate={initiativeTargetDate} setInitiativeTargetDate={setInitiativeTargetDate} inputIds={InitiativeModalIds.date}/>
+				<DateInput heading={'Target Completion'} initiativeTargetDate={initiativeTargetDate} setInitiativeTargetDate={setInitiativeTargetDate} inputIds={InitiativeModalIds.date} defaultInitiative={props.initiative}/>
 			</div>
       
       <div className='mt-2 justify-between flex'>
           <div className='w-24'>
             <p>Total Items</p>
-            <input id={InitiativeModalIds.totalItems} type={'number'} className={inputStyle} onChange={(e) => {setInitiativeTotalItems(parseInt(e.target.value))}}/>
+            <input defaultValue={props.initiative?.totalItems} id={InitiativeModalIds.totalItems} type={'number'} className={inputStyle} onChange={(e) => {setInitiativeTotalItems(parseInt(e.target.value))}}/>
           </div>
   
           <div className='h-10'>
