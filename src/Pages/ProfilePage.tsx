@@ -1,6 +1,6 @@
 import InitiativesTable from "../Components/InitiativesTable";
 import ProfileTable from "../Components/ProfileTable";
-import { getCompanyInfo, selectAllCompanies } from "../Store/CompanySlice";
+import { selectAllCompanies } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
 import { selectCurrentUser } from "../Store/UserSlice";
 
@@ -24,7 +24,7 @@ export default function ProfilePage(){
         <p className="text-3xl h-[90%]">Company Initiatives</p>
       </div>
       <div className="col-span-4 py-[5px]">
-        <InitiativesTable companyList={companyList}/>
+        <InitiativesTable companyList={companyList} radioStatus={'active'}/>
       </div>
     </div>
   )

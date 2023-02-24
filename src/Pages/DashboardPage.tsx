@@ -18,7 +18,7 @@ export default function DashboardPage(){
       )
     }else{
       return(
-        <InitiativesTable companyList={comp}/>
+        <InitiativesTable companyList={comp} radioStatus={'active'}/>
       )
     }
   }

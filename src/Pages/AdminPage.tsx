@@ -8,8 +8,6 @@ import { selectCurrentUser } from "../Store/UserSlice";
 
 export default function AdminPage(){
   const dispatch = useAppDispatch();
-  //const [companyId, setCompanyId] = useState('');
-  //const [companyModalIsOpen, setCompanyIsOpen] = useState(false);
   const currentUser = useAppSelector(selectCurrentUser);
   const navigate = useNavigate();
   
@@ -27,40 +25,6 @@ export default function AdminPage(){
   }, [currentUser])
 
 
-  /*function openCompanyModal(){
-    setCompanyIsOpen(true);
-  }
-  function closeCompanyModal(){
-    setCompanyIsOpen(false);
-  }*/
-
-  /*function ValidateCompany()
-  {
-    if(companyName)
-      return true;
-    return false;
-  }
-
-  function SubmitNewCompany()
-  {
-    let newCompany: Company = {
-      id: -1,
-      name: companyName,
-    }
-      
-    let isTest = false;
-    if((window as any).Cypress)
-      isTest = true;
-      
-    console.log('cypress: ' + isTest)
-  
-    //dispatch(addCompany({company: newCompany, isTest: isTest}));
-  
-    setCompanyName('');
-  
-    closeCompanyModal();
-  }*/
-
   useEffect(() => {
     dispatch(getCompanyInfo({})); //no args; admins get all companies/users
   },[])
@@ -75,15 +39,6 @@ export default function AdminPage(){
       <ManageUsersDisplay />
 
       <ManageInitiativesDisplay />
-      {/* <div className="col-span-3">
-        <p className="text-3xl bg-[#2ed7c3] rounded my-1 h-[75%]">Companies</p>
-      </div>
-        
-      <AddCompanyModal companyModalIsOpen={companyModalIsOpen} closeCompanyModal={closeCompanyModal} openCompanyModal={openCompanyModal} validateCompany={ValidateCompany} setCompanyName={setCompanyName} submitNewCompany={SubmitNewCompany} />
-        
-      <div className="col-span-4 py-[10px]">
-        <CompaniesTable/>
-      </div> */}
     </div>
   )
 }
