@@ -101,13 +101,12 @@ export default function ManageInitiativesDisplay() {
 
   return (
   <div className="col-span-4">
-    <div className="bg-[#2ed7c3] rounded-md p-2 pl-5">
+    <div className="bg-[#2ed7c3] rounded-md py-3 px-5">
 
       <div className="w-full flex justify-between">
-        <p className="text-3xl h-[90%]">Initiatives</p>
+        <p className="text-3xl">Initiatives</p>
         <AddInitiativeModal addInitiativeIsOpen={AddInitiativeIsOpen} setInitiativeIsOpen={setAddInitiativeIsOpen} Submit={SubmitUpdateInitiative} companyList={companyList}/>
       </div>
-
 
       <div className="w-fit justify-center mt-2 py-1 px-5 outline outline-1 outline-[#879794] rounded">
         <input type='radio' id='showAll' value='all' name='clientDisplay' className="mr-1"/>
@@ -122,9 +121,10 @@ export default function ManageInitiativesDisplay() {
 
     </div>
     
-
     <div className="col-span-4 py-[10px] flex">
+      
       <InitiativesTable companyList={companyList}/>
+
       <div className="w-[10%]">
         <div className="h-[25px]" />
         {
@@ -146,7 +146,9 @@ export default function ManageInitiativesDisplay() {
           })
         }
       </div>
+
       <EditInitiativeModal editInitiativeIsOpen={EditInitiativeIsOpen} setEditInitiativeIsOpen={setEditInitiativeIsOpen} initiative={selectedInitiative} company={selectedCompany} submitUpdateInitiative={SubmitUpdateInitiative}/>
+    
     </div>
   </div>
   )

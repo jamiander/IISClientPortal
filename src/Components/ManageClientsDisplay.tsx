@@ -143,10 +143,10 @@ export default function ManageClientDisplay() {
 
   return (
     <div className="col-span-4">
-      <div className="bg-[#2ed7c3] rounded-md p-2 pl-5">
+      <div className="bg-[#2ed7c3] rounded-md py-3 px-5">
 
         <div className="w-full flex justify-between">
-          <p className="text-3xl h-[90%]">Clients</p>
+          <p className="text-3xl">Clients</p>
           <AddUserModal userModalIsOpen={userModalIsOpen} closeUserModal={closeUserModal} openUserModal={openUserModal} setCompanyName={setCompanyName} setEmail={setEmail} setName={setName} setPassword={setPassword} companyList={companyList} submitNewUser={SubmitNewUser} />
         </div>
   
