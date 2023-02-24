@@ -3,7 +3,6 @@ import { useOutletContext } from "react-router-dom";
 import { DateInfo } from "../Services/CompanyService";
 import { Company, Initiative, selectAllCompanies, updateInitiativeInfo } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
-import AddInitiativeModal from "./AddInitiativeModal"
 import InitiativeModal from "./InitiativeModal";
 import InitiativesButton from "./InitiativesButton";
 import InitiativesTable from "./InitiativesTable"
