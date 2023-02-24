@@ -143,20 +143,26 @@ export default function ManageClientDisplay() {
 
   return (
     <div className="col-span-4">
-      <div className="flex justify-between bg-[#2ed7c3] rounded-md p-2 pl-5">
-        <p className="text-3xl h-[90%]">Clients</p>
-        <AddUserModal userModalIsOpen={userModalIsOpen} closeUserModal={closeUserModal} openUserModal={openUserModal} setCompanyName={setCompanyName} setEmail={setEmail} setName={setName} setPassword={setPassword} companyList={companyList} submitNewUser={SubmitNewUser} />
-      </div>
+      <div className="bg-[#2ed7c3] rounded-md py-3 px-5">
+
+        <div className="w-full flex justify-between">
+          <p className="text-3xl">Clients</p>
+          <AddUserModal userModalIsOpen={userModalIsOpen} closeUserModal={closeUserModal} openUserModal={openUserModal} setCompanyName={setCompanyName} setEmail={setEmail} setName={setName} setPassword={setPassword} companyList={companyList} submitNewUser={SubmitNewUser} />
+        </div>
   
-      <div className="w-1/3">
-        <input type='radio' id='showAll' value='all' name='clientDisplay' className="mr-1"/>
-        <label htmlFor='showAll' className="mr-5">Show All</label>
-        <input type='radio' id='showActive' value='active' name='clientDisplay' defaultChecked className="mr-1"/>
-        <label htmlFor='showActive' className="mr-5">Only Active</label>
-        <input type='radio' id='showInactive' value='inactive' name='clientDisplay' className="mr-1"/>
-        <label htmlFor='showInactive' className="mr-5">Only Inactive</label>
+      <div className="w-fit justify-center mt-2 py-1 px-5 outline outline-1 outline-[#879794] rounded">
+          <input type='radio' id='showAll' value='all' name='clientDisplay' className="mr-1"/>
+          <label htmlFor='showAll' className="mr-5">Show All</label>
+
+          <input type='radio' id='showActive' value='active' name='clientDisplay' defaultChecked className="mr-1"/>
+          <label htmlFor='showActive' className="mr-5">Only Active</label>
+          
+          <input type='radio' id='showInactive' value='inactive' name='clientDisplay' className="mr-1"/>
+          <label htmlFor='showInactive' className="">Only Inactive</label>
+        </div>
+
       </div>
-       
+         
       <div className="col-span-4 py-[10px] flex">
         <UsersTable userList={Sorter({users:userList})} companyList={companyList}/>
         <div className="w-[10%]">

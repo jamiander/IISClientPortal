@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { /*AddUser,*/ GetAllUsers } from "../Services/UserService";
+import { /*AddUser, GetAllUsers*/ } from "../Services/UserService";
 import { RootState } from "./Store";
 
 export interface User {
