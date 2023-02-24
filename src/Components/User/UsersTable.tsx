@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Company } from "../Store/CompanySlice";
-import { User } from "../Store/UserSlice"
+import { Company } from "../../Store/CompanySlice";
+import { User } from "../../Store/UserSlice"
 import EditUserModal from "./EditUserModal";
 
 interface UsersTableProps {

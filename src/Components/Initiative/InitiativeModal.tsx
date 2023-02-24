@@ -1,10 +1,10 @@
-import { Company, Initiative, selectAllCompanies } from "../Store/CompanySlice"
-import { cancelButtonStyle, inputStyle, modalStyle, submitButtonStyle } from "../Styles"
+import { Company, Initiative, selectAllCompanies } from "../../Store/CompanySlice"
+import { cancelButtonStyle, inputStyle, modalStyle, submitButtonStyle } from "../../Styles"
 import Modal from 'react-modal';
 import { useEffect, useState } from "react";
-import { DateInput } from "./DateInput";
-import { DateInfo } from "../Services/CompanyService";
-import { useAppSelector } from "../Store/Hooks";
+import { DateInput } from "./../DateInput";
+import { DateInfo } from "../../Services/CompanyService";
+import { useAppSelector } from "../../Store/Hooks";
 
 interface InitiativeModalProps {
 	title: string

@@ -1,6 +1,6 @@
 import Modal from 'react-modal';
-import { cancelButtonStyle, inputStyle, modalStyle, submitButtonStyle } from '../Styles';
-import { Company } from '../Store/CompanySlice';
+import { cancelButtonStyle, inputStyle, modalStyle, submitButtonStyle } from '../../Styles';
+import { Company } from '../../Store/CompanySlice';
 
 interface AddUserProps {
   userModalIsOpen: boolean,

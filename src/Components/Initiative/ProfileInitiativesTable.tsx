@@ -1,6 +1,6 @@
-import { selectAllCompanies } from "../Store/CompanySlice";
-import { useAppSelector } from "../Store/Hooks";
-import { selectCurrentUser } from "../Store/UserSlice";
+import { selectAllCompanies } from "../../Store/CompanySlice";
+import { useAppSelector } from "../../Store/Hooks";
+import { selectCurrentUser } from "../../Store/UserSlice";
 
 export default function ProfileInitiativesTable(){
     const user = useAppSelector(selectCurrentUser);
