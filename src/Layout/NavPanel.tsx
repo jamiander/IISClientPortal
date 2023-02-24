@@ -22,7 +22,7 @@ export default function NavPanel(props: NavProps){
   return(
     <div className="grid place-items-center p-[2%] space-y-3">
       
-        {isLoggedIn && <p className="text-3xl">Navigation</p>}
+      {isLoggedIn && <p className="text-3xl">Navigation</p>}
       
       {isLoggedIn && <button className="outline bg-[#21345b] hover:bg-[#445362] text-white h-12 w-[90%] rounded-md" 
           onClick={() => navHandler('/Dashboard')}>
