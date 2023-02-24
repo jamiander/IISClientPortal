@@ -27,7 +27,7 @@ export default function EditInitiativeModal(props: EditInitiativeProps) {
     <Modal
       isOpen={props.editInitiativeIsOpen}
       onRequestClose={() => props.setEditInitiativeIsOpen(false)}
-      style={{'content': {...modalStyle.content, 'width' : '25%', 'height' : '47%'}}}
+      style={{'content': {...modalStyle.content, 'width' : '25%'}}}
       appElement={document.getElementById('root') as HTMLElement}     
     >
 
@@ -47,23 +47,23 @@ export default function EditInitiativeModal(props: EditInitiativeProps) {
           <div className='flex'>
             <div className='w-24 mx-2'>
               <p>Month </p>
-              <input defaultValue={props.initiative.targetDate.month} id='modalMonth' className={inputStyle} maxLength={2}
+              <input defaultValue={props.initiative.targetDate.month} id='modalMonth' className={inputStyle} maxLength={2} placeholder='MM'
                 onChange={(e) => setInitiativeTargetDate({...initiativeTargetDate, month: e.target.value})}
-                placeholder='MM'/>
+              />
             </div>
             
             <div className='w-24 mx-2'>
               <p>Day </p>
-              <input defaultValue={props.initiative.targetDate.day} id='modalDay' className={inputStyle} maxLength={2}
+              <input defaultValue={props.initiative.targetDate.day} id='modalDay' className={inputStyle} maxLength={2} placeholder='DD'
                 onChange={(e) => setInitiativeTargetDate({...initiativeTargetDate, day: e.target.value})}
-                placeholder='DD'/>
+              />
             </div>
 
             <div className='w-24 mx-2'>
               <p>Year </p>        
-              <input defaultValue={props.initiative.targetDate.year} id='modalYear' className={inputStyle} maxLength={4} 
+              <input defaultValue={props.initiative.targetDate.year} id='modalYear' className={inputStyle} maxLength={4} placeholder='YYYY'
                 onChange={(e) => setInitiativeTargetDate({...initiativeTargetDate, year: e.target.value})}
-                placeholder='YYYY'/>
+              />
             </div>
           </div>
         </div>
@@ -77,16 +77,18 @@ export default function EditInitiativeModal(props: EditInitiativeProps) {
             onChange={(e) => setInitiativeTotalItems(parseInt(e.target.value))}/>
         </div>
         <div className='h-10'>
-          <button className={submitButtonStyle + ' mt-6'} onClick={() => {
-            let initiative: Initiative = {
-              id: props.initiative.id,
-              title: initiativeTitle,
-              targetDate: initiativeTargetDate,
-              totalItems: initiativeTotalItems,
-              itemsCompletedOnDate: props.initiative.itemsCompletedOnDate
-            }
-            props.submitUpdateInitiative(initiative, props.company.id);
-          }}>Submit</button>
+          <button className={submitButtonStyle + ' mt-6'} 
+            onClick={() => {
+              let initiative: Initiative = {
+                id: props.initiative.id,
+                title: initiativeTitle,
+                targetDate: initiativeTargetDate,
+                totalItems: initiativeTotalItems,
+                itemsCompletedOnDate: props.initiative.itemsCompletedOnDate
+              }
+              props.submitUpdateInitiative(initiative, props.company.id);
+            }}> Submit
+          </button>
           <button className={cancelButtonStyle} onClick={() => props.setEditInitiativeIsOpen(false)}>Cancel</button>
         </div>
       </div>
