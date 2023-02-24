@@ -4,7 +4,6 @@ import Sorter from "../Services/Sorter";
 import { Company, selectAllCompanies, updateCompanyInfo } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
 import { selectAllUsers, User } from "../Store/UserSlice";
-import AddUserModal from "./AddUserModal";
 import EditUserModal from "./EditUserModal";
 import UsersTable from "./UsersTable";
 
@@ -14,11 +13,7 @@ export default function ManageUsersDisplay() {
   const fakeCompany : Company = {id: -1, name: "", initiatives: []}
 
   const dispatch = useAppDispatch();
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [companyName, setCompanyName] = useState('');
-  const [userModalIsOpen, setUserIsOpen] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
   const [EditUserIsOpen, setEditUserIsOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(fakeUser);
   const [selectedCompany, setSelectedCompany] = useState(fakeCompany);
@@ -26,50 +21,6 @@ export default function ManageUsersDisplay() {
   const userList = useAppSelector(selectAllUsers);
   const companyList = useAppSelector(selectAllCompanies);
   const ShowToast : (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void = useOutletContext();
-
-  function SubmitNewUser(newCompanyName: string, newEmail: string, newPassword: string)
-  {
-    let newCompanyId = -1;
-    setCompanyName(newCompanyName); setEmail(newEmail); setPassword(newPassword);
-  
-    let newUser: User = {
-      id: -1,
-      companyId: newCompanyId,
-      email: newEmail,
-      password: newPassword
-    }
-    if(name)
-      newUser.name = name;
-    
-    let newCompany: Company = {
-      id: newCompanyId,
-      name: newCompanyName,
-      initiatives: []
-    }
-    console.log('newUser', newUser, 'newCompany', newCompany);
-
-    let isTest = false;
-    if((window as any).Cypress)
-      isTest = true;
-    
-    console.log('cypress: ' + isTest)
-
-    //dispatch(addUser({user: newUser,isTest: isTest}));
-    const validation = ValidateNewUser();
-    if(validation.success)
-    {
-      dispatch(updateCompanyInfo({company: newCompany, employee: newUser, isTest: isTest}));
-      ShowToast('New User Dispatched', 'Success');
-      setCompanyName('');
-      setName('');
-      setEmail('');
-      setPassword('');
-
-      setEditUserIsOpen(false);
-    }
-    else
-      ShowToast('Validation Failed: ' + validation.message, 'Error');
-  }
 
   function SubmitUpdateUser(companyName: string, email: string, password: string)
   {
@@ -80,7 +31,11 @@ export default function ManageUsersDisplay() {
     if((window as any).Cypress)
       isTest = true;
 
-    let validation = ValidateEdit(company.name, company.id, user.email, user.password, user.id)
+    let validation;
+
+    if (isEdit) validation = ValidateEdit(company.name, company.id, user.email, user.password, user.id)
+    else validation = ValidateNewUser(company.name, user.email, user.password);
+
     if(validation.success) {
       dispatch(updateCompanyInfo({ company: company, employee: user, isTest: isTest}));
       setSelectedCompany(fakeCompany); setSelectedUser(fakeUser);
@@ -90,17 +45,17 @@ export default function ManageUsersDisplay() {
       ShowToast('Validation Failed: ' + validation.message, 'Error');
   }
 
-  function ValidateNewUser() : {success: boolean, message: string}
+  function ValidateNewUser(newCompanyName: string, newEmail: string, newPassword: string) : {success: boolean, message: string}
   {
-    let matchingCompany = companyList.find(company => company.name.toUpperCase() === companyName.toUpperCase());
+    let matchingCompany = companyList.find(company => company.name.toUpperCase() === newCompanyName.toUpperCase());
     if(matchingCompany)
       return {success: false, message: "Cannot use the name of an existing company."};
 
-    let matchingUser = userList.find(user => user.email.toUpperCase() === email.toUpperCase());
+    let matchingUser = userList.find(user => user.email.toUpperCase() === newEmail.toUpperCase());
     if(matchingUser)
       return {success: false, message: "Cannot use the email of an existing user."};
 
-    if(companyName && email && password)
+    if(newCompanyName && newEmail && newPassword)
       return {success: true, message: "Successfully validated new user!"}
     
     return {success: false, message: "Cannot leave any fields blank."};
@@ -127,6 +82,7 @@ export default function ManageUsersDisplay() {
   {
     if(company)
     {
+      setIsEdit(true);
       setEditUserIsOpen(true);
       setSelectedCompany(company);
       setSelectedUser(user);
@@ -147,13 +103,10 @@ export default function ManageUsersDisplay() {
 
         <div className="w-full flex justify-between">
           <p className="text-3xl">Clients</p>
-          {/* <AddUserModal userModalIsOpen={userModalIsOpen} closeUserModal={closeUserModal} openUserModal={openUserModal} setCompanyName={setCompanyName} setEmail={setEmail} setName={setName} setPassword={setPassword} companyList={companyList} submitNewUser={SubmitNewUser} /> */}
-          <button className="outline bg-[#21345b] text-white w-28 rounded-md" onClick={() => setEditUserIsOpen(true)} >  
+          <button className="outline bg-[#21345b] text-white w-28 rounded-md" onClick={() => {setEditUserIsOpen(true); setIsEdit(false);}} >  
             Add Client
           </button>
         </div>
-
-        <EditUserModal EditUserIsOpen={EditUserIsOpen} handleCloseEditUser={handleCloseEditUser} user={selectedUser} company={selectedCompany} SubmitUpdateUser={SubmitNewUser} isEdit={false}/>
 
         <div className="w-fit justify-center mt-2 py-1 px-5 outline outline-1 outline-[#879794] rounded">
           <input type='radio' id='showAll' value='all' name='clientDisplay' className="mr-1"/>
@@ -174,7 +127,7 @@ export default function ManageUsersDisplay() {
         <div className="w-[10%]">
 
           <div className="h-6">
-            <EditUserModal EditUserIsOpen={EditUserIsOpen} handleCloseEditUser={handleCloseEditUser} user={selectedUser} company={selectedCompany} SubmitUpdateUser={SubmitUpdateUser} isEdit={true}/>
+            <EditUserModal EditUserIsOpen={EditUserIsOpen} handleCloseEditUser={handleCloseEditUser} user={selectedUser} company={selectedCompany} SubmitUser={SubmitUpdateUser} isEdit={isEdit}/>
           </div>
 
           {

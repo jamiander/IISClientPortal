@@ -27,6 +27,7 @@ export default function AddUserModal(props: AddUserProps) {
             style={{'content': {...modalStyle.content, 'width': '25%'}}}
             appElement={document.getElementById('root') as HTMLElement}
         >
+          
           <div className="w-full">
             <p className="text-3xl">Add Client</p>
             
@@ -51,6 +52,7 @@ export default function AddUserModal(props: AddUserProps) {
             <p className='my-1'>Password:</p>
             <input id="modalPassword" onChange={(e)=>props.setPassword(e.target.value)} className={inputStyle}/>
           </div>
+
           <div className='mt-2 h-10'>
 
             <button className={submitButtonStyle} onClick={() => props.submitNewUser()}>Submit</button>
