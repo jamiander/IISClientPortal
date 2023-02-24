@@ -29,6 +29,7 @@ describe('update company spec', () => {
     cy.get(modalIds.password).clear().type(company.password);
     cy.get('button').contains('Submit').click();
 
+    cy.get('#showAll').click();
     cy.get('table').contains(company.name);
     //cy.get('#toast-default').contains('User Update Dispatched');
   })

@@ -23,6 +23,7 @@ describe('add company spec', () => {
     cy.get(modalIds.password).clear().type('test');
     cy.get('button').contains('Submit').click();
 
+    cy.get('#showAll').click();
     cy.contains('Test Company');
   })
 
