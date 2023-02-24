@@ -57,77 +57,25 @@ export default function InitiativesButton(props:InitiativesButtonProps){
       console.log("Couldn't find company at handleEditInitiative (adminpage)")
   }
 
-  if(props.radioStatus === 'active'){
-    return(
-        <>
-        <div className="w-[10%]">
-            <div className="h-[25px]" />
-            {props.companyList.map((company, index) => {
-                return (
-                    ActiveInitiativesFilter(company.initiatives).map((initiative, index) => {
-                        return (
-                            <div key={index} className={'py-1 flex self-end'}>
-                                <button className=" mx-2 bg-[#21345b] text-sm text-white w-full h-8 rounded-md outline"
-                                    onClick={() => handleEditInitiative(company, initiative)}
-                                >
-                                    Edit Initiative
-                                </button>
-                            </div>
-                        );
-                    })
-                );
-            })}
-        </div>
-        <InitiativeModal title='Edit Initiative' initiativeIsOpen={EditInitiativeIsOpen} setInitiativeIsOpen={setEditInitiativeIsOpen} initiative={selectedInitiative} company={selectedCompany} Submit={SubmitUpdateInitiative} /></>
-    )
-  }
-  else if(props.radioStatus === 'inactive'){
-    return(
-        <>
-        <div className="w-[10%]">
-            <div className="h-[25px]" />
-            {props.companyList.map((company, index) => {
-                return (
-                    InactiveInitiativesFilter(company.initiatives).map((initiative, index) => {
-                        //company.initiatives.map((initiative, index) => {
-                        return (
-                            <div key={index} className={'py-1 flex self-end'}>
-                                <button className=" mx-2 bg-[#21345b] text-sm text-white w-full h-8 rounded-md outline"
-                                    onClick={() => handleEditInitiative(company, initiative)}
-                                >
-                                    Edit Initiative
-                                </button>
-                            </div>
-                        );
-                    })
-                );
-            })}
-        </div>
-        <InitiativeModal title='Edit Initiative' initiativeIsOpen={EditInitiativeIsOpen} setInitiativeIsOpen={setEditInitiativeIsOpen} initiative={selectedInitiative} company={selectedCompany} Submit={SubmitUpdateInitiative} /></>
-    )
-  }
-   else{
-    return(
-        <>
-        <div className="w-[10%]">
-            <div className="h-[25px]" />
-            {props.companyList.map((company, index) => {
-                return (
-                        company.initiatives.map((initiative, index) => {
-                        return (
-                            <div key={index} className={'py-1 flex self-end'}>
-                                <button className=" mx-2 bg-[#21345b] text-sm text-white w-full h-8 rounded-md outline"
-                                    onClick={() => handleEditInitiative(company, initiative)}
-                                >
-                                    Edit Initiative
-                                </button>
-                            </div>
-                        );
-                    })
-                );
-            })}
-        </div>
-        <InitiativeModal title='Edit Initiative' initiativeIsOpen={EditInitiativeIsOpen} setInitiativeIsOpen={setEditInitiativeIsOpen} initiative={selectedInitiative} company={selectedCompany} Submit={SubmitUpdateInitiative} /></>
-    )
-   } 
+  return(
+    <div className="w-[10%]">
+			<div className="h-[25px]" />
+				<InitiativeModal title='Edit Initiative' initiativeIsOpen={EditInitiativeIsOpen} setInitiativeIsOpen={setEditInitiativeIsOpen} initiative={selectedInitiative} company={selectedCompany} Submit={SubmitUpdateInitiative} />
+				{props.companyList.map((company, index) => {
+					return (
+						(props.radioStatus === 'active' ? ActiveInitiativesFilter(company.initiatives) : (props.radioStatus === 'inactive' ? InactiveInitiativesFilter(company.initiatives) : company.initiatives)).map((initiative, index) => {
+							return (
+								<div key={index} className={'py-1 flex self-end'}>
+										<button className=" mx-2 bg-[#21345b] text-sm text-white w-full h-8 rounded-md outline"
+												onClick={() => handleEditInitiative(company, initiative)}
+										>
+												Edit Initiative
+										</button>
+								</div>
+							);
+						})
+					)
+				})}
+			</div>
+		)
 }

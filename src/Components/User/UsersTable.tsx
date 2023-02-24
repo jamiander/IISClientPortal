@@ -1,8 +1,8 @@
 import { useState } from "react";
 import ActiveCompaniesFilter from "../../Services/ActiveCompaniesFilter";
+import InactiveCompaniesFilter from "../../Services/InactiveCompaniesFilter";
 import { Company } from "../../Store/CompanySlice";
 import { User } from "../../Store/UserSlice";
-import EditUserModal from "./EditUserModal";
 
 interface UsersTableProps {
   userList: User[]
@@ -11,8 +11,8 @@ interface UsersTableProps {
 }
 
 export default function UsersTable(props: UsersTableProps){
-  const [EditUserIsOpen, setEditUserIsOpen] = useState(false);
-  const filteredUsers = ActiveCompaniesFilter(props.userList);
+  const activeClients = ActiveCompaniesFilter(props.userList);
+  const inactiveClients = InactiveCompaniesFilter(props.userList);
 
     function PasswordDisplay(user:User){
         const [passwordShown, setPasswordShown] = useState(false);
@@ -38,7 +38,7 @@ export default function UsersTable(props: UsersTableProps){
           </tr>
         </thead>
         <tbody>
-          {filteredUsers.map((user, index)=>{
+          {activeClients.map((user, index)=>{
             const company = props.companyList.find(company => company.id === user.companyId);
             return(
               <tr key={index}>
@@ -65,7 +65,7 @@ export default function UsersTable(props: UsersTableProps){
           </tr>
         </thead>
         <tbody>
-          {filteredUsers.map((user, index)=>{
+          {inactiveClients.map((user, index)=>{
             const company = props.companyList.find(company => company.id === user.companyId);
             return(
               <tr key={index}>
