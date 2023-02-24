@@ -8,8 +8,6 @@ import AddUserModal from "./AddUserModal";
 import EditUserModal from "./EditUserModal";
 import UsersTable from "./UsersTable";
 
-
-
 export default function ManageClientDisplay() {
 
   const fakeUser : User = {id: -1, email: 'fake@fake', password: 'fake', companyId: -1};
@@ -28,9 +26,6 @@ export default function ManageClientDisplay() {
   const userList = useAppSelector(selectAllUsers);
   const companyList = useAppSelector(selectAllCompanies);
   const ShowToast : (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void = useOutletContext();
-
-
-
 
   function openUserModal(){
     setUserIsOpen(true);
@@ -153,15 +148,15 @@ export default function ManageClientDisplay() {
         <AddUserModal userModalIsOpen={userModalIsOpen} closeUserModal={closeUserModal} openUserModal={openUserModal} setCompanyName={setCompanyName} setEmail={setEmail} setName={setName} setPassword={setPassword} companyList={companyList} submitNewUser={SubmitNewUser} />
       </div>
   
-  
-      <div>
-        <input type='radio' id='showAll' value='all' name='clientDisplay'/>
-        <label htmlFor='showAll'>Show All</label>
-        <input type='radio' id='showActive' value='active' name='clientDisplay' defaultChecked/>
-        <label htmlFor='showActive'>Only Active</label>
-        <input type='radio' id='showInactive' value='inactive' name='clientDisplay'/>
-        <label htmlFor='showInactive'>Only Inactive</label>
+      <div className="w-1/3">
+        <input type='radio' id='showAll' value='all' name='clientDisplay' className="mr-1"/>
+        <label htmlFor='showAll' className="mr-5">Show All</label>
+        <input type='radio' id='showActive' value='active' name='clientDisplay' defaultChecked className="mr-1"/>
+        <label htmlFor='showActive' className="mr-5">Only Active</label>
+        <input type='radio' id='showInactive' value='inactive' name='clientDisplay' className="mr-1"/>
+        <label htmlFor='showInactive' className="mr-5">Only Inactive</label>
       </div>
+       
       <div className="col-span-4 py-[10px] flex">
         <UsersTable userList={Sorter({users:userList})} companyList={companyList}/>
         <div className="w-[10%]">
