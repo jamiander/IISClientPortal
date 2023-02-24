@@ -35,8 +35,11 @@ export default function Header(){
       {isLoggedIn && <p className="text-2xl self-center">{greet}</p>}
     </div>
     <div className="flex w-[50%] justify-end self-end">
-    {!isLoggedIn && <button className="bg-[#21345b] text-white h-[40px] w-[80px] my-[5px] rounded-md outline" onClick={()=>navigate('/Login')}>Log In</button>}
-    {isLoggedIn && <button className="bg-[#21345b] text-white h-[40px] w-[80px] my-[5px] rounded-md outline" onClick={()=>{dispatch(signOut()); navigate('/Login')}}>Log Out</button>}
+    {
+      !isLoggedIn ?
+        <button className="bg-[#21345b] hover:bg-[#445362] text-white p-2 px-3 my-1 rounded-md outline" onClick={()=>navigate('/Login')}>Log In</button> :
+        <button className="bg-[#21345b] hover:bg-[#445362] text-white p-2 px-3 my-1 rounded-md outline" onClick={()=>{dispatch(signOut()); navigate('/Login')}}>Log Out</button>
+    }
     </div>
   </div>
   )

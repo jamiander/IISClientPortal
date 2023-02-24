@@ -22,26 +22,25 @@ export default function NavPanel(props: NavProps){
   return(
     <div className="grid place-items-center p-[2%] space-y-3">
       
-        {isLoggedIn && <p className="text-3xl">Navigation</p>}
+      <p className="text-3xl">Navigation</p>
       
-      {isLoggedIn && <button className="outline bg-[#21345b] hover:bg-[#445362] text-white h-12 w-[90%] rounded-md" 
+      <button className="outline bg-[#21345b] hover:bg-[#445362] text-white h-12 w-[90%] rounded-md" 
           onClick={() => navHandler('/Dashboard')}>
           Dashboard
-      </button>}
+      </button>
       
       {
-        currentuser?.companyId === 0 && 
+        currentuser?.companyId === 0 ? 
           <button className="outline bg-[#21345b] hover:bg-[#445362] text-white h-12 w-[90%] rounded-md"
             disabled={!isLoggedIn} onClick={() => navHandler('/Admin')}>
               Admin
+          </button> :
+          <button className="outline bg-[#21345b] hover:bg-[#445362] text-white h-12 w-[90%] rounded-md" 
+            onClick={() => navHandler('/Profile')}>
+              Profile
           </button>
       }
       
-      {isLoggedIn && <button className="outline bg-[#21345b] hover:bg-[#445362] text-white h-12 w-[90%] rounded-md" 
-         onClick={() => navHandler('/Profile')}>
-          Profile
-      </button>}
-
     </div>  
   )
 }

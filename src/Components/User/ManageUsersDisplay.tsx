@@ -105,7 +105,7 @@ export default function ManageUsersDisplay() {
 
         <div className="w-full flex justify-between">
           <p className="text-3xl">Clients</p>
-          <button className="outline bg-[#21345b] text-white w-28 rounded-md" onClick={() => {setEditUserIsOpen(true); setIsEdit(false);}} >  
+          <button className="outline bg-[#21345b] hover:bg-[#445362] text-white w-28 rounded-md" onClick={() => {setEditUserIsOpen(true); setIsEdit(false);}} >  
             Add Client
           </button>
         </div>
@@ -137,7 +137,7 @@ export default function ManageUsersDisplay() {
               const company = companyList.find(company => company.id === user.companyId);
               return (
                 <div key={index} className={'py-[10px] my-[10px] flex self-end'}>
-                  <button className=" mx-2 bg-[#21345b] text-sm text-white w-full h-10 rounded-md outline"
+                  <button className=" mx-2 bg-[#21345b] hover:bg-[#445362] text-sm text-white w-full h-10 rounded-md outline"
                     onClick={() => handleEditUser(user, company)}
                   >  
                       Edit Client
