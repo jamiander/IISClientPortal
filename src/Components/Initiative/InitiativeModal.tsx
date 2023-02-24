@@ -15,6 +15,17 @@ interface InitiativeModalProps {
 	company?: Company
 }
 
+export const InitiativeModalIds = {
+	company: "initModalCompany",
+	title: "initModalTitle",
+	date: {
+		month: "initModalMonth",
+		day: "initModalDay",
+		year: "initModalYear"
+	},
+	totalItems: "initModalTotalItems",
+}
+
 export default function InitiativeModal(props: InitiativeModalProps){
   const emptyDate: DateInfo = {month: "", day: "", year: ""}
   const companyList = useAppSelector(selectAllCompanies);
@@ -41,7 +52,7 @@ export default function InitiativeModal(props: InitiativeModalProps){
 
 			<div className='w-full'>
 				<p className='my-1'>Company{props.company ? ": " + props.company.name : 
-					<select id='modalCompany' onChange={(e) => setInitiativeCompanyId(parseInt(e.target.value))} 
+					<select id={InitiativeModalIds.company} onChange={(e) => setInitiativeCompanyId(parseInt(e.target.value))} 
 					className='outline outline-1 rounded p-2'
 					>
 						<option>Select Company</option>
@@ -56,16 +67,16 @@ export default function InitiativeModal(props: InitiativeModalProps){
 				</p>
 
 				<p className='my-1'>Title</p>
-				<input defaultValue={props.initiative?.title} id='modalTitle' className={inputStyle + ' w-3/4'}
+				<input defaultValue={props.initiative?.title} id={InitiativeModalIds.title} className={inputStyle + ' w-3/4'}
           onChange={(e) => {setInitiativeTitle(e.target.value)}}/>
 				
-				<DateInput heading={'Target Completion'} initiativeTargetDate={initiativeTargetDate} setInitiativeTargetDate={setInitiativeTargetDate}/>
+				<DateInput heading={'Target Completion'} initiativeTargetDate={initiativeTargetDate} setInitiativeTargetDate={setInitiativeTargetDate} inputIds={InitiativeModalIds.date}/>
 			</div>
       
       <div className='mt-2 justify-between flex'>
           <div className='w-24'>
             <p>Total Items</p>
-            <input id='modalTotalItems' type={'number'} className={inputStyle} onChange={(e) => {setInitiativeTotalItems(parseInt(e.target.value))}}/>
+            <input id={InitiativeModalIds.totalItems} type={'number'} className={inputStyle} onChange={(e) => {setInitiativeTotalItems(parseInt(e.target.value))}}/>
           </div>
   
           <div className='h-10'>

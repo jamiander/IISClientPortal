@@ -18,6 +18,8 @@ export default function ManageUsersDisplay() {
   const [selectedUser, setSelectedUser] = useState(fakeUser);
   const [selectedCompany, setSelectedCompany] = useState(fakeCompany);
 
+  const [radioValue, setRadioValue] = useState('active')
+
   const userList = useAppSelector(selectAllUsers);
   const companyList = useAppSelector(selectAllCompanies);
   const ShowToast : (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void = useOutletContext();
@@ -107,23 +109,22 @@ export default function ManageUsersDisplay() {
             Add Client
           </button>
         </div>
-
-        <div className="w-fit justify-center mt-2 py-1 px-5 outline outline-1 outline-[#879794] rounded">
-          <input type='radio' id='showAll' value='all' name='clientDisplay' className="mr-1"/>
+  
+      <div className="w-fit justify-center mt-2 py-1 px-5 outline outline-1 outline-[#879794] rounded">
+          <input type='radio' id='showAll' value='all' name='clientDisplay' className="mr-1" onClick={()=>setRadioValue('all')}/>
           <label htmlFor='showAll' className="mr-5">Show All</label>
 
-          <input type='radio' id='showActive' value='active' name='clientDisplay' defaultChecked className="mr-1"/>
+          <input type='radio' id='showActive' value='active' name='clientDisplay' defaultChecked className="mr-1" onClick={()=>setRadioValue('active')}/>
           <label htmlFor='showActive' className="mr-5">Only Active</label>
           
-          <input type='radio' id='showInactive' value='inactive' name='clientDisplay' className="mr-1"/>
+          <input type='radio' id='showInactive' value='inactive' name='clientDisplay' className="mr-1" onClick={()=>setRadioValue('inactive')}/>
           <label htmlFor='showInactive' className="">Only Inactive</label>
         </div>
 
       </div>
          
       <div className="col-span-4 py-[10px] flex">
-
-        <UsersTable userList={Sorter({users:userList})} companyList={companyList}/>
+        <UsersTable userList={Sorter({users:userList})} companyList={companyList} radioStatus={radioValue}/>
         <div className="w-[10%]">
 
           <div className="h-6">
