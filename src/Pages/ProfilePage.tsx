@@ -23,7 +23,7 @@ export default function ProfilePage(){
       <div className="col-span-4 bg-[#2ed7c3] rounded-md p-2 pl-5 my-2">
         <p className="text-3xl h-[90%]">Company Initiatives</p>
       </div>
-      <div className="col-span-4 py-[5px]">
+      <div className="col-span-4 py-1">
         <InitiativesTable companyList={companyList} radioStatus={'active'}/>
       </div>
     </div>

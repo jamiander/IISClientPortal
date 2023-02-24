@@ -4,7 +4,7 @@ import Sorter from "../../Services/Sorter";
 import { Company, selectAllCompanies, updateCompanyInfo } from "../../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
 import { selectAllUsers, User } from "../../Store/UserSlice";
-import EditUserModal from "./EditUserModal";
+import EditUserModal from "./UpdateUserListModal";
 import UsersTable from "./UsersTable";
 
 export default function ManageUsersDisplay() {
