@@ -25,7 +25,6 @@ export default function InitiativesButton(props:InitiativesButtonProps){
 
   const dispatch = useAppDispatch();
   const ShowToast : (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void = useOutletContext();
-  const [radioValue, setRadioValue] = useState('active')
 
   function SubmitUpdateInitiative(initiative: Initiative, companyId: number)
   {

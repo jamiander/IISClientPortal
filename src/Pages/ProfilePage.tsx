@@ -1,6 +1,6 @@
 import InitiativesTable from "../Components/InitiativesTable";
 import ProfileTable from "../Components/ProfileTable";
-import { getCompanyInfo, selectAllCompanies } from "../Store/CompanySlice";
+import { selectAllCompanies } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
 import { selectCurrentUser } from "../Store/UserSlice";
 

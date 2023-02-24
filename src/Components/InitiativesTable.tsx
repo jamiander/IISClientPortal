@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import ActiveInitiativesFilter from "../Services/ActiveInitiativesFilter";
-import InitiativesFilter from "../Services/ActiveInitiativesFilter";
 import InactiveInitiativesFilter from "../Services/InactiveInitiativesFilter";
 import { Company } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";

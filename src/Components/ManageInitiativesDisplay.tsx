@@ -1,25 +1,19 @@
 import { useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import { DateInfo } from "../Services/CompanyService";
-import InitiativesFilter from "../Services/ActiveInitiativesFilter"
 import { Company, Initiative, selectAllCompanies, updateInitiativeInfo } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
-import { selectAllUsers, User } from "../Store/UserSlice";
 import AddInitiativeModal from "./AddInitiativeModal"
-import EditInitiativeModal from "./EditInitiativeModal"
 import InitiativesButton from "./InitiativesButton";
 import InitiativesTable from "./InitiativesTable"
 
 export default function ManageInitiativesDisplay() {
 
-  const fakeUser : User = {id: -1, email: 'fake@fake', password: 'fake', companyId: -1};
   const fakeCompany : Company = {id: -1, name: "N/A", initiatives: []}
   const fakeInitiative : Initiative = {id: -1, title: "N/A", totalItems: 0, targetDate: {month: "0", day: "0", year: "0000"}, itemsCompletedOnDate: []}
 
-  const userList = useAppSelector(selectAllUsers);
   const companyList = useAppSelector(selectAllCompanies);
 
-  const [selectedUser, setSelectedUser] = useState(fakeUser);
   const [selectedCompany, setSelectedCompany] = useState(fakeCompany);
   const [selectedInitiative, setSelectedInitiative] = useState(fakeInitiative);
   const [AddInitiativeIsOpen, setAddInitiativeIsOpen] = useState(false);
