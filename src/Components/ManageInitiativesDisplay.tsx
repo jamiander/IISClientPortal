@@ -95,13 +95,13 @@ export default function ManageInitiativesDisplay() {
       </div>
 
       <div className="w-fit justify-center mt-2 py-1 px-5 outline outline-1 outline-[#879794] rounded">
-        <input type='radio' id='showAll' value='all' name='clientDisplay' className="mr-1" onClick={()=>setRadioValue('all')}/>
+        <input type='radio' id='showAll' value='all' name='initiativesDisplay' className="mr-1" onClick={()=>setRadioValue('all')}/>
         <label htmlFor='showAll' className="mr-5">Show All</label>
 
-        <input type='radio' id='showActive' value='active' name='clientDisplay' defaultChecked className="mr-1" onClick={()=>setRadioValue('active')}/>
+        <input type='radio' id='showActive' value='active' name='initiativesDisplay' defaultChecked className="mr-1" onClick={()=>setRadioValue('active')}/>
         <label htmlFor='showActive' className="mr-5">Only Active</label>
 
-        <input type='radio' id='showInactive' value='inactive' name='clientDisplay' className="mr-1" onClick={()=>setRadioValue('inactive')}/>
+        <input type='radio' id='showInactive' value='inactive' name='initiativesDisplay' className="mr-1" onClick={()=>setRadioValue('inactive')}/>
         <label htmlFor='showInactive' className="">Only Inactive</label>
       </div>
 
