@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { SetStateAction, useState } from 'react';
 import Modal from 'react-modal';
 import { Company, Initiative } from '../Store/CompanySlice';
 import { cancelButtonStyle, inputStyle, modalStyle, submitButtonStyle } from '../Styles';
 import { DateInfo } from "../Services/CompanyService";
+import { DateInput } from './DateInput';
 
 interface AddInitiativeProps {
   addInitiativeIsOpen: boolean,
@@ -51,10 +52,11 @@ export default function AddInitiativeModal(props: AddInitiativeProps) {
           <p className='my-1'>Title</p>
           <input id='modalTitle' className={inputStyle + ' w-3/4'} onChange={(e) => {setInitiativeTitle(e.target.value)}}/>
           
-          <div className='my-2 p-2 outline outline-1 outline-[#879794] rounded'>
-            <p className=''>Target Completion</p>
-            <div className='flex'>
-              <div className='w-24 mx-2'>
+          <DateInput heading={'Target Completion'} initiativeTargetDate={initiativeTargetDate} setInitiativeTargetDate={setInitiativeTargetDate}/>
+          {/*<div className='my-[15px] outline outline-2 outline-offset-4 outline-[#879794] rounded'>
+            <p className='mt-2'>Target Completion</p>
+            <div className='flex mb-2 space-x-[5px]'>
+              <div>
                 <p>Month </p>
                 <input id='modalMonth' className={inputStyle} maxLength={2} placeholder='MM'
                   onChange={(e) => {setInitiativeTargetDate({...initiativeTargetDate, month: e.target.value})}}
@@ -75,7 +77,7 @@ export default function AddInitiativeModal(props: AddInitiativeProps) {
                 />
               </div>
             </div>
-          </div>
+          </div>*/}
 
 
         </div>

@@ -2,7 +2,7 @@ import axios from "axios";
 import { User } from "../Store/UserSlice";
 import { BASE_URL, http } from "./Http";
 
-interface GetAllUsersRequest {
+/*interface GetAllUsersRequest {
     id?: number,
     email?: string,
     companyId?: number
@@ -37,7 +37,7 @@ export async function GetAllUsers(request?: GetAllUsersRequest): Promise<User[]>
     //console.log(response)
     return response.data;
 }
-/*
+
 interface AddUserRequest {
     user: User
     isTest: boolean

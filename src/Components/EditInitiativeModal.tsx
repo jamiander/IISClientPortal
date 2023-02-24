@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import { Company, Initiative } from '../Store/CompanySlice';
 import { cancelButtonStyle, inputStyle, modalStyle, submitButtonStyle } from '../Styles';
+import { DateInput} from './DateInput';
 
 interface EditInitiativeProps {
   editInitiativeIsOpen: boolean,
@@ -38,10 +39,10 @@ export default function EditInitiativeModal(props: EditInitiativeProps) {
 
         <p className='my-1'>Title</p>
         <input defaultValue={props.initiative.title} id='modalTitle' className={inputStyle + ' w-3/4'}
-          onChange={(e) => setInitiativeTitle(e.target.value)}
-        />
-        
-        <div className='my-2 p-2 outline outline-1 outline-[#879794] rounded'>
+          onChange={(e) => setInitiativeTitle(e.target.value)}/>
+        <DateInput heading='Target Completion' initiativeTargetDate={initiativeTargetDate} setInitiativeTargetDate={setInitiativeTargetDate} defaultInitiative={props.initiative}/>
+        {/*
+        <div className='my-2 p-2 outline outline-1 outline-gray-500 rounded'>
           <span className=''>Target Completion</span>
           <div className='flex'>
             <div className='w-24 mx-2'>
@@ -66,6 +67,7 @@ export default function EditInitiativeModal(props: EditInitiativeProps) {
             </div>
           </div>
         </div>
+        */}
       </div>
       
       <div className='mt-2 justify-between flex'>
