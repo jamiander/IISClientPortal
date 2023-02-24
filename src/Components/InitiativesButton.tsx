@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import { DateInfo } from "../Services/CompanyService";
-import InitiativesFilter from "../Services/InitiativesFilter"
 import { Company, Initiative, selectAllCompanies, updateInitiativeInfo } from "../Store/CompanySlice"
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
 import EditInitiativeModal from "./EditInitiativeModal";
+import ActiveInitiativesFilter from "../Services/ActiveInitiativesFilter";
+import InactiveInitiativesFilter from "../Services/InactiveInitiativesFilter";
 
 interface InitiativesButtonProps{
     companyList: Company[],
@@ -104,7 +105,7 @@ export default function InitiativesButton(props:InitiativesButtonProps){
             <div className="h-[25px]" />
             {props.companyList.map((company, index) => {
                 return (
-                    InitiativesFilter(company.initiatives).map((initiative, index) => {
+                    ActiveInitiativesFilter(company.initiatives).map((initiative, index) => {
                         return (
                             <div key={index} className={'py-1 flex self-end'}>
                                 <button className=" mx-2 bg-[#21345b] text-sm text-white w-full h-8 rounded-md outline"
@@ -128,7 +129,7 @@ export default function InitiativesButton(props:InitiativesButtonProps){
             <div className="h-[25px]" />
             {props.companyList.map((company, index) => {
                 return (
-                    InitiativesFilter(company.initiatives).map((initiative, index) => {
+                    InactiveInitiativesFilter(company.initiatives).map((initiative, index) => {
                         //company.initiatives.map((initiative, index) => {
                         return (
                             <div key={index} className={'py-1 flex self-end'}>

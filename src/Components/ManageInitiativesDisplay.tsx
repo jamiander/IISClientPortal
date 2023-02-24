@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import { DateInfo } from "../Services/CompanyService";
-import InitiativesFilter from "../Services/InitiativesFilter"
+import InitiativesFilter from "../Services/ActiveInitiativesFilter"
 import { Company, Initiative, selectAllCompanies, updateInitiativeInfo } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
 import { selectAllUsers, User } from "../Store/UserSlice";
