@@ -3,7 +3,6 @@ import ActiveCompaniesFilter from "../../Services/ActiveCompaniesFilter";
 import InactiveCompaniesFilter from "../../Services/InactiveCompaniesFilter";
 import { Company } from "../../Store/CompanySlice";
 import { User } from "../../Store/UserSlice";
-import EditUserModal from "./EditUserModal";
 
 interface UsersTableProps {
   userList: User[]
@@ -12,7 +11,6 @@ interface UsersTableProps {
 }
 
 export default function UsersTable(props: UsersTableProps){
-  const [EditUserIsOpen, setEditUserIsOpen] = useState(false);
   const activeClients = ActiveCompaniesFilter(props.userList);
   const inactiveClients = InactiveCompaniesFilter(props.userList);
 

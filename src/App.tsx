@@ -42,7 +42,7 @@ function App() {
             <NavPanel ShowToast={ShowToast}/>
           </div>
         }
-        <div className={'bg-white h-full ' + span}>
+        <div className={'bg-white h-[84vh] ' + span}>
           <Content ShowToast={ShowToast}/>
           <Toast toastList={toastList} />
         </div>
