@@ -43,7 +43,7 @@ export default function LoginPage(){
         <input type={'checkbox'} onClick={togglePasswordVisibility}/> Show Password
       </div>
       <div className="col-span-4 py-[2%]">
-        <button onClick={()=>Login()} className="outline rounded bg-[#21345b] text-white h-[40px] w-[80px]">Submit</button>
+        <button onClick={()=>Login()} className="outline rounded bg-[#21345b] hover:bg-[#445362] text-white h-[40px] w-[80px]">Submit</button>
       </div>
     </div>
     
