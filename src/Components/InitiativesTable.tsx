@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import InitiativesFilter from "../Services/InitiativesFilter";
 import { Company } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
 import { selectCurrentUser, User } from "../Store/UserSlice";
@@ -43,7 +44,8 @@ export default function InitiativesTable(props: InitiativesProps) {
         {
           companies.map((company, index) => {
             return (
-              company.init.map((initiative, index) => {
+              InitiativesFilter(company.init).map((initiative, index) => {
+              //company.init.map((initiative, index) => {
                 const itemsCompleted = initiative.itemsCompletedOnDate.map((item) => item.itemsCompleted);
                 var total = 0;
                 itemsCompleted.forEach((num) => total += num);
