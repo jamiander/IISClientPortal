@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import ManageClientDisplay from "../Components/ManageClientsDisplay";
+import ManageUsersDisplay from "../Components/ManageUsersDisplay";
 import ManageInitiativesDisplay from "../Components/ManageInitiativesDisplay";
 import { getCompanyInfo } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
@@ -36,7 +36,7 @@ export default function AdminPage(){
         <p className="text-5xl">Admin Page</p>
       </div>
   
-      <ManageClientDisplay />
+      <ManageUsersDisplay />
 
       <ManageInitiativesDisplay />
     </div>

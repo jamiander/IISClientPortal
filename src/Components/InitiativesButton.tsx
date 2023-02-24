@@ -6,10 +6,12 @@ import { useAppDispatch, useAppSelector } from "../Store/Hooks";
 import EditInitiativeModal from "./EditInitiativeModal";
 import ActiveInitiativesFilter from "../Services/ActiveInitiativesFilter";
 import InactiveInitiativesFilter from "../Services/InactiveInitiativesFilter";
+import InitiativeModal from "./InitiativeModal";
 
 interface InitiativesButtonProps{
     companyList: Company[],
-    radioStatus: string
+    radioStatus: string,
+    ValidateInitiative: (initiative: Initiative, companyId: number) => {success: boolean, message: string}
 }
 
 export default function InitiativesButton(props:InitiativesButtonProps){
@@ -34,7 +36,7 @@ export default function InitiativesButton(props:InitiativesButtonProps){
     if((window as any).Cypress)
       isTest = true;
 
-    let validation = ValidateNewInitiative(initiative, companyId);
+    let validation = props.ValidateInitiative(initiative, companyId);
     if(validation.success)
     {
       ShowToast('New Initiative Dispatched', 'Success');
@@ -44,47 +46,6 @@ export default function InitiativesButton(props:InitiativesButtonProps){
     }
     else
       ShowToast('Validation Failed: ' + validation.message,'Error');
-  }
-
-  function ValidateNewInitiative(initiative: Initiative, companyId: number) : {success: boolean, message: string}
-  {
-    if (!initiative.title || !initiative.targetDate.month || !initiative.targetDate.day || !initiative.targetDate.year || !initiative.totalItems)
-      return {success: false, message: "Cannot leave any fields blank."};
-
-    let dateValidation = ValidateDate(initiative.targetDate)
-    if(!dateValidation.success)
-      return dateValidation;
-
-    if(initiative.totalItems < 0)
-      return {success: false, message: "Total items must be a positive value."};
-
-    const matchingCompany = companyList.find(company => company.id === companyId);
-    if(!matchingCompany)
-      return {success: false, message: "A company must be selected."};
-
-      console.log(`title: ${initiative.title}`)
-    const matchingInitiative = matchingCompany.initiatives.find(init => init.title === initiative.title && init.id !== initiative.id);
-    if(matchingInitiative)
-      return {success: false, message: "Initiative names must be unique."}
-
-    return {success: true, message: "Successfully validated; all good!"};
-  }
-
-  function ValidateDate(date: DateInfo) : {success: boolean, message: string}
-  {
-    let month = parseInt(date.month);
-    if(month < 1 || month > 12 || Number.isNaN(month))
-      return {success: false, message: "Month must be between 1 and 12"};
-
-    let day = parseInt(date.day);
-    if(day < 1 || day > 31 || Number.isNaN(day))
-      return {success: false, message: "Day must be between 1 and 31"};
-
-    let year = parseInt(date.year);    //TODO: there's probably a better way to validate years
-    if(year < 0 || year > 9999 || Number.isNaN(year))
-      return {success: false, message: "Year must be a positive value."};
-
-      return {success: true, message: "Date is all good!"}
   }
     
   function handleEditInitiative(company: Company, initiative: Initiative) {
@@ -118,7 +79,7 @@ export default function InitiativesButton(props:InitiativesButtonProps){
                 );
             })}
         </div>
-        <EditInitiativeModal editInitiativeIsOpen={EditInitiativeIsOpen} setEditInitiativeIsOpen={setEditInitiativeIsOpen} initiative={selectedInitiative} company={selectedCompany} submitUpdateInitiative={SubmitUpdateInitiative} /></>
+        <InitiativeModal title='Edit Initiative' initiativeIsOpen={EditInitiativeIsOpen} setInitiativeIsOpen={setEditInitiativeIsOpen} initiative={selectedInitiative} company={selectedCompany} Submit={SubmitUpdateInitiative} /></>
     )
   }
   else if(props.radioStatus === 'inactive'){
