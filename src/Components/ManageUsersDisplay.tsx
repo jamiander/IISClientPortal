@@ -8,10 +8,10 @@ import AddUserModal from "./AddUserModal";
 import EditUserModal from "./EditUserModal";
 import UsersTable from "./UsersTable";
 
-export default function ManageClientDisplay() {
+export default function ManageUsersDisplay() {
 
-  const fakeUser : User = {id: -1, email: 'fake@fake', password: 'fake', companyId: -1};
-  const fakeCompany : Company = {id: -1, name: "N/A", initiatives: []}
+  const fakeUser : User = {id: -1, email: '', password: '', companyId: -1};
+  const fakeCompany : Company = {id: -1, name: "", initiatives: []}
 
   const dispatch = useAppDispatch();
   const [name, setName] = useState('');
@@ -27,31 +27,26 @@ export default function ManageClientDisplay() {
   const companyList = useAppSelector(selectAllCompanies);
   const ShowToast : (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void = useOutletContext();
 
-  function openUserModal(){
-    setUserIsOpen(true);
-  }
-  function closeUserModal(){
-    setUserIsOpen(false);
-  }
-
-  function SubmitNewUser()
+  function SubmitNewUser(newCompanyName: string, newEmail: string, newPassword: string)
   {
     let newCompanyId = -1;
+    setCompanyName(newCompanyName); setEmail(newEmail); setPassword(newPassword);
   
     let newUser: User = {
       id: -1,
       companyId: newCompanyId,
-      email: email,
-      password: password
+      email: newEmail,
+      password: newPassword
     }
     if(name)
       newUser.name = name;
     
     let newCompany: Company = {
       id: newCompanyId,
-      name: companyName,
+      name: newCompanyName,
       initiatives: []
     }
+    console.log('newUser', newUser, 'newCompany', newCompany);
 
     let isTest = false;
     if((window as any).Cypress)
@@ -70,7 +65,7 @@ export default function ManageClientDisplay() {
       setEmail('');
       setPassword('');
 
-      closeUserModal();
+      setEditUserIsOpen(false);
     }
     else
       ShowToast('Validation Failed: ' + validation.message, 'Error');
@@ -128,7 +123,7 @@ export default function ManageClientDisplay() {
     return {success: false, message: "Cannot leave any fields blank."};
   }
 
-  function handleEditClient(user: User, company?: Company) 
+  function handleEditUser(user: User, company?: Company) 
   {
     if(company)
     {
@@ -140,6 +135,11 @@ export default function ManageClientDisplay() {
       console.log("Couldn't find company for user " + user.id + "in handleEditClient (adminpage)")
   }
 
+  function handleCloseEditUser() {
+    setEditUserIsOpen(false);
+    setSelectedCompany(fakeCompany);
+    setSelectedUser(fakeUser);
+  }
 
   return (
     <div className="col-span-4">
@@ -147,10 +147,15 @@ export default function ManageClientDisplay() {
 
         <div className="w-full flex justify-between">
           <p className="text-3xl">Clients</p>
-          <AddUserModal userModalIsOpen={userModalIsOpen} closeUserModal={closeUserModal} openUserModal={openUserModal} setCompanyName={setCompanyName} setEmail={setEmail} setName={setName} setPassword={setPassword} companyList={companyList} submitNewUser={SubmitNewUser} />
+          {/* <AddUserModal userModalIsOpen={userModalIsOpen} closeUserModal={closeUserModal} openUserModal={openUserModal} setCompanyName={setCompanyName} setEmail={setEmail} setName={setName} setPassword={setPassword} companyList={companyList} submitNewUser={SubmitNewUser} /> */}
+          <button className="outline bg-[#21345b] text-white w-28 rounded-md" onClick={() => setEditUserIsOpen(true)} >  
+            Add Client
+          </button>
         </div>
-  
-      <div className="w-fit justify-center mt-2 py-1 px-5 outline outline-1 outline-[#879794] rounded">
+
+        <EditUserModal EditUserIsOpen={EditUserIsOpen} handleCloseEditUser={handleCloseEditUser} user={selectedUser} company={selectedCompany} SubmitUpdateUser={SubmitNewUser} isEdit={false}/>
+
+        <div className="w-fit justify-center mt-2 py-1 px-5 outline outline-1 outline-[#879794] rounded">
           <input type='radio' id='showAll' value='all' name='clientDisplay' className="mr-1"/>
           <label htmlFor='showAll' className="mr-5">Show All</label>
 
@@ -164,9 +169,14 @@ export default function ManageClientDisplay() {
       </div>
          
       <div className="col-span-4 py-[10px] flex">
+
         <UsersTable userList={Sorter({users:userList})} companyList={companyList}/>
         <div className="w-[10%]">
-          <div className="h-[25px]" />
+
+          <div className="h-6">
+            <EditUserModal EditUserIsOpen={EditUserIsOpen} handleCloseEditUser={handleCloseEditUser} user={selectedUser} company={selectedCompany} SubmitUpdateUser={SubmitUpdateUser} isEdit={true}/>
+          </div>
+
           {
             Sorter({users:userList}).map((user, index) => {
               //const companyName = companyList.find(company => company.id === user.companyId)?.name ?? "n/a";
@@ -174,7 +184,7 @@ export default function ManageClientDisplay() {
               return (
                 <div key={index} className={'py-[10px] my-[10px] flex self-end'}>
                   <button className=" mx-2 bg-[#21345b] text-sm text-white w-full h-10 rounded-md outline"
-                    onClick={() => handleEditClient(user, company)}
+                    onClick={() => handleEditUser(user, company)}
                   >  
                       Edit Client
                   </button>
@@ -183,7 +193,7 @@ export default function ManageClientDisplay() {
             })
           }
         </div>
-        <EditUserModal EditUserIsOpen={EditUserIsOpen} setEditUserIsOpen={setEditUserIsOpen} user={selectedUser} company={selectedCompany} SubmitUpdateUser={SubmitUpdateUser} />
+
       </div>
     </div>
   )
