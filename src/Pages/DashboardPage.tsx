@@ -24,24 +24,24 @@ export default function DashboardPage(){
   }
 
   return(
-    <div className="m-[2%] grid grid-cols-4">
-      <div className="col-span-2">
-        <p className="text-5xl py-[10px]">Dashboard</p>
+    <div className="my-[1%] mx-[2%] grid grid-cols-4">
+      <div className="col-span-2 mb-4">
+        <p className="text-5xl">Dashboard</p>
       </div>
-      <div className="flex justify-end col-span-2">
-        {/*<select className="outline rounded w-[200px] h-[40px]">
+      {/*<div className="flex justify-end col-span-2">
+        <select className="outline rounded w-[200px] h-[40px]">
           <option>Select Initiative</option>
           {company?.initiatives.map((initiative,index)=>{
             return(
               <option key={index}>{initiative.title}</option>
             )
           })}
-        </select>  This select isn't needed in the current version of the project but will be when we want to display more information*/}
-      </div>
-      <div className="col-span-4 bg-[#2ed7c3] rounded-md p-2 pl-5 my-2">
+        </select>  This select isn't needed in the current version of the project but will be when we want to display more information
+      </div>*/}
+      <div className="col-span-4 bg-[#2ed7c3] rounded-md p-2 pl-5">
         <p className="text-3xl h-[90%]">Company Initiatives</p>
       </div>
-      <div className="col-span-4 h-[60vh] py-[10px]">
+      <div className="col-span-4 h-[60vh] py-3">
         <Dashboard/>
       </div>
     </div>

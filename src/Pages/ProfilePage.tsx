@@ -10,11 +10,11 @@ export default function ProfilePage(){
   const companyList = useAppSelector(selectAllCompanies).filter((company) => company.id === currentUser?.companyId);
 
   return(
-    <div className="m-[2%] grid grid-cols-4">
-      <div className="col-span-4">
-        <p className="text-5xl py-[10px]">Profile</p>
+    <div className="my-[1%] mx-[2%] grid grid-cols-4">
+      <div className="col-span-4 mb-4">
+        <p className="text-5xl">Profile</p>
       </div>
-      <div className="col-span-4 bg-[#2ed7c3] rounded-md p-2 pl-5 my-2">
+      <div className="col-span-4 bg-[#2ed7c3] rounded-md p-2 pl-5">
         <p className="text-3xl h-[90%]">User Information</p>
       </div>
       <div className="col-span-4 py-[5px]">
