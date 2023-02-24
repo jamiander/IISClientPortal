@@ -91,7 +91,7 @@ export default function ManageInitiativesDisplay() {
 
       <div className="w-full flex justify-between">
         <p className="text-3xl">Initiatives</p>
-        <button onClick={() => setAddInitiativeIsOpen(true)} className="outline bg-[#21345b] text-white h-full w-32 rounded-md">
+        <button onClick={() => setAddInitiativeIsOpen(true)} className="outline bg-[#21345b] hover:bg-[#445362] text-white w-32 rounded-md">
           Add Initiative
         </button>
         <InitiativeModal title='Add Initiative' initiativeIsOpen={AddInitiativeIsOpen} setInitiativeIsOpen={setAddInitiativeIsOpen} Submit={SubmitUpdateInitiative}/>
