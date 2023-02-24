@@ -1,9 +1,10 @@
-import { Company, Initiative } from "../Store/CompanySlice"
+import { Company, Initiative, selectAllCompanies } from "../Store/CompanySlice"
 import { cancelButtonStyle, inputStyle, modalStyle, submitButtonStyle } from "../Styles"
 import Modal from 'react-modal';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DateInput } from "./DateInput";
 import { DateInfo } from "../Services/CompanyService";
+import { useAppSelector } from "../Store/Hooks";
 
 interface InitiativeModalProps {
 	title: string
@@ -12,14 +13,21 @@ interface InitiativeModalProps {
 	setInitiativeIsOpen: (value: boolean) => void
 	Submit: (initiative: Initiative, companyId: number) => void
 	company?: Company
-	companyList?: Company[]
 }
 
 export default function InitiativeModal(props: InitiativeModalProps){
-	const [initiativeCompanyId, setInitiativeCompanyId] = useState(Number);
-  const [initiativeTitle, setInitiativeTitle] = useState(String);
-  const [initiativeTargetDate, setInitiativeTargetDate] = useState<DateInfo>({month: "", day: "", year: ""});
-  const [initiativeTotalItems, setInitiativeTotalItems] = useState(Number);
+  const emptyDate: DateInfo = {month: "", day: "", year: ""}
+  const companyList = useAppSelector(selectAllCompanies);
+  const [initiativeCompanyId, setInitiativeCompanyId] = useState(Number);
+  const [initiativeTitle, setInitiativeTitle] = useState(props.initiative?.title ?? "");
+  const [initiativeTargetDate, setInitiativeTargetDate] = useState<DateInfo>(props.initiative?.targetDate ?? emptyDate);
+  const [initiativeTotalItems, setInitiativeTotalItems] = useState(props.initiative?.totalItems ?? 0);
+
+  useEffect(() => {
+    setInitiativeTitle(props.initiative?.title ?? "");
+    setInitiativeTargetDate(props.initiative?.targetDate ?? emptyDate);
+    setInitiativeTotalItems(props.initiative?.totalItems ?? 0);
+  }, [props.initiative,props.company])
 
 	return (
 		<Modal
@@ -38,7 +46,7 @@ export default function InitiativeModal(props: InitiativeModalProps){
 					>
 						<option>Select Company</option>
 						{
-							props.companyList?.map((company, index) => {
+							companyList?.map((company, index) => {
 								return (
 									<option value={company.id} key={index}>{company.name}</option>
 								)
