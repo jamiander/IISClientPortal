@@ -2,13 +2,14 @@ import { DateInfo } from "../Services/CompanyService"
 import { Initiative } from "../Store/CompanySlice"
 import { inputStyle } from "../Styles"
 
-interface TargetDateInputProps {
+interface DateInputProps {
+  heading: string,
   initiativeTargetDate: DateInfo,
   setInitiativeTargetDate: (value: React.SetStateAction<DateInfo>) => void,
   defaultInitiative?: Initiative
 }
 
-export function TargetDateInput(props: TargetDateInputProps){
+export function DateInput(props: DateInputProps){
 
   return (
     <>
@@ -17,7 +18,7 @@ export function TargetDateInput(props: TargetDateInputProps){
         <div className='flex mb-2 space-x-[5px]'>
       </div>*/}
       <div className='my-2 p-2 outline outline-1 outline-[#879794] rounded'>
-        <p className=''>Target Completion</p>
+        <p className=''>{props.heading}</p>
         <div className='flex'>
           <div className='w-24 mx-2'>
             <p>Month </p>
