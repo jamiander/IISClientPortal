@@ -93,8 +93,6 @@ export default function AdminPage(){
     let isTest = false;
     if((window as any).Cypress)
       isTest = true;
-    
-    console.log('cypress: ' + isTest)
 
     //dispatch(addUser({user: newUser,isTest: isTest}));
     const validation = ValidateNewUser();
@@ -174,9 +172,9 @@ export default function AdminPage(){
     if((window as any).Cypress)
       isTest = true;
 
-    let validation = ValidateEdit(company.name, company.id, user.email, user.password, user.id)
+    let validation = ValidateEditUser(company.name, company.id, user.email, user.password, user.id)
     if(validation.success) {
-      dispatch(updateCompanyInfo({ company: company, employee: user, isTest: isTest}));
+      dispatch(updateCompanyInfo({ company: company, employee: user, isTest: isTest }));
       setSelectedCompany(fakeCompany); setSelectedUser(fakeUser);
       setEditUserIsOpen(false);
     }
@@ -184,7 +182,7 @@ export default function AdminPage(){
       ShowToast('Validation Failed: ' + validation.message, 'Error');
   }
 
-  function ValidateEdit(companyName: string, companyId: number, userEmail: string, userPassword: string, userId: number) : {message: string, success: boolean}
+  function ValidateEditUser(companyName: string, companyId: number, userEmail: string, userPassword: string, userId: number) : {message: string, success: boolean}
   {
     if(companyName && userEmail && userPassword && userId !== -1 && companyId !== -1)
     {
@@ -203,8 +201,6 @@ export default function AdminPage(){
 
   function SubmitUpdateInitiative(initiative: Initiative, companyId: number)
   {
-    console.log('initiative @ submitUpdateInitiative', initiative);
-
     let isTest = false;
     if((window as any).Cypress)
       isTest = true;
@@ -237,7 +233,6 @@ export default function AdminPage(){
     if(!matchingCompany)
       return {success: false, message: "A company must be selected."};
 
-      console.log(`title: ${initiative.title}`)
     const matchingInitiative = matchingCompany.initiatives.find(init => init.title === initiative.title && init.id !== initiative.id);
     if(matchingInitiative)
       return {success: false, message: "Initiative names must be unique."}
