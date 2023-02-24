@@ -41,33 +41,6 @@ export default function EditInitiativeModal(props: EditInitiativeProps) {
         <input defaultValue={props.initiative.title} id='modalTitle' className={inputStyle + ' w-3/4'}
           onChange={(e) => setInitiativeTitle(e.target.value)}/>
         <DateInput heading='Target Completion' initiativeTargetDate={initiativeTargetDate} setInitiativeTargetDate={setInitiativeTargetDate} defaultInitiative={props.initiative}/>
-        {/*
-        <div className='my-2 p-2 outline outline-1 outline-gray-500 rounded'>
-          <span className=''>Target Completion</span>
-          <div className='flex'>
-            <div className='w-24 mx-2'>
-              <p>Month </p>
-              <input defaultValue={props.initiative.targetDate.month} id='modalMonth' className={inputStyle} maxLength={2} placeholder='MM'
-                onChange={(e) => setInitiativeTargetDate({...initiativeTargetDate, month: e.target.value})}
-              />
-            </div>
-            
-            <div className='w-24 mx-2'>
-              <p>Day </p>
-              <input defaultValue={props.initiative.targetDate.day} id='modalDay' className={inputStyle} maxLength={2} placeholder='DD'
-                onChange={(e) => setInitiativeTargetDate({...initiativeTargetDate, day: e.target.value})}
-              />
-            </div>
-
-            <div className='w-24 mx-2'>
-              <p>Year </p>        
-              <input defaultValue={props.initiative.targetDate.year} id='modalYear' className={inputStyle} maxLength={4} placeholder='YYYY'
-                onChange={(e) => setInitiativeTargetDate({...initiativeTargetDate, year: e.target.value})}
-              />
-            </div>
-          </div>
-        </div>
-        */}
       </div>
       
       <div className='mt-2 justify-between flex'>
