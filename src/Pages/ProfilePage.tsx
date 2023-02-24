@@ -24,7 +24,7 @@ export default function ProfilePage(){
         <p className="text-3xl h-[90%]">Company Initiatives</p>
       </div>
       <div className="col-span-4 py-[5px]">
-        <InitiativesTable companyList={companyList}/>
+        <InitiativesTable companyList={companyList} radioStatus={'active'}/>
       </div>
     </div>
   )

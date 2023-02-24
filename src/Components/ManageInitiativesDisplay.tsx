@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from "../Store/Hooks";
 import { selectAllUsers, User } from "../Store/UserSlice";
 import AddInitiativeModal from "./AddInitiativeModal"
 import EditInitiativeModal from "./EditInitiativeModal"
+import InitiativesButton from "./InitiativesButton";
 import InitiativesTable from "./InitiativesTable"
 
 export default function ManageInitiativesDisplay() {
@@ -26,6 +27,7 @@ export default function ManageInitiativesDisplay() {
 
   const dispatch = useAppDispatch();
   const ShowToast : (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void = useOutletContext();
+  const [radioValue, setRadioValue] = useState('active')
 
   function SubmitUpdateInitiative(initiative: Initiative, companyId: number)
   {
@@ -87,16 +89,6 @@ export default function ManageInitiativesDisplay() {
 
       return {success: true, message: "Date is all good!"}
   }
-    
-  function handleEditInitiative(company: Company, initiative: Initiative) {
-    if (company) 
-    {
-      setEditInitiativeIsOpen(true);
-      setSelectedInitiative(initiative);
-      setSelectedCompany(company);
-    } else
-      console.log("Couldn't find company at handleEditInitiative (adminpage)")
-  }
 
 
   return (
@@ -110,13 +102,13 @@ export default function ManageInitiativesDisplay() {
 
 
       <div className="w-fit justify-center mt-2 py-1 px-5 outline outline-1 outline-[#879794] rounded">
-        <input type='radio' id='showAll' value='all' name='clientDisplay' className="mr-1"/>
+        <input type='radio' id='showAll' value='all' name='clientDisplay' className="mr-1" onClick={()=>setRadioValue('all')}/>
         <label htmlFor='showAll' className="mr-5">Show All</label>
 
-        <input type='radio' id='showActive' value='active' name='clientDisplay' defaultChecked className="mr-1"/>
+        <input type='radio' id='showActive' value='active' name='clientDisplay' defaultChecked className="mr-1" onClick={()=>setRadioValue('active')}/>
         <label htmlFor='showActive' className="mr-5">Only Active</label>
 
-        <input type='radio' id='showInactive' value='inactive' name='clientDisplay' className="mr-1"/>
+        <input type='radio' id='showInactive' value='inactive' name='clientDisplay' className="mr-1" onClick={()=>setRadioValue('inactive')}/>
         <label htmlFor='showInactive' className="">Only Inactive</label>
       </div>
 
@@ -124,29 +116,8 @@ export default function ManageInitiativesDisplay() {
     
 
     <div className="col-span-4 py-[10px] flex">
-      <InitiativesTable companyList={companyList}/>
-      <div className="w-[10%]">
-        <div className="h-[25px]" />
-        {
-          companyList.map((company, index) => {
-            return (
-              InitiativesFilter(company.initiatives).map((initiative, index) => {
-              //company.initiatives.map((initiative, index) => {
-                return (
-                  <div key={index} className={'py-1 flex self-end'}>
-                    <button className=" mx-2 bg-[#21345b] text-sm text-white w-full h-8 rounded-md outline"
-                      onClick={() => handleEditInitiative(company, initiative)}
-                    >
-                      Edit Initiative
-                    </button>
-                  </div>
-                )
-              })
-            )
-          })
-        }
-      </div>
-      <EditInitiativeModal editInitiativeIsOpen={EditInitiativeIsOpen} setEditInitiativeIsOpen={setEditInitiativeIsOpen} initiative={selectedInitiative} company={selectedCompany} submitUpdateInitiative={SubmitUpdateInitiative}/>
+      <InitiativesTable companyList={companyList} radioStatus={radioValue}/>
+      <InitiativesButton companyList={companyList} radioStatus={radioValue}/>
     </div>
   </div>
   )
