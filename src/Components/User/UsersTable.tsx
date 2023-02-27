@@ -13,8 +13,6 @@ interface ClientTableProps{
 }
 
 export default function UsersTable(props: UsersTableProps){
-  //const activeClients = ActiveCompaniesFilter(props.userList);
-  //const inactiveClients = InactiveCompaniesFilter(props.userList);
 
   function PasswordDisplay(user:User){
     const [passwordShown, setPasswordShown] = useState(false);

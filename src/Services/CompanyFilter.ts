@@ -10,35 +10,18 @@ export default function CompanyFilter(userlist:User[], isActive:string){
     const companyList = useAppSelector(selectAllCompanies);
     const fakeCompany : Company = {id: -1, name: "", initiatives: []}
 
-    if(isActive === 'active'){
-        userlist.forEach(user=>{
-            const company = companyList.find(e=>e.id === user.companyId) ?? fakeCompany;
-            initiatives = InitiativeFilter(company.initiatives, 'active');
-            if(initiatives.length !== 0){
-                activeCompanies.push(company)
-            }
-        })
-        activeCompanies.forEach(company=>{
-            const user = userlist.find(e=>e.companyId === company.id);
-            if(user !== undefined){
-                activeUsers.push(user);
-            }
-        })
-    }
-    else{
-        userlist.forEach(user=>{
-            const company = companyList.find(e=>e.id === user.companyId) ?? fakeCompany;
-            initiatives = InitiativeFilter(company?.initiatives, 'inactive');
-            if(initiatives.length !==0){
-                activeCompanies.push(company)
-            }
-        })
-        activeCompanies.forEach(company=>{
-            const user = userlist.find(e=>e.companyId === company.id);
-            if(user !== undefined){
-                activeUsers.push(user);
-            }
-        })
-    }
+    userlist.forEach(user=>{
+        const company = companyList.find(e=>e.id === user.companyId) ?? fakeCompany;
+        initiatives = InitiativeFilter(company.initiatives, isActive);
+        if(initiatives.length !== 0){
+            activeCompanies.push(company)
+        }
+    })
+    activeCompanies.forEach(company=>{
+        const user = userlist.find(e=>e.companyId === company.id);
+        if(user !== undefined){
+            activeUsers.push(user);
+        }
+    })
     return activeUsers
 }

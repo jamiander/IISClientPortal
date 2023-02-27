@@ -1,22 +1,19 @@
 import { useState } from "react";
 import { useOutletContext } from "react-router-dom";
-import Sorter from "../../Services/Sorter";
+import CompanyFilter from "../../Services/CompanyFilter";
 import { Company, selectAllCompanies, updateCompanyInfo } from "../../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
-import { selectAllUsers, User } from "../../Store/UserSlice";
-import EditUserButtons from "./EditUserButtons";
+import { User, selectAllUsers } from "../../Store/UserSlice";
 import EditUserModal from "./UpdateUserListModal";
-import UsersTable from "./UsersTable";
 
-export const UserRadioIds = {
-  all: "userDisplayShowAll",
-  active: "userDisplayShowActive",
-  inactive: "userDisplayShowInactive"
+interface EditUserButtonsProps{
+    userlist:User[],
+    companyList:Company[],
+    radioStatus:string
 }
 
-export default function ManageUsersDisplay() {
-
-  const fakeUser : User = {id: -1, email: '', password: '', companyId: -1};
+export default function EditUserButtons(props:EditUserButtonsProps){
+    const fakeUser : User = {id: -1, email: '', password: '', companyId: -1};
   const fakeCompany : Company = {id: -1, name: "", initiatives: []}
 
   const dispatch = useAppDispatch();
@@ -24,8 +21,6 @@ export default function ManageUsersDisplay() {
   const [EditUserIsOpen, setEditUserIsOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(fakeUser);
   const [selectedCompany, setSelectedCompany] = useState(fakeCompany);
-
-  const [radioValue, setRadioValue] = useState('active')
 
   const userList = useAppSelector(selectAllUsers);
   const companyList = useAppSelector(selectAllCompanies);
@@ -106,38 +101,39 @@ export default function ManageUsersDisplay() {
     setSelectedUser(fakeUser);
   }
 
-  return (
-    <div className="col-span-4">
-      <div className="bg-[#2ed7c3] rounded-md py-3 px-5">
-
-        <div className="w-full flex justify-between">
-          <p className="text-3xl">Clients</p>
-          <button className="outline bg-[#21345b] hover:bg-[#445362] text-white w-28 rounded-md" onClick={() => {setEditUserIsOpen(true); setIsEdit(false);}} >  
-            Add Client
-          </button>
-        </div>
-  
-      <div className="w-fit justify-center mt-2 py-1 px-5 outline outline-1 outline-[#879794] rounded">
-          <input type='radio' id={UserRadioIds.all} value='all' name='clientDisplay' className="mr-1" onClick={()=>setRadioValue('all')}/>
-          <label htmlFor='showAll' className="mr-5">Show All</label>
-
-          <input type='radio' id={UserRadioIds.active} value='active' name='clientDisplay' defaultChecked className="mr-1" onClick={()=>setRadioValue('active')}/>
-          <label htmlFor='showActive' className="mr-5">Only Active</label>
-          
-          <input type='radio' id={UserRadioIds.inactive} value='inactive' name='clientDisplay' className="mr-1" onClick={()=>setRadioValue('inactive')}/>
-          <label htmlFor='showInactive' className="">Only Inactive</label>
-        </div>
-
-      </div>
-         
-      <div className="col-span-4 py-[10px] flex">
-        <UsersTable userList={Sorter({users:userList})} companyList={companyList} radioStatus={radioValue}/>
-        <div className="w-[10%]">
-
-          <EditUserButtons userlist={Sorter({users:userList})} companyList={companyList} radioStatus={radioValue}/>
-        </div>
-
-      </div>
-    </div>
-  )
+  interface ButtonsProps{
+    clients:User[]
+  }
+    function Buttons(bprops:ButtonsProps){
+        return(
+            <div>
+                <div className="h-6">
+                    <EditUserModal EditUserIsOpen={EditUserIsOpen} handleCloseEditUser={handleCloseEditUser} user={selectedUser} company={selectedCompany} SubmitUser={SubmitUpdateUser} isEdit={isEdit}/>
+                </div>
+                {bprops.clients.map((user,index)=>{
+                const company = companyList.find(company => company.id === user.companyId);
+                  return (
+                    <div key={index} className={'py-[10px] my-[10px] flex self-end'}>
+                        <button className=" mx-2 bg-[#21345b] hover:bg-[#445362] text-sm text-white w-full h-10 rounded-md outline"
+                        onClick={() => handleEditUser(user, company)}
+                        >  
+                            Edit Client
+                        </button>
+                    </div>
+                )
+            })}
+            </div>
+        )
+    }
+    if(props.radioStatus === 'all'){
+        return(
+            <Buttons clients={props.userlist}/>
+        )
+    }
+    else{
+        return(   
+            <Buttons clients={CompanyFilter(props.userlist, props.radioStatus)}/>
+        )
+    }
+    
 }
