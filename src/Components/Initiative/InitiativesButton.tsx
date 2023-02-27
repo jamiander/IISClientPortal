@@ -1,11 +1,9 @@
 import { useState } from "react";
 import { useOutletContext } from "react-router-dom";
-import { DateInfo } from "../../Services/CompanyService";
 import { Company, Initiative, selectAllCompanies, updateInitiativeInfo } from "../../Store/CompanySlice"
 import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
-import ActiveInitiativesFilter from "../../Services/ActiveInitiativesFilter";
-import InactiveInitiativesFilter from "../../Services/InactiveInitiativesFilter";
 import InitiativeModal from "./InitiativeModal";
+import InitiativesFilter from "../../Services/InitiativesFilter";
 
 interface InitiativesButtonProps{
     companyList: Company[],
@@ -63,7 +61,7 @@ export default function InitiativesButton(props:InitiativesButtonProps){
 				<InitiativeModal title='Edit Initiative' initiativeIsOpen={EditInitiativeIsOpen} setInitiativeIsOpen={setEditInitiativeIsOpen} initiative={selectedInitiative} company={selectedCompany} Submit={SubmitUpdateInitiative} />
 				{props.companyList.map((company, index) => {
 					return (
-						(props.radioStatus === 'active' ? ActiveInitiativesFilter(company.initiatives) : (props.radioStatus === 'inactive' ? InactiveInitiativesFilter(company.initiatives) : company.initiatives)).map((initiative, index) => {
+            (props.radioStatus !== 'all' ? InitiativesFilter(company.initiatives, props.radioStatus) : company.initiatives).map((initiative, index) => {
 							return (
 								<div key={index} className={'py-1 flex self-end'}>
 										<button className=" mx-2 bg-[#21345b] text-sm text-white w-full h-8 rounded-md outline"
