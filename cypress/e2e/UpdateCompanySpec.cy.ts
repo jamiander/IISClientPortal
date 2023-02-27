@@ -1,4 +1,5 @@
 
+import { UserRadioIds } from "../../src/Components/User/ManageUsersDisplay";
 import { EditUserModalIds } from "../../src/Components/User/UpdateUserListModal";
 import { AddHash } from "./TestHelpers";
 
@@ -11,6 +12,7 @@ describe('update company spec', () => {
 
   const failMessage = 'Validation Failed';
   const modalIds = AddHash(EditUserModalIds);
+  const radioIds = AddHash(UserRadioIds);
 
   beforeEach(() => {
     cy.visit('http://localhost:3000/Login')
@@ -19,6 +21,7 @@ describe('update company spec', () => {
     cy.get('button').contains('Submit').click();
 
     cy.get('button').contains('Admin').click();
+    cy.get(radioIds.all).click();
     cy.get('table').contains('Integrity Inspired Solutions');
     cy.get('button').contains('Edit Client').click();
   });
@@ -29,7 +32,6 @@ describe('update company spec', () => {
     cy.get(modalIds.password).clear().type(company.password);
     cy.get('button').contains('Submit').click();
 
-    cy.get('#showAll').click();
     cy.get('table').contains(company.name);
     //cy.get('#toast-default').contains('User Update Dispatched');
   })

@@ -7,6 +7,12 @@ import InitiativeModal from "./InitiativeModal";
 import InitiativesButton from "./InitiativesButton";
 import InitiativesTable from "./InitiativesTable"
 
+export const InitiativeRadioIds = {
+  all: "initDisplayShowAll",
+  active: "initDisplayShowActive",
+  inactive: "initDisplayShowInactive"
+}
+
 export default function ManageInitiativesDisplay() {
 
   const fakeCompany : Company = {id: -1, name: "N/A", initiatives: []}
@@ -98,13 +104,13 @@ export default function ManageInitiativesDisplay() {
       </div>
 
       <div className="w-fit justify-center mt-2 py-1 px-5 outline outline-1 outline-[#879794] rounded">
-        <input type='radio' id='showAll' value='all' name='initiativesDisplay' className="mr-1" onClick={()=>setRadioValue('all')}/>
+        <input type='radio' id={InitiativeRadioIds.all} value='all' name='initiativesDisplay' className="mr-1" onClick={()=>setRadioValue('all')}/>
         <label htmlFor='showAll' className="mr-5">Show All</label>
 
-        <input type='radio' id='showActive' value='active' name='initiativesDisplay' defaultChecked className="mr-1" onClick={()=>setRadioValue('active')}/>
+        <input type='radio' id={InitiativeRadioIds.active} value='active' name='initiativesDisplay' defaultChecked className="mr-1" onClick={()=>setRadioValue('active')}/>
         <label htmlFor='showActive' className="mr-5">Only Active</label>
 
-        <input type='radio' id='showInactive' value='inactive' name='initiativesDisplay' className="mr-1" onClick={()=>setRadioValue('inactive')}/>
+        <input type='radio' id={InitiativeRadioIds.inactive} value='inactive' name='initiativesDisplay' className="mr-1" onClick={()=>setRadioValue('inactive')}/>
         <label htmlFor='showInactive' className="">Only Inactive</label>
       </div>
 
