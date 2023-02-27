@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { selectAllCompanies } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
 import { selectCurrentUser, selectIsLoggedIn, signOut } from "../Store/UserSlice";
@@ -28,7 +28,9 @@ export default function Header(){
   return(
   <div className="mr-[1%] ml-[1%] flex">
     <div className="flex min-h-[100%] h-auto justify-start self-start">
-      <img className="min-h-full h-auto" src={logo} alt='Integrity Inspired Solutions Logo'/>
+      <Link to="./DashBoard">
+        <img className="min-h-full h-auto" src={logo} alt='Integrity Inspired Solutions Logo'/>
+      </Link>
       
     </div>
     <div className="flex w-[50%] justify-center">
