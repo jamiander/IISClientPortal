@@ -9,6 +9,9 @@ interface UsersTableProps {
   companyList: Company[]
   radioStatus: string
 }
+interface ClientTableProps{
+  clients:User[]
+}
 
 export default function UsersTable(props: UsersTableProps){
   const activeClients = ActiveCompaniesFilter(props.userList);
@@ -27,85 +30,47 @@ export default function UsersTable(props: UsersTableProps){
         )
       }
 
+      function ClientTable(cprops:ClientTableProps){
+        return(
+          <table className="table-auto w-[100%] outline outline-3">
+          <thead className="outline outline-1">
+            <tr>
+              <th>Company</th>
+              <th>Email</th>
+              <th>Password</th>
+            </tr>
+          </thead>
+          <tbody>
+            {cprops.clients.map((user, index)=>{
+              const company = props.companyList.find(company => company.id === user.companyId);
+              return(
+                <tr key={index}>
+                  <td className="outline outline-1"><p className="flex justify-center">{company?.name}</p></td>
+                  <td className="outline outline-1"><p className="flex justify-center">{user.email}</p></td>
+                  <td className="outline outline-1">
+                    <PasswordDisplay {...(user)}/>
+                  </td>
+                </tr>
+              )
+            })}
+            </tbody>
+          </table>
+        )
+      }
+
     if(props.radioStatus === 'active'){
       return(
-        <table className="table-auto w-[100%] outline outline-3">
-        <thead className="outline outline-1">
-          <tr>
-            <th>Company</th>
-            <th>Email</th>
-            <th>Password</th>
-          </tr>
-        </thead>
-        <tbody>
-          {activeClients.map((user, index)=>{
-            const company = props.companyList.find(company => company.id === user.companyId);
-            return(
-              <tr key={index}>
-                <td className="outline outline-1"><p className="flex justify-center">{company?.name}</p></td>
-                <td className="outline outline-1"><p className="flex justify-center">{user.email}</p></td>
-                <td className="outline outline-1">
-                  <PasswordDisplay {...(user)}/>
-                </td>
-              </tr>
-            )
-          })}
-        </tbody>
-      </table>
+        <ClientTable clients={activeClients}/>
     )
   }
   else if(props.radioStatus === 'inactive'){
     return(
-      <table className="table-auto w-[100%] outline outline-3">
-        <thead className="outline outline-1">
-          <tr>
-            <th>Company</th>
-            <th>Email</th>
-            <th>Password</th>
-          </tr>
-        </thead>
-        <tbody>
-          {inactiveClients.map((user, index)=>{
-            const company = props.companyList.find(company => company.id === user.companyId);
-            return(
-              <tr key={index}>
-                <td className="outline outline-1"><p className="flex justify-center">{company?.name}</p></td>
-                <td className="outline outline-1"><p className="flex justify-center">{user.email}</p></td>
-                <td className="outline outline-1">
-                  <PasswordDisplay {...(user)}/>
-                </td>
-              </tr>
-            )
-          })}
-        </tbody>
-      </table>
+      <ClientTable clients={inactiveClients}/>
     )
   }
   else{
     return(
-      <table className="table-auto w-[100%] outline outline-3">
-        <thead className="outline outline-1">
-          <tr>
-            <th>Company</th>
-            <th>Email</th>
-            <th>Password</th>
-          </tr>
-        </thead>
-        <tbody>
-          {props.userList.map((user, index)=>{
-            const company = props.companyList.find(company => company.id === user.companyId);
-            return(
-              <tr key={index}>
-                <td className="outline outline-1"><p className="flex justify-center">{company?.name}</p></td>
-                <td className="outline outline-1"><p className="flex justify-center">{user.email}</p></td>
-                <td className="outline outline-1">
-                  <PasswordDisplay {...(user)}/>
-                </td>
-              </tr>
-            )
-          })}
-        </tbody>
-      </table>
+      <ClientTable clients={props.userList}/>
     )
   }
 }
