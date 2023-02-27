@@ -16,6 +16,7 @@ interface InitiativeModalProps {
 }
 
 export const InitiativeModalIds = {
+	modal: "initModal",
 	company: "initModalCompany",
 	title: "initModalTitle",
 	date: {
@@ -43,6 +44,7 @@ export default function InitiativeModal(props: InitiativeModalProps){
 
 	return (
 		<Modal
+			id={InitiativeModalIds.modal}
 			isOpen={props.initiativeIsOpen}
 			onRequestClose={() => props.setInitiativeIsOpen(false)}
 			style={{'content': {...modalStyle.content, 'width' : '25%'}}}

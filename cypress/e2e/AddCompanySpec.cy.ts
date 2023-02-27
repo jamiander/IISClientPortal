@@ -54,6 +54,11 @@ describe('add company spec', () => {
     cy.get('#toast-default').contains(failMessage);
   })
 
+  specify('close button closes the modal', () => {
+    cy.get('button').contains('Close').click();
+    cy.get(modalIds.modal).should('not.exist');
+  })
+
 })
 
 export {}
