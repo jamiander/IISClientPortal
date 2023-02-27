@@ -1,6 +1,5 @@
 import { useState } from "react";
-import ActiveCompaniesFilter from "../../Services/ActiveCompaniesFilter";
-import InactiveCompaniesFilter from "../../Services/InactiveCompaniesFilter";
+import CompanyFilter from "../../Services/CompanyFilter";
 import { Company } from "../../Store/CompanySlice";
 import { User } from "../../Store/UserSlice";
 
@@ -14,8 +13,8 @@ interface ClientTableProps{
 }
 
 export default function UsersTable(props: UsersTableProps){
-  const activeClients = ActiveCompaniesFilter(props.userList);
-  const inactiveClients = InactiveCompaniesFilter(props.userList);
+  //const activeClients = ActiveCompaniesFilter(props.userList);
+  //const inactiveClients = InactiveCompaniesFilter(props.userList);
 
   function PasswordDisplay(user:User){
     const [passwordShown, setPasswordShown] = useState(false);
@@ -60,12 +59,12 @@ export default function UsersTable(props: UsersTableProps){
 
   if(props.radioStatus === 'active'){
     return(
-      <ClientTable clients={activeClients}/>
+      <ClientTable clients={CompanyFilter(props.userList, 'active')}/>
     )
   }
   else if(props.radioStatus === 'inactive'){
     return(
-      <ClientTable clients={inactiveClients}/>
+      <ClientTable clients={CompanyFilter(props.userList, 'inactive')}/>
     )
   }
   else{

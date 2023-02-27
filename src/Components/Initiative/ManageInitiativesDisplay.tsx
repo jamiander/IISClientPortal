@@ -4,7 +4,7 @@ import { DateInfo } from "../../Services/CompanyService";
 import { Company, Initiative, selectAllCompanies, updateInitiativeInfo } from "../../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
 import InitiativeModal from "./InitiativeModal";
-import InitiativesButton from "./InitiativesButton";
+import InitiativesButtons from "./InitiativesButtons";
 import InitiativesTable from "./InitiativesTable"
 
 export const InitiativeRadioIds = {
@@ -118,7 +118,7 @@ export default function ManageInitiativesDisplay() {
     
     <div className="col-span-4 py-[10px] flex">
       <InitiativesTable companyList={companyList} radioStatus={radioValue}/>
-      <InitiativesButton companyList={companyList} radioStatus={radioValue} ValidateInitiative={ValidateNewInitiative}/>
+      <InitiativesButtons companyList={companyList} radioStatus={radioValue} ValidateInitiative={ValidateNewInitiative}/>
     </div>
   </div>
   )
