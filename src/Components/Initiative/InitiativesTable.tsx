@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { FindItemsRemaining } from "../../Services/CompanyService";
 import InitiativesFilter from "../../Services/InitiativesFilter";
 import { Company, Initiative } from "../../Store/CompanySlice";
-import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
+import { useAppSelector } from "../../Store/Hooks";
 import { selectCurrentUser, User } from "../../Store/UserSlice";
 import { EditInitiativeButton } from "./EditInitiativeButton";
 
@@ -13,12 +13,7 @@ interface InitiativesProps {
 }
 
 export default function InitiativesTable(props: InitiativesProps) {
-  const dispatch = useAppDispatch();
   const tableDataStyle = "outline outline-1 text-center ";
-  const companies = props.companyList.map((company) => {
-      return {'init': company.initiatives, 'name': company.name };
-    }
-  );
 
   const [isCompanyHidden, setCompanyHidden] = useState(false);
 
