@@ -64,7 +64,7 @@ export default function InitiativesButton(props:InitiativesButtonProps){
             (props.radioStatus !== 'all' ? InitiativesFilter(company.initiatives, props.radioStatus) : company.initiatives).map((initiative, index) => {
 							return (
 								<div key={index} className={'py-1 flex self-end'}>
-										<button className=" mx-2 bg-[#21345b] text-sm text-white w-full h-8 rounded-md outline"
+										<button className=" mx-2 bg-[#21345b] hover:bg-[#445362] text-sm text-white w-full h-8 rounded-md outline"
 												onClick={() => handleEditInitiative(company, initiative)}
 										>
 												Edit Initiative
