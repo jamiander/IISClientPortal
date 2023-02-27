@@ -4,14 +4,15 @@ import { Company, Initiative, selectAllCompanies, updateInitiativeInfo } from ".
 import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
 import InitiativeModal from "./InitiativeModal";
 import InitiativesFilter from "../../Services/InitiativesFilter";
+import { EditInitiativeButton } from "../EditInitiatveButton";
 
-interface InitiativesButtonProps{
+interface InitiativesButtonsProps{
     companyList: Company[],
     radioStatus: string,
     ValidateInitiative: (initiative: Initiative, companyId: number) => {success: boolean, message: string}
 }
 
-export default function InitiativesButton(props:InitiativesButtonProps){
+export default function InitiativesButtons(props:InitiativesButtonsProps){
   const fakeCompany : Company = {id: -1, name: "N/A", initiatives: []}
   const fakeInitiative : Initiative = {id: -1, title: "N/A", totalItems: 0, targetDate: {month: "0", day: "0", year: "0000"}, itemsCompletedOnDate: []}
 
@@ -63,13 +64,7 @@ export default function InitiativesButton(props:InitiativesButtonProps){
 					return (
             (props.radioStatus !== 'all' ? InitiativesFilter(company.initiatives, props.radioStatus) : company.initiatives).map((initiative, index) => {
 							return (
-								<div key={index} className={'py-1 flex self-end'}>
-										<button className=" mx-2 bg-[#21345b] hover:bg-[#445362] text-sm text-white w-full h-8 rounded-md outline"
-												onClick={() => handleEditInitiative(company, initiative)}
-										>
-												Edit Initiative
-										</button>
-								</div>
+								<EditInitiativeButton handleEditInitiative={handleEditInitiative} company={company} initiative={initiative} index={index}/>
 							);
 						})
 					)
