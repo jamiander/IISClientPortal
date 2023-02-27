@@ -4,7 +4,7 @@ import { Company, Initiative, selectAllCompanies, updateInitiativeInfo } from ".
 import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
 import InitiativeModal from "./InitiativeModal";
 import InitiativesFilter from "../../Services/InitiativesFilter";
-import { EditInitiativeButton } from "../EditInitiativeButton";
+import { EditInitiativeButton } from "./EditInitiativeButton";
 
 interface InitiativesButtonsProps{
     companyList: Company[],
@@ -16,11 +16,8 @@ export default function InitiativesButtons(props:InitiativesButtonsProps){
   const fakeCompany : Company = {id: -1, name: "N/A", initiatives: []}
   const fakeInitiative : Initiative = {id: -1, title: "N/A", totalItems: 0, targetDate: {month: "0", day: "0", year: "0000"}, itemsCompletedOnDate: []}
 
-  const companyList = useAppSelector(selectAllCompanies);
-
   const [selectedCompany, setSelectedCompany] = useState(fakeCompany);
   const [selectedInitiative, setSelectedInitiative] = useState(fakeInitiative);
-  const [AddInitiativeIsOpen, setAddInitiativeIsOpen] = useState(false);
   const [EditInitiativeIsOpen, setEditInitiativeIsOpen] = useState(false);
 
   const dispatch = useAppDispatch();
@@ -39,7 +36,7 @@ export default function InitiativesButtons(props:InitiativesButtonsProps){
     {
       ShowToast('New Initiative Dispatched', 'Success');
       dispatch(updateInitiativeInfo({initiative: initiative, companyId: companyId, isTest: isTest}))
-      setAddInitiativeIsOpen(false); setEditInitiativeIsOpen(false);
+      setEditInitiativeIsOpen(false);
       setSelectedCompany(fakeCompany); setSelectedInitiative(fakeInitiative);
     }
     else

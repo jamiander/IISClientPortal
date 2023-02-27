@@ -1,4 +1,4 @@
-import { Company, Initiative } from "../Store/CompanySlice";
+import { Company, Initiative } from "../../Store/CompanySlice";
 
 interface EditInitiativeButtonProps {
     handleEditInitiative: (company: Company, initiative: Initiative) => void
