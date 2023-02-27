@@ -100,7 +100,7 @@ export default function EditUserButton(props:EditUserButtonProps){
     }
     return(
         <div key={props.index} className={'py-[10px] my-[10px] flex self-end'}>
-            <button className=" mx-2 bg-[#21345b] hover:outline-[#2ed7c3] hover:text-[#2ed7c3] hover:bg-[#445362] text-sm text-white w-full h-10 rounded-md outline"
+            <button className=" mx-2 bg-[#21345b] hover:outline-[#2ed7c3] hover:text-[#2ed7c3] text-sm text-white w-full h-10 rounded-md outline"
             onClick={() => handleEditUser(props.user, props.company)}
             >  
                 Edit Client
