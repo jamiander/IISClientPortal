@@ -1,4 +1,5 @@
 import InitiativesTable from "../Components/Initiative/InitiativesTable";
+import ValidateNewInitiative from "../Services/ValidateNewInitiative";
 import { selectAllCompanies } from "../Store/CompanySlice";
 import { useAppSelector } from "../Store/Hooks"
 import { selectCurrentUser } from "../Store/UserSlice";
@@ -18,7 +19,7 @@ export default function DashboardPage(){
       )
     }else{
       return(
-        <InitiativesTable companyList={comp} radioStatus={'active'}/>
+        <InitiativesTable companyList={comp} radioStatus={'active'} ValidateInitiative={ValidateNewInitiative}/>
       )
     }
   }

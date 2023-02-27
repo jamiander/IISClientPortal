@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import { FindItemsRemaining } from "../../Services/CompanyService";
 import InitiativesFilter from "../../Services/InitiativesFilter";
-import { Company } from "../../Store/CompanySlice";
+import { Company, Initiative } from "../../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
 import { selectCurrentUser, User } from "../../Store/UserSlice";
+import { EditInitiativeButton } from "./EditInitiativeButton";
 
 interface InitiativesProps {
   companyList: Company[],
   radioStatus: string,
+  ValidateInitiative : (initiative: Initiative, companyId: number) => {success: boolean, message: string}
 }
 
 export default function InitiativesTable(props: InitiativesProps) {
@@ -40,13 +42,14 @@ export default function InitiativesTable(props: InitiativesProps) {
           <th>Total Items</th>
           <th>Items Remaining</th>
           <th>Probability</th>
+          <th>Edit</th>
         </tr>
       </thead>
       <tbody>
         {
-          companies.map((company, index) => {
+          props.companyList.map((company, index) => {
             return (
-              (props.radioStatus !== 'all' ? InitiativesFilter(company.init, props.radioStatus) : company.init).map((initiative, index) => {
+              (props.radioStatus !== 'all' ? InitiativesFilter(company.initiatives, props.radioStatus) : company.initiatives).map((initiative, index) => {
                 let itemsRemaining = FindItemsRemaining(initiative);
                 return (
                   <tr key={index}>
@@ -56,7 +59,8 @@ export default function InitiativesTable(props: InitiativesProps) {
                     <td className={tableDataStyle}>{initiative.targetDate.month + "/" + initiative.targetDate.day + "/" + initiative.targetDate.year}</td>
                     <td className={tableDataStyle}>{initiative.totalItems}</td>
                     <td className={tableDataStyle}>{itemsRemaining}</td>
-                    <td></td>
+                    <td className={tableDataStyle}></td>
+                    <td className={tableDataStyle}><EditInitiativeButton company={company} initiative={initiative} index={index} ValidateInitiative={props.ValidateInitiative} /></td>
                   </tr>
                 )
               })

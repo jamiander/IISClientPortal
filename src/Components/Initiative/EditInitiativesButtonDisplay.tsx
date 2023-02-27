@@ -53,19 +53,19 @@ export default function InitiativesButtons(props:InitiativesButtonsProps){
       console.log("Couldn't find company at handleEditInitiative (adminpage)")
   }
 
-  return(
-    <div className="w-[10%]">
-			<div className="h-[25px]" />
-				<InitiativeModal title='Edit Initiative' initiativeIsOpen={EditInitiativeIsOpen} setInitiativeIsOpen={setEditInitiativeIsOpen} initiative={selectedInitiative} company={selectedCompany} Submit={SubmitUpdateInitiative} />
-				{props.companyList.map((company, index) => {
-					return (
-            (props.radioStatus !== 'all' ? InitiativesFilter(company.initiatives, props.radioStatus) : company.initiatives).map((initiative, index) => {
-							return (
-								<EditInitiativeButton handleEditInitiative={handleEditInitiative} company={company} initiative={initiative} index={index}/>
-							);
-						})
-					)
-				})}
-			</div>
-		)
+  //return(
+  //  <div className="w-[10%]">
+	//		<div className="h-[25px]" />
+	//			<InitiativeModal title='Edit Initiative' initiativeIsOpen={EditInitiativeIsOpen} setInitiativeIsOpen={setEditInitiativeIsOpen} initiative={selectedInitiative} company={selectedCompany} Submit={SubmitUpdateInitiative} />
+	//			{props.companyList.map((company, index) => {
+	//				return (
+  //          (props.radioStatus !== 'all' ? InitiativesFilter(company.initiatives, props.radioStatus) : company.initiatives).map((initiative, index) => {
+	//						return (
+	//							<EditInitiativeButton handleEditInitiative={handleEditInitiative} company={company} initiative={initiative} index={index}/>
+	//						);
+	//					})
+	//				)
+	//			})}
+	//		</div>
+	//	)
 }

@@ -36,7 +36,7 @@ export default function UsersTable(props: UsersTableProps){
           <th>Company</th>
           <th>Email</th>
           <th>Password</th>
-          <th></th>
+          <th>Edit</th>
         </tr>
       </thead>
       <tbody>
@@ -49,7 +49,7 @@ export default function UsersTable(props: UsersTableProps){
               <td className="outline outline-1">
                 <PasswordDisplay {...(user)}/>
               </td>
-              <td>
+              <td className="outline outline-1">
                 <EditUserButton index={index} user={user} company={company} />
               </td>
             </tr>
