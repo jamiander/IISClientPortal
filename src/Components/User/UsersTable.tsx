@@ -2,6 +2,7 @@ import { useState } from "react";
 import CompanyFilter from "../../Services/CompanyFilter";
 import { Company } from "../../Store/CompanySlice";
 import { User } from "../../Store/UserSlice";
+import EditUserButton from "./EditUserButton";
 
 interface UsersTableProps {
   userList: User[]
@@ -35,6 +36,7 @@ export default function UsersTable(props: UsersTableProps){
           <th>Company</th>
           <th>Email</th>
           <th>Password</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -46,6 +48,9 @@ export default function UsersTable(props: UsersTableProps){
               <td className="outline outline-1"><p className="flex justify-center">{user.email}</p></td>
               <td className="outline outline-1">
                 <PasswordDisplay {...(user)}/>
+              </td>
+              <td>
+                <EditUserButton index={index} user={user} company={company} />
               </td>
             </tr>
           )
