@@ -1,5 +1,6 @@
 
 import { InitiativeModalIds } from "../../src/Components/Initiative/InitiativeModal";
+import { InitiativeRadioIds } from "../../src/Components/Initiative/ManageInitiativesDisplay";
 import { AddHash } from "./TestHelpers";
 
 describe('update initiative spec', () => {
@@ -17,6 +18,7 @@ describe('update initiative spec', () => {
 
   const failMessage = 'Validation Failed';
   const modalIds = AddHash(InitiativeModalIds);
+  const radioIds = AddHash(InitiativeRadioIds);
 
   beforeEach(() => {
     cy.visit('http://localhost:3000/Login')
@@ -25,6 +27,7 @@ describe('update initiative spec', () => {
     cy.get('button').contains('Submit').click();
 
     cy.get('button').contains('Admin').click();
+    cy.get(radioIds.all).click();
     cy.get('table').contains('Integrity Inspired Solutions');
     cy.get('button').contains('Edit Initiative').click();
 

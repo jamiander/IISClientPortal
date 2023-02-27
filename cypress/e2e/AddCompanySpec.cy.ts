@@ -1,4 +1,5 @@
 
+import { UserRadioIds } from "../../src/Components/User/ManageUsersDisplay";
 import { EditUserModalIds } from "../../src/Components/User/UpdateUserListModal";
 import { AddHash } from "./TestHelpers";
 
@@ -6,6 +7,7 @@ describe('add company spec', () => {
 
   const failMessage = 'Validation Failed';
   const modalIds = AddHash(EditUserModalIds);
+  const radioIds = AddHash(UserRadioIds);
 
   beforeEach(() => {
     cy.visit('http://localhost:3000/Login')
@@ -14,6 +16,7 @@ describe('add company spec', () => {
     cy.get('button').contains('Submit').click();
 
     cy.get('button').contains('Admin').click();
+    cy.get(radioIds.all).click();
     cy.get('button').contains('Add Client').click();
   });
 
@@ -23,7 +26,6 @@ describe('add company spec', () => {
     cy.get(modalIds.password).clear().type('test');
     cy.get('button').contains('Submit').click();
 
-    cy.get('#showAll').click();
     cy.contains('Test Company');
   })
 
