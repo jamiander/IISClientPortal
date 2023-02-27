@@ -34,15 +34,15 @@ function App() {
   
   return (
     <div className='grid grid-cols-5 gap-[.5vh] bg-[#2ed7c3]'>
-      <div className='col-span-5 bg-white h-fit mt-1 mx-1 py-1'><Header/></div>
+      <div className='col-span-5 bg-[#E4E1E5] h-fit mt-1 mx-1 py-1'><Header/></div>
       <div className='contents col-span-5 bg-white mx-1'>
         {
           isLoggedIn && 
-          <div className='bg-white ml-1 col-span-1'>
+          <div className='bg-[#E4E1E5] ml-1 col-span-1'>
             <NavPanel ShowToast={ShowToast}/>
           </div>
         }
-        <div className={'bg-white min-h-[83.25vh] ' + span}>
+        <div className={'bg-[#E4E1E5] min-h-[83.25vh] ' + span}>
           <Content ShowToast={ShowToast}/>
           <Toast toastList={toastList} />
         </div>
