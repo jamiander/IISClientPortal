@@ -37,7 +37,7 @@ export default function InitiativesTable(props: InitiativesProps) {
           <th>Total Items</th>
           <th>Items Remaining</th>
           <th>Probability</th>
-          <th>Edit</th>
+          <th hidden={isCompanyHidden}>Edit</th>
         </tr>
       </thead>
       <tbody>
@@ -55,7 +55,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                     <td className={tableDataStyle}>{initiative.totalItems}</td>
                     <td className={tableDataStyle}>{itemsRemaining}</td>
                     <td className={tableDataStyle}></td>
-                    <td className={tableDataStyle}><EditInitiativeButton company={company} initiative={initiative} index={index} ValidateInitiative={props.ValidateInitiative} /></td>
+                    <td className={tableDataStyle} hidden={isCompanyHidden}><EditInitiativeButton company={company} initiative={initiative} index={index} ValidateInitiative={props.ValidateInitiative} /></td>
                   </tr>
                 )
               })
