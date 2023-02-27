@@ -5,8 +5,6 @@ import { useAppDispatch } from "../../Store/Hooks";
 import InitiativeModal from "./InitiativeModal";
 
 interface EditInitiativeButtonProps {
-
-    //handleEditInitiative: (company: Company, initiative: Initiative) => void
     company: Company
     initiative: Initiative
     index: number
