@@ -104,7 +104,7 @@ export default function ManageInitiativesDisplay() {
       </div>
 
       <div className="w-fit justify-center mt-2 py-1 px-5 outline outline-1 outline-[#879794] rounded">
-        <input type='radio' id={InitiativeRadioIds.all} value='all' name='initiativesDisplay' className="mr-1" onClick={()=>setRadioValue('all')}/>
+        <input type='radio' id={InitiativeRadioIds.all} value='all' name='initiativesDisplay' className="mr-1 rounded" onClick={()=>setRadioValue('all')}/>
         <label htmlFor='showAll' className="mr-5">Show All</label>
 
         <input type='radio' id={InitiativeRadioIds.active} value='active' name='initiativesDisplay' defaultChecked className="mr-1" onClick={()=>setRadioValue('active')}/>

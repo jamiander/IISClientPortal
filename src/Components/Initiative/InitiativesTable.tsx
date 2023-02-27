@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { FindItemsRemaining } from "../../Services/CompanyService";
 import InitiativesFilter from "../../Services/InitiativesFilter";
 import { Company } from "../../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
@@ -46,9 +47,7 @@ export default function InitiativesTable(props: InitiativesProps) {
           companies.map((company, index) => {
             return (
               (props.radioStatus !== 'all' ? InitiativesFilter(company.init, props.radioStatus) : company.init).map((initiative, index) => {
-                const itemsCompleted = initiative.itemsCompletedOnDate.map((item) => item.itemsCompleted);
-                var total = 0;
-                itemsCompleted.forEach((num) => total += num);
+                let itemsRemaining = FindItemsRemaining(initiative);
                 return (
                   <tr key={index}>
                     <td className={tableDataStyle}>{initiative.id}</td>
@@ -56,7 +55,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                     <td className={tableDataStyle} hidden={isCompanyHidden}>{company.name}</td>
                     <td className={tableDataStyle}>{initiative.targetDate.month + "/" + initiative.targetDate.day + "/" + initiative.targetDate.year}</td>
                     <td className={tableDataStyle}>{initiative.totalItems}</td>
-                    <td className={tableDataStyle}>{initiative.totalItems - total}</td>
+                    <td className={tableDataStyle}>{itemsRemaining}</td>
                     <td></td>
                   </tr>
                 )
