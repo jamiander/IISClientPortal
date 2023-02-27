@@ -46,12 +46,8 @@ export default function ManageUsersDisplay() {
 
       </div>
          
-      <div className="col-span-4 py-[10px] flex">
-        <UsersTable userList={Sorter({users:userList})} companyList={companyList} radioStatus={radioValue}/>
-        <div className="w-[10%]">
-        </div>
+      <UsersTable userList={Sorter({users:userList})} companyList={companyList} radioStatus={radioValue}/>
 
-      </div>
     </div>
   )
 }

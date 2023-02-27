@@ -30,7 +30,7 @@ export default function UsersTable(props: UsersTableProps){
 
   function ClientTable(cprops:ClientTableProps){
     return(
-      <table className="table-auto w-[100%] outline outline-3">
+      <table className="table-auto w-[100%] outline outline-3 my-3">
       <thead className="outline outline-1">
         <tr>
           <th>Company</th>
