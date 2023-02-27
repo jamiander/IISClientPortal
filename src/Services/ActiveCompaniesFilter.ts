@@ -1,7 +1,7 @@
 import { Company, Initiative, selectAllCompanies } from "../Store/CompanySlice";
 import { useAppSelector } from "../Store/Hooks";
 import { User } from "../Store/UserSlice";
-import ActiveInitiativesFilter from "./ActiveInitiativesFilter";
+import InitiativesFilter from "./InitiativesFilter";
 
 export default function ActiveCompaniesFilter(userlist:User[]){
     var initiatives: Initiative[] = [];
@@ -12,7 +12,7 @@ export default function ActiveCompaniesFilter(userlist:User[]){
 
     userlist.forEach(user=>{
         const company = companyList.find(e=>e.id === user.companyId) ?? fakeCompany;
-        initiatives = ActiveInitiativesFilter(company?.initiatives);
+        initiatives = InitiativesFilter(company?.initiatives, 'active');
         if(initiatives.length !==0){
             activeCompanies.push(company)
         }
