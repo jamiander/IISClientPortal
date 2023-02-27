@@ -22,7 +22,7 @@ export default function UsersTable(props: UsersTableProps){
     return(
       <div className="px-4 w-4/5">
         <input disabled type={passwordShown ? 'text' : 'password'} value={user.password} className="bg-[#E4E1E5] flex justify-center"/>
-        <input type={'checkbox'} onClick={togglePasswordVisibility}/> Show Password
+        <input type={'checkbox'} className='hover:outline outline-1 -outline-offset-2' onClick={togglePasswordVisibility}/> Show Password
       </div>
     )
   }

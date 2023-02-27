@@ -4,7 +4,7 @@ import { DateInfo } from "../../Services/CompanyService";
 import { Company, Initiative, selectAllCompanies, updateInitiativeInfo } from "../../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
 import InitiativeModal from "./InitiativeModal";
-import InitiativesButtons from "./InitiativesButtons";
+import InitiativesButtons from "./EditInitiativesButtonDisplay";
 import InitiativesTable from "./InitiativesTable"
 
 export const InitiativeRadioIds = {
@@ -15,15 +15,9 @@ export const InitiativeRadioIds = {
 
 export default function ManageInitiativesDisplay() {
 
-  const fakeCompany : Company = {id: -1, name: "N/A", initiatives: []}
-  const fakeInitiative : Initiative = {id: -1, title: "N/A", totalItems: 0, targetDate: {month: "0", day: "0", year: "0000"}, itemsCompletedOnDate: []}
+  const companyList : Company[] = useAppSelector(selectAllCompanies);
 
-  const companyList = useAppSelector(selectAllCompanies);
-
-  const [selectedCompany, setSelectedCompany] = useState(fakeCompany);
-  const [selectedInitiative, setSelectedInitiative] = useState(fakeInitiative);
   const [AddInitiativeIsOpen, setAddInitiativeIsOpen] = useState(false);
-  const [EditInitiativeIsOpen, setEditInitiativeIsOpen] = useState(false);
 
   const dispatch = useAppDispatch();
   const ShowToast : (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void = useOutletContext();
@@ -42,8 +36,7 @@ export default function ManageInitiativesDisplay() {
     {
       ShowToast('New Initiative Dispatched', 'Success');
       dispatch(updateInitiativeInfo({initiative: initiative, companyId: companyId, isTest: isTest}))
-      setAddInitiativeIsOpen(false); setEditInitiativeIsOpen(false);
-      setSelectedCompany(fakeCompany); setSelectedInitiative(fakeInitiative);
+      setAddInitiativeIsOpen(false);
     }
     else
       ShowToast('Validation Failed: ' + validation.message,'Error');
@@ -97,7 +90,7 @@ export default function ManageInitiativesDisplay() {
 
       <div className="w-full flex justify-between">
         <p className="text-3xl">Initiatives</p>
-        <button onClick={() => setAddInitiativeIsOpen(true)} className="outline bg-[#21345b] hover:bg-[#445362] text-white w-32 rounded-md">
+        <button onClick={() => setAddInitiativeIsOpen(true)} className="outline bg-[#21345b] text-white w-32 rounded-md hover:outline-[#2ed7c3] hover:text-[#2ed7c3]">
           Add Initiative
         </button>
         <InitiativeModal title='Add Initiative' initiativeIsOpen={AddInitiativeIsOpen} setInitiativeIsOpen={setAddInitiativeIsOpen} Submit={SubmitUpdateInitiative}/>

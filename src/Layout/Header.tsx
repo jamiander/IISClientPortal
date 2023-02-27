@@ -37,8 +37,8 @@ export default function Header(){
     <div className="flex w-[50%] justify-end self-end">
     {
       !isLoggedIn ?
-        <button className="bg-[#21345b] hover:bg-[#445362] text-white p-2 px-3 my-1 rounded-md outline" onClick={()=>navigate('/Login')}>Log In</button> :
-        <button className="bg-[#21345b] hover:bg-[#445362] text-white p-2 px-3 my-1 rounded-md outline" onClick={()=>{dispatch(signOut()); navigate('/Login')}}>Log Out</button>
+        <button className="bg-[#21345b] text-white p-2 px-3 my-1 rounded-md outline hover:outline-[#2ed7c3] hover:text-[#2ed7c3]" onClick={()=>navigate('/Login')}>Log In</button> :
+        <button className="bg-[#21345b] text-white p-2 px-3 my-1 rounded-md outline hover:outline-[#2ed7c3] hover:text-[#2ed7c3]" onClick={()=>{dispatch(signOut()); navigate('/Login')}}>Log Out</button>
     }
     </div>
   </div>

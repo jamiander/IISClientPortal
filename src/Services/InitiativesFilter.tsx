@@ -1,15 +1,16 @@
 import { Initiative } from "../Store/CompanySlice";
+import { FindItemsRemaining } from "./CompanyService";
 
 export default function InitiativeFilter(initiativesList: Initiative[], isActive: String) {
   let filteredInitiatives:Initiative[] = [];
   
   filteredInitiatives = initiativesList.filter((initiative) => {
-    let initiativeDate:Date = new Date((initiative.targetDate.month + "/" + initiative.targetDate.day + "/" + initiative.targetDate.year));
-    const currentDate:Date = new Date();
-    if (isActive === 'active')
-      return (initiativeDate.toISOString() >= currentDate.toISOString())
-    else
-      return (initiativeDate.toISOString() < currentDate.toISOString())  
+    const itemsRemaining = FindItemsRemaining(initiative);
+
+    if (isActive == 'active')
+      return (itemsRemaining > 0)
+    else 
+      return (itemsRemaining <= 0)
   })
 
   return filteredInitiatives;

@@ -112,7 +112,7 @@ export default function ManageUsersDisplay() {
 
         <div className="w-full flex justify-between">
           <p className="text-3xl">Clients</p>
-          <button className="outline bg-[#21345b] hover:bg-[#445362] text-white w-28 rounded-md" onClick={() => {setEditUserIsOpen(true); setIsEdit(false);}} >  
+          <button className="outline bg-[#21345b] text-white w-28 rounded-md hover:outline-[#2ed7c3] hover:text-[#2ed7c3]" onClick={() => {setEditUserIsOpen(true); setIsEdit(false);}} >  
             Add Client
           </button>
         </div>

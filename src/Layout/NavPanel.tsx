@@ -24,18 +24,18 @@ export default function NavPanel(props: NavProps){
       
       <p className="text-3xl">Navigation</p>
       
-      <button className="outline bg-[#21345b] hover:bg-[#445362] text-white h-12 w-[90%] rounded-md" 
+      <button className="outline bg-[#21345b] text-white h-12 w-[90%] rounded-md hover:outline-[#2ed7c3] hover:text-[#2ed7c3]" 
           onClick={() => navHandler('/Dashboard')}>
           Dashboard
       </button>
       
       {
         currentuser?.companyId === 0 ? 
-          <button className="outline bg-[#21345b] hover:bg-[#445362] text-white h-12 w-[90%] rounded-md"
+          <button className="outline bg-[#21345b] text-white h-12 w-[90%] rounded-md hover:outline-[#2ed7c3] hover:text-[#2ed7c3]"
             disabled={!isLoggedIn} onClick={() => navHandler('/Admin')}>
               Admin
           </button> :
-          <button className="outline bg-[#21345b] hover:bg-[#445362] text-white h-12 w-[90%] rounded-md" 
+          <button className="outline bg-[#21345b] text-white h-12 w-[90%] rounded-md hover:outline-[#2ed7c3] hover:text-[#2ed7c3]" 
             onClick={() => navHandler('/Profile')}>
               Profile
           </button>
