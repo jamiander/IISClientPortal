@@ -2,11 +2,10 @@ import InitiativesTable from "../Components/Initiative/InitiativesTable";
 import ProfileTable from "../Components/User/ProfileTable";
 import ValidateNewInitiative from "../Services/ValidateNewInitiative";
 import { selectAllCompanies } from "../Store/CompanySlice";
-import { useAppDispatch, useAppSelector } from "../Store/Hooks";
+import { useAppSelector } from "../Store/Hooks";
 import { selectCurrentUser } from "../Store/UserSlice";
 
 export default function ProfilePage(){
-  const dispatch = useAppDispatch();
   const currentUser = useAppSelector(selectCurrentUser);
   const companyList = useAppSelector(selectAllCompanies).filter((company) => company.id === currentUser?.companyId);
 

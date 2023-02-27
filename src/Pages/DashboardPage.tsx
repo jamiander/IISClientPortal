@@ -9,7 +9,6 @@ export default function DashboardPage(){
   const companyList = useAppSelector(selectAllCompanies);
   const company = companyList.find(e=>e.id === user?.companyId);
   const comp = useAppSelector(selectAllCompanies).filter((company) => company.id === user?.companyId);
-  const tableDataStyle = "outline outline-1 text-center ";
 
   function Dashboard(){
     if(company?.initiatives === undefined || company.initiatives.length === 0){

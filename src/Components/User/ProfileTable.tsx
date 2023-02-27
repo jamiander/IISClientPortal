@@ -28,7 +28,7 @@ export default function ProfileTable(){
               {/*<td className="outline outline-1"><p className="flex justify-center">{user?.name}</p></td>*/}
               <td className="outline outline-1"><p className="flex justify-center">{user?.email}</p></td>
               <td className="outline outline-1">
-                <input disabled type={passwordShown ? 'text' : 'password'} value={user?.password} className="bg-white flex justify-center"/>
+                <input disabled type={passwordShown ? 'text' : 'password'} value={user?.password} className="bg-[#E4E1E5] flex justify-center"/>
                 <input type={'checkbox'} onClick={togglePasswordVisibility}/> Show Password
               </td>
             </tr>

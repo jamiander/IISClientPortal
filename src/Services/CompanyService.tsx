@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Company, Initiative } from "../Store/CompanySlice";
 import { User } from "../Store/UserSlice";
-import { BASE_URL, http } from "./Http";
+import { BASE_URL } from "./Http";
 
 /*interface GetAllCompaniesRequest {
   id?: number,

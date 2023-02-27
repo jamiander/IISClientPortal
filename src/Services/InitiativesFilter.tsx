@@ -7,7 +7,7 @@ export default function InitiativeFilter(initiativesList: Initiative[], isActive
   filteredInitiatives = initiativesList.filter((initiative) => {
     const itemsRemaining = FindItemsRemaining(initiative);
 
-    if (isActive == 'active')
+    if (isActive === 'active')
       return (itemsRemaining > 0)
     else 
       return (itemsRemaining <= 0)
