@@ -1,5 +1,5 @@
 
-
+//cypress can find items by id using "#id"
 export function AddHash(obj: any)
 {
   const newObj = JSON.parse(JSON.stringify(obj));

@@ -15,6 +15,7 @@ interface EditUserProps {
 }
 
 export const EditUserModalIds = {
+  modal: "editUserModal",
   company: "editUserModalCompany",
   email: "editUserModalEmail",
   password: "editUserModalPassword"
@@ -39,6 +40,7 @@ export default function EditUserModal(props: EditUserProps) {
   return (
     <div>
       <Modal
+        id={EditUserModalIds.modal}
         isOpen={props.EditUserIsOpen}
         onRequestClose={() => {props.handleCloseEditUser()}}
         style={{'content': {...modalStyle.content, 'width' : '25%'}}}
