@@ -4,7 +4,7 @@ import { Company, Initiative, selectAllCompanies, updateInitiativeInfo } from ".
 import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
 import InitiativeModal from "./InitiativeModal";
 import InitiativesFilter from "../../Services/InitiativesFilter";
-import { EditInitiativeButton } from "../EditInitiatveButton";
+import { EditInitiativeButton } from "../EditInitiativeButton";
 
 interface InitiativesButtonsProps{
     companyList: Company[],
