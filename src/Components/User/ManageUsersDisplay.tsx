@@ -4,7 +4,7 @@ import Sorter from "../../Services/Sorter";
 import { Company, selectAllCompanies, updateCompanyInfo } from "../../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
 import { selectAllUsers, User } from "../../Store/UserSlice";
-import EditUserModal from "./UpdateUserListModal";
+import UpdateUserListModal from "./UpdateUserListModal";
 import UsersTable from "./UsersTable";
 
 export const UserRadioIds = {
@@ -118,7 +118,7 @@ export default function ManageUsersDisplay() {
       </div>
          
       <UsersTable userList={Sorter({users:userList})} companyList={companyList} radioStatus={radioValue}/>
-      <EditUserModal EditUserIsOpen={EditUserIsOpen} handleCloseEditUser={handleCloseEditUser} user={selectedUser} company={selectedCompany} SubmitUser={SubmitUpdateUser} isEdit={isEdit} />
+      <UpdateUserListModal EditUserIsOpen={EditUserIsOpen} handleCloseEditUser={handleCloseEditUser} user={selectedUser} company={selectedCompany} SubmitUser={SubmitUpdateUser} isEdit={isEdit} />
     </div>
   )
 }

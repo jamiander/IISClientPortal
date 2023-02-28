@@ -20,7 +20,7 @@ export const EditUserModalIds = {
   password: "editUserModalPassword"
 }
 
-export default function EditUserModal(props: EditUserProps) {
+export default function UpdateUserListModal(props: EditUserProps) {
   const [companyName, setCompanyName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
