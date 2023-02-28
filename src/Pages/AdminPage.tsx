@@ -23,12 +23,12 @@ export default function AdminPage(){
     }
     if(kickThemOut)
       navigate('/Login');
-  }, [currentUser])
+  }, [currentUser, navigate])
 
 
   useEffect(() => {
     dispatch(getCompanyInfo({})); //no args; admins get all companies/users
-  },[])
+  },[dispatch])
 
   return(
     <div className="my-[1%] mx-[2%] grid grid-cols-4">
