@@ -3,7 +3,7 @@ import { useOutletContext } from "react-router-dom";
 import { Company, selectAllCompanies, updateCompanyInfo } from "../../Store/CompanySlice"
 import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
 import { selectAllUsers, User } from "../../Store/UserSlice"
-import EditUserModal from "./UpdateUserListModal";
+import UpdateUserListModal from "./UpdateUserListModal";
 
 interface EditUserButtonProps{
     index:number,
@@ -106,7 +106,7 @@ export default function EditUserButton(props:EditUserButtonProps){
                 Edit Client
             </button>
             <div className="h-6">
-                <EditUserModal EditUserIsOpen={EditUserIsOpen} handleCloseEditUser={handleCloseEditUser} user={selectedUser} company={selectedCompany} SubmitUser={SubmitUpdateUser} isEdit={isEdit} />
+                <UpdateUserListModal EditUserIsOpen={EditUserIsOpen} handleCloseEditUser={handleCloseEditUser} user={selectedUser} company={selectedCompany} SubmitUser={SubmitUpdateUser} isEdit={isEdit} />
             </div>
         </div>
     )
