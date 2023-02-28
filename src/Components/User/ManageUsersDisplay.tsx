@@ -24,24 +24,24 @@ export default function ManageUsersDisplay() {
 
   return (
     <div className="col-span-4">
-      <div className="bg-[#2ed7c3] rounded-md py-3 px-5">
+      <div className="bg-[#445362] rounded-md py-3 px-5">
 
         <div className="w-full flex justify-between">
-          <p className="text-3xl">Clients</p>
+          <p className="text-3xl text-white">Clients</p>
           <button className="outline bg-[#21345b] text-white w-28 rounded-md hover:outline-[#2ed7c3] hover:text-[#2ed7c3]" onClick={() => {setEditUserIsOpen(true); setIsEdit(false);}} >  
             Add Client
           </button>
         </div>
   
-      <div className="w-fit justify-center mt-2 py-1 px-5 outline outline-1 outline-[#879794] rounded">
+      <div className="w-fit justify-center mt-2 py-1 px-5 outline outline-1 outline-[#2ed7c3] rounded">
           <input type='radio' id={UserRadioIds.all} value='all' name='clientDisplay' className="mr-1" onClick={()=>setRadioValue('all')}/>
-          <label htmlFor='showAll' className="mr-5">Show All</label>
+          <label htmlFor='showAll' className="mr-5 text-white">Show All</label>
 
           <input type='radio' id={UserRadioIds.active} value='active' name='clientDisplay' defaultChecked className="mr-1" onClick={()=>setRadioValue('active')}/>
-          <label htmlFor='showActive' className="mr-5">Only Active</label>
+          <label htmlFor='showActive' className="mr-5 text-white">Only Active</label>
           
           <input type='radio' id={UserRadioIds.inactive} value='inactive' name='clientDisplay' className="mr-1" onClick={()=>setRadioValue('inactive')}/>
-          <label htmlFor='showInactive' className="">Only Inactive</label>
+          <label htmlFor='showInactive' className="text-white">Only Inactive</label>
         </div>
 
       </div>

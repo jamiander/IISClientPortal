@@ -33,13 +33,14 @@ export default function AdminPage(){
   return(
     <div className="my-[1%] mx-[2%] grid grid-cols-4">
     
-      <div className="col-span-3 mb-4 h-fit">
+      <div className="col-span-4 mb-4 h-fit bg-[#2ed7c3] rounded-md py-3 px-5 space-y-4">
         <p className="text-5xl">Admin Page</p>
+        <div className="mb-4 h-fit flex space-x-3">
+          <button className="outline bg-[#E4E1E5] h-12 w-[50%] rounded-md hover:outline-[#2ed7c3] hover:text-[#2ed7c3]" onClick={()=>setTable("clients")}>Clients</button>
+          <button className="outline bg-[#E4E1E5] h-12 w-[50%] rounded-md hover:outline-[#2ed7c3] hover:text-[#2ed7c3]" onClick={()=>setTable("initiatives")}>Initiatives</button>
+        </div>
       </div>
-      <div className="col-span-1 mb-4 h-fit flex justify-end space-x-3">
-        <button className="outline bg-[#21345b] text-white h-12 w-[40%] rounded-md hover:outline-[#2ed7c3] hover:text-[#2ed7c3]" onClick={()=>setTable("clients")}>Clients</button>
-        <button className="outline bg-[#21345b] text-white h-12 w-[40%] rounded-md hover:outline-[#2ed7c3] hover:text-[#2ed7c3]" onClick={()=>setTable("initiatives")}>Initiatives</button>
-      </div>
+      
   
       {table === "clients" && <ManageUsersDisplay/>}
 
