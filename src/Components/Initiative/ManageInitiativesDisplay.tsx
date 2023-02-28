@@ -30,7 +30,7 @@ export default function ManageInitiativesDisplay() {
     if((window as any).Cypress)
       isTest = true;
 
-    let validation = ValidateNewInitiative(initiative, companyId);
+    let validation = ValidateNewInitiative(initiative, companyId, companyList);
     if(validation.success)
     {
       ShowToast('New Initiative Dispatched', 'Success');

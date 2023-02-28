@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { useOutletContext } from "react-router-dom";
-import { Company, Initiative, updateInitiativeInfo } from "../../Store/CompanySlice";
-import { useAppDispatch } from "../../Store/Hooks";
+import { Company, Initiative, selectAllCompanies, updateInitiativeInfo } from "../../Store/CompanySlice";
+import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
 import InitiativeModal from "./InitiativeModal";
 
 interface EditInitiativeButtonProps {
     company: Company
     initiative: Initiative
     index: number
-    ValidateInitiative : (initiative: Initiative, companyId: number) => {success: boolean, message: string}
+    ValidateInitiative : (initiative: Initiative, companyId: number, allCompanies: Company[]) => {success: boolean, message: string}
 }
 
 export function EditInitiativeButton(props: EditInitiativeButtonProps){
@@ -20,6 +20,7 @@ export function EditInitiativeButton(props: EditInitiativeButtonProps){
   const [EditInitiativeIsOpen, setEditInitiativeIsOpen] = useState(false);
 
   const dispatch = useAppDispatch();
+  const companyList = useAppSelector(selectAllCompanies);
   const ShowToast : (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void = useOutletContext();
 
   function SubmitUpdateInitiative(initiative: Initiative, companyId: number)
@@ -30,7 +31,7 @@ export function EditInitiativeButton(props: EditInitiativeButtonProps){
     if((window as any).Cypress)
       isTest = true;
 
-    let validation = props.ValidateInitiative(initiative, companyId);
+    let validation = props.ValidateInitiative(initiative, companyId, companyList);
     if(validation.success)
     {
       ShowToast('New Initiative Dispatched', 'Success');
