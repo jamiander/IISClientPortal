@@ -59,7 +59,6 @@ export default function UsersTable(props: UsersTableProps){
       </table>
     )
   }
-console.log(props.radioStatus)
   if(props.radioStatus === 'active'){
     return(
       <ClientTable clients={CompanyFilter(props.userList, 'active')}/>
