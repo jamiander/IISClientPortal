@@ -36,8 +36,8 @@ export default function AdminPage(){
       <div className="col-span-4 mb-4 h-fit bg-[#2ed7c3] rounded-md py-3 px-5 space-y-4">
         <p className="text-5xl">Admin Page</p>
         <div className="mb-4 h-fit flex space-x-3">
-          <button className="outline bg-[#E4E1E5] h-12 w-[50%] rounded-md hover:outline-[#2ed7c3] hover:text-[#2ed7c3]" onClick={()=>setTable("clients")}>Clients</button>
-          <button className="outline bg-[#E4E1E5] h-12 w-[50%] rounded-md hover:outline-[#2ed7c3] hover:text-[#2ed7c3]" onClick={()=>setTable("initiatives")}>Initiatives</button>
+          <button className="outline bg-[#E4E1E5] h-12 w-[20%] rounded-md hover:outline-[#2ed7c3] hover:text-[#2ed7c3]" onClick={()=>setTable("clients")}>Clients</button>
+          <button className="outline bg-[#E4E1E5] h-12 w-[20%] rounded-md hover:outline-[#2ed7c3] hover:text-[#2ed7c3]" onClick={()=>setTable("initiatives")}>Initiatives</button>
         </div>
       </div>
       
