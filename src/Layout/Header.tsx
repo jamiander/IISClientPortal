@@ -28,7 +28,7 @@ export default function Header(){
   return(
   <div className="mr-[1%] ml-[1%] flex">
     <div className="flex min-h-[100%] h-auto justify-start self-start">
-      <Link to="./DashBoard">
+      <Link to="./Dashboard">
         <img className="min-h-full h-auto" src={logo} alt='Integrity Inspired Solutions Logo'/>
       </Link>
       
