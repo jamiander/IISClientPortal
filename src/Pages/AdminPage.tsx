@@ -33,11 +33,11 @@ export default function AdminPage(){
   return(
     <div className="my-[1%] mx-[2%] grid grid-cols-4">
     
-      <div className="col-span-4 mb-4 h-fit bg-[#2ed7c3] rounded-md py-3 px-5 space-y-4">
-        <p className="text-5xl">Admin Page</p>
-        <div className="mb-4 h-fit flex space-x-3">
-          <button className="outline bg-[#E4E1E5] h-12 w-[20%] rounded-md hover:outline-[#2ed7c3] hover:text-[#2ed7c3]" onClick={()=>setTable("clients")}>Clients</button>
-          <button className="outline bg-[#E4E1E5] h-12 w-[20%] rounded-md hover:outline-[#2ed7c3] hover:text-[#2ed7c3]" onClick={()=>setTable("initiatives")}>Initiatives</button>
+      <div className="flex col-span-4 mb-4 h-fit bg-[#2ed7c3] rounded-md py-6 px-5">
+        <p className="text-5xl w-1/4">Admin</p>
+        <div className="h-fit w-3/4 space-x-5 flex justify-end">
+          <button className="outline outline-white text-white bg-[#21345b] h-12 w-1/5 rounded-md hover:outline-[#2ed7c3] hover:text-[#2ed7c3]" onClick={()=>setTable("clients")}>Clients</button>
+          <button className="outline outline-white text-white bg-[#21345b] h-12 w-1/5 rounded-md hover:outline-[#2ed7c3] hover:text-[#2ed7c3]" onClick={()=>setTable("initiatives")}>Initiatives</button>
         </div>
       </div>
       
