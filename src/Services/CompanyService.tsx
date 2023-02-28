@@ -127,17 +127,17 @@ export async function UpdateCompanyInfo(request: UpdateCompanyInfoRequest) : Pro
 
 export interface UpdateInitiativeInfoRequest {
   initiative: Initiative,
-  companyId: number,
+  companyId: string//number,
   isTest: boolean
 }
 
 interface UpdateInitiativeInfoResponse {
-  initiativeId: number,
+  initiativeId: string//number,
   status: string
 }
 
 export async function UpdateInitiativeInfo(request: UpdateInitiativeInfoRequest) : Promise<UpdateInitiativeInfoResponse> { 
-  let baseUrl = BASE_URL + "AddInitiativeData?code=j8g7WVHgX7VVQXnN6__iUKZptpUbmZfdiBjmm9K2aRDpAzFuBMcYaw==";
+  let baseUrl = BASE_URL + "AddInitiativeDataDB?code=Myq5EJ7IUzofxs4iufiWIiprJxBmItjWZXG9zoTbnwcpAzFu-ZD83w=="//AddInitiativeData?code=j8g7WVHgX7VVQXnN6__iUKZptpUbmZfdiBjmm9K2aRDpAzFuBMcYaw==";
 
   let response = await axios.post(baseUrl, {initiative: request.initiative, companyId: request.companyId, isTest: request.isTest});
   return response.data;
