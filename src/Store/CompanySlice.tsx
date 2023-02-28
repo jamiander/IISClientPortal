@@ -66,12 +66,12 @@ export const getCompanyInfo = createAsyncThunk(
         let companies: Company[] = [];
         for(const info of companyInfo)
         {
-            let company: Company = {id: info.companyId, name: info.companyName, initiatives: []};
+            let company: Company = {id: parseInt(info.id), name: info.companyName, initiatives: []};
             companies.push(company);
 
             let employee = info.employeeInfo;
             let user: User = {
-                id: employee.employeeId,
+                id: parseInt(employee.employeeId),
                 companyId: company.id,
                 email: employee.employeeEmail,
                 password: employee.employeePassword
