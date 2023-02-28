@@ -27,7 +27,7 @@ export default function InitiativesTable(props: InitiativesProps) {
   }, []);
   
   return (
-    <table className="table-auto w-[100%] outline outline-3">
+    <table className="table-auto w-[98%] outline outline-3">
       <thead className="outline outline-1">
         <tr>
           <th>Id</th>
