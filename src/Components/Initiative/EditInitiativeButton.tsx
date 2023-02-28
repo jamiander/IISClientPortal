@@ -34,7 +34,7 @@ export function EditInitiativeButton(props: EditInitiativeButtonProps){
     if(validation.success)
     {
       ShowToast('New Initiative Dispatched', 'Success');
-      dispatch(updateInitiativeInfo({initiative: initiative, companyId: companyId, isTest: isTest}))
+      dispatch(updateInitiativeInfo({initiative: initiative, companyId: companyId.toString(), isTest: isTest}))
       setEditInitiativeIsOpen(false);
       setSelectedCompany(fakeCompany); setSelectedInitiative(fakeInitiative);
     }
