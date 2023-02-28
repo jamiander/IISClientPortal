@@ -44,25 +44,25 @@ export default function ManageInitiativesDisplay() {
 
   return (
   <div className="col-span-4">
-    <div className="bg-[#2ed7c3] rounded-md py-3 px-5">
+    <div className="bg-[#445362] rounded-md py-3 px-5">
 
       <div className="w-full flex justify-between">
-        <p className="text-3xl">Initiatives</p>
+        <p className="text-3xl text-white">Initiatives</p>
         <button onClick={() => setAddInitiativeIsOpen(true)} className="outline bg-[#21345b] text-white w-32 rounded-md hover:outline-[#2ed7c3] hover:text-[#2ed7c3]">
           Add Initiative
         </button>
         <InitiativeModal title='Add Initiative' initiativeIsOpen={AddInitiativeIsOpen} setInitiativeIsOpen={setAddInitiativeIsOpen} Submit={SubmitUpdateInitiative}/>
       </div>
 
-      <div className="w-fit justify-center mt-2 py-1 px-5 outline outline-1 outline-[#879794] rounded">
+      <div className="w-fit justify-center mt-2 py-1 px-5 outline outline-1 outline-[#2ed7c3] rounded">
         <input type='radio' id={InitiativeRadioIds.all} value='all' name='initiativesDisplay' className="mr-1 rounded" onClick={()=>setRadioValue('all')}/>
-        <label htmlFor='showAll' className="mr-5">Show All</label>
+        <label htmlFor='showAll' className="mr-5 text-white">Show All</label>
 
         <input type='radio' id={InitiativeRadioIds.active} value='active' name='initiativesDisplay' defaultChecked className="mr-1" onClick={()=>setRadioValue('active')}/>
-        <label htmlFor='showActive' className="mr-5">Only Active</label>
+        <label htmlFor='showActive' className="mr-5 text-white">Only Active</label>
 
         <input type='radio' id={InitiativeRadioIds.inactive} value='inactive' name='initiativesDisplay' className="mr-1" onClick={()=>setRadioValue('inactive')}/>
-        <label htmlFor='showInactive' className="">Only Inactive</label>
+        <label htmlFor='showInactive' className="text-white">Only Inactive</label>
       </div>
 
     </div>

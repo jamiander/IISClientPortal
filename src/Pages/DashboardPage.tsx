@@ -9,7 +9,6 @@ export default function DashboardPage(){
   const companyList = useAppSelector(selectAllCompanies);
   const company = companyList.find(e=>e.id === user?.companyId);
   const comp = useAppSelector(selectAllCompanies).filter((company) => company.id === user?.companyId);
-  const tableDataStyle = "outline outline-1 text-center ";
 
   function Dashboard(){
     if(company?.initiatives === undefined || company.initiatives.length === 0){
@@ -26,8 +25,8 @@ export default function DashboardPage(){
 
   return(
     <div className="my-[1%] mx-[2%] grid grid-cols-4">
-      <div className="col-span-2 mb-4">
-        <p className="text-5xl">Dashboard</p>
+      <div className="col-span-4 mb-4">
+        <p className="text-5xl  bg-[#2ed7c3] rounded-md py-3 px-5">Dashboard</p>
       </div>
       {/*<div className="flex justify-end col-span-2">
         <select className="outline rounded w-[200px] h-[40px]">
@@ -39,8 +38,8 @@ export default function DashboardPage(){
           })}
         </select>  This select isn't needed in the current version of the project but will be when we want to display more information
       </div>*/}
-      <div className="col-span-4 bg-[#2ed7c3] rounded-md p-2 pl-5">
-        <p className="text-3xl h-[90%]">Company Initiatives</p>
+      <div className="col-span-4 bg-[#445362] rounded-md p-2 pl-5">
+        <p className="text-3xl text-white h-[90%]">Company Initiatives</p>
       </div>
       <div className="col-span-4 h-[60vh] py-3">
         <Dashboard/>

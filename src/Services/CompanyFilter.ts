@@ -9,13 +9,21 @@ export default function CompanyFilter(userlist:User[], isActive:string){
     var activeUsers: User[] = [];
     const companyList = useAppSelector(selectAllCompanies);
     const fakeCompany : Company = {id: -1, name: "", initiatives: []}
-
+    
     userlist.forEach(user=>{
         const company = companyList.find(e=>e.id === user.companyId) ?? fakeCompany;
         initiatives = InitiativeFilter(company.initiatives, isActive);
-        if(initiatives.length !== 0){
-            activeCompanies.push(company)
+        if(isActive === 'inactive'){
+            if(initiatives.length === company.initiatives.length){
+                activeCompanies.push(company)
+            }
         }
+        else{
+            if(initiatives.length !== 0){
+                activeCompanies.push(company)
+            }
+        }
+        
     })
     activeCompanies.forEach(company=>{
         const user = userlist.find(e=>e.companyId === company.id);
