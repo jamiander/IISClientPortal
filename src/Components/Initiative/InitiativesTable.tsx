@@ -9,7 +9,7 @@ import { EditInitiativeButton } from "./EditInitiativeButton";
 interface InitiativesProps {
   companyList: Company[],
   radioStatus: string,
-  ValidateInitiative : (initiative: Initiative, companyId: number) => {success: boolean, message: string}
+  ValidateInitiative : (initiative: Initiative, companyId: number, allCompanies: Company[]) => {success: boolean, message: string}
 }
 
 export default function InitiativesTable(props: InitiativesProps) {
