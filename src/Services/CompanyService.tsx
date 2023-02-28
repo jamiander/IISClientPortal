@@ -99,7 +99,7 @@ export interface UpdateCompanyInfoRequest {
 }
 
 interface UpdateCompanyInfoResponse {
-  id: number,
+  id: string,//number,
   status: string
 }
 
@@ -119,7 +119,7 @@ export async function UpdateCompanyInfo(request: UpdateCompanyInfoRequest) : Pro
     //no initiatives; this shoulbe be handled by the UpdateInitiativeInfo() method
   }
 
-  let baseUrl = BASE_URL + "AddCompanyData?code=WkVKzojbAuWrWSmQVvYWKiG_iD9R4S_-7wp3xsE1SuOhAzFuEJk5oQ==";
+  let baseUrl = BASE_URL + "AddCompanyDataDB?code=Hu3y-USXm491pUrvMF-jQVFDMQvazAvfxEq9pAp58LhWAzFu7kjFvQ=="//"AddCompanyData?code=WkVKzojbAuWrWSmQVvYWKiG_iD9R4S_-7wp3xsE1SuOhAzFuEJk5oQ==";
 
   let response = await axios.post(baseUrl, {company: info, isTest: isTest});
   return response.data;

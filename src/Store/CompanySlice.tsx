@@ -100,13 +100,13 @@ export const updateCompanyInfo = createAsyncThunk(
         
         if (response.status.toUpperCase().includes('FAILED'))
             throw Error;
-        
+        let newId = parseInt(response.id);
         let newCompany: Company = JSON.parse(JSON.stringify(args.company));
-        newCompany.id = response.id;
+        newCompany.id = newId;
         
         let newUser: User = JSON.parse(JSON.stringify(args.employee));
-        newUser.companyId = response.id;
-        newUser.id = response.id;   //this stinks; consider having just one id property if they're just going to be identical
+        newUser.companyId = newId;
+        newUser.id = newId;   //this stinks; consider having just one id property if they're just going to be identical
 
         dispatch(addUsersToStore([newUser]));
 
