@@ -30,29 +30,6 @@ const initialState: CompanyState = {
     companies: [],
 }
 
-/*export const getCompanyData = createAsyncThunk(
-    'companies/getCompanyData',
-    async () => {
-        const response = await GetAllCompanies();
-        return response;
-    }
-)
-
-export const addCompany = createAsyncThunk(
-    'companies/addCompany',
-    async(args: AddCompanyRequest) : Promise<Company> => {
-        const response = await AddCompany(args);
-        console.log(response.status);
-
-        if (response.status.toUpperCase().includes('FAILED'))
-            throw Error;
-            
-        let newCompany = JSON.parse(JSON.stringify(args.company));
-        newCompany.id = response.id;
-        return newCompany;
-    }
-)*/
-
 export const getCompanyInfo = createAsyncThunk(
     'companies/getCompanyInfo',
     async (args: GetCompanyInfoRequest, {dispatch, getState}) => {
@@ -136,12 +113,6 @@ export const companySlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            /*.addCase(getCompanyData.fulfilled, (state, action) => {
-                state.companies = action.payload;
-            })
-            .addCase(addCompany.fulfilled, (state, action) => {
-                state.companies.push(action.payload);
-            })*/
             .addCase(getCompanyInfo.fulfilled, (state, action) => {
                 const newCompanies = action.payload;
                 for(const company of newCompanies)

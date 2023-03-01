@@ -69,7 +69,6 @@ export default function ManageInitiativesDisplay() {
     
     <div className="col-span-4 py-[10px] flex">
       <InitiativesTable companyList={companyList} radioStatus={radioValue} ValidateInitiative={ValidateNewInitiative}/>
-      {/*<InitiativesButtons companyList={companyList} radioStatus={radioValue} ValidateInitiative={ValidateNewInitiative}/>*/}
     </div>
   </div>
   )
