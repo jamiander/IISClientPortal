@@ -1,5 +1,4 @@
-import { Company, Initiative, selectAllCompanies } from "../Store/CompanySlice";
-import { useAppSelector } from "../Store/Hooks";
+import { Company, Initiative } from "../Store/CompanySlice";
 import { DateInfo } from "./CompanyService";
 
 export default function ValidateNewInitiative(initiative: Initiative, companyId: number, allCompanies: Company[]) : {success: boolean, message: string}
