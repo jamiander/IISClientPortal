@@ -23,6 +23,11 @@ export interface CompanyInfo {
   initiatives?: Initiative[]
 }
 
+export interface ThroughputData {
+  date: DateInfo,
+  itemsCompleted: number
+}
+
 export interface GetCompanyInfoRequest {
   companyId?: number,
   employeeId?: number
