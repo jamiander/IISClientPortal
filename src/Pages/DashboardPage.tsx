@@ -26,7 +26,7 @@ export default function DashboardPage(){
   return(
     <div className="my-[1%] mx-[2%] grid grid-cols-4">
       <div className="col-span-4 mb-4">
-        <p className="text-5xl  bg-[#2ed7c3] rounded-md py-3 px-5">Dashboard</p>
+        <p className="text-5xl  bg-[#2ed7c3] rounded-md py-6 px-5">Dashboard</p>
       </div>
       {/*<div className="flex justify-end col-span-2">
         <select className="outline rounded w-[200px] h-[40px]">
