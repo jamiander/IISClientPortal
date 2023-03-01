@@ -47,8 +47,7 @@ export default function ManageUsersDisplay() {
 
     if(validation.success) {
       dispatch(updateCompanyInfo({ company: company, employee: user, isTest: isTest}));
-      setSelectedCompany(fakeCompany); setSelectedUser(fakeUser);
-      setEditUserIsOpen(false);
+      handleCloseEditUser();
     }
     else
       ShowToast('Validation Failed: ' + validation.message, 'Error');
