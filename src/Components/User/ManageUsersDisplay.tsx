@@ -13,6 +13,46 @@ export const UserRadioIds = {
   inactive: "userDisplayShowInactive"
 }
 
+export function ValidateNewUser(newCompanyName: string, newEmail: string, newPassword: string) : {success: boolean, message: string}
+{
+  const userList = useAppSelector(selectAllUsers);
+  const companyList = useAppSelector(selectAllCompanies);
+
+  let matchingCompany = companyList.find(company => company.name.toUpperCase() === newCompanyName.toUpperCase());
+  if(matchingCompany)
+    return {success: false, message: "Cannot use the name of an existing company."};
+
+  let matchingUser = userList.find(user => user.email.toUpperCase() === newEmail.toUpperCase());
+  if(matchingUser)
+    return {success: false, message: "Cannot use the email of an existing user."};
+
+  if(newCompanyName && newEmail && newPassword)
+    return {success: true, message: "Successfully validated new user!"}
+  
+  return {success: false, message: "Cannot leave any fields blank."};
+}
+
+export function ValidateEdit(companyName: string, companyId: number, userEmail: string, userPassword: string, userId: number) : {message: string, success: boolean}
+{
+  const userList = useAppSelector(selectAllUsers);
+  const companyList = useAppSelector(selectAllCompanies);
+
+  if(companyName && userEmail && userPassword && userId !== -1 && companyId !== -1)
+  {
+    let matchingUser = userList.find(indexedUser => indexedUser.email.toUpperCase() === userEmail.toUpperCase() && indexedUser.id !== userId);
+    if(matchingUser)
+      return {success: false, message: "Cannot use the email of an existing user."};
+
+    let matchingCompany = companyList.find(indexedCompany => indexedCompany.name.toUpperCase() === companyName.toUpperCase() && indexedCompany.id !== companyId)
+    if(matchingCompany)
+      return {success: false, message: "Cannot use the name of an existing company."};
+
+    return {success: true, message: "Successfully validated; all good!"};
+  }
+  return {success: false, message: "Cannot leave any fields blank."};
+}
+
+
 export default function ManageUsersDisplay() {
   const dispatch = useAppDispatch();
   const [isEdit, setIsEdit] = useState(false);
@@ -51,39 +91,6 @@ export default function ManageUsersDisplay() {
     }
     else
       ShowToast('Validation Failed: ' + validation.message, 'Error');
-  }
-  
-  function ValidateNewUser(newCompanyName: string, newEmail: string, newPassword: string) : {success: boolean, message: string}
-  {
-    let matchingCompany = companyList.find(company => company.name.toUpperCase() === newCompanyName.toUpperCase());
-    if(matchingCompany)
-      return {success: false, message: "Cannot use the name of an existing company."};
-
-    let matchingUser = userList.find(user => user.email.toUpperCase() === newEmail.toUpperCase());
-    if(matchingUser)
-      return {success: false, message: "Cannot use the email of an existing user."};
-
-    if(newCompanyName && newEmail && newPassword)
-      return {success: true, message: "Successfully validated new user!"}
-    
-    return {success: false, message: "Cannot leave any fields blank."};
-  }
-  
-  function ValidateEdit(companyName: string, companyId: number, userEmail: string, userPassword: string, userId: number) : {message: string, success: boolean}
-  {
-    if(companyName && userEmail && userPassword && userId !== -1 && companyId !== -1)
-    {
-      let matchingUser = userList.find(indexedUser => indexedUser.email.toUpperCase() === userEmail.toUpperCase() && indexedUser.id !== userId);
-      if(matchingUser)
-        return {success: false, message: "Cannot use the email of an existing user."};
-
-      let matchingCompany = companyList.find(indexedCompany => indexedCompany.name.toUpperCase() === companyName.toUpperCase() && indexedCompany.id !== companyId)
-      if(matchingCompany)
-        return {success: false, message: "Cannot use the name of an existing company."};
-
-      return {success: true, message: "Successfully validated; all good!"};
-    }
-    return {success: false, message: "Cannot leave any fields blank."};
   }
   
   function handleCloseEditUser() {
