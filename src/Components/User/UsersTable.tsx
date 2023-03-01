@@ -5,9 +5,12 @@ import { User } from "../../Store/UserSlice";
 import EditUserButton from "./EditUserButton";
 
 interface UsersTableProps {
-  userList: User[]
-  companyList: Company[]
-  radioStatus: string
+  userList: User[],
+  companyList: Company[],
+  radioStatus: string,
+  SubmitUpdateUser:(companyName: string, email: string, password: string) => void,
+  handleEditUser:(user:User,company?:Company) => void,
+  handleCloseEditUser:() => void
 }
 interface ClientTableProps{
   clients:User[]
@@ -50,7 +53,7 @@ export default function UsersTable(props: UsersTableProps){
                 <PasswordDisplay {...(user)}/>
               </td>
               <td className="outline outline-1">
-                <EditUserButton index={index} user={user} company={company} />
+                <EditUserButton index={index} user={user} company={company} SubmitUpdateUser={props.SubmitUpdateUser} handleEditUser={props.handleEditUser} handleCloseEditUser={props.handleCloseEditUser}/>
               </td>
             </tr>
           )

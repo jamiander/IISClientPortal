@@ -85,6 +85,19 @@ export default function ManageUsersDisplay() {
     }
     return {success: false, message: "Cannot leave any fields blank."};
   }
+
+  function handleEditUser(user: User, company?: Company) 
+    {
+      if(company)
+      {
+        setIsEdit(true);
+        setEditUserIsOpen(true);
+        setSelectedCompany(company);
+        setSelectedUser(user);
+      }
+      else
+        console.log("Couldn't find company for user " + user.id + "in handleEditClient (adminpage)")
+    }
   
   function handleCloseEditUser() {
     setEditUserIsOpen(false);
@@ -116,7 +129,7 @@ export default function ManageUsersDisplay() {
 
       </div>
          
-      <UsersTable userList={Sorter({users:userList})} companyList={companyList} radioStatus={radioValue}/>
+      <UsersTable userList={Sorter({users:userList})} companyList={companyList} radioStatus={radioValue} SubmitUpdateUser={SubmitUpdateUser} handleEditUser={handleEditUser} handleCloseEditUser={handleCloseEditUser}/>
       <UpdateUserListModal EditUserIsOpen={EditUserIsOpen} handleCloseEditUser={handleCloseEditUser} user={selectedUser} company={selectedCompany} SubmitUser={SubmitUpdateUser} isEdit={isEdit} />
     </div>
   )
