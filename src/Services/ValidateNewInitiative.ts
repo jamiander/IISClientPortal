@@ -18,7 +18,6 @@ export default function ValidateNewInitiative(initiative: Initiative, companyId:
   if(!matchingCompany)
     return {success: false, message: "A company must be selected."};
 
-    console.log(`title: ${initiative.title}`)
   const matchingInitiative = matchingCompany.initiatives.find(init => init.title === initiative.title && init.id !== initiative.id);
   if(matchingInitiative)
     return {success: false, message: "Initiative names must be unique."}

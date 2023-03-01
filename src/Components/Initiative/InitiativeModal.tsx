@@ -39,7 +39,7 @@ export default function InitiativeModal(props: InitiativeModalProps){
     setInitiativeTitle(props.initiative?.title ?? "");
     setInitiativeTargetDate(props.initiative?.targetDate ?? emptyDate);
     setInitiativeTotalItems(props.initiative?.totalItems ?? 0);
-	setInitiativeCompanyId(props.company?.id ?? -1);
+	  setInitiativeCompanyId(props.company?.id ?? -1);
   }, [props.initiative,props.company])
 
 	return (

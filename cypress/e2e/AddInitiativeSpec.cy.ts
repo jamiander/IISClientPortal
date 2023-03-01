@@ -26,6 +26,7 @@ describe('add initiative spec', () => {
     cy.get('button').contains('Submit').click();
 
     cy.get('button').contains('Admin').click();
+    cy.get('button').contains('Initiatives').click();
     cy.get(radioIds.all).click();
     cy.get('button').contains('Add Initiative').click();
 

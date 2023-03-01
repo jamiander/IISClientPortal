@@ -27,6 +27,7 @@ describe('update initiative spec', () => {
     cy.get('button').contains('Submit').click();
 
     cy.get('button').contains('Admin').click();
+    cy.get('button').contains('Initiatives').click();
     cy.get(radioIds.all).click();
     cy.get('table').contains('Integrity Inspired Solutions');
     cy.get('button').contains('Edit Initiative').click();
