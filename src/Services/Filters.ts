@@ -13,12 +13,16 @@ export function CompanyFilter(userlist:User[], isActive:string){
     userlist.forEach(user=>{
         const company = companyList.find(e=>e.id === user.companyId) ?? fakeCompany;
         initiatives = InitiativeFilter(company.initiatives, isActive);
+        
+        if(isActive === 'all'){
+            activeCompanies.push(company)
+        }
         if(isActive === 'inactive'){
             if(initiatives.length === company.initiatives.length){
                 activeCompanies.push(company)
             }
         }
-        else{
+        if(isActive === 'active'){
             if(initiatives.length !== 0){
                 activeCompanies.push(company)
             }
