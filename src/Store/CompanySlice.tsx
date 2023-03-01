@@ -57,10 +57,14 @@ export const getCompanyInfo = createAsyncThunk(
 
             if(info.initiatives)
             {
-                for(const [key,value] of Object.entries(info.initiatives))
+                /*for(const [key,value] of Object.entries(info.initiatives))
                 {
                     let initiative: Initiative = {...value as Initiative,id: parseInt(key)};
                     company.initiatives.push(initiative);
+                }*/
+                for(const initiative of info.initiatives)
+                {
+                  company.initiatives.push(initiative);
                 }
             }
         }
