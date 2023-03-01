@@ -4,6 +4,7 @@ import { InitiativeFilter } from "../../Services/Filters";
 import { Company, Initiative } from "../../Store/CompanySlice";
 import { useAppSelector } from "../../Store/Hooks";
 import { selectCurrentUser, User } from "../../Store/UserSlice";
+import AccordionShell from "../AccordionShell";
 import { EditInitiativeButton } from "./EditInitiativeButton";
 
 interface InitiativesProps {
@@ -47,16 +48,23 @@ export default function InitiativesTable(props: InitiativesProps) {
               (props.radioStatus !== 'all' ? InitiativeFilter(company.initiatives, props.radioStatus) : company.initiatives).map((initiative, index) => {
                 let itemsRemaining = FindItemsRemaining(initiative);
                 return (
-                  <tr key={index}>
-                    <td className={tableDataStyle}>{initiative.id}</td>
-                    <td className={tableDataStyle}>{initiative.title}</td>
-                    <td className={tableDataStyle} hidden={isCompanyHidden}>{company.name}</td>
-                    <td className={tableDataStyle}>{initiative.targetDate.month + "/" + initiative.targetDate.day + "/" + initiative.targetDate.year}</td>
-                    <td className={tableDataStyle}>{initiative.totalItems}</td>
-                    <td className={tableDataStyle}>{itemsRemaining}</td>
-                    <td className={tableDataStyle}></td>
-                    <td className={tableDataStyle} hidden={isCompanyHidden}><EditInitiativeButton company={company} initiative={initiative} index={index} ValidateInitiative={props.ValidateInitiative} /></td>
-                  </tr>
+                  <>
+                    <tr key={index}>
+                      <td className={tableDataStyle}>{initiative.id}</td>
+                      <td className={tableDataStyle}>{initiative.title}</td>
+                      <td className={tableDataStyle} hidden={isCompanyHidden}>{company.name}</td>
+                      <td className={tableDataStyle}>{initiative.targetDate.month + "/" + initiative.targetDate.day + "/" + initiative.targetDate.year}</td>
+                      <td className={tableDataStyle}>{initiative.totalItems}</td>
+                      <td className={tableDataStyle}>{itemsRemaining}</td>
+                      <td className={tableDataStyle}></td>
+                      <td className={tableDataStyle} hidden={isCompanyHidden}><EditInitiativeButton company={company} initiative={initiative} index={index} ValidateInitiative={props.ValidateInitiative} /></td>
+                    </tr>
+                    <tr>
+                      <td colSpan={8}>
+                        <AccordionShell company={company}/>
+                      </td>
+                    </tr>
+                  </>
                 )
               })
             )
