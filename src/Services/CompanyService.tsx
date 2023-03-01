@@ -20,7 +20,7 @@ export interface CompanyInfo {
   id: string,
   companyName: string,
   employeeInfo: EmployeeInfo,
-  initiatives?: any //not sure how to represent this, since the key is dynamic { "<id string>": InitiativeObject{} }
+  initiatives?: Initiative[]
 }
 
 export interface GetCompanyInfoRequest {
@@ -34,7 +34,7 @@ interface GetCompanyInfoResponse {
 }
 
 export async function GetCompanyInfo(request?: GetCompanyInfoRequest) : Promise<GetCompanyInfoResponse> {
-  let baseUrl = BASE_URL + "GetCompanyDataDB?code=yxbqHLA5Vp_XyQwwR8TrGLamOrTxv9Dbqw53RhEOYy9CAzFuckblhQ=="//"GetCompanyData?code=1HsP_rZR0qd4PKt7Z7NyV7RQxSQWpMq9mirkMKg3ZNBcAzFuCCfxTQ==";
+  let baseUrl = BASE_URL + "GetCompanyDataDB?code=yxbqHLA5Vp_XyQwwR8TrGLamOrTxv9Dbqw53RhEOYy9CAzFuckblhQ==";
 
   let query = [];/*
   if (request)
@@ -78,10 +78,10 @@ export async function UpdateCompanyInfo(request: UpdateCompanyInfoRequest) : Pro
       employeeEmail: employee.email,
       employeePassword: employee.password
     },
-    //no initiatives; this shoulbe be handled by the UpdateInitiativeInfo() method
+    //no initiatives; this should be handled by the UpdateInitiativeInfo() method
   }
 
-  let baseUrl = BASE_URL + "AddCompanyDataDB?code=Hu3y-USXm491pUrvMF-jQVFDMQvazAvfxEq9pAp58LhWAzFu7kjFvQ=="//"AddCompanyData?code=WkVKzojbAuWrWSmQVvYWKiG_iD9R4S_-7wp3xsE1SuOhAzFuEJk5oQ==";
+  let baseUrl = BASE_URL + "AddCompanyDataDB?code=Hu3y-USXm491pUrvMF-jQVFDMQvazAvfxEq9pAp58LhWAzFu7kjFvQ==";
 
   let response = await axios.post(baseUrl, {company: info, isTest: isTest});
   return response.data;
@@ -99,7 +99,7 @@ interface UpdateInitiativeInfoResponse {
 }
 
 export async function UpdateInitiativeInfo(request: UpdateInitiativeInfoRequest) : Promise<UpdateInitiativeInfoResponse> { 
-  let baseUrl = BASE_URL + "AddInitiativeDataDB?code=Myq5EJ7IUzofxs4iufiWIiprJxBmItjWZXG9zoTbnwcpAzFu-ZD83w=="//AddInitiativeData?code=j8g7WVHgX7VVQXnN6__iUKZptpUbmZfdiBjmm9K2aRDpAzFuBMcYaw==";
+  let baseUrl = BASE_URL + "AddInitiativeDataDB?code=Myq5EJ7IUzofxs4iufiWIiprJxBmItjWZXG9zoTbnwcpAzFu-ZD83w==";
 
   let response = await axios.post(baseUrl, {initiative: request.initiative, companyId: request.companyId, isTest: request.isTest});
   return response.data;
