@@ -75,9 +75,13 @@ export function ValidateEditUser(companyName: string, user: User, userList: User
   return {success: false, message: "Cannot leave any fields blank."};
 }
 
-export function ValidateThroughputData(data: ThroughputData) : {message: string, success: boolean} 
+export function ValidateThroughputData(dataList: ThroughputData[]) : {message: string, success: boolean} 
 {
+  const invalidDate = dataList.find((entry) => {return !ValidateDate(entry.date).success})
+  const invalidNumberCompleted = dataList.find((entry) => {return entry.itemsCompleted < 0})
 
+  if (invalidDate) return {success: false, message: "All dates must be valid."}
+  if (invalidNumberCompleted) return {success: false, message: "All entreis must have a number completed greater than 0."}
 
-  return {success: false, message: "error"}
+  return {success: true, message: "All data is valid."}
 }
