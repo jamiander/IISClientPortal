@@ -32,8 +32,6 @@ export function CompanyFilter(userlist:User[], isActive:string){
     activeCompanies.forEach(company=>{
         const user = userlist.find(e=>e.companyId === company.id);
         if(user !== undefined){
-            console.log("Users")
-            console.log(user)
             activeUsers.push(user);
         }
     })
