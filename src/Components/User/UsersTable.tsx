@@ -1,5 +1,5 @@
 import { useState } from "react";
-import CompanyFilter from "../../Services/CompanyFilter";
+import { CompanyFilter } from "../../Services/Filters";
 import { Company } from "../../Store/CompanySlice";
 import { User } from "../../Store/UserSlice";
 import EditUserButton from "./EditUserButton";

@@ -1,9 +1,9 @@
 import { Company, Initiative, selectAllCompanies } from "../Store/CompanySlice";
 import { useAppSelector } from "../Store/Hooks";
 import { User } from "../Store/UserSlice";
-import InitiativeFilter from "./InitiativesFilter";
+import { FindItemsRemaining } from "./CompanyService";
 
-export default function CompanyFilter(userlist:User[], isActive:string){
+export function CompanyFilter(userlist:User[], isActive:string){
     var initiatives: Initiative[] = [];
     var activeCompanies: Company[] = [];
     var activeUsers: User[] = [];
@@ -32,4 +32,19 @@ export default function CompanyFilter(userlist:User[], isActive:string){
         }
     })
     return activeUsers
+}
+
+export function InitiativeFilter(initiativesList: Initiative[], isActive: String) {
+  let filteredInitiatives:Initiative[] = [];
+  
+  filteredInitiatives = initiativesList.filter((initiative) => {
+    const itemsRemaining = FindItemsRemaining(initiative);
+
+    if (isActive === 'active')
+      return (itemsRemaining > 0)
+    else 
+      return (itemsRemaining <= 0)
+  })
+
+  return filteredInitiatives;
 }

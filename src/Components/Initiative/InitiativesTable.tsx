@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { FindItemsRemaining } from "../../Services/CompanyService";
-import InitiativesFilter from "../../Services/InitiativesFilter";
+import { InitiativeFilter } from "../../Services/Filters";
 import { Company, Initiative } from "../../Store/CompanySlice";
 import { useAppSelector } from "../../Store/Hooks";
 import { selectCurrentUser, User } from "../../Store/UserSlice";
@@ -44,7 +44,7 @@ export default function InitiativesTable(props: InitiativesProps) {
         {
           props.companyList.map((company, index) => {
             return (
-              (props.radioStatus !== 'all' ? InitiativesFilter(company.initiatives, props.radioStatus) : company.initiatives).map((initiative, index) => {
+              (props.radioStatus !== 'all' ? InitiativeFilter(company.initiatives, props.radioStatus) : company.initiatives).map((initiative, index) => {
                 let itemsRemaining = FindItemsRemaining(initiative);
                 return (
                   <tr key={index}>
