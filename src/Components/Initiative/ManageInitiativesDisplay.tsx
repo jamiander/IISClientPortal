@@ -4,7 +4,7 @@ import { Company, Initiative, selectAllCompanies, updateInitiativeInfo } from ".
 import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
 import InitiativeModal from "./InitiativeModal";
 import InitiativesTable from "./InitiativesTable"
-import ValidateNewInitiative from "../../Services/ValidateNewInitiative";
+import ValidateNewInitiative from "../../Services/Validation";
 
 export const InitiativeRadioIds = {
   all: "initDisplayShowAll",

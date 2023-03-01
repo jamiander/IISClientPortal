@@ -1,4 +1,5 @@
 import { Company, Initiative } from "../Store/CompanySlice";
+import { User } from "../Store/UserSlice";
 import { DateInfo } from "./CompanyService";
 
 export default function ValidateNewInitiative(initiative: Initiative, companyId: number, allCompanies: Company[]) : {success: boolean, message: string}
@@ -39,4 +40,37 @@ function ValidateDate(date: DateInfo) : {success: boolean, message: string}
     return {success: false, message: "Year must be a positive value."};
 
     return {success: true, message: "Date is all good!"}
+}
+
+export function ValidateNewUser(newCompanyName: string, newEmail: string, newPassword: string, companyList: Company[], userList: User[]) : {success: boolean, message: string}
+{
+  let matchingCompany = companyList.find(company => company.name.toUpperCase() === newCompanyName.toUpperCase());
+  if(matchingCompany)
+    return {success: false, message: "Cannot use the name of an existing company."};
+
+  let matchingUser = userList.find(user => user.email.toUpperCase() === newEmail.toUpperCase());
+  if(matchingUser)
+    return {success: false, message: "Cannot use the email of an existing user."};
+
+  if(newCompanyName && newEmail && newPassword)
+    return {success: true, message: "Successfully validated new user!"}
+  
+  return {success: false, message: "Cannot leave any fields blank."};
+}
+
+export function ValidateEditUser(companyName: string, user: User, userList: User[], companyList: Company[]) : {message: string, success: boolean}
+{
+  if(companyName && user.email && user.password && user.id !== -1 && user.companyId !== -1)
+  {
+    let matchingUser = userList.find(indexedUser => indexedUser.email.toUpperCase() === user.email.toUpperCase() && indexedUser.id !== user.id);
+    if(matchingUser)
+      return {success: false, message: "Cannot use the email of an existing user."};
+
+    let matchingCompany = companyList.find(indexedCompany => indexedCompany.name.toUpperCase() === companyName.toUpperCase() && indexedCompany.id !== user.companyId)
+    if(matchingCompany)
+      return {success: false, message: "Cannot use the name of an existing company."};
+
+    return {success: true, message: "Successfully validated; all good!"};
+  }
+  return {success: false, message: "Cannot leave any fields blank."};
 }

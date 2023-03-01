@@ -1,5 +1,5 @@
 import InitiativesTable from "../Components/Initiative/InitiativesTable";
-import ValidateNewInitiative from "../Services/ValidateNewInitiative";
+import ValidateNewInitiative from "../Services/Validation";
 import { selectAllCompanies } from "../Store/CompanySlice";
 import { useAppSelector } from "../Store/Hooks"
 import { selectCurrentUser } from "../Store/UserSlice";
