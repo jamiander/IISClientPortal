@@ -62,19 +62,7 @@ export default function UsersTable(props: UsersTableProps){
       </table>
     )
   }
-  if(props.radioStatus === 'active'){
-    return(
-      <ClientTable clients={CompanyFilter(props.userList, 'active')}/>
-    )
-  }
-  else if(props.radioStatus === 'inactive'){
-    return(
-      <ClientTable clients={CompanyFilter(props.userList, 'inactive')}/>
-    )
-  }
-  else{
-    return(
-      <ClientTable clients={props.userList}/>
-    )
-  }
+  return(
+    <ClientTable clients={CompanyFilter(props.userList,props.radioStatus)}/>
+  )
 }
