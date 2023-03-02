@@ -30,6 +30,10 @@ export default function LoginPage(){
       <div className="col-span-4 mb-5">
         <p className="text-5xl">Login</p>
       </div>
+      <div className="m-5">
+        <p className="flex justify-center text-3xl">Welcome to the Integrity Inspired Solutions Client Portal!</p>
+        <p className="flex justify-center text-2xl">To view the information on your project, please log in</p>
+      </div>
       <div className="col-span-4 my-2">
         <p>Email:</p>
         <input id="email" autoFocus value={userEmail} onChange={(e)=>setUserEmail(e.target.value)} onKeyDown={(e)=> {if (e.key === 'Enter') Login()}} className="outline outline-1 rounded-md h-[40px] w-[220px] p-2"/>
