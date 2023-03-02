@@ -16,9 +16,9 @@ export default function UploadThroughputModal(props:ThroughputModalProps){
         <Modal
         isOpen={props.uploadIsOpen}
         onRequestClose={()=>props.setUploadIsOpen(false)}
-        style={{'content': {...modalStyle.content, 'width' : '25%'}}}
+        style={{'content': {...modalStyle.content, 'width' : '25%', 'height' : '25%'}}}
         appElement={document.getElementById('root') as HTMLElement}>
-            <div className="space-y-5">
+            <div className="flex flex-wrap space-y-5">
                 <p className="text-3xl">Upload Throughput Data</p>
 
                 <select onChange={(e)=>setSelectedCompany({...fakeCompany, name:(e.target as HTMLSelectElement).value})} className="outline rounded w-[200px] h-[40px]">
@@ -39,8 +39,8 @@ export default function UploadThroughputModal(props:ThroughputModalProps){
                     })}
                 </select>
                 <input type={'file'} accept={'.csv'}/>
-                <div className='h-10'>
-                    <button className={submitButtonStyle + ' mt-6'}>Submit</button> {/*submit button does nothing right now*/}
+                <div className='w-full flex justify-end h-10'>
+                    <button className={submitButtonStyle}>Submit</button> {/*submit button does nothing right now*/}
                     <button className={cancelButtonStyle} onClick={() => props.setUploadIsOpen(false)}>Close</button>
                 </div>
                  
