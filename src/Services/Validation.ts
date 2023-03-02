@@ -81,7 +81,7 @@ export function ValidateThroughputData(dataList: ThroughputData[]) : {message: s
   const invalidNumberCompleted = dataList.find((entry) => {return entry.itemsCompleted < 0})
 
   if (invalidDate) return {success: false, message: "All dates must be valid."}
-  if (invalidNumberCompleted) return {success: false, message: "All entreis must have a number completed greater than 0."}
+  if (invalidNumberCompleted) return {success: false, message: "All entries must have a number completed greater than 0."}
 
   return {success: true, message: "All data is valid."}
 }
