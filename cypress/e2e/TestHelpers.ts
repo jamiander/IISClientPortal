@@ -4,6 +4,8 @@ import { ToastId } from "../../src/Components/Toast";
 import { UserRadioIds } from "../../src/Components/User/ManageUsersDisplay";
 import { EditUserModalIds } from "../../src/Components/User/UpdateUserListModal";
 import { ValidationFailedPrefix } from "../../src/Services/Validation";
+import { UploadThroughputIds } from "../../src/Components/Initiative/UploadThroughputModal";
+import { InitiativeTableIds } from "../../src/Components/Initiative/InitiativesTable";
 
 //cypress can find items by id using "#id"
 export function AddHash(obj: any)
@@ -26,5 +28,7 @@ export const TestConstants = {
   initiativeModalIds: AddHash(InitiativeModalIds),
   initiativeRadioIds: AddHash(InitiativeRadioIds),
   userModalIds: AddHash(EditUserModalIds),
-  userRadioIds: AddHash(UserRadioIds)
+  userRadioIds: AddHash(UserRadioIds),
+  UploadThroughputIds: AddHash(UploadThroughputIds),
+  InitiativeTableIds: AddHash(InitiativeTableIds)
 }

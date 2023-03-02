@@ -7,6 +7,10 @@ import { selectCurrentUser, User } from "../../Store/UserSlice";
 import AccordionShell from "../AccordionShell";
 import { EditInitiativeButton } from "./EditInitiativeButton";
 
+export const InitiativeTableIds = {
+  totalItems: 'totalItems',
+  remainingItems: 'remainingItems'
+}
 interface InitiativesProps {
   companyList: Company[],
   radioStatus: string,
@@ -54,8 +58,8 @@ export default function InitiativesTable(props: InitiativesProps) {
                       <td className={tableDataStyle}>{initiative.title}</td>
                       <td className={tableDataStyle} hidden={isCompanyHidden}>{company.name}</td>
                       <td className={tableDataStyle}>{initiative.targetDate.month + "/" + initiative.targetDate.day + "/" + initiative.targetDate.year}</td>
-                      <td className={tableDataStyle}>{initiative.totalItems}</td>
-                      <td className={tableDataStyle}>{itemsRemaining}</td>
+                      <td id={InitiativeTableIds.totalItems} className={tableDataStyle}>{initiative.totalItems}</td>
+                      <td id={InitiativeTableIds.remainingItems} className={tableDataStyle}>{itemsRemaining}</td>
                       <td className={tableDataStyle}></td>
                       <td className={tableDataStyle} hidden={isCompanyHidden}><EditInitiativeButton company={company} initiative={initiative} index={index} ValidateInitiative={props.ValidateInitiative} /></td>
                     </tr>

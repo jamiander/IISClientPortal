@@ -4,6 +4,11 @@ import { cancelButtonStyle, modalStyle, submitButtonStyle } from "../../Styles";
 import { useRef, useState } from "react";
 import { ThroughputData } from "../../Services/CompanyService";
 
+export const UploadThroughputIds = {
+  selectCompany: "selectCompanyInThroughputModal",
+  selectInitiative: "selectInitiativeInThroughputModal"
+}
+
 interface ThroughputModalProps{
   companyList:Company[],
   uploadIsOpen: boolean,
@@ -33,12 +38,12 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
     <Modal
     isOpen={props.uploadIsOpen}
     onRequestClose={()=>props.setUploadIsOpen(false)}
-    style={{'content': {...modalStyle.content, 'width' : '25%', 'height' : '25%'}}}
+    style={{'content': {...modalStyle.content, 'width' : '25%', 'height' : 'fit-content'}}}
     appElement={document.getElementById('root') as HTMLElement}>
       <div className="flex flex-wrap space-y-5">
         <p className="text-3xl">Upload Throughput Data</p>
 
-        <select onChange={(e)=>SelectCompany(parseInt((e.target as HTMLSelectElement).value))} className="outline rounded w-[200px] h-[40px]">
+        <select id={UploadThroughputIds.selectCompany} onChange={(e)=>SelectCompany(parseInt((e.target as HTMLSelectElement).value))} className="outline rounded w-[200px] h-[40px]">
         <option>Select Company</option>
           {props.companyList.map((company,index)=>{
             return(
@@ -46,7 +51,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
             )
           })}
         </select>
-        <select value={selectedInitiativeIndex} onChange={(e)=>SelectInitiative(parseInt((e.target as HTMLSelectElement).value))} className="outline rounded w-[200px] h-[40px]">
+        <select id={UploadThroughputIds.selectInitiative} value={selectedInitiativeIndex} onChange={(e)=>SelectInitiative(parseInt((e.target as HTMLSelectElement).value))} className="outline rounded w-[200px] h-[40px]">
           <option>Select Initiative</option>
           {selectedCompany?.initiatives.map((initiative,index)=>{
             return(
