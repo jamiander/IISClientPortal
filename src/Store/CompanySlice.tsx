@@ -154,18 +154,18 @@ export const companySlice = createSlice({
               const ShowToast : (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void = useOutletContext();
               const companyId = action.payload.companyId;
               const initiativeId = action.payload.initiativeId;
-              const matchingCompany = state.companies.find(company => company.id == companyId);
+              const matchingCompany = state.companies.find(company => company.id === companyId);
               if(matchingCompany)
               {
-                const matchingInit = matchingCompany.initiatives.find(init => init.id == initiativeId);
+                const matchingInit = matchingCompany.initiatives.find(init => init.id === initiativeId);
                 if(matchingInit)
                 {
                   for(const item of action.payload.data)
                   {
                     const itemIndex = matchingInit.itemsCompletedOnDate.findIndex(entry => 
-                      entry.date.month == item.date.month &&
-                      entry.date.day == item.date.day &&
-                      entry.date.year == item.date.year);
+                      entry.date.month === item.date.month &&
+                      entry.date.day === item.date.day &&
+                      entry.date.year === item.date.year);
 
                     if(itemIndex > -1)
                       matchingInit.itemsCompletedOnDate[itemIndex].itemsCompleted = item.itemsCompleted;

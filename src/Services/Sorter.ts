@@ -1,4 +1,4 @@
-import { Company, selectAllCompanies } from "../Store/CompanySlice";
+import { selectAllCompanies } from "../Store/CompanySlice";
 import { useAppSelector } from "../Store/Hooks";
 import { User } from "../Store/UserSlice";
 
