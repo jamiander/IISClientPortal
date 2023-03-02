@@ -4,7 +4,7 @@ import ManageInitiativesDisplay from "../Components/Initiative/ManageInitiatives
 
 export default function AdminPage(){
   
-  const [table,setTable] = useState("clients");
+  const [table,setTable] = useState("initiatives");
 
   return(
     <div className="my-[1%] mx-[2%] grid grid-cols-4">
