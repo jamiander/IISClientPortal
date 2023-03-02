@@ -1,7 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
+import { useOutletContext } from "react-router-dom";
 import { DateInfo, GetCompanyInfo, GetCompanyInfoRequest, ThroughputData, UpdateCompanyInfo, UpdateCompanyInfoRequest, UpdateInitiativeInfo, UpdateInitiativeInfoRequest, UpdateThroughputData, UpdateThroughputDataRequest } from "../Services/CompanyService"
 import { RootState } from "./Store"
 import { addUsersToStore, User } from "./UserSlice"
+
+const ShowToast : (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void = useOutletContext();
 
 export interface Company {
     id: number,
@@ -171,8 +174,11 @@ export const companySlice = createSlice({
                       matchingInit.itemsCompletedOnDate.push(item);
                   }
                 }
+                else
+                  ShowToast("Initiative with id " + initiativeId + " does not exist clientside.","Error");
               }
-
+              else
+                ShowToast("Company with id " + companyId + " does not exist clientside.", "Error");
             })
     }
 });
