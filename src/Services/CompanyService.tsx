@@ -117,3 +117,24 @@ export function FindItemsRemaining(initiative: Initiative)  {
   itemsCompleted.forEach((num) => totalItemsCompleted += num);
   return initiative.totalItems - totalItemsCompleted;
 }
+
+
+export interface UpdateThroughputDataRequest {
+  isTest: boolean,
+  overwriteDuplicates: boolean,
+  companyId: string,
+  initiativeId: string,
+  itemsCompletedOnDate: ThroughputData[]
+}
+
+interface UpdateThroughputDataResponse {
+  status: string
+}
+
+export async function UpdateThroughputData(request: UpdateThroughputDataRequest) : Promise<UpdateThroughputDataResponse>
+{
+  let baseUrl = BASE_URL + "AddThroughputDataDB?code=7zfSWKR3W3-8WhgYqHm-8k50IZY6TdtJ_3ylenab25OoAzFuFzdQLA==";
+
+  const response = await axios.post(baseUrl,request);
+  return response.data;
+}

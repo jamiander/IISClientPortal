@@ -1,6 +1,6 @@
 import { Company, Initiative } from "../Store/CompanySlice";
 import { User } from "../Store/UserSlice";
-import { DateInfo } from "./CompanyService";
+import { DateInfo, ThroughputData } from "./CompanyService";
 
 export default function ValidateNewInitiative(initiative: Initiative, companyId: number, allCompanies: Company[]) : {success: boolean, message: string}
 {
@@ -73,4 +73,17 @@ export function ValidateEditUser(companyName: string, user: User, userList: User
     return {success: true, message: "Successfully validated; all good!"};
   }
   return {success: false, message: "Cannot leave any fields blank."};
+}
+
+export function ValidateThroughputData(dataList: ThroughputData[]) : {message: string, success: boolean} 
+{
+  dataList.find((entry) => {
+      if (!ValidateDate(entry.date).success) 
+        return {success: false, message: "All dates must be valid."}
+      if (entry.itemsCompleted < 0) 
+        return {success: false, message: "All entries must have a number of items completed greater than 0."}
+    }
+  )
+  
+  return {success: true, message: "All data is valid."}
 }

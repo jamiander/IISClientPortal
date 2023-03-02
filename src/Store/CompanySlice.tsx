@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import { DateInfo, GetCompanyInfo, GetCompanyInfoRequest, UpdateCompanyInfo, UpdateCompanyInfoRequest, UpdateInitiativeInfo, UpdateInitiativeInfoRequest } from "../Services/CompanyService"
+import { DateInfo, GetCompanyInfo, GetCompanyInfoRequest, ThroughputData, UpdateCompanyInfo, UpdateCompanyInfoRequest, UpdateInitiativeInfo, UpdateInitiativeInfoRequest, UpdateThroughputData, UpdateThroughputDataRequest } from "../Services/CompanyService"
 import { RootState } from "./Store"
 import { addUsersToStore, User } from "./UserSlice"
 
@@ -18,12 +18,7 @@ export interface Initiative {
     title: string,
     targetDate: DateInfo,
     totalItems: number,
-    itemsCompletedOnDate: [
-        {
-            date: DateInfo,
-            itemsCompleted: number
-        }
-    ] | []
+    itemsCompletedOnDate: ThroughputData[] 
 }
 
 const initialState: CompanyState = {
@@ -57,13 +52,9 @@ export const getCompanyInfo = createAsyncThunk(
 
             if(info.initiatives)
             {
-                /*for(const [key,value] of Object.entries(info.initiatives))
-                {
-                    let initiative: Initiative = {...value as Initiative,id: parseInt(key)};
-                    company.initiatives.push(initiative);
-                }*/
                 for(const initiative of info.initiatives)
                 {
+                  initiative.id = parseInt(initiative.id.toString());
                   company.initiatives.push(initiative);
                 }
             }
@@ -109,6 +100,18 @@ export const updateInitiativeInfo = createAsyncThunk(
     }
 )
 
+export const updateThroughputData = createAsyncThunk(
+  'companies/updateThroughputInfo',
+  async (args: UpdateThroughputDataRequest, {dispatch, getState}): Promise<{initiativeId: number, companyId: number, data: ThroughputData[]}> => {
+    const response = await UpdateThroughputData(args);
+
+    if(response.status.toUpperCase().includes('FAILED'))
+      throw Error;
+
+    return {initiativeId: parseInt(args.initiativeId), companyId: parseInt(args.companyId), data: args.itemsCompletedOnDate};
+  }
+)
+
 export const companySlice = createSlice({
     name: "companies",
     initialState: initialState,
@@ -145,6 +148,20 @@ export const companySlice = createSlice({
                         matchingCompany.initiatives.splice(initIndex,1);
                     matchingCompany.initiatives.push(newInitiative);
                 }
+            })
+            .addCase(updateThroughputData.fulfilled, (state, action) => {
+              const companyId = action.payload.companyId;
+              const initiativeId = action.payload.initiativeId;
+              const matchingCompany = state.companies.find(company => company.id == companyId);
+              if(matchingCompany)
+              {
+                const matchingInit = matchingCompany.initiatives.find(init => init.id == initiativeId);
+                if(matchingInit)
+                {
+                  matchingInit.itemsCompletedOnDate = action.payload.data;
+                }
+              }
+
             })
     }
 });
