@@ -37,7 +37,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
 
   function SelectCompany(companyId: number)
   {
-    setSelectedCompany(props.companyList[companyId]);
+    setSelectedCompany(props.companyList.find(company => company.id === companyId));
     setSelectedInitiativeIndex(-1);
   }
 

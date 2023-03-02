@@ -99,9 +99,10 @@ export function ValidateThroughputDataUpdate(companyList: Company[], companyId: 
   const dataValidation = ValidateThroughputData(dataList);
   if(dataValidation.success)
   {
-    if(!companyList[companyId])
+    const matchingCompany = companyList.find(company => company.id === companyId);
+    if(!matchingCompany)
       return {success: false, message: "A company must be selected."};
-    if(!companyList[companyId].initiatives.find(init => init.id === initiativeId))
+    if(!matchingCompany.initiatives.find(init => init.id === initiativeId))
       return {success: false, message: "An initiative must be selected."};
   }
   else
