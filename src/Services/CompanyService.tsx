@@ -121,7 +121,6 @@ export function FindItemsRemaining(initiative: Initiative)  {
 
 export interface UpdateThroughputDataRequest {
   isTest: boolean,
-  overwriteDuplicates: boolean,
   companyId: string,
   initiativeId: string,
   itemsCompletedOnDate: ThroughputData[]

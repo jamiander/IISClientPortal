@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { useOutletContext } from "react-router-dom";
-import { Company, Initiative, selectAllCompanies, updateInitiativeInfo } from "../../Store/CompanySlice";
+import { Company, Initiative, selectAllCompanies, updateInitiativeInfo, updateThroughputData } from "../../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
 import InitiativesTable from "./InitiativesTable"
-import ValidateNewInitiative, { ValidationFailedPrefix } from "../../Services/Validation";
+import ValidateNewInitiative, { ValidateThroughputData, ValidationFailedPrefix } from "../../Services/Validation";
 import UploadThroughputModal from "./UploadThroughputModal";
 import { UpdateInitiativeListModal } from "./UpdateInitiativeListModal";
+import { ThroughputData } from "../../Services/CompanyService";
 
 export const InitiativeRadioIds = {
   all: "initDisplayShowAll",
@@ -30,16 +31,32 @@ export default function ManageInitiativesDisplay() {
     if((window as any).Cypress)
       isTest = true;
 
-    let validation = ValidateNewInitiative(initiative, companyId, companyList);
+    const validation = ValidateNewInitiative(initiative, companyId, companyList);
     if(validation.success)
     {
-      dispatch(updateInitiativeInfo({initiative: initiative, companyId: companyId.toString(), isTest: isTest}))
+      dispatch(updateInitiativeInfo({initiative: initiative, companyId: companyId.toString(), isTest: isTest}));
       setAddInitiativeIsOpen(false);
     }
     else
       ShowToast(ValidationFailedPrefix + validation.message,'Error');
   }
 
+  function SubmitUpdateThroughput(companyId: number, initiativeId: number, dataList: ThroughputData[])
+  {
+    let isTest = false;
+    if((window as any).Cypress)
+      isTest = true;
+    
+    const validation = ValidateThroughputData(dataList);
+    if(validation.success)
+    {
+      //dispatch(updateThroughputData({companyId: companyId.toString(), initiativeId: initiativeId.toString(), itemsCompletedOnDate: dataList, isTest: isTest}));
+      setUploadModalIsOpen(false);
+      ShowToast("Success","Success");
+    }
+    else
+      ShowToast(ValidationFailedPrefix + validation.message, 'Error');
+  }
 
   return (
   <div className="col-span-4">
@@ -54,7 +71,7 @@ export default function ManageInitiativesDisplay() {
         <button onClick={()=> setUploadModalIsOpen(true)} className="outline bg-[#21345b] text-white w-32 rounded-md hover:outline-[#2ed7c3] hover:text-[#2ed7c3]">
           Upload data
         </button>
-        <UploadThroughputModal companyList={companyList} uploadIsOpen={UploadModalIsOpen} setUploadIsOpen={setUploadModalIsOpen}/>
+        <UploadThroughputModal companyList={companyList} uploadIsOpen={UploadModalIsOpen} setUploadIsOpen={setUploadModalIsOpen} Submit={SubmitUpdateThroughput}/>
       </div>
 
       <div className="w-fit justify-center mt-2 py-1 px-5 outline outline-1 outline-[#2ed7c3] rounded">
