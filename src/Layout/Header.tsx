@@ -11,24 +11,23 @@ export default function Header(){
   const user = useAppSelector(selectCurrentUser);
   const companyList = useAppSelector(selectAllCompanies);
   const company = companyList.find(e=>e.id === user?.companyId);
-  var date = new Date();
-  var hrs = date.getHours();
+  var hrs = new Date().getHours();
   var greet;
+  let imageLink = './Dashboard';
 
-  if(hrs < 12){
+  if(hrs < 12)
     greet = 'Good Morning ' + company?.name
-  }
-  else if(hrs >= 12 && hrs <=17){
+  else if(hrs >= 12 && hrs <=17)
     greet = 'Good Afternoon ' + company?.name
-  }
-  else if(hrs >= 17 && hrs <= 24){
+  else
     greet = 'Good Evening ' + company?.name
-  }
+
+  if(!isLoggedIn) imageLink = './Login'
 
   return(
   <div className="mr-[1%] ml-[1%] flex">
     <div className="flex min-h-[100%] h-auto justify-start self-start">
-      <Link to="./Dashboard">
+      <Link to={imageLink}>
         <img className="min-h-full h-auto" src={logo} alt='Integrity Inspired Solutions Logo'/>
       </Link>
       
