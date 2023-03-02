@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import { Company, Initiative, selectAllCompanies, updateInitiativeInfo } from "../../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
-import InitiativeModal from "./InitiativeModal";
+import { UpdateInitiativeListModal } from "./UpdateInitiativeListModal";
 
 interface EditInitiativeButtonProps {
     company: Company
@@ -25,8 +25,6 @@ export function EditInitiativeButton(props: EditInitiativeButtonProps){
 
   function SubmitUpdateInitiative(initiative: Initiative, companyId: number)
   {
-    console.log('initiative @ submitUpdateInitiative', initiative);
-
     let isTest = false;
     if((window as any).Cypress)
       isTest = true;
@@ -34,7 +32,6 @@ export function EditInitiativeButton(props: EditInitiativeButtonProps){
     let validation = props.ValidateInitiative(initiative, companyId, companyList);
     if(validation.success)
     {
-      ShowToast('New Initiative Dispatched', 'Success');
       dispatch(updateInitiativeInfo({initiative: initiative, companyId: companyId.toString(), isTest: isTest}))
       setEditInitiativeIsOpen(false);
       setSelectedCompany(fakeCompany); setSelectedInitiative(fakeInitiative);
@@ -59,7 +56,7 @@ export function EditInitiativeButton(props: EditInitiativeButtonProps){
         >
             Edit Initiative
         </button>
-        <InitiativeModal title='Edit Initiative' initiativeIsOpen={EditInitiativeIsOpen} setInitiativeIsOpen={setEditInitiativeIsOpen} initiative={selectedInitiative} company={selectedCompany} Submit={SubmitUpdateInitiative} />
+        <UpdateInitiativeListModal title='Edit Initiative' initiativeIsOpen={EditInitiativeIsOpen} setInitiativeIsOpen={setEditInitiativeIsOpen} initiative={selectedInitiative} company={selectedCompany} Submit={SubmitUpdateInitiative} />
       </div>
     );
 }

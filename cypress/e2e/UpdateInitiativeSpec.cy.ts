@@ -1,6 +1,7 @@
 
-import { InitiativeModalIds } from "../../src/Components/Initiative/InitiativeModal";
+import { InitiativeModalIds } from "../../src/Components/Initiative/UpdateInitiativeListModal";
 import { InitiativeRadioIds } from "../../src/Components/Initiative/ManageInitiativesDisplay";
+import { ToastId } from "../../src/Components/Toast";
 import { AddHash } from "./TestHelpers";
 
 describe('update initiative spec', () => {
@@ -16,7 +17,12 @@ describe('update initiative spec', () => {
     totalItems: "3"
   }
 
+  const existingInit = {
+    title: "IIS Initiative 2"
+  }
+
   const failMessage = 'Validation Failed';
+  const badToastId = AddHash(ToastId);
   const modalIds = AddHash(InitiativeModalIds);
   const radioIds = AddHash(InitiativeRadioIds);
 
@@ -48,35 +54,35 @@ describe('update initiative spec', () => {
   specify('cannot update with blank fields', () => {
     cy.get(modalIds.title).clear();
     cy.get('button').contains('Submit').click();
-    cy.get('#toast-default').contains(failMessage);
+    cy.get(badToastId).contains(failMessage);
     cy.get(modalIds.title).type(init.title);
 
     cy.get(modalIds.date.month).clear();
     cy.get('button').contains('Submit').click();
-    cy.get('#toast-default').contains(failMessage);
+    cy.get(badToastId).contains(failMessage);
     cy.get(modalIds.date.month).type(init.date.month);
 
     cy.get(modalIds.date.day).clear();
     cy.get('button').contains('Submit').click();
-    cy.get('#toast-default').contains(failMessage);
+    cy.get(badToastId).contains(failMessage);
     cy.get(modalIds.date.day).type(init.date.day);
 
     cy.get(modalIds.date.year).clear();
     cy.get('button').contains('Submit').click();
-    cy.get('#toast-default').contains(failMessage);
+    cy.get(badToastId).contains(failMessage);
     cy.get(modalIds.date.year).type(init.date.year);
 
     cy.get(modalIds.totalItems).clear();
     cy.get('button').contains('Submit').click();
-    cy.get('#toast-default').contains(failMessage);
+    cy.get(badToastId).contains(failMessage);
   })
 
-  specify('cannot rename an initative the name of another initiative', () => {
-    cy.get(modalIds.title).clear().type('IIS Initiative 2'); //TODO: figure out how to get an existing init for this company
+  specify('cannot rename an initative the name of another initiative within that company', () => {
+    cy.get(modalIds.title).clear().type(existingInit.title); //TODO: figure out how to get an existing init for this company
 
     cy.get('button').contains('Submit').click();
 
-    cy.get('#toast-default').contains(failMessage);
+    cy.get(badToastId).contains(failMessage);
   })
 
   specify('close button closes the modal', () => {

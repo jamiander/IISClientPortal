@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
+import { useOutletContext } from "react-router-dom";
 import { DateInfo, GetCompanyInfo, GetCompanyInfoRequest, ThroughputData, UpdateCompanyInfo, UpdateCompanyInfoRequest, UpdateInitiativeInfo, UpdateInitiativeInfoRequest, UpdateThroughputData, UpdateThroughputDataRequest } from "../Services/CompanyService"
 import { RootState } from "./Store"
 import { addUsersToStore, User } from "./UserSlice"
@@ -150,6 +151,7 @@ export const companySlice = createSlice({
                 }
             })
             .addCase(updateThroughputData.fulfilled, (state, action) => {
+              const ShowToast : (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void = useOutletContext();
               const companyId = action.payload.companyId;
               const initiativeId = action.payload.initiativeId;
               const matchingCompany = state.companies.find(company => company.id == companyId);
@@ -158,10 +160,24 @@ export const companySlice = createSlice({
                 const matchingInit = matchingCompany.initiatives.find(init => init.id == initiativeId);
                 if(matchingInit)
                 {
-                  matchingInit.itemsCompletedOnDate = action.payload.data;
-                }
-              }
+                  for(const item of action.payload.data)
+                  {
+                    const itemIndex = matchingInit.itemsCompletedOnDate.findIndex(entry => 
+                      entry.date.month == item.date.month &&
+                      entry.date.day == item.date.day &&
+                      entry.date.year == item.date.year);
 
+                    if(itemIndex > -1)
+                      matchingInit.itemsCompletedOnDate[itemIndex].itemsCompleted = item.itemsCompleted;
+                    else
+                      matchingInit.itemsCompletedOnDate.push(item);
+                  }
+                }
+                else
+                  ShowToast("Initiative with id " + initiativeId + " does not exist clientside.","Error");
+              }
+              else
+                ShowToast("Company with id " + companyId + " does not exist clientside.", "Error");
             })
     }
 });

@@ -2,7 +2,7 @@ import { Company, Initiative, selectAllCompanies } from "../../Store/CompanySlic
 import { cancelButtonStyle, inputStyle, modalStyle, submitButtonStyle } from "../../Styles"
 import Modal from 'react-modal';
 import { useEffect, useState } from "react";
-import { DateInput } from "./../DateInput";
+import { DateInput } from "../DateInput";
 import { DateInfo } from "../../Services/CompanyService";
 import { useAppSelector } from "../../Store/Hooks";
 
@@ -27,7 +27,7 @@ export const InitiativeModalIds = {
 	totalItems: "initModalTotalItems",
 }
 
-export default function InitiativeModal(props: InitiativeModalProps){
+export function UpdateInitiativeListModal(props: InitiativeModalProps){
   const emptyDate: DateInfo = {month: 0, day: 0, year: 0}
   const companyList = useAppSelector(selectAllCompanies);
   const [initiativeCompanyId, setInitiativeCompanyId] = useState(props.company?.id ?? -1);

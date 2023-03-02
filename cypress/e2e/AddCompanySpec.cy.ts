@@ -1,11 +1,25 @@
 
+import { ToastId } from "../../src/Components/Toast";
 import { UserRadioIds } from "../../src/Components/User/ManageUsersDisplay";
 import { EditUserModalIds } from "../../src/Components/User/UpdateUserListModal";
 import { AddHash } from "./TestHelpers";
 
 describe('add company spec', () => {
 
+  const company = {
+    name: "Test Company",
+    email: "test@test.com",
+    password: "test"
+  }
+
+  const existingCompany = {
+    name: "Integrity Inspired Solutions",
+    email: "info@integrityinspired.com",
+    password: "password"
+  }
+
   const failMessage = 'Validation Failed';
+  const badToastId = AddHash(ToastId);
   const modalIds = AddHash(EditUserModalIds);
   const radioIds = AddHash(UserRadioIds);
 
@@ -21,30 +35,30 @@ describe('add company spec', () => {
   });
 
   specify('add new company', () => {
-    cy.get(modalIds.company).clear().type('Test Company');
-    cy.get(modalIds.email).clear().type('test@test.com');
-    cy.get(modalIds.password).clear().type('test');
+    cy.get(modalIds.company).clear().type(company.name);
+    cy.get(modalIds.email).clear().type(company.email);
+    cy.get(modalIds.password).clear().type(company.password);
     cy.get('button').contains('Submit').click();
 
     cy.contains('Test Company');
   })
 
   specify('cannot add a company that already exists', () => {
-    cy.get(modalIds.company).clear().type('Integrity Inspired Solutions');
-    cy.get(modalIds.email).clear().type('test@test.com');
-    cy.get(modalIds.password).clear().type('test');
+    cy.get(modalIds.company).clear().type(existingCompany.name);
+    cy.get(modalIds.email).clear().type(company.email);
+    cy.get(modalIds.password).clear().type(company.password);
 
     cy.get('button').contains('Submit').click();
-    cy.get('#toast-default').contains(failMessage);
+    cy.get(badToastId).contains(failMessage);
   })
 
   specify('cannot add a company with the same email as another company', () => {
-    cy.get(modalIds.company).clear().type('Test Company');
-    cy.get(modalIds.email).clear().type('info@integrityinspired.com');
-    cy.get(modalIds.password).clear().type('test');
+    cy.get(modalIds.company).clear().type(company.name);
+    cy.get(modalIds.email).clear().type(existingCompany.email);
+    cy.get(modalIds.password).clear().type(company.password);
 
     cy.get('button').contains('Submit').click();
-    cy.get('#toast-default').contains(failMessage);
+    cy.get(badToastId).contains(failMessage);
   })
 
   specify('cannot add a company with invalid input', () => {
@@ -53,7 +67,7 @@ describe('add company spec', () => {
     cy.get(modalIds.password).clear();
 
     cy.get('button').contains('Submit').click();
-    cy.get('#toast-default').contains(failMessage);
+    cy.get(badToastId).contains(failMessage);
   })
 
   specify('close button closes the modal', () => {
