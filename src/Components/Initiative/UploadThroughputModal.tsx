@@ -1,7 +1,7 @@
 import { Company, Initiative } from "../../Store/CompanySlice";
 import  Modal  from 'react-modal';
 import { cancelButtonStyle, modalStyle, submitButtonStyle } from "../../Styles";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { DateInfo, ThroughputData } from "../../Services/CompanyService";
 //import * as fs from "fs";
 import * as path from "path";
@@ -15,9 +15,9 @@ export const UploadThroughputIds = {
 }
 
 interface ThroughputModalProps{
-  companyList:Company[],
+  companyList: Company[],
   uploadIsOpen: boolean,
-  setUploadIsOpen:(value:boolean)=>void,
+  setUploadIsOpen: (value: boolean) => void,
   Submit: (companyId: number, initiativeId: number, dataList: ThroughputData[]) => void
 }
 
@@ -29,9 +29,15 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
 
   const fileRef = useRef<HTMLInputElement>(null);
 
+  useEffect(() => {
+    setSelectedCompany(undefined);
+    setSelectedInitiativeIndex(-1);
+    setFileData([]);
+  },[props.uploadIsOpen])
+
   function SelectCompany(companyId: number)
   {
-    setSelectedCompany(props.companyList[companyId]);
+    setSelectedCompany(props.companyList.find(company => company.id === companyId));
     setSelectedInitiativeIndex(-1);
   }
 
@@ -110,9 +116,10 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
         </select>
         <input ref={fileRef} type={'file'} accept={'.csv'} onChange={(e) => ReceiveFile(e.target.value)}/>
         <div className='w-full flex justify-end h-10'>
-          <button className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives[selectedInitiativeIndex].id ?? -1, fileData)}>Submit</button> {/*submit button does nothing right now*/}
+          <button className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives[selectedInitiativeIndex]?.id ?? -1, fileData)}>Submit</button> {/*submit button does nothing right now*/}
           <button className={cancelButtonStyle} onClick={() => props.setUploadIsOpen(false)}>Close</button>
         </div>
+        <p>{selectedCompany?.id}</p>
     </div>
     </Modal>
   )

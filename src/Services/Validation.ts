@@ -3,8 +3,9 @@ import { User } from "../Store/UserSlice";
 import { DateInfo, ThroughputData } from "./CompanyService";
 
 export const ValidationFailedPrefix = 'Validation Failed: ';
+type Validation = {message: string, success: boolean}
 
-export default function ValidateNewInitiative(initiative: Initiative, companyId: number, allCompanies: Company[]) : {success: boolean, message: string}
+export default function ValidateNewInitiative(initiative: Initiative, companyId: number, allCompanies: Company[]) : Validation
 {
   if (!initiative.title || !initiative.targetDate.month || !initiative.targetDate.day || !initiative.targetDate.year || !initiative.totalItems)
     return {success: false, message: "Cannot leave any fields blank."};
@@ -27,7 +28,7 @@ export default function ValidateNewInitiative(initiative: Initiative, companyId:
   return {success: true, message: "Successfully validated; all good!"};
 }
 
-export function ValidateDate(date: DateInfo) : {success: boolean, message: string}
+export function ValidateDate(date: DateInfo) : Validation
 {
   let month = date.month;
   if(month < 1 || month > 12 || Number.isNaN(month))
@@ -44,7 +45,7 @@ export function ValidateDate(date: DateInfo) : {success: boolean, message: strin
     return {success: true, message: "Date is all good!"}
 }
 
-export function ValidateNewUser(newCompanyName: string, newEmail: string, newPassword: string, companyList: Company[], userList: User[]) : {success: boolean, message: string}
+export function ValidateNewUser(newCompanyName: string, newEmail: string, newPassword: string, companyList: Company[], userList: User[]) : Validation
 {
   let matchingCompany = companyList.find(company => company.name.toUpperCase() === newCompanyName.toUpperCase());
   if(matchingCompany)
@@ -60,7 +61,7 @@ export function ValidateNewUser(newCompanyName: string, newEmail: string, newPas
   return {success: false, message: "Cannot leave any fields blank."};
 }
 
-export function ValidateEditUser(companyName: string, user: User, userList: User[], companyList: Company[]) : {message: string, success: boolean}
+export function ValidateEditUser(companyName: string, user: User, userList: User[], companyList: Company[]) : Validation
 {
   if(companyName && user.email && user.password && user.id !== -1 && user.companyId !== -1)
   {
@@ -77,7 +78,7 @@ export function ValidateEditUser(companyName: string, user: User, userList: User
   return {success: false, message: "Cannot leave any fields blank."};
 }
 
-export function ValidateThroughputData(dataList: ThroughputData[]) : {message: string, success: boolean} 
+export function ValidateThroughputData(dataList: ThroughputData[]) : Validation
 {
   dataList.find((entry) => {
       if (!ValidateDate(entry.date).success) 
@@ -88,4 +89,24 @@ export function ValidateThroughputData(dataList: ThroughputData[]) : {message: s
   )
   
   return {success: true, message: "All data is valid."}
+}
+
+export function ValidateThroughputDataUpdate(companyList: Company[], companyId: number, initiativeId: number, dataList: ThroughputData[]): Validation
+{
+  if(dataList.length === 0)
+    return {success: false, message: "A set of data could not be derived from the selected file, or no file was selected."}
+
+  const dataValidation = ValidateThroughputData(dataList);
+  if(dataValidation.success)
+  {
+    const matchingCompany = companyList.find(company => company.id === companyId);
+    if(!matchingCompany)
+      return {success: false, message: "A company must be selected."};
+    if(!matchingCompany.initiatives.find(init => init.id === initiativeId))
+      return {success: false, message: "An initiative must be selected."};
+  }
+  else
+    return dataValidation;
+
+  return {success: true, message: "Successfully validated throughput data; all good!"}
 }

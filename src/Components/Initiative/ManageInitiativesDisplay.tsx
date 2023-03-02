@@ -3,7 +3,7 @@ import { useOutletContext } from "react-router-dom";
 import { Company, Initiative, selectAllCompanies, updateInitiativeInfo, updateThroughputData } from "../../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
 import InitiativesTable from "./InitiativesTable"
-import ValidateNewInitiative, { ValidateThroughputData, ValidationFailedPrefix } from "../../Services/Validation";
+import ValidateNewInitiative, { ValidateThroughputData, ValidateThroughputDataUpdate, ValidationFailedPrefix } from "../../Services/Validation";
 import UploadThroughputModal from "./UploadThroughputModal";
 import { UpdateInitiativeListModal } from "./UpdateInitiativeListModal";
 import { ThroughputData } from "../../Services/CompanyService";
@@ -47,12 +47,13 @@ export default function ManageInitiativesDisplay() {
     if((window as any).Cypress)
       isTest = true;
     
-    const validation = ValidateThroughputData(dataList);
+    console.log('Cid: ' + companyId)
+    console.log('Iid: ' + initiativeId)
+    const validation = ValidateThroughputDataUpdate(companyList, companyId, initiativeId, dataList);
     if(validation.success)
     {
-      //dispatch(updateThroughputData({companyId: companyId.toString(), initiativeId: initiativeId.toString(), itemsCompletedOnDate: dataList, isTest: isTest}));
+      dispatch(updateThroughputData({companyId: companyId.toString(), initiativeId: initiativeId.toString(), itemsCompletedOnDate: dataList, isTest: isTest}));
       setUploadModalIsOpen(false);
-      ShowToast("Success","Success");
     }
     else
       ShowToast(ValidationFailedPrefix + validation.message, 'Error');
@@ -68,7 +69,7 @@ export default function ManageInitiativesDisplay() {
             Add Initiative
           </button>
           <button onClick={()=> setUploadModalIsOpen(true)} className="outline h-[40px] bg-[#21345b] text-white w-32 rounded-md hover:outline-[#2ed7c3] hover:text-[#2ed7c3]">
-            Upload data
+            Upload Data
           </button>
           <UpdateInitiativeListModal title='Add Initiative' initiativeIsOpen={AddInitiativeIsOpen} setInitiativeIsOpen={setAddInitiativeIsOpen} Submit={SubmitUpdateInitiative}/>
           <UploadThroughputModal companyList={companyList} uploadIsOpen={UploadModalIsOpen} setUploadIsOpen={setUploadModalIsOpen} Submit={SubmitUpdateThroughput}/>

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Toast, { ToastDetails } from './Components/Toast';
 import Content from './Layout/Content';
 import Footer from './Layout/Footer';
@@ -16,6 +17,8 @@ function App() {
   const emptyToast : ToastDetails[] = [];
   const [toastList, setToastList] = useState(emptyToast);
   const isLoggedIn = useAppSelector(selectCurrentUser);
+  const currentUser = useAppSelector(selectCurrentUser);
+  const navigate = useNavigate();
 
   function ShowToast(message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') {
     const id = Math.floor((Math.random() * 101) + 1);
@@ -23,6 +26,23 @@ function App() {
     setToastList([...toastList, toastDetails]);
   }
 
+  useEffect(() => {
+    let kickThemOut = true;
+    if(currentUser)
+    {
+      if(currentUser.companyId === 0)
+      {
+        kickThemOut = false;
+      }
+    }
+    if(kickThemOut)
+      navigate('/Login');
+  }, [currentUser, navigate])
+
+
+  useEffect(() => {
+    dispatch(getCompanyInfo({})); //no args; admins get all companies/users
+  },[dispatch])
   useEffect(() => {
     //dispatch(getUserData());
     //dispatch(getCompanyData());
