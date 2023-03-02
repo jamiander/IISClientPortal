@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useOutletContext } from "react-router-dom";
+import { ValidationFailedPrefix } from "../../Services/Validation";
 import { Company, Initiative, selectAllCompanies, updateInitiativeInfo } from "../../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
 import { UpdateInitiativeListModal } from "./UpdateInitiativeListModal";
@@ -37,7 +38,7 @@ export function EditInitiativeButton(props: EditInitiativeButtonProps){
       setSelectedCompany(fakeCompany); setSelectedInitiative(fakeInitiative);
     }
     else
-      ShowToast('Validation Failed: ' + validation.message,'Error');
+      ShowToast(ValidationFailedPrefix + validation.message,'Error');
   }
     
   function handleEditInitiative(company: Company, initiative: Initiative) {

@@ -1,8 +1,4 @@
-
-import { ToastId } from "../../src/Components/Toast";
-import { UserRadioIds } from "../../src/Components/User/ManageUsersDisplay";
-import { EditUserModalIds } from "../../src/Components/User/UpdateUserListModal";
-import { AddHash } from "./TestHelpers";
+import { TestConstants } from "./TestHelpers";
 
 describe('update company spec', () => {
   const company = {
@@ -17,10 +13,11 @@ describe('update company spec', () => {
     password: "password"
   }
 
-  const failMessage = 'Validation Failed';
-  const badToastId = AddHash(ToastId);
-  const modalIds = AddHash(EditUserModalIds);
-  const radioIds = AddHash(UserRadioIds);
+  const consts = TestConstants;
+  const failMessage = consts.validationFailedMessage;
+  const badToastId = consts.toastId;
+  const modalIds = consts.userModalIds;
+  const radioIds = consts.userRadioIds;
 
   beforeEach(() => {
     cy.visit('http://localhost:3000/Login')
