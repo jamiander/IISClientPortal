@@ -28,16 +28,6 @@ export default function DashboardPage(){
       <div className="col-span-4 mb-4">
         <p className="text-5xl  bg-[#2ed7c3] rounded-md py-6 px-5">Dashboard</p>
       </div>
-      {/*<div className="flex justify-end col-span-2">
-        <select className="outline rounded w-[200px] h-[40px]">
-          <option>Select Initiative</option>
-          {company?.initiatives.map((initiative,index)=>{
-            return(
-              <option key={index}>{initiative.title}</option>
-            )
-          })}
-        </select>  This select isn't needed in the current version of the project but will be when we want to display more information
-      </div>*/}
       <div className="col-span-4 bg-[#445362] rounded-md p-2 pl-5">
         <p className="text-3xl text-white h-[90%]">Company Initiatives</p>
       </div>

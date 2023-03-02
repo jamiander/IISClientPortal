@@ -31,7 +31,7 @@ export const getCompanyInfo = createAsyncThunk(
     async (args: GetCompanyInfoRequest, {dispatch, getState}) => {
         const response = await GetCompanyInfo(args);
         const companyInfo = response.info;
-        console.log(response.status);
+        
         if (response.status.toUpperCase().includes('FAILED'))
             throw Error;
 

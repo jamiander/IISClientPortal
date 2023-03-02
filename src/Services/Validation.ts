@@ -27,7 +27,7 @@ export default function ValidateNewInitiative(initiative: Initiative, companyId:
   return {success: true, message: "Successfully validated; all good!"};
 }
 
-function ValidateDate(date: DateInfo) : {success: boolean, message: string}
+export function ValidateDate(date: DateInfo) : {success: boolean, message: string}
 {
   let month = date.month;
   if(month < 1 || month > 12 || Number.isNaN(month))
@@ -82,7 +82,7 @@ export function ValidateThroughputData(dataList: ThroughputData[]) : {message: s
   dataList.find((entry) => {
       if (!ValidateDate(entry.date).success) 
         return {success: false, message: "All dates must be valid."}
-      if (entry.itemsCompleted < 0) 
+      if (entry.itemsCompleted < 0 && !Number.isNaN(entry.itemsCompleted)) 
         return {success: false, message: "All entries must have items completed as 0 or greater."}
     }
   )

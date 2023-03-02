@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { FindItemsRemaining } from "../../Services/CompanyService";
 import { InitiativeFilter } from "../../Services/Filters";
 import { Company, Initiative } from "../../Store/CompanySlice";
@@ -21,6 +21,11 @@ export default function InitiativesTable(props: InitiativesProps) {
   const tableDataStyle = "outline outline-1 text-center ";
 
   const [isCompanyHidden, setCompanyHidden] = useState(false);
+  
+  const [searchedComp, setSearchedComp] = useState('');
+  const [searcehdInit, setSearchedInit] = useState('');
+
+  const filteredCompanies = props.companyList.filter(e => e.name.toLowerCase().includes(searchedComp.toLowerCase()))
 
   let currentUser : User = useAppSelector(selectCurrentUser) ?? {id: -1, email: 'fake@fake', password: 'fake', companyId: -1};
   useEffect(() => {
@@ -32,44 +37,53 @@ export default function InitiativesTable(props: InitiativesProps) {
   }, []);
   
   return (
-    <table className="table-auto w-[98%] outline outline-3">
-      <thead className="outline outline-1">
-        <tr>
-          <th>Id</th>
-          <th>Title</th>
-          <th hidden={isCompanyHidden}>Company</th>
-          <th>Target Completion</th>
-          <th>Total Items</th>
-          <th>Items Remaining</th>
-          <th>Probability</th>
-          <th hidden={isCompanyHidden}>Edit</th>
-        </tr>
-      </thead>
-      <tbody>
-        {
-          props.companyList.map((company, index) => {
-            return (
-              (props.radioStatus !== 'all' ? InitiativeFilter(company.initiatives, props.radioStatus) : company.initiatives).map((initiative, index) => {
-                let itemsRemaining = FindItemsRemaining(initiative);
+    <div className="grid grid-cols-1 w-full h-auto">
+      <div className="col-span-1 h-[4vh] space-x-2">
+        <input hidden={isCompanyHidden} className="rounded outline py-2 my-1" type={'text'} placeholder="Search by Company" onChange={(e)=> setSearchedComp(e.target.value)}/>
+        <input className="rounded outline py-2 my-1" type={'text'} placeholder="Search by Initiative" onChange={(e)=> setSearchedInit(e.target.value)}/>
+      </div>
+      <div className="col-span-1">
+        <table className="table-auto w-[98%] outline outline-3">
+          <thead className="outline outline-1">
+            <tr>
+              <th>Id</th>
+              <th>Title</th>
+              <th hidden={isCompanyHidden}>Company</th>
+              <th>Target Completion</th>
+              <th>Total Items</th>
+              <th>Items Remaining</th>
+              <th>Probability</th>
+              <th hidden={isCompanyHidden}>Edit</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              filteredCompanies.map((company, index) => {
+                const filteredInits = company.initiatives.filter(e => e.title.toLowerCase().includes(searcehdInit.toLowerCase()))
                 return (
-                  <>
-                    <tr key={index}>
-                      <td className={tableDataStyle}>{initiative.id}</td>
-                      <td className={tableDataStyle}>{initiative.title}</td>
-                      <td className={tableDataStyle} hidden={isCompanyHidden}>{company.name}</td>
-                      <td className={tableDataStyle}>{initiative.targetDate.month + "/" + initiative.targetDate.day + "/" + initiative.targetDate.year}</td>
-                      <td id={InitiativeTableIds.totalItems} className={tableDataStyle}>{initiative.totalItems}</td>
-                      <td id={InitiativeTableIds.remainingItems} className={tableDataStyle}>{itemsRemaining}</td>
-                      <td className={tableDataStyle}></td>
-                      <td className={tableDataStyle} hidden={isCompanyHidden}><EditInitiativeButton company={company} initiative={initiative} index={index} ValidateInitiative={props.ValidateInitiative} /></td>
-                    </tr>
-                  </>
+                  (props.radioStatus !== 'all' ? InitiativeFilter(filteredInits, props.radioStatus) : company.initiatives).map((initiative, index) => {
+                    let itemsRemaining = FindItemsRemaining(initiative);
+                    return (
+                      <Fragment key={index}>
+                        <tr key={index}>
+                          <td className={tableDataStyle}>{initiative.id}</td>
+                          <td className={tableDataStyle}>{initiative.title}</td>
+                          <td className={tableDataStyle} hidden={isCompanyHidden}>{company.name}</td>
+                          <td className={tableDataStyle}>{initiative.targetDate.month + "/" + initiative.targetDate.day + "/" + initiative.targetDate.year}</td>
+                          <td id={InitiativeTableIds.totalItems} className={tableDataStyle}>{initiative.totalItems}</td>
+                          <td id={InitiativeTableIds.remainingItems} className={tableDataStyle}>{itemsRemaining}</td>
+                          <td className={tableDataStyle}></td>
+                          <td className={tableDataStyle} hidden={isCompanyHidden}><EditInitiativeButton company={company} initiative={initiative} index={index} ValidateInitiative={props.ValidateInitiative} /></td>
+                        </tr>
+                      </Fragment>
+                    )
+                  })
                 )
               })
-            )
-          })
-        }
-      </tbody>
-    </table>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
   )
 }
