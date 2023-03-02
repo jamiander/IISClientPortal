@@ -27,7 +27,7 @@ export default function LoginPage(){
 
   return(
     <div className="m-[2%] grid grid-cols-4">
-      <div className="col-span-4 w-full py-6 px-5 rounded-md bg-[#2ed7c3] m-5">
+      <div className="col-span-4 w-auto py-6 px-5 rounded-md bg-[#2ed7c3] m-5">
         <p className="flex justify-center text-5xl">Welcome to the Integrity Inspired Solutions Client Portal!</p>
         <p className="flex justify-center text-4xl">To view the information on your project, please log in</p>
       </div>
