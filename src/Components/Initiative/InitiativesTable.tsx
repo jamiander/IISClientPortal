@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { FindItemsRemaining } from "../../Services/CompanyService";
 import { InitiativeFilter } from "../../Services/Filters";
 import { Company, Initiative } from "../../Store/CompanySlice";
@@ -48,7 +48,7 @@ export default function InitiativesTable(props: InitiativesProps) {
               (props.radioStatus !== 'all' ? InitiativeFilter(company.initiatives, props.radioStatus) : company.initiatives).map((initiative, index) => {
                 let itemsRemaining = FindItemsRemaining(initiative);
                 return (
-                  <>
+                  <Fragment key={index}>
                     <tr key={index}>
                       <td className={tableDataStyle}>{initiative.id}</td>
                       <td className={tableDataStyle}>{initiative.title}</td>
@@ -59,7 +59,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                       <td className={tableDataStyle}></td>
                       <td className={tableDataStyle} hidden={isCompanyHidden}><EditInitiativeButton company={company} initiative={initiative} index={index} ValidateInitiative={props.ValidateInitiative} /></td>
                     </tr>
-                  </>
+                  </Fragment>
                 )
               })
             )

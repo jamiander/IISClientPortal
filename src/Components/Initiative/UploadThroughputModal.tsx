@@ -2,7 +2,12 @@ import { Company, Initiative } from "../../Store/CompanySlice";
 import  Modal  from 'react-modal';
 import { cancelButtonStyle, modalStyle, submitButtonStyle } from "../../Styles";
 import { useRef, useState } from "react";
-import { ThroughputData } from "../../Services/CompanyService";
+import { DateInfo, ThroughputData } from "../../Services/CompanyService";
+//import * as fs from "fs";
+import * as path from "path";
+import { useOutletContext } from "react-router-dom";
+import { ValidateDate } from "../../Services/Validation";
+//import { parse } from 'csv-parse';
 
 interface ThroughputModalProps{
   companyList:Company[],
@@ -14,6 +19,10 @@ interface ThroughputModalProps{
 export default function UploadThroughputModal(props:ThroughputModalProps){;
   const [selectedCompany, setSelectedCompany] = useState<Company>();
   const [selectedInitiativeIndex, setSelectedInitiativeIndex] = useState(-1);
+  const [fileData, setFileData] = useState<ThroughputData[]>([]);
+  const ShowToast : (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void = useOutletContext();
+
+  const fileRef = useRef<HTMLInputElement>(null);
 
   function SelectCompany(companyId: number)
   {
@@ -25,8 +34,48 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
   {
     if(selectedCompany)
     {
-      setSelectedInitiativeIndex(initiativeIndex);
+      if(selectedCompany.initiatives[initiativeIndex])
+        setSelectedInitiativeIndex(initiativeIndex);
+      else
+        setSelectedInitiativeIndex(-1);
     }
+  }
+
+  function ReceiveFile(fileName: string)
+  {
+    let files = fileRef.current?.files ?? [];
+    let file = files[0];
+    let fileContent;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+
+      fileContent = reader.result;
+      if(fileContent && typeof(fileContent) === 'string')
+      {
+        let parseData: ThroughputData[] = [];
+        let lines = fileContent.split("\n");
+        for(let i = 0; i < lines.length; i++) {
+          let wordsInLine = lines[i].split(",");
+          if(wordsInLine.length === 2)
+          {
+            let dateString = wordsInLine[0];
+            let itemsCompletedString = wordsInLine[1];
+
+            let dateWords = dateString.split('/');
+            let date: DateInfo = {month: parseInt(dateWords[0]), day: parseInt(dateWords[1]), year: parseInt(dateWords[2])};
+            
+            let dataEntry: ThroughputData = {date: date, itemsCompleted: parseInt(itemsCompletedString)};
+            parseData.push(dataEntry);
+          }
+        }
+        
+        console.log(parseData);
+        setFileData(parseData);
+      }
+      else
+        ShowToast("Something went wrong when trying to load that file.","Error")
+    }
+    reader.readAsText(file);
   }
 
   return(
@@ -38,7 +87,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
       <div className="flex flex-wrap space-y-5">
         <p className="text-3xl">Upload Throughput Data</p>
 
-        <select onChange={(e)=>SelectCompany(parseInt((e.target as HTMLSelectElement).value))} className="outline rounded w-[200px] h-[40px]">
+        <select onChange={(e) => SelectCompany(parseInt((e.target as HTMLSelectElement).value))} className="outline rounded w-[200px] h-[40px]">
         <option>Select Company</option>
           {props.companyList.map((company,index)=>{
             return(
@@ -46,7 +95,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
             )
           })}
         </select>
-        <select value={selectedInitiativeIndex} onChange={(e)=>SelectInitiative(parseInt((e.target as HTMLSelectElement).value))} className="outline rounded w-[200px] h-[40px]">
+        <select value={selectedInitiativeIndex} onChange={(e) => SelectInitiative(parseInt((e.target as HTMLSelectElement).value))} className="outline rounded w-[200px] h-[40px]">
           <option>Select Initiative</option>
           {selectedCompany?.initiatives.map((initiative,index)=>{
             return(
@@ -54,9 +103,9 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
             )
           })}
         </select>
-        <input type={'file'} accept={'.csv'}/>
+        <input ref={fileRef} type={'file'} accept={'.csv'} onChange={(e) => ReceiveFile(e.target.value)}/>
         <div className='w-full flex justify-end h-10'>
-          <button className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives[selectedInitiativeIndex].id ?? -1, [])}>Submit</button> {/*submit button does nothing right now*/}
+          <button className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives[selectedInitiativeIndex].id ?? -1, fileData)}>Submit</button> {/*submit button does nothing right now*/}
           <button className={cancelButtonStyle} onClick={() => props.setUploadIsOpen(false)}>Close</button>
         </div>
     </div>
