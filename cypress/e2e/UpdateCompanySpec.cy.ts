@@ -1,4 +1,5 @@
 
+import { ToastId } from "../../src/Components/Toast";
 import { UserRadioIds } from "../../src/Components/User/ManageUsersDisplay";
 import { EditUserModalIds } from "../../src/Components/User/UpdateUserListModal";
 import { AddHash } from "./TestHelpers";
@@ -17,6 +18,7 @@ describe('update company spec', () => {
   }
 
   const failMessage = 'Validation Failed';
+  const badToastId = AddHash(ToastId);
   const modalIds = AddHash(EditUserModalIds);
   const radioIds = AddHash(UserRadioIds);
 
@@ -39,24 +41,24 @@ describe('update company spec', () => {
     cy.get('button').contains('Submit').click();
 
     cy.get('table').contains(company.name);
-    //cy.get('#toast-default').contains('User Update Dispatched');
+    //cy.get(badToastId).contains('User Update Dispatched');
   })
 
   specify('cannot update with invalid input', () => {
     cy.get(modalIds.company).clear();
 
     cy.get('button').contains('Submit').click();
-    cy.get('#toast-default').contains(failMessage);
+    cy.get(badToastId).contains(failMessage);
     cy.get(modalIds.company).type(company.name);
 
     cy.get(modalIds.email).clear();
     cy.get('button').contains('Submit').click();
-    cy.get('#toast-default').contains(failMessage);
+    cy.get(badToastId).contains(failMessage);
     cy.get(modalIds.email).type(company.email);
 
     cy.get(modalIds.password).clear();
     cy.get('button').contains('Submit').click();
-    cy.get('#toast-default').contains(failMessage);
+    cy.get(badToastId).contains(failMessage);
   })
 
   specify('cannot rename a company the name of another company', () => {
@@ -64,7 +66,7 @@ describe('update company spec', () => {
 
     cy.get('button').contains('Submit').click();
 
-    cy.get('#toast-default').contains(failMessage);
+    cy.get(badToastId).contains(failMessage);
   })
 
   specify('cannot rename a user the name of another user', () => {
@@ -72,7 +74,7 @@ describe('update company spec', () => {
 
     cy.get('button').contains('Submit').click();
 
-    cy.get('#toast-default').contains(failMessage);
+    cy.get(badToastId).contains(failMessage);
   })
 
   specify('close button closes the modal', () => {

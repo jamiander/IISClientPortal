@@ -1,6 +1,7 @@
 
 import { InitiativeModalIds } from "../../src/Components/Initiative/InitiativeModal";
 import { InitiativeRadioIds } from "../../src/Components/Initiative/ManageInitiativesDisplay";
+import { ToastId } from "../../src/Components/Toast";
 import { AddHash } from "./TestHelpers";
 
 describe('add initiative spec', () => {
@@ -20,6 +21,7 @@ describe('add initiative spec', () => {
   }
 
   const failMessage = 'Validation Failed';
+  const badToastId = AddHash(ToastId);
   const modalIds = AddHash(InitiativeModalIds);
   const radioIds = AddHash(InitiativeRadioIds);
 
@@ -45,7 +47,7 @@ describe('add initiative spec', () => {
   specify('add new initiative',() => {
     cy.get('button').contains('Submit').click();
 
-    cy.get('#toast-default').contains('New Initiative Dispatched');
+    cy.get(badToastId).contains('New Initiative Dispatched');
   })
 
   specify('cannot add an initiative with the name of an existing initiative for a given company', () => {
@@ -57,27 +59,27 @@ describe('add initiative spec', () => {
   specify('cannot add when a field is left blank', () => {
     cy.get(modalIds.title).clear();
     cy.get('button').contains('Submit').click();
-    cy.get('#toast-default').contains(failMessage);
+    cy.get(badToastId).contains(failMessage);
     cy.get(modalIds.title).type(init.title);
 
     cy.get(modalIds.date.month).clear();
     cy.get('button').contains('Submit').click();
-    cy.get('#toast-default').contains(failMessage);
+    cy.get(badToastId).contains(failMessage);
     cy.get(modalIds.date.month).type(init.date.month);
 
     cy.get(modalIds.date.day).clear();
     cy.get('button').contains('Submit').click();
-    cy.get('#toast-default').contains(failMessage);
+    cy.get(badToastId).contains(failMessage);
     cy.get(modalIds.date.day).type(init.date.day);
 
     cy.get(modalIds.date.year).clear();
     cy.get('button').contains('Submit').click();
-    cy.get('#toast-default').contains(failMessage);
+    cy.get(badToastId).contains(failMessage);
     cy.get(modalIds.date.year).type(init.date.year);
 
     cy.get(modalIds.totalItems).clear();
     cy.get('button').contains('Submit').click();
-    cy.get('#toast-default').contains(failMessage);
+    cy.get(badToastId).contains(failMessage);
     cy.get(modalIds.totalItems).type(init.totalItems);
   })
 
@@ -85,47 +87,47 @@ describe('add initiative spec', () => {
     cy.get(modalIds.totalItems).clear().type("-3");
     cy.get('button').contains('Submit').click();
 
-    cy.get('#toast-default').contains(failMessage);
+    cy.get(badToastId).contains(failMessage);
   })
 
   specify('cannot add when a date is not in a valid format', () => {
     cy.get(modalIds.date.month).clear().type("-3");
     cy.get('button').contains('Submit').click();
-    cy.get('#toast-default').contains(failMessage);
+    cy.get(badToastId).contains(failMessage);
 
     cy.get(modalIds.date.month).clear().type("ab");
     cy.get('button').contains('Submit').click();
-    cy.get('#toast-default').contains(failMessage);
+    cy.get(badToastId).contains(failMessage);
 
     cy.get(modalIds.date.month).clear().type("13");
     cy.get('button').contains('Submit').click();
-    cy.get('#toast-default').contains(failMessage);
+    cy.get(badToastId).contains(failMessage);
 
     cy.get(modalIds.date.month).clear().type(init.date.month);
 
 
     cy.get(modalIds.date.day).clear().type("-3");
     cy.get('button').contains('Submit').click();
-    cy.get('#toast-default').contains(failMessage);
+    cy.get(badToastId).contains(failMessage);
 
     cy.get(modalIds.date.day).clear().type("ab");
     cy.get('button').contains('Submit').click();
-    cy.get('#toast-default').contains(failMessage);
+    cy.get(badToastId).contains(failMessage);
 
     cy.get(modalIds.date.day).clear().type("32");
     cy.get('button').contains('Submit').click();
-    cy.get('#toast-default').contains(failMessage);
+    cy.get(badToastId).contains(failMessage);
 
     cy.get(modalIds.date.day).clear().type(init.date.day);
 
 
     cy.get(modalIds.date.year).clear().type("-3");
     cy.get('button').contains('Submit').click();
-    cy.get('#toast-default').contains(failMessage);
+    cy.get(badToastId).contains(failMessage);
 
     cy.get(modalIds.date.year).clear().type("abcd");
     cy.get('button').contains('Submit').click();
-    cy.get('#toast-default').contains(failMessage);
+    cy.get(badToastId).contains(failMessage);
 
   })
 
