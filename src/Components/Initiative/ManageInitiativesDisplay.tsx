@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
 import InitiativeModal from "./InitiativeModal";
 import InitiativesTable from "./InitiativesTable"
 import ValidateNewInitiative from "../../Services/Validation";
+import UploadThroughputModal from "./UploadThroughputModal";
 
 export const InitiativeRadioIds = {
   all: "initDisplayShowAll",
@@ -17,6 +18,7 @@ export default function ManageInitiativesDisplay() {
   const companyList : Company[] = useAppSelector(selectAllCompanies);
 
   const [AddInitiativeIsOpen, setAddInitiativeIsOpen] = useState(false);
+  const [UploadModalIsOpen, setUploadModalIsOpen] = useState(false);
 
   const dispatch = useAppDispatch();
   const ShowToast : (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void = useOutletContext();
@@ -52,6 +54,10 @@ export default function ManageInitiativesDisplay() {
           Add Initiative
         </button>
         <InitiativeModal title='Add Initiative' initiativeIsOpen={AddInitiativeIsOpen} setInitiativeIsOpen={setAddInitiativeIsOpen} Submit={SubmitUpdateInitiative}/>
+        <button onClick={()=> setUploadModalIsOpen(true)} className="outline bg-[#21345b] text-white w-32 rounded-md hover:outline-[#2ed7c3] hover:text-[#2ed7c3]">
+          Upload data
+        </button>
+        <UploadThroughputModal companyList={companyList} uploadIsOpen={UploadModalIsOpen} setUploadIsOpen={setUploadModalIsOpen}/>
       </div>
 
       <div className="w-fit justify-center mt-2 py-1 px-5 outline outline-1 outline-[#2ed7c3] rounded">
