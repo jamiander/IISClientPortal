@@ -2,6 +2,8 @@ import { Company, Initiative } from "../Store/CompanySlice";
 import { User } from "../Store/UserSlice";
 import { DateInfo, ThroughputData } from "./CompanyService";
 
+export const ValidationFailedPrefix = 'Validation Failed: ';
+
 export default function ValidateNewInitiative(initiative: Initiative, companyId: number, allCompanies: Company[]) : {success: boolean, message: string}
 {
   if (!initiative.title || !initiative.targetDate.month || !initiative.targetDate.day || !initiative.targetDate.year || !initiative.totalItems)

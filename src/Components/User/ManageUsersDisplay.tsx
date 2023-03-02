@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import Sorter from "../../Services/Sorter";
-import { ValidateEditUser, ValidateNewUser } from "../../Services/Validation";
+import { ValidateEditUser, ValidateNewUser, ValidationFailedPrefix } from "../../Services/Validation";
 import { Company, selectAllCompanies, updateCompanyInfo } from "../../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
 import { selectAllUsers, User } from "../../Store/UserSlice";
@@ -52,7 +52,7 @@ export default function ManageUsersDisplay() {
       handleCloseEditUser();
     }
     else
-      ShowToast('Validation Failed: ' + validation.message, 'Error');
+      ShowToast(ValidationFailedPrefix + validation.message, 'Error');
   }
   
   function handleEditUser(user: User, company?: Company) 

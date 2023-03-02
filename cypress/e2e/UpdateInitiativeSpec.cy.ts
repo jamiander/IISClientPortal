@@ -1,8 +1,4 @@
-
-import { InitiativeModalIds } from "../../src/Components/Initiative/UpdateInitiativeListModal";
-import { InitiativeRadioIds } from "../../src/Components/Initiative/ManageInitiativesDisplay";
-import { ToastId } from "../../src/Components/Toast";
-import { AddHash } from "./TestHelpers";
+import { TestConstants } from "./TestHelpers";
 
 describe('update initiative spec', () => {
 
@@ -21,10 +17,11 @@ describe('update initiative spec', () => {
     title: "IIS Initiative 2"
   }
 
-  const failMessage = 'Validation Failed';
-  const badToastId = AddHash(ToastId);
-  const modalIds = AddHash(InitiativeModalIds);
-  const radioIds = AddHash(InitiativeRadioIds);
+  const consts = TestConstants;
+  const failMessage = consts.validationFailedMessage;
+  const badToastId = consts.toastId;
+  const modalIds = consts.initiativeModalIds;
+  const radioIds = consts.initiativeRadioIds;
 
   beforeEach(() => {
     cy.visit('http://localhost:3000/Login')

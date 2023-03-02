@@ -3,7 +3,7 @@ import { useOutletContext } from "react-router-dom";
 import { Company, Initiative, selectAllCompanies, updateInitiativeInfo } from "../../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
 import InitiativesTable from "./InitiativesTable"
-import ValidateNewInitiative from "../../Services/Validation";
+import ValidateNewInitiative, { ValidationFailedPrefix } from "../../Services/Validation";
 import UploadThroughputModal from "./UploadThroughputModal";
 import { UpdateInitiativeListModal } from "./UpdateInitiativeListModal";
 
@@ -37,7 +37,7 @@ export default function ManageInitiativesDisplay() {
       setAddInitiativeIsOpen(false);
     }
     else
-      ShowToast('Validation Failed: ' + validation.message,'Error');
+      ShowToast(ValidationFailedPrefix + validation.message,'Error');
   }
 
 
