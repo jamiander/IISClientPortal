@@ -52,7 +52,7 @@ export default function ManageInitiativesDisplay() {
     const validation = ValidateThroughputDataUpdate(companyList, companyId, initiativeId, dataList);
     if(validation.success)
     {
-      //dispatch(updateThroughputData({companyId: companyId.toString(), initiativeId: initiativeId.toString(), itemsCompletedOnDate: dataList, isTest: isTest}));
+      dispatch(updateThroughputData({companyId: companyId.toString(), initiativeId: initiativeId.toString(), itemsCompletedOnDate: dataList, isTest: isTest}));
       setUploadModalIsOpen(false);
     }
     else
