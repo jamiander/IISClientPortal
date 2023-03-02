@@ -13,24 +13,19 @@ interface ThroughputModalProps{
 
 export default function UploadThroughputModal(props:ThroughputModalProps){;
   const [selectedCompany, setSelectedCompany] = useState<Company>();
-  const [selectedInitiative, setSelectedInitiative] = useState<Initiative>();
-  const [selectedIndex, setSelectedIndex] = useState(-1)
+  const [selectedInitiativeIndex, setSelectedInitiativeIndex] = useState(-1);
 
   function SelectCompany(companyId: number)
   {
     setSelectedCompany(props.companyList[companyId]);
-    setSelectedInitiative(undefined); //TODO: make it so it updates the selector to show what the value is actually set to
-    setSelectedIndex(-1);
+    setSelectedInitiativeIndex(-1);
   }
 
   function SelectInitiative(initiativeIndex: number)
   {
     if(selectedCompany)
     {
-      let theInitiative = selectedCompany.initiatives[initiativeIndex];
-      setSelectedInitiative(theInitiative);
-      //let i = selectedCompany?.initiatives?.findIndex(init => init.id === initiativeId)
-      setSelectedIndex(initiativeIndex)
+      setSelectedInitiativeIndex(initiativeIndex);
     }
   }
 
@@ -51,7 +46,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
             )
           })}
         </select>
-        <select value={selectedIndex} onChange={(e)=>SelectInitiative(parseInt((e.target as HTMLSelectElement).value))} className="outline rounded w-[200px] h-[40px]">
+        <select value={selectedInitiativeIndex} onChange={(e)=>SelectInitiative(parseInt((e.target as HTMLSelectElement).value))} className="outline rounded w-[200px] h-[40px]">
           <option>Select Initiative</option>
           {selectedCompany?.initiatives.map((initiative,index)=>{
             return(
@@ -61,10 +56,9 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
         </select>
         <input type={'file'} accept={'.csv'}/>
         <div className='w-full flex justify-end h-10'>
-          <button className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedInitiative?.id ?? -1, selectedInitiative?.itemsCompletedOnDate ?? [])}>Submit</button> {/*submit button does nothing right now*/}
+          <button className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives[selectedInitiativeIndex].id ?? -1, [])}>Submit</button> {/*submit button does nothing right now*/}
           <button className={cancelButtonStyle} onClick={() => props.setUploadIsOpen(false)}>Close</button>
         </div>
-          <p>{selectedInitiative?.id ?? "none"}</p>
     </div>
     </Modal>
   )
