@@ -6,7 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import DashboardPage from './Pages/DashboardPage';
 import ErrorPage from './Pages/ErrorPage';
-import { Provider } from 'react-redux';
+import { Provider as ReduxProvider } from 'react-redux';
 import { store } from './Store/Store';
 import WelcomePage from './Pages/WelcomePage';
 import AdminPage from './Pages/AdminPage';
@@ -53,9 +53,9 @@ const router = createBrowserRouter([
 ])
 root.render(
   <>
-    <Provider store={store}>
+    <ReduxProvider store={store}>
       <RouterProvider router={router}/>
-    </Provider>
+    </ReduxProvider>
   </>
 );
 
