@@ -10,6 +10,12 @@ describe('update company spec', () => {
     password: "test"
   }
 
+  const existingCompany = {
+    name: "Integrity Inspired Solutions",
+    email: "info@integrityinspired.com",
+    password: "password"
+  }
+
   const failMessage = 'Validation Failed';
   const modalIds = AddHash(EditUserModalIds);
   const radioIds = AddHash(UserRadioIds);
@@ -22,7 +28,7 @@ describe('update company spec', () => {
 
     cy.get('button').contains('Admin').click();
     cy.get(radioIds.all).click();
-    cy.get('table').contains('Integrity Inspired Solutions');
+    cy.get('table').contains(existingCompany.name);
     cy.get('button').contains('Edit Client').click();
   });
 
@@ -54,7 +60,7 @@ describe('update company spec', () => {
   })
 
   specify('cannot rename a company the name of another company', () => {
-    cy.get(modalIds.company).clear().type('Integrity Inspired Solutions');
+    cy.get(modalIds.company).clear().type(existingCompany.name);
 
     cy.get('button').contains('Submit').click();
 
@@ -62,7 +68,7 @@ describe('update company spec', () => {
   })
 
   specify('cannot rename a user the name of another user', () => {
-    cy.get(modalIds.email).clear().type('info@integrityinspired.com');
+    cy.get(modalIds.email).clear().type(existingCompany.email);
 
     cy.get('button').contains('Submit').click();
 

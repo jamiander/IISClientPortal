@@ -15,6 +15,10 @@ describe('add initiative spec', () => {
     totalItems: "3"
   }
 
+  const existingInit = {
+    title: "IIS Initiative"
+  }
+
   const failMessage = 'Validation Failed';
   const modalIds = AddHash(InitiativeModalIds);
   const radioIds = AddHash(InitiativeRadioIds);
@@ -45,7 +49,7 @@ describe('add initiative spec', () => {
   })
 
   specify('cannot add an initiative with the name of an existing initiative for a given company', () => {
-    cy.get(modalIds.title).clear().type('IIS Initiative'); //TODO: figure out how to make this match an existing initiative name for this company
+    cy.get(modalIds.title).clear().type(existingInit.title); //TODO: figure out how to make this match an existing initiative name for this company
 
     cy.get('button').contains('Submit').click();
   })
