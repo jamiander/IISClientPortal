@@ -28,7 +28,7 @@ export const InitiativeModalIds = {
 }
 
 export default function InitiativeModal(props: InitiativeModalProps){
-  const emptyDate: DateInfo = {month: "", day: "", year: ""}
+  const emptyDate: DateInfo = {month: 0, day: 0, year: 0}
   const companyList = useAppSelector(selectAllCompanies);
   const [initiativeCompanyId, setInitiativeCompanyId] = useState(props.company?.id ?? -1);
   const [initiativeTitle, setInitiativeTitle] = useState(props.initiative?.title ?? "");

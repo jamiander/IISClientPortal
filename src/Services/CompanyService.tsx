@@ -10,9 +10,9 @@ interface EmployeeInfo {
 }
 
 export interface DateInfo {
-  month: string,
-  day: string,
-  year: string
+  month: number,//string,
+  day: number,//string,
+  year: number//string
 }
 
 export interface CompanyInfo {
