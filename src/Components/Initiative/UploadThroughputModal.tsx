@@ -14,18 +14,23 @@ interface ThroughputModalProps{
 export default function UploadThroughputModal(props:ThroughputModalProps){;
   const [selectedCompany, setSelectedCompany] = useState<Company>();
   const [selectedInitiative, setSelectedInitiative] = useState<Initiative>();
+  const [selectedIndex, setSelectedIndex] = useState(-1)
 
   function SelectCompany(companyId: number)
   {
     setSelectedCompany(props.companyList[companyId]);
-    setSelectedInitiative(undefined);
+    setSelectedInitiative(undefined); //TODO: make it so it updates the selector to show what the value is actually set to
+    setSelectedIndex(-1);
   }
 
-  function SelectInitiative(initiativeId: number)
+  function SelectInitiative(initiativeIndex: number)
   {
     if(selectedCompany)
     {
-      setSelectedInitiative(selectedCompany.initiatives[initiativeId]);
+      let theInitiative = selectedCompany.initiatives[initiativeIndex];
+      setSelectedInitiative(theInitiative);
+      //let i = selectedCompany?.initiatives?.findIndex(init => init.id === initiativeId)
+      setSelectedIndex(initiativeIndex)
     }
   }
 
@@ -46,11 +51,11 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
             )
           })}
         </select>
-        <select value={selectedInitiative?.id ?? -1} onChange={(e)=>SelectInitiative(parseInt((e.target as HTMLSelectElement).value))} className="outline rounded w-[200px] h-[40px]">
+        <select value={selectedIndex} onChange={(e)=>SelectInitiative(parseInt((e.target as HTMLSelectElement).value))} className="outline rounded w-[200px] h-[40px]">
           <option>Select Initiative</option>
           {selectedCompany?.initiatives.map((initiative,index)=>{
             return(
-              <option value={initiative.id} key={index}>{initiative.title}</option>
+              <option value={index} key={index}>{initiative.title}</option>
             )
           })}
         </select>
@@ -59,7 +64,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
           <button className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedInitiative?.id ?? -1, selectedInitiative?.itemsCompletedOnDate ?? [])}>Submit</button> {/*submit button does nothing right now*/}
           <button className={cancelButtonStyle} onClick={() => props.setUploadIsOpen(false)}>Close</button>
         </div>
-          
+          <p>{selectedInitiative?.id ?? "none"}</p>
     </div>
     </Modal>
   )
