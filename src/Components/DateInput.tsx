@@ -20,21 +20,21 @@ export function DateInput(props: DateInputProps){
           <div className='w-24 mx-2'>
             <p>Month </p>
             <input defaultValue={props.defaultInitiative?.targetDate.month} id={props.inputIds.month} className={inputStyle + ' w-20 mx-1'} maxLength={2}
-            onChange={(e) => {props.setInitiativeTargetDate({...props.initiativeTargetDate, month: e.target.value})}}
+            onChange={(e) => {props.setInitiativeTargetDate({...props.initiativeTargetDate, month: parseInt(e.target.value)})}}
             placeholder='MM'/>
           </div>
 
           <div>
             <p>Day </p>
             <input defaultValue={props.defaultInitiative?.targetDate.day} id={props.inputIds.day} className={inputStyle + ' w-20 mx-1'} maxLength={2}
-            onChange={(e) => {props.setInitiativeTargetDate({...props.initiativeTargetDate, day: e.target.value})}}
+            onChange={(e) => {props.setInitiativeTargetDate({...props.initiativeTargetDate, day: parseInt(e.target.value)})}}
             placeholder='DD'/>
           </div>
 
           <div>
             <p>Year </p>        
             <input defaultValue={props.defaultInitiative?.targetDate.year} id={props.inputIds.year} className={inputStyle + ' w-20 mx-1'} maxLength={4}
-            onChange={(e) => {props.setInitiativeTargetDate({...props.initiativeTargetDate, year: e.target.value})}}
+            onChange={(e) => {props.setInitiativeTargetDate({...props.initiativeTargetDate, year: parseInt(e.target.value)})}}
             placeholder='YYYY'/>
           </div>
         </div>

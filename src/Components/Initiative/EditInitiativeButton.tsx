@@ -13,7 +13,7 @@ interface EditInitiativeButtonProps {
 
 export function EditInitiativeButton(props: EditInitiativeButtonProps){
   const fakeCompany : Company = {id: -1, name: "N/A", initiatives: []}
-  const fakeInitiative : Initiative = {id: -1, title: "N/A", totalItems: 0, targetDate: {month: "0", day: "0", year: "0000"}, itemsCompletedOnDate: []}
+  const fakeInitiative : Initiative = {id: -1, title: "N/A", totalItems: 0, targetDate: {month: 0, day: 0, year: 0}, itemsCompletedOnDate: []}
 
   const [selectedCompany, setSelectedCompany] = useState(fakeCompany);
   const [selectedInitiative, setSelectedInitiative] = useState(fakeInitiative);

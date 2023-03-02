@@ -27,17 +27,17 @@ export default function ValidateNewInitiative(initiative: Initiative, companyId:
 
 function ValidateDate(date: DateInfo) : {success: boolean, message: string}
 {
-  let month = parseInt(date.month);
+  let month = date.month;
   if(month < 1 || month > 12 || Number.isNaN(month))
     return {success: false, message: "Month must be between 1 and 12"};
 
-  let day = parseInt(date.day);
+  let day = date.day;
   if(day < 1 || day > 31 || Number.isNaN(day))
     return {success: false, message: "Day must be between 1 and 31"};
 
-  let year = parseInt(date.year);    //TODO: there's probably a better way to validate years
-  if(year < 0 || year > 9999 || Number.isNaN(year))
-    return {success: false, message: "Year must be a positive value."};
+  let year = date.year;    //TODO: there's probably a better way to validate years
+  if(year < 1900 || year > 2100 || Number.isNaN(year))
+    return {success: false, message: "Year must be between 1900 and 2100"};
 
     return {success: true, message: "Date is all good!"}
 }
@@ -81,7 +81,7 @@ export function ValidateThroughputData(dataList: ThroughputData[]) : {message: s
       if (!ValidateDate(entry.date).success) 
         return {success: false, message: "All dates must be valid."}
       if (entry.itemsCompleted < 0) 
-        return {success: false, message: "All entries must have a number of items completed greater than 0."}
+        return {success: false, message: "All entries must have items completed as 0 or greater."}
     }
   )
   
