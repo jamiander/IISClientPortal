@@ -2,10 +2,10 @@ import { useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import { Company, Initiative, selectAllCompanies, updateInitiativeInfo } from "../../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
-import InitiativeModal from "./InitiativeModal";
 import InitiativesTable from "./InitiativesTable"
 import ValidateNewInitiative from "../../Services/Validation";
 import UploadThroughputModal from "./UploadThroughputModal";
+import { UpdateInitiativeListModal } from "./UpdateInitiativeListModal";
 
 export const InitiativeRadioIds = {
   all: "initDisplayShowAll",
@@ -26,8 +26,6 @@ export default function ManageInitiativesDisplay() {
 
   function SubmitUpdateInitiative(initiative: Initiative, companyId: number)
   {
-    console.log('initiative @ submitUpdateInitiative', initiative);
-
     let isTest = false;
     if((window as any).Cypress)
       isTest = true;
@@ -35,7 +33,6 @@ export default function ManageInitiativesDisplay() {
     let validation = ValidateNewInitiative(initiative, companyId, companyList);
     if(validation.success)
     {
-      ShowToast('New Initiative Dispatched', 'Success');
       dispatch(updateInitiativeInfo({initiative: initiative, companyId: companyId.toString(), isTest: isTest}))
       setAddInitiativeIsOpen(false);
     }
@@ -53,7 +50,7 @@ export default function ManageInitiativesDisplay() {
         <button onClick={() => setAddInitiativeIsOpen(true)} className="outline bg-[#21345b] text-white w-32 rounded-md hover:outline-[#2ed7c3] hover:text-[#2ed7c3]">
           Add Initiative
         </button>
-        <InitiativeModal title='Add Initiative' initiativeIsOpen={AddInitiativeIsOpen} setInitiativeIsOpen={setAddInitiativeIsOpen} Submit={SubmitUpdateInitiative}/>
+        <UpdateInitiativeListModal title='Add Initiative' initiativeIsOpen={AddInitiativeIsOpen} setInitiativeIsOpen={setAddInitiativeIsOpen} Submit={SubmitUpdateInitiative}/>
         <button onClick={()=> setUploadModalIsOpen(true)} className="outline bg-[#21345b] text-white w-32 rounded-md hover:outline-[#2ed7c3] hover:text-[#2ed7c3]">
           Upload data
         </button>
