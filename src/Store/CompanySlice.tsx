@@ -158,7 +158,18 @@ export const companySlice = createSlice({
                 const matchingInit = matchingCompany.initiatives.find(init => init.id == initiativeId);
                 if(matchingInit)
                 {
-                  matchingInit.itemsCompletedOnDate = action.payload.data;
+                  for(const item of action.payload.data)
+                  {
+                    const itemIndex = matchingInit.itemsCompletedOnDate.findIndex(entry => 
+                      entry.date.month == item.date.month &&
+                      entry.date.day == item.date.day &&
+                      entry.date.year == item.date.year);
+
+                    if(itemIndex > -1)
+                      matchingInit.itemsCompletedOnDate[itemIndex].itemsCompleted = item.itemsCompleted;
+                    else
+                      matchingInit.itemsCompletedOnDate.push(item);
+                  }
                 }
               }
 
