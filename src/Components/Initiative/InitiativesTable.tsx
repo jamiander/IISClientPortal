@@ -59,11 +59,6 @@ export default function InitiativesTable(props: InitiativesProps) {
                       <td className={tableDataStyle}></td>
                       <td className={tableDataStyle} hidden={isCompanyHidden}><EditInitiativeButton company={company} initiative={initiative} index={index} ValidateInitiative={props.ValidateInitiative} /></td>
                     </tr>
-                    <tr>
-                      <td colSpan={8}>
-                        <AccordionShell company={company}/>
-                      </td>
-                    </tr>
                   </>
                 )
               })

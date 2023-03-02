@@ -9,7 +9,7 @@ export default function AccordionShell(props:AccordionProps){
   return(
     <Accordion collapseAll={true} alwaysOpen={true}>
       <Accordion.Panel>
-        <Accordion.Title>
+        <Accordion.Title className={"h-1"}>
           
         </Accordion.Title>
         <Accordion.Content>
