@@ -1,5 +1,5 @@
 
-import { InitiativeModalIds } from "../../src/Components/Initiative/InitiativeModal";
+import { InitiativeModalIds } from "../../src/Components/Initiative/UpdateInitiativeListModal";
 import { InitiativeRadioIds } from "../../src/Components/Initiative/ManageInitiativesDisplay";
 import { ToastId } from "../../src/Components/Toast";
 import { AddHash } from "./TestHelpers";

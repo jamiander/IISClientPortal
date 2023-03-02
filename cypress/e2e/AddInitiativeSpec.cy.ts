@@ -1,5 +1,5 @@
 
-import { InitiativeModalIds } from "../../src/Components/Initiative/InitiativeModal";
+import { InitiativeModalIds } from "../../src/Components/Initiative/UpdateInitiativeListModal";
 import { InitiativeRadioIds } from "../../src/Components/Initiative/ManageInitiativesDisplay";
 import { ToastId } from "../../src/Components/Toast";
 import { AddHash } from "./TestHelpers";
@@ -47,7 +47,7 @@ describe('add initiative spec', () => {
   specify('add new initiative',() => {
     cy.get('button').contains('Submit').click();
 
-    cy.get(badToastId).contains('New Initiative Dispatched');
+    cy.get('table').contains(init.title);
   })
 
   specify('cannot add an initiative with the name of an existing initiative for a given company', () => {
