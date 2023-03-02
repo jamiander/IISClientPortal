@@ -4,8 +4,6 @@ import { DateInfo, GetCompanyInfo, GetCompanyInfoRequest, ThroughputData, Update
 import { RootState } from "./Store"
 import { addUsersToStore, User } from "./UserSlice"
 
-const ShowToast : (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void = useOutletContext();
-
 export interface Company {
     id: number,
     name: string,
@@ -153,6 +151,7 @@ export const companySlice = createSlice({
                 }
             })
             .addCase(updateThroughputData.fulfilled, (state, action) => {
+              const ShowToast : (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void = useOutletContext();
               const companyId = action.payload.companyId;
               const initiativeId = action.payload.initiativeId;
               const matchingCompany = state.companies.find(company => company.id == companyId);
