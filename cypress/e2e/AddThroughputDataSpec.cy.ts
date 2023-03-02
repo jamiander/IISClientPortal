@@ -16,6 +16,7 @@ describe('add throughput data spec', () => {
   const consts = TestConstants;
   const selectIds = consts.UploadThroughputIds;
   const tableIds = consts.InitiativeTableIds;
+  const badToastId = consts.toastId;
   let remainingItemsBefore: number;
 
   beforeEach(() => {
@@ -33,7 +34,7 @@ describe('add throughput data spec', () => {
     cy.get('button').contains('Upload data').click();
   })
   
-  specify.only('add throughput data by file', () => {
+  specify('add throughput data by file', () => {
 
     cy.get(selectIds.selectCompany).select('Integrity Inspired Solutions');
     cy.get(selectIds.selectInitiative).select('IIS Initiative');
@@ -48,8 +49,8 @@ describe('add throughput data spec', () => {
         fileName: 'file.csv' 
       }, {action: 'drag-drop'});  
     })
-
     cy.get('button').contains('Submit').click();
+
     cy.contains('td', 'IIS Initiative').siblings().get(tableIds.remainingItems).then(($span) => {
       let remainingItemsAfter = Number($span.text());
       // console.log('remainingItemsAfter:', remainingItemsAfter);
@@ -58,12 +59,24 @@ describe('add throughput data spec', () => {
   })
 
   specify('cannot add throughput data by file when file is the wrong type', () => {
-    cy.get('input[type=file]').selectFile('cypress/data/wrongTypeThroughputDataFile.txt', {action: 'drag-drop'});
+    cy.get(selectIds.selectCompany).select('Integrity Inspired Solutions');
+    cy.get(selectIds.selectInitiative).select('IIS Initiative');
+
+    cy.readFile('cypress/data/validThroughputDataFile.csv', null).then((file) => {
+      cy.get('input[type=file]').selectFile({
+        contents: file,
+        fileName: 'file.txt'
+      }, {action: 'drag-drop'});
+    })
+    cy.get('button').contains('Submit').click();
+    cy.get(badToastId).contains('');
   })
 
   specify('cannot add throughput data by file when a field is blank', () => {
+    cy.get(selectIds.selectCompany).select('Integrity Inspired Solutions');
+    cy.get(selectIds.selectInitiative).select('IIS Initiative');
+
     cy.readFile('cypress/data/validThroughputDataFile.csv', 'ascii').then((file) => {
-      // expect(Cypress.Buffer.isBuffer(file)).to.be.true
       let blankFieldFile = file.split('\n');
       blankFieldFile[2] = blankFieldFile[2].split(',');
       blankFieldFile[2].splice(0,1);
@@ -77,25 +90,62 @@ describe('add throughput data spec', () => {
       }, {action: 'drag-drop'});
 
     })
-    // cy.get('button').contains('Submit').click()
+    cy.get('button').contains('Submit').click();
+    cy.get(badToastId).contains('');
   })
 
   specify('cannot add throughput data by file when file format is invalid', () => {
-    cy.get('input[type=file]').selectFile('cypress/data/invalidFormatThroughputDataFile.csv', {action: 'drag-drop'});
+    cy.get(selectIds.selectCompany).select('Integrity Inspired Solutions');
+    cy.get(selectIds.selectInitiative).select('IIS Initiative');
 
+    cy.readFile('cypress/data/validThroughputDataFile.csv', 'ascii').then((file) => {
+      let invalidFormatFile = file.split('\n');
+      invalidFormatFile[2] = invalidFormatFile[2].replace(',', ';');
+      invalidFormatFile = invalidFormatFile.join('\n');
+      // console.log(invalidFormatFile)
+
+      cy.get('input[type=file]').selectFile({
+        contents: Cypress.Buffer.from(invalidFormatFile),
+        fileName: 'file.csv'
+      }, {action: 'drag-drop'});
+    })
+    cy.get('button').contains('Submit').click();
+    cy.get(badToastId).contains('');
   })
 
   specify('cannot add throughput data by file when date entry is invalid', () => {
-    // cy.get('input[type=file]').selectFile('cypress/data/invalidDateThroughputDataFile.csv', {action: 'drag-drop'})
+    cy.get(selectIds.selectCompany).select('Integrity Inspired Solutions');
+    cy.get(selectIds.selectInitiative).select('IIS Initiative');
+
     cy.readFile('cypress/data/validThroughputDataFile.csv', 'ascii').then((file) => {
+      let invalidDateFile = file.split('\n');
+      invalidDateFile[3] = invalidDateFile[3].split('/');
+      invalidDateFile[3][0] = '23';
+      invalidDateFile[3] = invalidDateFile[3].join('/'); invalidDateFile = invalidDateFile.join('\n');
+      // console.log(invalidDateFile);
 
+      cy.get('input[type=file]').selectFile({
+        contents: Cypress.Buffer.from(invalidDateFile),
+        fileName: 'file.csv'
+      }, {action: 'drag-drop'});
     })
-
+    cy.get('button').contains('Submit').click();
+    cy.get(badToastId).contains('');
   })
 
-  specify('cannot add throughput data by file when items completed entry is invalid', () => {
-    cy.get('input[type=file]').selectFile('cypress/data/invalidItemsCompletedThroughputDataFile.csv', {action: 'drag-drop'});
+  specify.only('cannot add throughput data by file when items completed entry is invalid', () => {
+    cy.get(selectIds.selectCompany).select('Integrity Inspired Solutions');
+    cy.get(selectIds.selectInitiative).select('IIS Initiative');
 
+    // cy.get('input[type=file]').selectFile('cypress/data/invalidItemsCompletedThroughputDataFile.csv', {action: 'drag-drop'});
+    cy.readFile('cypress/data/validThroughputDataFile.csv', 'ascii').then((file) => {
+      let temp = file.split('\n');
+      let temp2 = temp[4].split(',');
+      temp2[1] = temp2[1].replace(temp2[1][1], '-3');
+      console.log(temp);
+      temp[4] = temp2.join(','); temp = temp.join('\n');
+      console.log(temp);
+    })
   })
 
 })
