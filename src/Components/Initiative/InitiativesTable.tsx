@@ -33,8 +33,8 @@ export default function InitiativesTable(props: InitiativesProps) {
   }, []);
   
   return (
-    <div className="grid grid-cols-1 w-full h-full">
-      <div className="col-span-1 h-[4vh]">
+    <div className="grid grid-cols-1 w-full h-auto">
+      <div className="col-span-1 h-[4vh] space-x-2">
         <input className="rounded outline py-2 my-1" type={'text'} placeholder="Search by Company" onChange={(e)=> setSearchedComp(e.target.value)}/>
         <input className="rounded outline py-2 my-1" type={'text'} placeholder="Searchy by Initiative" onChange={(e)=> setSearchedInit(e.target.value)}/>
       </div>
