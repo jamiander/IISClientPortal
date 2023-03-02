@@ -1,8 +1,6 @@
 import { useState } from "react";
-import { useOutletContext } from "react-router-dom";
-import { Company, selectAllCompanies, updateCompanyInfo } from "../../Store/CompanySlice"
-import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
-import { selectAllUsers, User } from "../../Store/UserSlice"
+import { Company } from "../../Store/CompanySlice"
+import { User } from "../../Store/UserSlice"
 import UpdateUserListModal from "./UpdateUserListModal";
 
 interface EditUserButtonProps{
@@ -17,7 +15,6 @@ export default function EditUserButton(props:EditUserButtonProps){
   const fakeUser : User = {id: -1, email: '', password: '', companyId: -1};
   const fakeCompany : Company = {id: -1, name: "", initiatives: []}
 
-  const dispatch = useAppDispatch();
   const [isEdit, setIsEdit] = useState(false);
   const [EditUserIsOpen, setEditUserIsOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(fakeUser);
