@@ -84,7 +84,7 @@ export function ValidateThroughputData(dataList: ThroughputData[]) : Validation
   {
     if (!ValidateDate(entry.date).success) 
       return {success: false, message: "All dates must be valid."}
-    if (!entry.itemsCompleted || entry.itemsCompleted < 0) 
+    if ((!entry.itemsCompleted && entry.itemsCompleted !== 0) || entry.itemsCompleted < 0) 
       return {success: false, message: "All entries must have items completed as 0 or greater."}
   }
   
