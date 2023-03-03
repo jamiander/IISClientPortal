@@ -28,7 +28,7 @@ function App() {
     let kickThemOut = true;
     if(currentUser)
     {
-      if(currentUser.companyId === 0)
+      if(currentUser.companyId !== -1)
       {
         kickThemOut = false;
       }
