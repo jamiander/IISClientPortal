@@ -24,7 +24,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
   const [selectedCompany, setSelectedCompany] = useState<Company>();
   const [selectedInitiativeIndex, setSelectedInitiativeIndex] = useState(-1);
   const [fileData, setFileData] = useState<ThroughputData[]>([]);
-  const [fileError, setFileError] = useState("");
+  const [fileWarning, setFileWarning] = useState("");
   const ShowToast : (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void = useOutletContext();
   const emptyDate: DateInfo = {month: 0, day: 0, year: 0};
   const [entryDate, setEntryDate] = useState<DateInfo>(emptyDate);
@@ -39,7 +39,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
     setSelectedCompany(undefined);
     setSelectedInitiativeIndex(-1);
     setFileData([]);
-    setFileError("");
+    setFileWarning("");
   },[props.uploadIsOpen])
 
   function SelectCompany(companyId: number)
@@ -68,6 +68,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
       if(extension !== 'csv')
       {
         setFileData([]);
+        setFileWarning("");
         ShowToast(ValidationFailedPrefix + "File can only be of type .csv", "Error");
         return;
       }
@@ -82,6 +83,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
       if(fileContent && typeof(fileContent) === 'string')
       {
         let parseData: ThroughputData[] = [];
+        let warningMessage = "";
         let lines = fileContent.split("\n");
         for(let i = 0; i < lines.length; i++) {
           let wordsInLine = lines[i].split(",");
@@ -95,9 +97,12 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
             let day = parseInt(dateWords[1]);
             let year = parseInt(dateWords[2]);
 
-            if(!month || !day || !year || !itemsCompleted)
+            if(!month || !day || !year || (!itemsCompleted && itemsCompleted !== 0))
+            {
+              warningMessage = 'Warning: This file contains data that is not properly formatted. Entries that are not provided as "MM/DD/YYYY, #itemsCompleted" will be ignored.';
               continue;
-            
+            }
+
             let date: DateInfo = {month: month, day: day, year: year};
             let dataEntry: ThroughputData = {date: date, itemsCompleted: itemsCompleted};
             parseData.push(dataEntry);
@@ -105,6 +110,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
           }
         }
         
+        setFileWarning(warningMessage);
         setFileData(parseData);
       }
       else
@@ -139,6 +145,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
           })}
         </select>
         {selectedInitiativeIndex !== -1 && <p className="p-2">Items Remaining: {FindItemsRemaining(selectedCompany?.initiatives.at(selectedInitiativeIndex) ?? fakeInit)}</p>}
+        {fileWarning}
         <div className="space-y-2">
           <div className="outline outline-[#879794] rounded space-y-2 p-1">
             <p className="text-2xl">Upload CSV File</p>
