@@ -103,9 +103,9 @@ describe('invalid add throughput tests', () => {
   specify('cannot add throughput data by file when a field is blank', () => {
     cy.readFile('cypress/data/validThroughputDataFile.csv', 'ascii').then((file) => {
       let blankFieldFile = file.split('\n');
-      blankFieldFile[2] = blankFieldFile[2].split(',');
-      blankFieldFile[2].splice(0,1);
-      blankFieldFile[2] = ',' + blankFieldFile[2];
+      let fieldToClear = blankFieldFile[2].split(',');
+      fieldToClear.splice(0,1);
+      blankFieldFile[2] = ',' + fieldToClear;
       blankFieldFile = blankFieldFile.join('\n');
       // console.log(blankFieldFile);
 
@@ -138,9 +138,9 @@ describe('invalid add throughput tests', () => {
   specify('cannot add throughput data by file when date entry is invalid', () => {
     cy.readFile('cypress/data/validThroughputDataFile.csv', 'ascii').then((file) => {
       let invalidDateFile = file.split('\n');
-      invalidDateFile[3] = invalidDateFile[3].split('/');
-      invalidDateFile[3][0] = '23';
-      invalidDateFile[3] = invalidDateFile[3].join('/'); invalidDateFile = invalidDateFile.join('\n');
+      let dateToInvalidate = invalidDateFile[3].split('/');
+      dateToInvalidate[0] = '23';
+      invalidDateFile[3] = dateToInvalidate.join('/'); invalidDateFile = invalidDateFile.join('\n');
       // console.log(invalidDateFile);
 
       cy.get('input[type=file]').selectFile({
