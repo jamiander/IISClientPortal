@@ -112,7 +112,6 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
             let date: DateInfo = {month: month, day: day, year: year};
             let dataEntry: ThroughputData = {date: date, itemsCompleted: itemsCompleted};
             parseData.push(dataEntry);
-            console.log(parseData)
           }
           else
             isWarning = true;
