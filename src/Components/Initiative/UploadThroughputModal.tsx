@@ -6,13 +6,19 @@ import { DateInfo, FindItemsRemaining, ThroughputData } from "../../Services/Com
 //import * as fs from "fs";
 import { useOutletContext } from "react-router-dom";
 import { ValidationFailedPrefix } from "../../Services/Validation";
+import { DateInput } from "../DateInput";
 //import { parse } from 'csv-parse';
 
 export const UploadThroughputIds = {
   selectCompany: "selectCompanyInThroughputModal",
   selectInitiative: "selectInitiativeInThroughputModal",
   fileSubmit: "submitThroughputAsFile",
-  manualSubmit: "submitThroughputAsSingleEntry"
+  manualSubmit: "submitThroughputAsSingleEntry",
+  date: {
+    month: "uploadModalMonth",
+    day: "uploadModalDay",
+    year: "uploadModalYear"
+  }
 }
 
 interface ThroughputModalProps{
@@ -167,24 +173,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
             <div>
               <p className="text-2xl">Manually Enter Single Entry</p>
             </div>
-            <div className="flex space-x-2">
-              <div className="w-[20%]">
-                <p>Month</p>
-                <input 
-                type={'text'} className={'outline rounded p-2 w-full'} maxLength={2} placeholder={'MM'}
-                onChange={(e)=>{setEntryDate({...entryDate, month:parseInt(e.target.value)})}}/>
-              </div>
-              <div className="w-[20%]">
-                <p>Day</p>
-                <input type={'text'} className={'outline rounded p-2 w-full'} maxLength={2} placeholder={'DD'}
-                onChange={(e)=>{setEntryDate({...entryDate, day:parseInt(e.target.value)})}}/>
-              </div>
-              <div className="w-[30%]">
-                <p>Year</p>
-                <input type={'text'} className={'outline rounded p-2 w-full'} maxLength={4} placeholder={'YYYY'}
-                onChange={(e)=>{setEntryDate({...entryDate, year:parseInt(e.target.value)})}}/>
-              </div>
-            </div>
+            <DateInput date={entryDate} setDate={setEntryDate} inputIds={UploadThroughputIds.date}/>
             <div>
               <p>Items Completed</p>
             </div>

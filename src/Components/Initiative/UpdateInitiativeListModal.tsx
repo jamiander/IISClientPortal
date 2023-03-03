@@ -73,8 +73,11 @@ export function UpdateInitiativeListModal(props: InitiativeModalProps){
 				<input defaultValue={props.initiative?.title} id={InitiativeModalIds.title} className={inputStyle + ' w-3/4'}
           onChange={(e) => {setInitiativeTitle(e.target.value)}}/>
 				
-				<DateInput heading={'Target Completion'} date={initiativeTargetDate} setDate={setInitiativeTargetDate} inputIds={InitiativeModalIds.date} defaultDate={props.initiative?.targetDate}/>
-			</div>
+        <div className='my-2 p-2 outline outline-1 outline-[#879794] rounded'>
+          <p className=''>Target Completion</p>
+				  <DateInput date={initiativeTargetDate} setDate={setInitiativeTargetDate} inputIds={InitiativeModalIds.date} defaultDate={props.initiative?.targetDate}/>
+        </div>
+      </div>
       
       <div className='mt-2 justify-between flex'>
           <div className='w-24'>
