@@ -107,11 +107,11 @@ export function ValidateThroughputDataUpdate(companyList: Company[], companyId: 
     if(!matchingInitiative)
       return {success: false, message: "An initiative must be selected."};
 
-    let itemsRemaining = FindItemsRemaining(matchingInitiative);
+    /*let itemsRemaining = FindItemsRemaining(matchingInitiative);
     let dataCompletedAmount = 0;
     dataList.map(entry => dataCompletedAmount += entry.itemsCompleted);
     if(dataCompletedAmount > itemsRemaining)
-      return {success: false, message: "Items completed cannot exceed " + itemsRemaining + "."}
+      return {success: false, message: "Items completed cannot exceed " + itemsRemaining + "."}*/
   }
   else
     return dataValidation;
