@@ -34,6 +34,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
   const [fileWarning, setFileWarning] = useState("");
   const ShowToast : (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void = useOutletContext();
   const emptyDate: DateInfo = {month: 0, day: 0, year: 0};
+  const today = new Date;
   const [entryDate, setEntryDate] = useState<DateInfo>(emptyDate);
   const fakeEntry: ThroughputData[] = [{date:emptyDate,itemsCompleted:0}];
   const fakeInit: Initiative = {id:-1, title:'', targetDate:emptyDate, totalItems:0, itemsCompletedOnDate:fakeEntry};
@@ -180,7 +181,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
             <div>
               <p className="text-2xl">Manually Entry</p>
             </div>
-            <DateInput date={entryDate} setDate={setEntryDate} inputIds={UploadThroughputIds.date}/>
+            <DateInput date={entryDate} setDate={setEntryDate} inputIds={UploadThroughputIds.date} defaultDate={{month:(parseInt(today.getMonth().toString()) + 1),day:today.getDate(),year:today.getFullYear()}}/>
             <div>
               <p>Items Completed</p>
             </div>
