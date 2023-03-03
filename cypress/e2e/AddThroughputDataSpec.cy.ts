@@ -175,3 +175,73 @@ describe('invalid add throughput tests', () => {
     cy.get(badToastId).contains('Validation Failed');
   })
 })
+
+describe ('add throughput data by manual entry', () => {
+  let remainingItemsBefore: number;
+
+  before(() => {
+    cy.visit('http://localhost:3000/Login');
+    cy.get('#email').clear().type('info@integrityinspired.com');
+    cy.get('#password').clear().type('password');
+    cy.get('button').contains('Submit').click();
+
+    cy.get('button').contains('Admin').click();
+    cy.get('button').contains('Initiatives').click();
+
+    cy.contains('tr', initiative).find(tableIds.remainingItems).then(($span) => {
+      remainingItemsBefore = Number($span.text());
+    });
+
+    cy.get('button').contains('Upload Data').click();
+    cy.get(modalIds.selectCompany).select(company);
+    cy.get(modalIds.selectInitiative).select(initiative);
+  })
+
+  specify('add throughput data by manual entry', () => {
+    cy.get(modalIds.date.month).clear().type('01');
+    cy.get(modalIds.date.day).clear().type('01');
+    cy.get(modalIds.date.year).clear().type('2020');
+    cy.get(modalIds.itemsComplete).clear().type('2');
+    cy.get(modalIds.manualSubmit).click();
+
+    cy.wait(waitTime)
+    cy.contains('tr', initiative).find(tableIds.remainingItems).then(($span) => {
+      let remainingItemsAfter = Number($span.text());
+      expect(remainingItemsBefore-2).to.be.equal(remainingItemsAfter);
+    })
+  })
+})
+
+describe ('invalid manual entry test', () => {
+  beforeEach(() => {
+    cy.visit('http://localhost:3000/Login');
+    cy.get('#email').clear().type('info@integrityinspired.com');
+    cy.get('#password').clear().type('password');
+    cy.get('button').contains('Submit').click();
+
+    cy.get('button').contains('Admin').click();
+    cy.get('button').contains('Initiatives').click();
+
+    cy.get('button').contains('Upload Data').click();
+    cy.get(modalIds.selectCompany).select(company);
+    cy.get(modalIds.selectInitiative).select(initiative);
+  })
+
+  specify('cannot add throughput entry when date is invalid', () => {
+    cy.get(modalIds.date.month).clear().type('01');
+    cy.get(modalIds.date.day).clear().type('01');
+    cy.get(modalIds.itemsComplete).clear().type('2');
+    cy.get(modalIds.manualSubmit).click();
+    cy.wait(waitTime);
+    cy.get(badToastId).contains('Validation Failed');
+  })
+
+  specify.only('cannot add throughput entry when item completed is invalid', () => {
+    cy.get(modalIds.date.month).clear().type('01');
+    cy.get(modalIds.date.day).clear().type('01');
+    cy.get(modalIds.date.year).clear().type('2020');
+    cy.get(modalIds.manualSubmit).click();
+    cy.wait(waitTime);
+    cy.get(badToastId).contains('Validation Failed');
+  })
+})

@@ -18,7 +18,8 @@ export const UploadThroughputIds = {
     month: "uploadModalMonth",
     day: "uploadModalDay",
     year: "uploadModalYear"
-  }
+  },
+  itemsComplete: "uploadModalComplete"
 }
 
 interface ThroughputModalProps{
@@ -178,7 +179,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
               <p>Items Completed</p>
             </div>
             <div className='w-full flex justify-end h-10'>
-              <input type={'number'} className={'outline rounded p-2 w-1/2'} onChange={(e) => {setItemsCompleted(parseInt(e.target.value))}}/>
+              <input id={UploadThroughputIds.itemsComplete} type={'number'} className={'outline rounded p-2 w-1/2'} onChange={(e) => {setItemsCompleted(parseInt(e.target.value))}}/>
               <button id={UploadThroughputIds.manualSubmit} className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives[selectedInitiativeIndex]?.id ?? -1, manualEntry)}>Submit</button>
               <button className={cancelButtonStyle} onClick={() => props.setUploadIsOpen(false)}>Close</button>
             </div>
