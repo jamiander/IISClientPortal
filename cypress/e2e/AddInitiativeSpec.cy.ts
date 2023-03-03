@@ -50,23 +50,22 @@ describe('add initiative spec', () => {
   })
 
   specify('cannot add an initiative with the name of an existing initiative for a given company', () => {
-    /*cy.get('tr').siblings().first().find() => {
+    cy.get('tr').siblings().first().then(($row) => {
+
       cy.get(tableIds.initiativeTitle).invoke('text').then(($txt) => { 
-        const existingInit_title = $txt;
+        const existingInitTitle = $txt;
+
         cy.get(tableIds.companyName).invoke('text').then(($txt2) => { 
-          const existingInit_companyName = $txt2;*/
-          let existingInit_companyName = "Integrity Inspired Solutions";
-          let existingInit_title = "IIS Initiative";
-          cy.get('select').select(existingInit_companyName);
-          cy.get(modalIds.title).clear().type(existingInit_title); //TODO: figure out how to make this match an existing initiative name for this company
+          const existingInitCompanyName = $txt2;
+          
+          cy.get('select').select(existingInitCompanyName);
+          cy.get(modalIds.title).clear().type(existingInitTitle);
 
           cy.get('button').contains('Submit').click();
           cy.get(badToastId).contains(failMessage);
-        /*});
+        });
       });
-      
-    })*/
-
+    });
   })
 
   specify('cannot add when a field is left blank', () => {
