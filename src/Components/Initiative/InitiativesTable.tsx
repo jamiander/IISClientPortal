@@ -38,11 +38,11 @@ export default function InitiativesTable(props: InitiativesProps) {
   
   return (
     <div className="grid grid-cols-1 w-full h-auto">
-      <div className="col-span-1 h-[4vh] space-x-2">
+      <div className="col-span-1 h-[4vh] px-2 pb-[2%] space-x-2">
         <input hidden={isCompanyHidden} className="rounded outline py-2 my-1" type={'text'} placeholder="Search by Company" onChange={(e)=> setSearchedComp(e.target.value)}/>
         <input className="rounded outline py-2 my-1" type={'text'} placeholder="Search by Initiative" onChange={(e)=> setSearchedInit(e.target.value)}/>
       </div>
-      <div className="col-span-1">
+      <div className="col-span-1 py-[2%]">
         <table className="table-auto w-[98%] outline outline-3">
           <thead className="outline outline-1">
             <tr>
@@ -64,7 +64,8 @@ export default function InitiativesTable(props: InitiativesProps) {
                   (props.radioStatus !== 'all' ? InitiativeFilter(filteredInits, props.radioStatus) : company.initiatives).map((initiative, index) => {
                     let itemsRemaining = FindItemsRemaining(initiative);
                     return (
-                      <Fragment key={index}>
+                      <Fragment key={index}><>
+                        {console.log(company)}
                         <tr key={index}>
                           <td className={tableDataStyle}>{initiative.id}</td>
                           <td className={tableDataStyle}>{initiative.title}</td>
@@ -74,7 +75,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                           <td id={InitiativeTableIds.remainingItems} className={tableDataStyle}>{itemsRemaining}</td>
                           <td className={tableDataStyle}></td>
                           <td className={tableDataStyle} hidden={isCompanyHidden}><EditInitiativeButton company={company} initiative={initiative} index={index} ValidateInitiative={props.ValidateInitiative} /></td>
-                        </tr>
+                        </tr></>
                       </Fragment>
                     )
                   })
