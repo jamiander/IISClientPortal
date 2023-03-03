@@ -64,8 +64,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                   (props.radioStatus !== 'all' ? InitiativeFilter(filteredInits, props.radioStatus) : company.initiatives).map((initiative, index) => {
                     let itemsRemaining = FindItemsRemaining(initiative);
                     return (
-                      <Fragment key={index}><>
-                        {console.log(company)}
+                      <Fragment key={index}>
                         <tr key={index}>
                           <td className={tableDataStyle}>{initiative.id}</td>
                           <td className={tableDataStyle}>{initiative.title}</td>
@@ -75,7 +74,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                           <td id={InitiativeTableIds.remainingItems} className={tableDataStyle}>{itemsRemaining}</td>
                           <td className={tableDataStyle}></td>
                           <td className={tableDataStyle} hidden={isCompanyHidden}><EditInitiativeButton company={company} initiative={initiative} index={index} ValidateInitiative={props.ValidateInitiative} /></td>
-                        </tr></>
+                        </tr>
                       </Fragment>
                     )
                   })
