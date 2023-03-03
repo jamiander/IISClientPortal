@@ -3,7 +3,7 @@ import { useAppSelector } from "../Store/Hooks";
 import { User } from "../Store/UserSlice";
 import { FindItemsRemaining } from "./CompanyService";
 
-export function CompanyFilter(userlist:User[], isActive:string){
+export function CompanyFilter(userlist: User[], isActive: string){
     var initiatives: Initiative[] = [];
     var activeCompanies: Company[] = [];
     var activeUsers: User[] = [];
@@ -46,8 +46,10 @@ export function InitiativeFilter(initiativesList: Initiative[], isActive: String
 
     if (isActive === 'active')
       return (itemsRemaining > 0)
-    else 
+    else if(isActive === 'inactive')
       return (itemsRemaining <= 0)
+    else
+      return true;
   })
 
   return filteredInitiatives;

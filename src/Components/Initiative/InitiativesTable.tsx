@@ -62,7 +62,7 @@ export default function InitiativesTable(props: InitiativesProps) {
               filteredCompanies.map((company, index) => {
                 const filteredInits = company.initiatives.filter(e => e.title.toLowerCase().includes(searcehdInit.toLowerCase()))
                 return (
-                  (props.radioStatus !== 'all' ? InitiativeFilter(filteredInits, props.radioStatus) : filteredInits).map((initiative, index) => {
+                  InitiativeFilter(filteredInits, props.radioStatus).map((initiative, index) => {
                     let itemsRemaining = FindItemsRemaining(initiative);
                     return (
                       <Fragment key={index}>
