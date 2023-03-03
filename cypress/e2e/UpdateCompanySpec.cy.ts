@@ -26,6 +26,7 @@ describe('update company spec', () => {
     cy.get('button').contains('Submit').click();
 
     cy.get('button').contains('Admin').click();
+    cy.get('button').contains('Clients').click();
     cy.get(radioIds.all).click();
     cy.get('table').contains(existingCompany.name);
     cy.get('button').contains('Edit Client').click();
