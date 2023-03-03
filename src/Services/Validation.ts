@@ -31,18 +31,18 @@ export default function ValidateNewInitiative(initiative: Initiative, companyId:
 export function ValidateDate(date: DateInfo) : Validation
 {
   let month = date.month;
-  if(month < 1 || month > 12 || Number.isNaN(month))
+  if(!month || month < 1 || month > 12 || Number.isNaN(month))
     return {success: false, message: "Month must be between 1 and 12"};
 
   let day = date.day;
-  if(day < 1 || day > 31 || Number.isNaN(day))
+  if(!day || day < 1 || day > 31 || Number.isNaN(day))
     return {success: false, message: "Day must be between 1 and 31"};
 
   let year = date.year;    //TODO: there's probably a better way to validate years
-  if(year < 1900 || year > 2100 || Number.isNaN(year))
+  if(!year || year < 1900 || year > 2100 || Number.isNaN(year))
     return {success: false, message: "Year must be between 1900 and 2100"};
 
-    return {success: true, message: "Date is all good!"}
+  return {success: true, message: "Date is all good!"}
 }
 
 export function ValidateNewUser(newCompanyName: string, newEmail: string, newPassword: string, companyList: Company[], userList: User[]) : Validation
@@ -80,13 +80,13 @@ export function ValidateEditUser(companyName: string, user: User, userList: User
 
 export function ValidateThroughputData(dataList: ThroughputData[]) : Validation
 {
-  dataList.find((entry) => {
-      if (!ValidateDate(entry.date).success) 
-        return {success: false, message: "All dates must be valid."}
-      if (entry.itemsCompleted < 0 && !Number.isNaN(entry.itemsCompleted)) 
-        return {success: false, message: "All entries must have items completed as 0 or greater."}
-    }
-  )
+  for(const entry of dataList)
+  {
+    if (!ValidateDate(entry.date).success) 
+      return {success: false, message: "All dates must be valid."}
+    if (!entry.itemsCompleted || entry.itemsCompleted < 0 || Number.isNaN(entry.itemsCompleted)) 
+      return {success: false, message: "All entries must have items completed as 0 or greater."}
+  }
   
   return {success: true, message: "All data is valid."}
 }
