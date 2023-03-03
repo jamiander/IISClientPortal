@@ -46,9 +46,7 @@ export default function ManageInitiativesDisplay() {
     let isTest = false;
     if((window as any).Cypress)
       isTest = true;
-    
-    console.log('Cid: ' + companyId)
-    console.log('Iid: ' + initiativeId)
+
     const validation = ValidateThroughputDataUpdate(companyList, companyId, initiativeId, dataList);
     if(validation.success)
     {

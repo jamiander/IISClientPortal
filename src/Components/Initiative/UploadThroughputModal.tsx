@@ -6,7 +6,7 @@ import { DateInfo, ThroughputData } from "../../Services/CompanyService";
 //import * as fs from "fs";
 import * as path from "path";
 import { useOutletContext } from "react-router-dom";
-import { ValidateDate } from "../../Services/Validation";
+import { ValidateDate, ValidationFailedPrefix } from "../../Services/Validation";
 //import { parse } from 'csv-parse';
 
 export const UploadThroughputIds = {
@@ -60,17 +60,27 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
 
   function ReceiveFile(fileName: string)
   {
+    if(fileName)
+    {
+      let splitName = fileName.split('.');
+      let extension = splitName[splitName.length-1];
+      if(extension != 'csv')
+      {
+        setFileData([]);
+        ShowToast(ValidationFailedPrefix + "File can only be of type .csv", "Error");
+        return;
+      }
+    }
+
     let files = fileRef.current?.files ?? [];
     let file = files[0];
     let fileContent;
     const reader = new FileReader();
     reader.onload = function(e) {
-
       fileContent = reader.result;
       if(fileContent && typeof(fileContent) === 'string')
       {
         let parseData: ThroughputData[] = [];
-        let errorMessage = "";
         let lines = fileContent.split("\n");
         for(let i = 0; i < lines.length; i++) {
           let wordsInLine = lines[i].split(",");
@@ -85,26 +95,19 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
             let year = parseInt(dateWords[2]);
 
             if(!month || !day || !year || !itemsCompleted)
-            {
-              //parseData = [];
-              //errorMessage = "";
               continue;
-            }
-
-            let date: DateInfo = {month: month, day: day, year: year};
             
+            let date: DateInfo = {month: month, day: day, year: year};
             let dataEntry: ThroughputData = {date: date, itemsCompleted: itemsCompleted};
             parseData.push(dataEntry);
 
           }
         }
         
-        console.log(parseData);
         setFileData(parseData);
-        setFileError(errorMessage);
       }
       else
-        ShowToast("Something went wrong when trying to load that file.","Error")
+        ShowToast("Something went wrong when trying to load that file.","Error");
     }
     reader.readAsText(file);
   }
@@ -134,7 +137,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
             )
           })}
         </select>
-        <div className="space-y-2"><>
+        <div className="space-y-2">
           <p className="text-2xl">Upload CSV File</p>
           <input ref={fileRef} type={'file'} accept={'.csv'} onChange={(e) => ReceiveFile(e.target.value)}/>
           <button className={'rounded bg-lime-600 h-[40px] w-[80px]'} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives[selectedInitiativeIndex]?.id ?? -1, fileData)}>Submit</button>
@@ -163,13 +166,11 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
           <div>
             <p>Items Completed</p>
           </div>
-          {console.log(manualEntry)}
           <div className='w-full flex justify-end h-10'>
             <input type={'number'} className={'outline rounded p-2 w-1/2'} onChange={(e) => {setItemsCompleted(parseInt(e.target.value))}}/>
             <button className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives[selectedInitiativeIndex]?.id ?? -1, manualEntry)}>Submit</button>
             <button className={cancelButtonStyle} onClick={() => props.setUploadIsOpen(false)}>Close</button>
           </div>
-          <p>{selectedCompany?.id}</p></>
       </div>
     </div>
     </Modal>
