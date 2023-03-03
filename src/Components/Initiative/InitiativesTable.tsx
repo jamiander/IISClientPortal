@@ -16,6 +16,7 @@ interface InitiativesProps {
   companyList: Company[],
   radioStatus: string,
   ValidateInitiative : (initiative: Initiative, companyId: number, allCompanies: Company[]) => {success: boolean, message: string}
+  admin:boolean,
 }
 
 export default function InitiativesTable(props: InitiativesProps) {
@@ -41,7 +42,7 @@ export default function InitiativesTable(props: InitiativesProps) {
     <div className="grid grid-cols-1 w-full h-auto">
       <div className="col-span-1 h-[4vh] px-2 pb-[2%] space-x-2">
         <input className="rounded outline outline-1 p-2 " type={'text'} placeholder="Filter by Title" onChange={(e)=> setSearchedInit(e.target.value)}/>
-        <input hidden={isCompanyHidden} className="rounded outline outline-1 p-2" type={'text'} placeholder="Filter by Company" onChange={(e)=> setSearchedComp(e.target.value)}/>
+        <input hidden={!props.admin} className="rounded outline outline-1 p-2" type={'text'} placeholder="Filter by Company" onChange={(e)=> setSearchedComp(e.target.value)}/>
       </div>
       <div className="col-span-1 py-[2%]">
         <table className="table-auto w-[98%] outline outline-3">
@@ -54,7 +55,7 @@ export default function InitiativesTable(props: InitiativesProps) {
               <th>Total Items</th>
               <th>Items Remaining</th>
               <th>Probability</th>
-              <th hidden={isCompanyHidden}>Edit</th>
+              <th hidden={!props.admin}>Edit</th>
             </tr>
           </thead>
           <tbody>
@@ -74,7 +75,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                           <td id={InitiativeTableIds.totalItems} className={tableDataStyle}>{initiative.totalItems}</td>
                           <td id={InitiativeTableIds.remainingItems} className={tableDataStyle}>{itemsRemaining}</td>
                           <td className={tableDataStyle}></td>
-                          <td className={tableDataStyle} hidden={isCompanyHidden}><EditInitiativeButton company={company} initiative={initiative} index={index} ValidateInitiative={props.ValidateInitiative} /></td>
+                          <td className={tableDataStyle} hidden={!props.admin}><EditInitiativeButton company={company} initiative={initiative} index={index} ValidateInitiative={props.ValidateInitiative} /></td>
                         </tr>
                       </Fragment>
                     )
