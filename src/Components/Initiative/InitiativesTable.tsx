@@ -4,7 +4,6 @@ import { InitiativeFilter } from "../../Services/Filters";
 import { Company, Initiative } from "../../Store/CompanySlice";
 import { useAppSelector } from "../../Store/Hooks";
 import { selectCurrentUser, User } from "../../Store/UserSlice";
-import AccordionShell from "../AccordionShell";
 import { EditInitiativeButton } from "./EditInitiativeButton";
 
 export const InitiativeTableIds = {
