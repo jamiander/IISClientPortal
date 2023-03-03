@@ -23,8 +23,8 @@ export default function ProfilePage(){
         </div>
       </div>
 
-      <div className="col-span-1 bg-[#445362] rounded-md p-3 pl-5 h-fit text-white">
-        <p className="text-3xl h-[90%] m-2">User Information</p>
+      <div className="col-span-1 bg-[#445362] rounded-md p-5 h-fit text-white min-h-fit min-w-fit">
+        <p className="text-3xl text-center">User Info</p>
         <ProfileInfoDisplay/>
       </div>
 

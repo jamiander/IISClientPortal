@@ -29,7 +29,7 @@ export default function DashboardPage(){
         <p className="text-5xl  bg-[#2ed7c3] rounded-md py-6 px-5">Dashboard</p>
       </div>
       <div className="col-span-4 bg-[#445362] rounded-md p-2 pl-5">
-        <p className="text-3xl text-white h-[90%]">Company Initiatives</p>
+        <p className="text-3xl text-white h-[90%]">{company?.name} Initiatives</p>
       </div>
       <div className="col-span-4 h-[60vh] py-3">
         <Dashboard/>
