@@ -36,10 +36,10 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
   const ShowToast : (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void = useOutletContext();
   const emptyDate: DateInfo = {month: 0, day: 0, year: 0};
   const [entryDate, setEntryDate] = useState<DateInfo>(emptyDate);
-  const fakeEntry:ThroughputData[] = [{date:emptyDate,itemsCompleted:0}];
-  const fakeInit:Initiative = {id:-1, title:'', targetDate:emptyDate, totalItems:0, itemsCompletedOnDate:fakeEntry};
-  const [itemsCompleted, setItemsCompleted] = useState(0);
-  const manualEntry:ThroughputData[] = [{date:entryDate,itemsCompleted:itemsCompleted}]
+  const fakeEntry: ThroughputData[] = [{date:emptyDate,itemsCompleted:0}];
+  const fakeInit: Initiative = {id:-1, title:'', targetDate:emptyDate, totalItems:0, itemsCompletedOnDate:fakeEntry};
+  const [itemsCompleted, setItemsCompleted] = useState(-1);
+  const manualEntry: ThroughputData[] = [{date:entryDate,itemsCompleted:itemsCompleted}]
 
   const fileRef = useRef<HTMLInputElement>(null);
 
@@ -48,6 +48,8 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
     setSelectedInitiativeIndex(-1);
     setFileData([]);
     setFileWarning("");
+    setEntryDate(emptyDate);
+    setItemsCompleted(-1);
   },[props.uploadIsOpen])
 
   function SelectCompany(companyId: number)
@@ -94,7 +96,8 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
         let warningMessage = "";
         let isWarning = false;
         let lines = fileContent.split("\n");
-        for(let i = 0; i < lines.length; i++) {
+        for(let i = 0; i < lines.length; i++)
+        {
           let wordsInLine = lines[i].split(",");
           if(wordsInLine.length === 2)
           {
@@ -166,7 +169,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
           <div className="outline outline-[#879794] rounded space-y-2 p-1">
             <p className="text-2xl">Upload CSV File</p>
             <input ref={fileRef} type={'file'} accept={'.csv'} onChange={(e) => ReceiveFile(e.target.value)}/>
-            <button id={UploadThroughputIds.fileSubmit} className={'rounded bg-lime-600 h-[40px] w-[80px]'} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives[selectedInitiativeIndex]?.id ?? -1, fileData)}>Submit</button>
+            <button id={UploadThroughputIds.fileSubmit} className={'rounded bg-lime-600 h-[40px] w-[80px]'} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives.at(selectedInitiativeIndex)?.id ?? -1, fileData)}>Submit</button>
           </div>
           <p className="text-2xl">OR</p>
           <div className="outline outline-[#879794] rounded space-y-2 p-1">
@@ -179,7 +182,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
             </div>
             <div className='w-full flex justify-end h-10'>
               <input type={'number'} className={'outline rounded p-2 w-1/2'} onChange={(e) => {setItemsCompleted(parseInt(e.target.value))}}/>
-              <button id={UploadThroughputIds.manualSubmit} className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives[selectedInitiativeIndex]?.id ?? -1, manualEntry)}>Submit</button>
+              <button id={UploadThroughputIds.manualSubmit} className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives.at(selectedInitiativeIndex)?.id ?? -1, manualEntry)}>Submit</button>
               <button className={cancelButtonStyle} onClick={() => props.setUploadIsOpen(false)}>Close</button>
             </div>
           </div>  

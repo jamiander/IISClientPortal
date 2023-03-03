@@ -8,7 +8,7 @@ import { UploadThroughputIds } from "../../src/Components/Initiative/UploadThrou
 import { InitiativeTableIds } from "../../src/Components/Initiative/InitiativesTable";
 
 //cypress can find items by id using "#id"
-export function AddHash(obj: any)
+export function AddHash(obj: Record<string,any> | string)
 {
   if(typeof(obj) == 'string')
     return "#" + obj;
