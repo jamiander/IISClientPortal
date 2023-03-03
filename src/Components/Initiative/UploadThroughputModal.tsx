@@ -84,6 +84,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
       {
         let parseData: ThroughputData[] = [];
         let warningMessage = "";
+        let isWarning = false;
         let lines = fileContent.split("\n");
         for(let i = 0; i < lines.length; i++) {
           let wordsInLine = lines[i].split(",");
@@ -102,17 +103,22 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
             if(!month || !day || !year || (!itemsCompleted && itemsCompleted !== 0))
             {
               if(dateString.toUpperCase() !== 'DATE' && itemsCompletedString.toUpperCase() !== "ITEMSCOMPLETED")
-                warningMessage = 'Warning: This file contains data that is not properly formatted. Entries that are not provided as "MM/DD/YYYY, #itemsCompleted" will be ignored.';
+                isWarning = true;
               continue;
             }
 
             let date: DateInfo = {month: month, day: day, year: year};
             let dataEntry: ThroughputData = {date: date, itemsCompleted: itemsCompleted};
             parseData.push(dataEntry);
-
+            console.log(parseData)
           }
+          else
+            isWarning = true;
         }
         
+        if(isWarning)
+          warningMessage = 'Warning: This file contains data that is not properly formatted. Entries that are not provided as "MM/DD/YYYY, #itemsCompleted" will be ignored.';
+
         setFileWarning(warningMessage);
         setFileData(parseData);
       }
