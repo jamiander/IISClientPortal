@@ -3,7 +3,7 @@ import { useOutletContext } from "react-router-dom";
 import { Company, Initiative, selectAllCompanies, updateInitiativeInfo, updateThroughputData } from "../../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
 import InitiativesTable from "./InitiativesTable"
-import ValidateNewInitiative, { ValidateThroughputData, ValidateThroughputDataUpdate, ValidationFailedPrefix } from "../../Services/Validation";
+import ValidateNewInitiative, { ValidateThroughputDataUpdate, ValidationFailedPrefix } from "../../Services/Validation";
 import UploadThroughputModal from "./UploadThroughputModal";
 import { UpdateInitiativeListModal } from "./UpdateInitiativeListModal";
 import { ThroughputData } from "../../Services/CompanyService";

@@ -1,12 +1,11 @@
 import { Company, Initiative } from "../../Store/CompanySlice";
 import  Modal  from 'react-modal';
-import { cancelButtonStyle, inputStyle, modalStyle, submitButtonStyle } from "../../Styles";
+import { cancelButtonStyle, modalStyle, submitButtonStyle } from "../../Styles";
 import { useEffect, useRef, useState } from "react";
-import { DateInfo, ThroughputData } from "../../Services/CompanyService";
+import { DateInfo, FindItemsRemaining, ThroughputData } from "../../Services/CompanyService";
 //import * as fs from "fs";
-import * as path from "path";
 import { useOutletContext } from "react-router-dom";
-import { ValidateDate, ValidationFailedPrefix } from "../../Services/Validation";
+import { ValidationFailedPrefix } from "../../Services/Validation";
 //import { parse } from 'csv-parse';
 
 export const UploadThroughputIds = {
@@ -29,6 +28,8 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
   const ShowToast : (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void = useOutletContext();
   const emptyDate: DateInfo = {month: 0, day: 0, year: 0};
   const [entryDate, setEntryDate] = useState<DateInfo>(emptyDate);
+  const fakeEntry:ThroughputData[] = [{date:emptyDate,itemsCompleted:0}];
+  const fakeInit:Initiative = {id:-1, title:'', targetDate:emptyDate, totalItems:0, itemsCompletedOnDate:fakeEntry};
   const [itemsCompleted, setItemsCompleted] = useState(0);
   const manualEntry:ThroughputData[] = [{date:entryDate,itemsCompleted:itemsCompleted}]
 
@@ -64,7 +65,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
     {
       let splitName = fileName.split('.');
       let extension = splitName[splitName.length-1];
-      if(extension != 'csv')
+      if(extension !== 'csv')
       {
         setFileData([]);
         ShowToast(ValidationFailedPrefix + "File can only be of type .csv", "Error");
@@ -137,40 +138,45 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
             )
           })}
         </select>
+        {selectedInitiativeIndex !== -1 && <p className="p-2">Items Remaining: {FindItemsRemaining(selectedCompany?.initiatives.at(selectedInitiativeIndex) ?? fakeInit)}</p>}
         <div className="space-y-2">
-          <p className="text-2xl">Upload CSV File</p>
-          <input ref={fileRef} type={'file'} accept={'.csv'} onChange={(e) => ReceiveFile(e.target.value)}/>
-          <button className={'rounded bg-lime-600 h-[40px] w-[80px]'} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives[selectedInitiativeIndex]?.id ?? -1, fileData)}>Submit</button>
-          <div>
-            <p className="text-2xl">------------------OR------------------</p>
-            <p className="text-2xl">Manually Enter Single Entry</p>
+          <div className="outline outline-[#879794] rounded space-y-2 p-1">
+            <p className="text-2xl">Upload CSV File</p>
+            <input ref={fileRef} type={'file'} accept={'.csv'} onChange={(e) => ReceiveFile(e.target.value)}/>
+            <button className={'rounded bg-lime-600 h-[40px] w-[80px]'} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives[selectedInitiativeIndex]?.id ?? -1, fileData)}>Submit</button>
           </div>
-          <div className="flex space-x-2">
-            <div className="w-[20%]">
-              <p>Month</p>
-              <input 
-              type={'text'} className={'outline rounded p-2 w-full'} maxLength={2} placeholder={'MM'}
-              onChange={(e)=>{setEntryDate({...entryDate, month:parseInt(e.target.value)})}}/>
+          <p className="text-2xl">OR</p>
+          <div className="outline outline-[#879794] rounded space-y-2 p-1">
+            <div>
+              <p className="text-2xl">Manually Enter Single Entry</p>
             </div>
-            <div className="w-[20%]">
-              <p>Day</p>
-              <input type={'text'} className={'outline rounded p-2 w-full'} maxLength={2} placeholder={'DD'}
-              onChange={(e)=>{setEntryDate({...entryDate, day:parseInt(e.target.value)})}}/>
+            <div className="flex space-x-2">
+              <div className="w-[20%]">
+                <p>Month</p>
+                <input 
+                type={'text'} className={'outline rounded p-2 w-full'} maxLength={2} placeholder={'MM'}
+                onChange={(e)=>{setEntryDate({...entryDate, month:parseInt(e.target.value)})}}/>
+              </div>
+              <div className="w-[20%]">
+                <p>Day</p>
+                <input type={'text'} className={'outline rounded p-2 w-full'} maxLength={2} placeholder={'DD'}
+                onChange={(e)=>{setEntryDate({...entryDate, day:parseInt(e.target.value)})}}/>
+              </div>
+              <div className="w-[30%]">
+                <p>Year</p>
+                <input type={'text'} className={'outline rounded p-2 w-full'} maxLength={4} placeholder={'YYYY'}
+                onChange={(e)=>{setEntryDate({...entryDate, year:parseInt(e.target.value)})}}/>
+              </div>
             </div>
-            <div className="w-[30%]">
-              <p>Year</p>
-              <input type={'text'} className={'outline rounded p-2 w-full'} maxLength={4} placeholder={'YYYY'}
-              onChange={(e)=>{setEntryDate({...entryDate, year:parseInt(e.target.value)})}}/>
+            <div>
+              <p>Items Completed</p>
             </div>
-          </div>
-          <div>
-            <p>Items Completed</p>
-          </div>
-          <div className='w-full flex justify-end h-10'>
-            <input type={'number'} className={'outline rounded p-2 w-1/2'} onChange={(e) => {setItemsCompleted(parseInt(e.target.value))}}/>
-            <button className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives[selectedInitiativeIndex]?.id ?? -1, manualEntry)}>Submit</button>
-            <button className={cancelButtonStyle} onClick={() => props.setUploadIsOpen(false)}>Close</button>
-          </div>
+            <div className='w-full flex justify-end h-10'>
+              <input type={'number'} className={'outline rounded p-2 w-1/2'} onChange={(e) => {setItemsCompleted(parseInt(e.target.value))}}/>
+              <button className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives[selectedInitiativeIndex]?.id ?? -1, manualEntry)}>Submit</button>
+              <button className={cancelButtonStyle} onClick={() => props.setUploadIsOpen(false)}>Close</button>
+            </div>
+          </div>  
       </div>
     </div>
     </Modal>

@@ -4,7 +4,6 @@ import { InitiativeFilter } from "../../Services/Filters";
 import { Company, Initiative } from "../../Store/CompanySlice";
 import { useAppSelector } from "../../Store/Hooks";
 import { selectCurrentUser, User } from "../../Store/UserSlice";
-import AccordionShell from "../AccordionShell";
 import { EditInitiativeButton } from "./EditInitiativeButton";
 
 export const InitiativeTableIds = {
@@ -41,14 +40,14 @@ export default function InitiativesTable(props: InitiativesProps) {
   return (
     <div className="grid grid-cols-1 w-full h-auto">
       <div className="col-span-1 h-[4vh] px-2 pb-[2%] space-x-2">
-        <input hidden={isCompanyHidden} className="rounded outline py-2 my-1" type={'text'} placeholder="Search by Company" onChange={(e)=> setSearchedComp(e.target.value)}/>
-        <input className="rounded outline py-2 my-1" type={'text'} placeholder="Search by Initiative" onChange={(e)=> setSearchedInit(e.target.value)}/>
+        <input className="rounded outline outline-1 p-2 " type={'text'} placeholder="Filter by Title" onChange={(e)=> setSearchedInit(e.target.value)}/>
+        <input hidden={isCompanyHidden} className="rounded outline outline-1 p-2" type={'text'} placeholder="Filter by Company" onChange={(e)=> setSearchedComp(e.target.value)}/>
       </div>
       <div className="col-span-1 py-[2%]">
         <table className="table-auto w-[98%] outline outline-3">
           <thead className="outline outline-1">
             <tr>
-              <th>Id</th>
+              <th className="w-8">Id</th>
               <th>Title</th>
               <th hidden={isCompanyHidden}>Company</th>
               <th>Target Completion</th>
@@ -68,7 +67,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                     return (
                       <Fragment key={index}>
                         <tr key={index}>
-                          <td className={tableDataStyle}>{initiative.id}</td>
+                          <td className={tableDataStyle + ' p-1'}>{initiative.id}</td>
                           <td id={InitiativeTableIds.initiativeTitle} className={tableDataStyle}>{initiative.title}</td>
                           <td id={InitiativeTableIds.companyName} className={tableDataStyle} hidden={isCompanyHidden}>{company.name}</td>
                           <td className={tableDataStyle}>{initiative.targetDate.month + "/" + initiative.targetDate.day + "/" + initiative.targetDate.year}</td>

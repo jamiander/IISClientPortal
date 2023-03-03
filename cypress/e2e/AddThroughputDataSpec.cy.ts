@@ -63,7 +63,7 @@ describe('add throughput data spec', () => {
     })
   })
 
-  specify.skip('cannot add throughput data by file when file is the wrong type', () => {
+  specify('cannot add throughput data by file when file is the wrong type', () => {
     cy.readFile('cypress/data/validThroughputDataFile.csv', null).then((file) => {
       cy.get('input[type=file]').selectFile({
         contents: file,
