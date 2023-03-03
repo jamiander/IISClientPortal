@@ -27,6 +27,10 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
   const [fileData, setFileData] = useState<ThroughputData[]>([]);
   const [fileError, setFileError] = useState("");
   const ShowToast : (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void = useOutletContext();
+  const emptyDate: DateInfo = {month: 0, day: 0, year: 0};
+  const [entryDate, setEntryDate] = useState<DateInfo>(emptyDate);
+  const [itemsCompleted, setItemsCompleted] = useState(0);
+  const manualEntry:ThroughputData[] = [{date:entryDate,itemsCompleted:itemsCompleted}]
 
   const fileRef = useRef<HTMLInputElement>(null);
 
@@ -130,36 +134,42 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
             )
           })}
         </select>
-        <div className="space-y-2">
+        <div className="space-y-2"><>
           <p className="text-2xl">Upload CSV File</p>
           <input ref={fileRef} type={'file'} accept={'.csv'} onChange={(e) => ReceiveFile(e.target.value)}/>
+          <button className={'rounded bg-lime-600 h-[40px] w-[80px]'} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives[selectedInitiativeIndex]?.id ?? -1, fileData)}>Submit</button>
           <div>
-            <p>--OR--</p>
+            <p className="text-2xl">------------------OR------------------</p>
             <p className="text-2xl">Manually Enter Single Entry</p>
           </div>
           <div className="flex space-x-2">
             <div className="w-[20%]">
               <p>Month</p>
-              <input type={'text'} className={'outline rounded p-2 w-full'} maxLength={2} placeholder={'MM'}/>
+              <input 
+              type={'text'} className={'outline rounded p-2 w-full'} maxLength={2} placeholder={'MM'}
+              onChange={(e)=>{setEntryDate({...entryDate, month:parseInt(e.target.value)})}}/>
             </div>
             <div className="w-[20%]">
               <p>Day</p>
-              <input type={'text'} className={'outline rounded p-2 w-full'} maxLength={2} placeholder={'DD'}/>
+              <input type={'text'} className={'outline rounded p-2 w-full'} maxLength={2} placeholder={'DD'}
+              onChange={(e)=>{setEntryDate({...entryDate, day:parseInt(e.target.value)})}}/>
             </div>
             <div className="w-[30%]">
               <p>Year</p>
-              <input type={'text'} className={'outline rounded p-2 w-full'} maxLength={4} placeholder={'YYYY'}/>
+              <input type={'text'} className={'outline rounded p-2 w-full'} maxLength={4} placeholder={'YYYY'}
+              onChange={(e)=>{setEntryDate({...entryDate, year:parseInt(e.target.value)})}}/>
             </div>
           </div>
           <div>
             <p>Items Completed</p>
-            <input type={'number'} className={inputStyle}/>
           </div>
+          {console.log(manualEntry)}
           <div className='w-full flex justify-end h-10'>
-            <button className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives[selectedInitiativeIndex]?.id ?? -1, fileData)}>Submit</button> {/*submit button does nothing right now*/}
+            <input type={'number'} className={'outline rounded p-2 w-1/2'} onChange={(e) => {setItemsCompleted(parseInt(e.target.value))}}/>
+            <button className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives[selectedInitiativeIndex]?.id ?? -1, manualEntry)}>Submit</button>
             <button className={cancelButtonStyle} onClick={() => props.setUploadIsOpen(false)}>Close</button>
           </div>
-          <p>{selectedCompany?.id}</p>
+          <p>{selectedCompany?.id}</p></>
       </div>
     </div>
     </Modal>
