@@ -11,8 +11,8 @@ function findItemsCompleted(file: string) : number {
 }
 
 const consts = TestConstants;
-const modalIds = consts.UploadThroughputIds;
-const tableIds = consts.InitiativeTableIds;
+const modalIds = consts.uploadThroughputIds;
+const tableIds = consts.initiativeTableIds;
 const badToastId = consts.toastId;
 
 const initiative = 'IIS Initiative';

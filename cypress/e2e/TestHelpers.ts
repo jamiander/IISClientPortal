@@ -29,6 +29,6 @@ export const TestConstants = {
   initiativeRadioIds: AddHash(InitiativeRadioIds),
   userModalIds: AddHash(EditUserModalIds),
   userRadioIds: AddHash(UserRadioIds),
-  UploadThroughputIds: AddHash(UploadThroughputIds),
-  InitiativeTableIds: AddHash(InitiativeTableIds)
+  uploadThroughputIds: AddHash(UploadThroughputIds),
+  initiativeTableIds: AddHash(InitiativeTableIds)
 }

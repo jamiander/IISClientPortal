@@ -37,15 +37,11 @@ function App() {
       navigate('/Login');
   }, [currentUser, navigate])
 
-
-  useEffect(() => {
-    dispatch(getCompanyInfo({})); //no args; admins get all companies/users
-  },[dispatch])
   useEffect(() => {
     //dispatch(getUserData());
     //dispatch(getCompanyData());
     dispatch(getCompanyInfo({})); //TODO: remove this when we add logging in
-  },[])
+  },[dispatch])
 
   let span;
   if (isLoggedIn) span = 'col-span-4 mr-1'; else span = 'col-span-5 mx-1'

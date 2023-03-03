@@ -3,11 +3,9 @@ import  Modal  from 'react-modal';
 import { cancelButtonStyle, modalStyle, submitButtonStyle } from "../../Styles";
 import { useEffect, useRef, useState } from "react";
 import { DateInfo, FindItemsRemaining, ThroughputData } from "../../Services/CompanyService";
-//import * as fs from "fs";
 import { useOutletContext } from "react-router-dom";
 import { ValidationFailedPrefix } from "../../Services/Validation";
 import { DateInput } from "../DateInput";
-//import { parse } from 'csv-parse';
 
 export const UploadThroughputIds = {
   selectCompany: "selectCompanyInThroughputModal",

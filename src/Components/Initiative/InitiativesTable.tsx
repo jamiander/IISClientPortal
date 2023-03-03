@@ -35,7 +35,7 @@ export default function InitiativesTable(props: InitiativesProps) {
     } else {
       setCompanyHidden(true);
     }
-  }, []);
+  }, [currentUser.id]);
   
   return (
     <div className="grid grid-cols-1 w-full h-auto">

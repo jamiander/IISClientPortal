@@ -176,7 +176,7 @@ export const companySlice = createSlice({
     }
 });
 
-export const {} = companySlice.actions;
+//export const {} = companySlice.actions;
 
 export const selectAllCompanies = (state: RootState) => state.companies.companies;
 
