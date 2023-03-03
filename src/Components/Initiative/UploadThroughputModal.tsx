@@ -6,7 +6,7 @@ import { DateInfo, ThroughputData } from "../../Services/CompanyService";
 //import * as fs from "fs";
 import * as path from "path";
 import { useOutletContext } from "react-router-dom";
-import { ValidateDate } from "../../Services/Validation";
+import { ValidateDate, ValidationFailedPrefix } from "../../Services/Validation";
 //import { parse } from 'csv-parse';
 
 export const UploadThroughputIds = {
@@ -56,6 +56,18 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
 
   function ReceiveFile(fileName: string)
   {
+    if(fileName)
+    {
+      let splitName = fileName.split('.');
+      let extension = splitName[splitName.length-1];
+      if(extension != 'csv')
+      {
+        setFileData([]);
+        ShowToast(ValidationFailedPrefix + "File can only be of type .csv", "Error");
+        return;
+      }
+    }
+
     let files = fileRef.current?.files ?? [];
     let file = files[0];
     let fileContent;
@@ -91,7 +103,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
         setFileData(parseData);
       }
       else
-        ShowToast("Something went wrong when trying to load that file.","Error")
+        ShowToast("Something went wrong when trying to load that file.","Error");
     }
     reader.readAsText(file);
   }
