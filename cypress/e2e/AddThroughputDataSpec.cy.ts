@@ -11,7 +11,7 @@ function findItemsCompleted(file: string) : number {
 }
 
 const consts = TestConstants;
-const selectIds = consts.UploadThroughputIds;
+const modalIds = consts.UploadThroughputIds;
 const tableIds = consts.InitiativeTableIds;
 const badToastId = consts.toastId;
 
@@ -41,11 +41,11 @@ describe('valid add throughput tests', () => {
     // });
 
     cy.get('button').contains('Upload Data').click();
-    cy.get(selectIds.selectCompany).select(company);
-    cy.get(selectIds.selectInitiative).select(initiative);
+    cy.get(modalIds.selectCompany).select(company);
+    cy.get(modalIds.selectInitiative).select(initiative);
   })
 
-  specify.only('add throughput data by file', () => {
+  specify('add throughput data by file', () => {
     let itemsCompletedInUpload : number;
     cy.readFile('cypress/data/validThroughputDataFile.csv', 'ascii').then((file) => {
       itemsCompletedInUpload = findItemsCompleted(file);
@@ -58,7 +58,7 @@ describe('valid add throughput tests', () => {
     })
 
     cy.wait(waitTime);
-    cy.get('button').contains('Submit').click();
+    cy.get(modalIds.fileSubmit).click();
     cy.wait(waitTime);
     cy.contains('tr', initiative).find(tableIds.remainingItems).then(($span) => {
       let remainingItemsAfter = Number($span.text());
@@ -81,8 +81,8 @@ describe('invalid add throughput tests', () => {
     cy.get('button').contains('Initiatives').click();
 
     cy.get('button').contains('Upload Data').click();
-    cy.get(selectIds.selectCompany).select(company);
-    cy.get(selectIds.selectInitiative).select(initiative);
+    cy.get(modalIds.selectCompany).select(company);
+    cy.get(modalIds.selectInitiative).select(initiative);
   })
   
 
@@ -95,7 +95,7 @@ describe('invalid add throughput tests', () => {
     })
 
     cy.wait(waitTime);
-    cy.get('button').contains('Submit').click();
+    cy.get(modalIds.fileSubmit).click();
     cy.wait(waitTime);
     cy.get(badToastId).contains('Validation Failed');
   })
@@ -116,7 +116,7 @@ describe('invalid add throughput tests', () => {
 
     })
     cy.wait(waitTime);
-    cy.get('Warning: This file contains data that is not properly formatted');
+    cy.contains('Warning: This file contains data that is not properly formatted');
   })
 
   specify('cannot add throughput data by file when file format is invalid', () => {
@@ -132,7 +132,7 @@ describe('invalid add throughput tests', () => {
       }, {action: 'drag-drop'});
     })
     cy.wait(waitTime);
-    cy.get('Warning: This file contains data that is not properly formatted');
+    cy.contains('Warning: This file contains data that is not properly formatted');
   })
 
   specify('cannot add throughput data by file when date entry is invalid', () => {
@@ -150,7 +150,7 @@ describe('invalid add throughput tests', () => {
     })
 
     cy.wait(waitTime);
-    cy.get('button').contains('Submit').click();
+    cy.get(modalIds.fileSubmit).click();
     cy.wait(waitTime);
     cy.get(badToastId).contains('Validation Failed');
   })
@@ -170,7 +170,7 @@ describe('invalid add throughput tests', () => {
     })
 
     cy.wait(waitTime);
-    cy.get('button').contains('Submit').click();
+    cy.get(modalIds.fileSubmit).click();
     cy.wait(waitTime);
     cy.get(badToastId).contains('Validation Failed');
   })
