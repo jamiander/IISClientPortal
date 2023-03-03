@@ -141,42 +141,45 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
     <Modal
     isOpen={props.uploadIsOpen}
     onRequestClose={()=>props.setUploadIsOpen(false)}
-    style={{'content': {...modalStyle.content, 'width' : '50%', 'height' : 'fit-content'}}}
+    style={{'content': {...modalStyle.content, 'width' : 'fit-content', 'height' : 'fit-content'}}}
     appElement={document.getElementById('root') as HTMLElement}>
       <div className="space-y-5">
-        <p className="text-3xl">Enter Throughput Data</p>
+        <p className="text-3xl w-full">Enter Throughput Data</p>
 
-        <select id={UploadThroughputIds.selectCompany} onChange={(e) => SelectCompany(parseInt((e.target as HTMLSelectElement).value))} className="outline outline-1 rounded w-56 h-10">
-        <option>Select Company</option>
-          {props.companyList.map((company,index)=>{
-            return(
-              <option value={company.id} key={index}>{company.name}</option>
-            )
-          })}
-        </select>
-        <select id={UploadThroughputIds.selectInitiative} value={selectedInitiativeIndex} onChange={(e) => SelectInitiative(parseInt((e.target as HTMLSelectElement).value))} className="outline outline-1 rounded w-56 h-10">
-          <option>Select Initiative</option>
-          {selectedCompany?.initiatives.map((initiative,index)=>{
-            return(
-              <option value={index} key={index}>{initiative.title}</option>
-            )
-          })}
-        </select>
-        {selectedInitiativeIndex !== -1 && <p className="p-2">Items Remaining: {FindItemsRemaining(selectedCompany?.initiatives.at(selectedInitiativeIndex) ?? fakeInit)}</p>}
+        <div className="space-x-5 flex w-full">
+          <select id={UploadThroughputIds.selectCompany} onChange={(e) => SelectCompany(parseInt((e.target as HTMLSelectElement).value))} className="outline outline-1 rounded w-56 h-10">
+            <option>Select Company</option>
+              {props.companyList.map((company,index)=>{
+                return(
+                  <option value={company.id} key={index}>{company.name}</option>
+                )
+              })}
+          </select>
+          <select id={UploadThroughputIds.selectInitiative} value={selectedInitiativeIndex} onChange={(e) => SelectInitiative(parseInt((e.target as HTMLSelectElement).value))} className="outline outline-1 rounded w-56 h-10">
+            <option>Select Initiative</option>
+              {selectedCompany?.initiatives.map((initiative,index)=>{
+                return(
+                  <option value={index} key={index}>{initiative.title}</option>
+                )
+              })}
+          </select>
+          {!selectedInitiativeIndex && <p className="p-2">Items Remaining: {FindItemsRemaining(selectedCompany?.initiatives.at(selectedInitiativeIndex) ?? fakeInit)}</p>}
+
+        </div>
         {fileWarning}
         <div className="flex space-y-2">
 
-          <div className="outline outline-[#879794] rounded space-y-2 p-2">
-            <p className="text-2xl">Upload CSV File</p>
-            <input ref={fileRef} type={'file'} accept={'.csv'} onChange={(e) => ReceiveFile(e.target.value)}/>
+          <div className="outline outline-[#879794] rounded space-y-2 p-2 w-64 h-48">
+            <p className="text-2xl w-full">Upload CSV File</p>
+            <input className="w-full" ref={fileRef} type={'file'} accept={'.csv'} onChange={(e) => ReceiveFile(e.target.value)}/>
             {/* <div className="h-full flex justify-end align-bottom"> */}
               <button id={UploadThroughputIds.fileSubmit} className={submitButtonStyle + ' max-h-10'} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives.at(selectedInitiativeIndex)?.id ?? -1, fileData)}>Submit</button>
             {/* </div> */}
           </div>
 
-          <p className="text-2xl m-2">OR</p>
+          <p className="text-2xl m-3">OR</p>
 
-          <div className="outline outline-[#879794] rounded space-y-2 p-2">
+          <div className="outline outline-[#879794] rounded space-y-2 p-2 w-64">
             <div>
               <p className="text-2xl">Manually Entry</p>
             </div>
@@ -184,15 +187,16 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
             <div>
               <p>Items Completed</p>
             </div>
-            <div className='w-full flex justify-end h-10'>
-              <input id={UploadThroughputIds.itemsComplete} type={'number'} className={'outline rounded p-2 w-1/2'} onChange={(e) => {setItemsCompleted(parseInt(e.target.value))}}/>
+            <div className='flex w-full h-10'>
+              <input id={UploadThroughputIds.itemsComplete} type={'number'} className={'outline outline-1 rounded p-2 w-1/4'} onChange={(e) => {setItemsCompleted(parseInt(e.target.value))}}/>
               <button id={UploadThroughputIds.manualSubmit} className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives[selectedInitiativeIndex]?.id ?? -1, manualEntry)}>Submit</button>
-              <button className={cancelButtonStyle} onClick={() => props.setUploadIsOpen(false)}>Close</button>
             </div>
           </div>
-
+        </div>
+        <div className="h-10 w-full">
+          <button className={cancelButtonStyle} onClick={() => props.setUploadIsOpen(false)}>Close</button>
+        </div>
       </div>
-    </div>
     </Modal>
   )
 }
