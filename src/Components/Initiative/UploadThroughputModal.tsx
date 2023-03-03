@@ -1,8 +1,8 @@
-import { Company } from "../../Store/CompanySlice";
+import { Company, Initiative } from "../../Store/CompanySlice";
 import  Modal  from 'react-modal';
 import { cancelButtonStyle, modalStyle, submitButtonStyle } from "../../Styles";
 import { useEffect, useRef, useState } from "react";
-import { DateInfo, ThroughputData } from "../../Services/CompanyService";
+import { DateInfo, FindItemsRemaining, ThroughputData } from "../../Services/CompanyService";
 //import * as fs from "fs";
 import { useOutletContext } from "react-router-dom";
 import { ValidationFailedPrefix } from "../../Services/Validation";
@@ -28,6 +28,8 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
   const ShowToast : (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void = useOutletContext();
   const emptyDate: DateInfo = {month: 0, day: 0, year: 0};
   const [entryDate, setEntryDate] = useState<DateInfo>(emptyDate);
+  const fakeEntry:ThroughputData[] = [{date:emptyDate,itemsCompleted:0}];
+  const fakeInit:Initiative = {id:-1, title:'', targetDate:emptyDate, totalItems:0, itemsCompletedOnDate:fakeEntry};
   const [itemsCompleted, setItemsCompleted] = useState(0);
   const manualEntry:ThroughputData[] = [{date:entryDate,itemsCompleted:itemsCompleted}]
 
@@ -136,6 +138,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
             )
           })}
         </select>
+        {selectedInitiativeIndex !== -1 && <p>Items Remaining: {FindItemsRemaining(selectedCompany?.initiatives.at(selectedInitiativeIndex) ?? fakeInit)}</p>}
         <div className="space-y-2">
           <div className="outline outline-[#879794] rounded space-y-2 p-1">
             <p className="text-2xl">Upload CSV File</p>
