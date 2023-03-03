@@ -151,7 +151,6 @@ export const companySlice = createSlice({
                 }
             })
             .addCase(updateThroughputData.fulfilled, (state, action) => {
-              const ShowToast : (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void = useOutletContext();
               const companyId = action.payload.companyId;
               const initiativeId = action.payload.initiativeId;
               const matchingCompany = state.companies.find(company => company.id === companyId);
@@ -173,11 +172,7 @@ export const companySlice = createSlice({
                       matchingInit.itemsCompletedOnDate.push(item);
                   }
                 }
-                else
-                  ShowToast("Initiative with id " + initiativeId + " does not exist clientside.","Error");
               }
-              else
-                ShowToast("Company with id " + companyId + " does not exist clientside.", "Error");
             })
     }
 });
