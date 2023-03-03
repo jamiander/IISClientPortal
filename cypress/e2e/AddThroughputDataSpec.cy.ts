@@ -236,6 +236,16 @@ describe ('invalid manual entry test', () => {
     cy.get(badToastId).contains('Validation Failed');
   })
 
+  specify.only('cannot add throughput entry when letters are entered for date', () => {
+    cy.get(modalIds.date.month).clear().type('a');
+    cy.get(modalIds.date.day).clear().type('01');
+    cy.get(modalIds.date.year).clear().type('2020');
+    cy.get(modalIds.itemsComplete).clear().type('2');
+    cy.get(modalIds.manualSubmit).click();
+    cy.wait(waitTime);
+    cy.get(badToastId).contains('Validation Failed');
+  })
+
   specify('cannot add throughput entry when item completed is invalid', () => {
     cy.get(modalIds.date.month).clear().type('01');
     cy.get(modalIds.date.day).clear().type('01');
