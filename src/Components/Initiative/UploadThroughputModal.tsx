@@ -10,7 +10,9 @@ import { ValidationFailedPrefix } from "../../Services/Validation";
 
 export const UploadThroughputIds = {
   selectCompany: "selectCompanyInThroughputModal",
-  selectInitiative: "selectInitiativeInThroughputModal"
+  selectInitiative: "selectInitiativeInThroughputModal",
+  fileSubmit: "submitThroughputAsFile",
+  manualSubmit: "submitThroughputAsSingleEntry"
 }
 
 interface ThroughputModalProps{
@@ -153,7 +155,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
           <div className="outline outline-[#879794] rounded space-y-2 p-1">
             <p className="text-2xl">Upload CSV File</p>
             <input ref={fileRef} type={'file'} accept={'.csv'} onChange={(e) => ReceiveFile(e.target.value)}/>
-            <button className={'rounded bg-lime-600 h-[40px] w-[80px]'} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives[selectedInitiativeIndex]?.id ?? -1, fileData)}>Submit</button>
+            <button id={UploadThroughputIds.fileSubmit} className={'rounded bg-lime-600 h-[40px] w-[80px]'} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives[selectedInitiativeIndex]?.id ?? -1, fileData)}>Submit</button>
           </div>
           <p className="text-2xl">OR</p>
           <div className="outline outline-[#879794] rounded space-y-2 p-1">
@@ -183,7 +185,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
             </div>
             <div className='w-full flex justify-end h-10'>
               <input type={'number'} className={'outline rounded p-2 w-1/2'} onChange={(e) => {setItemsCompleted(parseInt(e.target.value))}}/>
-              <button className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives[selectedInitiativeIndex]?.id ?? -1, manualEntry)}>Submit</button>
+              <button id={UploadThroughputIds.manualSubmit} className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives[selectedInitiativeIndex]?.id ?? -1, manualEntry)}>Submit</button>
               <button className={cancelButtonStyle} onClick={() => props.setUploadIsOpen(false)}>Close</button>
             </div>
           </div>  
