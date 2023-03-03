@@ -1,6 +1,6 @@
 import { Company, Initiative } from "../../Store/CompanySlice";
 import  Modal  from 'react-modal';
-import { cancelButtonStyle, modalStyle, submitButtonStyle } from "../../Styles";
+import { cancelButtonStyle, inputStyle, modalStyle, submitButtonStyle } from "../../Styles";
 import { useEffect, useRef, useState } from "react";
 import { DateInfo, ThroughputData } from "../../Services/CompanyService";
 //import * as fs from "fs";
@@ -112,7 +112,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
     style={{'content': {...modalStyle.content, 'width' : '25%', 'height' : 'fit-content'}}}
     appElement={document.getElementById('root') as HTMLElement}>
       <div className="flex flex-wrap space-y-5">
-        <p className="text-3xl">Upload Throughput Data</p>
+        <p className="text-3xl">Enter Throughput Data</p>
 
         <select id={UploadThroughputIds.selectCompany} onChange={(e) => SelectCompany(parseInt((e.target as HTMLSelectElement).value))} className="outline rounded w-[200px] h-[40px]">
         <option>Select Company</option>
@@ -130,12 +130,37 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
             )
           })}
         </select>
-        <input ref={fileRef} type={'file'} accept={'.csv'} onChange={(e) => ReceiveFile(e.target.value)}/>
-        <div className='w-full flex justify-end h-10'>
-          <button className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives[selectedInitiativeIndex]?.id ?? -1, fileData)}>Submit</button> {/*submit button does nothing right now*/}
-          <button className={cancelButtonStyle} onClick={() => props.setUploadIsOpen(false)}>Close</button>
-        </div>
-        <p>{selectedCompany?.id}</p>
+        <div className="space-y-2">
+          <p className="text-2xl">Upload CSV File</p>
+          <input ref={fileRef} type={'file'} accept={'.csv'} onChange={(e) => ReceiveFile(e.target.value)}/>
+          <div>
+            <p>--OR--</p>
+            <p className="text-2xl">Manually Enter Single Entry</p>
+          </div>
+          <div className="flex space-x-2">
+            <div className="w-[20%]">
+              <p>Month</p>
+              <input type={'text'} className={'outline rounded p-2 w-full'} maxLength={2} placeholder={'MM'}/>
+            </div>
+            <div className="w-[20%]">
+              <p>Day</p>
+              <input type={'text'} className={'outline rounded p-2 w-full'} maxLength={2} placeholder={'DD'}/>
+            </div>
+            <div className="w-[30%]">
+              <p>Year</p>
+              <input type={'text'} className={'outline rounded p-2 w-full'} maxLength={4} placeholder={'YYYY'}/>
+            </div>
+          </div>
+          <div>
+            <p>Items Completed</p>
+            <input type={'number'} className={inputStyle}/>
+          </div>
+          <div className='w-full flex justify-end h-10'>
+            <button className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives[selectedInitiativeIndex]?.id ?? -1, fileData)}>Submit</button> {/*submit button does nothing right now*/}
+            <button className={cancelButtonStyle} onClick={() => props.setUploadIsOpen(false)}>Close</button>
+          </div>
+          <p>{selectedCompany?.id}</p>
+      </div>
     </div>
     </Modal>
   )
