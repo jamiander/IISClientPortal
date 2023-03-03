@@ -4,9 +4,9 @@ import { inputStyle } from "../Styles"
 
 interface DateInputProps {
   heading: string,
-  initiativeTargetDate: DateInfo,
-  setInitiativeTargetDate: (value: React.SetStateAction<DateInfo>) => void,
-  defaultInitiative?: Initiative
+  date: DateInfo,
+  setDate: (value: React.SetStateAction<DateInfo>) => void,
+  defaultDate?: DateInfo
   inputIds: {month: string, day: string, year: string}
 }
 
@@ -19,22 +19,22 @@ export function DateInput(props: DateInputProps){
         <div className='flex'>
           <div className='w-24 mx-2'>
             <p>Month </p>
-            <input defaultValue={props.defaultInitiative?.targetDate.month} id={props.inputIds.month} className={inputStyle + ' w-20 mx-1'} maxLength={2}
-            onChange={(e) => {props.setInitiativeTargetDate({...props.initiativeTargetDate, month: parseInt(e.target.value)})}}
+            <input defaultValue={props.defaultDate?.month} id={props.inputIds.month} className={inputStyle + ' w-20 mx-1'} maxLength={2}
+            onChange={(e) => {props.setDate({...props.date, month: parseInt(e.target.value)})}}
             placeholder='MM'/>
           </div>
 
           <div>
             <p>Day </p>
-            <input defaultValue={props.defaultInitiative?.targetDate.day} id={props.inputIds.day} className={inputStyle + ' w-20 mx-1'} maxLength={2}
-            onChange={(e) => {props.setInitiativeTargetDate({...props.initiativeTargetDate, day: parseInt(e.target.value)})}}
+            <input defaultValue={props.defaultDate?.day} id={props.inputIds.day} className={inputStyle + ' w-20 mx-1'} maxLength={2}
+            onChange={(e) => {props.setDate({...props.date, day: parseInt(e.target.value)})}}
             placeholder='DD'/>
           </div>
 
           <div>
             <p>Year </p>        
-            <input defaultValue={props.defaultInitiative?.targetDate.year} id={props.inputIds.year} className={inputStyle + ' w-20 mx-1'} maxLength={4}
-            onChange={(e) => {props.setInitiativeTargetDate({...props.initiativeTargetDate, year: parseInt(e.target.value)})}}
+            <input defaultValue={props.defaultDate?.year} id={props.inputIds.year} className={inputStyle + ' w-20 mx-1'} maxLength={4}
+            onChange={(e) => {props.setDate({...props.date, year: parseInt(e.target.value)})}}
             placeholder='YYYY'/>
           </div>
         </div>
