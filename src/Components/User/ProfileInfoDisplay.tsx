@@ -13,21 +13,20 @@ export default function ProfileInfoDisplay(){
   };
   
   return(  
-    <div className="">
-      <b>Company:</b> <p>{company?.name}</p>
-      <div className="my-3">
-        <b>Email:</b> <p>{user?.email}</p>
+    <div className="grid grid-cols-3">
+      <div className="col-span-1 h-fit p-2">
+        <p className="font-bold flex justify-end mb-2">Company:</p>
+        <p className="font-bold flex justify-end mb-2">Email:</p>
+        <p className="font-bold flex justify-end">Password:</p>
       </div>
-      <div className="w-full">
-        <div className="flex space-x-12">
-          <b>Password:</b>
-          <div className="flex">
-            <input className="mr-2" type={'checkbox'} onClick={togglePasswordVisibility}/>
-            <p>Show Password</p>
-          </div>
-        </div>
-        <input disabled type={passwordShown ? 'text' : 'password'} value={user?.password} className="bg-[#445362] flex justify-center"/>
-
+      <div className="col-span-2 h-fit p-2">
+        <p className="mb-2">{company?.name}</p>
+        <p className="mb-2">{user?.email}</p>
+        <input disabled type={passwordShown ? 'text' : 'password'} value={user?.password} className="bg-[#445362] w-40"/>
+      </div>
+      <div className="flex col-span-3 w-full h-fit">
+        <input className="mr-2" type={'checkbox'} onClick={togglePasswordVisibility}/>
+        <p>Show Password</p>
       </div>
     </div>
   )

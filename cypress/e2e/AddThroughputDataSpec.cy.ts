@@ -236,7 +236,7 @@ describe ('invalid manual entry test', () => {
     cy.get(badToastId).contains('Validation Failed');
   })
 
-  specify.only('cannot add throughput entry when item completed is invalid', () => {
+  specify('cannot add throughput entry when item completed is invalid', () => {
     cy.get(modalIds.date.month).clear().type('01');
     cy.get(modalIds.date.day).clear().type('01');
     cy.get(modalIds.date.year).clear().type('2020');
