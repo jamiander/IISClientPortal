@@ -22,7 +22,7 @@ describe('add initiative spec', () => {
   const badToastId = consts.toastId;
   const modalIds = consts.initiativeModalIds;
   const radioIds = consts.initiativeRadioIds;
-  const tableIds = consts.InitiativeTableIds;
+  const tableIds = consts.initiativeTableIds;
 
   beforeEach(() => {
     cy.visit('http://localhost:3000/Login')

@@ -3,11 +3,9 @@ import  Modal  from 'react-modal';
 import { cancelButtonStyle, modalStyle, submitButtonStyle } from "../../Styles";
 import { useEffect, useRef, useState } from "react";
 import { DateInfo, FindItemsRemaining, ThroughputData } from "../../Services/CompanyService";
-//import * as fs from "fs";
 import { useOutletContext } from "react-router-dom";
 import { ValidationFailedPrefix } from "../../Services/Validation";
 import { DateInput } from "../DateInput";
-//import { parse } from 'csv-parse';
 
 export const UploadThroughputIds = {
   selectCompany: "selectCompanyInThroughputModal",
@@ -18,7 +16,8 @@ export const UploadThroughputIds = {
     month: "uploadModalMonth",
     day: "uploadModalDay",
     year: "uploadModalYear"
-  }
+  },
+  itemsComplete: "uploadModalComplete"
 }
 
 interface ThroughputModalProps{
@@ -186,8 +185,8 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
               <p>Items Completed</p>
             </div>
             <div className='w-full flex justify-end h-10'>
-              <input type={'number'} className={'outline outline-1 rounded p-2 w-1/2'} onChange={(e) => {setItemsCompleted(parseInt(e.target.value))}}/>
-              <button id={UploadThroughputIds.manualSubmit} className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives.at(selectedInitiativeIndex)?.id ?? -1, manualEntry)}>Submit</button>
+              <input id={UploadThroughputIds.itemsComplete} type={'number'} className={'outline rounded p-2 w-1/2'} onChange={(e) => {setItemsCompleted(parseInt(e.target.value))}}/>
+              <button id={UploadThroughputIds.manualSubmit} className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives[selectedInitiativeIndex]?.id ?? -1, manualEntry)}>Submit</button>
               <button className={cancelButtonStyle} onClick={() => props.setUploadIsOpen(false)}>Close</button>
             </div>
           </div>

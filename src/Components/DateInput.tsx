@@ -1,5 +1,4 @@
 import { DateInfo } from "../Services/CompanyService"
-import { Initiative } from "../Store/CompanySlice"
 import { inputStyle } from "../Styles"
 
 interface DateInputProps {

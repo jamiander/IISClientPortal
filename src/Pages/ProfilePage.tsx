@@ -19,7 +19,7 @@ export default function ProfilePage(){
           <p className="text-3xl text-white h-[90%]">Company Initiatives</p>
         </div>
         <div className="col-span-3 py-1 flex justify-center mt-2">
-          <InitiativesTable companyList={companyList} radioStatus={'active'} ValidateInitiative={ValidateNewInitiative}/>
+          <InitiativesTable companyList={companyList} radioStatus={'active'} ValidateInitiative={ValidateNewInitiative} admin={false}/>
         </div>
       </div>
 
