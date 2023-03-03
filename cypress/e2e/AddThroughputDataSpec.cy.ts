@@ -1,4 +1,3 @@
-import { table } from "console";
 import { TestConstants } from "./TestHelpers";
 
 function findItemsCompleted(file: string) : number {
@@ -19,6 +18,8 @@ describe('add throughput data spec', () => {
   const badToastId = consts.toastId;
   let remainingItemsBefore: number;
 
+  const initiative = 'IIS Initiative';
+
   beforeEach(() => {
     cy.visit('http://localhost:3000/Login');
     cy.get('#email').clear().type('info@integrityinspired.com');
@@ -27,22 +28,25 @@ describe('add throughput data spec', () => {
 
     cy.get('button').contains('Admin').click();
     cy.get('button').contains('Initiatives').click();
-    cy.contains('td', 'IIS Initiative').siblings().get(tableIds.remainingItems).then(($span) => {
+
+    cy.contains('tr', initiative).find(tableIds.remainingItems).then(($span) => {
       remainingItemsBefore = Number($span.text());
-      // console.log('remainingItemsBefore:', remainingItemsBefore);
+      console.log('remainingItemsBefore:', remainingItemsBefore);
     });
-    cy.get('button').contains('Upload data').click();
+    cy.contains('tr', initiative).find(tableIds.initiativeTitle).then(($span) => {
+      console.log('remainingItemsBefore:', $span.text()); // help with verification of row
+    });
+
+    cy.get('button').contains('Upload Data').click();
+    cy.get(selectIds.selectCompany).select('Integrity Inspired Solutions');
+    cy.get(selectIds.selectInitiative).select(initiative);
   })
   
-  specify('add throughput data by file', () => {
-
-    cy.get(selectIds.selectCompany).select('Integrity Inspired Solutions');
-    cy.get(selectIds.selectInitiative).select('IIS Initiative');
-
+  specify.only('add throughput data by file', () => {
     let itemsCompletedInUpload : number;
     cy.readFile('cypress/data/validThroughputDataFile.csv', 'ascii').then((file) => {
       itemsCompletedInUpload = findItemsCompleted(file);
-      // console.log('itemsCompletedInUpload:',itemsCompletedInUpload);
+      console.log('itemsCompletedInUpload:',itemsCompletedInUpload);
 
       cy.get('input[type=file]').selectFile({
         contents: Cypress.Buffer.from(file),
@@ -51,17 +55,14 @@ describe('add throughput data spec', () => {
     })
     cy.get('button').contains('Submit').click();
 
-    cy.contains('td', 'IIS Initiative').siblings().get(tableIds.remainingItems).then(($span) => {
+    cy.contains('tr', initiative).find(tableIds.remainingItems).then(($span) => {
       let remainingItemsAfter = Number($span.text());
-      // console.log('remainingItemsAfter:', remainingItemsAfter);
+      console.log('remainingItemsAfter:', remainingItemsAfter);
       expect(remainingItemsBefore-itemsCompletedInUpload).to.be.equal(remainingItemsAfter);
     })
   })
 
   specify('cannot add throughput data by file when file is the wrong type', () => {
-    cy.get(selectIds.selectCompany).select('Integrity Inspired Solutions');
-    cy.get(selectIds.selectInitiative).select('IIS Initiative');
-
     cy.readFile('cypress/data/validThroughputDataFile.csv', null).then((file) => {
       cy.get('input[type=file]').selectFile({
         contents: file,
@@ -69,20 +70,17 @@ describe('add throughput data spec', () => {
       }, {action: 'drag-drop'});
     })
     cy.get('button').contains('Submit').click();
-    cy.get(badToastId).contains('');
+    cy.get(badToastId).contains('Validation Failed');
   })
 
   specify('cannot add throughput data by file when a field is blank', () => {
-    cy.get(selectIds.selectCompany).select('Integrity Inspired Solutions');
-    cy.get(selectIds.selectInitiative).select('IIS Initiative');
-
     cy.readFile('cypress/data/validThroughputDataFile.csv', 'ascii').then((file) => {
       let blankFieldFile = file.split('\n');
       blankFieldFile[2] = blankFieldFile[2].split(',');
       blankFieldFile[2].splice(0,1);
       blankFieldFile[2] = ',' + blankFieldFile[2];
       blankFieldFile = blankFieldFile.join('\n');
-      console.log(blankFieldFile);
+      // console.log(blankFieldFile);
 
       cy.get('input[type=file]').selectFile({
         contents: Cypress.Buffer.from(blankFieldFile),
@@ -91,13 +89,10 @@ describe('add throughput data spec', () => {
 
     })
     cy.get('button').contains('Submit').click();
-    cy.get(badToastId).contains('');
+    cy.get(badToastId).contains('Validation Failed');
   })
 
   specify('cannot add throughput data by file when file format is invalid', () => {
-    cy.get(selectIds.selectCompany).select('Integrity Inspired Solutions');
-    cy.get(selectIds.selectInitiative).select('IIS Initiative');
-
     cy.readFile('cypress/data/validThroughputDataFile.csv', 'ascii').then((file) => {
       let invalidFormatFile = file.split('\n');
       invalidFormatFile[2] = invalidFormatFile[2].replace(',', ';');
@@ -110,13 +105,10 @@ describe('add throughput data spec', () => {
       }, {action: 'drag-drop'});
     })
     cy.get('button').contains('Submit').click();
-    cy.get(badToastId).contains('');
+    cy.get(badToastId).contains('Validation Failed');
   })
 
   specify('cannot add throughput data by file when date entry is invalid', () => {
-    cy.get(selectIds.selectCompany).select('Integrity Inspired Solutions');
-    cy.get(selectIds.selectInitiative).select('IIS Initiative');
-
     cy.readFile('cypress/data/validThroughputDataFile.csv', 'ascii').then((file) => {
       let invalidDateFile = file.split('\n');
       invalidDateFile[3] = invalidDateFile[3].split('/');
@@ -130,22 +122,24 @@ describe('add throughput data spec', () => {
       }, {action: 'drag-drop'});
     })
     cy.get('button').contains('Submit').click();
-    cy.get(badToastId).contains('');
+    cy.get(badToastId).contains('Validation Failed');
   })
 
-  specify.only('cannot add throughput data by file when items completed entry is invalid', () => {
-    cy.get(selectIds.selectCompany).select('Integrity Inspired Solutions');
-    cy.get(selectIds.selectInitiative).select('IIS Initiative');
-
-    // cy.get('input[type=file]').selectFile('cypress/data/invalidItemsCompletedThroughputDataFile.csv', {action: 'drag-drop'});
+  specify('cannot add throughput data by file when items completed entry is invalid', () => {
     cy.readFile('cypress/data/validThroughputDataFile.csv', 'ascii').then((file) => {
-      let temp = file.split('\n');
-      let temp2 = temp[4].split(',');
-      temp2[1] = temp2[1].replace(temp2[1][1], '-3');
-      console.log(temp);
-      temp[4] = temp2.join(','); temp = temp.join('\n');
-      console.log(temp);
+      let invalidItemsCompletedFile = file.split('\n');
+      let entryToInvalidate = invalidItemsCompletedFile[4].split(',');
+      entryToInvalidate[1] = entryToInvalidate[1].replace(entryToInvalidate[1][1], '-3');
+      invalidItemsCompletedFile[4] = entryToInvalidate.join(','); invalidItemsCompletedFile = invalidItemsCompletedFile.join('\n');
+      console.log(invalidItemsCompletedFile);
+      
+      cy.get('input[type=file]').selectFile({
+        contents: Cypress.Buffer.from(invalidItemsCompletedFile),
+        fileName: 'file.csv'
+      }, {action: 'drag-drop'});
     })
-  })
 
+    cy.get('button').contains('Submit').click();
+    cy.get(badToastId).contains('Validation Failed');
+  })
 })

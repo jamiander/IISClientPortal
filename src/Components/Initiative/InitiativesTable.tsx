@@ -9,7 +9,8 @@ import { EditInitiativeButton } from "./EditInitiativeButton";
 
 export const InitiativeTableIds = {
   totalItems: 'totalItems',
-  remainingItems: 'remainingItems'
+  remainingItems: 'remainingItems',
+  initiativeTitle: 'initiativeTitle'
 }
 interface InitiativesProps {
   companyList: Company[],
@@ -67,7 +68,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                       <Fragment key={index}>
                         <tr key={index}>
                           <td className={tableDataStyle}>{initiative.id}</td>
-                          <td className={tableDataStyle}>{initiative.title}</td>
+                          <td id={InitiativeTableIds.initiativeTitle} className={tableDataStyle}>{initiative.title}</td>
                           <td className={tableDataStyle} hidden={isCompanyHidden}>{company.name}</td>
                           <td className={tableDataStyle}>{initiative.targetDate.month + "/" + initiative.targetDate.day + "/" + initiative.targetDate.year}</td>
                           <td id={InitiativeTableIds.totalItems} className={tableDataStyle}>{initiative.totalItems}</td>

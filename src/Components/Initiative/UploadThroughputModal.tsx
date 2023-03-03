@@ -25,6 +25,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
   const [selectedCompany, setSelectedCompany] = useState<Company>();
   const [selectedInitiativeIndex, setSelectedInitiativeIndex] = useState(-1);
   const [fileData, setFileData] = useState<ThroughputData[]>([]);
+  const [fileError, setFileError] = useState("");
   const ShowToast : (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void = useOutletContext();
 
   const fileRef = useRef<HTMLInputElement>(null);
@@ -33,6 +34,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
     setSelectedCompany(undefined);
     setSelectedInitiativeIndex(-1);
     setFileData([]);
+    setFileError("");
   },[props.uploadIsOpen])
 
   function SelectCompany(companyId: number)
@@ -64,24 +66,38 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
       if(fileContent && typeof(fileContent) === 'string')
       {
         let parseData: ThroughputData[] = [];
+        let errorMessage = "";
         let lines = fileContent.split("\n");
         for(let i = 0; i < lines.length; i++) {
           let wordsInLine = lines[i].split(",");
           if(wordsInLine.length === 2)
           {
             let dateString = wordsInLine[0];
-            let itemsCompletedString = wordsInLine[1];
+            let itemsCompleted = parseInt(wordsInLine[1]);
 
             let dateWords = dateString.split('/');
-            let date: DateInfo = {month: parseInt(dateWords[0]), day: parseInt(dateWords[1]), year: parseInt(dateWords[2])};
+            let month = parseInt(dateWords[0]);
+            let day = parseInt(dateWords[1]);
+            let year = parseInt(dateWords[2]);
+
+            if(!month || !day || !year || !itemsCompleted)
+            {
+              //parseData = [];
+              //errorMessage = "";
+              continue;
+            }
+
+            let date: DateInfo = {month: month, day: day, year: year};
             
-            let dataEntry: ThroughputData = {date: date, itemsCompleted: parseInt(itemsCompletedString)};
+            let dataEntry: ThroughputData = {date: date, itemsCompleted: itemsCompleted};
             parseData.push(dataEntry);
+
           }
         }
         
         console.log(parseData);
         setFileData(parseData);
+        setFileError(errorMessage);
       }
       else
         ShowToast("Something went wrong when trying to load that file.","Error")
