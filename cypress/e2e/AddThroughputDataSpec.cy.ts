@@ -10,18 +10,20 @@ function findItemsCompleted(file: string) : number {
   return itemsCompletedInUpload;
 }
 
-describe('add throughput data spec', () => {
+const consts = TestConstants;
+const selectIds = consts.UploadThroughputIds;
+const tableIds = consts.InitiativeTableIds;
+const badToastId = consts.toastId;
 
-  const consts = TestConstants;
-  const selectIds = consts.UploadThroughputIds;
-  const tableIds = consts.InitiativeTableIds;
-  const badToastId = consts.toastId;
+const initiative = 'IIS Initiative';
+const company = 'Integrity Inspired Solutions'
+const waitTime = 250;
+
+describe('valid add throughput tests', () => {
+
   let remainingItemsBefore: number;
 
-  const initiative = 'IIS Initiative';
-  const waitTime = 250;
-
-  beforeEach(() => {
+  before(() => {
     cy.visit('http://localhost:3000/Login');
     cy.get('#email').clear().type('info@integrityinspired.com');
     cy.get('#password').clear().type('password');
@@ -39,10 +41,10 @@ describe('add throughput data spec', () => {
     // });
 
     cy.get('button').contains('Upload Data').click();
-    cy.get(selectIds.selectCompany).select('Integrity Inspired Solutions');
+    cy.get(selectIds.selectCompany).select(company);
     cy.get(selectIds.selectInitiative).select(initiative);
   })
-  
+
   specify('add throughput data by file', () => {
     let itemsCompletedInUpload : number;
     cy.readFile('cypress/data/validThroughputDataFile.csv', 'ascii').then((file) => {
@@ -64,6 +66,25 @@ describe('add throughput data spec', () => {
       expect(remainingItemsBefore-itemsCompletedInUpload).to.be.equal(remainingItemsAfter);
     })
   })
+
+})
+
+describe('invalid add throughput tests', () => {
+
+  beforeEach(() => {
+    cy.visit('http://localhost:3000/Login');
+    cy.get('#email').clear().type('info@integrityinspired.com');
+    cy.get('#password').clear().type('password');
+    cy.get('button').contains('Submit').click();
+
+    cy.get('button').contains('Admin').click();
+    cy.get('button').contains('Initiatives').click();
+
+    cy.get('button').contains('Upload Data').click();
+    cy.get(selectIds.selectCompany).select(company);
+    cy.get(selectIds.selectInitiative).select(initiative);
+  })
+  
 
   specify('cannot add throughput data by file when file is the wrong type', () => {
     cy.readFile('cypress/data/validThroughputDataFile.csv', null).then((file) => {
