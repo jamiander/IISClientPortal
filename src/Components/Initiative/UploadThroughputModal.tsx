@@ -1,12 +1,11 @@
-import { Company, Initiative } from "../../Store/CompanySlice";
+import { Company } from "../../Store/CompanySlice";
 import  Modal  from 'react-modal';
-import { cancelButtonStyle, inputStyle, modalStyle, submitButtonStyle } from "../../Styles";
+import { cancelButtonStyle, modalStyle, submitButtonStyle } from "../../Styles";
 import { useEffect, useRef, useState } from "react";
 import { DateInfo, ThroughputData } from "../../Services/CompanyService";
 //import * as fs from "fs";
-import * as path from "path";
 import { useOutletContext } from "react-router-dom";
-import { ValidateDate, ValidationFailedPrefix } from "../../Services/Validation";
+import { ValidationFailedPrefix } from "../../Services/Validation";
 //import { parse } from 'csv-parse';
 
 export const UploadThroughputIds = {
@@ -64,7 +63,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
     {
       let splitName = fileName.split('.');
       let extension = splitName[splitName.length-1];
-      if(extension != 'csv')
+      if(extension !== 'csv')
       {
         setFileData([]);
         ShowToast(ValidationFailedPrefix + "File can only be of type .csv", "Error");
