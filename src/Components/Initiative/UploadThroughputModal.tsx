@@ -138,7 +138,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
             )
           })}
         </select>
-        {selectedInitiativeIndex !== -1 && <p>Items Remaining: {FindItemsRemaining(selectedCompany?.initiatives.at(selectedInitiativeIndex) ?? fakeInit)}</p>}
+        {selectedInitiativeIndex !== -1 && <p className="p-2">Items Remaining: {FindItemsRemaining(selectedCompany?.initiatives.at(selectedInitiativeIndex) ?? fakeInit)}</p>}
         <div className="space-y-2">
           <div className="outline outline-[#879794] rounded space-y-2 p-1">
             <p className="text-2xl">Upload CSV File</p>
