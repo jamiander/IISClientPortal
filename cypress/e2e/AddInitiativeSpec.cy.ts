@@ -12,15 +12,17 @@ describe('add initiative spec', () => {
     totalItems: "3"
   }
 
-  const existingInit = {
-    title: "IIS Initiative"
-  }
+  /*const existingInit = {
+    title: "IIS Initiative",
+    companyName: "Integrity Inspired Solutions"
+  }*/
 
   const consts = TestConstants;
   const failMessage = consts.validationFailedMessage;
   const badToastId = consts.toastId;
   const modalIds = consts.initiativeModalIds;
   const radioIds = consts.initiativeRadioIds;
+  const tableIds = consts.InitiativeTableIds;
 
   beforeEach(() => {
     cy.visit('http://localhost:3000/Login')
@@ -48,10 +50,23 @@ describe('add initiative spec', () => {
   })
 
   specify('cannot add an initiative with the name of an existing initiative for a given company', () => {
-    cy.get(modalIds.title).clear().type(existingInit.title); //TODO: figure out how to make this match an existing initiative name for this company
+    /*cy.get('tr').siblings().first().find() => {
+      cy.get(tableIds.initiativeTitle).invoke('text').then(($txt) => { 
+        const existingInit_title = $txt;
+        cy.get(tableIds.companyName).invoke('text').then(($txt2) => { 
+          const existingInit_companyName = $txt2;*/
+          let existingInit_companyName = "Integrity Inspired Solutions";
+          let existingInit_title = "IIS Initiative";
+          cy.get('select').select(existingInit_companyName);
+          cy.get(modalIds.title).clear().type(existingInit_title); //TODO: figure out how to make this match an existing initiative name for this company
 
-    cy.get('button').contains('Submit').click();
-    cy.get(badToastId).contains(failMessage);
+          cy.get('button').contains('Submit').click();
+          cy.get(badToastId).contains(failMessage);
+        /*});
+      });
+      
+    })*/
+
   })
 
   specify('cannot add when a field is left blank', () => {

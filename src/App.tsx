@@ -6,10 +6,8 @@ import Footer from './Layout/Footer';
 import Header from './Layout/Header';
 import NavPanel from './Layout/NavPanel';
 import { getCompanyInfo } from './Store/CompanySlice';
-//import { getCompanyData } from './Store/CompanySlice';
 import { useAppDispatch, useAppSelector } from './Store/Hooks';
 import { selectCurrentUser } from './Store/UserSlice';
-//import { getUserData } from './Store/UserSlice';
 
 function App() {
   const dispatch = useAppDispatch();

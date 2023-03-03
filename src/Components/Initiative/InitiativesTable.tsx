@@ -4,13 +4,13 @@ import { InitiativeFilter } from "../../Services/Filters";
 import { Company, Initiative } from "../../Store/CompanySlice";
 import { useAppSelector } from "../../Store/Hooks";
 import { selectCurrentUser, User } from "../../Store/UserSlice";
-import AccordionShell from "../AccordionShell";
 import { EditInitiativeButton } from "./EditInitiativeButton";
 
 export const InitiativeTableIds = {
   totalItems: 'totalItems',
   remainingItems: 'remainingItems',
-  initiativeTitle: 'initiativeTitle'
+  initiativeTitle: 'initiativeTitle',
+  companyName: 'companyName'
 }
 interface InitiativesProps {
   companyList: Company[],
@@ -69,7 +69,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                         <tr key={index}>
                           <td className={tableDataStyle + ' p-1'}>{initiative.id}</td>
                           <td id={InitiativeTableIds.initiativeTitle} className={tableDataStyle}>{initiative.title}</td>
-                          <td className={tableDataStyle} hidden={isCompanyHidden}>{company.name}</td>
+                          <td id={InitiativeTableIds.companyName} className={tableDataStyle} hidden={isCompanyHidden}>{company.name}</td>
                           <td className={tableDataStyle}>{initiative.targetDate.month + "/" + initiative.targetDate.day + "/" + initiative.targetDate.year}</td>
                           <td id={InitiativeTableIds.totalItems} className={tableDataStyle}>{initiative.totalItems}</td>
                           <td id={InitiativeTableIds.remainingItems} className={tableDataStyle}>{itemsRemaining}</td>
