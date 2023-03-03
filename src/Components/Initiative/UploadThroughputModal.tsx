@@ -90,16 +90,19 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
           if(wordsInLine.length === 2)
           {
             let dateString = wordsInLine[0];
-            let itemsCompleted = parseInt(wordsInLine[1]);
+            let itemsCompletedString = wordsInLine[1];
 
             let dateWords = dateString.split('/');
             let month = parseInt(dateWords[0]);
             let day = parseInt(dateWords[1]);
             let year = parseInt(dateWords[2]);
 
+            let itemsCompleted = parseInt(itemsCompletedString);
+
             if(!month || !day || !year || (!itemsCompleted && itemsCompleted !== 0))
             {
-              warningMessage = 'Warning: This file contains data that is not properly formatted. Entries that are not provided as "MM/DD/YYYY, #itemsCompleted" will be ignored.';
+              if(dateString.toUpperCase() !== 'DATE' && itemsCompletedString.toUpperCase() !== "ITEMSCOMPLETED")
+                warningMessage = 'Warning: This file contains data that is not properly formatted. Entries that are not provided as "MM/DD/YYYY, #itemsCompleted" will be ignored.';
               continue;
             }
 
