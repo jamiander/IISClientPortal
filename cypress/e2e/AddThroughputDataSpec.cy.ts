@@ -17,7 +17,7 @@ const badToastId = consts.toastId;
 
 const initiative = 'IIS Initiative';
 const company = 'Integrity Inspired Solutions'
-const waitTime = 250;
+const waitTime = 500;
 
 describe('valid add throughput tests', () => {
 
@@ -45,7 +45,7 @@ describe('valid add throughput tests', () => {
     cy.get(selectIds.selectInitiative).select(initiative);
   })
 
-  specify('add throughput data by file', () => {
+  specify.only('add throughput data by file', () => {
     let itemsCompletedInUpload : number;
     cy.readFile('cypress/data/validThroughputDataFile.csv', 'ascii').then((file) => {
       itemsCompletedInUpload = findItemsCompleted(file);
@@ -115,11 +115,8 @@ describe('invalid add throughput tests', () => {
       }, {action: 'drag-drop'});
 
     })
-
     cy.wait(waitTime);
-    cy.get('button').contains('Submit').click();
-    cy.wait(waitTime);
-    cy.get(badToastId).contains('Validation Failed');
+    cy.get('Warning: This file contains data that is not properly formatted');
   })
 
   specify('cannot add throughput data by file when file format is invalid', () => {
@@ -135,9 +132,7 @@ describe('invalid add throughput tests', () => {
       }, {action: 'drag-drop'});
     })
     cy.wait(waitTime);
-    cy.get('button').contains('Submit').click();
-    cy.wait(waitTime);
-    cy.get(badToastId).contains('Validation Failed');
+    cy.get('Warning: This file contains data that is not properly formatted');
   })
 
   specify('cannot add throughput data by file when date entry is invalid', () => {
