@@ -61,12 +61,10 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
     let fileContent;
     const reader = new FileReader();
     reader.onload = function(e) {
-
       fileContent = reader.result;
       if(fileContent && typeof(fileContent) === 'string')
       {
         let parseData: ThroughputData[] = [];
-        let errorMessage = "";
         let lines = fileContent.split("\n");
         for(let i = 0; i < lines.length; i++) {
           let wordsInLine = lines[i].split(",");
@@ -81,23 +79,16 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
             let year = parseInt(dateWords[2]);
 
             if(!month || !day || !year || !itemsCompleted)
-            {
-              //parseData = [];
-              //errorMessage = "";
               continue;
-            }
-
-            let date: DateInfo = {month: month, day: day, year: year};
             
+            let date: DateInfo = {month: month, day: day, year: year};
             let dataEntry: ThroughputData = {date: date, itemsCompleted: itemsCompleted};
             parseData.push(dataEntry);
 
           }
         }
         
-        console.log(parseData);
         setFileData(parseData);
-        setFileError(errorMessage);
       }
       else
         ShowToast("Something went wrong when trying to load that file.","Error")
@@ -159,7 +150,6 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
             <button className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives[selectedInitiativeIndex]?.id ?? -1, fileData)}>Submit</button> {/*submit button does nothing right now*/}
             <button className={cancelButtonStyle} onClick={() => props.setUploadIsOpen(false)}>Close</button>
           </div>
-          <p>{selectedCompany?.id}</p>
       </div>
     </div>
     </Modal>

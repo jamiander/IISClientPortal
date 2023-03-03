@@ -1,6 +1,6 @@
 import { Company, Initiative } from "../Store/CompanySlice";
 import { User } from "../Store/UserSlice";
-import { DateInfo, ThroughputData } from "./CompanyService";
+import { DateInfo, FindItemsRemaining, ThroughputData } from "./CompanyService";
 
 export const ValidationFailedPrefix = 'Validation Failed: ';
 type Validation = {message: string, success: boolean}
@@ -84,7 +84,7 @@ export function ValidateThroughputData(dataList: ThroughputData[]) : Validation
   {
     if (!ValidateDate(entry.date).success) 
       return {success: false, message: "All dates must be valid."}
-    if (!entry.itemsCompleted || entry.itemsCompleted < 0 || Number.isNaN(entry.itemsCompleted)) 
+    if (!entry.itemsCompleted || entry.itemsCompleted < 0) 
       return {success: false, message: "All entries must have items completed as 0 or greater."}
   }
   
@@ -102,8 +102,16 @@ export function ValidateThroughputDataUpdate(companyList: Company[], companyId: 
     const matchingCompany = companyList.find(company => company.id === companyId);
     if(!matchingCompany)
       return {success: false, message: "A company must be selected."};
-    if(!matchingCompany.initiatives.find(init => init.id === initiativeId))
+
+    const matchingInitiative = matchingCompany.initiatives.find(init => init.id === initiativeId);
+    if(!matchingInitiative)
       return {success: false, message: "An initiative must be selected."};
+
+    let itemsRemaining = FindItemsRemaining(matchingInitiative);
+    let dataCompletedAmount = 0;
+    dataList.map(entry => dataCompletedAmount += entry.itemsCompleted);
+    if(dataCompletedAmount > itemsRemaining)
+      return {success: false, message: "Items completed cannot exceed " + itemsRemaining + "."}
   }
   else
     return dataValidation;
