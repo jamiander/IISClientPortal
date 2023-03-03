@@ -20,9 +20,7 @@ export default function NavPanel(props: NavProps){
   }
 
   return(
-    <div className="grid place-items-center p-[2%] space-y-3">
-      
-      <p className="text-3xl">Navigation</p>
+    <div className="grid place-items-center p-[2%] py-3 space-y-3">
       
       <button className="outline bg-[#21345b] text-white h-12 w-[90%] rounded-md hover:outline-[#2ed7c3] hover:text-[#2ed7c3]" 
           onClick={() => navHandler('/Dashboard')}>
