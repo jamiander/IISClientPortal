@@ -19,6 +19,7 @@ describe('add throughput data spec', () => {
   let remainingItemsBefore: number;
 
   const initiative = 'IIS Initiative';
+  const waitTime = 250;
 
   beforeEach(() => {
     cy.visit('http://localhost:3000/Login');
@@ -53,9 +54,10 @@ describe('add throughput data spec', () => {
         fileName: 'file.csv' 
       }, {action: 'drag-drop'});  
     })
-    cy.wait(500);
+
+    cy.wait(waitTime);
     cy.get('button').contains('Submit').click();
-    cy.wait(500);
+    cy.wait(waitTime);
     cy.contains('tr', initiative).find(tableIds.remainingItems).then(($span) => {
       let remainingItemsAfter = Number($span.text());
       // console.log('remainingItemsAfter:', remainingItemsAfter);
@@ -70,8 +72,10 @@ describe('add throughput data spec', () => {
         fileName: 'file.txt'
       }, {action: 'drag-drop'});
     })
+
+    cy.wait(waitTime);
     cy.get('button').contains('Submit').click();
-    cy.wait(500);
+    cy.wait(waitTime);
     cy.get(badToastId).contains('Validation Failed');
   })
 
@@ -90,8 +94,10 @@ describe('add throughput data spec', () => {
       }, {action: 'drag-drop'});
 
     })
+
+    cy.wait(waitTime);
     cy.get('button').contains('Submit').click();
-    cy.wait(500);
+    cy.wait(waitTime);
     cy.get(badToastId).contains('Validation Failed');
   })
 
@@ -107,8 +113,9 @@ describe('add throughput data spec', () => {
         fileName: 'file.csv'
       }, {action: 'drag-drop'});
     })
+    cy.wait(waitTime);
     cy.get('button').contains('Submit').click();
-    cy.wait(500);
+    cy.wait(waitTime);
     cy.get(badToastId).contains('Validation Failed');
   })
 
@@ -125,8 +132,10 @@ describe('add throughput data spec', () => {
         fileName: 'file.csv'
       }, {action: 'drag-drop'});
     })
+
+    cy.wait(waitTime);
     cy.get('button').contains('Submit').click();
-    cy.wait(500);
+    cy.wait(waitTime);
     cy.get(badToastId).contains('Validation Failed');
   })
 
@@ -144,8 +153,9 @@ describe('add throughput data spec', () => {
       }, {action: 'drag-drop'});
     })
 
+    cy.wait(waitTime);
     cy.get('button').contains('Submit').click();
-    cy.wait(500);
+    cy.wait(waitTime);
     cy.get(badToastId).contains('Validation Failed');
   })
 })
