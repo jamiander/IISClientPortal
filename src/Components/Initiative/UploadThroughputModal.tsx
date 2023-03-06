@@ -34,7 +34,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
   const [fileWarning, setFileWarning] = useState("");
   const ShowToast : (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void = useOutletContext();
   const emptyDate: DateInfo = {month: 0, day: 0, year: 0};
-  const today = new Date;
+  const today = new Date();
   const [entryDate, setEntryDate] = useState<DateInfo>(emptyDate);
   const fakeEntry: ThroughputData[] = [{date:emptyDate,itemsCompleted:0}];
   const fakeInit: Initiative = {id:-1, title:'', targetDate:emptyDate, totalItems:0, itemsCompletedOnDate:fakeEntry};
@@ -168,9 +168,9 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
 
         </div>
         {fileWarning}
-        <div className="flex space-y-2">
+        <div className="flex">
 
-          <div className="outline outline-[#879794] rounded space-y-2 p-2 w-64 h-48">
+          <div className="outline outline-[#879794] rounded space-y-2 p-2 w-64">
             <p className="text-2xl w-full">Upload CSV File</p>
             <input className="w-full" ref={fileRef} type={'file'} accept={'.csv'} onChange={(e) => ReceiveFile(e.target.value)}/>
             {/* <div className="h-full flex justify-end align-bottom"> */}

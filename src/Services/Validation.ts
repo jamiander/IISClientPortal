@@ -1,6 +1,6 @@
 import { Company, Initiative } from "../Store/CompanySlice";
 import { User } from "../Store/UserSlice";
-import { DateInfo, FindItemsRemaining, ThroughputData } from "./CompanyService";
+import { DateInfo, ThroughputData } from "./CompanyService";
 
 export const ValidationFailedPrefix = 'Validation Failed: ';
 type Validation = {message: string, success: boolean}
