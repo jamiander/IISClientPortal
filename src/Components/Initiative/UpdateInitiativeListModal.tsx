@@ -54,23 +54,26 @@ export function UpdateInitiativeListModal(props: InitiativeModalProps){
 			<p className='text-3xl'>{props.title}</p>
 
 			<div className='w-full'>
-				<p className='my-1'>Company{props.company ? ": " + props.company.name : 
-					<select id={InitiativeModalIds.company} onChange={(e) => setInitiativeCompanyId(parseInt(e.target.value))} 
-					className='outline outline-1 rounded p-2'
-					>
-						<option>Select Company</option>
-						{
-							companyList?.map((company, index) => {
-								return (
-									<option value={company.id} key={index}>{company.name}</option>
-								)
-							})
-						}
-					</select>}
+				<p className='my-1'>Company</p>
+        <p>{props.company ? ": " + props.company.name : 
+          <div>
+            <select id={InitiativeModalIds.company} onChange={(e) => setInitiativeCompanyId(parseInt(e.target.value))} 
+            className='outline outline-1 rounded p-2'
+            >
+              <option>Select Company</option>
+              {
+                companyList?.map((company, index) => {
+                  return (
+                    <option value={company.id} key={index}>{company.name}</option>
+                  )
+                })
+              }
+            </select>
+          </div>}
 				</p>
 
 				<p className='my-1'>Title</p>
-				<input defaultValue={props.initiative?.title} id={InitiativeModalIds.title} className={inputStyle + ' w-3/4'}
+				<input defaultValue={props.initiative?.title} id={InitiativeModalIds.title} className={inputStyle + ' w-3/4'} placeholder='Initiative Title'
           onChange={(e) => {setInitiativeTitle(e.target.value)}}/>
 				
         <div className='my-2 p-2 outline outline-1 outline-[#879794] rounded'>
@@ -82,7 +85,7 @@ export function UpdateInitiativeListModal(props: InitiativeModalProps){
       <div className='mt-2 justify-between flex'>
           <div className='w-24'>
             <p>Total Items</p>
-            <input defaultValue={props.initiative?.totalItems} id={InitiativeModalIds.totalItems} type={'number'} className={inputStyle} onChange={(e) => {setInitiativeTotalItems(parseInt(e.target.value))}}/>
+            <input defaultValue={props.initiative?.totalItems} id={InitiativeModalIds.totalItems} type={'number'} placeholder='###' className={inputStyle} onChange={(e) => {setInitiativeTotalItems(parseInt(e.target.value))}}/>
           </div>
   
           <div className='h-10'>
