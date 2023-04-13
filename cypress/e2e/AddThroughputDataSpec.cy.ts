@@ -230,6 +230,7 @@ describe ('invalid manual entry test', () => {
   specify('cannot add throughput entry when date is invalid', () => {
     cy.get(modalIds.date.month).clear().type('01');
     cy.get(modalIds.date.day).clear().type('01');
+    cy.get(modalIds.date.year).clear();
     cy.get(modalIds.itemsComplete).clear().type('2');
     cy.get(modalIds.manualSubmit).click();
     cy.wait(waitTime);
