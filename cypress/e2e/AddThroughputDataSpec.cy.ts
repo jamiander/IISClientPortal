@@ -16,14 +16,14 @@ const tableIds = consts.initiativeTableIds;
 const badToastId = consts.toastId;
 
 const initiative = 'IIS Initiative';
-const company = 'Integrity Inspired Solutions'
+const company = 'Integrity Inspired Solutions';
 const waitTime = 500;
 
 describe('valid add throughput tests', () => {
 
   let remainingItemsBefore: number;
 
-  before(() => {
+  beforeEach(() => {
     cy.visit('http://localhost:3000/Login');
     cy.get('#email').clear().type('info@integrityinspired.com');
     cy.get('#password').clear().type('password');
@@ -65,6 +65,14 @@ describe('valid add throughput tests', () => {
       // console.log('remainingItemsAfter:', remainingItemsAfter);
       expect(remainingItemsBefore-itemsCompletedInUpload).to.be.equal(remainingItemsAfter);
     })
+  })
+
+  specify('close button closes modal', () => {
+    cy.get(modalIds.modal);
+    cy.get(modalIds.closeButton).click();
+    cy.wait(waitTime);
+
+    cy.get(modalIds.modal).should('not.exist');
   })
 
 })
