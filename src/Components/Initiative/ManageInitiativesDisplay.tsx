@@ -7,6 +7,7 @@ import ValidateNewInitiative, { ValidateThroughputDataUpdate, ValidationFailedPr
 import UploadThroughputModal from "./UploadThroughputModal";
 import { UpdateInitiativeListModal } from "./UpdateInitiativeListModal";
 import { ThroughputData } from "../../Services/CompanyService";
+import EditThroughputModal from "./EditThroughputModal";
 
 export const InitiativeRadioIds = {
   all: "initDisplayShowAll",
@@ -20,6 +21,7 @@ export default function ManageInitiativesDisplay() {
 
   const [AddInitiativeIsOpen, setAddInitiativeIsOpen] = useState(false);
   const [UploadModalIsOpen, setUploadModalIsOpen] = useState(false);
+  const [EditModalIsOpen, setEditModalIsOpen] = useState(false);
 
   const dispatch = useAppDispatch();
   const ShowToast : (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void = useOutletContext();
@@ -57,6 +59,22 @@ export default function ManageInitiativesDisplay() {
       ShowToast(ValidationFailedPrefix + validation.message, 'Error');
   }
 
+  function SubmitEditThroughput(companyId: number, initiativeId: number, dataList: ThroughputData[])
+  {
+    let isTest = false;
+    if((window as any).Cypress)
+      isTest = true;
+
+    /* const validation = ValidateThroughputDataUpdate(companyList, companyId, initiativeId, dataList);
+    if(validation.success)
+    {*/
+      dispatch(updateThroughputData({companyId: companyId.toString(), initiativeId: initiativeId.toString(), itemsCompletedOnDate: dataList, isTest: isTest}));
+      setEditModalIsOpen(false);
+    /*}
+    else
+      ShowToast(ValidationFailedPrefix + validation.message, 'Error'); */
+  }
+
   return (
   <div className="col-span-4">
     <div className="bg-[#445362] rounded-md py-3 px-5">
@@ -69,11 +87,12 @@ export default function ManageInitiativesDisplay() {
           <button onClick={() => setUploadModalIsOpen(true)} className="outline h-[40px] bg-[#21345b] text-white w-32 rounded-md hover:outline-[#2ed7c3] hover:text-[#2ed7c3]">
             Upload Data
           </button>
-          <button className="outline h-[40px] bg-[#21345b] text-white w-32 rounded-md hover:outline-[#2ed7c3] hover:text-[#2ed7c3]">
-            Edit Data``
+          <button onClick={() => setEditModalIsOpen(true)} className="outline h-[40px] bg-[#21345b] text-white w-32 rounded-md hover:outline-[#2ed7c3] hover:text-[#2ed7c3]">
+            Edit Data
           </button>
           <UpdateInitiativeListModal title='Add Initiative' initiativeIsOpen={AddInitiativeIsOpen} setInitiativeIsOpen={setAddInitiativeIsOpen} Submit={SubmitUpdateInitiative}/>
           <UploadThroughputModal companyList={companyList} uploadIsOpen={UploadModalIsOpen} setUploadIsOpen={setUploadModalIsOpen} Submit={SubmitUpdateThroughput}/>
+          <EditThroughputModal companyList={companyList} editIsOpen={EditModalIsOpen} setEditIsOpen={setEditModalIsOpen} Submit={SubmitEditThroughput}/>
         </div>
       </div>
 
