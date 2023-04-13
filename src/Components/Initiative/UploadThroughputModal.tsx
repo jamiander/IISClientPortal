@@ -8,6 +8,7 @@ import { ValidationFailedPrefix } from "../../Services/Validation";
 import { DateInput } from "../DateInput";
 
 export const UploadThroughputIds = {
+  modal: "uploadThroughputModal",
   selectCompany: "selectCompanyInThroughputModal",
   selectInitiative: "selectInitiativeInThroughputModal",
   fileSubmit: "submitThroughputAsFile",
@@ -17,7 +18,8 @@ export const UploadThroughputIds = {
     day: "uploadModalDay",
     year: "uploadModalYear"
   },
-  itemsComplete: "uploadModalComplete"
+  itemsComplete: "uploadModalComplete",
+  closeButton: "uploadModalClose"
 }
 
 interface ThroughputModalProps{
@@ -141,6 +143,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
 
   return(
     <Modal
+    id={UploadThroughputIds.modal}
     isOpen={props.uploadIsOpen}
     onRequestClose={()=>props.setUploadIsOpen(false)}
     style={{'content': {...modalStyle.content, 'width' : 'fit-content', 'height' : 'fit-content'}}}
@@ -195,7 +198,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
           </div>
         </div>
         <div className="h-10 w-full">
-          <button className={cancelButtonStyle} onClick={() => props.setUploadIsOpen(false)}>Close</button>
+          <button id={UploadThroughputIds.closeButton} className={cancelButtonStyle} onClick={() => props.setUploadIsOpen(false)}>Close</button>
         </div>
       </div>
     </Modal>
