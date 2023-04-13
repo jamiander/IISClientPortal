@@ -66,8 +66,11 @@ export default function ManageInitiativesDisplay() {
           <button onClick={() => setAddInitiativeIsOpen(true)} className="outline h-[40px] bg-[#21345b] text-white w-32 rounded-md hover:outline-[#2ed7c3] hover:text-[#2ed7c3]">
             Add Initiative
           </button>
-          <button onClick={()=> setUploadModalIsOpen(true)} className="outline h-[40px] bg-[#21345b] text-white w-32 rounded-md hover:outline-[#2ed7c3] hover:text-[#2ed7c3]">
+          <button onClick={() => setUploadModalIsOpen(true)} className="outline h-[40px] bg-[#21345b] text-white w-32 rounded-md hover:outline-[#2ed7c3] hover:text-[#2ed7c3]">
             Upload Data
+          </button>
+          <button className="outline h-[40px] bg-[#21345b] text-white w-32 rounded-md hover:outline-[#2ed7c3] hover:text-[#2ed7c3]">
+            Edit Data``
           </button>
           <UpdateInitiativeListModal title='Add Initiative' initiativeIsOpen={AddInitiativeIsOpen} setInitiativeIsOpen={setAddInitiativeIsOpen} Submit={SubmitUpdateInitiative}/>
           <UploadThroughputModal companyList={companyList} uploadIsOpen={UploadModalIsOpen} setUploadIsOpen={setUploadModalIsOpen} Submit={SubmitUpdateThroughput}/>
