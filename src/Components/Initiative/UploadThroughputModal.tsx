@@ -35,7 +35,8 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
   const ShowToast : (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void = useOutletContext();
   const emptyDate: DateInfo = {month: 0, day: 0, year: 0};
   const today = new Date();
-  const [entryDate, setEntryDate] = useState<DateInfo>(emptyDate);
+  const todayInfo: DateInfo = {month: today.getMonth()+1, day: today.getDate(), year: today.getFullYear()}
+  const [entryDate, setEntryDate] = useState<DateInfo>(todayInfo);
   const fakeEntry: ThroughputData[] = [{date:emptyDate,itemsCompleted:0}];
   const fakeInit: Initiative = {id:-1, title:'', targetDate:emptyDate, totalItems:0, itemsCompletedOnDate:fakeEntry};
   const [itemsCompleted, setItemsCompleted] = useState(-1);
@@ -48,7 +49,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
     setSelectedInitiativeIndex(-1);
     setFileData([]);
     setFileWarning("");
-    setEntryDate(emptyDate);
+    setEntryDate(todayInfo);
     setItemsCompleted(-1);
   },[props.uploadIsOpen])
 
@@ -146,7 +147,6 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
     appElement={document.getElementById('root') as HTMLElement}>
       <div className="space-y-5">
         <p className="text-3xl w-full">Enter Throughput Data</p>
-
         <div className="space-x-5 flex w-full">
           <select id={UploadThroughputIds.selectCompany} onChange={(e) => SelectCompany(parseInt((e.target as HTMLSelectElement).value))} className="outline outline-1 rounded w-56 h-10">
             <option>Select Company</option>
@@ -184,7 +184,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
             <div>
               <p className="text-2xl">Manually Entry</p>
             </div>
-            <DateInput date={entryDate} setDate={setEntryDate} inputIds={UploadThroughputIds.date} defaultDate={{month:(parseInt(today.getMonth().toString()) + 1),day:today.getDate(),year:today.getFullYear()}}/>
+            <DateInput date={entryDate} setDate={setEntryDate} inputIds={UploadThroughputIds.date}/>
             <div>
               <p>Items Completed</p>
             </div>

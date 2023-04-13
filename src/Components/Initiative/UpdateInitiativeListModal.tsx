@@ -28,19 +28,20 @@ export const InitiativeModalIds = {
 }
 
 export function UpdateInitiativeListModal(props: InitiativeModalProps){
-  const emptyDate: DateInfo = {month: 0, day: 0, year: 0}
+  const today = new Date();
+  const todayInfo: DateInfo = {month: today.getMonth() + 1, day: today.getDate(), year: today.getFullYear()};
   const companyList = useAppSelector(selectAllCompanies);
   const [initiativeCompanyId, setInitiativeCompanyId] = useState(props.company?.id ?? -1);
   const [initiativeTitle, setInitiativeTitle] = useState(props.initiative?.title ?? "");
-  const [initiativeTargetDate, setInitiativeTargetDate] = useState<DateInfo>(props.initiative?.targetDate ?? emptyDate);
+  const [initiativeTargetDate, setInitiativeTargetDate] = useState<DateInfo>(props.initiative?.targetDate ?? todayInfo);
   const [initiativeTotalItems, setInitiativeTotalItems] = useState(props.initiative?.totalItems ?? 0);
 
   useEffect(() => {
     setInitiativeTitle(props.initiative?.title ?? "");
-    setInitiativeTargetDate(props.initiative?.targetDate ?? emptyDate);
+    setInitiativeTargetDate(props.initiative?.targetDate ?? todayInfo);
     setInitiativeTotalItems(props.initiative?.totalItems ?? 0);
 	  setInitiativeCompanyId(props.company?.id ?? -1);
-  }, [props.initiative,props.company])
+  }, [props.initiative,props.company,props.initiativeIsOpen])
 
 	return (
 		<Modal
@@ -48,7 +49,7 @@ export function UpdateInitiativeListModal(props: InitiativeModalProps){
 			isOpen={props.initiativeIsOpen}
 			onRequestClose={() => props.setInitiativeIsOpen(false)}
 			style={{'content': {...modalStyle.content, 'width' : '25%'}}}
-			appElement={document.getElementById('root') as HTMLElement}     
+			appElement={document.getElementById('root') as HTMLElement}
 		>
 
 			<p className='text-3xl'>{props.title}</p>
@@ -78,7 +79,8 @@ export function UpdateInitiativeListModal(props: InitiativeModalProps){
 				
         <div className='my-2 p-2 outline outline-1 outline-[#879794] rounded'>
           <p className=''>Target Completion</p>
-				  <DateInput date={initiativeTargetDate} setDate={setInitiativeTargetDate} inputIds={InitiativeModalIds.date} defaultDate={props.initiative?.targetDate}/>
+          {initiativeTargetDate.day}
+				  <DateInput date={initiativeTargetDate} setDate={setInitiativeTargetDate} inputIds={InitiativeModalIds.date}/>
         </div>
       </div>
       
