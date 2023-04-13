@@ -1,5 +1,5 @@
 import Modal from "react-modal";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { DateInfo, FindItemsRemaining, ThroughputData } from "../../Services/CompanyService";
 import { Company, Initiative } from "../../Store/CompanySlice";
 import { cancelButtonStyle, modalStyle } from "../../Styles";
@@ -23,12 +23,17 @@ export const EditThroughputIds = {
     Submit: (companyId: number, initiativeId: number, dataList: ThroughputData[]) => void
   }
 
-export default function EditThroughputModal(props:ThroughputModalProps){;
+  export function addLeadingZero(num: number){
+    return ((num < 10) ? "0" : "") + num.toString();
+  }
+
+export default function EditThroughputModal(this: any, props:ThroughputModalProps){;
     const [selectedCompany, setSelectedCompany] = useState<Company>();
     const [selectedInitiativeIndex, setSelectedInitiativeIndex] = useState(-1);
     const emptyDate: DateInfo = {month: 0, day: 0, year: 0};
     const fakeEntry: ThroughputData[] = [{date:emptyDate,itemsCompleted:0}];
     const fakeInit: Initiative = {id:-1, title:'', targetDate:emptyDate, totalItems:0, itemsCompletedOnDate:fakeEntry};
+    const tableDataStyle = "outline outline-1 text-center ";
     
   useEffect(() => {
     setSelectedCompany(undefined);
@@ -50,6 +55,37 @@ export default function EditThroughputModal(props:ThroughputModalProps){;
       else
         setSelectedInitiativeIndex(-1);
     }
+  }
+
+    
+  function EditDate(key: number, e: string)
+  {
+    var date = e.split("-");
+    var selectedCompanyClone = JSON.parse(JSON.stringify(selectedCompany));
+    var changeThroughput = selectedCompanyClone?.initiatives?.at(selectedInitiativeIndex)?.itemsCompletedOnDate.at(key);
+    if (changeThroughput != null)
+    {
+        changeThroughput.date.day = parseInt(date[2]);
+        changeThroughput.date.month = parseInt(date[1]);
+        changeThroughput.date.year = parseInt(date[0]);
+    }
+
+    setSelectedCompany(selectedCompanyClone);
+    console.log(changeThroughput);
+    console.log(selectedCompanyClone);
+    console.log(selectedCompany);
+  }
+
+  function EditItems(key: number, e: string)
+  {
+    var selectedCompanyClone = JSON.parse(JSON.stringify(selectedCompany));
+    var changeThroughput = selectedCompanyClone?.initiatives?.at(selectedInitiativeIndex)?.itemsCompletedOnDate.at(key);
+    if (changeThroughput != null)
+        changeThroughput.itemsCompleted = parseInt(e);
+
+    setSelectedCompany(selectedCompanyClone);
+    console.log(changeThroughput.itemsComplete);
+    console.log(selectedCompanyClone);
   }
 
   return(
@@ -79,12 +115,36 @@ export default function EditThroughputModal(props:ThroughputModalProps){;
               })}
           </select>
           {!selectedInitiativeIndex && <p className="p-2">Items Remaining: {FindItemsRemaining(selectedCompany?.initiatives.at(selectedInitiativeIndex) ?? fakeInit)}</p>}
-
-            </div>
-            <div className="h-10 w-full">
+        </div>
+        <div>
+            <table className="table-auto w-[98%] outline outline-3">
+                <thead>
+                    <tr>
+                        <th className="w-8">Date</th>
+                        <th>Items Completed</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {selectedCompany?.initiatives.at(selectedInitiativeIndex)?.itemsCompletedOnDate.map((throughput, key) => {
+                        return (
+                        <tr key={key}>
+                            <td>
+                                <input type="date" value={throughput.date.year + "-" + addLeadingZero(throughput.date.month) + "-" + addLeadingZero(throughput.date.day)} 
+                                onChange={(e) => EditDate(key, (e.target.value))}/>                              
+                            </td>
+                            <td>
+                                <input type="number" value={throughput.itemsCompleted} onChange={(e) =>EditItems(key, (e.target.value))}/>
+                            </td>
+                        </tr>
+                        )
+                    })}
+                </tbody>
+            </table>
+        </div>
+        <div className="h-10 w-full">
           <button className={cancelButtonStyle} onClick={() => props.setEditIsOpen(false)}>Close</button>
         </div>
-        </div>
+    </div>
     </Modal>
   )
 }
