@@ -51,9 +51,7 @@ export function UpdateInitiativeListModal(props: InitiativeModalProps){
 			style={{'content': {...modalStyle.content, 'width' : '25%'}}}
 			appElement={document.getElementById('root') as HTMLElement}
 		>
-
 			<p className='text-3xl'>{props.title}</p>
-
 			<div className='w-full'>
 				<p className='my-1'>Company</p>
         <p>{props.company ? ": " + props.company.name : 
@@ -72,11 +70,9 @@ export function UpdateInitiativeListModal(props: InitiativeModalProps){
             </select>
           </div>}
 				</p>
-
 				<p className='my-1'>Title</p>
 				<input defaultValue={props.initiative?.title} id={InitiativeModalIds.title} className={inputStyle + ' w-3/4'} placeholder='Initiative Title'
           onChange={(e) => {setInitiativeTitle(e.target.value)}}/>
-				
         <div className='my-2 p-2 outline outline-1 outline-[#879794] rounded'>
           <p className=''>Target Completion</p>
           {initiativeTargetDate.day}
@@ -89,7 +85,6 @@ export function UpdateInitiativeListModal(props: InitiativeModalProps){
             <p>Total Items</p>
             <input defaultValue={props.initiative?.totalItems} id={InitiativeModalIds.totalItems} type={'number'} placeholder='###' className={inputStyle} onChange={(e) => {setInitiativeTotalItems(parseInt(e.target.value))}}/>
           </div>
-  
           <div className='h-10'>
             <button className={submitButtonStyle + ' mt-6'} 
               onClick={() => {
@@ -104,10 +99,8 @@ export function UpdateInitiativeListModal(props: InitiativeModalProps){
               }}> Submit
             </button>
             <button className={cancelButtonStyle} onClick={() => props.setInitiativeIsOpen(false)}>Close</button> 
-          
           </div>
         </div>
 		</Modal>
-
 	)
 }

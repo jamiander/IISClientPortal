@@ -118,7 +118,6 @@ export function FindItemsRemaining(initiative: Initiative)  {
   return initiative.totalItems - totalItemsCompleted;
 }
 
-
 export interface UpdateThroughputDataRequest {
   isTest: boolean,
   companyId: string,
