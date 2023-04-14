@@ -29,7 +29,7 @@ export function DateInput(props: DateInputProps)
   return (
     <>
       <div className='flex space-x-2'>
-        <input id={props.id} type="date" defaultValue={MakeDateString(props.date)} onChange={(e) => { props.setDate(MakeDateInfo(e.target.value) ?? props.date) }}/>
+        <input id={props.id} type="date" value={MakeDateString(props.date)} onChange={(e) => { props.setDate(MakeDateInfo(e.target.value) ?? props.date) }}/>
         {/*<div className='w-[20%]'>
           <p>Month </p>
           <input defaultValue={props.date.month} id={props.inputIds.month} className={inputStyle} maxLength={2}
