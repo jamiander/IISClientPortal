@@ -4,6 +4,7 @@ import { DateInfo, FindItemsRemaining, ThroughputData } from "../../Services/Com
 import { Company, Initiative } from "../../Store/CompanySlice";
 import { cancelButtonStyle, modalStyle, submitButtonStyle } from "../../Styles";
 import { EditUserModalIds } from "../User/UpdateUserListModal";
+import { MakeDateString } from "../DateInput";
 
 export const EditThroughputIds = {
     modal: "editThroughputModal",
@@ -22,10 +23,9 @@ export const EditThroughputIds = {
     Submit: (companyId: number, initiativeId: number, dataList: ThroughputData[], emptyDataCheck: boolean) => void
   }
 
-export default function EditThroughputModal(this: any, props:ThroughputModalProps){
+export default function EditThroughputModal(this: any, props: ThroughputModalProps){
     const [selectedCompany, setSelectedCompany] = useState<Company>();
     const [selectedInitiativeIndex, setSelectedInitiativeIndex] = useState(-1);
-    const emptyDate: DateInfo = {month: 0, day: 0, year: 0};
     const tableDataStyle = "outline outline-1 text-center ";
     
   useEffect(() => {
@@ -48,10 +48,6 @@ export default function EditThroughputModal(this: any, props:ThroughputModalProp
       else
         setSelectedInitiativeIndex(-1);
     }
-  }
-
-  function AddLeadingZero(num: number){
-    return ((num < 10) ? "0" : "") + num.toString();
   }
 
   function GetInitiativeFromCompany(company: Company | undefined, initiativeIndex: number) : Initiative | undefined
@@ -129,7 +125,7 @@ export default function EditThroughputModal(this: any, props:ThroughputModalProp
                         return (
                         <tr key={key}>
                             <td>
-                                <input id={EditThroughputIds.date} type="date" value={throughput.date.year + "-" + AddLeadingZero(throughput.date.month) + "-" + AddLeadingZero(throughput.date.day)} 
+                                <input id={EditThroughputIds.date} type="date" value={MakeDateString(throughput.date)} 
                                 onChange={(e) => EditDate(key, e.target.value)}/>                              
                             </td>
                             <td>

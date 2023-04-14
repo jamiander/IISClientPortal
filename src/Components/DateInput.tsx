@@ -8,17 +8,17 @@ interface DateInputProps {
   //inputIds: {month: string, day: string, year: string}
 }
 
+function AddLeadingZero(num: number){
+  return ((num < 10) ? "0" : "") + num.toString();
+}
+
+export function MakeDateString(dateInfo: DateInfo)
+{
+  return dateInfo.year + "-" + AddLeadingZero(dateInfo.month) + "-" + AddLeadingZero(dateInfo.day);
+}
+
 export function DateInput(props: DateInputProps)
 {
-  function AddLeadingZero(num: number){
-    return ((num < 10) ? "0" : "") + num.toString();
-  }
-
-  function MakeDateString(dateInfo: DateInfo)
-  {
-    return dateInfo.year + "-" + AddLeadingZero(dateInfo.month) + "-" + AddLeadingZero(dateInfo.day);
-  }
-
   function MakeDateInfo(dateString: string)
   {
     let dateSplit = dateString.split("-");
