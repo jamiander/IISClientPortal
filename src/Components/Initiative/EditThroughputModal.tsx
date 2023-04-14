@@ -2,7 +2,7 @@ import Modal from "react-modal";
 import { Fragment, useEffect, useState } from "react";
 import { DateInfo, FindItemsRemaining, ThroughputData } from "../../Services/CompanyService";
 import { Company, Initiative } from "../../Store/CompanySlice";
-import { cancelButtonStyle, modalStyle } from "../../Styles";
+import { cancelButtonStyle, modalStyle, submitButtonStyle } from "../../Styles";
 
 export const EditThroughputIds = {
     selectCompany: "selectCompanyInThroughputModal",
@@ -23,11 +23,7 @@ export const EditThroughputIds = {
     Submit: (companyId: number, initiativeId: number, dataList: ThroughputData[]) => void
   }
 
-  export function addLeadingZero(num: number){
-    return ((num < 10) ? "0" : "") + num.toString();
-  }
-
-export default function EditThroughputModal(this: any, props:ThroughputModalProps){;
+export default function EditThroughputModal(this: any, props:ThroughputModalProps){
     const [selectedCompany, setSelectedCompany] = useState<Company>();
     const [selectedInitiativeIndex, setSelectedInitiativeIndex] = useState(-1);
     const emptyDate: DateInfo = {month: 0, day: 0, year: 0};
@@ -57,35 +53,46 @@ export default function EditThroughputModal(this: any, props:ThroughputModalProp
     }
   }
 
-    
-  function EditDate(key: number, e: string)
-  {
-    var date = e.split("-");
-    var selectedCompanyClone = JSON.parse(JSON.stringify(selectedCompany));
-    var changeThroughput = selectedCompanyClone?.initiatives?.at(selectedInitiativeIndex)?.itemsCompletedOnDate.at(key);
-    if (changeThroughput != null)
-    {
-        changeThroughput.date.day = parseInt(date[2]);
-        changeThroughput.date.month = parseInt(date[1]);
-        changeThroughput.date.year = parseInt(date[0]);
-    }
-
-    setSelectedCompany(selectedCompanyClone);
-    console.log(changeThroughput);
-    console.log(selectedCompanyClone);
-    console.log(selectedCompany);
+  function addLeadingZero(num: number){
+    return ((num < 10) ? "0" : "") + num.toString();
   }
 
-  function EditItems(key: number, e: string)
+  function GetInitiativeFromCompany(company: Company | undefined, initiativeIndex: number) : Initiative | undefined
+  {
+    let initiatives = company?.initiatives.at(initiativeIndex);
+    return initiatives;
+  }
+    
+  function EditDate(key: number, dateString: string)
+  {
+    var splitDate = dateString.split("-");
+    var selectedCompanyClone = JSON.parse(JSON.stringify(selectedCompany));
+    var changeThroughput = GetInitiativeFromCompany(selectedCompanyClone,selectedInitiativeIndex)?.itemsCompletedOnDate.at(key);
+    if (changeThroughput)
+    {
+      changeThroughput.date.day = parseInt(splitDate[2]);
+      changeThroughput.date.month = parseInt(splitDate[1]);
+      changeThroughput.date.year = parseInt(splitDate[0]);
+
+      setSelectedCompany(selectedCompanyClone);
+      console.log(changeThroughput);
+      console.log(selectedCompanyClone);
+      console.log(selectedCompany);
+    }
+  }
+
+  function EditItems(key: number, newItems: string)
   {
     var selectedCompanyClone = JSON.parse(JSON.stringify(selectedCompany));
-    var changeThroughput = selectedCompanyClone?.initiatives?.at(selectedInitiativeIndex)?.itemsCompletedOnDate.at(key);
-    if (changeThroughput != null)
-        changeThroughput.itemsCompleted = parseInt(e);
+    var changeThroughput = GetInitiativeFromCompany(selectedCompanyClone,selectedInitiativeIndex)?.itemsCompletedOnDate.at(key);
+    if (changeThroughput)
+    {
+      changeThroughput.itemsCompleted = parseInt(newItems);
 
-    setSelectedCompany(selectedCompanyClone);
-    console.log(changeThroughput.itemsComplete);
-    console.log(selectedCompanyClone);
+      setSelectedCompany(selectedCompanyClone);
+      console.log(changeThroughput.itemsCompleted);
+      console.log(selectedCompanyClone);
+    }
   }
 
   return(
@@ -130,10 +137,10 @@ export default function EditThroughputModal(this: any, props:ThroughputModalProp
                         <tr key={key}>
                             <td>
                                 <input type="date" value={throughput.date.year + "-" + addLeadingZero(throughput.date.month) + "-" + addLeadingZero(throughput.date.day)} 
-                                onChange={(e) => EditDate(key, (e.target.value))}/>                              
+                                onChange={(e) => EditDate(key, e.target.value)}/>                              
                             </td>
                             <td>
-                                <input type="number" value={throughput.itemsCompleted} onChange={(e) =>EditItems(key, (e.target.value))}/>
+                                <input type="number" value={throughput.itemsCompleted} onChange={(e) =>EditItems(key, e.target.value)}/>
                             </td>
                         </tr>
                         )
@@ -142,6 +149,7 @@ export default function EditThroughputModal(this: any, props:ThroughputModalProp
             </table>
         </div>
         <div className="h-10 w-full">
+          <button className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? -1, GetInitiativeFromCompany(selectedCompany,selectedInitiativeIndex)?.id ?? -1,GetInitiativeFromCompany(selectedCompany,selectedInitiativeIndex)?.itemsCompletedOnDate ?? [])}>Submit</button>
           <button className={cancelButtonStyle} onClick={() => props.setEditIsOpen(false)}>Close</button>
         </div>
     </div>
