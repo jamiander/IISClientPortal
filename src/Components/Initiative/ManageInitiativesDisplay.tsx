@@ -3,7 +3,7 @@ import { useOutletContext } from "react-router-dom";
 import { Company, Initiative, selectAllCompanies, updateInitiativeInfo, updateThroughputData } from "../../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
 import InitiativesTable from "./InitiativesTable"
-import ValidateNewInitiative, { ValidateCompanyAndInitiative, ValidateThroughputDataUpdate, ValidationFailedPrefix } from "../../Services/Validation";
+import ValidateNewInitiative, { ValidateCompanyAndInitiative, ValidateEditThroughputData, ValidateNewThroughputData, ValidationFailedPrefix } from "../../Services/Validation";
 import UploadThroughputModal from "./UploadThroughputModal";
 import { UpdateInitiativeListModal } from "./UpdateInitiativeListModal";
 import { ThroughputData } from "../../Services/CompanyService";
@@ -50,7 +50,7 @@ export default function ManageInitiativesDisplay() {
     if((window as any).Cypress)
       isTest = true;
 
-    const validation = ValidateThroughputDataUpdate(companyList, companyId, initiativeId, dataList);
+    const validation = ValidateNewThroughputData(companyList, companyId, initiativeId, dataList);
     if(validation.success)
     {
       dispatch(updateThroughputData({companyId: companyId.toString(), initiativeId: initiativeId.toString(), itemsCompletedOnDate: dataList, isTest: isTest}));
@@ -67,7 +67,7 @@ export default function ManageInitiativesDisplay() {
     if((window as any).Cypress)
       isTest = true;
 
-    const validation = ValidateCompanyAndInitiative(companyList, companyId, initiativeId);
+    const validation = ValidateEditThroughputData(companyList, companyId, initiativeId, dataList);
     if(validation.success)
     {
       dispatch(updateThroughputData({companyId: companyId.toString(), initiativeId: initiativeId.toString(), itemsCompletedOnDate: dataList, isTest: isTest}));

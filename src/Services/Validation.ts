@@ -30,6 +30,9 @@ export default function ValidateNewInitiative(initiative: Initiative, companyId:
 
 export function ValidateDate(date: DateInfo) : Validation
 {
+  if(date == null || date == undefined)
+    return {success: false, message: "A date was not provided"};
+  
   let month = date.month;
   if(!month || month < 1 || month > 12 || Number.isNaN(month))
     return {success: false, message: "Month must be between 1 and 12"};
@@ -91,23 +94,30 @@ export function ValidateThroughputData(dataList: ThroughputData[]) : Validation
   return {success: true, message: "All data is valid."}
 }
 
-export function ValidateThroughputDataUpdate(companyList: Company[], companyId: number, initiativeId: number, dataList: ThroughputData[]): Validation
+export function ValidateNewThroughputData(companyList: Company[], companyId: number, initiativeId: number, dataList: ThroughputData[]): Validation
 {
   if(dataList.length === 0)
     return {success: false, message: "A set of data could not be derived from the selected file, or no file was selected."}
 
+  return ValidateEditThroughputData(companyList, companyId, initiativeId, dataList);
+}
+
+export function ValidateEditThroughputData(companyList: Company[], companyId: number, initiativeId: number, dataList: ThroughputData[]): Validation
+{
   const dataValidation = ValidateThroughputData(dataList);
   if(dataValidation.success)
-    {
-      ValidateCompanyAndInitiative(companyList, companyId, initiativeId);
-    }
+  {
+    const selectsValidation = ValidateCompanyAndInitiative(companyList, companyId, initiativeId);
+    if(!selectsValidation.success)
+      return selectsValidation;
+  }
   else
     return dataValidation;
 
   return {success: true, message: "Successfully validated throughput data; all good!"}
 }
 
-export function ValidateCompanyAndInitiative(companyList: Company[], companyId: number, initiativeId: number)
+export function ValidateCompanyAndInitiative(companyList: Company[], companyId: number, initiativeId: number) : Validation
 {
     const matchingCompany = companyList.find(company => company.id === companyId);
     if(!matchingCompany)

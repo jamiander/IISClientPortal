@@ -11,12 +11,8 @@ export const EditThroughputIds = {
     selectInitiative: "editThroughputInititia",
     submitButton: "editThroughputSubmitButton",
     closeButton: "editThroughputCloseButton",
-    date: {
-      month: "uploadModalMonth",
-      day: "uploadModalDay",
-      year: "uploadModalYear"
-    },
-    itemsComplete: "uploadModalComplete"
+    date: "editThroughputDate",
+    itemsComplete: "editThroughputItemsComplete"
   }
   
   interface ThroughputModalProps{
@@ -135,11 +131,11 @@ export default function EditThroughputModal(this: any, props:ThroughputModalProp
                         return (
                         <tr key={key}>
                             <td>
-                                <input type="date" value={throughput.date.year + "-" + addLeadingZero(throughput.date.month) + "-" + addLeadingZero(throughput.date.day)} 
+                                <input id={EditThroughputIds.date} type="date" value={throughput.date.year + "-" + addLeadingZero(throughput.date.month) + "-" + addLeadingZero(throughput.date.day)} 
                                 onChange={(e) => EditDate(key, e.target.value)}/>                              
                             </td>
                             <td>
-                                <input type="number" min="0" value={throughput.itemsCompleted} onChange={(e) =>EditItems(key, e.target.value)}/>
+                                <input id={EditThroughputIds.itemsComplete} type="number" min="0" value={throughput.itemsCompleted} onChange={(e) =>EditItems(key, e.target.value)}/>
                             </td>
                         </tr>
                         )
