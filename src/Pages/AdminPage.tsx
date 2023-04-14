@@ -6,9 +6,9 @@ export default function AdminPage(){
   
   const [table,setTable] = useState("initiatives");
 
-  const tabStyle = "h-12 w-1/5 rounded-t-lg";
-  const selectedTabStyle = "text-black bg-[#2ed7c3] hover:text-white" + tabStyle;
-  const unselectedTabStyle = "outline outline-white text-white bg-[#21345b] hover:outline-[#2ed7c3] hover:text-[#2ed7c3]" + tabStyle;
+  const tabStyle = "h-1/2 w-1/5 rounded-t-lg";
+  const unselectedTabStyle = "text-black bg-[#2ed7c3] hover:text-white hover:bg-[#28c4b1]" + " " + tabStyle;
+  const selectedTabStyle = "text-white bg-[#21345b] hover:outline hover:outline-[#2ed7c3] hover:text-[#2ed7c3]" + " " + tabStyle;
 
   const CLIENT = "clients";
   const INITIATIVE = "initiatives"
