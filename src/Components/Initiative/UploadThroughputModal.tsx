@@ -168,21 +168,15 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
               })}
           </select>
           {!selectedInitiativeIndex && <p className="p-2">Items Remaining: {FindItemsRemaining(selectedCompany?.initiatives.at(selectedInitiativeIndex) ?? fakeInit)}</p>}
-
         </div>
         {fileWarning}
         <div className="flex">
-
           <div className="outline outline-[#879794] rounded space-y-2 p-2 w-64">
             <p className="text-2xl w-full">Upload CSV File</p>
             <input className="w-full" ref={fileRef} type={'file'} accept={'.csv'} onChange={(e) => ReceiveFile(e.target.value)}/>
-            {/* <div className="h-full flex justify-end align-bottom"> */}
               <button id={UploadThroughputIds.fileSubmit} className={submitButtonStyle + ' max-h-10'} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives.at(selectedInitiativeIndex)?.id ?? -1, fileData)}>Submit</button>
-            {/* </div> */}
           </div>
-
           <p className="text-2xl m-3">OR</p>
-
           <div className="outline outline-[#879794] rounded space-y-2 p-2 w-64">
             <div>
               <p className="text-2xl">Manually Entry</p>

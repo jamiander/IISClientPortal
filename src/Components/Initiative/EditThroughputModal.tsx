@@ -1,5 +1,5 @@
 import Modal from "react-modal";
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { DateInfo, FindItemsRemaining, ThroughputData } from "../../Services/CompanyService";
 import { Company, Initiative } from "../../Store/CompanySlice";
 import { cancelButtonStyle, modalStyle, submitButtonStyle } from "../../Styles";
