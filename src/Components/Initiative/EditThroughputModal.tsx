@@ -3,11 +3,14 @@ import { useEffect, useState } from "react";
 import { DateInfo, FindItemsRemaining, ThroughputData } from "../../Services/CompanyService";
 import { Company, Initiative } from "../../Store/CompanySlice";
 import { cancelButtonStyle, modalStyle, submitButtonStyle } from "../../Styles";
+import { EditUserModalIds } from "../User/UpdateUserListModal";
 
 export const EditThroughputIds = {
-    selectCompany: "selectCompanyInThroughputModal",
-    selectInitiative: "selectInitiativeInThroughputModal",
-    manualSubmit: "submitThroughputAsSingleEntry",
+    modal: "editThroughputModal",
+    selectCompany: "editThroughputCompanySelect",
+    selectInitiative: "editThroughputInititia",
+    submitButton: "editThroughputSubmitButton",
+    closeButton: "editThroughputCloseButton",
     date: {
       month: "uploadModalMonth",
       day: "uploadModalDay",
@@ -92,6 +95,7 @@ export default function EditThroughputModal(this: any, props:ThroughputModalProp
 
   return(
     <Modal
+        id={EditThroughputIds.modal}
         isOpen={props.editIsOpen}
         onRequestClose={()=>props.setEditIsOpen(false)}
         style={{'content': {...modalStyle.content, 'width' : 'fit-content', 'height' : 'fit-content'}}}
@@ -145,8 +149,8 @@ export default function EditThroughputModal(this: any, props:ThroughputModalProp
             </table>
         </div>
         <div className="h-10 w-full">
-          <button className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives[selectedInitiativeIndex]?.id ?? -1, GetInitiativeFromCompany(selectedCompany,selectedInitiativeIndex)?.itemsCompletedOnDate ?? [])}>Submit</button>
-          <button className={cancelButtonStyle} onClick={() => props.setEditIsOpen(false)}>Close</button>
+          <button id={EditThroughputIds.submitButton} className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives[selectedInitiativeIndex]?.id ?? -1, GetInitiativeFromCompany(selectedCompany,selectedInitiativeIndex)?.itemsCompletedOnDate ?? [])}>Submit</button>
+          <button id={EditThroughputIds.closeButton} className={cancelButtonStyle} onClick={() => props.setEditIsOpen(false)}>Close</button>
         </div>
     </div>
     </Modal>
