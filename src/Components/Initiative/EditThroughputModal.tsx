@@ -52,7 +52,7 @@ export default function EditThroughputModal(this: any, props:ThroughputModalProp
     }
   }
 
-  function addLeadingZero(num: number){
+  function AddLeadingZero(num: number){
     return ((num < 10) ? "0" : "") + num.toString();
   }
 
@@ -131,7 +131,7 @@ export default function EditThroughputModal(this: any, props:ThroughputModalProp
                         return (
                         <tr key={key}>
                             <td>
-                                <input id={EditThroughputIds.date} type="date" value={throughput.date.year + "-" + addLeadingZero(throughput.date.month) + "-" + addLeadingZero(throughput.date.day)} 
+                                <input id={EditThroughputIds.date} type="date" value={throughput.date.year + "-" + AddLeadingZero(throughput.date.month) + "-" + AddLeadingZero(throughput.date.day)} 
                                 onChange={(e) => EditDate(key, e.target.value)}/>                              
                             </td>
                             <td>

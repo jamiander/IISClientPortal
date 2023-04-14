@@ -13,13 +13,9 @@ export const UploadThroughputIds = {
   selectInitiative: "selectInitiativeInThroughputModal",
   fileSubmit: "submitThroughputAsFile",
   manualSubmit: "submitThroughputAsSingleEntry",
-  date: {
-    month: "uploadModalMonth",
-    day: "uploadModalDay",
-    year: "uploadModalYear"
-  },
-  itemsComplete: "uploadModalComplete",
-  closeButton: "uploadModalClose"
+  date: "uploadThroughputDate",
+  itemsComplete: "uploadThroughputItemsComplete",
+  closeButton: "uploadThroughputClose"
 }
 
 interface ThroughputModalProps{
@@ -181,7 +177,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
             <div>
               <p className="text-2xl">Manually Entry</p>
             </div>
-            <DateInput date={entryDate} setDate={setEntryDate} inputIds={UploadThroughputIds.date}/>
+            <DateInput id={UploadThroughputIds.date} date={entryDate} setDate={setEntryDate}/>
             <div>
               <p>Items Completed</p>
             </div>
