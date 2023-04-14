@@ -140,7 +140,7 @@ export default function EditThroughputModal(this: any, props:ThroughputModalProp
                                 onChange={(e) => EditDate(key, e.target.value)}/>                              
                             </td>
                             <td>
-                                <input type="number" value={throughput.itemsCompleted} onChange={(e) =>EditItems(key, e.target.value)}/>
+                                <input type="number" min="0" value={throughput.itemsCompleted} onChange={(e) =>EditItems(key, e.target.value)}/>
                             </td>
                         </tr>
                         )

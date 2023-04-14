@@ -38,6 +38,7 @@ export default function ManageInitiativesDisplay() {
     {
       dispatch(updateInitiativeInfo({initiative: initiative, companyId: companyId.toString(), isTest: isTest}));
       setAddInitiativeIsOpen(false);
+      ShowToast("Update initiative successful", 'Success')
     }
     else
       ShowToast(ValidationFailedPrefix + validation.message,'Error');
@@ -54,6 +55,7 @@ export default function ManageInitiativesDisplay() {
     {
       dispatch(updateThroughputData({companyId: companyId.toString(), initiativeId: initiativeId.toString(), itemsCompletedOnDate: dataList, isTest: isTest}));
       setUploadModalIsOpen(false);
+      ShowToast(validation.message, 'Success')
     }
     else
       ShowToast(ValidationFailedPrefix + validation.message, 'Error');
@@ -65,14 +67,15 @@ export default function ManageInitiativesDisplay() {
     if((window as any).Cypress)
       isTest = true;
 
-    /* const validation = ValidateThroughputDataUpdate(companyList, companyId, initiativeId, dataList);
+    const validation = ValidateThroughputDataUpdate(companyList, companyId, initiativeId, dataList);
     if(validation.success)
-    {*/
+    {
       dispatch(updateThroughputData({companyId: companyId.toString(), initiativeId: initiativeId.toString(), itemsCompletedOnDate: dataList, isTest: isTest}));
       setEditModalIsOpen(false);
-    /*}
+      ShowToast(validation.message, 'Success')
+    }
     else
-      ShowToast(ValidationFailedPrefix + validation.message, 'Error'); */
+      ShowToast(ValidationFailedPrefix + validation.message, 'Error'); 
   }
 
   return (
