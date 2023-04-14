@@ -29,7 +29,7 @@ describe('add initiative spec', () => {
     cy.get('#email').clear().type('info@integrityinspired.com');
     cy.get('#password').clear().type('password');
     cy.get('button').contains('Submit').click();
-
+    cy.wait(500);
     cy.get('button').contains('Admin').click();
     cy.get('button').contains('Initiatives').click();
     cy.get(radioIds.all).click();
