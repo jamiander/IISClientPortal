@@ -78,9 +78,6 @@ export default function EditThroughputModal(this: any, props:ThroughputModalProp
       changeThroughput.date.year = parseInt(splitDate[0]);
 
       setSelectedCompany(selectedCompanyClone);
-      console.log(changeThroughput);
-      console.log(selectedCompanyClone);
-      console.log(selectedCompany);
     }
   }
 
@@ -93,8 +90,6 @@ export default function EditThroughputModal(this: any, props:ThroughputModalProp
       changeThroughput.itemsCompleted = parseInt(newItems);
 
       setSelectedCompany(selectedCompanyClone);
-      console.log(changeThroughput.itemsCompleted);
-      console.log(selectedCompanyClone);
     }
   }
 
@@ -136,7 +131,7 @@ export default function EditThroughputModal(this: any, props:ThroughputModalProp
                     </tr>
                 </thead>
                 <tbody>
-                    {selectedCompany?.initiatives.at(selectedInitiativeIndex)?.itemsCompletedOnDate.map((throughput, key) => {
+                    {(selectedInitiativeIndex >= 0) && selectedCompany?.initiatives.at(selectedInitiativeIndex)?.itemsCompletedOnDate.map((throughput, key) => {
                         return (
                         <tr key={key}>
                             <td>
@@ -149,11 +144,12 @@ export default function EditThroughputModal(this: any, props:ThroughputModalProp
                         </tr>
                         )
                     })}
+                
                 </tbody>
             </table>
         </div>
         <div className="h-10 w-full">
-          <button id={EditThroughputIds.submitButton} className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? -1, GetInitiativeFromCompany(selectedCompany,selectedInitiativeIndex)?.id ?? -1,GetInitiativeFromCompany(selectedCompany,selectedInitiativeIndex)?.itemsCompletedOnDate ?? [])}>Submit</button>
+          <button id={EditThroughputIds.submitButton} className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives[selectedInitiativeIndex]?.id ?? -1, GetInitiativeFromCompany(selectedCompany,selectedInitiativeIndex)?.itemsCompletedOnDate ?? [])}>Submit</button>
           <button id={EditThroughputIds.closeButton} className={cancelButtonStyle} onClick={() => props.setEditIsOpen(false)}>Close</button>
         </div>
     </div>

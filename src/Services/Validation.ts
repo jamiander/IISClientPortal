@@ -98,7 +98,17 @@ export function ValidateThroughputDataUpdate(companyList: Company[], companyId: 
 
   const dataValidation = ValidateThroughputData(dataList);
   if(dataValidation.success)
-  {
+    {
+      ValidateCompanyAndInitiative(companyList, companyId, initiativeId);
+    }
+  else
+    return dataValidation;
+
+  return {success: true, message: "Successfully validated throughput data; all good!"}
+}
+
+export function ValidateCompanyAndInitiative(companyList: Company[], companyId: number, initiativeId: number)
+{
     const matchingCompany = companyList.find(company => company.id === companyId);
     if(!matchingCompany)
       return {success: false, message: "A company must be selected."};
@@ -106,15 +116,6 @@ export function ValidateThroughputDataUpdate(companyList: Company[], companyId: 
     const matchingInitiative = matchingCompany.initiatives.find(init => init.id === initiativeId);
     if(!matchingInitiative)
       return {success: false, message: "An initiative must be selected."};
-
-    /*let itemsRemaining = FindItemsRemaining(matchingInitiative);
-    let dataCompletedAmount = 0;
-    dataList.map(entry => dataCompletedAmount += entry.itemsCompleted);
-    if(dataCompletedAmount > itemsRemaining)
-      return {success: false, message: "Items completed cannot exceed " + itemsRemaining + "."}*/
-  }
-  else
-    return dataValidation;
 
   return {success: true, message: "Successfully validated throughput data; all good!"}
 }
