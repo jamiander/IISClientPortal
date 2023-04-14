@@ -31,7 +31,7 @@ describe('update throughput spec', () => {
     //check for updated amount
   })
 
-  specify('change the date of an entry', () => {
+  specify('update the date of an entry', () => {
     //this is only if date-changing is something we support
   })
 
@@ -41,6 +41,14 @@ describe('update throughput spec', () => {
     cy.wait(waitTime);
 
     cy.get(modalIds.modal).should('not.exist');
+  })
+
+  specify('cannot update throughput data if unselected company', () => {
+
+  })
+
+  specify('cannot update throughput data if unselected initiative', () => {
+
   })
 
   specify('cannot update throughput data to an invalid date', () => {
