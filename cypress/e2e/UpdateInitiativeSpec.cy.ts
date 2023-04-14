@@ -28,6 +28,7 @@ describe('update initiative spec', () => {
     cy.visit('http://localhost:3000/Login')
     cy.get('#email').clear().type('info@integrityinspired.com');
     cy.get('#password').clear().type('password');
+    cy.wait(500);
     cy.get('button').contains('Submit').click();
 
     cy.get('button').contains('Admin').click();
