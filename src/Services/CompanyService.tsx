@@ -109,12 +109,16 @@ export async function UpdateInitiativeInfo(request: UpdateInitiativeInfoRequest)
   return response.data;
 }
 
-export function FindItemsRemaining(initiative: Initiative)  {
-  const itemsCompleted = initiative.itemsCompletedOnDate.map((item) => item.itemsCompleted);
-  let totalItemsCompleted = 0;
+export function FindItemsRemaining(initiative: Initiative | undefined) {
+  if(initiative)
+  {
+    const itemsCompleted = initiative.itemsCompletedOnDate.map((item) => item.itemsCompleted);
+    let totalItemsCompleted = 0;
 
-  itemsCompleted.forEach((num) => totalItemsCompleted += num);
-  return initiative.totalItems - totalItemsCompleted;
+    itemsCompleted.forEach((num) => totalItemsCompleted += num);
+    return initiative.totalItems - totalItemsCompleted;
+  }
+  return NaN;
 }
 
 export interface UpdateThroughputDataRequest {

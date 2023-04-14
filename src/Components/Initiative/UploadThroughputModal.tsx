@@ -31,12 +31,9 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
   const [fileData, setFileData] = useState<ThroughputData[]>([]);
   const [fileWarning, setFileWarning] = useState("");
   const ShowToast : (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void = useOutletContext();
-  const emptyDate: DateInfo = {month: 0, day: 0, year: 0};
   const today = new Date();
   const todayInfo: DateInfo = {month: today.getMonth()+1, day: today.getDate(), year: today.getFullYear()}
   const [entryDate, setEntryDate] = useState<DateInfo>(todayInfo);
-  const fakeEntry: ThroughputData[] = [{date:emptyDate,itemsCompleted:0}];
-  const fakeInit: Initiative = {id:-1, title:'', targetDate:emptyDate, totalItems:0, itemsCompletedOnDate:fakeEntry};
   const [itemsCompleted, setItemsCompleted] = useState(-1);
   const manualEntry: ThroughputData[] = [{date:entryDate,itemsCompleted:itemsCompleted}]
 
@@ -163,7 +160,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
                 )
               })}
           </select>
-          {!selectedInitiativeIndex && <p className="p-2">Items Remaining: {FindItemsRemaining(selectedCompany?.initiatives.at(selectedInitiativeIndex) ?? fakeInit)}</p>}
+          {selectedInitiativeIndex >= 0 && <p className="p-2">Items Remaining: {FindItemsRemaining(selectedCompany?.initiatives.at(selectedInitiativeIndex))}</p>}
         </div>
         {fileWarning}
         <div className="flex">

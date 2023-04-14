@@ -26,8 +26,6 @@ export default function EditThroughputModal(this: any, props:ThroughputModalProp
     const [selectedCompany, setSelectedCompany] = useState<Company>();
     const [selectedInitiativeIndex, setSelectedInitiativeIndex] = useState(-1);
     const emptyDate: DateInfo = {month: 0, day: 0, year: 0};
-    const fakeEntry: ThroughputData[] = [{date:emptyDate,itemsCompleted:0}];
-    const fakeInit: Initiative = {id:-1, title:'', targetDate:emptyDate, totalItems:0, itemsCompletedOnDate:fakeEntry};
     const tableDataStyle = "outline outline-1 text-center ";
     
   useEffect(() => {
@@ -116,7 +114,7 @@ export default function EditThroughputModal(this: any, props:ThroughputModalProp
                 )
               })}
           </select>
-          {!selectedInitiativeIndex && <p className="p-2">Items Remaining: {FindItemsRemaining(selectedCompany?.initiatives.at(selectedInitiativeIndex) ?? fakeInit)}</p>}
+          {selectedInitiativeIndex >= 0 && <p className="p-2">Items Remaining: {FindItemsRemaining(selectedCompany?.initiatives.at(selectedInitiativeIndex))}</p>}
         </div>
         <div>
             <table className="table-auto w-[98%] outline outline-3">
