@@ -22,7 +22,7 @@ interface ThroughputModalProps{
   companyList: Company[],
   uploadIsOpen: boolean,
   setUploadIsOpen: (value: boolean) => void,
-  Submit: (companyId: number, initiativeId: number, dataList: ThroughputData[]) => void
+  Submit: (companyId: number, initiativeId: number, dataList: ThroughputData[], emptyDataCheck: boolean) => void
 }
 
 export default function UploadThroughputModal(props:ThroughputModalProps){;
@@ -167,7 +167,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
           <div className="outline outline-[#879794] rounded space-y-2 p-2 w-64">
             <p className="text-2xl w-full">Upload CSV File</p>
             <input className="w-full" ref={fileRef} type={'file'} accept={'.csv'} onChange={(e) => ReceiveFile(e.target.value)}/>
-              <button id={UploadThroughputIds.fileSubmit} className={submitButtonStyle + ' max-h-10'} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives.at(selectedInitiativeIndex)?.id ?? -1, fileData)}>Submit</button>
+              <button id={UploadThroughputIds.fileSubmit} className={submitButtonStyle + ' max-h-10'} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives.at(selectedInitiativeIndex)?.id ?? -1, fileData, true)}>Submit</button>
           </div>
           <p className="text-2xl m-3">OR</p>
           <div className="outline outline-[#879794] rounded space-y-2 p-2 w-64">
@@ -180,7 +180,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
             </div>
             <div className='flex w-full h-10'>
               <input id={UploadThroughputIds.itemsComplete} type={'number'} className={'outline outline-1 rounded p-2 w-1/4'} onChange={(e) => {setItemsCompleted(parseInt(e.target.value))}}/>
-              <button id={UploadThroughputIds.manualSubmit} className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives[selectedInitiativeIndex]?.id ?? -1, manualEntry)}>Submit</button>
+              <button id={UploadThroughputIds.manualSubmit} className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives[selectedInitiativeIndex]?.id ?? -1, manualEntry, true)}>Submit</button>
             </div>
           </div>
         </div>

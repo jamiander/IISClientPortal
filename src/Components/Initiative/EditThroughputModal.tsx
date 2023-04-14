@@ -19,7 +19,7 @@ export const EditThroughputIds = {
     companyList: Company[],
     editIsOpen: boolean,
     setEditIsOpen: (value: boolean) => void,
-    Submit: (companyId: number, initiativeId: number, dataList: ThroughputData[]) => void
+    Submit: (companyId: number, initiativeId: number, dataList: ThroughputData[], emptyDataCheck: boolean) => void
   }
 
 export default function EditThroughputModal(this: any, props:ThroughputModalProps){
@@ -138,12 +138,11 @@ export default function EditThroughputModal(this: any, props:ThroughputModalProp
                         </tr>
                         )
                     })}
-                
                 </tbody>
             </table>
         </div>
         <div className="h-10 w-full">
-          <button id={EditThroughputIds.submitButton} className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives[selectedInitiativeIndex]?.id ?? -1, GetInitiativeFromCompany(selectedCompany,selectedInitiativeIndex)?.itemsCompletedOnDate ?? [])}>Submit</button>
+          <button id={EditThroughputIds.submitButton} className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives[selectedInitiativeIndex]?.id ?? -1, GetInitiativeFromCompany(selectedCompany,selectedInitiativeIndex)?.itemsCompletedOnDate ?? [], false)}>Submit</button>
           <button id={EditThroughputIds.closeButton} className={cancelButtonStyle} onClick={() => props.setEditIsOpen(false)}>Close</button>
         </div>
     </div>
