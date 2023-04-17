@@ -14,10 +14,11 @@ export default function Header(){
   var hrs = new Date().getHours();
   var greet;
   let imageLink = './Dashboard';
+  const loginButtonStyle = "transition ease-in-out p-2 px-3 my-1 rounded-md text-white outline outline-[#445362] bg-[#445362] hover:bg-white hover:text-[#879794]";
 
   if(hrs < 12)
     greet = 'Good Morning ' + company?.name
-  else if(hrs >= 12 && hrs <=17)
+  else if(hrs >= 12 && hrs <= 17)
     greet = 'Good Afternoon ' + company?.name
   else
     greet = 'Good Evening ' + company?.name
@@ -33,13 +34,13 @@ export default function Header(){
       
     </div>
     <div className="flex w-[50%] justify-center">
-      {isLoggedIn && <p className="text-2xl self-center">{greet}</p>}
+      {isLoggedIn && <p className="text-2xl self-center">{/*greet*/}</p>}
     </div>
     <div className="flex w-[50%] justify-end self-end">
     {
       !isLoggedIn ?
-        <button className="bg-[#21345b] text-white p-2 px-3 my-1 rounded-md outline hover:outline-[#2ed7c3] hover:text-[#2ed7c3]" onClick={()=>navigate('/Login')}>Log In</button> :
-        <button className="bg-[#21345b] text-white p-2 px-3 my-1 rounded-md outline hover:outline-[#2ed7c3] hover:text-[#2ed7c3]" onClick={()=>{dispatch(signOut()); navigate('/Login')}}>Log Out</button>
+        <button className={loginButtonStyle} onClick={()=>navigate('/Login')}>Log In</button> :
+        <button className={loginButtonStyle} onClick={()=>{dispatch(signOut()); navigate('/Login')}}>Log Out</button>
     }
     </div>
   </div>

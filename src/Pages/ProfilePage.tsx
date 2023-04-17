@@ -13,7 +13,7 @@ export default function ProfilePage(){
     <div className="grid grid-cols-4 p-5">
       <div className="col-span-3 mr-5">
         <div className="h-fit mb-4 bg-[#2ed7c3] rounded-md py-4 pl-5">
-          <p className="text-5xl">Profile</p>
+          <p className="text-5xl font-bold">Profile</p>
         </div>
         <div className="col-span-3 bg-[#445362] rounded-md p-2 pl-5">
           <p className="text-3xl text-white h-[90%]">Company Initiatives</p>
