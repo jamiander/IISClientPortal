@@ -28,8 +28,9 @@ describe('add initiative spec', () => {
     cy.visit('http://localhost:3000/Login')
     cy.get('#email').clear().type('info@integrityinspired.com');
     cy.get('#password').clear().type('password');
-    cy.get('button').contains('Submit').click();
     cy.wait(500);
+    cy.get('button').contains('Submit').click();
+
     cy.get('button').contains('Admin').click();
     cy.get('button').contains('Initiatives').click();
     cy.get(radioIds.all).click();
@@ -37,9 +38,10 @@ describe('add initiative spec', () => {
 
     cy.get('select').select(1);
     cy.get(modalIds.title).clear().type(init.title);
-    cy.get(modalIds.date.month).clear().type(init.date.month);
+    /*cy.get(modalIds.date.month).clear().type(init.date.month);
     cy.get(modalIds.date.day).clear().type(init.date.day);
-    cy.get(modalIds.date.year).clear().type(init.date.year);
+    cy.get(modalIds.date.year).clear().type(init.date.year);*/
+    cy.get(modalIds.date).clear().type("2020-01-01");
     cy.get(modalIds.totalItems).clear().type(init.totalItems);
   });
 
@@ -70,11 +72,11 @@ describe('add initiative spec', () => {
 
   specify('cannot add when a field is left blank', () => {
     cy.get(modalIds.title).clear();
-    cy.get('button').contains('Submit').click();
+    cy.get(modalIds.submitButton).click();
     cy.get(badToastId).contains(failMessage);
     cy.get(modalIds.title).type(init.title);
 
-    cy.get(modalIds.date.month).clear();
+    /*cy.get(modalIds.date.month).clear();
     cy.get('button').contains('Submit').click();
     cy.get(badToastId).contains(failMessage);
     cy.get(modalIds.date.month).type(init.date.month);
@@ -87,7 +89,12 @@ describe('add initiative spec', () => {
     cy.get(modalIds.date.year).clear();
     cy.get('button').contains('Submit').click();
     cy.get(badToastId).contains(failMessage);
-    cy.get(modalIds.date.year).type(init.date.year);
+    cy.get(modalIds.date.year).type(init.date.year);*/
+
+    cy.get(modalIds.date).clear();
+    cy.get(modalIds.submitButton).click();
+    cy.get(badToastId).contains(failMessage);
+    cy.get(modalIds.date).type("2020-01-01");
 
     cy.get(modalIds.totalItems).clear();
     cy.get('button').contains('Submit').click();
@@ -102,7 +109,8 @@ describe('add initiative spec', () => {
     cy.get(badToastId).contains(failMessage);
   })
 
-  specify('cannot add when a date is not in a valid format', () => {
+  //Cypress does not allow invalid dates in date pickers
+  /*specify('cannot add when a date is not in a valid format', () => {
     cy.get(modalIds.date.month).clear().type("-3");
     cy.get('button').contains('Submit').click();
     cy.get(badToastId).contains(failMessage);
@@ -140,8 +148,8 @@ describe('add initiative spec', () => {
     cy.get(modalIds.date.year).clear().type("abcd");
     cy.get('button').contains('Submit').click();
     cy.get(badToastId).contains(failMessage);
-
-  })
+    
+  })*/
 
   specify('close button closes the modal', () => {
     cy.get('button').contains('Close').click();

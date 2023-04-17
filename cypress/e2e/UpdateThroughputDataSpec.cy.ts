@@ -2,6 +2,8 @@ import { TestConstants } from "./TestHelpers";
 
 const consts = TestConstants;
 const modalIds = consts.editThroughputIds;
+const toastId = consts.toastId;
+const failMessage = consts.validationFailedMessage;
 
 const initiative = 'IIS Initiative';
 const company = 'Integrity Inspired Solutions';
@@ -13,6 +15,7 @@ describe('update throughput spec', () => {
     cy.visit('http://localhost:3000/Login');
     cy.get('#email').clear().type('info@integrityinspired.com');
     cy.get('#password').clear().type('password');
+    cy.wait(500);
     cy.get('button').contains('Submit').click();
 
     cy.get('button').contains('Admin').click();
@@ -24,15 +27,19 @@ describe('update throughput spec', () => {
   })
 
   specify('update completed amount', () => {
-    //get before amount
+    cy.get(modalIds.itemsComplete).clear().type("33");
 
-    //do update
+    cy.get(modalIds.submitButton).click();
 
-    //check for updated amount
+    cy.get(toastId).contains("Success");
   })
 
   specify('update the date of an entry', () => {
-    //this is only if date-changing is something we support
+    cy.get(modalIds.date).clear().type("2023-04-20");
+
+    cy.get(modalIds.submitButton).click();
+
+    cy.get(toastId).contains("Success");
   })
 
   specify('close button closes modal', () => {
@@ -44,27 +51,43 @@ describe('update throughput spec', () => {
   })
 
   specify('cannot update throughput data if unselected company', () => {
-
+    cy.get(modalIds.selectCompany).select(0);
+    cy.get(modalIds.submitButton).click();
+    cy.get(toastId).contains(failMessage);
   })
 
   specify('cannot update throughput data if unselected initiative', () => {
-
+    cy.get(modalIds.selectInitiative).select(0);
+    cy.get(modalIds.submitButton).click();
+    cy.get(toastId).contains(failMessage);
   })
 
   specify('cannot update throughput data to an invalid date', () => {
-    //valid completed amount
+    cy.get(modalIds.date).clear();
+    cy.get(modalIds.submitButton).click();
+    cy.get(toastId).contains(failMessage);
 
-    //empty date fields
-    //NaN date fields
-    //out of range date fields
+    /*cy.get(modalIds.date).clear().type("2020-03-aa");   //Cypress doesn't allow this
+    cy.get(modalIds.submitButton).click();
+    cy.get(toastId).contains(failMessage);*/
+
+    /*cy.get(modalIds.date).clear().type("1800-13-32");   //Same here
+    cy.get(modalIds.submitButton).click();
+    cy.get(toastId).contains(failMessage);*/
   })
 
   specify('cannot update throughput data to an invalid completed amount', () => {
-    //valid date
+    cy.get(modalIds.itemsComplete).clear();
+    cy.get(modalIds.submitButton).click();
+    cy.get(toastId).contains(failMessage);
 
-    //empty completed amount
-    //NaN completed amount
-    //negative completed amount
+    cy.get(modalIds.itemsComplete).clear().type("a");
+    cy.get(modalIds.submitButton).click();
+    cy.get(toastId).contains(failMessage);
+
+    cy.get(modalIds.itemsComplete).clear().type("-2");
+    cy.get(modalIds.submitButton).click();
+    cy.get(toastId).contains(failMessage);
   })
 
 });

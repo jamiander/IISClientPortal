@@ -19,12 +19,10 @@ export const InitiativeModalIds = {
 	modal: "initModal",
 	company: "initModalCompany",
 	title: "initModalTitle",
-	date: {
-		month: "initModalMonth",
-		day: "initModalDay",
-		year: "initModalYear"
-	},
+	date: "initModalDate",
 	totalItems: "initModalTotalItems",
+  submitButton: "initModalSubmitButton",
+  closeButton: "initModalCloseButton"
 }
 
 export function UpdateInitiativeListModal(props: InitiativeModalProps){
@@ -53,8 +51,7 @@ export function UpdateInitiativeListModal(props: InitiativeModalProps){
 		>
 			<p className='text-3xl'>{props.title}</p>
 			<div className='w-full'>
-				<p className='my-1'>Company</p>
-        <p>{props.company ? ": " + props.company.name : 
+				<p className='my-1'>Company{props.company ? ": " + props.company.name :
           <div>
             <select id={InitiativeModalIds.company} onChange={(e) => setInitiativeCompanyId(parseInt(e.target.value))} 
             className='outline outline-1 rounded p-2'
@@ -68,15 +65,14 @@ export function UpdateInitiativeListModal(props: InitiativeModalProps){
                 })
               }
             </select>
-          </div>}
-				</p>
+          </div>
+        }</p>
 				<p className='my-1'>Title</p>
 				<input defaultValue={props.initiative?.title} id={InitiativeModalIds.title} className={inputStyle + ' w-3/4'} placeholder='Initiative Title'
           onChange={(e) => {setInitiativeTitle(e.target.value)}}/>
         <div className='my-2 p-2 outline outline-1 outline-[#879794] rounded'>
           <p className=''>Target Completion</p>
-          {initiativeTargetDate.day}
-				  <DateInput date={initiativeTargetDate} setDate={setInitiativeTargetDate} inputIds={InitiativeModalIds.date}/>
+				  <DateInput id={InitiativeModalIds.date} date={initiativeTargetDate} setDate={setInitiativeTargetDate}/>
         </div>
       </div>
       
@@ -85,8 +81,8 @@ export function UpdateInitiativeListModal(props: InitiativeModalProps){
             <p>Total Items</p>
             <input defaultValue={props.initiative?.totalItems} id={InitiativeModalIds.totalItems} type={'number'} placeholder='###' className={inputStyle} onChange={(e) => {setInitiativeTotalItems(parseInt(e.target.value))}}/>
           </div>
-          <div className='h-10'>
-            <button className={submitButtonStyle + ' mt-6'} 
+          <div className='h-10 flex'>
+            <button id={InitiativeModalIds.submitButton} className={submitButtonStyle + ' mt-6'} 
               onClick={() => {
                 let initiative : Initiative = {
                   id: props.initiative?.id ?? -1,
@@ -98,7 +94,7 @@ export function UpdateInitiativeListModal(props: InitiativeModalProps){
                 props.Submit(initiative,initiativeCompanyId)
               }}> Submit
             </button>
-            <button className={cancelButtonStyle} onClick={() => props.setInitiativeIsOpen(false)}>Close</button> 
+            <button id={InitiativeModalIds.closeButton} className={cancelButtonStyle + ' mt-6'} onClick={() => props.setInitiativeIsOpen(false)}>Close</button> 
           </div>
         </div>
 		</Modal>

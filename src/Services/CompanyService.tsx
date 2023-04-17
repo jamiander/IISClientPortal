@@ -4,19 +4,18 @@ import { User } from "../Store/UserSlice";
 import { BASE_URL } from "./Http";
 
 interface EmployeeInfo {
-  employeeId: string//number,
+  employeeId: string,
   employeeEmail: string,
   employeePassword: string
 }
 
 export interface DateInfo {
-  month: number,//string,
-  day: number,//string,
-  year: number//string
+  month: number,
+  day: number,
+  year: number
 }
 
 export interface CompanyInfo {
-  //companyId: number,
   id: string,
   companyName: string,
   employeeInfo: EmployeeInfo,
@@ -66,7 +65,7 @@ export interface UpdateCompanyInfoRequest {
 }
 
 interface UpdateCompanyInfoResponse {
-  id: string,//number,
+  id: string,
   status: string
 }
 
@@ -94,12 +93,12 @@ export async function UpdateCompanyInfo(request: UpdateCompanyInfoRequest) : Pro
 
 export interface UpdateInitiativeInfoRequest {
   initiative: Initiative,
-  companyId: string//number,
+  companyId: string,
   isTest: boolean
 }
 
 interface UpdateInitiativeInfoResponse {
-  initiativeId: string//number,
+  initiativeId: string,
   status: string
 }
 
@@ -110,12 +109,16 @@ export async function UpdateInitiativeInfo(request: UpdateInitiativeInfoRequest)
   return response.data;
 }
 
-export function FindItemsRemaining(initiative: Initiative)  {
-  const itemsCompleted = initiative.itemsCompletedOnDate.map((item) => item.itemsCompleted);
-  let totalItemsCompleted = 0;
+export function FindItemsRemaining(initiative: Initiative | undefined) {
+  if(initiative)
+  {
+    const itemsCompleted = initiative.itemsCompletedOnDate.map((item) => item.itemsCompleted);
+    let totalItemsCompleted = 0;
 
-  itemsCompleted.forEach((num) => totalItemsCompleted += num);
-  return initiative.totalItems - totalItemsCompleted;
+    itemsCompleted.forEach((num) => totalItemsCompleted += num);
+    return initiative.totalItems - totalItemsCompleted;
+  }
+  return NaN;
 }
 
 export interface UpdateThroughputDataRequest {

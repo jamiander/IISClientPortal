@@ -15,20 +15,16 @@ export const UploadThroughputIds = {
   selectInitiative: "selectInitiativeInThroughputModal",
   fileSubmit: "submitThroughputAsFile",
   manualSubmit: "submitThroughputAsSingleEntry",
-  date: {
-    month: "uploadModalMonth",
-    day: "uploadModalDay",
-    year: "uploadModalYear"
-  },
-  itemsComplete: "uploadModalComplete",
-  closeButton: "uploadModalClose"
+  date: "uploadThroughputDate",
+  itemsComplete: "uploadThroughputItemsComplete",
+  closeButton: "uploadThroughputClose"
 }
 
 interface ThroughputModalProps{
   companyList: Company[],
   uploadIsOpen: boolean,
   setUploadIsOpen: (value: boolean) => void,
-  Submit: (companyId: number, initiativeId: number, dataList: ThroughputData[]) => void
+  Submit: (companyId: number, initiativeId: number, dataList: ThroughputData[], emptyDataCheck: boolean) => void
 }
 
 export default function UploadThroughputModal(props:ThroughputModalProps){;
@@ -37,12 +33,9 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
   const [fileData, setFileData] = useState<ThroughputData[]>([]);
   const [fileWarning, setFileWarning] = useState("");
   const ShowToast : (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void = useOutletContext();
-  const emptyDate: DateInfo = {month: 0, day: 0, year: 0};
   const today = new Date();
   const todayInfo: DateInfo = {month: today.getMonth()+1, day: today.getDate(), year: today.getFullYear()}
   const [entryDate, setEntryDate] = useState<DateInfo>(todayInfo);
-  const fakeEntry: ThroughputData[] = [{date:emptyDate,itemsCompleted:0}];
-  const fakeInit: Initiative = {id:-1, title:'', targetDate:emptyDate, totalItems:0, itemsCompletedOnDate:fakeEntry};
   const [itemsCompleted, setItemsCompleted] = useState(-1);
   const manualEntry: ThroughputData[] = [{date:entryDate,itemsCompleted:itemsCompleted}]
   const fileRef = useRef<HTMLInputElement>(null);
@@ -180,20 +173,20 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
           <div className="outline outline-[#879794] rounded space-y-2 p-2 w-64">
             <p className="text-2xl w-full">Upload CSV File</p>
             <input className="w-full" ref={fileRef} type={'file'} accept={'.csv'} onChange={(e) => ReceiveFile(e.target.value)}/>
-              <button id={UploadThroughputIds.fileSubmit} className={submitButtonStyle + ' max-h-10'} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives.at(selectedInitiativeIndex)?.id ?? -1, fileData)}>Submit</button>
+              <button id={UploadThroughputIds.fileSubmit} className={submitButtonStyle + ' max-h-10'} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives.at(selectedInitiativeIndex)?.id ?? -1, fileData, true)}>Submit</button>
           </div>
           <p className="text-2xl m-3">OR</p>
           <div className="outline outline-[#879794] rounded space-y-2 p-2 w-64">
             <div>
               <p className="text-2xl">Manual Entry</p>
             </div>
-            <DateInput date={entryDate} setDate={setEntryDate} inputIds={UploadThroughputIds.date}/>
+            <DateInput id={UploadThroughputIds.date} date={entryDate} setDate={setEntryDate}/>
             <div>
               <p>Items Completed</p>
             </div>
             <div className='flex w-full h-10'>
               <input id={UploadThroughputIds.itemsComplete} type={'number'} className={'outline outline-1 rounded p-2 w-1/4'} onChange={(e) => {setItemsCompleted(parseInt(e.target.value))}}/>
-              <button id={UploadThroughputIds.manualSubmit} className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives[selectedInitiativeIndex]?.id ?? -1, manualEntry)}>Submit</button>
+              <button id={UploadThroughputIds.manualSubmit} className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives[selectedInitiativeIndex]?.id ?? -1, manualEntry, true)}>Submit</button>
             </div>
           </div>
         </div>

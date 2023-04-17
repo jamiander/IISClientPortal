@@ -3,7 +3,7 @@ import { useOutletContext } from "react-router-dom";
 import { Company, Initiative, selectAllCompanies, updateInitiativeInfo, updateThroughputData } from "../../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
 import InitiativesTable from "./InitiativesTable"
-import ValidateNewInitiative, { ValidateCompanyAndInitiative, ValidateThroughputDataUpdate, ValidationFailedPrefix } from "../../Services/Validation";
+import ValidateNewInitiative, { ValidateCompanyAndInitiative, ValidateEditThroughputData, ValidateNewThroughputData, ValidationFailedPrefix } from "../../Services/Validation";
 import UploadThroughputModal from "./UploadThroughputModal";
 import { UpdateInitiativeListModal } from "./UpdateInitiativeListModal";
 import { ThroughputData } from "../../Services/CompanyService";
@@ -44,38 +44,22 @@ export default function ManageInitiativesDisplay() {
       ShowToast(ValidationFailedPrefix + validation.message,'Error');
   }
 
-  function SubmitUpdateThroughput(companyId: number, initiativeId: number, dataList: ThroughputData[])
+  function SubmitUpdateThroughput(companyId: number, initiativeId: number, dataList: ThroughputData[], emptyDataCheck: boolean = true)
   {
     let isTest = false;
     if((window as any).Cypress)
       isTest = true;
 
-    const validation = ValidateThroughputDataUpdate(companyList, companyId, initiativeId, dataList);
+    const validation = emptyDataCheck ? ValidateNewThroughputData(companyList, companyId, initiativeId, dataList) : ValidateEditThroughputData(companyList, companyId, initiativeId, dataList);
     if(validation.success)
     {
       dispatch(updateThroughputData({companyId: companyId.toString(), initiativeId: initiativeId.toString(), itemsCompletedOnDate: dataList, isTest: isTest}));
       setUploadModalIsOpen(false);
-      ShowToast(validation.message, 'Success')
-    }
-    else
-      ShowToast(ValidationFailedPrefix + validation.message, 'Error');
-  }
-
-  function SubmitEditThroughput(companyId: number, initiativeId: number, dataList: ThroughputData[])
-  {
-    let isTest = false;
-    if((window as any).Cypress)
-      isTest = true;
-
-    const validation = ValidateCompanyAndInitiative(companyList, companyId, initiativeId);
-    if(validation.success)
-    {
-      dispatch(updateThroughputData({companyId: companyId.toString(), initiativeId: initiativeId.toString(), itemsCompletedOnDate: dataList, isTest: isTest}));
       setEditModalIsOpen(false);
       ShowToast(validation.message, 'Success')
     }
     else
-      ShowToast(ValidationFailedPrefix + validation.message, 'Error'); 
+      ShowToast(ValidationFailedPrefix + validation.message, 'Error');
   }
 
   return (
@@ -95,7 +79,7 @@ export default function ManageInitiativesDisplay() {
           </button>
           <UpdateInitiativeListModal title='Add Initiative' initiativeIsOpen={AddInitiativeIsOpen} setInitiativeIsOpen={setAddInitiativeIsOpen} Submit={SubmitUpdateInitiative}/>
           <UploadThroughputModal companyList={companyList} uploadIsOpen={UploadModalIsOpen} setUploadIsOpen={setUploadModalIsOpen} Submit={SubmitUpdateThroughput}/>
-          <EditThroughputModal companyList={companyList} editIsOpen={EditModalIsOpen} setEditIsOpen={setEditModalIsOpen} Submit={SubmitEditThroughput}/>
+          <EditThroughputModal companyList={companyList} editIsOpen={EditModalIsOpen} setEditIsOpen={setEditModalIsOpen} Submit={SubmitUpdateThroughput}/>
         </div>
       </div>
 

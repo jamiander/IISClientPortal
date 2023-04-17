@@ -4,6 +4,7 @@ import { DateInfo, ThroughputData } from "../../Services/CompanyService";
 import { Company, Initiative } from "../../Store/CompanySlice";
 import { cancelButtonStyle, modalStyle, submitButtonStyle } from "../../Styles";
 import SelectCompanyAndInitiative from "./SelectCompanyAndInitiative";
+import { MakeDateString } from "../DateInput";
 
 export const EditThroughputIds = {
     modal: "editThroughputModal",
@@ -11,27 +12,21 @@ export const EditThroughputIds = {
     selectInitiative: "editThroughputInititia",
     submitButton: "editThroughputSubmitButton",
     closeButton: "editThroughputCloseButton",
-    date: {
-      month: "uploadModalMonth",
-      day: "uploadModalDay",
-      year: "uploadModalYear"
-    },
-    itemsComplete: "uploadModalComplete"
+    date: "editThroughputDate",
+    itemsComplete: "editThroughputItemsComplete"
   }
   
   interface ThroughputModalProps{
     companyList: Company[],
     editIsOpen: boolean,
     setEditIsOpen: (value: boolean) => void,
-    Submit: (companyId: number, initiativeId: number, dataList: ThroughputData[]) => void
+    Submit: (companyId: number, initiativeId: number, dataList: ThroughputData[], emptyDataCheck: boolean) => void
   }
 
-export default function EditThroughputModal(this: any, props:ThroughputModalProps){
+export default function EditThroughputModal(this: any, props: ThroughputModalProps){
     const [selectedCompany, setSelectedCompany] = useState<Company>();
     const [selectedInitiativeIndex, setSelectedInitiativeIndex] = useState(-1);
-    const emptyDate: DateInfo = {month: 0, day: 0, year: 0};
-    const fakeEntry: ThroughputData[] = [{date:emptyDate,itemsCompleted:0}];
-    const fakeInit: Initiative = {id:-1, title:'', targetDate:emptyDate, totalItems:0, itemsCompletedOnDate:fakeEntry};
+    const tableDataStyle = "outline outline-1 text-center ";
     
   useEffect(() => {
     setSelectedCompany(undefined);
@@ -53,10 +48,6 @@ export default function EditThroughputModal(this: any, props:ThroughputModalProp
       else
         setSelectedInitiativeIndex(-1);
     }
-  }
-
-  function addLeadingZero(num: number){
-    return ((num < 10) ? "0" : "") + num.toString();
   }
 
   function GetInitiativeFromCompany(company: Company | undefined, initiativeIndex: number) : Initiative | undefined
@@ -127,33 +118,33 @@ export default function EditThroughputModal(this: any, props:ThroughputModalProp
           throw new Error("Function not implemented.");
         } }></SelectCompanyAndInitiative>
         <div>
-            <table className="table-auto w-[98%] outline outline-3">
+            <table className="table-auto w-full outline outline-3 rounded-md">
                 <thead>
                     <tr>
-                        <th className="w-8">Date</th>
+                        <th>Date</th>
                         <th>Items Completed</th>
                     </tr>
                 </thead>
                 <tbody>
                     {(selectedInitiativeIndex >= 0) && selectedCompany?.initiatives.at(selectedInitiativeIndex)?.itemsCompletedOnDate.map((throughput, key) => {
                         return (
-                        <tr key={key}>
-                            <td>
-                                <input type="date" value={throughput.date.year + "-" + addLeadingZero(throughput.date.month) + "-" + addLeadingZero(throughput.date.day)} 
-                                onChange={(e) => EditDate(key, e.target.value)}/>                              
+                        <tr key={key} className="">
+                            <td className="border border-spacing-x-0 border-y-gray-700 even:bg-gray-100 focus-within:bg-gray-200 hover:bg-gray-200">
+                                <input className="px-2 w-full bg-inherit focus:outline-none" id={EditThroughputIds.date} type="date" value={MakeDateString(throughput.date)} 
+                                onChange={(e) => EditDate(key, e.target.value)}/>                        
                             </td>
-                            <td>
-                                <input type="number" min="0" value={throughput.itemsCompleted} onChange={(e) =>EditItems(key, e.target.value)}/>
+                            <td className="border border-spacing-x-0 border-y-gray-700 focus-within:bg-gray-200 hover:bg-gray-200">
+                                <input className="px-2 w-full bg-inherit focus:outline-none" id={EditThroughputIds.itemsComplete} type="number" min="0" value={throughput.itemsCompleted}
+                                onChange={(e) =>EditItems(key, e.target.value)}/>
                             </td>
                         </tr>
                         )
                     })}
-                
                 </tbody>
             </table>
         </div>
         <div className="h-10 w-full">
-          <button id={EditThroughputIds.submitButton} className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives[selectedInitiativeIndex]?.id ?? -1, GetInitiativeFromCompany(selectedCompany,selectedInitiativeIndex)?.itemsCompletedOnDate ?? [])}>Submit</button>
+          <button id={EditThroughputIds.submitButton} className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives[selectedInitiativeIndex]?.id ?? -1, GetInitiativeFromCompany(selectedCompany,selectedInitiativeIndex)?.itemsCompletedOnDate ?? [], false)}>Submit</button>
           <button id={EditThroughputIds.closeButton} className={cancelButtonStyle} onClick={() => props.setEditIsOpen(false)}>Close</button>
         </div>
     </div>
