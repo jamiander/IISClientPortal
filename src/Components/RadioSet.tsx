@@ -14,7 +14,7 @@ interface RadioSetProps {
 export function RadioSet(props: RadioSetProps)
 {
   return (
-    <div className="w-fit flex justify-center mt-2 py-1 px-5 outline outline-1 outline-[#2ed7c3] rounded text-white">
+    <div className="w-fit flex justify-center mt-2 py-1 px-5 outline outline-1 outline-white rounded text-white">
       {
         props.options.map((radio) => {
           return (

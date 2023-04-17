@@ -22,5 +22,5 @@ export const integrityColors = {
 
 export const inputStyle = "outline rounded outline-1 p-2 w-full ";
 
-export const submitButtonStyle = "rounded h-full w-[80px] mx-2 bg-lime-600 text-white hover:bg-lime-700";
-export const cancelButtonStyle = "rounded h-full w-[80px] bg-red-600 text-white hover:bg-red-700";
+export const submitButtonStyle = "rounded h-3/4 max-h-7 w-[90px] mx-2 bg-lime-600 text-white hover:bg-lime-700";
+export const cancelButtonStyle = "rounded h-3/4 max-h-7 w-[90px] mx-2 bg-red-600 text-white hover:bg-red-700";

@@ -76,13 +76,13 @@ export function UpdateInitiativeListModal(props: InitiativeModalProps){
         </div>
       </div>
       
-      <div className='mt-2 justify-between flex'>
+      <div className='mt-2 grid grid-cols-2'>
           <div className='w-24'>
             <p>Total Items</p>
             <input defaultValue={props.initiative?.totalItems} id={InitiativeModalIds.totalItems} type={'number'} placeholder='###' className={inputStyle} onChange={(e) => {setInitiativeTotalItems(parseInt(e.target.value))}}/>
           </div>
-          <div className='h-10 flex'>
-            <button id={InitiativeModalIds.submitButton} className={submitButtonStyle + ' mt-6'} 
+          <div className="p-2 justify-self-end">
+            <button id={InitiativeModalIds.submitButton} className={submitButtonStyle} 
               onClick={() => {
                 let initiative : Initiative = {
                   id: props.initiative?.id ?? -1,
@@ -94,7 +94,7 @@ export function UpdateInitiativeListModal(props: InitiativeModalProps){
                 props.Submit(initiative,initiativeCompanyId)
               }}> Submit
             </button>
-            <button id={InitiativeModalIds.closeButton} className={cancelButtonStyle + ' mt-6'} onClick={() => props.setInitiativeIsOpen(false)}>Close</button> 
+            <button id={InitiativeModalIds.closeButton} className={cancelButtonStyle + " mt-2"} onClick={() => props.setInitiativeIsOpen(false)}>Close</button> 
           </div>
         </div>
 		</Modal>
