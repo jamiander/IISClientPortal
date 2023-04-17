@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { getCompanyInfo } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks"
 import { selectAllUsers, setCurrentUserId } from "../Store/UserSlice";
+import { genericButtonStyle } from "../Styles";
 
 export default function LoginPage(){
   const dispatch = useAppDispatch();
@@ -40,7 +41,7 @@ export default function LoginPage(){
           <p className="">Password</p>
           <div className="flex">
             <label>
-              <input type='checkbox' className='mr-2' onChange={togglePasswordVisibility}/> 
+              <input type='checkbox' className='mr-2' onChange={togglePasswordVisibility}/>
               Show Password
             </label>
           </div>
@@ -49,7 +50,7 @@ export default function LoginPage(){
         className={selectStyle}/>
         
         <div className="w-full my-5">
-          <button onClick={()=>Login()} className="outline outline-black rounded bg-[#21345b] text-white h-10 w-24 transition ease-in-out hover:bg-white hover:text-[#879794]">Submit</button>
+          <button onClick={()=>Login()} className={genericButtonStyle}>Submit</button>
         </div>
 
       </div>

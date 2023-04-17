@@ -3,7 +3,7 @@ import { useOutletContext } from "react-router-dom";
 import { Company, Initiative, selectAllCompanies, updateInitiativeInfo, updateThroughputData } from "../../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
 import InitiativesTable from "./InitiativesTable"
-import ValidateNewInitiative, { ValidateCompanyAndInitiative, ValidateEditThroughputData, ValidateNewThroughputData, ValidationFailedPrefix } from "../../Services/Validation";
+import ValidateNewInitiative, { ValidateEditThroughputData, ValidateNewThroughputData, ValidationFailedPrefix } from "../../Services/Validation";
 import UploadThroughputModal from "./UploadThroughputModal";
 import { UpdateInitiativeListModal } from "./UpdateInitiativeListModal";
 import { ThroughputData } from "../../Services/CompanyService";
@@ -26,7 +26,10 @@ export default function ManageInitiativesDisplay() {
 
   const dispatch = useAppDispatch();
   const ShowToast : (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void = useOutletContext();
-  const [radioValue, setRadioValue] = useState('active')
+  const [radioValue, setRadioValue] = useState('active');
+
+  const buttonStyle = "outline h-[40px] bg-[#21345b] text-white w-32 rounded-md hover:outline-[#2ed7c3] hover:text-[#2ed7c3]";
+  
 
   function SubmitUpdateInitiative(initiative: Initiative, companyId: number)
   {
@@ -39,7 +42,7 @@ export default function ManageInitiativesDisplay() {
     {
       dispatch(updateInitiativeInfo({initiative: initiative, companyId: companyId.toString(), isTest: isTest}));
       setAddInitiativeIsOpen(false);
-      ShowToast("Update initiative successful", 'Success')
+      ShowToast("Update initiative successful", 'Success');
     }
     else
       ShowToast(ValidationFailedPrefix + validation.message,'Error');
@@ -57,7 +60,7 @@ export default function ManageInitiativesDisplay() {
       dispatch(updateThroughputData({companyId: companyId.toString(), initiativeId: initiativeId.toString(), itemsCompletedOnDate: dataList, isTest: isTest}));
       setUploadModalIsOpen(false);
       setEditModalIsOpen(false);
-      ShowToast(validation.message, 'Success')
+      ShowToast(validation.message, 'Success');
     }
     else
       ShowToast(ValidationFailedPrefix + validation.message, 'Error');
@@ -69,13 +72,13 @@ export default function ManageInitiativesDisplay() {
       <div className="w-full flex justify-between">
         <p className="text-3xl text-white">Initiatives</p>
         <div className="space-x-2 flex flex-wrap">
-          <button onClick={() => setAddInitiativeIsOpen(true)} className="outline h-[40px] bg-[#21345b] text-white w-32 rounded-md hover:outline-[#2ed7c3] hover:text-[#2ed7c3]">
+          <button onClick={() => setAddInitiativeIsOpen(true)} className={buttonStyle}>
             Add Initiative
           </button>
-          <button onClick={() => setUploadModalIsOpen(true)} className="outline h-[40px] bg-[#21345b] text-white w-32 rounded-md hover:outline-[#2ed7c3] hover:text-[#2ed7c3]">
+          <button onClick={() => setUploadModalIsOpen(true)} className={buttonStyle}>
             Upload Data
           </button>
-          <button onClick={() => setEditModalIsOpen(true)} className="outline h-[40px] bg-[#21345b] text-white w-32 rounded-md hover:outline-[#2ed7c3] hover:text-[#2ed7c3]">
+          <button onClick={() => setEditModalIsOpen(true)} className={buttonStyle}>
             Edit Data
           </button>
           <UpdateInitiativeListModal title='Add Initiative' initiativeIsOpen={AddInitiativeIsOpen} setInitiativeIsOpen={setAddInitiativeIsOpen} Submit={SubmitUpdateInitiative}/>

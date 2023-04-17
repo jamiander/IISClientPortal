@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { selectAllCompanies } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
 import { selectCurrentUser, selectIsLoggedIn, signOut } from "../Store/UserSlice";
+import { genericButtonStyle } from "../Styles";
 
 export default function Header(){
   const logo = 'https://static.wixstatic.com/media/4f8b60_2899998071014662a534db34be03a3d1~mv2.png/v1/fill/w_438,h_118,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/Integrity-Logo_2x%20(3)_edited.png'
@@ -14,16 +15,16 @@ export default function Header(){
   var hrs = new Date().getHours();
   var greet;
   let imageLink = './Dashboard';
-  const loginButtonStyle = "transition ease-in-out p-2 px-3 my-1 rounded-md text-white outline outline-[#445362] bg-[#445362] hover:bg-white hover:text-[#879794]";
 
   if(hrs < 12)
-    greet = 'Good Morning ' + company?.name
+    greet = 'Good Morning ' + company?.name;
   else if(hrs >= 12 && hrs <= 17)
-    greet = 'Good Afternoon ' + company?.name
+    greet = 'Good Afternoon ' + company?.name;
   else
-    greet = 'Good Evening ' + company?.name
+    greet = 'Good Evening ' + company?.name;
 
-  if(!isLoggedIn) imageLink = './Login'
+  if(!isLoggedIn)
+    imageLink = './Login';
 
   return(
   <div className="mr-[1%] ml-[1%] flex">
@@ -34,13 +35,13 @@ export default function Header(){
       
     </div>
     <div className="flex w-[50%] justify-center">
-      {isLoggedIn && <p className="text-2xl self-center">{/*greet*/}</p>}
+      {/*isLoggedIn && <p className="text-2xl self-center">{greet}</p>*/}
     </div>
     <div className="flex w-[50%] justify-end self-end">
     {
       !isLoggedIn ?
-        <button className={loginButtonStyle} onClick={()=>navigate('/Login')}>Log In</button> :
-        <button className={loginButtonStyle} onClick={()=>{dispatch(signOut()); navigate('/Login')}}>Log Out</button>
+        <button className={genericButtonStyle + " my-1"} onClick={()=>navigate('/Login')}>Log In</button> :
+        <button className={genericButtonStyle + " my-1"} onClick={()=>{dispatch(signOut()); navigate('/Login')}}>Log Out</button>
     }
     </div>
   </div>

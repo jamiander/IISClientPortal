@@ -54,7 +54,7 @@ export function UpdateInitiativeListModal(props: InitiativeModalProps){
 				<p className='my-1'>Company{props.company ? ": " + props.company.name :
           <div>
             <select id={InitiativeModalIds.company} onChange={(e) => setInitiativeCompanyId(parseInt(e.target.value))} 
-            className='outline outline-1 rounded p-2'
+            className='outline outline-1 rounded p-2 hover:outline-2'
             >
               <option>Select Company</option>
               {
