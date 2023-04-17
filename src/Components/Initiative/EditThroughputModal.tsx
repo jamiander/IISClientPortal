@@ -1,9 +1,9 @@
 import Modal from "react-modal";
-import { useEffect, useState } from "react";
-import { DateInfo, FindItemsRemaining, ThroughputData } from "../../Services/CompanyService";
+import { SetStateAction, useEffect, useState } from "react";
+import { DateInfo, ThroughputData } from "../../Services/CompanyService";
 import { Company, Initiative } from "../../Store/CompanySlice";
 import { cancelButtonStyle, modalStyle, submitButtonStyle } from "../../Styles";
-import { EditUserModalIds } from "../User/UpdateUserListModal";
+import SelectCompanyAndInitiative from "./SelectCompanyAndInitiative";
 
 export const EditThroughputIds = {
     modal: "editThroughputModal",
@@ -32,7 +32,6 @@ export default function EditThroughputModal(this: any, props:ThroughputModalProp
     const emptyDate: DateInfo = {month: 0, day: 0, year: 0};
     const fakeEntry: ThroughputData[] = [{date:emptyDate,itemsCompleted:0}];
     const fakeInit: Initiative = {id:-1, title:'', targetDate:emptyDate, totalItems:0, itemsCompletedOnDate:fakeEntry};
-    const tableDataStyle = "outline outline-1 text-center ";
     
   useEffect(() => {
     setSelectedCompany(undefined);
@@ -103,7 +102,7 @@ export default function EditThroughputModal(this: any, props:ThroughputModalProp
 
       <div className="space-y-5">
         <p className="text-3xl w-full">Edit Throughput Data</p>
-        <div className="space-x-5 flex w-full">
+        {/* <div className="space-x-5 flex w-full">
           <select id={EditThroughputIds.selectCompany} onChange={(e) => SelectCompany(parseInt((e.target as HTMLSelectElement).value))} className="outline outline-1 rounded w-56 h-10">
             <option>Select Company</option>
               {props.companyList.map((company,index)=>{
@@ -121,7 +120,12 @@ export default function EditThroughputModal(this: any, props:ThroughputModalProp
               })}
           </select>
           {!selectedInitiativeIndex && <p className="p-2">Items Remaining: {FindItemsRemaining(selectedCompany?.initiatives.at(selectedInitiativeIndex) ?? fakeInit)}</p>}
-        </div>
+        </div> */}
+        <SelectCompanyAndInitiative companyList={[]} setSelectedCompany={function (value: SetStateAction<Company | undefined>): void {
+          throw new Error("Function not implemented.");
+        } } setSelectedInitiativeIndex={function (value: SetStateAction<number>): void {
+          throw new Error("Function not implemented.");
+        } }></SelectCompanyAndInitiative>
         <div>
             <table className="table-auto w-[98%] outline outline-3">
                 <thead>
