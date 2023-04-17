@@ -7,7 +7,6 @@ import { useOutletContext } from "react-router-dom";
 import { ValidationFailedPrefix } from "../../Services/Validation";
 import { DateInput } from "../DateInput";
 import SelectCompanyAndInitiative from "./SelectCompanyAndInitiative";
-import { useAppSelector } from "../../Store/Hooks";
 
 export const UploadThroughputIds = {
   modal: "uploadThroughputModal",
@@ -21,13 +20,13 @@ export const UploadThroughputIds = {
 }
 
 interface ThroughputModalProps{
-  companyList: Company[],
+  companyList: Company[];
   uploadIsOpen: boolean,
   setUploadIsOpen: (value: boolean) => void,
   Submit: (companyId: number, initiativeId: number, dataList: ThroughputData[], emptyDataCheck: boolean) => void
 }
 
-export default function UploadThroughputModal(props:ThroughputModalProps){;
+export default function UploadThroughputModal(props:ThroughputModalProps){
   const [selectedCompany, setSelectedCompany] = useState<Company>();
   const [selectedInitiativeIndex, setSelectedInitiativeIndex] = useState(-1);
   const [fileData, setFileData] = useState<ThroughputData[]>([]);
@@ -48,23 +47,6 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
     setEntryDate(todayInfo);
     setItemsCompleted(-1);
   },[props.uploadIsOpen])
-
-  /* function SelectCompany(companyId: number)
-  {
-    setSelectedCompany(props.companyList.find(company => company.id === companyId));
-    setSelectedInitiativeIndex(-1);
-  }
-
-  function SelectInitiative(initiativeIndex: number)
-  {
-    if(selectedCompany)
-    {
-      if(selectedCompany.initiatives[initiativeIndex])
-        setSelectedInitiativeIndex(initiativeIndex);
-      else
-        setSelectedInitiativeIndex(-1);
-    }
-  } */
 
   function ReceiveFile(fileName: string)
   {
@@ -144,30 +126,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
     appElement={document.getElementById('root') as HTMLElement}>
       <div className="space-y-5">
         <p className="text-3xl w-full">Enter Throughput Data</p>
-        {/* </div><div className="space-x-5 flex w-full">
-          <select id={UploadThroughputIds.selectCompany} onChange={(e) => SelectCompany(parseInt((e.target as HTMLSelectElement).value))} className="outline outline-1 rounded w-56 h-10">
-            <option>Select Company</option>
-              {props.companyList.map((company,index)=>{
-                return(
-                  <option value={company.id} key={index}>{company.name}</option>
-                )
-              })}
-          </select>
-          <select id={UploadThroughputIds.selectInitiative} value={selectedInitiativeIndex} onChange={(e) => SelectInitiative(parseInt((e.target as HTMLSelectElement).value))} className="outline outline-1 rounded w-56 h-10">
-            <option>Select Initiative</option>
-              {selectedCompany?.initiatives.map((initiative,index)=>{
-                return(
-                  <option value={index} key={index}>{initiative.title}</option>
-                )
-              })}
-          </select>
-          {!selectedInitiativeIndex && <p className="p-2">Items Remaining: {FindItemsRemaining(selectedCompany?.initiatives.at(selectedInitiativeIndex) ?? fakeInit)}</p>}
-        </div>  */}
-        <SelectCompanyAndInitiative companyList={[]} setSelectedCompany={function (value: SetStateAction<Company | undefined>): void {
-          throw new Error("Function not implemented.");
-        } } setSelectedInitiativeIndex={function (value: SetStateAction<number>): void {
-          throw new Error("Function not implemented.");
-        } }></SelectCompanyAndInitiative>
+        <SelectCompanyAndInitiative companyList={props.companyList} setSelectedCompany={setSelectedCompany} setSelectedInitiativeIndex={setSelectedInitiativeIndex} selectedCompany={selectedCompany}></SelectCompanyAndInitiative>
         {fileWarning}
         <div className="flex">
           <div className="outline outline-[#879794] rounded space-y-2 p-2 w-64">
