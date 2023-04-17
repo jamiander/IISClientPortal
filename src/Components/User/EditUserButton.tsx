@@ -22,14 +22,12 @@ export default function EditUserButton(props:EditUserButtonProps){
 
   return(
     <div key={props.index} className={'py-2 my-2 flex self-end'}>
-      <button className=" mx-2 bg-[#21345b] hover:outline-[#2ed7c3] hover:text-[#2ed7c3] text-sm text-white w-full h-10 rounded-md outline"
+      <button className=" mx-2 bg-[#21345b] text-sm text-white w-full h-8 rounded-md outline hover:outline-[#2ed7c3] hover:text-[#2ed7c3]"
       onClick={() => props.handleEditUser(props.user, props.company)}
       >  
-        Edit Client
+        Edit
       </button>
-      <div className="h-6">
-        <UpdateUserListModal EditUserIsOpen={EditUserIsOpen} handleCloseEditUser={props.handleCloseEditUser} user={selectedUser} company={selectedCompany} SubmitUser={props.SubmitUpdateUser} isEdit={isEdit} />
-      </div>
+      <UpdateUserListModal EditUserIsOpen={EditUserIsOpen} handleCloseEditUser={props.handleCloseEditUser} user={selectedUser} company={selectedCompany} SubmitUser={props.SubmitUpdateUser} isEdit={isEdit} />
     </div>
   )
 }

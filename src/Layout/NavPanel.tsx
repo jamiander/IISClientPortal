@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { useAppSelector } from "../Store/Hooks"
 import { selectCurrentUser, selectIsLoggedIn } from "../Store/UserSlice"
 
@@ -10,8 +10,10 @@ export default function NavPanel(props: NavProps){
   const navigate = useNavigate()
   const isLoggedIn = useAppSelector(selectIsLoggedIn);
   const currentuser = useAppSelector(selectCurrentUser);
+  const navButtonStyle = "text-[#21345b] h-12 w-[90%] hover:bg-[#2ed7c3] hover:text-white";
+  const location = useLocation();
 
-  function navHandler(path: string) {
+  function NavHandler(path: string) {
     if (!isLoggedIn) {
       
       props.ShowToast('You must login to leave this page', 'Error');
@@ -19,22 +21,33 @@ export default function NavPanel(props: NavProps){
     else navigate(path);
   }
 
+  function IsActivePath(pathToCheck: string)
+  {
+    console.log(location.pathname);
+    return location.pathname === pathToCheck;
+  }
+
+  function GetNavStyle(path: string) : string
+  {
+    return navButtonStyle + (IsActivePath(path) ? " border-b-4 border-[#fab947] rounded-t-md" : " rounded-md");
+  }
+
   return(
     <div className="grid place-items-center p-[2%] py-3 space-y-3">
       
-      <button className="outline bg-[#21345b] text-white h-12 w-[90%] rounded-md hover:outline-[#2ed7c3] hover:text-[#2ed7c3]" 
-          onClick={() => navHandler('/Dashboard')}>
+      <button className={GetNavStyle("/Dashboard")}
+          onClick={() => NavHandler('/Dashboard')}>
           Dashboard
       </button>
       
       {
         currentuser?.companyId === 0 ? 
-          <button className="outline bg-[#21345b] text-white h-12 w-[90%] rounded-md hover:outline-[#2ed7c3] hover:text-[#2ed7c3]"
-            disabled={!isLoggedIn} onClick={() => navHandler('/Admin')}>
+          <button className={GetNavStyle("/Admin")}
+            disabled={!isLoggedIn} onClick={() => NavHandler('/Admin')}>
               Admin
           </button> :
-          <button className="outline bg-[#21345b] text-white h-12 w-[90%] rounded-md hover:outline-[#2ed7c3] hover:text-[#2ed7c3]" 
-            onClick={() => navHandler('/Profile')}>
+          <button className={GetNavStyle("/Profile")} 
+            onClick={() => NavHandler('/Profile')}>
               Profile
           </button>
       }

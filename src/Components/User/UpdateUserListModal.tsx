@@ -58,7 +58,7 @@ export default function UpdateUserListModal(props: EditUserProps) {
           <input defaultValue={props.user.password} onChange={(e) => setPassword(e.target.value)}  id={EditUserModalIds.password} className={inputStyle}/>
         </div>
 
-        <div className='mt-2 h-10'>
+        <div className='mt-2 h-10 flex justify-between'>
           <button className={submitButtonStyle} 
             onClick={() => {
               console.log('company:', companyName, '\nemail:', email, '\npassword:', password);

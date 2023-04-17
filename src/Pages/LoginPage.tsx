@@ -21,7 +21,7 @@ export default function LoginPage(){
     if(currentUser){
       dispatch(setCurrentUserId(currentUser.id));
       dispatch(getCompanyInfo({employeeId: currentUser.id}));
-      navigate('/DashBoard');
+      navigate('/Dashboard');
     }
   }
 
