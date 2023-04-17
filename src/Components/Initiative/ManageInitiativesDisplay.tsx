@@ -86,7 +86,7 @@ export default function ManageInitiativesDisplay() {
 
       <RadioSet options={[
         {id: InitiativeRadioIds.all, label: "Show All", value: "all"},
-        {id: InitiativeRadioIds.active, label: "Only Active", value: "active"},
+        {id: InitiativeRadioIds.active, label: "Only Active", value: "active", default: true},
         {id: InitiativeRadioIds.inactive, label: "Only Inactive", value: "inactive"}
         ]} 
         setter={setRadioValue} name="initiativesDisplay"/>

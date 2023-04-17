@@ -88,7 +88,7 @@ export default function ManageUsersDisplay() {
   
         <RadioSet options={[
         {id: UserRadioIds.all, label: "Show All", value: "all"},
-        {id: UserRadioIds.active, label: "Only Active", value: "active"},
+        {id: UserRadioIds.active, label: "Only Active", value: "active", default: true},
         {id: UserRadioIds.inactive, label: "Only Inactive", value: "inactive"}
         ]} 
         setter={setRadioValue} name="clientsDisplay"/>
