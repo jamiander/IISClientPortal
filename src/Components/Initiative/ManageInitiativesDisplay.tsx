@@ -55,6 +55,7 @@ export default function ManageInitiativesDisplay() {
     {
       dispatch(updateThroughputData({companyId: companyId.toString(), initiativeId: initiativeId.toString(), itemsCompletedOnDate: dataList, isTest: isTest}));
       setUploadModalIsOpen(false);
+      setEditModalIsOpen(false);
       ShowToast(validation.message, 'Success')
     }
     else

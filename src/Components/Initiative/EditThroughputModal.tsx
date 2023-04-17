@@ -2,8 +2,7 @@ import Modal from "react-modal";
 import { useEffect, useState } from "react";
 import { DateInfo, FindItemsRemaining, ThroughputData } from "../../Services/CompanyService";
 import { Company, Initiative } from "../../Store/CompanySlice";
-import { cancelButtonStyle, integrityColors, modalStyle, submitButtonStyle } from "../../Styles";
-import { EditUserModalIds } from "../User/UpdateUserListModal";
+import { cancelButtonStyle, modalStyle, submitButtonStyle } from "../../Styles";
 import { MakeDateString } from "../DateInput";
 
 export const EditThroughputIds = {
@@ -124,12 +123,12 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
                     {(selectedInitiativeIndex >= 0) && selectedCompany?.initiatives.at(selectedInitiativeIndex)?.itemsCompletedOnDate.map((throughput, key) => {
                         return (
                         <tr key={key} className="">
-                            <td className="border border-spacing-x-0 border-y-gray-700 hover:bg-gray-200 focus-within:bg-gray-200">
-                                <input className="px-2 w-full hover:bg-gray-200 focus:bg-gray-200 focus:outline-none" id={EditThroughputIds.date} type="date" value={MakeDateString(throughput.date)} 
+                            <td className="border border-spacing-x-0 border-y-gray-700 even:bg-gray-100 focus-within:bg-gray-200 hover:bg-gray-200">
+                                <input className="px-2 w-full bg-inherit focus:outline-none" id={EditThroughputIds.date} type="date" value={MakeDateString(throughput.date)} 
                                 onChange={(e) => EditDate(key, e.target.value)}/>                        
                             </td>
-                            <td className="border border-spacing-x-0 border-y-gray-700 hover:bg-gray-200 focus-within:bg-gray-200">
-                                <input className="px-2 w-full hover:bg-gray-200 focus:bg-gray-200 focus:outline-none" id={EditThroughputIds.itemsComplete} type="number" min="0" value={throughput.itemsCompleted}
+                            <td className="border border-spacing-x-0 border-y-gray-700 focus-within:bg-gray-200 hover:bg-gray-200">
+                                <input className="px-2 w-full bg-inherit focus:outline-none" id={EditThroughputIds.itemsComplete} type="number" min="0" value={throughput.itemsCompleted}
                                 onChange={(e) =>EditItems(key, e.target.value)}/>
                             </td>
                         </tr>
