@@ -1,11 +1,12 @@
-import { Company, Initiative } from "../../Store/CompanySlice";
+import { Company, Initiative, selectAllCompanies } from "../../Store/CompanySlice";
 import  Modal  from 'react-modal';
 import { cancelButtonStyle, modalStyle, submitButtonStyle } from "../../Styles";
-import { useEffect, useRef, useState } from "react";
-import { DateInfo, FindItemsRemaining, ThroughputData } from "../../Services/CompanyService";
+import { SetStateAction, useEffect, useRef, useState } from "react";
+import { DateInfo, ThroughputData } from "../../Services/CompanyService";
 import { useOutletContext } from "react-router-dom";
 import { ValidationFailedPrefix } from "../../Services/Validation";
 import { DateInput } from "../DateInput";
+import SelectCompanyAndInitiative from "./SelectCompanyAndInitiative";
 
 export const UploadThroughputIds = {
   modal: "uploadThroughputModal",
@@ -19,13 +20,13 @@ export const UploadThroughputIds = {
 }
 
 interface ThroughputModalProps{
-  companyList: Company[],
+  companyList: Company[];
   uploadIsOpen: boolean,
   setUploadIsOpen: (value: boolean) => void,
   Submit: (companyId: number, initiativeId: number, dataList: ThroughputData[], emptyDataCheck: boolean) => void
 }
 
-export default function UploadThroughputModal(props:ThroughputModalProps){;
+export default function UploadThroughputModal(props:ThroughputModalProps){
   const [selectedCompany, setSelectedCompany] = useState<Company>();
   const [selectedInitiativeIndex, setSelectedInitiativeIndex] = useState(-1);
   const [fileData, setFileData] = useState<ThroughputData[]>([]);
@@ -36,7 +37,6 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
   const [entryDate, setEntryDate] = useState<DateInfo>(todayInfo);
   const [itemsCompleted, setItemsCompleted] = useState(-1);
   const manualEntry: ThroughputData[] = [{date:entryDate,itemsCompleted:itemsCompleted}]
-
   const fileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -47,23 +47,6 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
     setEntryDate(todayInfo);
     setItemsCompleted(-1);
   },[props.uploadIsOpen])
-
-  function SelectCompany(companyId: number)
-  {
-    setSelectedCompany(props.companyList.find(company => company.id === companyId));
-    setSelectedInitiativeIndex(-1);
-  }
-
-  function SelectInitiative(initiativeIndex: number)
-  {
-    if(selectedCompany)
-    {
-      if(selectedCompany.initiatives[initiativeIndex])
-        setSelectedInitiativeIndex(initiativeIndex);
-      else
-        setSelectedInitiativeIndex(-1);
-    }
-  }
 
   function ReceiveFile(fileName: string)
   {
@@ -143,25 +126,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
     appElement={document.getElementById('root') as HTMLElement}>
       <div className="space-y-5">
         <p className="text-3xl w-full">Enter Throughput Data</p>
-        <div className="space-x-5 flex w-full">
-          <select id={UploadThroughputIds.selectCompany} onChange={(e) => SelectCompany(parseInt((e.target as HTMLSelectElement).value))} className="outline outline-1 rounded w-56 h-10">
-            <option>Select Company</option>
-              {props.companyList.map((company,index)=>{
-                return(
-                  <option value={company.id} key={index}>{company.name}</option>
-                )
-              })}
-          </select>
-          <select id={UploadThroughputIds.selectInitiative} value={selectedInitiativeIndex} onChange={(e) => SelectInitiative(parseInt((e.target as HTMLSelectElement).value))} className="outline outline-1 rounded w-56 h-10">
-            <option>Select Initiative</option>
-              {selectedCompany?.initiatives.map((initiative,index)=>{
-                return(
-                  <option value={index} key={index}>{initiative.title}</option>
-                )
-              })}
-          </select>
-          {selectedInitiativeIndex >= 0 && <p className="p-2">Items Remaining: {FindItemsRemaining(selectedCompany?.initiatives.at(selectedInitiativeIndex))}</p>}
-        </div>
+        <SelectCompanyAndInitiative companyList={props.companyList} setSelectedCompany={setSelectedCompany} setSelectedInitiativeIndex={setSelectedInitiativeIndex} selectedCompany={selectedCompany}></SelectCompanyAndInitiative>
         {fileWarning}
         <div className="flex">
           <div className="outline outline-[#879794] rounded space-y-2 p-2 w-64">
@@ -172,7 +137,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
           <p className="text-2xl m-3">OR</p>
           <div className="outline outline-[#879794] rounded space-y-2 p-2 w-64">
             <div>
-              <p className="text-2xl">Manually Entry</p>
+              <p className="text-2xl">Manual Entry</p>
             </div>
             <DateInput id={UploadThroughputIds.date} date={entryDate} setDate={setEntryDate}/>
             <div>
@@ -187,7 +152,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){;
         <div className="h-10 w-full">
           <button id={UploadThroughputIds.closeButton} className={cancelButtonStyle} onClick={() => props.setUploadIsOpen(false)}>Close</button>
         </div>
-      </div>
+        </div>
     </Modal>
   )
 }
