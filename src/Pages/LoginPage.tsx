@@ -11,6 +11,7 @@ export default function LoginPage(){
   const [password, setPassword] = useState('password');
   const userlist = useAppSelector(selectAllUsers);
   const [passwordShown,setPasswordShown]=useState(false);
+  const selectStyle = "outline outline-1 h-10 w-60 p-2 mb-4 hover:outline-2";
 
   const togglePasswordVisibility = () => {
     setPasswordShown(passwordShown ? false : true);
@@ -31,20 +32,24 @@ export default function LoginPage(){
 
         <p className="text-5xl mb-5">Login</p>
 
-        <p className='my-2'>Email:</p>
-        <input id="email" autoFocus value={userEmail} onChange={(e)=>setUserEmail(e.target.value)} onKeyDown={(e)=> {if (e.key === 'Enter') Login()}} className="outline outline-1 rounded-md h-10 w-60 p-2 mb-4"/>
+        <p className='my-2'>Email</p>
+        <input id="email" autoFocus value={userEmail} onChange={(e)=>setUserEmail(e.target.value)} onKeyDown={(e)=> {if (e.key === 'Enter') Login()}}
+        className={selectStyle}/>
 
         <div className="flex my-2 space-x-12">
-          <p className="">Password:</p>
+          <p className="">Password</p>
           <div className="flex">
-            <input type={'checkbox'} onClick={togglePasswordVisibility} className='mr-2'/> 
-            <p>Show Password</p>
+            <label>
+              <input type='checkbox' className='mr-2' onChange={togglePasswordVisibility}/> 
+              Show Password
+            </label>
           </div>
         </div>
-        <input id="password" value={password} type={passwordShown ? 'text' : 'password'} onChange={(e)=>setPassword(e.target.value)} onKeyDown={(e)=> {if (e.key === 'Enter') Login()}} className="outline outline-1 rounded-md h-10 w-60 p-2"/>
+        <input id="password" value={password} type={passwordShown ? 'text' : 'password'} onChange={(e)=>setPassword(e.target.value)} onKeyDown={(e)=> {if (e.key === 'Enter') Login()}}
+        className={selectStyle}/>
         
         <div className="w-full my-5">
-          <button onClick={()=>Login()} className="outline rounded bg-[#21345b] text-white h-10 w-24 hover:outline-[#2ed7c3] hover:text-[#2ed7c3]">Submit</button>
+          <button onClick={()=>Login()} className="outline outline-black rounded bg-[#21345b] text-white h-10 w-24 transition ease-in-out hover:bg-white hover:text-[#879794]">Submit</button>
         </div>
 
       </div>
