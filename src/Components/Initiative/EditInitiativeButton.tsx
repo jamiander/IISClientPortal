@@ -56,7 +56,7 @@ export function EditInitiativeButton(props: EditInitiativeButtonProps){
         <button id={"editInitiativeButton"+props.initiative.id} className=" mx-2 bg-[#21345b] text-sm text-white w-full h-8 rounded-md outline hover:outline-[#2ed7c3] hover:text-[#2ed7c3]"
             onClick={() => handleEditInitiative(props.company, props.initiative)}
         >
-            Edit Initiative
+            Edit
         </button>
         <UpdateInitiativeListModal title='Edit Initiative' initiativeIsOpen={EditInitiativeIsOpen} setInitiativeIsOpen={setEditInitiativeIsOpen} initiative={selectedInitiative} company={selectedCompany} Submit={SubmitUpdateInitiative} />
       </div>
