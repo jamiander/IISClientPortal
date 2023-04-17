@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
 import { selectAllUsers, User } from "../../Store/UserSlice";
 import UpdateUserListModal from "./UpdateUserListModal";
 import UsersTable from "./UsersTable";
+import { RadioSet } from "../RadioSet";
 
 export const UserRadioIds = {
   all: "userDisplayShowAll",
@@ -85,16 +86,12 @@ export default function ManageUsersDisplay() {
           </button>
         </div>
   
-      <div className="w-fit justify-center mt-2 py-1 px-5 outline outline-1 outline-[#2ed7c3] rounded">
-          <input type='radio' id={UserRadioIds.all} value='all' name='clientDisplay' className="mr-1" onClick={()=>setRadioValue('all')}/>
-          <label htmlFor='showAll' className="mr-5 text-white">Show All</label>
-
-          <input type='radio' id={UserRadioIds.active} value='active' name='clientDisplay' defaultChecked className="mr-1" onClick={()=>setRadioValue('active')}/>
-          <label htmlFor='showActive' className="mr-5 text-white">Only Active</label>
-          
-          <input type='radio' id={UserRadioIds.inactive} value='inactive' name='clientDisplay' className="mr-1" onClick={()=>setRadioValue('inactive')}/>
-          <label htmlFor='showInactive' className="text-white">Only Inactive</label>
-        </div>
+        <RadioSet options={[
+        {id: UserRadioIds.all, label: "Show All", value: "all"},
+        {id: UserRadioIds.active, label: "Only Active", value: "active"},
+        {id: UserRadioIds.inactive, label: "Only Inactive", value: "inactive"}
+        ]} 
+        setter={setRadioValue} name="clientsDisplay"/>
 
       </div>
          

@@ -1,8 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom"
 import { useAppSelector } from "../Store/Hooks"
 import { selectCurrentUser, selectIsLoggedIn } from "../Store/UserSlice"
-import { useEffect, useState } from "react"
-import { integrityColors } from "../Styles"
 
 interface NavProps {
   ShowToast: (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void
@@ -26,7 +24,7 @@ export default function NavPanel(props: NavProps){
   function IsActivePath(pathToCheck: string)
   {
     console.log(location.pathname);
-    return location.pathname == pathToCheck;
+    return location.pathname === pathToCheck;
   }
 
   function GetNavStyle(path: string) : string

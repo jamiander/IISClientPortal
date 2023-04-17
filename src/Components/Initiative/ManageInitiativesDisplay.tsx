@@ -8,6 +8,7 @@ import UploadThroughputModal from "./UploadThroughputModal";
 import { UpdateInitiativeListModal } from "./UpdateInitiativeListModal";
 import { ThroughputData } from "../../Services/CompanyService";
 import EditThroughputModal from "./EditThroughputModal";
+import { RadioSet } from "../RadioSet";
 
 export const InitiativeRadioIds = {
   all: "initDisplayShowAll",
@@ -83,16 +84,12 @@ export default function ManageInitiativesDisplay() {
         </div>
       </div>
 
-      <div className="w-fit justify-center mt-2 py-1 px-5 outline outline-1 outline-[#2ed7c3] rounded">
-        <input type='radio' id={InitiativeRadioIds.all} value='all' name='initiativesDisplay' className="mr-1 rounded" onClick={()=>setRadioValue('all')}/>
-        <label htmlFor='showAll' className="mr-5 text-white">Show All</label>
-
-        <input type='radio' id={InitiativeRadioIds.active} value='active' name='initiativesDisplay' defaultChecked className="mr-1" onClick={()=>setRadioValue('active')}/>
-        <label htmlFor='showActive' className="mr-5 text-white">Only Active</label>
-
-        <input type='radio' id={InitiativeRadioIds.inactive} value='inactive' name='initiativesDisplay' className="mr-1" onClick={()=>setRadioValue('inactive')}/>
-        <label htmlFor='showInactive' className="text-white">Only Inactive</label>
-      </div>
+      <RadioSet options={[
+        {id: InitiativeRadioIds.all, label: "Show All", value: "all"},
+        {id: InitiativeRadioIds.active, label: "Only Active", value: "active"},
+        {id: InitiativeRadioIds.inactive, label: "Only Inactive", value: "inactive"}
+        ]} 
+        setter={setRadioValue} name="initiativesDisplay"/>
 
     </div>
     
