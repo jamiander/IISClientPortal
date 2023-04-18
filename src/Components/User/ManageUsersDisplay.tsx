@@ -8,6 +8,7 @@ import { selectAllUsers, User } from "../../Store/UserSlice";
 import UpdateUserListModal from "./UpdateUserListModal";
 import UsersTable from "./UsersTable";
 import { RadioSet } from "../RadioSet";
+import { yellowButtonStyle } from "../../Styles";
 
 export const UserRadioIds = {
   all: "userDisplayShowAll",
@@ -81,7 +82,7 @@ export default function ManageUsersDisplay() {
 
         <div className="w-full flex justify-between">
           <p className="text-3xl text-white">Clients</p>
-          <button className="outline outline-white bg-[#21345b] text-white w-28 rounded-md hover:outline-[#2ed7c3] hover:text-[#2ed7c3]" onClick={() => {setEditUserIsOpen(true); setIsEdit(false);}} >  
+          <button className={yellowButtonStyle} onClick={() => {setEditUserIsOpen(true); setIsEdit(false);}} >  
             Add Client
           </button>
         </div>
