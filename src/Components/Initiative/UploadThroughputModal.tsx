@@ -146,7 +146,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){
               <p>Items Completed</p>
             </div>
             <div className='flex w-full h-10 justify-between'>
-              <input id={UploadThroughputIds.itemsComplete} type={'number'} className={inputStyle + ' w-1/4'} onChange={(e) => {setItemsCompleted(parseInt(e.target.value))}}/>
+              <input id={UploadThroughputIds.itemsComplete} type={'number'} className={inputStyle + ' w-1/4'} min={0} onChange={(e) => {setItemsCompleted(parseInt(e.target.value))}}/>
               <button id={UploadThroughputIds.manualSubmit} className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives[selectedInitiativeIndex]?.id ?? -1, manualEntry, true)}>Submit</button>
             </div>
           </div>
