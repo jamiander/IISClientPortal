@@ -72,10 +72,9 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
         onRequestClose={()=>props.setEditIsOpen(false)}
         style={{'content': {...modalStyle.content, 'width' : 'fit-content', 'height' : 'fit-content'}}}
         appElement={document.getElementById('root') as HTMLElement}>
-        <div className="space-y-5">
-          <p className="text-3xl w-full">Edit Throughput Data</p>
-          <SelectCompanyAndInitiative companyList={props.companyList} selectedCompany={selectedCompany} setSelectedCompany={setSelectedCompany} setSelectedInitiativeIndex={setSelectedInitiativeIndex}></SelectCompanyAndInitiative>
-          <div>
+
+        <SelectCompanyAndInitiative companyList={props.companyList} selectedCompany={selectedCompany}  selectedInitiativeIndex={selectedInitiativeIndex} setSelectedCompany={setSelectedCompany} setSelectedInitiativeIndex={setSelectedInitiativeIndex}></SelectCompanyAndInitiative>
+        <div>
             <table className="table-auto w-full outline outline-3 rounded-md bg-white">
                 <thead>
                     <tr>
@@ -105,7 +104,6 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
           <button id={EditThroughputIds.submitButton} className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives[selectedInitiativeIndex]?.id ?? -1, GetInitiativeFromCompany(selectedCompany,selectedInitiativeIndex)?.itemsCompletedOnDate ?? [], false)}>Submit</button>
           <button id={EditThroughputIds.closeButton} className={cancelButtonStyle} onClick={() => props.setEditIsOpen(false)}>Close</button>
         </div>
-      </div>
     </Modal>
   )
 }
