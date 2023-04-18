@@ -31,6 +31,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){
   const [selectedInitiativeIndex, setSelectedInitiativeIndex] = useState(-1);
   const [fileData, setFileData] = useState<ThroughputData[]>([]);
   const [fileWarning, setFileWarning] = useState("");
+  const [dateWarning, setDateWarning] = useState("");
   const ShowToast : (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void = useOutletContext();
   const today = new Date();
   const todayInfo: DateInfo = {month: today.getMonth()+1, day: today.getDate(), year: today.getFullYear()}
@@ -44,9 +45,42 @@ export default function UploadThroughputModal(props:ThroughputModalProps){
     setSelectedInitiativeIndex(-1);
     setFileData([]);
     setFileWarning("");
+    setDateWarning("");
     setEntryDate(todayInfo);
     setItemsCompleted(-1);
   },[props.uploadIsOpen])
+
+  useEffect(() => {
+    let warningMessage = "";
+    let initiative = selectedCompany?.initiatives[selectedInitiativeIndex];
+    if(initiative)
+    {
+      let dates = initiative.itemsCompletedOnDate;
+      if(dates)
+      {
+        let dateExists = false;
+        let existingItems = -1;
+        for(let i = 0; i < dates.length; i++)
+        {
+          if(EqualDateInfos(dates[i].date,entryDate))
+          {
+            existingItems = dates[i].itemsCompleted;
+            dateExists = true;
+            break;
+          }
+        }
+
+        if(dateExists)
+          warningMessage = "Warning: This date already has " + existingItems + " item(s). Submitting will overwrite this.";
+      }
+    }
+    setDateWarning(warningMessage);
+  },[entryDate,selectedInitiativeIndex])
+
+  function EqualDateInfos(date1: DateInfo, date2: DateInfo)
+  {
+    return date1.day === date2.day && date1.month === date2.month && date1.year === date2.year;
+  }
 
   function ReceiveFile(fileName: string)
   {
@@ -141,7 +175,8 @@ export default function UploadThroughputModal(props:ThroughputModalProps){
             <div>
               <p className="text-2xl">Manual Entry</p>
             </div>
-            <DateInput id={UploadThroughputIds.date} date={entryDate} setDate={setEntryDate}/>
+              <DateInput id={UploadThroughputIds.date} date={entryDate} setDate={setEntryDate}/>
+              {dateWarning}
             <div>
               <p>Items Completed</p>
             </div>
@@ -154,7 +189,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){
         <div className="h-10 w-full flex justify-end">
           <button id={UploadThroughputIds.closeButton} className={cancelButtonStyle} onClick={() => props.setUploadIsOpen(false)}>Close</button>
         </div>
-        </div>
+      </div>
     </Modal>
   )
 }
