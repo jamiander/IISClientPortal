@@ -73,7 +73,7 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
         style={{'content': {...modalStyle.content, 'width' : 'fit-content', 'height' : 'fit-content'}}}
         appElement={document.getElementById('root') as HTMLElement}>
 
-        <SelectCompanyAndInitiative companyList={props.companyList} selectedCompany={selectedCompany} setSelectedCompany={setSelectedCompany} setSelectedInitiativeIndex={setSelectedInitiativeIndex}></SelectCompanyAndInitiative>
+        <SelectCompanyAndInitiative companyList={props.companyList} selectedCompany={selectedCompany}  selectedInitiativeIndex={selectedInitiativeIndex} setSelectedCompany={setSelectedCompany} setSelectedInitiativeIndex={setSelectedInitiativeIndex}></SelectCompanyAndInitiative>
         <div>
             <table className="table-auto w-full outline outline-3 rounded-md">
                 <thead>
