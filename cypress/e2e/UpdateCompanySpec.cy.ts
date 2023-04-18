@@ -15,7 +15,7 @@ describe('update company spec', () => {
 
   const consts = TestConstants;
   const failMessage = consts.validationFailedMessage;
-  const badToastId = consts.toastId;
+  const badToastId = consts.toastIds.main;
   const modalIds = consts.userModalIds;
   const radioIds = consts.userRadioIds;
 
@@ -30,7 +30,7 @@ describe('update company spec', () => {
     cy.get('button').contains('Clients').click();
     cy.get(radioIds.all).click();
     cy.get('table').contains(existingCompany.name);
-    cy.get('button').contains('Edit Client').click();
+    cy.get('button').contains('Edit').click();
   });
 
   specify('update a company', () => {

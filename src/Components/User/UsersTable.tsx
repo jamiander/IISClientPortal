@@ -25,7 +25,7 @@ export default function UsersTable(props: UsersTableProps){
     };
     return(
       <div className="px-4 w-4/5">
-        <input disabled type={passwordShown ? 'text' : 'password'} value={user.password} className="bg-[#E4E1E5] flex justify-center"/>
+        <input disabled type={passwordShown ? 'text' : 'password'} value={user.password} className="bg-inherit flex justify-center"/>
         <input type={'checkbox'} className='hover:outline outline-1 -outline-offset-2' onClick={togglePasswordVisibility}/> Show Password
       </div>
     )
@@ -33,7 +33,7 @@ export default function UsersTable(props: UsersTableProps){
 
   function ClientTable(cprops:ClientTableProps){
     return(
-      <table className="table-auto w-[100%] outline outline-3 my-3">
+      <table className="table-auto w-[100%] outline outline-3 my-3 bg-gray-100">
       <thead className="outline outline-1">
         <tr>
           <th>Company</th>
@@ -46,7 +46,7 @@ export default function UsersTable(props: UsersTableProps){
         {cprops.clients.map((user, index)=>{
           const company = props.companyList.find(company => company.id === user.companyId);
           return(
-            <tr key={index}>
+            <tr key={index} className="odd:bg-gray-200">
               <td className="outline outline-1"><p className="flex justify-center">{company?.name}</p></td>
               <td className="outline outline-1"><p className="flex justify-center">{user.email}</p></td>
               <td className="outline outline-1">

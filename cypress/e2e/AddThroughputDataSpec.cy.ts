@@ -13,7 +13,7 @@ function findItemsCompleted(file: string) : number {
 const consts = TestConstants;
 const modalIds = consts.uploadThroughputIds;
 const tableIds = consts.initiativeTableIds;
-const badToastId = consts.toastId;
+const badToastId = consts.toastIds.main;
 
 const initiative = 'IIS Initiative';
 const company = 'Integrity Inspired Solutions';

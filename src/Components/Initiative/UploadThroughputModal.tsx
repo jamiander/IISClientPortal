@@ -1,6 +1,6 @@
 import { Company, Initiative, selectAllCompanies } from "../../Store/CompanySlice";
 import  Modal  from 'react-modal';
-import { cancelButtonStyle, modalStyle, submitButtonStyle } from "../../Styles";
+import { cancelButtonStyle, inputStyle, modalStyle, submitButtonStyle } from "../../Styles";
 import { SetStateAction, useEffect, useRef, useState } from "react";
 import { DateInfo, ThroughputData } from "../../Services/CompanyService";
 import { useOutletContext } from "react-router-dom";
@@ -126,7 +126,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){
     appElement={document.getElementById('root') as HTMLElement}>
       <div className="space-y-5">
         <p className="text-3xl w-full">Enter Throughput Data</p>
-        <SelectCompanyAndInitiative companyList={props.companyList} selectedCompany={selectedCompany} selectedInitiativeIndex={selectedInitiativeIndex} setSelectedCompany={setSelectedCompany} setSelectedInitiativeIndex={setSelectedInitiativeIndex}></SelectCompanyAndInitiative>
+        <SelectCompanyAndInitiative companyList={props.companyList} selectedCompany={selectedCompany} selectedInitiativeIndex={selectedInitiativeIndex} setSelectedCompany={setSelectedCompany} setSelectedInitiativeIndex={setSelectedInitiativeIndex} companyElementId={UploadThroughputIds.selectCompany} initiativeElementId={UploadThroughputIds.selectInitiative}/>
         {fileWarning}
         <div className="flex">
           <div className="outline outline-[#879794] rounded space-y-2 p-2 w-64">
@@ -146,7 +146,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){
               <p>Items Completed</p>
             </div>
             <div className='flex w-full h-10 justify-between'>
-              <input id={UploadThroughputIds.itemsComplete} type={'number'} className={'outline outline-1 rounded p-2 w-1/4'} onChange={(e) => {setItemsCompleted(parseInt(e.target.value))}}/>
+              <input id={UploadThroughputIds.itemsComplete} type={'number'} className={inputStyle + ' w-1/4'} onChange={(e) => {setItemsCompleted(parseInt(e.target.value))}}/>
               <button id={UploadThroughputIds.manualSubmit} className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives[selectedInitiativeIndex]?.id ?? -1, manualEntry, true)}>Submit</button>
             </div>
           </div>

@@ -72,10 +72,11 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
         onRequestClose={()=>props.setEditIsOpen(false)}
         style={{'content': {...modalStyle.content, 'width' : 'fit-content', 'height' : 'fit-content'}}}
         appElement={document.getElementById('root') as HTMLElement}>
-
-        <SelectCompanyAndInitiative companyList={props.companyList} selectedCompany={selectedCompany}  selectedInitiativeIndex={selectedInitiativeIndex} setSelectedCompany={setSelectedCompany} setSelectedInitiativeIndex={setSelectedInitiativeIndex}></SelectCompanyAndInitiative>
-        <div>
-            <table className="table-auto w-full outline outline-3 rounded-md">
+        <div className="space-y-5">
+          <p className="text-3xl w-full">Edit Throughput Data</p>
+          <SelectCompanyAndInitiative companyList={props.companyList} selectedCompany={selectedCompany}  selectedInitiativeIndex={selectedInitiativeIndex} setSelectedCompany={setSelectedCompany} setSelectedInitiativeIndex={setSelectedInitiativeIndex} companyElementId={EditThroughputIds.selectCompany} initiativeElementId={EditThroughputIds.selectInitiative}/>
+          <div>
+            <table className="table-auto w-full outline outline-3 rounded-md bg-white">
                 <thead>
                     <tr>
                         <th>Date</th>
@@ -85,8 +86,8 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
                 <tbody>
                     {(selectedInitiativeIndex >= 0) && selectedCompany?.initiatives.at(selectedInitiativeIndex)?.itemsCompletedOnDate.map((throughput, key) => {
                         return (
-                        <tr key={key} className="">
-                            <td className="border border-spacing-x-0 border-y-gray-700 even:bg-gray-100 focus-within:bg-gray-200 hover:bg-gray-200">
+                        <tr key={key} className="odd:bg-gray-100">
+                            <td className="border border-spacing-x-0 border-y-gray-700 focus-within:bg-gray-200 hover:bg-gray-200">
                                 <input className="px-2 w-full bg-inherit focus:outline-none" id={EditThroughputIds.date} type="date" value={MakeDateString(throughput.date)} 
                                 onChange={(e) => EditDate(key, e.target.value)}/>                        
                             </td>
@@ -99,11 +100,12 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
                     })}
                 </tbody>
             </table>
-        </div>
+          </div>
         <div className="h-10 w-full">
           <button id={EditThroughputIds.submitButton} className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives[selectedInitiativeIndex]?.id ?? -1, GetInitiativeFromCompany(selectedCompany,selectedInitiativeIndex)?.itemsCompletedOnDate ?? [], false)}>Submit</button>
           <button id={EditThroughputIds.closeButton} className={cancelButtonStyle} onClick={() => props.setEditIsOpen(false)}>Close</button>
         </div>
+      </div>
     </Modal>
   )
 }

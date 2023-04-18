@@ -2,7 +2,8 @@ import { TestConstants } from "./TestHelpers";
 
 const consts = TestConstants;
 const modalIds = consts.editThroughputIds;
-const toastId = consts.toastId;
+const toastId = consts.toastIds.main;
+const toastCloseId = consts.toastIds.closeButton;
 const failMessage = consts.validationFailedMessage;
 
 const initiative = 'IIS Initiative';
@@ -80,10 +81,12 @@ describe('update throughput spec', () => {
     cy.get(modalIds.itemsComplete).clear();
     cy.get(modalIds.submitButton).click();
     cy.get(toastId).contains(failMessage);
+    cy.get(toastCloseId).click();
 
     cy.get(modalIds.itemsComplete).clear().type("a");
     cy.get(modalIds.submitButton).click();
     cy.get(toastId).contains(failMessage);
+    cy.get(toastCloseId).click();
 
     cy.get(modalIds.itemsComplete).clear().type("-2");
     cy.get(modalIds.submitButton).click();

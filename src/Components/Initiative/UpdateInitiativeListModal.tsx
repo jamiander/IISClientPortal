@@ -1,5 +1,5 @@
 import { Company, Initiative, selectAllCompanies } from "../../Store/CompanySlice"
-import { cancelButtonStyle, inputStyle, modalStyle, submitButtonStyle } from "../../Styles"
+import { cancelButtonStyle, inputStyle, modalStyle, selectStyle, submitButtonStyle } from "../../Styles"
 import Modal from 'react-modal';
 import { useEffect, useState } from "react";
 import { DateInput } from "../DateInput";
@@ -54,7 +54,7 @@ export function UpdateInitiativeListModal(props: InitiativeModalProps){
 				<p className='my-1'>Company{props.company ? ": " + props.company.name :
           <div>
             <select id={InitiativeModalIds.company} onChange={(e) => setInitiativeCompanyId(parseInt(e.target.value))} 
-            className='outline outline-1 rounded p-2 hover:outline-2'
+            className={selectStyle}
             >
               <option>Select Company</option>
               {
@@ -79,7 +79,8 @@ export function UpdateInitiativeListModal(props: InitiativeModalProps){
       <div className='mt-2 grid grid-cols-2'>
           <div className='w-24'>
             <p>Total Items</p>
-            <input defaultValue={props.initiative?.totalItems} id={InitiativeModalIds.totalItems} type={'number'} placeholder='###' className={inputStyle} onChange={(e) => {setInitiativeTotalItems(parseInt(e.target.value))}}/>
+            <input defaultValue={props.initiative?.totalItems} id={InitiativeModalIds.totalItems} type={'number'} placeholder='###' className={inputStyle + " w-full"} 
+              onChange={(e) => {setInitiativeTotalItems(parseInt(e.target.value))}}/>
           </div>
           <div className="p-2 justify-self-end">
             <button id={InitiativeModalIds.submitButton} className={submitButtonStyle} 

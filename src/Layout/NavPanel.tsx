@@ -10,7 +10,7 @@ export default function NavPanel(props: NavProps){
   const navigate = useNavigate()
   const isLoggedIn = useAppSelector(selectIsLoggedIn);
   const currentuser = useAppSelector(selectCurrentUser);
-  const navButtonStyle = "text-[#21345b] h-12 w-[90%] hover:bg-[#2ed7c3] hover:text-white";
+  const navButtonStyle = "text-[#21345b] h-12 w-[90%] hover:bg-[#21345b] hover:text-white";
   const location = useLocation();
 
   function NavHandler(path: string) {

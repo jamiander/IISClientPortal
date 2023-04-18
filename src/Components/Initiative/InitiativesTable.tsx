@@ -5,6 +5,7 @@ import { Company, Initiative } from "../../Store/CompanySlice";
 import { useAppSelector } from "../../Store/Hooks";
 import { selectCurrentUser, User } from "../../Store/UserSlice";
 import { EditInitiativeButton } from "./EditInitiativeButton";
+import { inputStyle } from "../../Styles";
 
 export const InitiativeTableIds = {
   totalItems: 'totalItems',
@@ -41,11 +42,11 @@ export default function InitiativesTable(props: InitiativesProps) {
   return (
     <div className="grid grid-cols-1 w-full h-auto">
       <div className="col-span-1 h-[4vh] px-2 pb-[2%] space-x-2">
-        <input className="rounded outline outline-1 p-2 hover:outline-2" type={'text'} placeholder="Filter by Title" onChange={(e)=> setSearchedInit(e.target.value)}/>
-        <input hidden={!props.admin} className="rounded outline outline-1 p-2 hover:outline-2" type={'text'} placeholder="Filter by Company" onChange={(e)=> setSearchedComp(e.target.value)}/>
+        <input className={inputStyle} type={'text'} placeholder="Filter by Title" onChange={(e)=> setSearchedInit(e.target.value)}/>
+        <input hidden={!props.admin} className={inputStyle} type={'text'} placeholder="Filter by Company" onChange={(e)=> setSearchedComp(e.target.value)}/>
       </div>
       <div className="col-span-1 py-[2%]">
-        <table className="table-auto w-[98%] outline outline-3">
+        <table className="table-auto w-[98%] outline outline-3 bg-gray-100">
           <thead className="outline outline-1">
             <tr>
               <th className="w-8">Id</th>
@@ -67,7 +68,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                     let itemsRemaining = FindItemsRemaining(initiative);
                     return (
                       <Fragment key={index}>
-                        <tr key={index}>
+                        <tr key={index} className="odd:bg-gray-200">
                           <td className={tableDataStyle + ' p-1'}>{initiative.id}</td>
                           <td id={InitiativeTableIds.initiativeTitle} className={tableDataStyle}>{initiative.title}</td>
                           <td id={InitiativeTableIds.companyName} className={tableDataStyle} hidden={isCompanyHidden}>{company.name}</td>

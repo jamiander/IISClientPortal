@@ -49,13 +49,13 @@ export default function UpdateUserListModal(props: EditUserProps) {
 
         <div className="w-full">
           <p className='my-1'>Company Name:</p>
-          <input defaultValue={props.company.name} onChange={(e) => setCompanyName(e.target.value)} id={EditUserModalIds.company}  className={inputStyle}/>
+          <input defaultValue={props.company.name} onChange={(e) => setCompanyName(e.target.value)} id={EditUserModalIds.company}  className={inputStyle + " w-full"}/>
 
           <p className='my-1'>Email:</p>            
-          <input defaultValue={props.user.email} onChange={(e) => setEmail(e.target.value)}  id={EditUserModalIds.email}  className={inputStyle}/>
+          <input defaultValue={props.user.email} onChange={(e) => setEmail(e.target.value)}  id={EditUserModalIds.email}  className={inputStyle + " w-full"}/>
 
           <p className='my-1'>Password:</p>
-          <input defaultValue={props.user.password} onChange={(e) => setPassword(e.target.value)}  id={EditUserModalIds.password} className={inputStyle}/>
+          <input defaultValue={props.user.password} onChange={(e) => setPassword(e.target.value)}  id={EditUserModalIds.password} className={inputStyle + " w-full"}/>
         </div>
 
         <div className='mt-2 h-10 flex justify-between'>
