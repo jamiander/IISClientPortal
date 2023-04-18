@@ -53,7 +53,7 @@ export default function SelectCompanyAndInitiative(props:SelectProps){
                 )
               })}
           </select>
-          {!props.selectedInitiativeIndex && <p className="p-2">Items Remaining: {FindItemsRemaining(props.selectedCompany?.initiatives.at(props.selectedInitiativeIndex) ?? undefined)}</p>}
+          {props.selectedInitiativeIndex > -1 && <p className="p-2">Items Remaining: {FindItemsRemaining(props.selectedCompany?.initiatives.at(props.selectedInitiativeIndex) ?? undefined)}</p>}
         </div>
         </div>
         )
