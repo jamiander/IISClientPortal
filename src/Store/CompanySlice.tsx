@@ -108,7 +108,7 @@ export const updateThroughputData = createAsyncThunk(
     if(response.status.toUpperCase().includes('FAILED'))
       throw Error;
 
-    return {initiativeId: parseInt(args.initiativeId), companyId: parseInt(args.companyId), data: args.itemsCompletedOnDate};
+    return {initiativeId: args.initiativeId, companyId: parseInt(args.companyId), data: args.itemsCompletedOnDate};
   }
 )
 

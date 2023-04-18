@@ -124,7 +124,7 @@ export function FindItemsRemaining(initiative: Initiative | undefined) {
 export interface UpdateThroughputDataRequest {
   isTest: boolean,
   companyId: string,
-  initiativeId: string,
+  initiativeId: number,
   itemsCompletedOnDate: ThroughputData[]
 }
 
