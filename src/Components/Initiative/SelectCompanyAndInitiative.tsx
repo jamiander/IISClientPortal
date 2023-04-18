@@ -39,7 +39,7 @@ function SelectCompany(companyId: number)
   return (
   <div className="space-y-5">
         <div className="space-x-5 flex w-full">
-          <select id={SelectIds.selectCompany} onChange={(e) => SelectCompany(parseInt((e.target as HTMLSelectElement).value))} className="outline outline-1 rounded w-56 h-10">
+          <select id={SelectIds.selectCompany} onChange={(e) => SelectCompany(parseInt((e.target as HTMLSelectElement).value))} className="outline outline-1 rounded w-56 h-10 hover:outline-2">
             <option>Select Company</option>
               {props.companyList.map((company,index)=>{
                 return(

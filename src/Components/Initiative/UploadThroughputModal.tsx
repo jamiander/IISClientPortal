@@ -132,7 +132,9 @@ export default function UploadThroughputModal(props:ThroughputModalProps){
           <div className="outline outline-[#879794] rounded space-y-2 p-2 w-64">
             <p className="text-2xl w-full">Upload CSV File</p>
             <input className="w-full" ref={fileRef} type={'file'} accept={'.csv'} onChange={(e) => ReceiveFile(e.target.value)}/>
+            <div className="grid justify-end h-1/2">
               <button id={UploadThroughputIds.fileSubmit} className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives.at(selectedInitiativeIndex)?.id ?? -1, fileData, true)}>Submit</button>
+            </div>
           </div>
           <p className="text-2xl m-3">OR</p>
           <div className="outline outline-[#879794] rounded space-y-2 p-2 w-64">
@@ -143,13 +145,13 @@ export default function UploadThroughputModal(props:ThroughputModalProps){
             <div>
               <p>Items Completed</p>
             </div>
-            <div className='flex w-full h-10'>
+            <div className='flex w-full h-10 justify-between'>
               <input id={UploadThroughputIds.itemsComplete} type={'number'} className={'outline outline-1 rounded p-2 w-1/4'} onChange={(e) => {setItemsCompleted(parseInt(e.target.value))}}/>
               <button id={UploadThroughputIds.manualSubmit} className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives[selectedInitiativeIndex]?.id ?? -1, manualEntry, true)}>Submit</button>
             </div>
           </div>
         </div>
-        <div className="h-10 w-full">
+        <div className="h-10 w-full flex justify-end">
           <button id={UploadThroughputIds.closeButton} className={cancelButtonStyle} onClick={() => props.setUploadIsOpen(false)}>Close</button>
         </div>
         </div>

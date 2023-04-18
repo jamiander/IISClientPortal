@@ -3,6 +3,7 @@ export interface RadioInstance {
   id: string,
   label: string,
   value: string
+  default?: boolean
 }
 
 interface RadioSetProps {
@@ -19,7 +20,7 @@ export function RadioSet(props: RadioSetProps)
         props.options.map((radio) => {
           return (
             <label className="mr-5 hover:text-[#879794]" onClick={()=>props.setter(radio.value)}>
-              <input type='radio' id={radio.id} value={radio.value} name={props.name} className="mr-1"/>
+              <input type='radio' id={radio.id} value={radio.value} name={props.name} defaultChecked={radio.default} className="mr-1"/>
               {radio.label}
             </label>
           )
