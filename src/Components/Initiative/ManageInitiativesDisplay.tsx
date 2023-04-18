@@ -9,6 +9,7 @@ import { UpdateInitiativeListModal } from "./UpdateInitiativeListModal";
 import { ThroughputData } from "../../Services/CompanyService";
 import EditThroughputModal from "./EditThroughputModal";
 import { RadioSet } from "../RadioSet";
+import { yellowButtonStyle } from "../../Styles";
 
 export const InitiativeRadioIds = {
   all: "initDisplayShowAll",
@@ -27,9 +28,6 @@ export default function ManageInitiativesDisplay() {
   const dispatch = useAppDispatch();
   const ShowToast : (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void = useOutletContext();
   const [radioValue, setRadioValue] = useState('active');
-
-  const buttonStyle = "outline h-[40px] bg-[#21345b] text-white w-32 rounded-md hover:outline-[#2ed7c3] hover:text-[#2ed7c3]";
-  
 
   function SubmitUpdateInitiative(initiative: Initiative, companyId: number)
   {
@@ -72,13 +70,13 @@ export default function ManageInitiativesDisplay() {
       <div className="w-full flex justify-between">
         <p className="text-3xl text-white">Initiatives</p>
         <div className="space-x-2 flex flex-wrap">
-          <button onClick={() => setAddInitiativeIsOpen(true)} className={buttonStyle}>
+          <button onClick={() => setAddInitiativeIsOpen(true)} className={yellowButtonStyle}>
             Add Initiative
           </button>
-          <button onClick={() => setUploadModalIsOpen(true)} className={buttonStyle}>
+          <button onClick={() => setUploadModalIsOpen(true)} className={yellowButtonStyle}>
             Upload Data
           </button>
-          <button onClick={() => setEditModalIsOpen(true)} className={buttonStyle}>
+          <button onClick={() => setEditModalIsOpen(true)} className={yellowButtonStyle}>
             Edit Data
           </button>
           <UpdateInitiativeListModal title='Add Initiative' initiativeIsOpen={AddInitiativeIsOpen} setInitiativeIsOpen={setAddInitiativeIsOpen} Submit={SubmitUpdateInitiative}/>
