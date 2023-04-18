@@ -74,7 +74,7 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
         appElement={document.getElementById('root') as HTMLElement}>
         <div className="space-y-5">
           <p className="text-3xl w-full">Edit Throughput Data</p>
-          <SelectCompanyAndInitiative companyList={props.companyList} selectedCompany={selectedCompany}  selectedInitiativeIndex={selectedInitiativeIndex} setSelectedCompany={setSelectedCompany} setSelectedInitiativeIndex={setSelectedInitiativeIndex}></SelectCompanyAndInitiative>
+          <SelectCompanyAndInitiative companyList={props.companyList} selectedCompany={selectedCompany}  selectedInitiativeIndex={selectedInitiativeIndex} setSelectedCompany={setSelectedCompany} setSelectedInitiativeIndex={setSelectedInitiativeIndex} companyElementId={EditThroughputIds.selectCompany} initiativeElementId={EditThroughputIds.selectInitiative}/>
           <div>
             <table className="table-auto w-full outline outline-3 rounded-md bg-white">
                 <thead>

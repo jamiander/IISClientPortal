@@ -3,22 +3,19 @@ import { FindItemsRemaining } from "../../Services/CompanyService";
 import { Company } from "../../Store/CompanySlice";
 import { selectStyle } from "../../Styles";
 
-export const SelectIds = {
-    selectCompany: "selectCompanyInThroughputModal",
-    selectInitiative: "selectInitiativeInThroughputModal"
-}
-
 interface SelectProps{
     companyList: Company[];
     selectedCompany: Company | undefined;
     selectedInitiativeIndex: number;
     setSelectedCompany:  (value: React.SetStateAction<Company | undefined>) => void;
-    setSelectedInitiativeIndex: (value: React.SetStateAction<number>) => void; 
+    setSelectedInitiativeIndex: (value: React.SetStateAction<number>) => void;
+    companyElementId: string,
+    initiativeElementId: string
 }
 
 export default function SelectCompanyAndInitiative(props:SelectProps){
     
-function SelectCompany(companyId: number)
+  function SelectCompany(companyId: number)
   {
     props.setSelectedCompany(props.companyList.find(company => company.id === companyId));
     props.setSelectedInitiativeIndex(-1);
@@ -40,7 +37,7 @@ function SelectCompany(companyId: number)
   return (
   <div className="space-y-5">
         <div className="space-x-5 flex w-full">
-          <select id={SelectIds.selectCompany} onChange={(e) => SelectCompany(parseInt((e.target as HTMLSelectElement).value))} className={selectStyle + " w-56 h-10"}>
+          <select id={props.companyElementId} onChange={(e) => SelectCompany(parseInt((e.target as HTMLSelectElement).value))} className={selectStyle + " w-56 h-10"}>
             <option>Select Company</option>
               {props.companyList.map((company,index)=>{
                 return(
@@ -48,7 +45,7 @@ function SelectCompany(companyId: number)
                 )
               })}
           </select>
-          <select id={SelectIds.selectInitiative} value={props.selectedInitiativeIndex} onChange={(e) => SelectInitiative(parseInt((e.target as HTMLSelectElement).value))} className={selectStyle + " w-56 h-10"}>
+          <select id={props.initiativeElementId} value={props.selectedInitiativeIndex} onChange={(e) => SelectInitiative(parseInt((e.target as HTMLSelectElement).value))} className={selectStyle + " w-56 h-10"}>
             <option>Select Initiative</option>
               {props.selectedCompany?.initiatives.map((initiative,index)=>{
                 return(

@@ -1,6 +1,6 @@
 import { InitiativeRadioIds } from "../../src/Components/Initiative/ManageInitiativesDisplay";
 import { InitiativeModalIds } from "../../src/Components/Initiative/UpdateInitiativeListModal";
-import { ToastId } from "../../src/Components/Toast";
+import { ToastIds } from "../../src/Components/Toast";
 import { UserRadioIds } from "../../src/Components/User/ManageUsersDisplay";
 import { EditUserModalIds } from "../../src/Components/User/UpdateUserListModal";
 import { ValidationFailedPrefix } from "../../src/Services/Validation";
@@ -25,7 +25,7 @@ export function AddHash(obj: Record<string,any> | string)
 
 export const TestConstants = {
   validationFailedMessage: ValidationFailedPrefix,
-  toastId: AddHash(ToastId),
+  toastIds: AddHash(ToastIds),
   initiativeModalIds: AddHash(InitiativeModalIds),
   initiativeRadioIds: AddHash(InitiativeRadioIds),
   userModalIds: AddHash(EditUserModalIds),

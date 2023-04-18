@@ -20,7 +20,7 @@ describe('update initiative spec', () => {
 
   const consts = TestConstants;
   const failMessage = consts.validationFailedMessage;
-  const badToastId = consts.toastId;
+  const badToastId = consts.toastIds.main;
   const modalIds = consts.initiativeModalIds;
   const radioIds = consts.initiativeRadioIds;
 
@@ -35,7 +35,7 @@ describe('update initiative spec', () => {
     cy.get('button').contains('Initiatives').click();
     cy.get(radioIds.all).click();
     cy.get('table').contains('Integrity Inspired Solutions');
-    cy.get('button').contains('Edit Initiative').click();
+    cy.get('#editInitiativeButton0').click();
 
     cy.get(modalIds.title).clear().type(init.title);
     /*cy.get(modalIds.date.month).clear().type(init.date.month);

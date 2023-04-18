@@ -16,7 +16,7 @@ describe('add company spec', () => {
 
   const consts = TestConstants;
   const failMessage = consts.validationFailedMessage;
-  const badToastId = consts.toastId;
+  const badToastId = consts.toastIds.main;
   const modalIds = consts.userModalIds;
   const radioIds = consts.userRadioIds;
 
