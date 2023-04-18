@@ -20,7 +20,8 @@ export const integrityColors = {
   integrityVeryLightGray: '#E4E1E5'
 }
 
-export const inputStyle = "outline rounded outline-1 p-2 w-full hover:outline-2 ";
+export const inputStyle = "outline rounded outline-1 p-2 hover:outline-2 focus:outline-2";
+export const selectStyle = "outline rounded outline-1 p-2 hover:outline-2 focus:outline-2";
 
 export const submitButtonStyle = "rounded h-3/4 max-h-7 w-[90px] mx-2 bg-lime-600 text-white hover:bg-lime-700";
 export const cancelButtonStyle = "rounded h-3/4 max-h-7 w-[90px] mx-2 bg-red-600 text-white hover:bg-red-700";

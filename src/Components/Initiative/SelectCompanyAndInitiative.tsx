@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { FindItemsRemaining } from "../../Services/CompanyService";
 import { Company } from "../../Store/CompanySlice";
+import { selectStyle } from "../../Styles";
 
 export const SelectIds = {
     selectCompany: "selectCompanyInThroughputModal",
@@ -41,7 +42,7 @@ function SelectCompany(companyId: number)
   return (
   <div className="space-y-5">
         <div className="space-x-5 flex w-full">
-          <select id={SelectIds.selectCompany} onChange={(e) => SelectCompany(parseInt((e.target as HTMLSelectElement).value))} className="outline outline-1 rounded w-56 h-10 hover:outline-2">
+          <select id={SelectIds.selectCompany} onChange={(e) => SelectCompany(parseInt((e.target as HTMLSelectElement).value))} className={selectStyle + " w-56 h-10"}>
             <option>Select Company</option>
               {props.companyList.map((company,index)=>{
                 return(
@@ -49,7 +50,7 @@ function SelectCompany(companyId: number)
                 )
               })}
           </select>
-          <select id={SelectIds.selectInitiative} value={selectedInitiativeIndex} onChange={(e) => SelectInitiative(parseInt((e.target as HTMLSelectElement).value))} className="outline outline-1 rounded w-56 h-10 hover:outline-2">
+          <select id={SelectIds.selectInitiative} value={selectedInitiativeIndex} onChange={(e) => SelectInitiative(parseInt((e.target as HTMLSelectElement).value))} className={selectStyle + " w-56 h-10"}>
             <option>Select Initiative</option>
               {props.selectedCompany?.initiatives.map((initiative,index)=>{
                 return(

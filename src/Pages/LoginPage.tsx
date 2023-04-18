@@ -12,7 +12,7 @@ export default function LoginPage(){
   const [password, setPassword] = useState('password');
   const userlist = useAppSelector(selectAllUsers);
   const [passwordShown,setPasswordShown]=useState(false);
-  const selectStyle = "outline outline-1 h-10 w-60 p-2 mb-4 hover:outline-2";
+  const selectStyle = "outline outline-1 h-10 w-60 p-2 mb-4 hover:outline-2 focus:outline-2";
 
   const togglePasswordVisibility = () => {
     setPasswordShown(passwordShown ? false : true);

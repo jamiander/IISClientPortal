@@ -5,6 +5,7 @@ import { Company, Initiative } from "../../Store/CompanySlice";
 import { useAppSelector } from "../../Store/Hooks";
 import { selectCurrentUser, User } from "../../Store/UserSlice";
 import { EditInitiativeButton } from "./EditInitiativeButton";
+import { inputStyle } from "../../Styles";
 
 export const InitiativeTableIds = {
   totalItems: 'totalItems',
@@ -41,8 +42,8 @@ export default function InitiativesTable(props: InitiativesProps) {
   return (
     <div className="grid grid-cols-1 w-full h-auto">
       <div className="col-span-1 h-[4vh] px-2 pb-[2%] space-x-2">
-        <input className="rounded outline outline-1 p-2 hover:outline-2" type={'text'} placeholder="Filter by Title" onChange={(e)=> setSearchedInit(e.target.value)}/>
-        <input hidden={!props.admin} className="rounded outline outline-1 p-2 hover:outline-2" type={'text'} placeholder="Filter by Company" onChange={(e)=> setSearchedComp(e.target.value)}/>
+        <input className={inputStyle} type={'text'} placeholder="Filter by Title" onChange={(e)=> setSearchedInit(e.target.value)}/>
+        <input hidden={!props.admin} className={inputStyle} type={'text'} placeholder="Filter by Company" onChange={(e)=> setSearchedComp(e.target.value)}/>
       </div>
       <div className="col-span-1 py-[2%]">
         <table className="table-auto w-[98%] outline outline-3 bg-gray-100">
