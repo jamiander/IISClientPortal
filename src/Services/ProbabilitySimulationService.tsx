@@ -8,7 +8,6 @@ export function GenerateProbability(initiative: Initiative, itemsRemaining: numb
     {
       if (initiative.itemsCompletedOnDate.every(item => item.itemsCompleted === 0)) return;
       else {
-        console.log(initiative.itemsCompletedOnDate);
         return Simulation(new Date(MakeDateString(initiative.targetDate)), itemsRemaining, initiative.itemsCompletedOnDate)
       };
     }

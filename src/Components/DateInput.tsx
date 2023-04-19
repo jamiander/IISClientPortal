@@ -17,6 +17,16 @@ export function MakeDateString(dateInfo: DateInfo)
   return dateInfo.year + "-" + AddLeadingZero(dateInfo.month) + "-" + AddLeadingZero(dateInfo.day);
 }
 
+export function EqualDateInfos(date1: DateInfo, date2: DateInfo)
+{
+  return date1.day === date2.day && date1.month === date2.month && date1.year === date2.year;
+}
+
+export function CompareDateInfos(date1: DateInfo, date2: DateInfo)
+{
+  return new Date(MakeDateString(date1)).getTime() - new Date(MakeDateString(date2)).getTime();
+}
+
 export function DateInput(props: DateInputProps)
 {
   function MakeDateInfo(dateString: string)
