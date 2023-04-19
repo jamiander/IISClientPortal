@@ -12,23 +12,25 @@ export function Simulation(targetDate: Date, itemsRemaining: number, historicalD
         {
             var index = Math.floor(Math.random() * historicalData.length);
             var items = historicalData[index].itemsCompleted;
-            incompleteItems -= items;
+            incompleteItems = incompleteItems - items;
             days ++;
             if (days > 100) break;
         }
         var endDate = addDays(days);
         endDates.push(endDate);
     }
-    var successDates =  endDates.filter((date) => date <= targetDate);
     
-    return ((successDates.length/endDates.length) * 100).toFixed();
-}
+    var successDates =  endDates.filter(function (date) {
+        return date <= targetDate});
+    
+    return Math.round((successDates.length/endDates.length) * 100);
 
-function addDays(days: number) {
-    var result = new Date();
-    result.setDate(result.getDate() + days);
-    return result;
-  }
+    function addDays(days: number) {
+        var result = new Date();
+        result.setDate(result.getDate() + days);
+        return result;
+    }
+}
 
 
 
