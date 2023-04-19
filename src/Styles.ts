@@ -27,3 +27,6 @@ export const submitButtonStyle = "rounded h-3/4 max-h-7 w-[90px] mx-2 bg-lime-60
 export const cancelButtonStyle = "rounded h-3/4 max-h-7 w-[90px] mx-2 bg-red-600 text-white hover:bg-red-700";
 export const genericButtonStyle = "outline outline-[#445362] rounded bg-[#21345b] text-white h-10 w-24 transition ease-in-out hover:bg-white hover:text-[#445362]";
 export const yellowButtonStyle = "outline outline-[#445362] h-[40px] w-32 bg-[#FAB947] text-[#445362] rounded-md transition ease-in-out hover:bg-white hover:text-[#445362]";
+
+export const redProbabilityStyle = "bg-red-300";
+export const greenProbabilityStyle = "bg-green-200";
