@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Company } from "../../Store/CompanySlice"
 import { User } from "../../Store/UserSlice"
 import UpdateUserListModal from "./UpdateUserListModal";
+import { genericButtonStyle } from "../../Styles";
 
 interface EditUserButtonProps{
   index:number,
@@ -22,7 +23,7 @@ export default function EditUserButton(props:EditUserButtonProps){
 
   return(
     <div key={props.index} className={'py-2 my-2 flex self-end'}>
-      <button className=" mx-2 bg-[#21345b] text-sm text-white w-full h-8 rounded-md outline hover:outline-[#2ed7c3] hover:text-[#2ed7c3]"
+      <button className={genericButtonStyle + " h-8 w-full mx-2"}
       onClick={() => props.handleEditUser(props.user, props.company)}
       >  
         Edit

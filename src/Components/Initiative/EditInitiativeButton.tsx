@@ -4,6 +4,7 @@ import { ValidationFailedPrefix } from "../../Services/Validation";
 import { Company, Initiative, selectAllCompanies, updateInitiativeInfo } from "../../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
 import { UpdateInitiativeListModal } from "./UpdateInitiativeListModal";
+import { genericButtonStyle } from "../../Styles";
 
 interface EditInitiativeButtonProps {
     company: Company
@@ -53,7 +54,7 @@ export function EditInitiativeButton(props: EditInitiativeButtonProps){
   }
     return (
       <div key={props.index} className={'py-1 flex self-end'}>
-        <button id={"editInitiativeButton"+props.initiative.id} className=" mx-2 bg-[#21345b] text-sm text-white w-full h-8 rounded-md outline hover:outline-[#2ed7c3] hover:text-[#2ed7c3]"
+        <button id={"editInitiativeButton"+props.initiative.id} className={genericButtonStyle + " h-8 w-full mx-2"}
             onClick={() => handleEditInitiative(props.company, props.initiative)}
         >
             Edit
