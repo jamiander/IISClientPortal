@@ -5,7 +5,7 @@ import { Company, Initiative } from "../../Store/CompanySlice";
 import { useAppSelector } from "../../Store/Hooks";
 import { selectCurrentUser, User } from "../../Store/UserSlice";
 import { EditInitiativeButton } from "./EditInitiativeButton";
-import { inputStyle } from "../../Styles";
+import { greenProbabilityStyle, inputStyle, redProbabilityStyle } from "../../Styles";
 import { GenerateProbability } from "../../Services/ProbabilitySimulationService";
 
 export const InitiativeTableIds = {
@@ -28,7 +28,7 @@ export default function InitiativesTable(props: InitiativesProps) {
   const [searchedComp, setSearchedComp] = useState('');
   const [searcehdInit, setSearchedInit] = useState('');
 
-  const filteredCompanies = props.companyList.filter(e => e.name.toLowerCase().includes(searchedComp.toLowerCase()))
+  const filteredCompanies = (props.companyList.filter(e => e.name.toLowerCase().includes(searchedComp.toLowerCase()))).sort((a, b) => a.name.localeCompare(b.name));
 
   let currentUser : User = useAppSelector(selectCurrentUser) ?? {id: -1, email: 'fake@fake', password: 'fake', companyId: -1};
   useEffect(() => {
@@ -38,6 +38,13 @@ export default function InitiativesTable(props: InitiativesProps) {
       setCompanyHidden(true);
     }
   }, [currentUser.id]);
+
+  function getHealthIndicator(probability: number | undefined)
+  {
+    if (probability === undefined) return;
+    if (probability < 50) return redProbabilityStyle;
+    else if (probability > 90) return greenProbabilityStyle;
+  }
   
   return (
     
@@ -62,19 +69,20 @@ export default function InitiativesTable(props: InitiativesProps) {
           <tbody>
             {
               filteredCompanies.map((company) => {
-                const filteredInits = company.initiatives.filter(e => e.title.toLowerCase().includes(searcehdInit.toLowerCase()))
+                const filteredInits = company.initiatives.filter(e => e.title.toLowerCase().includes(searcehdInit.toLowerCase())).sort((a, b) => a.title.localeCompare(b.title))
                 return (
                   InitiativeFilter(filteredInits, props.radioStatus).map((initiative, index) => {
                       let itemsRemaining = FindItemsRemaining(initiative);
                       let probability = GenerateProbability(initiative, itemsRemaining);
+                      let healthIndicator = getHealthIndicator(probability);
                       let probabilityValue = probability === undefined ? "NA"  : probability +  '%';
                       let tooltipMessage = probabilityValue === "NA" ? "No data available to calculate probability" : 
                       probabilityValue === "0%" ? "Data may be insufficient or may indicate a very low probability of success" : 
-                      probability + "%";
+                      probabilityValue;
 
                       return (
                       <Fragment key={index}>
-                        <tr key={index} className="odd:bg-gray-200">
+                        <tr key={index} className={healthIndicator}>
                           <td id={InitiativeTableIds.initiativeTitle} className={tableDataStyle}>{initiative.title}</td>
                           <td id={InitiativeTableIds.companyName} className={tableDataStyle} hidden={isCompanyHidden}>{company.name}</td>
                           <td className={tableDataStyle}>{initiative.targetDate.month + "/" + initiative.targetDate.day + "/" + initiative.targetDate.year}</td>
