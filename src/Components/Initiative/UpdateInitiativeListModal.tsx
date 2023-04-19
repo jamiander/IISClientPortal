@@ -70,34 +70,37 @@ export function UpdateInitiativeListModal(props: InitiativeModalProps){
 				<p className='my-1'>Title</p>
 				<input defaultValue={props.initiative?.title} id={InitiativeModalIds.title} className={inputStyle + ' w-3/4'} placeholder='Initiative Title'
           onChange={(e) => {setInitiativeTitle(e.target.value)}}/>
-        <div className='my-2 p-2 outline outline-1 outline-[#879794] rounded'>
-          <p className=''>Target Completion</p>
-				  <DateInput id={InitiativeModalIds.date} date={initiativeTargetDate} setDate={setInitiativeTargetDate}/>
+        <div className="flex">
+          <div className='my-2'>
+            <p className=''>Target Completion</p>
+            <DateInput id={InitiativeModalIds.date} date={initiativeTargetDate} setDate={setInitiativeTargetDate}/>
+          </div>
+          <div className='w-24 my-2 ml-2'>
+            <p>Total Items</p>
+            <input defaultValue={props.initiative?.totalItems} id={InitiativeModalIds.totalItems} type={'number'} placeholder='###'
+              className={inputStyle + " w-full"} 
+              onChange={(e) => {setInitiativeTotalItems(parseInt(e.target.value))}}/>
+          </div>
         </div>
       </div>
       
-      <div className='mt-2 grid grid-cols-2'>
-          <div className='w-24'>
-            <p>Total Items</p>
-            <input defaultValue={props.initiative?.totalItems} id={InitiativeModalIds.totalItems} type={'number'} placeholder='###' className={inputStyle + " w-full"} 
-              onChange={(e) => {setInitiativeTotalItems(parseInt(e.target.value))}}/>
-          </div>
-          <div className="p-2 justify-self-end">
-            <button id={InitiativeModalIds.submitButton} className={submitButtonStyle} 
-              onClick={() => {
-                let initiative : Initiative = {
-                  id: props.initiative?.id ?? -1,
-                  title: initiativeTitle,
-                  targetDate: initiativeTargetDate,
-                  totalItems: initiativeTotalItems,
-                  itemsCompletedOnDate: props.initiative?.itemsCompletedOnDate ?? []
-                }
-                props.Submit(initiative,initiativeCompanyId)
-              }}> Submit
-            </button>
-            <button id={InitiativeModalIds.closeButton} className={cancelButtonStyle + " mt-2"} onClick={() => props.setInitiativeIsOpen(false)}>Close</button> 
-          </div>
+      <div>
+        <div className="p-2 flex justify-between">
+          <button id={InitiativeModalIds.submitButton} className={submitButtonStyle} 
+            onClick={() => {
+              let initiative : Initiative = {
+                id: props.initiative?.id ?? -1,
+                title: initiativeTitle,
+                targetDate: initiativeTargetDate,
+                totalItems: initiativeTotalItems,
+                itemsCompletedOnDate: props.initiative?.itemsCompletedOnDate ?? []
+              }
+              props.Submit(initiative,initiativeCompanyId)
+            }}> Submit
+          </button>
+          <button id={InitiativeModalIds.closeButton} className={cancelButtonStyle} onClick={() => props.setInitiativeIsOpen(false)}>Close</button> 
         </div>
+      </div>
 		</Modal>
 	)
 }
