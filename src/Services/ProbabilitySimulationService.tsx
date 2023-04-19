@@ -4,7 +4,7 @@ export function Simulation(targetDate: Date, itemsRemaining: number, historicalD
 {
     if (historicalData.length === 0) return 0;
     var endDates: Date[] = [];
-    for (var i = 0; i < 100; i++)
+    for (var i = 0; i < 10000; i++)
     {
         var incompleteItems = itemsRemaining;
         var days = 0;
@@ -22,7 +22,7 @@ export function Simulation(targetDate: Date, itemsRemaining: number, historicalD
     }
     var successDates =  endDates.filter((date) => date <= targetDate);
     
-    return (successDates.length/endDates.length) * 100;
+    return ((successDates.length/endDates.length) * 100).toFixed();
 }
 
 function addDays(days: number) {
