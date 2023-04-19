@@ -211,35 +211,36 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
               onClick={() => AddThroughputEntry()}>Submit</button>
           </div>
         </div>
-        <div>
-          <table className="table-auto w-full outline outline-3 rounded-md bg-white">
-              <thead>
-                  <tr>
-                      <th>Date</th>
-                      <th>Items Completed</th>
-                  </tr>
-              </thead>
-              <tbody>
-                  {(selectedInitiativeIndex >= 0) && selectedCompany?.initiatives[selectedInitiativeIndex]?.itemsCompletedOnDate.map((throughput, key) => {
-                      return (
-                      <tr key={key} className="odd:bg-gray-100">
-                          <td className="border border-spacing-x-0 border-y-gray-700 focus-within:bg-gray-200 hover:bg-gray-200">
-                              <input className="px-2 w-full bg-inherit focus:outline-none" id={EditThroughputIds.tableDate} type="date" value={MakeDateString(throughput.date)} 
-                              onChange={(e) => EditDate(key, e.target.value)}/>                        
-                          </td>
-                          <td className="border border-spacing-x-0 border-y-gray-700 focus-within:bg-gray-200 hover:bg-gray-200">
-                              <input className="px-2 w-full bg-inherit focus:outline-none" id={EditThroughputIds.tableItemsComplete} type="number" min="0" value={throughput.itemsCompleted}
-                              onChange={(e) =>EditItems(key, e.target.value)}/>
-                          </td>
-                      </tr>
-                      )
-                  })}
-              </tbody>
+        <div className="rounded overflow-y-auto max-h-60">
+          <table className="table-auto w-full outline outline-3 rounded-md bg-white overflow-y-auto">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Items Completed</th>
+              </tr>
+            </thead>
+            <tbody>
+                {(selectedInitiativeIndex >= 0) && selectedCompany?.initiatives[selectedInitiativeIndex]?.itemsCompletedOnDate.map((throughput, key) => {
+                    if (key < resultsLimit*pageNumber && key >= resultsLimit*(pageNumber-1)) return (
+                    <tr key={key} className="odd:bg-gray-100">
+                        <td className="border border-spacing-x-0 border-y-gray-700 focus-within:bg-gray-200 hover:bg-gray-200">
+                            <input className="px-2 w-full bg-inherit focus:outline-none" id={EditThroughputIds.tableDate} type="date" value={MakeDateString(throughput.date)} 
+                            onChange={(e) => EditDate(key, e.target.value)}/>                        
+                        </td>
+                        <td className="border border-spacing-x-0 border-y-gray-700 focus-within:bg-gray-200 hover:bg-gray-200">
+                            <input className="px-2 w-full bg-inherit focus:outline-none" id={EditThroughputIds.tableItemsComplete} type="number" min="0" value={throughput.itemsCompleted}
+                            onChange={(e) =>EditItems(key, e.target.value)}/>
+                        </td>
+                    </tr>
+                    )
+                })}
+            </tbody>
           </table>
         </div>
         <div className="flex p-2 items-center">
           <p>Results Per Page</p>
-          <select value={resultsLimit} onChange={(e) => { setResultsLimit(parseInt(e.target.value)); ResetPageNumber()}} className='mx-2 rounded-md border border-gray-200 hover:bg-gray-100'>
+          <select value={resultsLimit} onChange={(e) => { setResultsLimit(parseInt(e.target.value)); ResetPageNumber()}}
+            className='mx-2 rounded-md border border-gray-200 hover:bg-gray-100'>
             {resultsLimitOptions.map((limit,index) => {
               return (
                 <option key={index} value={limit}>
