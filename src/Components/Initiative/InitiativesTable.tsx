@@ -6,8 +6,7 @@ import { useAppSelector } from "../../Store/Hooks";
 import { selectCurrentUser, User } from "../../Store/UserSlice";
 import { EditInitiativeButton } from "./EditInitiativeButton";
 import { inputStyle } from "../../Styles";
-import { Simulation } from "../../Services/ProbabilitySimulationService";
-import { MakeDateString } from "../DateInput";
+import { GenerateProbability } from "../../Services/ProbabilitySimulationService";
 
 export const InitiativeTableIds = {
   totalItems: 'totalItems',
@@ -63,13 +62,13 @@ export default function InitiativesTable(props: InitiativesProps) {
           </thead>
           <tbody>
             {
-              filteredCompanies.map((company, index) => {
+              filteredCompanies.map((company) => {
                 const filteredInits = company.initiatives.filter(e => e.title.toLowerCase().includes(searcehdInit.toLowerCase()))
                 return (
                   InitiativeFilter(filteredInits, props.radioStatus).map((initiative, index) => {
-                    let itemsRemaining = FindItemsRemaining(initiative);
-                    let probability = Simulation(new Date(MakeDateString(initiative.targetDate)), itemsRemaining, initiative.itemsCompletedOnDate);
-                    return (
+                      let itemsRemaining = FindItemsRemaining(initiative);
+                      let probability = GenerateProbability(initiative, itemsRemaining);
+                      return (
                       <Fragment key={index}>
                         <tr key={index} className="odd:bg-gray-200">
                           <td className={tableDataStyle + ' p-1'}>{initiative.id}</td>
@@ -78,7 +77,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                           <td className={tableDataStyle}>{initiative.targetDate.month + "/" + initiative.targetDate.day + "/" + initiative.targetDate.year}</td>
                           <td id={InitiativeTableIds.totalItems} className={tableDataStyle}>{initiative.totalItems}</td>
                           <td id={InitiativeTableIds.remainingItems} className={tableDataStyle}>{itemsRemaining}</td>
-                          <td className={tableDataStyle}>{probability}%</td>
+                          <td className={tableDataStyle}>{ probability === undefined ? "NA" : probability +  '%' }</td>
                           <td className={tableDataStyle + " w-1/12"} hidden={!props.admin}><EditInitiativeButton company={company} initiative={initiative} index={index} ValidateInitiative={props.ValidateInitiative} /></td>
                         </tr>
                       </Fragment>
