@@ -47,7 +47,7 @@ export default function InitiativesTable(props: InitiativesProps) {
         <input hidden={!props.admin} className={inputStyle} type={'text'} placeholder="Filter by Company" onChange={(e)=> setSearchedComp(e.target.value)}/>
       </div>
       <div className="col-span-1 py-[2%]">
-        <table className="table-auto w-[98%] outline outline-3 bg-gray-100">
+        <table className="table-auto w-full outline outline-3 bg-gray-100">
           <thead className="outline outline-1">
             <tr>
               <th>Title</th>
