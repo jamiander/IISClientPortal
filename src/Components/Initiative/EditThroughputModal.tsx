@@ -1,15 +1,18 @@
 import Modal from "react-modal";
 import { useEffect, useState } from "react";
-import { ThroughputData } from "../../Services/CompanyService";
+import { DateInfo, ThroughputData } from "../../Services/CompanyService";
 import { Company, Initiative } from "../../Store/CompanySlice";
-import { cancelButtonStyle, modalStyle, submitButtonStyle } from "../../Styles";
+import { cancelButtonStyle, inputStyle, modalStyle, submitButtonStyle } from "../../Styles";
 import SelectCompanyAndInitiative from "./SelectCompanyAndInitiative";
-import { MakeDateString } from "../DateInput";
+import { DateInput, MakeDateString } from "../DateInput";
+import { ValidateEditThroughputData } from "../../Services/Validation";
+import { useOutletContext } from "react-router-dom";
 
 export const EditThroughputIds = {
     modal: "editThroughputModal",
     selectCompany: "editThroughputCompanySelect",
     selectInitiative: "editThroughputInititia",
+    addEntrySubmitButton: "editThroughputAdd",
     submitButton: "editThroughputSubmitButton",
     closeButton: "editThroughputCloseButton",
     date: "editThroughputDate",
@@ -24,25 +27,95 @@ export const EditThroughputIds = {
   }
 
 export default function EditThroughputModal(this: any, props: ThroughputModalProps){
-    const [selectedCompany, setSelectedCompany] = useState<Company>();
-    const [selectedInitiativeIndex, setSelectedInitiativeIndex] = useState(-1);
-    
+  const [selectedCompany, setSelectedCompany] = useState<Company>();
+  const [selectedInitiativeIndex, setSelectedInitiativeIndex] = useState(-1);
+  const [dateWarning, setDateWarning] = useState("");
+  const today = new Date();
+  const todayInfo: DateInfo = {month: today.getMonth()+1, day: today.getDate(), year: today.getFullYear()}
+  const [entryDate, setEntryDate] = useState<DateInfo>(todayInfo);
+  const [itemsCompleted, setItemsCompleted] = useState(-1);
+  const manualEntry: ThroughputData = { date:entryDate, itemsCompleted:itemsCompleted }
+  const ShowToast : (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void = useOutletContext();
+
   useEffect(() => {
     setSelectedCompany(undefined);
     setSelectedInitiativeIndex(-1);
+    setDateWarning("");
+    setEntryDate(todayInfo);
+    setItemsCompleted(-1);
   },[props.editIsOpen])
+
+  useEffect(() => {
+    let warningMessage = "";
+    let initiative = selectedCompany?.initiatives[selectedInitiativeIndex];
+    if(initiative)
+    {
+      let dates = initiative.itemsCompletedOnDate;
+      if(dates)
+      {
+        let dateExists = false;
+        let existingItems = -1;
+        for(let i = 0; i < dates.length; i++)
+        {
+          if(EqualDateInfos(dates[i].date,entryDate))
+          {
+            existingItems = dates[i].itemsCompleted;
+            dateExists = true;
+            break;
+          }
+        }
+
+        if(dateExists)
+          warningMessage = "Warning: This date already has " + existingItems + " item(s). Submitting will overwrite this.";
+      }
+    }
+    setDateWarning(warningMessage);
+  },[entryDate,selectedInitiativeIndex])
+
+  function EqualDateInfos(date1: DateInfo, date2: DateInfo)
+  {
+    return date1.day === date2.day && date1.month === date2.month && date1.year === date2.year;
+  }
 
   function GetInitiativeFromCompany(company: Company | undefined, initiativeIndex: number) : Initiative | undefined
   {
-    let initiatives = company?.initiatives.at(initiativeIndex);
+    let initiatives = company?.initiatives[initiativeIndex];
     return initiatives;
   }
-    
+
+  function AddThroughputEntry()
+  {
+    let initiative = GetInitiativeFromCompany(selectedCompany,selectedInitiativeIndex);
+    let validate = ValidateEditThroughputData(props.companyList, selectedCompany?.id ?? -1, initiative?.id ?? -1, [manualEntry]);
+    if(validate.success)
+    {
+      ShowToast("New data added!", "Success");
+      UpsertThroughput(manualEntry);
+    }
+    else
+      ShowToast(validate.message, "Error");
+  }
+  
+  function UpsertThroughput(newData: ThroughputData)
+  {
+    let selectedCompanyClone = JSON.parse(JSON.stringify(selectedCompany));
+    let initiative = GetInitiativeFromCompany(selectedCompanyClone,selectedInitiativeIndex)
+    if(initiative)
+    {
+      let existingThroughputIndex = initiative.itemsCompletedOnDate.findIndex((data) => EqualDateInfos(data.date,newData.date));
+      if(existingThroughputIndex === -1)
+        initiative.itemsCompletedOnDate.push(newData);
+      else
+        initiative.itemsCompletedOnDate[existingThroughputIndex] = newData;
+    }
+    setSelectedCompany(selectedCompanyClone);
+  }
+
   function EditDate(key: number, dateString: string)
   {
-    var splitDate = dateString.split("-");
-    var selectedCompanyClone = JSON.parse(JSON.stringify(selectedCompany));
-    var changeThroughput = GetInitiativeFromCompany(selectedCompanyClone,selectedInitiativeIndex)?.itemsCompletedOnDate.at(key);
+    let splitDate = dateString.split("-");
+    let selectedCompanyClone = JSON.parse(JSON.stringify(selectedCompany));
+    let changeThroughput = GetInitiativeFromCompany(selectedCompanyClone,selectedInitiativeIndex)?.itemsCompletedOnDate.at(key);
     if (changeThroughput)
     {
       changeThroughput.date.day = parseInt(splitDate[2]);
@@ -55,8 +128,8 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
 
   function EditItems(key: number, newItems: string)
   {
-    var selectedCompanyClone = JSON.parse(JSON.stringify(selectedCompany));
-    var changeThroughput = GetInitiativeFromCompany(selectedCompanyClone,selectedInitiativeIndex)?.itemsCompletedOnDate.at(key);
+    let selectedCompanyClone = JSON.parse(JSON.stringify(selectedCompany));
+    let changeThroughput = GetInitiativeFromCompany(selectedCompanyClone,selectedInitiativeIndex)?.itemsCompletedOnDate.at(key);
     if (changeThroughput)
     {
       changeThroughput.itemsCompleted = parseInt(newItems);
@@ -74,7 +147,27 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
         appElement={document.getElementById('root') as HTMLElement}>
         <div className="space-y-5">
           <p className="text-3xl w-full">Edit Throughput Data</p>
-          <SelectCompanyAndInitiative companyList={props.companyList} selectedCompany={selectedCompany}  selectedInitiativeIndex={selectedInitiativeIndex} setSelectedCompany={setSelectedCompany} setSelectedInitiativeIndex={setSelectedInitiativeIndex} companyElementId={EditThroughputIds.selectCompany} initiativeElementId={EditThroughputIds.selectInitiative}/>
+          <SelectCompanyAndInitiative companyList={props.companyList} selectedCompany={selectedCompany} selectedInitiativeIndex={selectedInitiativeIndex} setSelectedCompany={setSelectedCompany} setSelectedInitiativeIndex={setSelectedInitiativeIndex} companyElementId={EditThroughputIds.selectCompany} initiativeElementId={EditThroughputIds.selectInitiative}/>
+          <div className="outline outline-[#879794] rounded space-y-2 p-2">
+            <div>
+              <p className="text-2xl">Add Data</p>
+            </div>
+            <div className="flex justify-between h-full">
+              <div>
+                <p>Date</p>
+                <DateInput id={EditThroughputIds.date} date={entryDate} setDate={setEntryDate}/>
+              </div>
+              <div>
+                <p>Items Completed</p>
+                <input id={EditThroughputIds.itemsComplete} type={'number'} className={inputStyle + ' w-1/2'} min={0} onChange={(e) => {setItemsCompleted(parseInt(e.target.value))}}/>
+              </div>
+            </div>
+            <div className="grid">
+              {dateWarning}
+              <button id={EditThroughputIds.addEntrySubmitButton} className={submitButtonStyle + " h-full"} 
+                onClick={() => AddThroughputEntry()/*props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives[selectedInitiativeIndex]?.id ?? -1, manualEntry, true)*/}>Submit</button>
+            </div>
+          </div>
           <div>
             <table className="table-auto w-full outline outline-3 rounded-md bg-white">
                 <thead>
@@ -101,9 +194,9 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
                 </tbody>
             </table>
           </div>
-        <div className="h-10 w-full">
-          <button id={EditThroughputIds.submitButton} className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives[selectedInitiativeIndex]?.id ?? -1, GetInitiativeFromCompany(selectedCompany,selectedInitiativeIndex)?.itemsCompletedOnDate ?? [], false)}>Submit</button>
-          <button id={EditThroughputIds.closeButton} className={cancelButtonStyle} onClick={() => props.setEditIsOpen(false)}>Close</button>
+        <div className="h-10 w-full flex justify-between">
+          <button id={EditThroughputIds.submitButton} className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives[selectedInitiativeIndex]?.id ?? -1, GetInitiativeFromCompany(selectedCompany,selectedInitiativeIndex)?.itemsCompletedOnDate ?? [], false)}>Save</button>
+          <button id={EditThroughputIds.closeButton} className={cancelButtonStyle} onClick={() => props.setEditIsOpen(false)}>Cancel</button>
         </div>
       </div>
     </Modal>

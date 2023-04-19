@@ -13,9 +13,7 @@ export const UploadThroughputIds = {
   selectCompany: "selectCompanyInThroughputModal",
   selectInitiative: "selectInitiativeInThroughputModal",
   fileSubmit: "submitThroughputAsFile",
-  manualSubmit: "submitThroughputAsSingleEntry",
   date: "uploadThroughputDate",
-  itemsComplete: "uploadThroughputItemsComplete",
   closeButton: "uploadThroughputClose"
 }
 
@@ -31,13 +29,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){
   const [selectedInitiativeIndex, setSelectedInitiativeIndex] = useState(-1);
   const [fileData, setFileData] = useState<ThroughputData[]>([]);
   const [fileWarning, setFileWarning] = useState("");
-  const [dateWarning, setDateWarning] = useState("");
   const ShowToast : (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void = useOutletContext();
-  const today = new Date();
-  const todayInfo: DateInfo = {month: today.getMonth()+1, day: today.getDate(), year: today.getFullYear()}
-  const [entryDate, setEntryDate] = useState<DateInfo>(todayInfo);
-  const [itemsCompleted, setItemsCompleted] = useState(-1);
-  const manualEntry: ThroughputData[] = [{date:entryDate,itemsCompleted:itemsCompleted}]
   const fileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -45,42 +37,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){
     setSelectedInitiativeIndex(-1);
     setFileData([]);
     setFileWarning("");
-    setDateWarning("");
-    setEntryDate(todayInfo);
-    setItemsCompleted(-1);
   },[props.uploadIsOpen])
-
-  useEffect(() => {
-    let warningMessage = "";
-    let initiative = selectedCompany?.initiatives[selectedInitiativeIndex];
-    if(initiative)
-    {
-      let dates = initiative.itemsCompletedOnDate;
-      if(dates)
-      {
-        let dateExists = false;
-        let existingItems = -1;
-        for(let i = 0; i < dates.length; i++)
-        {
-          if(EqualDateInfos(dates[i].date,entryDate))
-          {
-            existingItems = dates[i].itemsCompleted;
-            dateExists = true;
-            break;
-          }
-        }
-
-        if(dateExists)
-          warningMessage = "Warning: This date already has " + existingItems + " item(s). Submitting will overwrite this.";
-      }
-    }
-    setDateWarning(warningMessage);
-  },[entryDate,selectedInitiativeIndex])
-
-  function EqualDateInfos(date1: DateInfo, date2: DateInfo)
-  {
-    return date1.day === date2.day && date1.month === date2.month && date1.year === date2.year;
-  }
 
   function ReceiveFile(fileName: string)
   {
@@ -159,7 +116,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){
     style={{'content': {...modalStyle.content, 'width' : 'fit-content', 'height' : 'fit-content'}}}
     appElement={document.getElementById('root') as HTMLElement}>
       <div className="space-y-5">
-        <p className="text-3xl w-full">Enter Throughput Data</p>
+        <p className="text-3xl w-full">Upload Throughput Data</p>
         <SelectCompanyAndInitiative companyList={props.companyList} selectedCompany={selectedCompany} selectedInitiativeIndex={selectedInitiativeIndex} setSelectedCompany={setSelectedCompany} setSelectedInitiativeIndex={setSelectedInitiativeIndex} companyElementId={UploadThroughputIds.selectCompany} initiativeElementId={UploadThroughputIds.selectInitiative}/>
         {fileWarning}
         <div className="flex">
@@ -168,21 +125,6 @@ export default function UploadThroughputModal(props:ThroughputModalProps){
             <input className="w-full" ref={fileRef} type={'file'} accept={'.csv'} onChange={(e) => ReceiveFile(e.target.value)}/>
             <div className="grid justify-end h-1/2">
               <button id={UploadThroughputIds.fileSubmit} className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives.at(selectedInitiativeIndex)?.id ?? -1, fileData, true)}>Submit</button>
-            </div>
-          </div>
-          <p className="text-2xl m-3">OR</p>
-          <div className="outline outline-[#879794] rounded space-y-2 p-2 w-64">
-            <div>
-              <p className="text-2xl">Manual Entry</p>
-            </div>
-              <DateInput id={UploadThroughputIds.date} date={entryDate} setDate={setEntryDate}/>
-              {dateWarning}
-            <div>
-              <p>Items Completed</p>
-            </div>
-            <div className='flex w-full h-10 justify-between'>
-              <input id={UploadThroughputIds.itemsComplete} type={'number'} className={inputStyle + ' w-1/4'} min={0} onChange={(e) => {setItemsCompleted(parseInt(e.target.value))}}/>
-              <button id={UploadThroughputIds.manualSubmit} className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives[selectedInitiativeIndex]?.id ?? -1, manualEntry, true)}>Submit</button>
             </div>
           </div>
         </div>
