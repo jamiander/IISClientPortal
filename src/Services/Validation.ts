@@ -94,7 +94,7 @@ export function ValidateThroughputData(dataList: ThroughputData[]) : Validation
   return {success: true, message: "All data is valid."}
 }
 
-export function ValidateNewThroughputData(companyList: Company[], companyId: number, initiativeId: number, dataList: ThroughputData[]): Validation
+export function ValidateFileThroughputData(companyList: Company[], companyId: number, initiativeId: number, dataList: ThroughputData[]): Validation
 {
   if(dataList.length === 0)
     return {success: false, message: "A set of data could not be derived from the selected file, or no file was selected."}

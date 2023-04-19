@@ -17,7 +17,6 @@ export function Simulation(targetDate: Date, itemsRemaining: number, historicalD
             if (days > 100) break;
         }
         var endDate = addDays(days);
-        console.log("days   " + days);
         endDates.push(endDate);
     }
     var successDates =  endDates.filter((date) => date <= targetDate);
