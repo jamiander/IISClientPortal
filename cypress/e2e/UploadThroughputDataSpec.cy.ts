@@ -19,7 +19,7 @@ const initiative = 'IIS Initiative';
 const company = 'Integrity Inspired Solutions';
 const waitTime = 500;
 
-describe('valid add throughput tests', () => {
+describe('valid upload throughput tests', () => {
 
   let remainingItemsBefore: number;
 
@@ -35,11 +35,7 @@ describe('valid add throughput tests', () => {
 
     cy.contains('tr', initiative).find(tableIds.remainingItems).then(($span) => {
       remainingItemsBefore = Number($span.text());
-      // console.log('remainingItemsBefore:', remainingItemsBefore);
     });
-    // cy.contains('tr', initiative).find(tableIds.initiativeTitle).then(($span) => {
-    //   console.log('initiative verification:', $span.text());
-    // });
 
     cy.get('button').contains('Upload Data').click();
     cy.get(modalIds.selectCompany).select(company);
@@ -50,7 +46,6 @@ describe('valid add throughput tests', () => {
     let itemsCompletedInUpload : number;
     cy.readFile('cypress/data/validThroughputDataFile.csv', 'ascii').then((file) => {
       itemsCompletedInUpload = findItemsCompleted(file);
-      // console.log('itemsCompletedInUpload:',itemsCompletedInUpload);
 
       cy.get('input[type=file]').selectFile({
         contents: Cypress.Buffer.from(file),
@@ -63,7 +58,6 @@ describe('valid add throughput tests', () => {
     cy.wait(waitTime);
     cy.contains('tr', initiative).find(tableIds.remainingItems).then(($span) => {
       let remainingItemsAfter = Number($span.text());
-      // console.log('remainingItemsAfter:', remainingItemsAfter);
       expect(remainingItemsBefore-itemsCompletedInUpload).to.be.equal(remainingItemsAfter);
     })
   })
@@ -78,7 +72,7 @@ describe('valid add throughput tests', () => {
 
 })
 
-describe('invalid add throughput tests', () => {
+describe('invalid upload throughput tests', () => {
 
   beforeEach(() => {
     cy.visit('http://localhost:3000/Login');
@@ -116,7 +110,6 @@ describe('invalid add throughput tests', () => {
       fieldToClear.splice(0,1);
       blankFieldFile[2] = ',' + fieldToClear;
       blankFieldFile = blankFieldFile.join('\n');
-      // console.log(blankFieldFile);
 
       cy.get('input[type=file]').selectFile({
         contents: Cypress.Buffer.from(blankFieldFile),
@@ -133,7 +126,6 @@ describe('invalid add throughput tests', () => {
       let invalidFormatFile = file.split('\n');
       invalidFormatFile[2] = invalidFormatFile[2].replace(',', ';');
       invalidFormatFile = invalidFormatFile.join('\n');
-      // console.log(invalidFormatFile)
 
       cy.get('input[type=file]').selectFile({
         contents: Cypress.Buffer.from(invalidFormatFile),
@@ -150,7 +142,6 @@ describe('invalid add throughput tests', () => {
       let dateToInvalidate = invalidDateFile[3].split('/');
       dateToInvalidate[0] = '23';
       invalidDateFile[3] = dateToInvalidate.join('/'); invalidDateFile = invalidDateFile.join('\n');
-      // console.log(invalidDateFile);
 
       cy.get('input[type=file]').selectFile({
         contents: Cypress.Buffer.from(invalidDateFile),
@@ -170,7 +161,6 @@ describe('invalid add throughput tests', () => {
       let entryToInvalidate = invalidItemsCompletedFile[4].split(',');
       entryToInvalidate[1] = entryToInvalidate[1].replace(entryToInvalidate[1][1], '-3');
       invalidItemsCompletedFile[4] = entryToInvalidate.join(','); invalidItemsCompletedFile = invalidItemsCompletedFile.join('\n');
-      // console.log(invalidItemsCompletedFile);
       
       cy.get('input[type=file]').selectFile({
         contents: Cypress.Buffer.from(invalidItemsCompletedFile),
@@ -185,88 +175,3 @@ describe('invalid add throughput tests', () => {
   })
 })
 
-describe ('add throughput data by manual entry', () => {
-  let remainingItemsBefore: number;
-
-  before(() => {
-    cy.visit('http://localhost:3000/Login');
-    cy.get('#email').clear().type('info@integrityinspired.com');
-    cy.get('#password').clear().type('password');
-    cy.get('button').contains('Submit').click();
-
-    cy.get('button').contains('Admin').click();
-    cy.get('button').contains('Initiatives').click();
-
-    cy.contains('tr', initiative).find(tableIds.remainingItems).then(($span) => {
-      remainingItemsBefore = Number($span.text());
-    });
-
-    cy.get('button').contains('Upload Data').click();
-    cy.get(modalIds.selectCompany).select(company);
-    cy.get(modalIds.selectInitiative).select(initiative);
-  })
-
-  specify('add throughput data by manual entry', () => {
-    /*cy.get(modalIds.date.month).clear().type('01');
-    cy.get(modalIds.date.day).clear().type('01');
-    cy.get(modalIds.date.year).clear().type('2020');*/
-    cy.get(modalIds.date).clear().type("2020-01-01");
-    cy.get(modalIds.itemsComplete).clear().type('2');
-    cy.get(modalIds.manualSubmit).click();
-
-    cy.wait(waitTime)
-    cy.contains('tr', initiative).find(tableIds.remainingItems).then(($span) => {
-      let remainingItemsAfter = Number($span.text());
-      expect(remainingItemsBefore-2).to.be.equal(remainingItemsAfter);
-    })
-  })
-})
-
-describe ('invalid manual entry test', () => {
-  beforeEach(() => {
-    cy.visit('http://localhost:3000/Login');
-    cy.get('#email').clear().type('info@integrityinspired.com');
-    cy.get('#password').clear().type('password');
-    cy.get('button').contains('Submit').click();
-
-    cy.get('button').contains('Admin').click();
-    cy.get('button').contains('Initiatives').click();
-
-    cy.get('button').contains('Upload Data').click();
-    cy.get(modalIds.selectCompany).select(company);
-    cy.get(modalIds.selectInitiative).select(initiative);
-  })
-
-  specify('cannot add throughput entry when date is invalid', () => {
-    /*cy.get(modalIds.date.month).clear().type('01');
-    cy.get(modalIds.date.day).clear().type('01');
-    cy.get(modalIds.date.year).clear();*/
-    cy.get(modalIds.date).clear();
-
-    cy.get(modalIds.itemsComplete).clear().type('2');
-    cy.get(modalIds.manualSubmit).click();
-    cy.wait(waitTime);
-    cy.get(badToastId).contains('Validation Failed');
-  })
-
-  //Cypress does not allow letters in date pickers
-  /*specify('cannot add throughput entry when letters are entered for date', () => {
-    cy.get(modalIds.date.month).clear().type('a');
-    cy.get(modalIds.date.day).clear().type('01');
-    cy.get(modalIds.date.year).clear().type('2020');
-    cy.get(modalIds.itemsComplete).clear().type('2');
-    cy.get(modalIds.manualSubmit).click();
-    cy.wait(waitTime);
-    cy.get(badToastId).contains('Validation Failed');
-  })*/
-
-  specify('cannot add throughput entry when item completed is invalid', () => {
-    /*cy.get(modalIds.date.month).clear().type('01');
-    cy.get(modalIds.date.day).clear().type('01');
-    cy.get(modalIds.date.year).clear().type('2020');*/
-    cy.get(modalIds.date).clear().type("2020-01-01");
-    cy.get(modalIds.manualSubmit).click();
-    cy.wait(waitTime);
-    cy.get(badToastId).contains('Validation Failed');
-  })
-})

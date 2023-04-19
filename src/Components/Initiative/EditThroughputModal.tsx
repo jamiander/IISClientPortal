@@ -5,7 +5,7 @@ import { Company, Initiative } from "../../Store/CompanySlice";
 import { cancelButtonStyle, inputStyle, modalStyle, submitButtonStyle } from "../../Styles";
 import SelectCompanyAndInitiative from "./SelectCompanyAndInitiative";
 import { DateInput, MakeDateString } from "../DateInput";
-import { ValidateEditThroughputData } from "../../Services/Validation";
+import { ValidateEditThroughputData, ValidationFailedPrefix } from "../../Services/Validation";
 import { useOutletContext } from "react-router-dom";
 
 export const EditThroughputIds = {
@@ -15,8 +15,10 @@ export const EditThroughputIds = {
     addEntrySubmitButton: "editThroughputAdd",
     submitButton: "editThroughputSubmitButton",
     closeButton: "editThroughputCloseButton",
-    date: "editThroughputDate",
-    itemsComplete: "editThroughputItemsComplete"
+    addDate: "editThroughputAddDate",
+    addItemsComplete: "editThroughputAddItemsComplete",
+    tableDate: "editThroughputTableDate",
+    tableItemsComplete: "editThroughputTableItemsComplete"
   }
   
   interface ThroughputModalProps{
@@ -93,7 +95,7 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
       UpsertThroughput(manualEntry);
     }
     else
-      ShowToast(validate.message, "Error");
+      ShowToast(ValidationFailedPrefix + validate.message, "Error");
   }
   
   function UpsertThroughput(newData: ThroughputData)
@@ -155,11 +157,11 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
             <div className="flex justify-between h-full">
               <div>
                 <p>Date</p>
-                <DateInput id={EditThroughputIds.date} date={entryDate} setDate={setEntryDate}/>
+                <DateInput id={EditThroughputIds.addDate} date={entryDate} setDate={setEntryDate}/>
               </div>
               <div>
                 <p>Items Completed</p>
-                <input id={EditThroughputIds.itemsComplete} type={'number'} className={inputStyle + ' w-1/2'} min={0} onChange={(e) => {setItemsCompleted(parseInt(e.target.value))}}/>
+                <input id={EditThroughputIds.addItemsComplete} type={'number'} className={inputStyle + ' w-1/2'} min={0} onChange={(e) => {setItemsCompleted(parseInt(e.target.value))}}/>
               </div>
             </div>
             <div className="grid">
@@ -181,11 +183,11 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
                         return (
                         <tr key={key} className="odd:bg-gray-100">
                             <td className="border border-spacing-x-0 border-y-gray-700 focus-within:bg-gray-200 hover:bg-gray-200">
-                                <input className="px-2 w-full bg-inherit focus:outline-none" id={EditThroughputIds.date} type="date" value={MakeDateString(throughput.date)} 
+                                <input className="px-2 w-full bg-inherit focus:outline-none" id={EditThroughputIds.tableDate} type="date" value={MakeDateString(throughput.date)} 
                                 onChange={(e) => EditDate(key, e.target.value)}/>                        
                             </td>
                             <td className="border border-spacing-x-0 border-y-gray-700 focus-within:bg-gray-200 hover:bg-gray-200">
-                                <input className="px-2 w-full bg-inherit focus:outline-none" id={EditThroughputIds.itemsComplete} type="number" min="0" value={throughput.itemsCompleted}
+                                <input className="px-2 w-full bg-inherit focus:outline-none" id={EditThroughputIds.tableItemsComplete} type="number" min="0" value={throughput.itemsCompleted}
                                 onChange={(e) =>EditItems(key, e.target.value)}/>
                             </td>
                         </tr>
