@@ -30,7 +30,7 @@ export default function ValidateNewInitiative(initiative: Initiative, companyId:
 
 export function ValidateDate(date: DateInfo) : Validation
 {
-  if(date == null || date == undefined)
+  if(date === null || date === undefined)
     return {success: false, message: "A date was not provided"};
   
   let month = date.month;
