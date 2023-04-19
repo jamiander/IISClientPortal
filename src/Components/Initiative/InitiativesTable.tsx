@@ -47,7 +47,6 @@ export default function InitiativesTable(props: InitiativesProps) {
   }
   
   return (
-    
     <div className="grid grid-cols-1 w-full h-auto">
       <div className="col-span-1 h-[4vh] px-2 pb-[2%] space-x-2">
         <input className={inputStyle} type={'text'} placeholder="Filter by Title" onChange={(e)=> setSearchedInit(e.target.value)}/>
@@ -75,10 +74,9 @@ export default function InitiativesTable(props: InitiativesProps) {
                       let itemsRemaining = FindItemsRemaining(initiative);
                       let probability = GenerateProbability(initiative, itemsRemaining);
                       let healthIndicator = getHealthIndicator(probability);
-                      let probabilityValue = probability === undefined ? "NA"  : probability +  '%';
-                      let tooltipMessage = probabilityValue === "NA" ? "No data available to calculate probability" : 
-                      probabilityValue === "0%" ? "Data may be insufficient or may indicate a very low probability of success" : 
-                      probabilityValue;
+                      let tooltipMessage = probability === undefined ? "No data available to calculate probability" : 
+                      probability === 0 ? "Data may be insufficient or may indicate a very low probability of success" : 
+                      probability + "%";
 
                       return (
                       <Fragment key={index}>
@@ -88,7 +86,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                           <td className={tableDataStyle}>{initiative.targetDate.month + "/" + initiative.targetDate.day + "/" + initiative.targetDate.year}</td>
                           <td id={InitiativeTableIds.totalItems} className={tableDataStyle}>{initiative.totalItems}</td>
                           <td id={InitiativeTableIds.remainingItems} className={tableDataStyle}>{itemsRemaining}</td>
-                          <td className={tableDataStyle + "tooltipStyle"} title={tooltipMessage}>{ probabilityValue }</td>
+                          <td className={tableDataStyle + "tooltipStyle"} title={tooltipMessage}>{ probability === undefined ? "NA"  : probability +  "%" }</td>
                           <td className={tableDataStyle + " w-1/12"} hidden={!props.admin}><EditInitiativeButton company={company} initiative={initiative} index={index} ValidateInitiative={props.ValidateInitiative} /></td>
                         </tr>
                       </Fragment>
