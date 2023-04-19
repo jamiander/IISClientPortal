@@ -23,7 +23,6 @@ export default function NavPanel(props: NavProps){
 
   function IsActivePath(pathToCheck: string)
   {
-    console.log(location.pathname);
     return location.pathname === pathToCheck;
   }
 

@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { DateInfo, GetCompanyInfo, GetCompanyInfoRequest, ThroughputData, UpdateCompanyInfo, UpdateCompanyInfoRequest, UpdateInitiativeInfo, UpdateInitiativeInfoRequest, UpdateThroughputData, UpdateThroughputDataRequest } from "../Services/CompanyService"
 import { RootState } from "./Store"
 import { addUsersToStore, User } from "./UserSlice"
+import { CompareDateInfos } from "../Components/DateInput"
 
 export interface Company {
     id: number,
@@ -54,7 +55,8 @@ export const getCompanyInfo = createAsyncThunk(
             {
                 for(const initiative of info.initiatives)
                 {
-                  initiative.id = parseInt(initiative.id.toString());
+                  //let throughputs = JSON.parse(JSON.stringify(initiative.itemsCompletedOnDate));
+                  //initiative.itemsCompletedOnDate = throughputs.sort((a:ThroughputData, b:ThroughputData) => CompareDateInfos(a.date,b.date));
                   company.initiatives.push(initiative);
                 }
             }
