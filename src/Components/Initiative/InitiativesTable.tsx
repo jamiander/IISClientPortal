@@ -23,7 +23,6 @@ interface InitiativesProps {
 
 export default function InitiativesTable(props: InitiativesProps) {
   const tableDataStyle = "outline outline-1 text-center ";
-
   const [isCompanyHidden, setCompanyHidden] = useState(false);
   
   const [searchedComp, setSearchedComp] = useState('');
@@ -41,6 +40,7 @@ export default function InitiativesTable(props: InitiativesProps) {
   }, [currentUser.id]);
   
   return (
+    
     <div className="grid grid-cols-1 w-full h-auto">
       <div className="col-span-1 h-[4vh] px-2 pb-[2%] space-x-2">
         <input className={inputStyle} type={'text'} placeholder="Filter by Title" onChange={(e)=> setSearchedInit(e.target.value)}/>
@@ -50,7 +50,6 @@ export default function InitiativesTable(props: InitiativesProps) {
         <table className="table-auto w-[98%] outline outline-3 bg-gray-100">
           <thead className="outline outline-1">
             <tr>
-              <th className="w-8">Id</th>
               <th>Title</th>
               <th hidden={isCompanyHidden}>Company</th>
               <th>Target Completion</th>
@@ -68,16 +67,20 @@ export default function InitiativesTable(props: InitiativesProps) {
                   InitiativeFilter(filteredInits, props.radioStatus).map((initiative, index) => {
                       let itemsRemaining = FindItemsRemaining(initiative);
                       let probability = GenerateProbability(initiative, itemsRemaining);
+                      let probabilityValue = probability === undefined ? "NA"  : probability +  '%';
+                      let tooltipMessage = probabilityValue === "NA" ? "No data available to calculate probability" : 
+                      probabilityValue === "0%" ? "Data may be insufficient or may indicate a very low probability of success" : 
+                      probability + "%";
+
                       return (
                       <Fragment key={index}>
                         <tr key={index} className="odd:bg-gray-200">
-                          <td className={tableDataStyle + ' p-1'}>{initiative.id}</td>
                           <td id={InitiativeTableIds.initiativeTitle} className={tableDataStyle}>{initiative.title}</td>
                           <td id={InitiativeTableIds.companyName} className={tableDataStyle} hidden={isCompanyHidden}>{company.name}</td>
                           <td className={tableDataStyle}>{initiative.targetDate.month + "/" + initiative.targetDate.day + "/" + initiative.targetDate.year}</td>
                           <td id={InitiativeTableIds.totalItems} className={tableDataStyle}>{initiative.totalItems}</td>
                           <td id={InitiativeTableIds.remainingItems} className={tableDataStyle}>{itemsRemaining}</td>
-                          <td className={tableDataStyle}>{ probability === undefined ? "NA" : probability +  '%' }</td>
+                          <td className={tableDataStyle + "tooltipStyle"} title={tooltipMessage}>{ probabilityValue }</td>
                           <td className={tableDataStyle + " w-1/12"} hidden={!props.admin}><EditInitiativeButton company={company} initiative={initiative} index={index} ValidateInitiative={props.ValidateInitiative} /></td>
                         </tr>
                       </Fragment>
