@@ -12,8 +12,13 @@ export function GenerateProbability(initiative: Initiative, itemsRemaining: numb
   if(initiative.itemsCompletedOnDate.length === 0)
     return { value: undefined, status: "No data available to calculate probability" };
   
-  if (initiative.itemsCompletedOnDate.every(item => item.itemsCompleted === 0))
+  if(initiative.itemsCompletedOnDate.every(item => item.itemsCompleted === 0))
     return { value: undefined, status: "No data available to calculate probability" };
+
+  let today = new Date();
+  today.setHours(0,0,0,0);
+  if(MakeDate(initiative.targetDate) < today)
+    return { value: undefined, status: "Target date has already passed"}
 
   let throughput = AddZeroEntries(initiative);
 
@@ -62,14 +67,15 @@ function AddZeroEntries(initiative: Initiative) : ThroughputData[]
 {
   let throughput: ThroughputData[] = JSON.parse(JSON.stringify(initiative.itemsCompletedOnDate)).sort((a:ThroughputData, b:ThroughputData) => CompareDateInfos(a.date,b.date));
   let startDate = initiative.startDate;
-  let lastThroughput: ThroughputData = JSON.parse(JSON.stringify(throughput.at(-1)));
-  let endDate = MakeDate(lastThroughput.date);
   if(CompareDateInfos(throughput[0].date,startDate) === -1)
     startDate = JSON.parse(JSON.stringify(throughput[0].date));
 
+  let lastThroughput: ThroughputData = JSON.parse(JSON.stringify(throughput.at(-1)));
+  let lastDate = MakeDate(lastThroughput.date);
+
   let currentDate = MakeDate(startDate);
   let lastDateIndex = 0;
-  while(currentDate.getTime() < endDate.getTime())
+  while(currentDate.getTime() < lastDate.getTime())
   {
     let currentDateInfo: DateInfo = {day: currentDate.getDate(), month: currentDate.getMonth() + 1, year: currentDate.getFullYear()};
     let foundDate = false;

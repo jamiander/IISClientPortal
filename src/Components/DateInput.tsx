@@ -35,7 +35,7 @@ export function EqualDateInfos(date1: DateInfo, date2: DateInfo)
 
 export function CompareDateInfos(date1: DateInfo, date2: DateInfo)
 {
-  return new Date(MakeDateString(date1)).getTime() - new Date(MakeDateString(date2)).getTime();
+  return MakeDate(date1).getTime() - MakeDate(date2).getTime();
 }
 
 export function DateInput(props: DateInputProps)
