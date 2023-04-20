@@ -114,8 +114,10 @@ describe('update throughput data', () => {
   })
 
   specify('update the date of an entry', () => {
-    cy.get(modalIds.tableDate).clear().type("2023-04-20");
-
+    cy.get(modalIds.tableDate).clear().type("2023-04-30");
+    cy.get(toastId).then(() => {
+      cy.get(toastCloseId).click();
+    })
     cy.get(modalIds.submitButton).click();
 
     cy.get(toastId).contains("Success");
