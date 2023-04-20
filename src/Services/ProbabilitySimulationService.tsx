@@ -1,6 +1,6 @@
 import { CompareDateInfos, EqualDateInfos, MakeDate } from "../Components/DateInput";
 import { Initiative } from "../Store/CompanySlice";
-import { DateInfo, ThroughputData, UpdateThroughputData } from "./CompanyService";
+import { DateInfo, ThroughputData } from "./CompanyService";
 
 interface MaybeProbability {
   value: number | undefined

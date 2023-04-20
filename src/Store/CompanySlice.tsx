@@ -161,18 +161,20 @@ export const companySlice = createSlice({
                 const matchingInit = matchingCompany.initiatives.find(init => init.id === initiativeId);
                 if(matchingInit)
                 {
+                  const throughputClone: ThroughputData[] = JSON.parse(JSON.stringify(matchingInit.itemsCompletedOnDate));
                   for(const item of action.payload.data)
                   {
-                    const itemIndex = matchingInit.itemsCompletedOnDate.findIndex(entry => 
+                    const itemIndex = throughputClone.findIndex(entry => 
                       entry.date.month === item.date.month &&
                       entry.date.day === item.date.day &&
                       entry.date.year === item.date.year);
 
                     if(itemIndex > -1)
-                      matchingInit.itemsCompletedOnDate[itemIndex].itemsCompleted = item.itemsCompleted;
+                      throughputClone[itemIndex].itemsCompleted = item.itemsCompleted;
                     else
-                      matchingInit.itemsCompletedOnDate.push(item);
+                      throughputClone.push(item);
                   }
+                  matchingInit.itemsCompletedOnDate = throughputClone.filter(data => data.itemsCompleted !== 0);
                 }
               }
             })
