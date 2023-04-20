@@ -7,6 +7,9 @@ import { selectCurrentUser, User } from "../../Store/UserSlice";
 import { EditInitiativeButton } from "./EditInitiativeButton";
 import { greenProbabilityStyle, inputStyle, redProbabilityStyle } from "../../Styles";
 import { GenerateProbability } from "../../Services/ProbabilitySimulationService";
+import React from "react";
+import { filter } from "cypress/types/bluebird";
+import { Button } from "flowbite-react";
 
 export const InitiativeTableIds = {
   totalItems: 'totalItems',
@@ -26,11 +29,13 @@ export default function InitiativesTable(props: InitiativesProps) {
   const [isCompanyHidden, setCompanyHidden] = useState(false);
   
   const [searchedComp, setSearchedComp] = useState('');
-  const [searcehdInit, setSearchedInit] = useState('');
+  const [searchedInit, setSearchedInit] = useState('');
+  const [sortConfig, setSortConfig] = useState<Record<string, string>>({'': ''});
 
   const filteredCompanies = (props.companyList.filter(e => e.name.toLowerCase().includes(searchedComp.toLowerCase()))).sort((a, b) => a.name.localeCompare(b.name));
-
+  
   let currentUser : User = useAppSelector(selectCurrentUser) ?? {id: -1, email: 'fake@fake', password: 'fake', companyId: -1};
+
   useEffect(() => {
     if (currentUser.id === 0) {
       setCompanyHidden(false);
@@ -39,13 +44,39 @@ export default function InitiativesTable(props: InitiativesProps) {
     }
   }, [currentUser.id]);
 
+  const sorted = React.useMemo(() => {
+  let sortedCompanies = [...filteredCompanies];
+    sortedCompanies.sort((a: any, b: any) => {
+      if (a[sortConfig.key] < b[sortConfig.key]) {
+        return sortConfig.direction === 'ascending' ? -1 : 1;
+      }
+      if (a[sortConfig.key] > b[sortConfig.key]) {
+        return sortConfig.direction === 'ascending' ? 1 : -1;
+      }
+      return 0;
+    });
+  
+  return sortedCompanies;
+  }, [filteredCompanies, sortConfig]);
+  
+    const requestSort = (key: string) => {
+      let direction = 'ascending';
+      if (sortConfig.key === key && sortConfig.direction === 'ascending') {
+        direction = 'descending';
+      }
+      console.log(direction);
+      console.log(key);
+      setSortConfig({ key, direction });
+    }
+    
+  
   function getHealthIndicator(probability: number | undefined)
   {
     if (probability === undefined) return;
     if (probability < 50) return redProbabilityStyle;
     else if (probability > 90) return greenProbabilityStyle;
   }
-  
+
   return (
     <div className="grid grid-cols-1 w-full h-auto">
       <div className="col-span-1 h-[4vh] px-2 pb-[2%] space-x-2">
@@ -57,7 +88,7 @@ export default function InitiativesTable(props: InitiativesProps) {
           <thead className="outline outline-1">
             <tr>
               <th>Title</th>
-              <th hidden={isCompanyHidden}>Company</th>
+              <th hidden={isCompanyHidden}>Company<button onClick={() => requestSort('name')}>Sort</button></th>
               <th>Target Completion</th>
               <th>Total Items</th>
               <th>Items Remaining</th>
@@ -68,7 +99,7 @@ export default function InitiativesTable(props: InitiativesProps) {
           <tbody>
             {
               filteredCompanies.map((company) => {
-                const filteredInits = company.initiatives.filter(e => e.title.toLowerCase().includes(searcehdInit.toLowerCase())).sort((a, b) => a.title.localeCompare(b.title))
+                const filteredInits = company.initiatives.filter(e => e.title.toLowerCase().includes(searchedInit.toLowerCase())).sort((a, b) => a.title.localeCompare(b.title))
                 return (
                   InitiativeFilter(filteredInits, props.radioStatus).map((initiative, index) => {
                       let itemsRemaining = FindItemsRemaining(initiative);
