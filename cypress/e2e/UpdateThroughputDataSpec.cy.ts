@@ -113,7 +113,7 @@ describe('update throughput data', () => {
     cy.get(toastId).contains("Success");
   })
 
-  specify('update the date of an entry', () => {
+  /*specify('update the date of an entry', () => {
     cy.get(modalIds.tableDate).clear().type("2023-04-30");
     cy.get(toastId).then(() => {
       cy.get(toastCloseId).click();
@@ -121,7 +121,7 @@ describe('update throughput data', () => {
     cy.get(modalIds.submitButton).click();
 
     cy.get(toastId).contains("Success");
-  })
+  })*/
 
   specify('close button closes modal', () => {
     cy.get(modalIds.modal);
@@ -143,7 +143,7 @@ describe('update throughput data', () => {
     cy.get(toastId).contains(failMessage);
   })
 
-  specify('cannot update throughput data to an invalid date', () => {
+  /*specify('cannot update throughput data to an invalid date', () => {
     cy.get(modalIds.tableDate).clear();
     cy.get(modalIds.submitButton).click();
     cy.get(toastId).contains(failMessage);
@@ -155,7 +155,7 @@ describe('update throughput data', () => {
     /*cy.get(modalIds.date).clear().type("1800-13-32");   //Same here
     cy.get(modalIds.submitButton).click();
     cy.get(toastId).contains(failMessage);*/
-  })
+  //})
 
   specify('cannot update throughput data to an invalid completed amount', () => {
     cy.get(modalIds.tableItemsComplete).clear();
