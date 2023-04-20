@@ -224,7 +224,7 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
                     if (key < resultsLimit*pageNumber && key >= resultsLimit*(pageNumber-1)) return (
                     <tr key={key} className="odd:bg-gray-100">
                         <td className="border border-spacing-x-0 border-y-gray-700 focus-within:bg-gray-200 hover:bg-gray-200">
-                            <input className="px-2 w-full bg-inherit focus:outline-none" id={EditThroughputIds.tableDate} type="date" value={MakeDateString(throughput.date)} 
+                            <input disabled className="px-2 w-full bg-inherit focus:outline-none" id={EditThroughputIds.tableDate} type="date" value={MakeDateString(throughput.date)} 
                             onChange={(e) => EditDate(key, e.target.value)}/>                        
                         </td>
                         <td className="border border-spacing-x-0 border-y-gray-700 focus-within:bg-gray-200 hover:bg-gray-200">
