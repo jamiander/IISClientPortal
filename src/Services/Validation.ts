@@ -1,4 +1,4 @@
-import { MakeDateString } from "../Components/DateInput";
+import { MakeDate } from "../Components/DateInput";
 import { Company, Initiative } from "../Store/CompanySlice";
 import { User } from "../Store/UserSlice";
 import { DateInfo, ThroughputData } from "./CompanyService";
@@ -19,7 +19,7 @@ export default function ValidateNewInitiative(initiative: Initiative, companyId:
     if(!startDateValidation.success)
       return startDateValidation;
 
-  if(new Date(MakeDateString(initiative.startDate)).getTime() > new Date(MakeDateString(initiative.targetDate)).getTime())
+  if(MakeDate(initiative.startDate).getTime() > MakeDate(initiative.targetDate).getTime())
     return {success: false, message: "Initiative start date must be before target completion date."};
 
   if(initiative.totalItems < 0)

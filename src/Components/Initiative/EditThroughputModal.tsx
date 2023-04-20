@@ -212,7 +212,7 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
           </div>
         </div>
         <div className="rounded overflow-y-auto max-h-60">
-          <table className="table-auto w-full outline outline-3 rounded-md bg-white overflow-y-auto">
+          <table className="table-auto w-full rounded-md bg-white overflow-y-auto">
             <thead>
               <tr>
                 <th>Date</th>

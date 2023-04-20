@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useState } from "react";
-import { FindItemsRemaining } from "../../Services/CompanyService";
+import { DateInfo, FindItemsRemaining } from "../../Services/CompanyService";
 import { InitiativeFilter } from "../../Services/Filters";
 import { Company, Initiative } from "../../Store/CompanySlice";
 import { useAppSelector } from "../../Store/Hooks";
@@ -7,6 +7,7 @@ import { selectCurrentUser, User } from "../../Store/UserSlice";
 import { EditInitiativeButton } from "./EditInitiativeButton";
 import { greenProbabilityStyle, inputStyle, redProbabilityStyle } from "../../Styles";
 import { GenerateProbability } from "../../Services/ProbabilitySimulationService";
+import { MakeDate } from "../DateInput";
 
 export const InitiativeTableIds = {
   totalItems: 'totalItems',
@@ -76,10 +77,10 @@ export default function InitiativesTable(props: InitiativesProps) {
                   InitiativeFilter(filteredInits, props.radioStatus).map((initiative, index) => {
                       let itemsRemaining = FindItemsRemaining(initiative);
                       let probability = GenerateProbability(initiative, itemsRemaining);
-                      let healthIndicator = getHealthIndicator(probability);
-                      let tooltipMessage = probability === undefined ? "No data available to calculate probability" : 
-                      probability === 0 ? "Data may be insufficient or may indicate a very low probability of success" : 
-                      probability + "%";
+                      let healthIndicator = getHealthIndicator(probability.value);
+                      let tooltipMessage = probability.value === undefined ? probability.status : 
+                      probability.value === 0 ? "Data may be insufficient or may indicate a very low probability of success" : 
+                      probability.value + "%";
 
                       return (
                       <Fragment key={index}>
@@ -90,7 +91,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                           <td className={tableDataStyle}>{initiative.targetDate.month + "/" + initiative.targetDate.day + "/" + initiative.targetDate.year}</td>
                           <td id={InitiativeTableIds.totalItems} className={tableDataStyle}>{initiative.totalItems}</td>
                           <td id={InitiativeTableIds.remainingItems} className={tableDataStyle}>{itemsRemaining}</td>
-                          <td className={tableDataStyle + "tooltipStyle"} title={tooltipMessage}>{ probability === undefined ? "NA"  : probability +  "%" }</td>
+                          <td className={tableDataStyle + "tooltipStyle"} title={tooltipMessage}>{ probability.value === undefined ? "NA"  : probability.value +  "%" }</td>
                           <td className={tableDataStyle + " w-1/12"} hidden={!props.admin}><EditInitiativeButton company={company} initiative={initiative} index={index} ValidateInitiative={props.ValidateInitiative} /></td>
                         </tr>
                       </Fragment>
