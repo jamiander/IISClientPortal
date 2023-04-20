@@ -212,7 +212,7 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
           </div>
         </div>
         <div className="rounded overflow-y-auto max-h-60">
-          <table className="table-auto w-full outline outline-3 rounded-md bg-white overflow-y-auto">
+          <table className="table-auto w-full rounded-md bg-white overflow-y-auto">
             <thead>
               <tr>
                 <th>Date</th>
@@ -224,7 +224,7 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
                     if (key < resultsLimit*pageNumber && key >= resultsLimit*(pageNumber-1)) return (
                     <tr key={key} className="odd:bg-gray-100">
                         <td className="border border-spacing-x-0 border-y-gray-700 focus-within:bg-gray-200 hover:bg-gray-200">
-                            <input className="px-2 w-full bg-inherit focus:outline-none" id={EditThroughputIds.tableDate} type="date" value={MakeDateString(throughput.date)} 
+                            <input disabled className="px-2 w-full bg-inherit focus:outline-none" id={EditThroughputIds.tableDate} type="date" value={MakeDateString(throughput.date)} 
                             onChange={(e) => EditDate(key, e.target.value)}/>                        
                         </td>
                         <td className="border border-spacing-x-0 border-y-gray-700 focus-within:bg-gray-200 hover:bg-gray-200">

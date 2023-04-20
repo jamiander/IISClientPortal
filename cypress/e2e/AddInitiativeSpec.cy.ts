@@ -21,7 +21,7 @@ describe('add initiative spec', () => {
   const failMessage = consts.validationFailedMessage;
   const badToastId = consts.toastIds.main;
   const modalIds = consts.initiativeModalIds;
-  const radioIds = consts.initiativeRadioIds;
+  const radioIds = consts.initiativeDisplayRadioIds;
   const tableIds = consts.initiativeTableIds;
 
   beforeEach(() => {
@@ -38,10 +38,8 @@ describe('add initiative spec', () => {
 
     cy.get('select').select(1);
     cy.get(modalIds.title).clear().type(init.title);
-    /*cy.get(modalIds.date.month).clear().type(init.date.month);
-    cy.get(modalIds.date.day).clear().type(init.date.day);
-    cy.get(modalIds.date.year).clear().type(init.date.year);*/
-    cy.get(modalIds.date).clear().type("2020-01-01");
+    cy.get(modalIds.startDate).clear().type("2020-01-01");
+    cy.get(modalIds.targetDate).clear().type("2023-01-03");
     cy.get(modalIds.totalItems).clear().type(init.totalItems);
   });
 
@@ -76,30 +74,28 @@ describe('add initiative spec', () => {
     cy.get(badToastId).contains(failMessage);
     cy.get(modalIds.title).type(init.title);
 
-    /*cy.get(modalIds.date.month).clear();
-    cy.get('button').contains('Submit').click();
-    cy.get(badToastId).contains(failMessage);
-    cy.get(modalIds.date.month).type(init.date.month);
-
-    cy.get(modalIds.date.day).clear();
-    cy.get('button').contains('Submit').click();
-    cy.get(badToastId).contains(failMessage);
-    cy.get(modalIds.date.day).type(init.date.day);
-
-    cy.get(modalIds.date.year).clear();
-    cy.get('button').contains('Submit').click();
-    cy.get(badToastId).contains(failMessage);
-    cy.get(modalIds.date.year).type(init.date.year);*/
-
-    cy.get(modalIds.date).clear();
+    cy.get(modalIds.startDate).clear();
     cy.get(modalIds.submitButton).click();
     cy.get(badToastId).contains(failMessage);
-    cy.get(modalIds.date).type("2020-01-01");
+    cy.get(modalIds.startDate).type("2020-01-01");
+
+    cy.get(modalIds.targetDate).clear();
+    cy.get(modalIds.submitButton).click();
+    cy.get(badToastId).contains(failMessage);
+    cy.get(modalIds.targetDate).type("2020-01-01");
 
     cy.get(modalIds.totalItems).clear();
     cy.get('button').contains('Submit').click();
     cy.get(badToastId).contains(failMessage);
     cy.get(modalIds.totalItems).type(init.totalItems);
+  })
+
+  specify('cannot have a target date before a start date', () => {
+    cy.get(modalIds.startDate).clear().type("2023-04-20");
+    cy.get(modalIds.targetDate).clear().type("2023-04-19");
+
+    cy.get(modalIds.submitButton).click();
+    cy.get(badToastId).contains(failMessage);
   })
 
   specify('cannot add when total items are negative', () => {
@@ -109,47 +105,7 @@ describe('add initiative spec', () => {
     cy.get(badToastId).contains(failMessage);
   })
 
-  //Cypress does not allow invalid dates in date pickers
-  /*specify('cannot add when a date is not in a valid format', () => {
-    cy.get(modalIds.date.month).clear().type("-3");
-    cy.get('button').contains('Submit').click();
-    cy.get(badToastId).contains(failMessage);
-
-    cy.get(modalIds.date.month).clear().type("ab");
-    cy.get('button').contains('Submit').click();
-    cy.get(badToastId).contains(failMessage);
-
-    cy.get(modalIds.date.month).clear().type("13");
-    cy.get('button').contains('Submit').click();
-    cy.get(badToastId).contains(failMessage);
-
-    cy.get(modalIds.date.month).clear().type(init.date.month);
-
-
-    cy.get(modalIds.date.day).clear().type("-3");
-    cy.get('button').contains('Submit').click();
-    cy.get(badToastId).contains(failMessage);
-
-    cy.get(modalIds.date.day).clear().type("ab");
-    cy.get('button').contains('Submit').click();
-    cy.get(badToastId).contains(failMessage);
-
-    cy.get(modalIds.date.day).clear().type("32");
-    cy.get('button').contains('Submit').click();
-    cy.get(badToastId).contains(failMessage);
-
-    cy.get(modalIds.date.day).clear().type(init.date.day);
-
-
-    cy.get(modalIds.date.year).clear().type("-3");
-    cy.get('button').contains('Submit').click();
-    cy.get(badToastId).contains(failMessage);
-
-    cy.get(modalIds.date.year).clear().type("abcd");
-    cy.get('button').contains('Submit').click();
-    cy.get(badToastId).contains(failMessage);
-    
-  })*/
+  //Cypress does not allow invalid dates in date pickers, so we cannot test for NaN or 2/30/yyyy
 
   specify('close button closes the modal', () => {
     cy.get('button').contains('Close').click();

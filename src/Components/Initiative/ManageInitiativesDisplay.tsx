@@ -11,7 +11,7 @@ import EditThroughputModal from "./EditThroughputModal";
 import { RadioSet } from "../RadioSet";
 import { yellowButtonStyle } from "../../Styles";
 
-export const InitiativeRadioIds = {
+export const InitiativeDisplayRadioIds = {
   all: "initDisplayShowAll",
   active: "initDisplayShowActive",
   inactive: "initDisplayShowInactive"
@@ -86,9 +86,9 @@ export default function ManageInitiativesDisplay() {
       </div>
 
       <RadioSet options={[
-        {id: InitiativeRadioIds.all, label: "Show All", value: "all"},
-        {id: InitiativeRadioIds.active, label: "Only Active", value: "active", default: true},
-        {id: InitiativeRadioIds.inactive, label: "Only Inactive", value: "inactive"}
+        {id: InitiativeDisplayRadioIds.all, label: "Show All", value: "all"},
+        {id: InitiativeDisplayRadioIds.active, label: "Only Active", value: "active", default: true},
+        {id: InitiativeDisplayRadioIds.inactive, label: "Only Inactive", value: "inactive"}
         ]} 
         setter={setRadioValue} name="initiativesDisplay"/>
 

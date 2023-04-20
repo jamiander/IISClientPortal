@@ -1,3 +1,4 @@
+import { MakeDate } from "../Components/DateInput";
 import { Company, Initiative } from "../Store/CompanySlice";
 import { User } from "../Store/UserSlice";
 import { DateInfo, ThroughputData } from "./CompanyService";
@@ -10,9 +11,16 @@ export default function ValidateNewInitiative(initiative: Initiative, companyId:
   if (!initiative.title || !initiative.targetDate.month || !initiative.targetDate.day || !initiative.targetDate.year || !initiative.totalItems)
     return {success: false, message: "Cannot leave any fields blank."};
 
-  let dateValidation = ValidateDate(initiative.targetDate);
-  if(!dateValidation.success)
-    return dateValidation;
+  let targetDateValidation = ValidateDate(initiative.targetDate);
+  if(!targetDateValidation.success)
+    return targetDateValidation;
+
+  let startDateValidation = ValidateDate(initiative.startDate);
+    if(!startDateValidation.success)
+      return startDateValidation;
+
+  if(MakeDate(initiative.startDate).getTime() > MakeDate(initiative.targetDate).getTime())
+    return {success: false, message: "Initiative start date must be before target completion date."};
 
   if(initiative.totalItems < 0)
     return {success: false, message: "Total items must be a positive value."};
