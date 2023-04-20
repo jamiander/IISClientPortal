@@ -68,15 +68,18 @@ function AddZeroEntries(initiative: Initiative) : ThroughputData[]
     startDate = JSON.parse(JSON.stringify(throughput[0].date));
 
   let currentDate = MakeDate(startDate);
+  let lastDateIndex = 0;
   while(currentDate.getTime() < endDate.getTime())
   {
     let currentDateInfo: DateInfo = {day: currentDate.getDate(), month: currentDate.getMonth() + 1, year: currentDate.getFullYear()};
     let foundDate = false;
-    for(let data of throughput)
+    for(let i = lastDateIndex; i < throughput.length; i++)
     {
+      let data = throughput[i];
       if(EqualDateInfos(currentDateInfo,data.date))
       {
         foundDate = true;
+        lastDateIndex = i;
         break;
       }
     }

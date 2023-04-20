@@ -23,6 +23,7 @@ interface InitiativesProps {
 }
 
 export default function InitiativesTable(props: InitiativesProps) {
+  const tableHeaderStyle = "px-2 ";
   const tableDataStyle = "outline outline-1 text-center ";
   const [isCompanyHidden, setCompanyHidden] = useState(false);
   
@@ -60,13 +61,13 @@ export default function InitiativesTable(props: InitiativesProps) {
           <thead className="outline outline-1">
             <tr>
               <th>Title</th>
-              <th hidden={isCompanyHidden}>Company</th>
-              <th>Start Date</th>
-              <th>Target Completion</th>
-              <th>Total Items</th>
-              <th>Items Remaining</th>
-              <th>Probability</th>
-              <th hidden={!props.admin}>Edit</th>
+              <th className={tableHeaderStyle} hidden={isCompanyHidden}>Company</th>
+              <th className={tableHeaderStyle}>Start Date</th>
+              <th className={tableHeaderStyle}>Target Completion</th>
+              <th className={tableHeaderStyle}>Total Items</th>
+              <th className={tableHeaderStyle}>Items Remaining</th>
+              <th className={tableHeaderStyle}>Probability</th>
+              <th className={tableHeaderStyle} hidden={!props.admin}>Edit</th>
             </tr>
           </thead>
           <tbody>
@@ -91,7 +92,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                           <td className={tableDataStyle}>{initiative.targetDate.month + "/" + initiative.targetDate.day + "/" + initiative.targetDate.year}</td>
                           <td id={InitiativeTableIds.totalItems} className={tableDataStyle}>{initiative.totalItems}</td>
                           <td id={InitiativeTableIds.remainingItems} className={tableDataStyle}>{itemsRemaining}</td>
-                          <td className={tableDataStyle + "tooltipStyle"} title={tooltipMessage}>{ probability.value === undefined ? "NA"  : probability.value +  "%" }</td>
+                          <td className={tableDataStyle + " tooltipStyle"} title={tooltipMessage}>{ probability.value === undefined ? "NA"  : probability.value +  "%" }</td>
                           <td className={tableDataStyle + " w-1/12"} hidden={!props.admin}><EditInitiativeButton company={company} initiative={initiative} index={index} ValidateInitiative={props.ValidateInitiative} /></td>
                         </tr>
                       </Fragment>
