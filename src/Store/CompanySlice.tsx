@@ -18,8 +18,9 @@ export interface Initiative {
     id: number,
     title: string,
     targetDate: DateInfo,
+    startDate: DateInfo,
     totalItems: number,
-    itemsCompletedOnDate: ThroughputData[] 
+    itemsCompletedOnDate: ThroughputData[]
 }
 
 const initialState: CompanyState = {

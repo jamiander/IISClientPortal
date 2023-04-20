@@ -19,7 +19,8 @@ export const InitiativeModalIds = {
 	modal: "initModal",
 	company: "initModalCompany",
 	title: "initModalTitle",
-	date: "initModalDate",
+  startDate: "initModalStartDate",
+	targetDate: "initModalTargetDate",
 	totalItems: "initModalTotalItems",
   submitButton: "initModalSubmitButton",
   closeButton: "initModalCloseButton"
@@ -32,10 +33,12 @@ export function UpdateInitiativeListModal(props: InitiativeModalProps){
   const [initiativeCompanyId, setInitiativeCompanyId] = useState(props.company?.id ?? -1);
   const [initiativeTitle, setInitiativeTitle] = useState(props.initiative?.title ?? "");
   const [initiativeTargetDate, setInitiativeTargetDate] = useState<DateInfo>(props.initiative?.targetDate ?? todayInfo);
+  const [initiativeStartDate, setInitiativeStartDate] = useState<DateInfo>(props.initiative?.startDate ?? todayInfo);
   const [initiativeTotalItems, setInitiativeTotalItems] = useState(props.initiative?.totalItems ?? 0);
 
   useEffect(() => {
     setInitiativeTitle(props.initiative?.title ?? "");
+    setInitiativeStartDate(props.initiative?.startDate ?? todayInfo)
     setInitiativeTargetDate(props.initiative?.targetDate ?? todayInfo);
     setInitiativeTotalItems(props.initiative?.totalItems ?? 0);
 	  setInitiativeCompanyId(props.company?.id ?? -1);
@@ -70,10 +73,14 @@ export function UpdateInitiativeListModal(props: InitiativeModalProps){
 				<p className='my-1'>Title</p>
 				<input defaultValue={props.initiative?.title} id={InitiativeModalIds.title} className={inputStyle + ' w-3/4'} placeholder='Initiative Title'
           onChange={(e) => {setInitiativeTitle(e.target.value)}}/>
+        <div className='my-2'>
+            <p className=''>Start Date</p>
+            <DateInput id={InitiativeModalIds.startDate} date={initiativeStartDate} setDate={setInitiativeStartDate}/>
+          </div>
         <div className="flex">
           <div className='my-2'>
             <p className=''>Target Completion</p>
-            <DateInput id={InitiativeModalIds.date} date={initiativeTargetDate} setDate={setInitiativeTargetDate}/>
+            <DateInput id={InitiativeModalIds.targetDate} date={initiativeTargetDate} setDate={setInitiativeTargetDate}/>
           </div>
           <div className='w-24 my-2 ml-2'>
             <p>Total Items</p>
@@ -92,6 +99,7 @@ export function UpdateInitiativeListModal(props: InitiativeModalProps){
                 id: props.initiative?.id ?? -1,
                 title: initiativeTitle,
                 targetDate: initiativeTargetDate,
+                startDate: initiativeStartDate,
                 totalItems: initiativeTotalItems,
                 itemsCompletedOnDate: props.initiative?.itemsCompletedOnDate ?? []
               }

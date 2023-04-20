@@ -60,6 +60,7 @@ export default function InitiativesTable(props: InitiativesProps) {
             <tr>
               <th>Title</th>
               <th hidden={isCompanyHidden}>Company</th>
+              <th>Start Date</th>
               <th>Target Completion</th>
               <th>Total Items</th>
               <th>Items Remaining</th>
@@ -85,6 +86,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                         <tr key={index} className={healthIndicator}>
                           <td id={InitiativeTableIds.initiativeTitle} className={tableDataStyle}>{initiative.title}</td>
                           <td id={InitiativeTableIds.companyName} className={tableDataStyle} hidden={isCompanyHidden}>{company.name}</td>
+                          <td className={tableDataStyle}>{initiative.startDate.month + "/" + initiative.startDate.day + "/" + initiative.startDate.year}</td>
                           <td className={tableDataStyle}>{initiative.targetDate.month + "/" + initiative.targetDate.day + "/" + initiative.targetDate.year}</td>
                           <td id={InitiativeTableIds.totalItems} className={tableDataStyle}>{initiative.totalItems}</td>
                           <td id={InitiativeTableIds.remainingItems} className={tableDataStyle}>{itemsRemaining}</td>

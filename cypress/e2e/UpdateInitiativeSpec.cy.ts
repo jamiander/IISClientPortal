@@ -5,12 +5,8 @@ describe('update initiative spec', () => {
   const init = {
     companyId: 0,
     title: "Test Initiative 1234",
-    /*date:{
-      month: "04",
-      day: "01",
-      year: "2023"
-    },*/
-    date: "2023-04-01",
+    startDate: "2023-01-01",
+    targetDate: "2023-04-01",
     totalItems: "3"
   }
 
@@ -38,10 +34,8 @@ describe('update initiative spec', () => {
     cy.get('#editInitiativeButton0').click();
 
     cy.get(modalIds.title).clear().type(init.title);
-    /*cy.get(modalIds.date.month).clear().type(init.date.month);
-    cy.get(modalIds.date.day).clear().type(init.date.day);
-    cy.get(modalIds.date.year).clear().type(init.date.year);*/
-    cy.get(modalIds.date).clear().type(init.date);
+    cy.get(modalIds.startDate).clear().type(init.startDate);
+    cy.get(modalIds.targetDate).clear().type(init.targetDate);
     cy.get(modalIds.totalItems).clear().type(init.totalItems);
   });
 
@@ -57,28 +51,26 @@ describe('update initiative spec', () => {
     cy.get(badToastId).contains(failMessage);
     cy.get(modalIds.title).type(init.title);
 
-    /*cy.get(modalIds.date.month).clear();
-    cy.get('button').contains('Submit').click();
-    cy.get(badToastId).contains(failMessage);
-    cy.get(modalIds.date.month).type(init.date.month);
-
-    cy.get(modalIds.date.day).clear();
-    cy.get('button').contains('Submit').click();
-    cy.get(badToastId).contains(failMessage);
-    cy.get(modalIds.date.day).type(init.date.day);
-
-    cy.get(modalIds.date.year).clear();
-    cy.get('button').contains('Submit').click();
-    cy.get(badToastId).contains(failMessage);
-    cy.get(modalIds.date.year).type(init.date.year);*/
-
-    cy.get(modalIds.date).clear();
+    cy.get(modalIds.startDate).clear();
     cy.get(modalIds.submitButton).click();
     cy.get(badToastId).contains(failMessage);
-    cy.get(modalIds.date).type(init.date);
+    cy.get(modalIds.startDate).type(init.startDate);
+
+    cy.get(modalIds.targetDate).clear();
+    cy.get(modalIds.submitButton).click();
+    cy.get(badToastId).contains(failMessage);
+    cy.get(modalIds.targetDate).type(init.targetDate);
 
     cy.get(modalIds.totalItems).clear();
-    cy.get('button').contains('Submit').click();
+    cy.get(modalIds.submitButton).click();
+    cy.get(badToastId).contains(failMessage);
+  })
+
+  specify('cannot have a target date before a start date', () => {
+    cy.get(modalIds.startDate).clear().type("2023-04-20");
+    cy.get(modalIds.targetDate).clear().type("2023-04-19");
+
+    cy.get(modalIds.submitButton).click();
     cy.get(badToastId).contains(failMessage);
   })
 
