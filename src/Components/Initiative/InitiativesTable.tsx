@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 import { DateInfo, FindItemsRemaining } from "../../Services/CompanyService";
 import { InitiativeFilter } from "../../Services/Filters";
 import { Company, Initiative } from "../../Store/CompanySlice";
@@ -20,8 +20,8 @@ export const InitiativeTableIds = {
 interface InitiativesProps {
   companyList: Company[],
   radioStatus: string,
-  ValidateInitiative : (initiative: Initiative, companyId: number, allCompanies: Company[]) => {success: boolean, message: string}
-  admin:boolean,
+  ValidateInitiative: (initiative: Initiative, companyId: number, allCompanies: Company[]) => {success: boolean, message: string}
+  admin: boolean,
 }
 
 export default function InitiativesTable(props: InitiativesProps) {
@@ -33,7 +33,9 @@ export default function InitiativesTable(props: InitiativesProps) {
   const [searchedInit, setSearchedInit] = useState('');
   const [sortConfig, setSortConfig] = useState<Record<string, string>>({'': ''});
 
-  const filteredCompanies = (props.companyList.filter(e => e.name.toLowerCase().includes(searchedComp.toLowerCase()))).sort((a, b) => a.name.localeCompare(b.name));
+  const [sortedCompanyList, setSortedCompanyList] = useState<Company[]>([]);
+
+  //const filteredCompanies = (props.companyList.filter(e => e.name.toLowerCase().includes(searchedComp.toLowerCase()))).sort((a, b) => a.name.localeCompare(b.name));
   
   let currentUser : User = useAppSelector(selectCurrentUser) ?? {id: -1, email: 'fake@fake', password: 'fake', companyId: -1};
 
@@ -45,8 +47,8 @@ export default function InitiativesTable(props: InitiativesProps) {
     }
   }, [currentUser.id]);
 
-  const sorted = React.useMemo(() => {
-  let sortedCompanies = [...filteredCompanies];
+  useMemo(() => {
+    let sortedCompanies = JSON.parse(JSON.stringify(props.companyList));
     sortedCompanies.sort((a: any, b: any) => {
       if (a[sortConfig.key] < b[sortConfig.key]) {
         return sortConfig.direction === 'ascending' ? -1 : 1;
@@ -56,21 +58,18 @@ export default function InitiativesTable(props: InitiativesProps) {
       }
       return 0;
     });
+    setSortedCompanyList(sortedCompanies);
+  }, [sortConfig, props.companyList]);
   
-  return sortedCompanies;
-  }, [filteredCompanies, sortConfig]);
-  
-    const requestSort = (key: string) => {
-      let direction = 'ascending';
-      if (sortConfig.key === key && sortConfig.direction === 'ascending') {
-        direction = 'descending';
-      }
-      console.log(direction);
-      console.log(key);
-      setSortConfig({ key, direction });
+  const requestSort = (key: string) => {
+    let direction = 'descending';
+    if (sortConfig.key === key && sortConfig.direction === 'descending') {
+      direction = 'ascending';
     }
+    setSortConfig({ key, direction });
+  }
     
-  
+
   function getHealthIndicator(probability: number | undefined)
   {
     if (probability === undefined) return;
@@ -90,8 +89,8 @@ export default function InitiativesTable(props: InitiativesProps) {
         <table className="table-auto w-full outline outline-3 bg-gray-100">
           <thead className="outline outline-1">
             <tr>
-              <th>Title</th>
-              <th className={tableHeaderStyle} hidden={isCompanyHidden}>Company<button onClick={() => requestSort('name')}>Sort</button></th>
+              <th className={tableHeaderStyle}>Title</th>
+              <th className={tableHeaderStyle} hidden={isCompanyHidden}><button onClick={() => requestSort('name')}>Company</button></th>
               <th className={tableHeaderStyle}>Start Date</th>
               <th className={tableHeaderStyle}>Target Completion</th>
               <th className={tableHeaderStyle}>Total Items</th>
@@ -102,7 +101,7 @@ export default function InitiativesTable(props: InitiativesProps) {
           </thead>
           <tbody>
             {
-              filteredCompanies.map((company) => {
+              sortedCompanyList.map((company) => {
                 const filteredInits = company.initiatives.filter(e => e.title.toLowerCase().includes(searchedInit.toLowerCase())).sort((a, b) => a.title.localeCompare(b.title))
                 return (
                   InitiativeFilter(filteredInits, props.radioStatus).map((initiative, index) => {
