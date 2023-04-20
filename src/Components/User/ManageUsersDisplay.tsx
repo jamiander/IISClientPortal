@@ -10,7 +10,7 @@ import UsersTable from "./UsersTable";
 import { RadioSet } from "../RadioSet";
 import { yellowButtonStyle } from "../../Styles";
 
-export const UserRadioIds = {
+export const UserDisplayRadioIds = {
   all: "userDisplayShowAll",
   active: "userDisplayShowActive",
   inactive: "userDisplayShowInactive"
@@ -88,9 +88,9 @@ export default function ManageUsersDisplay() {
         </div>
   
         <RadioSet options={[
-        {id: UserRadioIds.all, label: "Show All", value: "all"},
-        {id: UserRadioIds.active, label: "Only Active", value: "active", default: true},
-        {id: UserRadioIds.inactive, label: "Only Inactive", value: "inactive"}
+        {id: UserDisplayRadioIds.all, label: "Show All", value: "all"},
+        {id: UserDisplayRadioIds.active, label: "Only Active", value: "active", default: true},
+        {id: UserDisplayRadioIds.inactive, label: "Only Inactive", value: "inactive"}
         ]} 
         setter={setRadioValue} name="clientsDisplay"/>
 

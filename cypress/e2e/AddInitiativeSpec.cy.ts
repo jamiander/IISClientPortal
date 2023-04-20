@@ -21,7 +21,7 @@ describe('add initiative spec', () => {
   const failMessage = consts.validationFailedMessage;
   const badToastId = consts.toastIds.main;
   const modalIds = consts.initiativeModalIds;
-  const radioIds = consts.initiativeRadioIds;
+  const radioIds = consts.initiativeDisplayRadioIds;
   const tableIds = consts.initiativeTableIds;
 
   beforeEach(() => {

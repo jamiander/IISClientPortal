@@ -18,7 +18,7 @@ describe('add company spec', () => {
   const failMessage = consts.validationFailedMessage;
   const badToastId = consts.toastIds.main;
   const modalIds = consts.userModalIds;
-  const radioIds = consts.userRadioIds;
+  const radioIds = consts.userDisplayRadioIds;
 
   beforeEach(() => {
     cy.visit('http://localhost:3000/Login')
