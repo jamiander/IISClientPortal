@@ -108,7 +108,7 @@ export default function InitiativesTable(props: InitiativesProps) {
 
   useEffect(() => {
     UpdateDisplayItems();
-  },[props.companyList,searchedInit,searchedComp])
+  },[props.companyList,searchedInit,searchedComp,props.radioStatus])
 
   return (
     <div className="grid grid-cols-1 w-full h-auto">
