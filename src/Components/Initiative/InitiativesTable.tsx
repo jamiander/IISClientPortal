@@ -119,11 +119,20 @@ export default function InitiativesTable(props: InitiativesProps) {
       <div className="col-span-1 py-[2%]">
         <table className="table-auto w-full outline outline-3 bg-gray-100">
           <thead className="outline outline-1">
+          <link href = "https://fonts.googleapis.com/icon?family=Material+Icons" rel = "stylesheet"/> 
             <tr>
-              <th className={tableHeaderStyle}><button onClick={() => requestSort('title')}>Title</button></th>
-              <th className={tableHeaderStyle} hidden={isCompanyHidden}><button onClick={() => requestSort('companyName')}>Company</button></th>
-              <th className={tableHeaderStyle}>Start Date</th>
-              <th className={tableHeaderStyle}>Target Completion</th>
+              <th className={tableHeaderStyle}>Title
+              <button className="sort-by" onClick={() => requestSort('Title')}>
+                </button></th>
+              <th className={tableHeaderStyle} hidden={isCompanyHidden}>Company
+                <button className="sort-by" onClick={() => requestSort('companyName')}>
+                </button></th>
+              <th className={tableHeaderStyle}>Start Date
+              <button className="sort-by" onClick={() => requestSort('name')}>
+                </button></th>
+              <th className={tableHeaderStyle}>Target Completion
+              <button className="sort-by" onClick={() => requestSort('name')}>
+                </button></th>
               <th className={tableHeaderStyle}>Total Items</th>
               <th className={tableHeaderStyle}>Items Remaining</th>
               <th className={tableHeaderStyle}>Probability</th>
@@ -150,7 +159,9 @@ export default function InitiativesTable(props: InitiativesProps) {
                         <td className={tableDataStyle}>{displayItem.targetDate.month + "/" + displayItem.targetDate.day + "/" + displayItem.targetDate.year}</td>
                         <td id={InitiativeTableIds.totalItems} className={tableDataStyle}>{displayItem.totalItems}</td>
                         <td id={InitiativeTableIds.remainingItems} className={tableDataStyle}>{itemsRemaining}</td>
-                        <td className={tableDataStyle + " tooltipStyle"} title={tooltipMessage}>{ probability.value === undefined ? "NA"  : probability.value +  "%" }</td>
+                        <td className={tableDataStyle + " tooltipStyle"} title={tooltipMessage}>{ probability.value === undefined ? "NA"  : probability.value +  "%" }
+                          <i className="material-icons max-w-24px max-h-24px">info_outline</i>
+                          </td>
                         <td className={tableDataStyle + " w-1/12"} hidden={!props.admin}><EditInitiativeButton company={displayItem.company} initiative={displayItem} index={index} ValidateInitiative={props.ValidateInitiative} /></td>
                       </tr>
                     </Fragment>
