@@ -7,6 +7,7 @@ import { selectCurrentUser, User } from "../../Store/UserSlice";
 import { EditInitiativeButton } from "./EditInitiativeButton";
 import { greenProbabilityStyle, inputStyle, redProbabilityStyle } from "../../Styles";
 import { GenerateProbability } from "../../Services/ProbabilitySimulationService";
+import { MakeDate } from "../DateInput";
 
 export const InitiativeTableIds = {
   totalItems: 'totalItems',
@@ -24,7 +25,9 @@ interface InitiativesProps {
 
 interface InitCompanyDisplay extends Initiative {
     company: Company,
-    companyName: string
+    companyName: string,
+    startDateTime: Date,
+    targetDateTime: Date
   }
 
 export default function InitiativesTable(props: InitiativesProps) {
@@ -41,7 +44,7 @@ export default function InitiativesTable(props: InitiativesProps) {
 
   const resultsLimitOptions: number[] = [5, 10, 25];
   const [pageNumber, setPageNumber] = useState(1);
-  const [resultsLimit, setResultsLimit] = useState(5);
+  const [resultsLimit, setResultsLimit] = useState(10);
 
 
   const filteredCompanies = (props.companyList.filter(e => e.name.toLowerCase().includes(searchedComp.toLowerCase()))).sort((a, b) => a.name.localeCompare(b.name));
@@ -75,6 +78,8 @@ export default function InitiativesTable(props: InitiativesProps) {
     if (sortConfig.key === key && sortConfig.direction === 'descending') {
       direction = 'ascending';
     }
+    console.log(key)
+    console.log(direction)
     setSortConfig({ key, direction });
   }
     
@@ -99,7 +104,7 @@ export default function InitiativesTable(props: InitiativesProps) {
     for(let company of filteredCompanies)
     {
       let initiatives = InitiativeFilter(company.initiatives.filter(e => e.title.toLowerCase().includes(searchedInit.toLowerCase())).sort((a, b) => a.title.localeCompare(b.title)),props.radioStatus);
-      initiatives.map((init) => { displayList.push({...init, companyName:company.name, company:company}) });
+      initiatives.map((init) => { displayList.push({...init, companyName:company.name, company:company, startDateTime:MakeDate(init.startDate), targetDateTime:MakeDate(init.targetDate)}) });
     }
     setDisplayItems(displayList);
   }
@@ -122,16 +127,16 @@ export default function InitiativesTable(props: InitiativesProps) {
           <link href = "https://fonts.googleapis.com/icon?family=Material+Icons" rel = "stylesheet"/> 
             <tr>
               <th className={tableHeaderStyle}>Title
-              <button className="sort-by" onClick={() => requestSort('Title')}>
+              <button className="sort-by" onClick={() => requestSort('title')}>
                 </button></th>
               <th className={tableHeaderStyle} hidden={isCompanyHidden}>Company
                 <button className="sort-by" onClick={() => requestSort('companyName')}>
                 </button></th>
               <th className={tableHeaderStyle}>Start Date
-              <button className="sort-by" onClick={() => requestSort('name')}>
+              <button className="sort-by" onClick={() => requestSort('startDateTime')}>
                 </button></th>
               <th className={tableHeaderStyle}>Target Completion
-              <button className="sort-by" onClick={() => requestSort('name')}>
+              <button className="sort-by" onClick={() => requestSort('targetDateTime')}>
                 </button></th>
               <th className={tableHeaderStyle}>Total Items</th>
               <th className={tableHeaderStyle}>Items Remaining</th>
