@@ -41,7 +41,7 @@ export default function InitiativesTable(props: InitiativesProps) {
 
   const resultsLimitOptions: number[] = [5, 10, 25];
   const [pageNumber, setPageNumber] = useState(1);
-  const [resultsLimit, setResultsLimit] = useState(5);
+  const [resultsLimit, setResultsLimit] = useState(10);
 
 
   const filteredCompanies = (props.companyList.filter(e => e.name.toLowerCase().includes(searchedComp.toLowerCase()))).sort((a, b) => a.name.localeCompare(b.name));
@@ -125,7 +125,7 @@ export default function InitiativesTable(props: InitiativesProps) {
               <button className="sort-by" onClick={() => requestSort('name')}>
                 </button></th>
               <th className={tableHeaderStyle} hidden={isCompanyHidden}>Company
-                <button className="sort-by" onClick={() => requestSort('name')}>
+              <button className="sort-by" onClick={() => requestSort('companyName')}>
                 </button></th>
               <th className={tableHeaderStyle}>Start Date
               <button className="sort-by" onClick={() => requestSort('name')}>
@@ -133,15 +133,9 @@ export default function InitiativesTable(props: InitiativesProps) {
               <th className={tableHeaderStyle}>Target Completion
               <button className="sort-by" onClick={() => requestSort('name')}>
                 </button></th>
-              <th className={tableHeaderStyle}>Total Items
-              <button className="sort-by" onClick={() => requestSort('name')}>
-                </button></th>
-              <th className={tableHeaderStyle}>Items Remaining
-              <button className="sort-by" onClick={() => requestSort('name')}>
-                </button></th>
-              <th className={tableHeaderStyle}>Probability
-              <button className="sort-by" onClick={() => requestSort('name')}>
-                </button></th>
+              <th className={tableHeaderStyle}>Total Items</th>
+              <th className={tableHeaderStyle}>Items Remaining</th>
+              <th className={tableHeaderStyle}>Probability</th>
               <th className={tableHeaderStyle} hidden={!props.admin}>Edit</th>
             </tr>
           </thead>
@@ -166,7 +160,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                         <td id={InitiativeTableIds.totalItems} className={tableDataStyle}>{displayItem.totalItems}</td>
                         <td id={InitiativeTableIds.remainingItems} className={tableDataStyle}>{itemsRemaining}</td>
                         <td className={tableDataStyle + " tooltipStyle"} title={tooltipMessage}>{ probability.value === undefined ? "NA"  : probability.value +  "%" }
-                          <i className="material-icons max-w-24px max-h-24px">info_outline</i>
+                          <i className="material-icons iconStyle" style={{fontSize: '15px'}}>info_outline</i>
                           </td>
                         <td className={tableDataStyle + " w-1/12"} hidden={!props.admin}><EditInitiativeButton company={displayItem.company} initiative={displayItem} index={index} ValidateInitiative={props.ValidateInitiative} /></td>
                       </tr>
