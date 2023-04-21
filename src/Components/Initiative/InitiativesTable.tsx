@@ -10,10 +10,12 @@ import { GenerateProbability } from "../../Services/ProbabilitySimulationService
 import { MakeDate } from "../DateInput";
 
 export const InitiativeTableIds = {
-  totalItems: 'totalItems',
-  remainingItems: 'remainingItems',
-  initiativeTitle: 'initiativeTitle',
-  companyName: 'companyName'
+  totalItems: 'initiativeTableTotalItems',
+  remainingItems: 'initiativesTableRemainingItems',
+  initiativeTitle: 'initiativesTableTitle',
+  companyName: 'initiativesTableCompanyName',
+  initiativeTitleFilter: "initiativesTableFilterTitle",
+  companyNameFilter: "initiativesTableFilterCompanyName"
 }
 
 interface InitiativesProps {
@@ -114,8 +116,8 @@ export default function InitiativesTable(props: InitiativesProps) {
     <div className="grid grid-cols-1 w-full h-auto">
       {props.admin &&
       <div className="col-span-1 h-[4vh] px-2 pb-[2%] space-x-2">
-        <input className={inputStyle} type={'text'} placeholder="Filter by Title" onChange={(e) => setSearchedInit(e.target.value)}/>
-        <input className={inputStyle} type={'text'} placeholder="Filter by Company" onChange={(e) => setSearchedComp(e.target.value)}/>
+        <input id={InitiativeTableIds.initiativeTitleFilter} className={inputStyle} type={'text'} placeholder="Filter by Title" onChange={(e) => setSearchedInit(e.target.value)}/>
+        <input id={InitiativeTableIds.companyNameFilter} className={inputStyle} type={'text'} placeholder="Filter by Company" onChange={(e) => setSearchedComp(e.target.value)}/>
       </div>
       }
       <div className="col-span-1 py-[2%]">

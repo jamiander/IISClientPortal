@@ -3,7 +3,7 @@ import { TestConstants } from "./TestHelpers";
 describe('add initiative spec', () => {
   const init = {
     companyId: 0,
-    title: "Test Initiative",
+    title: "Integration Test Initiative",
     date: {
       month: "04",
       day: "01",
@@ -34,9 +34,10 @@ describe('add initiative spec', () => {
     cy.get('button').contains('Admin').click();
     cy.get('button').contains('Initiatives').click();
     cy.get(radioIds.all).click();
+
     cy.get('button').contains('Add Initiative').click();
 
-    cy.get('select').select(1);
+    cy.get(modalIds.company).select(1);
     cy.get(modalIds.title).clear().type(init.title);
     cy.get(modalIds.startDate).clear().type("2020-01-01");
     cy.get(modalIds.targetDate).clear().type("2023-01-03");
@@ -45,7 +46,7 @@ describe('add initiative spec', () => {
 
   specify('add new initiative',() => {
     cy.get('button').contains('Submit').click();
-
+    cy.get(tableIds.initiativeTitleFilter).type(init.title);
     cy.get('table').contains(init.title);
   })
 
@@ -58,7 +59,7 @@ describe('add initiative spec', () => {
         cy.get(tableIds.companyName).invoke('text').then(($txt2) => { 
           const existingInitCompanyName = $txt2;
           
-          cy.get('select').select(existingInitCompanyName);
+          cy.get(modalIds.company).select(existingInitCompanyName);
           cy.get(modalIds.title).clear().type(existingInitTitle);
 
           cy.get('button').contains('Submit').click();

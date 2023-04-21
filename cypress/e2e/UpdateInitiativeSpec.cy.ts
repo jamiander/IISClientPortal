@@ -3,7 +3,8 @@ import { TestConstants } from "./TestHelpers";
 describe('update initiative spec', () => {
 
   const init = {
-    companyId: 0,
+    //companyId: 0,
+    companyName: 'Integrity Inspired Solutions',
     title: "Test Initiative 1234",
     startDate: "2023-01-01",
     targetDate: "2023-04-01",
@@ -19,6 +20,7 @@ describe('update initiative spec', () => {
   const badToastId = consts.toastIds.main;
   const modalIds = consts.initiativeModalIds;
   const radioIds = consts.initiativeDisplayRadioIds;
+  const tableIds = consts.initiativeTableIds;
 
   beforeEach(() => {
     cy.visit('http://localhost:3000/Login')
@@ -30,7 +32,8 @@ describe('update initiative spec', () => {
     cy.get('button').contains('Admin').click();
     cy.get('button').contains('Initiatives').click();
     cy.get(radioIds.all).click();
-    cy.get('table').contains('Integrity Inspired Solutions');
+    cy.get(tableIds.companyNameFilter).type(init.companyName);
+    cy.get('table').contains(init.companyName);
     cy.get('#editInitiativeButton0').click();
 
     cy.get(modalIds.title).clear().type(init.title);
