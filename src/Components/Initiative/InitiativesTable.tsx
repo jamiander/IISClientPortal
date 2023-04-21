@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useMemo, useState } from "react";
-import { DateInfo, FindItemsRemaining } from "../../Services/CompanyService";
+import { FindItemsRemaining } from "../../Services/CompanyService";
 import { InitiativeFilter } from "../../Services/Filters";
 import { Company, Initiative } from "../../Store/CompanySlice";
 import { useAppSelector } from "../../Store/Hooks";
@@ -7,9 +7,7 @@ import { selectCurrentUser, User } from "../../Store/UserSlice";
 import { EditInitiativeButton } from "./EditInitiativeButton";
 import { greenProbabilityStyle, inputStyle, redProbabilityStyle } from "../../Styles";
 import { GenerateProbability } from "../../Services/ProbabilitySimulationService";
-import React from "react";
-import { filter } from "cypress/types/bluebird";
-import { Button } from "flowbite-react";
+import { info } from "console";
 
 export const InitiativeTableIds = {
   totalItems: 'totalItems',
@@ -88,14 +86,29 @@ export default function InitiativesTable(props: InitiativesProps) {
       <div className="col-span-1 py-[2%]">
         <table className="table-auto w-full outline outline-3 bg-gray-100">
           <thead className="outline outline-1">
+          <link href = "https://fonts.googleapis.com/icon?family=Material+Icons" rel = "stylesheet"/> 
             <tr>
-              <th className={tableHeaderStyle}>Title</th>
-              <th className={tableHeaderStyle} hidden={isCompanyHidden}><button onClick={() => requestSort('name')}>Company</button></th>
-              <th className={tableHeaderStyle}>Start Date</th>
-              <th className={tableHeaderStyle}>Target Completion</th>
-              <th className={tableHeaderStyle}>Total Items</th>
-              <th className={tableHeaderStyle}>Items Remaining</th>
-              <th className={tableHeaderStyle}>Probability</th>
+              <th className={tableHeaderStyle}>Title
+              <button className="sort-by" onClick={() => requestSort('name')}>Company
+                </button></th>
+              <th className={tableHeaderStyle} hidden={isCompanyHidden}>
+                <button className="sort-by" onClick={() => requestSort('name')}>Company
+                </button></th>
+              <th className={tableHeaderStyle}>Start Date
+              <button className="sort-by" onClick={() => requestSort('name')}>Company
+                </button></th>
+              <th className={tableHeaderStyle}>Target Completion
+              <button className="sort-by" onClick={() => requestSort('name')}>Company
+                </button></th>
+              <th className={tableHeaderStyle}>Total Items
+              <button className="sort-by" onClick={() => requestSort('name')}>Company
+                </button></th>
+              <th className={tableHeaderStyle}>Items Remaining
+              <button className="sort-by" onClick={() => requestSort('name')}>Company
+                </button></th>
+              <th className={tableHeaderStyle}>Probability
+              <button className="sort-by" onClick={() => requestSort('name')}>Company
+                </button></th>
               <th className={tableHeaderStyle} hidden={!props.admin}>Edit</th>
             </tr>
           </thead>
@@ -121,7 +134,9 @@ export default function InitiativesTable(props: InitiativesProps) {
                           <td className={tableDataStyle}>{initiative.targetDate.month + "/" + initiative.targetDate.day + "/" + initiative.targetDate.year}</td>
                           <td id={InitiativeTableIds.totalItems} className={tableDataStyle}>{initiative.totalItems}</td>
                           <td id={InitiativeTableIds.remainingItems} className={tableDataStyle}>{itemsRemaining}</td>
-                          <td className={tableDataStyle + " tooltipStyle"} title={tooltipMessage}>{ probability.value === undefined ? "NA"  : probability.value +  "%" }</td>
+                          <td className={tableDataStyle + " tooltipStyle"} title={tooltipMessage}>{ probability.value === undefined ? "NA"  : probability.value +  "%" }
+                          <i className="material-icons max-w-24px max-h-24px">info_outline</i>
+                          </td>
                           <td className={tableDataStyle + " w-1/12"} hidden={!props.admin}><EditInitiativeButton company={company} initiative={initiative} index={index} ValidateInitiative={props.ValidateInitiative} /></td>
                         </tr>
                       </Fragment>
