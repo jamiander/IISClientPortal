@@ -46,9 +46,6 @@ export default function InitiativesTable(props: InitiativesProps) {
   const [pageNumber, setPageNumber] = useState(1);
   const [resultsLimit, setResultsLimit] = useState(10);
 
-
-  const filteredCompanies = (props.companyList.filter(e => e.name.toLowerCase().includes(searchedComp.toLowerCase()))).sort((a, b) => a.name.localeCompare(b.name));
-  
   let currentUser : User = useAppSelector(selectCurrentUser) ?? {id: -1, email: 'fake@fake', password: 'fake', companyId: -1};
 
   useEffect(() => {
@@ -78,8 +75,6 @@ export default function InitiativesTable(props: InitiativesProps) {
     if (sortConfig.key === key && sortConfig.direction === 'descending') {
       direction = 'ascending';
     }
-    console.log(key)
-    console.log(direction)
     setSortConfig({ key, direction });
   }
     
@@ -101,6 +96,8 @@ export default function InitiativesTable(props: InitiativesProps) {
   function UpdateDisplayItems()
   {
     const displayList: InitCompanyDisplay[] = []
+    const filteredCompanies = (props.companyList.filter(e => e.name.toLowerCase().includes(searchedComp.toLowerCase()))).sort((a, b) => a.name.localeCompare(b.name));
+  
     for(let company of filteredCompanies)
     {
       let initiatives = InitiativeFilter(company.initiatives.filter(e => e.title.toLowerCase().includes(searchedInit.toLowerCase())).sort((a, b) => a.title.localeCompare(b.title)),props.radioStatus);
@@ -111,7 +108,7 @@ export default function InitiativesTable(props: InitiativesProps) {
 
   useEffect(() => {
     UpdateDisplayItems();
-  },[props.companyList])
+  },[props.companyList,searchedInit,searchedComp])
 
   return (
     <div className="grid grid-cols-1 w-full h-auto">
