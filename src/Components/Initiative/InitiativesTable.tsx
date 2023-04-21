@@ -7,12 +7,15 @@ import { selectCurrentUser, User } from "../../Store/UserSlice";
 import { EditInitiativeButton } from "./EditInitiativeButton";
 import { greenProbabilityStyle, inputStyle, redProbabilityStyle } from "../../Styles";
 import { GenerateProbability } from "../../Services/ProbabilitySimulationService";
+import { MakeDate } from "../DateInput";
 
 export const InitiativeTableIds = {
-  totalItems: 'totalItems',
-  remainingItems: 'remainingItems',
-  initiativeTitle: 'initiativeTitle',
-  companyName: 'companyName'
+  totalItems: 'initiativeTableTotalItems',
+  remainingItems: 'initiativesTableRemainingItems',
+  initiativeTitle: 'initiativesTableTitle',
+  companyName: 'initiativesTableCompanyName',
+  initiativeTitleFilter: "initiativesTableFilterTitle",
+  companyNameFilter: "initiativesTableFilterCompanyName"
 }
 
 interface InitiativesProps {
@@ -24,7 +27,9 @@ interface InitiativesProps {
 
 interface InitCompanyDisplay extends Initiative {
     company: Company,
-    companyName: string
+    companyName: string,
+    startDateTime: Date,
+    targetDateTime: Date
   }
 
 export default function InitiativesTable(props: InitiativesProps) {
@@ -43,9 +48,6 @@ export default function InitiativesTable(props: InitiativesProps) {
   const [pageNumber, setPageNumber] = useState(1);
   const [resultsLimit, setResultsLimit] = useState(10);
 
-
-  const filteredCompanies = (props.companyList.filter(e => e.name.toLowerCase().includes(searchedComp.toLowerCase()))).sort((a, b) => a.name.localeCompare(b.name));
-  
   let currentUser : User = useAppSelector(selectCurrentUser) ?? {id: -1, email: 'fake@fake', password: 'fake', companyId: -1};
 
   useEffect(() => {
@@ -96,24 +98,26 @@ export default function InitiativesTable(props: InitiativesProps) {
   function UpdateDisplayItems()
   {
     const displayList: InitCompanyDisplay[] = []
+    const filteredCompanies = (props.companyList.filter(e => e.name.toLowerCase().includes(searchedComp.toLowerCase()))).sort((a, b) => a.name.localeCompare(b.name));
+  
     for(let company of filteredCompanies)
     {
-      let initiatives = company.initiatives.filter(e => e.title.toLowerCase().includes(searchedInit.toLowerCase())).sort((a, b) => a.title.localeCompare(b.title));
-      initiatives.map((init) => { displayList.push({...init, companyName:company.name, company:company}) });
+      let initiatives = InitiativeFilter(company.initiatives.filter(e => e.title.toLowerCase().includes(searchedInit.toLowerCase())).sort((a, b) => a.title.localeCompare(b.title)),props.radioStatus);
+      initiatives.map((init) => { displayList.push({...init, companyName:company.name, company:company, startDateTime:MakeDate(init.startDate), targetDateTime:MakeDate(init.targetDate)}) });
     }
     setDisplayItems(displayList);
   }
 
   useEffect(() => {
     UpdateDisplayItems();
-  },[props.companyList])
+  },[props.companyList,searchedInit,searchedComp,props.radioStatus])
 
   return (
     <div className="grid grid-cols-1 w-full h-auto">
       {props.admin &&
       <div className="col-span-1 h-[4vh] px-2 pb-[2%] space-x-2">
-        <input className={inputStyle} type={'text'} placeholder="Filter by Title" onChange={(e) => setSearchedInit(e.target.value)}/>
-        <input className={inputStyle} type={'text'} placeholder="Filter by Company" onChange={(e) => setSearchedComp(e.target.value)}/>
+        <input id={InitiativeTableIds.initiativeTitleFilter} className={inputStyle} type={'text'} placeholder="Filter by Title" onChange={(e) => setSearchedInit(e.target.value)}/>
+        <input id={InitiativeTableIds.companyNameFilter} className={inputStyle} type={'text'} placeholder="Filter by Company" onChange={(e) => setSearchedComp(e.target.value)}/>
       </div>
       }
       <div className="col-span-1 py-[2%]">
@@ -122,16 +126,16 @@ export default function InitiativesTable(props: InitiativesProps) {
           <link href = "https://fonts.googleapis.com/icon?family=Material+Icons" rel = "stylesheet"/> 
             <tr>
               <th className={tableHeaderStyle}>Title
-              <button className="sort-by" onClick={() => requestSort('name')}>
+              <button className="sort-by" onClick={() => requestSort('title')}>
                 </button></th>
               <th className={tableHeaderStyle} hidden={isCompanyHidden}>Company
               <button className="sort-by" onClick={() => requestSort('companyName')}>
                 </button></th>
               <th className={tableHeaderStyle}>Start Date
-              <button className="sort-by" onClick={() => requestSort('name')}>
+              <button className="sort-by" onClick={() => requestSort('startDateTime')}>
                 </button></th>
               <th className={tableHeaderStyle}>Target Completion
-              <button className="sort-by" onClick={() => requestSort('name')}>
+              <button className="sort-by" onClick={() => requestSort('targetDateTime')}>
                 </button></th>
               <th className={tableHeaderStyle}>Total Items</th>
               <th className={tableHeaderStyle}>Items Remaining</th>
