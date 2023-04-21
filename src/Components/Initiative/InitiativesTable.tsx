@@ -98,7 +98,7 @@ export default function InitiativesTable(props: InitiativesProps) {
     const displayList: InitCompanyDisplay[] = []
     for(let company of filteredCompanies)
     {
-      let initiatives = company.initiatives.filter(e => e.title.toLowerCase().includes(searchedInit.toLowerCase())).sort((a, b) => a.title.localeCompare(b.title));
+      let initiatives = InitiativeFilter(company.initiatives.filter(e => e.title.toLowerCase().includes(searchedInit.toLowerCase())).sort((a, b) => a.title.localeCompare(b.title)),props.radioStatus);
       initiatives.map((init) => { displayList.push({...init, companyName:company.name, company:company}) });
     }
     setDisplayItems(displayList);
@@ -120,7 +120,7 @@ export default function InitiativesTable(props: InitiativesProps) {
         <table className="table-auto w-full outline outline-3 bg-gray-100">
           <thead className="outline outline-1">
             <tr>
-              <th className={tableHeaderStyle}>Title</th>
+              <th className={tableHeaderStyle}><button onClick={() => requestSort('title')}>Title</button></th>
               <th className={tableHeaderStyle} hidden={isCompanyHidden}><button onClick={() => requestSort('companyName')}>Company</button></th>
               <th className={tableHeaderStyle}>Start Date</th>
               <th className={tableHeaderStyle}>Target Completion</th>
