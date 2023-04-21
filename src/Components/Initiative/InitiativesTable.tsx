@@ -1,6 +1,5 @@
 import { Fragment, useEffect, useMemo, useState } from "react";
 import { FindItemsRemaining } from "../../Services/CompanyService";
-import { FindItemsRemaining } from "../../Services/CompanyService";
 import { InitiativeFilter } from "../../Services/Filters";
 import { Company, Initiative } from "../../Store/CompanySlice";
 import { useAppSelector } from "../../Store/Hooks";
@@ -8,7 +7,6 @@ import { selectCurrentUser, User } from "../../Store/UserSlice";
 import { EditInitiativeButton } from "./EditInitiativeButton";
 import { greenProbabilityStyle, inputStyle, redProbabilityStyle } from "../../Styles";
 import { GenerateProbability } from "../../Services/ProbabilitySimulationService";
-import { info } from "console";
 
 export const InitiativeTableIds = {
   totalItems: 'totalItems',
@@ -124,25 +122,25 @@ export default function InitiativesTable(props: InitiativesProps) {
           <link href = "https://fonts.googleapis.com/icon?family=Material+Icons" rel = "stylesheet"/> 
             <tr>
               <th className={tableHeaderStyle}>Title
-              <button className="sort-by" onClick={() => requestSort('name')}>Company
+              <button className="sort-by" onClick={() => requestSort('name')}>
                 </button></th>
-              <th className={tableHeaderStyle} hidden={isCompanyHidden}>
-                <button className="sort-by" onClick={() => requestSort('name')}>Company
+              <th className={tableHeaderStyle} hidden={isCompanyHidden}>Company
+                <button className="sort-by" onClick={() => requestSort('name')}>
                 </button></th>
               <th className={tableHeaderStyle}>Start Date
-              <button className="sort-by" onClick={() => requestSort('name')}>Company
+              <button className="sort-by" onClick={() => requestSort('name')}>
                 </button></th>
               <th className={tableHeaderStyle}>Target Completion
-              <button className="sort-by" onClick={() => requestSort('name')}>Company
+              <button className="sort-by" onClick={() => requestSort('name')}>
                 </button></th>
               <th className={tableHeaderStyle}>Total Items
-              <button className="sort-by" onClick={() => requestSort('name')}>Company
+              <button className="sort-by" onClick={() => requestSort('name')}>
                 </button></th>
               <th className={tableHeaderStyle}>Items Remaining
-              <button className="sort-by" onClick={() => requestSort('name')}>Company
+              <button className="sort-by" onClick={() => requestSort('name')}>
                 </button></th>
               <th className={tableHeaderStyle}>Probability
-              <button className="sort-by" onClick={() => requestSort('name')}>Company
+              <button className="sort-by" onClick={() => requestSort('name')}>
                 </button></th>
               <th className={tableHeaderStyle} hidden={!props.admin}>Edit</th>
             </tr>
