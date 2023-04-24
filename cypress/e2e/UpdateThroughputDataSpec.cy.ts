@@ -6,7 +6,8 @@ const toastId = consts.toastIds.main;
 const toastCloseId = consts.toastIds.closeButton;
 const failMessage = consts.validationFailedMessage;
 const tableIds = consts.initiativeTableIds;
-const initiative = 'IIS Initiative';
+const radioIds = consts.initiativeDisplayRadioIds;
+const initiativeTitle = 'IIS Initiative';
 const company = 'Integrity Inspired Solutions';
 const waitTime = 500;
 
@@ -21,14 +22,16 @@ describe ('add throughput data by manual entry', () => {
 
     cy.get('button').contains('Admin').click();
     cy.get('button').contains('Initiatives').click();
+    cy.get(radioIds.all).click();
+    cy.get(tableIds.initiativeTitleFilter).type(initiativeTitle);
 
-    cy.contains('tr', initiative).find(tableIds.remainingItems).then(($span) => {
+    cy.contains('tr', initiativeTitle).find(tableIds.remainingItems).then(($span) => {
       remainingItemsBefore = Number($span.text());
     });
 
     cy.get('button').contains('Edit Data').click();
     cy.get(modalIds.selectCompany).select(company);
-    cy.get(modalIds.selectInitiative).select(initiative);
+    cy.get(modalIds.selectInitiative).select(initiativeTitle);
   })
 
   specify('add throughput data by manual entry', () => {
@@ -37,8 +40,8 @@ describe ('add throughput data by manual entry', () => {
     cy.get(modalIds.addEntrySubmitButton).click();
     cy.get(modalIds.submitButton).click();
 
-    cy.wait(waitTime)
-    cy.contains('tr', initiative).find(tableIds.remainingItems).then(($span) => {
+    cy.wait(waitTime);
+    cy.contains('tr', initiativeTitle).find(tableIds.remainingItems).then(($span) => {
       let remainingItemsAfter = Number($span.text());
       expect(remainingItemsBefore-2).to.be.equal(remainingItemsAfter);
     })
@@ -57,7 +60,7 @@ describe ('invalid manual entry test', () => {
 
     cy.get('button').contains('Edit Data').click();
     cy.get(modalIds.selectCompany).select(company);
-    cy.get(modalIds.selectInitiative).select(initiative);
+    cy.get(modalIds.selectInitiative).select(initiativeTitle);
   })
 
   specify('cannot add throughput entry when date is invalid', () => {
@@ -102,7 +105,7 @@ describe('update throughput data', () => {
 
     cy.get('button').contains('Edit Data').click();
     cy.get(modalIds.selectCompany).select(company);
-    cy.get(modalIds.selectInitiative).select(initiative);
+    cy.get(modalIds.selectInitiative).select(initiativeTitle);
   })
 
   specify('update completed amount', () => {

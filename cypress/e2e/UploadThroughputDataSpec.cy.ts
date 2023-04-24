@@ -14,9 +14,10 @@ const consts = TestConstants;
 const modalIds = consts.uploadThroughputIds;
 const tableIds = consts.initiativeTableIds;
 const badToastId = consts.toastIds.main;
+const radioIds = consts.initiativeDisplayRadioIds;
 
-const initiative = 'IIS Initiative';
-const company = 'Integrity Inspired Solutions';
+const initiativeTitle = 'IIS Initiative';
+const companyName = 'Integrity Inspired Solutions';
 const waitTime = 500;
 
 describe('valid upload throughput tests', () => {
@@ -32,14 +33,16 @@ describe('valid upload throughput tests', () => {
 
     cy.get('button').contains('Admin').click();
     cy.get('button').contains('Initiatives').click();
+    cy.get(radioIds.all).click();
+    cy.get(tableIds.initiativeTitleFilter).type(initiativeTitle);
 
-    cy.contains('tr', initiative).find(tableIds.remainingItems).then(($span) => {
+    cy.contains('tr', initiativeTitle).find(tableIds.remainingItems).then(($span) => {
       remainingItemsBefore = Number($span.text());
     });
 
     cy.get('button').contains('Upload Data').click();
-    cy.get(modalIds.selectCompany).select(company);
-    cy.get(modalIds.selectInitiative).select(initiative);
+    cy.get(modalIds.selectCompany).select(companyName);
+    cy.get(modalIds.selectInitiative).select(initiativeTitle);
   })
 
   specify('add throughput data by file', () => {
@@ -56,7 +59,7 @@ describe('valid upload throughput tests', () => {
     cy.wait(waitTime);
     cy.get(modalIds.fileSubmit).click();
     cy.wait(waitTime);
-    cy.contains('tr', initiative).find(tableIds.remainingItems).then(($span) => {
+    cy.contains('tr', initiativeTitle).find(tableIds.remainingItems).then(($span) => {
       let remainingItemsAfter = Number($span.text());
       expect(remainingItemsBefore-itemsCompletedInUpload).to.be.equal(remainingItemsAfter);
     })
@@ -84,8 +87,8 @@ describe('invalid upload throughput tests', () => {
     cy.get('button').contains('Initiatives').click();
 
     cy.get('button').contains('Upload Data').click();
-    cy.get(modalIds.selectCompany).select(company);
-    cy.get(modalIds.selectInitiative).select(initiative);
+    cy.get(modalIds.selectCompany).select(companyName);
+    cy.get(modalIds.selectInitiative).select(initiativeTitle);
   })
   
 
