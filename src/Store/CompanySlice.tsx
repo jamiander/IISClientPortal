@@ -10,7 +10,8 @@ export interface Company {
 }
 
 export interface CompanyState {
-    companies: Company[]
+    companies: Company[],
+    logInAttempts: number
 }
 
 export interface Initiative {
@@ -23,7 +24,8 @@ export interface Initiative {
 }
 
 const initialState: CompanyState = {
-    companies: []
+    companies: [],
+    logInAttempts: 0
 }
 
 export const getCompanyInfo = createAsyncThunk(
@@ -123,7 +125,7 @@ export const authenticateUser = createAsyncThunk(
       throw Error;
     
     const companyId = parseInt(response.companyId);
-    if(companyId !== 0)
+    if(companyId !== 0)   //Admins see all
       dispatch(getCompanyInfo({companyId: companyId}));
     else
       dispatch(getCompanyInfo({companyId: -1}));
@@ -196,11 +198,18 @@ export const companySlice = createSlice({
                 }
               }
             })
+            .addCase(authenticateUser.fulfilled, (state, action) => {
+              state.logInAttempts = 0;
+            })
+            .addCase(authenticateUser.rejected, (state, action) => {
+              state.logInAttempts++;
+            })
     }
 });
 
 export const { clearCompanies } = companySlice.actions;
 
 export const selectAllCompanies = (state: RootState) => state.companies.companies;
+export const selectLogInAttempts = (state: RootState) => state.companies.logInAttempts;
 
 export default companySlice.reducer;

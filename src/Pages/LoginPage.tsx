@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { authenticateUser, getCompanyInfo } from "../Store/CompanySlice";
+import { authenticateUser, getCompanyInfo, selectLogInAttempts } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks"
 import { selectAllUsers, selectCurrentUserId, setCurrentUserId } from "../Store/UserSlice";
 import { genericButtonStyle } from "../Styles";
-import { selectCurrentUser } from "../Store/UserSlice";
 
 export default function LoginPage(){
   const dispatch = useAppDispatch();
@@ -15,6 +14,7 @@ export default function LoginPage(){
   const userList = useAppSelector(selectAllUsers);
   const [passwordShown,setPasswordShown] = useState(false);
   const selectStyle = "outline outline-1 h-10 w-60 p-2 mb-4 hover:outline-2 focus:outline-2";
+  const logInAttempts = useAppSelector(selectLogInAttempts);
 
   const togglePasswordVisibility = () => {
     setPasswordShown(passwordShown ? false : true);
@@ -65,6 +65,8 @@ export default function LoginPage(){
         <div className="w-full my-5">
           <button onClick={()=>Login()} className={genericButtonStyle}>Submit</button>
         </div>
+
+        {logInAttempts > 0 && <p>Incorrect Email or Password</p>}
 
       </div>
 
