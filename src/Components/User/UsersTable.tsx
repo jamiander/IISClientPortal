@@ -2,7 +2,16 @@ import { useState } from "react";
 import { CompanyFilter } from "../../Services/Filters";
 import { Company } from "../../Store/CompanySlice";
 import { User } from "../../Store/UserSlice";
+import { styled } from '@mui/material/styles';
 import EditUserButton from "./EditUserButton";
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell, { tableCellClasses } from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import { defaultRowStyle } from "../../Styles";
 
 interface UsersTableProps {
   userList: User[],
@@ -17,6 +26,21 @@ interface ClientTableProps{
 }
 
 export default function UsersTable(props: UsersTableProps){
+
+  const TableHeaderStyle =
+  styled(TableCell)(({ theme }) => ({
+    [`&.${tableCellClasses.head}`]: {
+      backgroundColor: theme.palette.common.white,
+      color: theme.palette.common.black,
+    }
+  })); 
+
+  const TableCellStyle = 
+  styled(TableCell)(({ theme }) => ({
+    [`&.${tableCellClasses.body}`]: {
+      alignContent: { alignItems: 'right'},
+    }
+  }))
 
   function PasswordDisplay(user:User){
     const [passwordShown, setPasswordShown] = useState(false);
@@ -33,33 +57,48 @@ export default function UsersTable(props: UsersTableProps){
 
   function ClientTable(cprops:ClientTableProps){
     return(
-      <table className="table-auto w-[100%] outline outline-3 my-3 bg-gray-100">
-      <thead className="outline outline-1">
-        <tr>
-          <th>Company</th>
-          <th>Email</th>
-          <th>Password</th>
-          <th>Edit</th>
-        </tr>
-      </thead>
-      <tbody>
+      <TableContainer component={Paper}>
+      <Table className="table-auto w-[100%] outline outline-3 my-3 bg-gray-100">
+      <TableHead className="outline outline-1">
+        <TableRow sx={{
+                borderBottom: "2px solid black",
+                "& th": {
+                  fontSize: "1.25rem",
+                  fontWeight: "bold",
+                  fontFamily: "Arial, Helvetica" 
+                }
+              }}>
+          <TableHeaderStyle>Company</TableHeaderStyle>
+          <TableHeaderStyle>Email</TableHeaderStyle>
+          <TableHeaderStyle>Password</TableHeaderStyle>
+          <TableHeaderStyle>Edit</TableHeaderStyle>
+        </TableRow>
+      </TableHead>
+      <TableBody>
         {cprops.clients.map((user, index)=>{
           const company = props.companyList.find(company => company.id === user.companyId);
           return(
-            <tr key={index} className="odd:bg-gray-200">
-              <td className="outline outline-1"><p className="flex justify-center">{company?.name}</p></td>
-              <td className="outline outline-1"><p className="flex justify-center">{user.email}</p></td>
-              <td className="outline outline-1">
+            <TableRow key={index} className={defaultRowStyle} sx={{
+              borderBottom: "1px solid black",
+                "& td": {
+                  fontSize: "1.1rem",
+                  fontFamily: "Arial, Helvetica" 
+                }
+              }}>
+              <TableCellStyle>{company?.name}</TableCellStyle>
+              <TableCellStyle>{user.email}</TableCellStyle>
+              <TableCellStyle>
                 <PasswordDisplay {...(user)}/>
-              </td>
-              <td className="outline outline-1">
+              </TableCellStyle>
+              <TableCellStyle>
                 <EditUserButton index={index} user={user} company={company} SubmitUpdateUser={props.SubmitUpdateUser} handleEditUser={props.handleEditUser} handleCloseEditUser={props.handleCloseEditUser}/>
-              </td>
-            </tr>
+              </TableCellStyle>
+            </TableRow>
           )
         })}
-        </tbody>
-      </table>
+        </TableBody>
+      </Table>
+      </TableContainer>
     )
   }
   return(
