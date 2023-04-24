@@ -4,6 +4,7 @@ import { authenticateUser, getCompanyInfo, selectLogInAttempts } from "../Store/
 import { useAppDispatch, useAppSelector } from "../Store/Hooks"
 import { selectAllUsers, selectCurrentUserId, setCurrentUserId } from "../Store/UserSlice";
 import { genericButtonStyle } from "../Styles";
+import { hash } from "bcrypt"
 
 export default function LoginPage(){
   const dispatch = useAppDispatch();
@@ -20,7 +21,8 @@ export default function LoginPage(){
     setPasswordShown(passwordShown ? false : true);
   };
 
-  function Login(){
+  function Login()
+  {
     dispatch(authenticateUser({creds: { username: userEmail, password: password }}))
 
     /*let currentUser = userList.find(user => (user.email === userEmail) && (user.password === password));
