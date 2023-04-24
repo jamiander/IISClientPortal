@@ -28,8 +28,7 @@ export default function LoginPage(){
       dispatch(setCurrentUserId(currentUser.id));
       dispatch(getCompanyInfo({employeeId: currentUser.id}));
       navigate('/Dashboard');
-    }
-    */
+    }*/
   }
 
   useEffect(() => {
@@ -66,7 +65,11 @@ export default function LoginPage(){
           <button onClick={()=>Login()} className={genericButtonStyle}>Submit</button>
         </div>
 
-        {logInAttempts > 0 && <p>Incorrect Email or Password</p>}
+        {logInAttempts > 0 && 
+        <div className="outline rounded outline-red-600 p-2 flex justify-center w-3/4">
+          <p className="text-red-600">Incorrect Email or Password</p>
+        </div>
+        }
 
       </div>
 
