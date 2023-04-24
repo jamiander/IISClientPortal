@@ -1,3 +1,7 @@
+import TableCell, { tableCellClasses } from '@mui/material/TableCell';
+import { styled } from '@mui/material/styles';
+import { TableRow } from 'flowbite-react/lib/esm/components/Table/TableRow';
+
 export const modalStyle = {
   content: {
     top: '50%',
@@ -20,6 +24,15 @@ export const integrityColors = {
   integrityVeryLightGray: '#E4E1E5'
 }
 
+export const TableHeaderStyle =
+  styled(TableCell)(({ theme }) => ({
+    [`&.${tableCellClasses.head}`]: {
+      backgroundColor: theme.palette.common.white,
+      color: theme.palette.common.black,
+    }
+  })); 
+
+export const tooltipStyle = "hover:bg-gray-300 cursor-pointer";
 export const inputStyle = "outline rounded outline-1 p-2 hover:outline-2 focus:outline-2";
 export const selectStyle = "outline rounded outline-1 p-2 hover:outline-2 focus:outline-2";
 

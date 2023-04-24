@@ -5,20 +5,17 @@ import { Company, Initiative } from "../../Store/CompanySlice";
 import { useAppSelector } from "../../Store/Hooks";
 import { selectCurrentUser, User } from "../../Store/UserSlice";
 import { EditInitiativeButton } from "./EditInitiativeButton";
-import { defaultRowStyle, greenProbabilityStyle, inputStyle, redProbabilityStyle } from "../../Styles";
+import { defaultRowStyle, greenProbabilityStyle, inputStyle, redProbabilityStyle, TableHeaderStyle, tooltipStyle } from "../../Styles";
 import { GenerateProbability } from "../../Services/ProbabilitySimulationService";
 import { MakeDate } from "../DateInput";
-import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
-import TableCell, { tableCellClasses } from '@mui/material/TableCell';
+import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import TableSortLabel from '@mui/material/TableSortLabel';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
 
 export const InitiativeTableIds = {
   totalItems: 'initiativeTableTotalItems',
@@ -44,14 +41,6 @@ interface InitCompanyDisplay extends Initiative {
   }
 
 export default function InitiativesTable(props: InitiativesProps) {
-
-  const TableHeaderStyle =
-  styled(TableCell)(({ theme }) => ({
-    [`&.${tableCellClasses.head}`]: {
-      backgroundColor: theme.palette.common.white,
-      color: theme.palette.common.black,
-    }
-  })); 
     
   const [isCompanyHidden, setCompanyHidden] = useState(false);
   
@@ -195,7 +184,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                         <TableCell>{displayItem.targetDate.month + "/" + displayItem.targetDate.day + "/" + displayItem.targetDate.year}</TableCell>
                         <TableCell id={InitiativeTableIds.totalItems}>{displayItem.totalItems}</TableCell>
                         <TableCell id={InitiativeTableIds.remainingItems}>{itemsRemaining}</TableCell>
-                        <TableCell className="tooltipStyle" title={tooltipMessage}>{ probability.value === undefined ? "NA"  : probability.value +  "%" }
+                        <TableCell className={tooltipStyle} title={tooltipMessage}>{ probability.value === undefined ? "NA"  : probability.value +  "%" }
                           <i className="material-icons" style={{fontSize: '15px', marginLeft: '15px', marginTop: '10px'}}>info_outline</i>
                         </TableCell>
                         <TableCell className="w-1/12" hidden={!props.admin}><EditInitiativeButton company={displayItem.company} initiative={displayItem} index={index} ValidateInitiative={props.ValidateInitiative} /></TableCell>

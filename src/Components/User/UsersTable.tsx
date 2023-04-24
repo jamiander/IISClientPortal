@@ -2,7 +2,6 @@ import { useState } from "react";
 import { CompanyFilter } from "../../Services/Filters";
 import { Company } from "../../Store/CompanySlice";
 import { User } from "../../Store/UserSlice";
-import { styled } from '@mui/material/styles';
 import EditUserButton from "./EditUserButton";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -11,7 +10,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { defaultRowStyle } from "../../Styles";
+import { defaultRowStyle, TableHeaderStyle } from "../../Styles";
 
 interface UsersTableProps {
   userList: User[],
@@ -26,21 +25,6 @@ interface ClientTableProps{
 }
 
 export default function UsersTable(props: UsersTableProps){
-
-  const TableHeaderStyle =
-  styled(TableCell)(({ theme }) => ({
-    [`&.${tableCellClasses.head}`]: {
-      backgroundColor: theme.palette.common.white,
-      color: theme.palette.common.black,
-    }
-  })); 
-
-  const TableCellStyle = 
-  styled(TableCell)(({ theme }) => ({
-    [`&.${tableCellClasses.body}`]: {
-      alignContent: { alignItems: 'right'},
-    }
-  }))
 
   function PasswordDisplay(user:User){
     const [passwordShown, setPasswordShown] = useState(false);
@@ -85,14 +69,14 @@ export default function UsersTable(props: UsersTableProps){
                   fontFamily: "Arial, Helvetica" 
                 }
               }}>
-              <TableCellStyle>{company?.name}</TableCellStyle>
-              <TableCellStyle>{user.email}</TableCellStyle>
-              <TableCellStyle>
+              <TableCell>{company?.name}</TableCell>
+              <TableCell>{user.email}</TableCell>
+              <TableCell>
                 <PasswordDisplay {...(user)}/>
-              </TableCellStyle>
-              <TableCellStyle>
+              </TableCell>
+              <TableCell>
                 <EditUserButton index={index} user={user} company={company} SubmitUpdateUser={props.SubmitUpdateUser} handleEditUser={props.handleEditUser} handleCloseEditUser={props.handleCloseEditUser}/>
-              </TableCellStyle>
+              </TableCell>
             </TableRow>
           )
         })}
