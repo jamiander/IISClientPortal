@@ -48,7 +48,7 @@ export default function DashboardPage(){
             ]} 
             setter={setRadioValue} name="dashboardInitiatives"/>
       </div>
-      <div className="col-span-4 h-[60vh] py-3">
+      <div className="col-span-4 py-3">
         <Dashboard/>
       </div>
     </div>
