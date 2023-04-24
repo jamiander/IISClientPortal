@@ -1,17 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getCompanyInfo } from "../Store/CompanySlice";
+import { authenticateUser, getCompanyInfo } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks"
-import { selectAllUsers, setCurrentUserId } from "../Store/UserSlice";
+import { selectAllUsers, selectCurrentUserId, setCurrentUserId } from "../Store/UserSlice";
 import { genericButtonStyle } from "../Styles";
+import { selectCurrentUser } from "../Store/UserSlice";
 
 export default function LoginPage(){
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const currentUserId = useAppSelector(selectCurrentUserId);
   const [userEmail, setUserEmail] = useState('info@integrityinspired.com');
   const [password, setPassword] = useState('password');
-  const userlist = useAppSelector(selectAllUsers);
-  const [passwordShown,setPasswordShown]=useState(false);
+  const userList = useAppSelector(selectAllUsers);
+  const [passwordShown,setPasswordShown] = useState(false);
   const selectStyle = "outline outline-1 h-10 w-60 p-2 mb-4 hover:outline-2 focus:outline-2";
 
   const togglePasswordVisibility = () => {
@@ -19,13 +21,24 @@ export default function LoginPage(){
   };
 
   function Login(){
-    let currentUser = userlist.find(user => (user.email === userEmail) && (user.password === password));
+    dispatch(authenticateUser({creds: { username: userEmail, password: password }}))
+
+    /*let currentUser = userList.find(user => (user.email === userEmail) && (user.password === password));
     if(currentUser){
       dispatch(setCurrentUserId(currentUser.id));
       dispatch(getCompanyInfo({employeeId: currentUser.id}));
       navigate('/Dashboard');
     }
+    */
   }
+
+  useEffect(() => {
+    if(currentUserId !== -1)
+    {
+      //dispatch(getCompanyInfo({employeeId: currentUserId}));
+      navigate('/Dashboard');
+    }
+  },[currentUserId]);
 
   return(
     <div className="m-[2%] grid grid-cols-4">

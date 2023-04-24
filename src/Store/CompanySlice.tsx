@@ -1,8 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import { DateInfo, GetCompanyInfo, GetCompanyInfoRequest, ThroughputData, UpdateCompanyInfo, UpdateCompanyInfoRequest, UpdateInitiativeInfo, UpdateInitiativeInfoRequest, UpdateThroughputData, UpdateThroughputDataRequest } from "../Services/CompanyService"
+import { AuthenticateUser, AuthenticateUserRequest, DateInfo, GetCompanyInfo, GetCompanyInfoRequest, ThroughputData, UpdateCompanyInfo, UpdateCompanyInfoRequest, UpdateInitiativeInfo, UpdateInitiativeInfoRequest, UpdateThroughputData, UpdateThroughputDataRequest } from "../Services/CompanyService"
 import { RootState } from "./Store"
-import { addUsersToStore, User } from "./UserSlice"
-import { CompareDateInfos } from "../Components/DateInput"
+import { addUsersToStore, setCurrentUserId, User } from "./UserSlice"
 
 export interface Company {
     id: number,
@@ -24,7 +23,7 @@ export interface Initiative {
 }
 
 const initialState: CompanyState = {
-    companies: [],
+    companies: []
 }
 
 export const getCompanyInfo = createAsyncThunk(
@@ -115,11 +114,30 @@ export const updateThroughputData = createAsyncThunk(
   }
 )
 
+export const authenticateUser = createAsyncThunk(
+  'companies/userAuthentication',
+  async (args: AuthenticateUserRequest, {dispatch, getState}) => {
+    const response = await AuthenticateUser(args);
+    
+    if(response.status.toUpperCase().includes("FAILED"))
+      throw Error;
+    
+    const companyId = parseInt(response.companyId);
+    if(companyId !== 0)
+      dispatch(getCompanyInfo({companyId: companyId}));
+    else
+      dispatch(getCompanyInfo({companyId: -1}));
+    dispatch(setCurrentUserId(companyId));
+  }
+)
+
 export const companySlice = createSlice({
     name: "companies",
     initialState: initialState,
     reducers: {
-
+      clearCompanies: (state) => {
+        state.companies = [];
+      }
     },
     extraReducers: (builder) => {
         builder
@@ -135,7 +153,7 @@ export const companySlice = createSlice({
             })
             .addCase(updateCompanyInfo.fulfilled, (state, action) => {
                 const newCompany = action.payload;
-                const companyIndex = state.companies.findIndex(company => company.id === newCompany.id)
+                const companyIndex = state.companies.findIndex(company => company.id === newCompany.id);
                 if(companyIndex > -1)
                     state.companies.splice(companyIndex, 1);
                 state.companies.push(newCompany);
@@ -181,7 +199,7 @@ export const companySlice = createSlice({
     }
 });
 
-//export const {} = companySlice.actions;
+export const { clearCompanies } = companySlice.actions;
 
 export const selectAllCompanies = (state: RootState) => state.companies.companies;
 

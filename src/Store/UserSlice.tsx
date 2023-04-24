@@ -1,5 +1,6 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "./Store";
+import { clearCompanies } from "./CompanySlice";
 
 export interface User {
     id: number
@@ -26,13 +27,14 @@ export const userSlice = createSlice({
     reducers: {
         setCurrentUserId: (state, action: PayloadAction<number>) => {
             let id = action.payload;
-            if(state.users.find((user: User) => user.id === id))
+            //if(state.users.find((user: User) => user.id === id))
                 state.currentUserId = action.payload;
-            else
-                state.currentUserId = -1;
+            //else
+              //  state.currentUserId = -1;
         },
-        signOut:(state)=>{
+        signOut: (state) => {
             state.currentUserId = -1;
+            state.users = [];
         },
         addUsersToStore: (state, action: PayloadAction<User[]>) => {
             let newUsers = action.payload;
@@ -53,6 +55,7 @@ export const { setCurrentUserId, signOut, addUsersToStore } = userSlice.actions;
 
 export const selectAllUsers = (state: RootState) => state.users.users;
 export const selectCurrentUser = (state: RootState) => state.users.users.find((user: User) => user.id === state.users.currentUserId);
+export const selectCurrentUserId = (state: RootState) => state.users.currentUserId;
 export const selectIsLoggedIn = (state:RootState) => state.users.currentUserId !== -1;
 
 export default userSlice.reducer;

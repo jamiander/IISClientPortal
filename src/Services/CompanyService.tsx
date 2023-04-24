@@ -139,3 +139,23 @@ export async function UpdateThroughputData(request: UpdateThroughputDataRequest)
   const response = await axios.post(baseUrl,request);
   return response.data;
 }
+
+export interface AuthenticateUserRequest {
+  creds: {
+    username: string,
+    password: string
+  }
+}
+
+interface AuthenticateUserResponse {
+  companyId: string,
+  status: string
+}
+
+export async function AuthenticateUser(request: AuthenticateUserRequest) : Promise<AuthenticateUserResponse>
+{
+  let baseUrl = BASE_URL + "UserAuthentication?code=iqcIvAsZ41saejn9tQunqf70l-WeFVqYz62IGmKCLiu2AzFuLOqw7g==";
+
+  const response = await axios.post(baseUrl,request);
+  return response.data;
+}

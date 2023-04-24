@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { selectAllCompanies } from "../Store/CompanySlice";
+import { clearCompanies, selectAllCompanies } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
 import { selectCurrentUser, selectIsLoggedIn, signOut } from "../Store/UserSlice";
 import { genericButtonStyle } from "../Styles";
@@ -26,6 +26,12 @@ export default function Header(){
   if(!isLoggedIn)
     imageLink = './Login';
 
+  function LogOut()
+  {
+    dispatch(clearCompanies());
+    dispatch(signOut());
+  }
+
   return(
   <div className="mr-[1%] ml-[1%] flex">
     <div className="flex min-h-[100%] h-auto justify-start self-start">
@@ -40,8 +46,8 @@ export default function Header(){
     <div className="flex w-[50%] justify-end self-end">
     {
       !isLoggedIn ?
-        <button className={genericButtonStyle + " my-1"} onClick={()=>navigate('/Login')}>Log In</button> :
-        <button className={genericButtonStyle + " my-1"} onClick={()=>{dispatch(signOut()); navigate('/Login')}}>Log Out</button>
+        <button className={genericButtonStyle + " my-1"} onClick={() => navigate('/Login')}>Log In</button> :
+        <button className={genericButtonStyle + " my-1"} onClick={() => LogOut()}>Log Out</button>
     }
     </div>
   </div>
