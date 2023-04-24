@@ -4,7 +4,6 @@ import { authenticateUser, getCompanyInfo, selectLogInAttempts } from "../Store/
 import { useAppDispatch, useAppSelector } from "../Store/Hooks"
 import { selectAllUsers, selectCurrentUserId, setCurrentUserId } from "../Store/UserSlice";
 import { genericButtonStyle } from "../Styles";
-import { hash } from "bcrypt"
 
 export default function LoginPage(){
   const dispatch = useAppDispatch();

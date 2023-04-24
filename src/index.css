@@ -18,41 +18,5 @@ code {
 
 .tooltipStyle:hover {
   background-color:gainsboro;
-}
-
-.iconStyle {
-  width: 24px !important;
-  height: 24px !important;
-}
-
-th { 
-	padding-right: 18px;
-  padding-left: 18px;
-  padding-top: 18px;
-  padding-bottom: 18px;
-	position: relative;
-}
-
-.sort-by:before,
-.sort-by:after {
-	border: 4px solid transparent;
-	content: "";
-	display: block;
-	height: 5;
-	right: 5px;
-	top: 50%;
-	position: absolute;
-	width: 5;
-}
-.sort-by:before {
-	border-bottom-color: #666;
-	margin-top: -15px;
-  width: 10px;
-  height: 10px;
-}
-.sort-by:after {
-	border-top-color: #666;
-	margin-top: 1px;
-  width: 10px;
-  height: 10px;
+  cursor: pointer;
 }

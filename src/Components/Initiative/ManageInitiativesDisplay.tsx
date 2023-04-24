@@ -11,7 +11,7 @@ import EditThroughputModal from "./EditThroughputModal";
 import { RadioSet } from "../RadioSet";
 import { yellowButtonStyle } from "../../Styles";
 
-export const InitiativeDisplayRadioIds = {
+export const InitiativeRadioIds = {
   all: "initDisplayShowAll",
   active: "initDisplayShowActive",
   inactive: "initDisplayShowInactive"
@@ -74,10 +74,10 @@ export default function ManageInitiativesDisplay() {
             Add Initiative
           </button>
           <button onClick={() => setUploadModalIsOpen(true)} className={yellowButtonStyle}>
-            Upload Data
+            Upload Data File
           </button>
           <button onClick={() => setEditModalIsOpen(true)} className={yellowButtonStyle}>
-            Edit Data
+            Add/Edit Data
           </button>
           <UpdateInitiativeListModal title='Add Initiative' initiativeIsOpen={AddInitiativeIsOpen} setInitiativeIsOpen={setAddInitiativeIsOpen} Submit={SubmitUpdateInitiative}/>
           <UploadThroughputModal companyList={companyList} uploadIsOpen={UploadModalIsOpen} setUploadIsOpen={setUploadModalIsOpen} Submit={SubmitUpdateThroughput}/>
@@ -86,9 +86,9 @@ export default function ManageInitiativesDisplay() {
       </div>
 
       <RadioSet options={[
-        {id: InitiativeDisplayRadioIds.all, label: "Show All", value: "all"},
-        {id: InitiativeDisplayRadioIds.active, label: "Only Active", value: "active", default: true},
-        {id: InitiativeDisplayRadioIds.inactive, label: "Only Inactive", value: "inactive"}
+        {id: InitiativeRadioIds.all, label: "Show All", value: "all"},
+        {id: InitiativeRadioIds.active, label: "Only Active", value: "active", default: true},
+        {id: InitiativeRadioIds.inactive, label: "Only Inactive", value: "inactive"}
         ]} 
         setter={setRadioValue} name="initiativesDisplay"/>
 

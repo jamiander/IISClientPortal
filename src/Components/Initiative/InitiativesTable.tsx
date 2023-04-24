@@ -8,6 +8,17 @@ import { EditInitiativeButton } from "./EditInitiativeButton";
 import { greenProbabilityStyle, inputStyle, redProbabilityStyle } from "../../Styles";
 import { GenerateProbability } from "../../Services/ProbabilitySimulationService";
 import { MakeDate } from "../DateInput";
+import { styled } from '@mui/material/styles';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell, { tableCellClasses } from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import TableSortLabel from '@mui/material/TableSortLabel';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 
 export const InitiativeTableIds = {
   totalItems: 'initiativeTableTotalItems',
@@ -33,8 +44,17 @@ interface InitCompanyDisplay extends Initiative {
   }
 
 export default function InitiativesTable(props: InitiativesProps) {
-  const tableHeaderStyle = "px-2 ";
+
+  const TableHeaderStyle =
+  styled(TableCell)(({ theme }) => ({
+    [`&.${tableCellClasses.head}`]: {
+      backgroundColor: theme.palette.common.white,
+      color: theme.palette.common.black,
+    }
+  })); 
+  
   const tableDataStyle = "outline outline-1 text-center ";
+  
   const [isCompanyHidden, setCompanyHidden] = useState(false);
   
   const [searchedComp, setSearchedComp] = useState('');
@@ -79,7 +99,6 @@ export default function InitiativesTable(props: InitiativesProps) {
     }
     setSortConfig({ key, direction });
   }
-    
 
   function getHealthIndicator(probability: number | undefined)
   {
@@ -121,29 +140,39 @@ export default function InitiativesTable(props: InitiativesProps) {
       </div>
       }
       <div className="col-span-1 py-[2%]">
-        <table className="table-auto w-full outline outline-3 bg-gray-100">
-          <thead className="outline outline-1">
+        <TableContainer component={Paper}>
+        <Table className="table-auto w-full outline outline-3 bg-gray-100">
+          <TableHead className="outline outline-1">
           <link href = "https://fonts.googleapis.com/icon?family=Material+Icons" rel = "stylesheet"/> 
-            <tr>
-              <th className={tableHeaderStyle}>Title
-              <button className="sort-by" onClick={() => requestSort('title')}>
-                </button></th>
-              <th className={tableHeaderStyle} hidden={isCompanyHidden}>Company
-              <button className="sort-by" onClick={() => requestSort('companyName')}>
-                </button></th>
-              <th className={tableHeaderStyle}>Start Date
-              <button className="sort-by" onClick={() => requestSort('startDateTime')}>
-                </button></th>
-              <th className={tableHeaderStyle}>Target Completion
-              <button className="sort-by" onClick={() => requestSort('targetDateTime')}>
-                </button></th>
-              <th className={tableHeaderStyle}>Total Items</th>
-              <th className={tableHeaderStyle}>Items Remaining</th>
-              <th className={tableHeaderStyle}>Probability</th>
-              <th className={tableHeaderStyle} hidden={!props.admin}>Edit</th>
-            </tr>
-          </thead>
-          <tbody>
+            <TableRow sx={{
+                borderBottom: "2px solid black",
+                "& th": {
+                  fontSize: "1.25rem",
+                  fontWeight: "bold",
+                  fontFamily: "Arial, Helvetica" 
+                }
+              }}>
+              <TableHeaderStyle>Title
+                <TableSortLabel onClick={() => requestSort('title')} active={true} direction={sortConfig.direction === 'descending' ? 'desc' : 'asc'}>
+                  </TableSortLabel>
+                  <Typography component='div'><Box fontWeight='fontWeightMedium'></Box></Typography>
+              </TableHeaderStyle>
+              <TableHeaderStyle hidden={isCompanyHidden}>Company
+              <TableSortLabel onClick={() => requestSort('companyName')} active={true} direction={sortConfig.direction === 'descending' ? 'desc' : 'asc'}>
+                </TableSortLabel></TableHeaderStyle>
+              <TableHeaderStyle>Start Date
+              <TableSortLabel onClick={() => requestSort('startDateTime')} active={true} direction={sortConfig.direction === 'descending' ? 'desc' : 'asc'}>
+                </TableSortLabel></TableHeaderStyle>
+              <TableHeaderStyle >Target Completion
+              <TableSortLabel onClick={() => requestSort('targetDateTime')} active={true} direction={sortConfig.direction === 'descending' ? 'desc' : 'asc'}>
+              </TableSortLabel></TableHeaderStyle>
+              <TableHeaderStyle >Total Items</TableHeaderStyle>
+              <TableHeaderStyle >Items Remaining</TableHeaderStyle>
+              <TableHeaderStyle >Probability</TableHeaderStyle>
+              <TableHeaderStyle hidden={!props.admin}>Edit</TableHeaderStyle>
+            </TableRow>
+          </TableHead>
+          <TableBody>
             {
               sortedDisplayItems.map((displayItem,index) => {
                 if (index < resultsLimit*pageNumber && index >= resultsLimit*(pageNumber-1))
@@ -156,25 +185,32 @@ export default function InitiativesTable(props: InitiativesProps) {
                   probability.value + "%";
                   return(
                     <Fragment key={index}>
-                      <tr key={index} className={healthIndicator}>
-                        <td id={InitiativeTableIds.initiativeTitle} className={tableDataStyle}>{displayItem.title}</td>
-                        <td id={InitiativeTableIds.companyName} className={tableDataStyle} hidden={isCompanyHidden}>{displayItem.companyName}</td>
-                        <td className={tableDataStyle}>{displayItem.startDate.month + "/" + displayItem.startDate.day + "/" + displayItem.startDate.year}</td>
-                        <td className={tableDataStyle}>{displayItem.targetDate.month + "/" + displayItem.targetDate.day + "/" + displayItem.targetDate.year}</td>
-                        <td id={InitiativeTableIds.totalItems} className={tableDataStyle}>{displayItem.totalItems}</td>
-                        <td id={InitiativeTableIds.remainingItems} className={tableDataStyle}>{itemsRemaining}</td>
-                        <td className={tableDataStyle + " tooltipStyle"} title={tooltipMessage}>{ probability.value === undefined ? "NA"  : probability.value +  "%" }
-                          <i className="material-icons iconStyle" style={{fontSize: '15px'}}>info_outline</i>
-                          </td>
-                        <td className={tableDataStyle + " w-1/12"} hidden={!props.admin}><EditInitiativeButton company={displayItem.company} initiative={displayItem} index={index} ValidateInitiative={props.ValidateInitiative} /></td>
-                      </tr>
+                      <TableRow key={index} className={healthIndicator} sx={{
+                        borderBottom: "1px solid black",
+                          "& td": {
+                            fontSize: "1.1rem",
+                            fontFamily: "Arial, Helvetica" 
+                          }
+                        }}>
+                        <TableCell id={InitiativeTableIds.initiativeTitle} className={tableDataStyle}>{displayItem.title}</TableCell>
+                        <TableCell id={InitiativeTableIds.companyName} className={tableDataStyle} hidden={isCompanyHidden}>{displayItem.companyName}</TableCell>
+                        <TableCell className={tableDataStyle}>{displayItem.startDate.month + "/" + displayItem.startDate.day + "/" + displayItem.startDate.year}</TableCell>
+                        <TableCell className={tableDataStyle}>{displayItem.targetDate.month + "/" + displayItem.targetDate.day + "/" + displayItem.targetDate.year}</TableCell>
+                        <TableCell id={InitiativeTableIds.totalItems} className={tableDataStyle}>{displayItem.totalItems}</TableCell>
+                        <TableCell id={InitiativeTableIds.remainingItems} className={tableDataStyle}>{itemsRemaining}</TableCell>
+                        <TableCell className={tableDataStyle + " tooltipStyle"} title={tooltipMessage}>{ probability.value === undefined ? "NA"  : probability.value +  "%" }
+                          <i className="material-icons" style={{fontSize: '15px', marginLeft: '15px', marginTop: '10px'}}>info_outline</i>
+                        </TableCell>
+                        <TableCell className={tableDataStyle + " w-1/12"} hidden={!props.admin}><EditInitiativeButton company={displayItem.company} initiative={displayItem} index={index} ValidateInitiative={props.ValidateInitiative} /></TableCell>
+                      </TableRow>
                     </Fragment>
                   )
                 }
               })
             }
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
+        </TableContainer>
         {props.admin &&
         <div className="flex p-2 items-center">
           <p>Results Per Page</p>

@@ -211,6 +211,10 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
               onClick={() => AddThroughputEntry()}>Submit</button>
           </div>
         </div>
+        <div className="outline outline-[#879794] rounded space-y-2 p-2">
+          <div>
+          <p className="text-2xl">Edit Data</p>
+          </div>
         <div className="rounded overflow-y-auto max-h-60">
           <table className="table-auto w-full rounded-md bg-white overflow-y-auto">
             <thead>
@@ -236,6 +240,7 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
                 })}
             </tbody>
           </table>
+          </div>
         </div>
         <div className="flex p-2 items-center">
           <p>Results Per Page</p>
