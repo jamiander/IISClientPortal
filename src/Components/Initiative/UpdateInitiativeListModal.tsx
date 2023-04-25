@@ -101,7 +101,8 @@ export function UpdateInitiativeListModal(props: InitiativeModalProps){
                 targetDate: initiativeTargetDate,
                 startDate: initiativeStartDate,
                 totalItems: initiativeTotalItems,
-                itemsCompletedOnDate: props.initiative?.itemsCompletedOnDate ?? []
+                itemsCompletedOnDate: props.initiative?.itemsCompletedOnDate ?? [],
+                decisions: props.initiative?.decisions ?? []
               }
               props.Submit(initiative,initiativeCompanyId)
             }}> Submit

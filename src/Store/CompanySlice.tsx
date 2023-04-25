@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import { AuthenticateUser, AuthenticateUserRequest, DateInfo, GetCompanyInfo, GetCompanyInfoRequest, ThroughputData, UpdateCompanyInfo, UpdateCompanyInfoRequest, UpdateInitiativeInfo, UpdateInitiativeInfoRequest, UpdateThroughputData, UpdateThroughputDataRequest } from "../Services/CompanyService"
+import { AuthenticateUser, AuthenticateUserRequest, DateInfo, GetCompanyInfo, GetCompanyInfoRequest, ThroughputData, DecisionData, UpdateCompanyInfo, UpdateCompanyInfoRequest, UpdateInitiativeInfo, UpdateInitiativeInfoRequest, UpdateThroughputData, UpdateThroughputDataRequest, UpdateDecisionDataRequest, UpdateDecisionData } from "../Services/CompanyService"
 import { RootState } from "./Store"
 import { addUsersToStore, setCurrentUserId, User } from "./UserSlice"
 
@@ -20,7 +20,8 @@ export interface Initiative {
     targetDate: DateInfo,
     startDate: DateInfo,
     totalItems: number,
-    itemsCompletedOnDate: ThroughputData[]
+    itemsCompletedOnDate: ThroughputData[],
+    decisions: DecisionData[]
 }
 
 const initialState: CompanyState = {
@@ -30,7 +31,7 @@ const initialState: CompanyState = {
 
 export const getCompanyInfo = createAsyncThunk(
     'companies/getCompanyInfo',
-    async (args: GetCompanyInfoRequest, {dispatch, getState}) => {
+    async (args: GetCompanyInfoRequest, {dispatch}) => {
         const response = await GetCompanyInfo(args);
         const companyInfo = response.info;
         
@@ -57,8 +58,6 @@ export const getCompanyInfo = createAsyncThunk(
             {
                 for(const initiative of info.initiatives)
                 {
-                  //let throughputs = JSON.parse(JSON.stringify(initiative.itemsCompletedOnDate));
-                  //initiative.itemsCompletedOnDate = throughputs.sort((a:ThroughputData, b:ThroughputData) => CompareDateInfos(a.date,b.date));
                   company.initiatives.push(initiative);
                 }
             }
@@ -71,7 +70,7 @@ export const getCompanyInfo = createAsyncThunk(
 
 export const updateCompanyInfo = createAsyncThunk(
     'companies/updateCompanyInfo',
-    async (args: UpdateCompanyInfoRequest, {dispatch, getState}): Promise<Company> => {
+    async (args: UpdateCompanyInfoRequest, {dispatch}): Promise<Company> => {
         const response = await UpdateCompanyInfo(args);
         
         if (response.status.toUpperCase().includes('FAILED'))
@@ -92,7 +91,7 @@ export const updateCompanyInfo = createAsyncThunk(
 
 export const updateInitiativeInfo = createAsyncThunk(
     'companies/updateInitiativesInfo',
-    async (args: UpdateInitiativeInfoRequest, {dispatch, getState}): Promise<{initiative: Initiative, companyId: number}> => {
+    async (args: UpdateInitiativeInfoRequest, {}): Promise<{initiative: Initiative, companyId: number}> => {
         const response = await UpdateInitiativeInfo(args);
 
         if(response.status.toUpperCase().includes('FAILED'))
@@ -106,13 +105,25 @@ export const updateInitiativeInfo = createAsyncThunk(
 
 export const updateThroughputData = createAsyncThunk(
   'companies/updateThroughputInfo',
-  async (args: UpdateThroughputDataRequest, {dispatch, getState}): Promise<{initiativeId: number, companyId: number, data: ThroughputData[]}> => {
+  async (args: UpdateThroughputDataRequest, {}): Promise<{initiativeId: number, companyId: number, data: ThroughputData[]}> => {
     const response = await UpdateThroughputData(args);
 
     if(response.status.toUpperCase().includes('FAILED'))
       throw Error;
 
     return {initiativeId: args.initiativeId, companyId: parseInt(args.companyId), data: args.itemsCompletedOnDate};
+  }
+)
+
+export const updateDecisionData = createAsyncThunk(
+  'companies/updateDecisionData',
+  async (args: UpdateDecisionDataRequest, {}): Promise<{initiativeId: number, companyId: number, data: DecisionData[]}> => {
+    const response = await UpdateDecisionData(args);
+
+    if(response.status.toUpperCase().includes('FAILED'))
+      throw Error;
+
+      return {initiativeId: args.initiativeId, companyId: parseInt(args.companyId), data: args.decisions};
   }
 )
 

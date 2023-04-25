@@ -27,6 +27,14 @@ export interface ThroughputData {
   itemsCompleted: number
 }
 
+export interface DecisionData {
+  id: number,
+  description: string,
+  resolution: string,
+  participants: string[],
+  date: DateInfo
+}
+
 export interface GetCompanyInfoRequest {
   companyId?: number,
   employeeId?: number
@@ -132,9 +140,28 @@ interface UpdateThroughputDataResponse {
   status: string
 }
 
+export interface UpdateDecisionDataRequest {
+  companyId: string,
+  initiativeId: number,
+  decisions: DecisionData[]
+}
+
+interface UpdateDecisionDataResponse {
+  status: string
+}
+
 export async function UpdateThroughputData(request: UpdateThroughputDataRequest) : Promise<UpdateThroughputDataResponse>
 {
   let baseUrl = BASE_URL + "AddThroughputDataDB?code=7zfSWKR3W3-8WhgYqHm-8k50IZY6TdtJ_3ylenab25OoAzFuFzdQLA==";
+
+  const response = await axios.post(baseUrl,request);
+  return response.data;
+}
+
+export async function UpdateDecisionData(request: UpdateDecisionDataRequest) : Promise<UpdateDecisionDataResponse>
+{
+  let baseUrl = BASE_URL + "AddDecisionDataDB?code=7zfSWKR3W3-8WhgYqHm-8k50IZY6TdtJ_3ylenab25OoAzFuFzdQLA==";
+// get correct url
 
   const response = await axios.post(baseUrl,request);
   return response.data;
