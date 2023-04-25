@@ -37,7 +37,10 @@ interface InitCompanyDisplay extends Initiative {
     company: Company,
     companyName: string,
     startDateTime: Date,
-    targetDateTime: Date
+    targetDateTime: Date,
+    probabilityValue: number | undefined,
+    probabilityStatus: string,
+    itemsRemaining: number
   }
 
 export default function InitiativesTable(props: InitiativesProps) {
@@ -69,13 +72,28 @@ export default function InitiativesTable(props: InitiativesProps) {
     UpdateDisplayItems();
   },[props.companyList,searchedInit,searchedComp,props.radioStatus]);
 
+  function Define(value: string | number) : string | number
+  {
+    if(value === undefined)
+    {
+      if(typeof(value) === 'string')
+        value = "";
+      else
+        value = -0.00001;
+    }
+    return value;
+  }
+
   useMemo(() => {
     let sortedItems = JSON.parse(JSON.stringify(displayItems));
     sortedItems.sort((a: any, b: any) => {
-      if (a[sortConfig.key] < b[sortConfig.key]) {
+      let aValue = Define(a[sortConfig.key]);
+      let bValue = Define(b[sortConfig.key]);
+
+      if (aValue < bValue) {
         return sortConfig.direction === 'ascending' ? -1 : 1;
       }
-      if (a[sortConfig.key] > b[sortConfig.key]) {
+      if (aValue > bValue) {
         return sortConfig.direction === 'ascending' ? 1 : -1;
       }
       return 0;
@@ -99,7 +117,11 @@ export default function InitiativesTable(props: InitiativesProps) {
     for(let company of filteredCompanies)
     {
       let initiatives = InitiativeFilter(company.initiatives.filter(e => e.title.toLowerCase().includes(searchedInit.toLowerCase())).sort((a, b) => a.title.localeCompare(b.title)),props.radioStatus);
-      initiatives.map((init) => { displayList.push({...init, companyName:company.name, company:company, startDateTime:MakeDate(init.startDate), targetDateTime:MakeDate(init.targetDate)}) });
+      initiatives.map((init) => {
+        let itemsRemaining = FindItemsRemaining(init);
+        let probability = GenerateProbability(init, itemsRemaining);
+        displayList.push({...init, companyName:company.name, company:company, startDateTime:MakeDate(init.startDate), targetDateTime:MakeDate(init.targetDate), itemsRemaining:itemsRemaining, probabilityValue:probability.value, probabilityStatus:probability.status})
+      });
     }
     setDisplayItems(displayList);
   }
@@ -141,20 +163,26 @@ export default function InitiativesTable(props: InitiativesProps) {
               }}>
               <TableHeaderStyle>Title
                 <TableSortLabel onClick={() => requestSort('title')} active={true} direction={sortConfig.direction === 'descending' ? 'desc' : 'asc'}>
-                  </TableSortLabel>
+                </TableSortLabel>
               </TableHeaderStyle>
               <TableHeaderStyle hidden={isCompanyHidden}>Company
-              <TableSortLabel onClick={() => requestSort('companyName')} active={true} direction={sortConfig.direction === 'descending' ? 'desc' : 'asc'}>
-                </TableSortLabel></TableHeaderStyle>
+                <TableSortLabel onClick={() => requestSort('companyName')} active={true} direction={sortConfig.direction === 'descending' ? 'desc' : 'asc'}>
+                </TableSortLabel>
+              </TableHeaderStyle>
               <TableHeaderStyle>Start Date
-              <TableSortLabel onClick={() => requestSort('startDateTime')} active={true} direction={sortConfig.direction === 'descending' ? 'desc' : 'asc'}>
-                </TableSortLabel></TableHeaderStyle>
+                <TableSortLabel onClick={() => requestSort('startDateTime')} active={true} direction={sortConfig.direction === 'descending' ? 'desc' : 'asc'}>
+                </TableSortLabel>
+              </TableHeaderStyle>
               <TableHeaderStyle >Target Completion
-              <TableSortLabel onClick={() => requestSort('targetDateTime')} active={true} direction={sortConfig.direction === 'descending' ? 'desc' : 'asc'}>
-              </TableSortLabel></TableHeaderStyle>
+                <TableSortLabel onClick={() => requestSort('targetDateTime')} active={true} direction={sortConfig.direction === 'descending' ? 'desc' : 'asc'}>
+                </TableSortLabel>
+              </TableHeaderStyle>
               <TableHeaderStyle >Total Items</TableHeaderStyle>
               <TableHeaderStyle >Items Remaining</TableHeaderStyle>
-              <TableHeaderStyle >Probability</TableHeaderStyle>
+              <TableHeaderStyle >Probability
+                <TableSortLabel onClick={() => requestSort('probabilityValue')} active={true} direction={sortConfig.direction === 'descending' ? 'desc' : 'asc'}>
+                </TableSortLabel>
+              </TableHeaderStyle>
               <TableHeaderStyle hidden={!props.admin}>Edit</TableHeaderStyle>
             </TableRow>
           </TableHead>
@@ -162,9 +190,8 @@ export default function InitiativesTable(props: InitiativesProps) {
             {
               sortedDisplayItems.map((displayItem,index) => {
                 if (index < resultsLimit*pageNumber && index >= resultsLimit*(pageNumber-1))
-                { 
-                  let itemsRemaining = FindItemsRemaining(displayItem);
-                  let probability = GenerateProbability(displayItem, itemsRemaining);
+                {
+                  let probability = {value:displayItem.probabilityValue, status:displayItem.probabilityStatus};
                   let healthIndicator = getHealthIndicator(probability.value);
                   let tooltipMessage = probability.value === undefined ? probability.status : 
                   probability.value === 0 ? "Data may be insufficient or may indicate a very low probability of success" : 
@@ -183,7 +210,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                         <TableCell>{displayItem.startDate.month + "/" + displayItem.startDate.day + "/" + displayItem.startDate.year}</TableCell>
                         <TableCell>{displayItem.targetDate.month + "/" + displayItem.targetDate.day + "/" + displayItem.targetDate.year}</TableCell>
                         <TableCell id={InitiativeTableIds.totalItems}>{displayItem.totalItems}</TableCell>
-                        <TableCell id={InitiativeTableIds.remainingItems}>{itemsRemaining}</TableCell>
+                        <TableCell id={InitiativeTableIds.remainingItems}>{displayItem.itemsRemaining}</TableCell>
                         <TableCell className={tooltipStyle} title={tooltipMessage}>{ probability.value === undefined ? "NA"  : probability.value +  "%" }
                           <i className="material-icons" style={{fontSize: '15px', marginLeft: '15px', marginTop: '10px'}}>info_outline</i>
                         </TableCell>

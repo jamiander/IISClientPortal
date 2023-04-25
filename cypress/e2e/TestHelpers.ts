@@ -11,7 +11,7 @@ import { EditThroughputIds } from "../../src/Components/Initiative/EditThroughpu
 //cypress can find items by id using "#id"
 export function AddHash(obj: Record<string,any> | string)
 {
-  if(typeof(obj) == 'string')
+  if(typeof(obj) === 'string')
     return "#" + obj;
 
   const newObj = JSON.parse(JSON.stringify(obj));
