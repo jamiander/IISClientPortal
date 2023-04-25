@@ -141,6 +141,7 @@ interface UpdateThroughputDataResponse {
 }
 
 export interface UpdateDecisionDataRequest {
+  isTest: boolean,
   companyId: string,
   initiativeId: number,
   decisions: DecisionData[]
@@ -160,7 +161,7 @@ export async function UpdateThroughputData(request: UpdateThroughputDataRequest)
 
 export async function UpdateDecisionData(request: UpdateDecisionDataRequest) : Promise<UpdateDecisionDataResponse>
 {
-  let baseUrl = BASE_URL + "AddDecisionDataDB?code=7zfSWKR3W3-8WhgYqHm-8k50IZY6TdtJ_3ylenab25OoAzFuFzdQLA==";
+  let baseUrl = BASE_URL + "AddDecisionDataDB?code=vg1Gfo79pB09asPWVpH-lNaXbl3KTux5RuuMy741kmqIAzFuHnJFvg==";
 // get correct url
 
   const response = await axios.post(baseUrl,request);
