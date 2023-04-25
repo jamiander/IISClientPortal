@@ -8,10 +8,12 @@ import { ValidateDate, ValidateEditThroughputData, ValidationFailedPrefix } from
 import { useOutletContext } from "react-router-dom";
 import Modal from "react-modal";
 import Table from '@mui/material/Table';
+import TableContainer from '@mui/material/TableContainer';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import { Paper } from "@mui/material";
 
 export const EditThroughputIds = {
     modal: "editThroughputModal",
@@ -43,11 +45,6 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
   const [itemsCompleted, setItemsCompleted] = useState(-1);
   const manualEntry: ThroughputData = { date:entryDate, itemsCompleted:itemsCompleted }
   const ShowToast : (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void = useOutletContext();
-  const resultsLimitOptions: number[] = [5, 10, 25];
-  const [resultsLimit, setResultsLimit] = useState(5);
-  const [pageNumber, setPageNumber] = useState(1);
-
-  const pageButtonStyle = "outline outline-[#445362] rounded bg-[#21345b] text-white transition ease-in-out hover:bg-white hover:text-[#445362] px-2";
 
   useEffect(() => {
     setSelectedCompany(undefined);
@@ -151,11 +148,6 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
     }
   }
 
-  function ResetPageNumber()
-  {
-    setPageNumber(1);
-  }
-
   return(
     <Modal
       id={EditThroughputIds.modal}
@@ -191,6 +183,7 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
           <p className="text-2xl">Edit Data</p>
           </div>
         <div className="rounded overflow-y-auto max-h-60">
+          <TableContainer component={Paper} >
           <Table className="table-auto w-full rounded-md bg-white overflow-y-auto">
             <TableHead className="outline outline-1">
               <TableRow sx={{
@@ -207,7 +200,7 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
             </TableHead>
             <TableBody>
                 {(selectedInitiativeIndex >= 0) && selectedCompany?.initiatives[selectedInitiativeIndex]?.itemsCompletedOnDate.map((throughput, key) => {
-                    if (key < resultsLimit*pageNumber && key >= resultsLimit*(pageNumber-1)) return (
+                    return (
                     <TableRow key={key} className={defaultRowStyle} sx={{
                       borderBottom: "1px solid black",
                         "& td": {
@@ -227,24 +220,7 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
                 })}
             </TableBody>
           </Table>
-          </div>
-        </div>
-        <div className="flex p-2 items-center">
-          <p>Results Per Page</p>
-          <select value={resultsLimit} onChange={(e) => { setResultsLimit(parseInt(e.target.value)); ResetPageNumber()}}
-            className='mx-2 rounded-md border border-gray-200 hover:bg-gray-100'>
-            {resultsLimitOptions.map((limit,index) => {
-              return (
-                <option key={index} value={limit}>
-                  {limit}
-                </option>
-              )
-            })}
-          </select>
-          <div className="flex pl-2">
-            <button className={pageButtonStyle} onClick={() => {setPageNumber(Math.max(pageNumber-1,1))}}>{"<"}</button>
-            <p className='px-2'>Page: {pageNumber}</p>
-            <button className={pageButtonStyle} onClick={() => {setPageNumber(pageNumber+1)}}>{">"}</button>
+          </TableContainer>
           </div>
         </div>
         <div className="h-10 w-full flex justify-between">
