@@ -165,10 +165,10 @@ export default function InitiativesTable(props: InitiativesProps) {
                 <TableSortLabel onClick={() => requestSort('title')} active={true} direction={sortConfig.direction === 'descending' ? 'desc' : 'asc'}>
                 </TableSortLabel>
               </TableHeaderStyle>
-              <TableHeaderStyle hidden={isCompanyHidden}>Company
+              {!isCompanyHidden && <TableHeaderStyle>Company
                 <TableSortLabel onClick={() => requestSort('companyName')} active={true} direction={sortConfig.direction === 'descending' ? 'desc' : 'asc'}>
                 </TableSortLabel>
-              </TableHeaderStyle>
+              </TableHeaderStyle>}
               <TableHeaderStyle>Start Date
                 <TableSortLabel onClick={() => requestSort('startDateTime')} active={true} direction={sortConfig.direction === 'descending' ? 'desc' : 'asc'}>
                 </TableSortLabel>
@@ -206,7 +206,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                           }
                         }}>
                         <TableCell id={InitiativeTableIds.initiativeTitle}>{displayItem.title}</TableCell>
-                        <TableCell id={InitiativeTableIds.companyName} hidden={isCompanyHidden}>{displayItem.companyName}</TableCell>
+                        {!isCompanyHidden && <TableCell id={InitiativeTableIds.companyName}>{displayItem.companyName}</TableCell>}
                         <TableCell>{displayItem.startDate.month + "/" + displayItem.startDate.day + "/" + displayItem.startDate.year}</TableCell>
                         <TableCell>{displayItem.targetDate.month + "/" + displayItem.targetDate.day + "/" + displayItem.targetDate.year}</TableCell>
                         <TableCell id={InitiativeTableIds.totalItems}>{displayItem.totalItems}</TableCell>
