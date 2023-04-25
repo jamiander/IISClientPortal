@@ -32,7 +32,7 @@ export const TableHeaderStyle =
     }
   })); 
 
-export const tooltipStyle = "hover:bg-gray-300 cursor-pointer";
+export const tooltipStyle = "hover:bg-slate-50 cursor-pointer";
 export const inputStyle = "outline rounded outline-1 p-2 hover:outline-2 focus:outline-2";
 export const selectStyle = "outline rounded outline-1 p-2 hover:outline-2 focus:outline-2";
 

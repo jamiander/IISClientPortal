@@ -1,12 +1,17 @@
-import Modal from "react-modal";
 import { useEffect, useState } from "react";
 import { DateInfo, ThroughputData } from "../../Services/CompanyService";
 import { Company, Initiative } from "../../Store/CompanySlice";
-import { cancelButtonStyle, genericButtonStyle, inputStyle, modalStyle, submitButtonStyle } from "../../Styles";
+import { cancelButtonStyle, defaultRowStyle, inputStyle, modalStyle, submitButtonStyle, TableHeaderStyle, tooltipStyle } from "../../Styles";
 import SelectCompanyAndInitiative from "./SelectCompanyAndInitiative";
-import { CompareDateInfos, DateInput, EqualDateInfos, MakeDateString } from "../DateInput";
+import { CompareDateInfos, DateInput, EqualDateInfos } from "../DateInput";
 import { ValidateDate, ValidateEditThroughputData, ValidationFailedPrefix } from "../../Services/Validation";
 import { useOutletContext } from "react-router-dom";
+import Modal from "react-modal";
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
 
 export const EditThroughputIds = {
     modal: "editThroughputModal",
@@ -129,36 +134,6 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
     }
   }
 
-  function EditDate(key: number, dateString: string)
-  {
-    let splitDate = dateString.split("-");
-    let newDate: DateInfo = {day: parseInt(splitDate[2]), month: parseInt(splitDate[1]), year: parseInt(splitDate[0])};
-    let validation = ValidateDate(newDate);
-    if(!validation.success)
-    {
-      ShowToast(ValidationFailedPrefix + validation.message, "Error");
-      return;
-    }
-
-    let selectedCompanyClone = JSON.parse(JSON.stringify(selectedCompany));
-    let initiative = GetInitiativeFromCompany(selectedCompanyClone,selectedInitiativeIndex);
-    if (initiative)
-    {
-      let changeThroughput = initiative.itemsCompletedOnDate[key];
-      if (changeThroughput)
-      {
-        if(initiative.itemsCompletedOnDate.findIndex((data) => EqualDateInfos(data.date,newDate)) === -1)
-        {
-          changeThroughput.date = newDate;
-          initiative.itemsCompletedOnDate.sort((a:ThroughputData, b:ThroughputData) => CompareDateInfos(a.date,b.date));
-          setSelectedCompany(selectedCompanyClone);
-        }
-        else
-          ShowToast("Failed to update date; an entry with that date already exists.", "Error")
-      }
-    }
-  }
-
   function EditItems(key: number, newItems: string)
   {
     let selectedCompanyClone = JSON.parse(JSON.stringify(selectedCompany));
@@ -216,30 +191,42 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
           <p className="text-2xl">Edit Data</p>
           </div>
         <div className="rounded overflow-y-auto max-h-60">
-          <table className="table-auto w-full rounded-md bg-white overflow-y-auto">
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Items Completed</th>
-              </tr>
-            </thead>
-            <tbody>
+          <Table className="table-auto w-full rounded-md bg-white overflow-y-auto">
+            <TableHead className="outline outline-1">
+              <TableRow sx={{
+                        borderBottom: "2px solid black",
+                          "& th": {
+                            fontSize: "1.1rem",
+                            fontWeight: "bold",
+                            fontFamily: "Arial, Helvetica" 
+                          }
+                        }}>
+                <TableHeaderStyle>Date</TableHeaderStyle>
+                <TableHeaderStyle>Items Completed</TableHeaderStyle>
+              </TableRow>
+            </TableHead>
+            <TableBody>
                 {(selectedInitiativeIndex >= 0) && selectedCompany?.initiatives[selectedInitiativeIndex]?.itemsCompletedOnDate.map((throughput, key) => {
                     if (key < resultsLimit*pageNumber && key >= resultsLimit*(pageNumber-1)) return (
-                    <tr key={key} className="odd:bg-gray-100">
-                        <td className="border border-spacing-x-0 border-y-gray-700 focus-within:bg-gray-200 hover:bg-gray-200">
-                            <input disabled className="px-2 w-full bg-inherit focus:outline-none" id={EditThroughputIds.tableDate} type="date" value={MakeDateString(throughput.date)} 
-                            onChange={(e) => EditDate(key, e.target.value)}/>                        
-                        </td>
-                        <td className="border border-spacing-x-0 border-y-gray-700 focus-within:bg-gray-200 hover:bg-gray-200">
-                            <input className="px-2 w-full bg-inherit focus:outline-none" id={EditThroughputIds.tableItemsComplete} type="number" min="0" value={throughput.itemsCompleted}
-                            onChange={(e) =>EditItems(key, e.target.value)}/>
-                        </td>
-                    </tr>
+                    <TableRow key={key} className={defaultRowStyle} sx={{
+                      borderBottom: "1px solid black",
+                        "& td": {
+                          fontSize: "1rem",
+                          fontFamily: "Arial, Helvetica" 
+                        }
+                      }}>
+                        <TableCell className="border border-spacing-x-0 border-y-gray-700" id={EditThroughputIds.tableDate}>
+                          <p className="px-2 w-full bg-inherit focus:outline-none" id={EditThroughputIds.tableDate}>{throughput.date.month + "/" + throughput.date.day + "/" + throughput.date.year}</p> 
+                        </TableCell>
+                        <TableCell className={tooltipStyle}>
+                          <input className="px-2 w-full bg-inherit focus:outline-none" id={EditThroughputIds.tableItemsComplete} type="number" min="0" value={throughput.itemsCompleted}
+                          onChange={(e) =>EditItems(key, e.target.value)}/>
+                        </TableCell>
+                    </TableRow>
                     )
                 })}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
           </div>
         </div>
         <div className="flex p-2 items-center">

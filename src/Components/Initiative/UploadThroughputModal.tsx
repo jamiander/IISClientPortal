@@ -1,11 +1,10 @@
-import { Company, Initiative, selectAllCompanies } from "../../Store/CompanySlice";
+import { Company } from "../../Store/CompanySlice";
 import  Modal  from 'react-modal';
-import { cancelButtonStyle, inputStyle, modalStyle, submitButtonStyle } from "../../Styles";
-import { SetStateAction, useEffect, useRef, useState } from "react";
+import { cancelButtonStyle, modalStyle, submitButtonStyle } from "../../Styles";
+import { useEffect, useRef, useState } from "react";
 import { DateInfo, ThroughputData } from "../../Services/CompanyService";
 import { useOutletContext } from "react-router-dom";
 import { ValidationFailedPrefix } from "../../Services/Validation";
-import { DateInput } from "../DateInput";
 import SelectCompanyAndInitiative from "./SelectCompanyAndInitiative";
 
 export const UploadThroughputIds = {
