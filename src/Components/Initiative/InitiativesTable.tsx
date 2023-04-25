@@ -65,6 +65,10 @@ export default function InitiativesTable(props: InitiativesProps) {
     }
   }, [currentUser.id]);
 
+  useEffect(() => {
+    UpdateDisplayItems();
+  },[props.companyList,searchedInit,searchedComp,props.radioStatus]);
+
   useMemo(() => {
     let sortedItems = JSON.parse(JSON.stringify(displayItems));
     sortedItems.sort((a: any, b: any) => {
@@ -87,20 +91,6 @@ export default function InitiativesTable(props: InitiativesProps) {
     setSortConfig({ key, direction });
   }
 
-  function getHealthIndicator(probability: number | undefined)
-  {
-    if (probability === undefined) return defaultRowStyle;
-    if (probability < 50) return redProbabilityStyle;
-    else if (probability > 90) return greenProbabilityStyle;
-  }
-
-  function ResetPageNumber()
-  {
-    setPageNumber(1);
-  }
-
-  const pageButtonStyle = "outline outline-[#445362] rounded bg-[#21345b] text-white transition ease-in-out hover:bg-white hover:text-[#445362] px-2";
-
   function UpdateDisplayItems()
   {
     const displayList: InitCompanyDisplay[] = []
@@ -114,9 +104,19 @@ export default function InitiativesTable(props: InitiativesProps) {
     setDisplayItems(displayList);
   }
 
-  useEffect(() => {
-    UpdateDisplayItems();
-  },[props.companyList,searchedInit,searchedComp,props.radioStatus])
+  function getHealthIndicator(probability: number | undefined)
+  {
+    if (probability === undefined) return defaultRowStyle;
+    if (probability < 50) return redProbabilityStyle;
+    else if (probability > 90) return greenProbabilityStyle;
+  }
+
+  function ResetPageNumber()
+  {
+    setPageNumber(1);
+  }
+
+  const pageButtonStyle = "outline outline-[#445362] rounded bg-[#21345b] text-white transition ease-in-out hover:bg-white hover:text-[#445362] px-2";
 
   return (
     <div className="grid grid-cols-1 w-full h-auto">

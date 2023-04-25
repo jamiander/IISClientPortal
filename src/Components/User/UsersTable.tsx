@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CompanyFilter } from "../../Services/Filters";
 import { Company } from "../../Store/CompanySlice";
 import { User } from "../../Store/UserSlice";
@@ -10,7 +10,11 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { defaultRowStyle, TableHeaderStyle } from "../../Styles";
+import { defaultRowStyle, inputStyle, TableHeaderStyle } from "../../Styles";
+
+export const UserTableIds = {
+  companyNameFilter: "userTableFilterCompanyName"
+}
 
 interface UsersTableProps {
   userList: User[],
@@ -20,11 +24,14 @@ interface UsersTableProps {
   handleEditUser:(user:User,company?:Company) => void,
   handleCloseEditUser:() => void
 }
-interface ClientTableProps{
-  clients:User[]
-}
 
 export default function UsersTable(props: UsersTableProps){
+  const [filteredCompanies, setFilteredCompanies] = useState<Company[]>([]);
+  const [searchedCompany, setSearchedCompany] = useState<string>("");
+
+  useEffect(() => {
+    setFilteredCompanies(props.companyList.filter(e => e.name.toLowerCase().includes(searchedCompany.toLowerCase())));
+  },[searchedCompany])
 
   function PasswordDisplay(user:User){
     const [passwordShown, setPasswordShown] = useState(false);
@@ -41,53 +48,58 @@ export default function UsersTable(props: UsersTableProps){
     )
   }
 
-  function ClientTable(cprops:ClientTableProps){
-    return(
-      <TableContainer component={Paper}>
-      <Table className="table-auto w-[100%] outline outline-3 my-3 bg-gray-100">
-      <TableHead className="outline outline-1">
-        <TableRow sx={{
-                borderBottom: "2px solid black",
-                "& th": {
-                  fontSize: "1.25rem",
-                  fontWeight: "bold",
-                  fontFamily: "Arial, Helvetica" 
-                }
-              }}>
-          <TableHeaderStyle>Company</TableHeaderStyle>
-          <TableHeaderStyle>Email</TableHeaderStyle>
-          <TableHeaderStyle>Password</TableHeaderStyle>
-          <TableHeaderStyle>Edit</TableHeaderStyle>
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        {cprops.clients.map((user, index)=>{
-          const company = props.companyList.find(company => company.id === user.companyId);
-          return(
-            <TableRow key={index} className={defaultRowStyle} sx={{
-              borderBottom: "1px solid black",
-                "& td": {
-                  fontSize: "1.1rem",
-                  fontFamily: "Arial, Helvetica" 
-                }
-              }}>
-              <TableCell>{company?.name}</TableCell>
-              <TableCell>{user.email}</TableCell>
-              <TableCell>
-                <PasswordDisplay {...(user)}/>
-              </TableCell>
-              <TableCell>
-                <EditUserButton index={index} user={user} company={company} SubmitUpdateUser={props.SubmitUpdateUser} handleEditUser={props.handleEditUser} handleCloseEditUser={props.handleCloseEditUser}/>
-              </TableCell>
-            </TableRow>
-          )
-        })}
-        </TableBody>
-      </Table>
-      </TableContainer>
-    )
-  }
   return(
-    <ClientTable clients={CompanyFilter(props.userList,props.radioStatus)}/>
+    <div className="grid grid-cols-1 w-full h-auto">
+      <div className="col-span-1 h-[4vh] px-2 pb-[2%] space-x-2">
+        <input id={UserTableIds.companyNameFilter} className={inputStyle} type={'text'} placeholder="Filter by Company" onChange={(e) => setSearchedCompany(e.target.value)}/>
+      </div>
+      <div className="col-span-1 py-[2%]">
+        <TableContainer component={Paper}>
+          <Table className="table-auto w-full outline outline-3 bg-gray-100">
+          <TableHead className="outline outline-1">
+            <TableRow sx={{
+                    borderBottom: "2px solid black",
+                    "& th": {
+                      fontSize: "1.25rem",
+                      fontWeight: "bold",
+                      fontFamily: "Arial, Helvetica" 
+                    }
+                  }}>
+              <TableHeaderStyle>Company</TableHeaderStyle>
+              <TableHeaderStyle>Email</TableHeaderStyle>
+              <TableHeaderStyle>Password</TableHeaderStyle>
+              <TableHeaderStyle>Edit</TableHeaderStyle>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {CompanyFilter(props.userList,props.radioStatus).map((user, index)=>{
+              const company = filteredCompanies.find(company => company.id === user.companyId);
+              if(company)
+              {
+                return(
+                  <TableRow key={index} className={defaultRowStyle} sx={{
+                    borderBottom: "1px solid black",
+                      "& td": {
+                        fontSize: "1.1rem",
+                        fontFamily: "Arial, Helvetica" 
+                      }
+                    }}>
+                    <TableCell>{company?.name}</TableCell>
+                    <TableCell>{user.email}</TableCell>
+                    <TableCell>
+                      <PasswordDisplay {...(user)}/>
+                    </TableCell>
+                    <TableCell>
+                      <EditUserButton index={index} user={user} company={company} SubmitUpdateUser={props.SubmitUpdateUser} handleEditUser={props.handleEditUser} handleCloseEditUser={props.handleCloseEditUser}/>
+                    </TableCell>
+                  </TableRow>
+                )
+              }
+            })}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </div>
+    </div>
   )
 }
