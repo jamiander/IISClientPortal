@@ -5,7 +5,7 @@ import { Company, Initiative } from "../../Store/CompanySlice";
 import { useAppSelector } from "../../Store/Hooks";
 import { selectCurrentUser, User } from "../../Store/UserSlice";
 import { EditInitiativeButton } from "./EditInitiativeButton";
-import { defaultRowStyle, greenProbabilityStyle, inputStyle, redProbabilityStyle, TableHeaderStyle, tooltipStyle } from "../../Styles";
+import { defaultRowStyle, genericButtonStyle, greenProbabilityStyle, inputStyle, redProbabilityStyle, TableHeaderStyle, tooltipStyle } from "../../Styles";
 import { GenerateProbability } from "../../Services/ProbabilitySimulationService";
 import { MakeDate } from "../DateInput";
 import Table from '@mui/material/Table';
@@ -16,6 +16,8 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import TableSortLabel from '@mui/material/TableSortLabel';
+import DecisionDataPage from "./DecisionDataModal";
+import DecisionDataModal from "./DecisionDataModal";
 
 export const InitiativeTableIds = {
   totalItems: 'initiativeTableTotalItems',
@@ -53,6 +55,7 @@ export default function InitiativesTable(props: InitiativesProps) {
 
   const [sortedDisplayItems, setSortedDisplayItems] = useState<InitCompanyDisplay[]>([]);
   const [displayItems, setDisplayItems] = useState<InitCompanyDisplay[]>([])
+  const [decisionPageOpen, setDecisionDataPageOpen] = useState(false);
 
   const resultsLimitOptions: number[] = [5, 10, 25];
   const [pageNumber, setPageNumber] = useState(1);
@@ -173,16 +176,17 @@ export default function InitiativesTable(props: InitiativesProps) {
                 <TableSortLabel onClick={() => requestSort('startDateTime')} active={true} direction={sortConfig.direction === 'descending' ? 'desc' : 'asc'}>
                 </TableSortLabel>
               </TableHeaderStyle>
-              <TableHeaderStyle >Target Completion
+              <TableHeaderStyle>Target Completion
                 <TableSortLabel onClick={() => requestSort('targetDateTime')} active={true} direction={sortConfig.direction === 'descending' ? 'desc' : 'asc'}>
                 </TableSortLabel>
               </TableHeaderStyle>
-              <TableHeaderStyle >Total Items</TableHeaderStyle>
-              <TableHeaderStyle >Items Remaining</TableHeaderStyle>
-              <TableHeaderStyle >Probability
+              <TableHeaderStyle>Total Items</TableHeaderStyle>
+              <TableHeaderStyle>Items Remaining</TableHeaderStyle>
+              <TableHeaderStyle>Probability
                 <TableSortLabel onClick={() => requestSort('probabilityValue')} active={true} direction={sortConfig.direction === 'descending' ? 'desc' : 'asc'}>
                 </TableSortLabel>
               </TableHeaderStyle>
+              <TableHeaderStyle>View Decisions</TableHeaderStyle>
               <TableHeaderStyle hidden={!props.admin}>Edit</TableHeaderStyle>
             </TableRow>
           </TableHead>
@@ -214,6 +218,10 @@ export default function InitiativesTable(props: InitiativesProps) {
                         <TableCell className={tooltipStyle} title={tooltipMessage}>{ probability.value === undefined ? "NA"  : probability.value +  "%" }
                           <i className="material-icons" style={{fontSize: '15px', marginLeft: '15px', marginTop: '10px'}}>info_outline</i>
                         </TableCell>
+                        <TableCell className="w-1/12">
+                          <button className={genericButtonStyle + " h-8 w-full mx-2"} onClick={() => setDecisionDataPageOpen(true)}>View</button>
+                          <DecisionDataModal company={displayItem.company} initiative={displayItem} index={index} setDecisionPageIsOpen={setDecisionDataPageOpen} isOpen={decisionPageOpen}/>
+                        </TableCell>
                         <TableCell className="w-1/12" hidden={!props.admin}><EditInitiativeButton company={displayItem.company} initiative={displayItem} index={index} ValidateInitiative={props.ValidateInitiative} /></TableCell>
                       </TableRow>
                     </Fragment>
@@ -238,7 +246,7 @@ export default function InitiativesTable(props: InitiativesProps) {
             })}
           </select>
           <div className="flex pl-2">
-            <button className={pageButtonStyle} onClick={() => {setPageNumber(Math.max(pageNumber-1,1))}}>{"<"}</button>
+          <button className={pageButtonStyle} onClick={() => {setPageNumber(Math.max(pageNumber-1,1))}}>{"<"}</button>
             <p className='px-2'>Page: {pageNumber}</p>
             <button className={pageButtonStyle} onClick={() => {setPageNumber(pageNumber+1)}}>{">"}</button>
           </div>
