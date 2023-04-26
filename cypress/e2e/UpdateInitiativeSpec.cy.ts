@@ -3,7 +3,6 @@ import { TestConstants } from "./TestHelpers";
 describe('update initiative spec', () => {
 
   const init = {
-    //companyId: 0,
     companyName: 'Integrity Inspired Solutions',
     title: "Test Initiative 1234",
     startDate: "2023-01-01",

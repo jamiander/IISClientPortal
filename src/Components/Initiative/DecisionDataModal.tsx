@@ -77,6 +77,9 @@ export default function DecisionDataModal(props: DecisionDataProps) {
                   </Item>
                 </Grid>
               )})}
+              {
+                props.initiative.decisions.length === 0 && "No decisions to display."
+              }
             </Grid>
           </div>
           <div className="h-10 w-full flex justify-between">
