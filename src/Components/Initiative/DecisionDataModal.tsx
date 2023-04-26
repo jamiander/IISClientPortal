@@ -8,6 +8,8 @@ import Paper from "@mui/material/Paper";
 import { styled } from '@mui/material/styles';
 import CssBaseline from "@mui/material/CssBaseline";
 import { Fragment } from "react";
+import { cancelButtonStyle, submitButtonStyle } from "../../Styles";
+import { DecisionData } from "../../Services/CompanyService";
 
 export const DecisionModalIds = {
   addButton: "decisionModalAddButton",
@@ -20,6 +22,7 @@ interface DecisionDataProps {
     initiative: Initiative 
     isOpen: boolean
     setDecisionModalIsOpen: (value: boolean) => void
+    Submit: (decisions: DecisionData[]) => void
 }
 
 export default function DecisionDataModal(props: DecisionDataProps) {
@@ -57,21 +60,25 @@ export default function DecisionDataModal(props: DecisionDataProps) {
           <div style={{margin: '5%'}}>
             <Grid container spacing={4}>
               {
-              props.initiative.decisions.map((displayItem) => {
+              props.initiative.decisions.map((displayItem,index) => {
               return(
-                  <Grid item md={4}>
-                    <Item>
-                      <Typography variant="h5">{displayItem.description}</Typography>
-                      <Typography variant="body1">{displayItem.resolution}</Typography>
-                      <Typography variant="body1">{displayItem.participants}</Typography>
-                      <Typography variant="body2">{displayItem.date.month + "/" + displayItem.date.day + "/" + displayItem.date.year}</Typography>
-                      <CardActions>
-                        <Button>share</Button>
-                      </CardActions>
-                    </Item>
-                  </Grid>
+                <Grid item md={4} key={index}>
+                  <Item>
+                    <Typography variant="h5">{displayItem.description}</Typography>
+                    <Typography variant="body1">{displayItem.resolution}</Typography>
+                    <Typography variant="body1">{displayItem.participants}</Typography>
+                    <Typography variant="body2">{displayItem.date.month + "/" + displayItem.date.day + "/" + displayItem.date.year}</Typography>
+                    <CardActions>
+                      <Button>share</Button>
+                    </CardActions>
+                  </Item>
+                </Grid>
               )})}
             </Grid>
+          </div>
+          <div className="h-10 w-full flex justify-between">
+            <button className={submitButtonStyle} onClick={() => props.Submit(props.initiative.decisions)}>Save</button>
+            <button className={cancelButtonStyle} onClick={() => props.setDecisionModalIsOpen(false)}>Close</button>
           </div>
         </Dialog>
     </Fragment>
