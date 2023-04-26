@@ -8,9 +8,10 @@ import Paper from "@mui/material/Paper";
 import { styled } from '@mui/material/styles';
 import CssBaseline from "@mui/material/CssBaseline";
 import { Fragment, useEffect, useState } from "react";
-import { cancelButtonStyle, submitButtonStyle, TextField } from "../../Styles";
+import { cancelButtonStyle, submitButtonStyle } from "../../Styles";
 import { DecisionData } from "../../Services/CompanyService";
 import React from "react";
+import TextField from "@mui/material/TextField";
 
 export const DecisionModalIds = {
   modal: "decisionModal",
@@ -84,12 +85,11 @@ export default function DecisionDataModal(props: DecisionDataProps) {
                       <TextField
                         autoFocus={false}
                         defaultValue={displayItem.description}
-                        onChange={event => EditDescription(displayItem.id, event.target.value)}
+                        onChange={(event: { target: { value: string; }; }) => EditDescription(displayItem.id, event.target.value)}
                        />
                       <Typography variant="body1">{displayItem.resolution}</Typography>
                       <Typography variant="body1">{displayItem.participants}</Typography>
                       <Typography variant="body2">{displayItem.date.month + "/" + displayItem.date.day + "/" + displayItem.date.year}</Typography>
-                    </Item>
                     <CardActions>
                       <Button>share</Button>
                     </CardActions>
