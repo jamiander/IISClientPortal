@@ -8,13 +8,20 @@ import Dialog from "@mui/material/Dialog";
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
 import { Company, Initiative, selectAllCompanies } from "../../Store/CompanySlice";
-import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
+//import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import { styled } from '@mui/material/styles';
 import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
 import { Fragment } from "react";
+import { Theme, createStyles, makeStyles } from "@mui/material";
+import { DecisionData } from "../../Services/CompanyService";
+
+export const DecisionModalIds = {
+  addButton: "decisionModalAddButton",
+  closeButton: "decisionModalCloseButton"
+}
 
 interface DecisionDataProps {
     title: string
@@ -32,19 +39,20 @@ export default function DecisionDataModal(props: DecisionDataProps) {
     textAlign: 'center',
     color: 'black',
   }));
+  function Submit(decisions: DecisionData[])
+  {
+
+  }
    
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
+  const styles = {
     root: {
       display: "flex",
       flexWrap: "wrap",
       "& > *": {
-        margin: theme.spacing(3),
+        
       },
     },
-  })
-);
-  const classes = useStyles();
+  };
 
   return (
     <Fragment>

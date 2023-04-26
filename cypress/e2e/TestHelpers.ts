@@ -7,6 +7,7 @@ import { ValidationFailedPrefix } from "../../src/Services/Validation";
 import { UploadThroughputIds } from "../../src/Components/Initiative/UploadThroughputModal";
 import { InitiativeTableIds } from "../../src/Components/Initiative/InitiativesTable";
 import { EditThroughputIds } from "../../src/Components/Initiative/EditThroughputModal";
+import { DecisionModalIds } from "../../src/Components/Initiative/DecisionDataModal";
 
 //cypress can find items by id using "#id"
 export function AddHash(obj: Record<string,any> | string)
@@ -32,5 +33,6 @@ export const TestConstants = {
   userDisplayRadioIds: AddHash(UserDisplayRadioIds),
   uploadThroughputIds: AddHash(UploadThroughputIds),
   editThroughputIds: AddHash(EditThroughputIds),
-  initiativeTableIds: AddHash(InitiativeTableIds)
+  initiativeTableIds: AddHash(InitiativeTableIds),
+  decisionModalIds: AddHash(DecisionModalIds)
 }

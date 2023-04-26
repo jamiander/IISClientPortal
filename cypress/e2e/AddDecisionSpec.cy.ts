@@ -1,6 +1,7 @@
 import { TestConstants } from "./TestHelpers";
 
 const consts = TestConstants;
+const modalIds = consts.decisionModalIds;
 const decision = {
   names: [ "Johnny Test" ],
   description: "Test Decision",
@@ -18,7 +19,7 @@ describe("add decision spec", () => {
 
     cy.get("#viewDecisionButton0").click();
 
-    //click on some add button
+    cy.get(modalIds.addButton);
     //fill in all fields with decision constant
   })
 
