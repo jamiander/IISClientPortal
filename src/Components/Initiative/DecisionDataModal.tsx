@@ -10,13 +10,11 @@ import Typography from "@mui/material/Typography";
 import { Company, Initiative, selectAllCompanies } from "../../Store/CompanySlice";
 import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
 import Grid from "@mui/material/Grid";
-import { BoxStyle } from "../../Styles";
-import Input from "@mui/material/Input";
 
 interface DecisionDataProps {
+    title: string
     company: Company
     initiative: Initiative 
-    index: number
     isOpen: boolean
     setDecisionPageIsOpen: (value: boolean) => void
 }
@@ -35,40 +33,45 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   })
 );
-
-
   const classes = useStyles();
+
   return (
-      <Modal
+      <Dialog
       open={props.isOpen}
       onClose={()=>props.setDecisionPageIsOpen(false)}
       >
+        <div>
+          <h2>{props.company.name}</h2>
+          <h3>{props.initiative.title}</h3>
+        </div>
           <div style={{margin: '25%'}}>
-            <Box className={classes.root}>
-              {
-            props.initiative.decisions.map((displayItem,index) => {
+            {
+              props.initiative.decisions.map((displayItem) => {
               return(
+                <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+                  <Grid xs={6}>
               <Card sx={{ maxWidth: 600 }} variant='outlined'>
                 <CardContent>
-                  <Typography variant="h3">{displayItem.description}</Typography>
+                  <Typography variant="h5">{displayItem.description}</Typography>
                 </CardContent>
                 <CardContent>
-                  <Typography variant="h3">{displayItem.resolution}</Typography>
+                  <Typography variant="body1">{displayItem.resolution}</Typography>
                 </CardContent>
                 <CardContent>
-                  <Typography variant="h3">{displayItem.participants}</Typography>
+                  <Typography variant="body1">{displayItem.participants}</Typography>
                 </CardContent>
                 <CardContent>
-                  <Typography variant="h3">{displayItem.date.month + "/" + displayItem.date.day + "/" + displayItem.date.year}</Typography>
+                  <Typography variant="body2">{displayItem.date.month + "/" + displayItem.date.day + "/" + displayItem.date.year}</Typography>
                 </CardContent>
                 <CardActions>
                   <Button>share</Button>
                 </CardActions>
               </Card>
+          </Grid>
+          </Grid>
             )})}
-            </Box>
       </div>
-    </Modal>
+    </Dialog>
   );
 
 
