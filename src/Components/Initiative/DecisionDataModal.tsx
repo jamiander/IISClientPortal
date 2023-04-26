@@ -57,22 +57,22 @@ export default function DecisionDataModal(props: DecisionDataProps) {
   return (
     <Fragment>
     <CssBaseline />
-    <Container>
-      <Box>
         <Dialog
         open={props.isOpen}
         onClose={()=>props.setDecisionModalIsOpen(false)}
+        fullWidth
+        maxWidth={false}
         >
           <div>
             <h2>{props.company.name}</h2>
             <h3>{props.initiative.title}</h3>
           </div>
-          <div style={{margin: '25%'}}>
-            {
+          <div style={{margin: '5%'}}>
+            <Grid container spacing={4}>
+              {
               props.initiative.decisions.map((displayItem) => {
               return(
-                <Grid container spacing={4}>
-                  <Grid item xs={12}>
+                  <Grid item md={4}>
                     <Item>
                       <Typography variant="h5">{displayItem.description}</Typography>
                     </Item>
@@ -89,31 +89,10 @@ export default function DecisionDataModal(props: DecisionDataProps) {
                       <Button>share</Button>
                     </CardActions>
                   </Grid>
-                </Grid>
-            )})}
+              )})}
+            </Grid>
           </div>
         </Dialog>
-      </Box>
-    </Container>
     </Fragment>
   );
-
-
-        {/* <Card sx={{ maxWidth: 1000 }} variant='outlined'>
-          <CardContent>
-            <Typography gutterBottom variant="h5" component="div">
-              Dragon
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Large green monster that breathes fire
-            </Typography>
-          </CardContent>
-          <CardActions>
-            <Button size="small">Share</Button>
-            <Button size="small">Learn More</Button>
-          </CardActions>
-        </Card>
-        </div>
-        </Modal>
-      ); */}
 }
