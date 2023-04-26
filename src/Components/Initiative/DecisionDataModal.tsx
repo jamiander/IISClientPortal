@@ -11,6 +11,7 @@ import { Company, Initiative, selectAllCompanies } from "../../Store/CompanySlic
 //import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
 import Grid from "@mui/material/Grid";
 import { Theme, createStyles, makeStyles } from "@mui/material";
+import { DecisionData } from "../../Services/CompanyService";
 
 export const DecisionModalIds = {
   addButton: "decisionModalAddButton",
@@ -28,6 +29,10 @@ interface DecisionDataProps {
 
 export default function DecisionDataPage(props: DecisionDataProps) {
   
+  function Submit(decisions: DecisionData[])
+  {
+
+  }
     
   const styles = {
     root: {
@@ -38,7 +43,6 @@ export default function DecisionDataPage(props: DecisionDataProps) {
       },
     },
   };
-
 
   return (
       <Dialog

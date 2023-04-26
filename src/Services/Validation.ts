@@ -160,7 +160,7 @@ export function ValidateDecisions(decisions: DecisionData[]) : Validation
       return {success: false, message: "All dates must be valid."};
     if (!decision.description || !decision.resolution) 
       return {success: false, message: "Decisions cannot have any empty fields."};
-    if (decision.participants.length === 0)
+    if (decision.participants.length === 0 || decision.participants.every(p => p === ""))
       return {success: false, message: "Decisions must have at least one participant."}
   }
   return { success: true, message: "Successfully validated decisions; all good!" }
