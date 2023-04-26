@@ -1,5 +1,6 @@
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
-import { styled } from '@mui/material/styles';
+import { makeStyles, styled } from '@mui/material/styles';
+import CardContent from '@mui/material/CardContent';
 
 export const modalStyle = {
   content: {
@@ -30,6 +31,16 @@ export const TableHeaderStyle =
       color: theme.palette.common.black,
     }
   })); 
+
+  export const BoxStyle = 
+  styled(CardContent)(({theme}) => ({
+      flexGrow: 1,
+      padding: theme.spacing(2),
+      display: 'flex',
+      backgroundColor: theme.palette.common.white,
+      color: theme.palette.common.black
+  }));
+
 
 export const tooltipStyle = "hover:bg-slate-50 cursor-pointer";
 export const inputStyle = "outline rounded outline-1 p-2 hover:outline-2 focus:outline-2";
