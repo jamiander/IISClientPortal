@@ -1,7 +1,7 @@
 import { MakeDate } from "../Components/DateInput";
 import { Company, Initiative } from "../Store/CompanySlice";
 import { User } from "../Store/UserSlice";
-import { DateInfo, ThroughputData } from "./CompanyService";
+import { DateInfo, DecisionData, ThroughputData } from "./CompanyService";
 
 export const ValidationFailedPrefix = 'Validation Failed: ';
 type Validation = {message: string, success: boolean}
@@ -150,4 +150,18 @@ export function ValidateThroughputDataUpdate(companyList: Company[], companyId: 
     }
   else
     return dataValidation;
+}
+
+export function ValidateDecisions(decisions: DecisionData[]) : Validation
+{
+  for(const decision of decisions)
+  {
+    if (!ValidateDate(decision.date).success) 
+      return {success: false, message: "All dates must be valid."};
+    if (!decision.description || !decision.resolution) 
+      return {success: false, message: "Decisions cannot have any empty fields."};
+    if (decision.participants.length === 0)
+      return {success: false, message: "Decisions must have at least one participant."}
+  }
+  return { success: true, message: "Successfully validated decisions; all good!" }
 }
