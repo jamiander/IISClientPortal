@@ -32,16 +32,6 @@ export const TableHeaderStyle =
     }
   })); 
 
-  export const BoxStyle = 
-  styled(CardContent)(({theme}) => ({
-      flexGrow: 1,
-      padding: theme.spacing(2),
-      display: 'flex',
-      backgroundColor: theme.palette.common.white,
-      color: theme.palette.common.black
-  }));
-
-
 export const tooltipStyle = "hover:bg-slate-50 cursor-pointer";
 export const inputStyle = "outline rounded outline-1 p-2 hover:outline-2 focus:outline-2";
 export const selectStyle = "outline rounded outline-1 p-2 hover:outline-2 focus:outline-2";

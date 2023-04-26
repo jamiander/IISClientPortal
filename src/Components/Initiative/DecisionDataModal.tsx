@@ -10,18 +10,29 @@ import Typography from "@mui/material/Typography";
 import { Company, Initiative, selectAllCompanies } from "../../Store/CompanySlice";
 import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
 import Grid from "@mui/material/Grid";
+import Paper from "@mui/material/Paper";
+import { styled } from '@mui/material/styles';
+import Container from "@mui/material/Container";
+import CssBaseline from "@mui/material/CssBaseline";
+import { Fragment } from "react";
 
 interface DecisionDataProps {
     title: string
     company: Company
     initiative: Initiative 
     isOpen: boolean
-    setDecisionPageIsOpen: (value: boolean) => void
+    setDecisionModalIsOpen: (value: boolean) => void
 }
 
-export default function DecisionDataPage(props: DecisionDataProps) {
+export default function DecisionDataModal(props: DecisionDataProps) {
   
-    
+  const Item = styled(Paper)(() => ({
+    backgroundColor: '#98d6a9',
+    padding: 8,
+    textAlign: 'center',
+    color: 'black',
+  }));
+   
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -36,42 +47,47 @@ const useStyles = makeStyles((theme: Theme) =>
   const classes = useStyles();
 
   return (
-      <Dialog
-      open={props.isOpen}
-      onClose={()=>props.setDecisionPageIsOpen(false)}
-      >
-        <div>
-          <h2>{props.company.name}</h2>
-          <h3>{props.initiative.title}</h3>
-        </div>
+    <Fragment>
+    <CssBaseline />
+    <Container>
+      <Box>
+        <Dialog
+        open={props.isOpen}
+        onClose={()=>props.setDecisionModalIsOpen(false)}
+        >
+          <div>
+            <h2>{props.company.name}</h2>
+            <h3>{props.initiative.title}</h3>
+          </div>
           <div style={{margin: '25%'}}>
             {
               props.initiative.decisions.map((displayItem) => {
               return(
-                <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-                  <Grid xs={6}>
-              <Card sx={{ maxWidth: 600 }} variant='outlined'>
-                <CardContent>
-                  <Typography variant="h5">{displayItem.description}</Typography>
-                </CardContent>
-                <CardContent>
-                  <Typography variant="body1">{displayItem.resolution}</Typography>
-                </CardContent>
-                <CardContent>
-                  <Typography variant="body1">{displayItem.participants}</Typography>
-                </CardContent>
-                <CardContent>
-                  <Typography variant="body2">{displayItem.date.month + "/" + displayItem.date.day + "/" + displayItem.date.year}</Typography>
-                </CardContent>
-                <CardActions>
-                  <Button>share</Button>
-                </CardActions>
-              </Card>
-          </Grid>
-          </Grid>
+                <Grid container spacing={4}>
+                  <Grid item xs={12}>
+                    <Item>
+                      <Typography variant="h5">{displayItem.description}</Typography>
+                    </Item>
+                    <Item>
+                      <Typography variant="body1">{displayItem.resolution}</Typography>
+                    </Item>
+                    <Item>
+                      <Typography variant="body1">{displayItem.participants}</Typography>
+                    </Item>
+                    <Item>
+                      <Typography variant="body2">{displayItem.date.month + "/" + displayItem.date.day + "/" + displayItem.date.year}</Typography>
+                    </Item>
+                    <CardActions>
+                      <Button>share</Button>
+                    </CardActions>
+                  </Grid>
+                </Grid>
             )})}
-      </div>
-    </Dialog>
+          </div>
+        </Dialog>
+      </Box>
+    </Container>
+    </Fragment>
   );
 
 

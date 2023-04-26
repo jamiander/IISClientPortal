@@ -8,7 +8,7 @@ interface ViewDecisionDataProps {
     initiative: Initiative 
     index: number
     isOpen: boolean
-    setDecisionPageIsOpen: (value: boolean) => void
+    setDecisionModalIsOpen: (value: boolean) => void
 }
 
 export function ViewDecisionDataButton(props: ViewDecisionDataProps){
@@ -30,7 +30,7 @@ export function ViewDecisionDataButton(props: ViewDecisionDataProps){
             >
                 View
             </button>
-            <DecisionDataModal title='View Decision Data' isOpen={ViewDecisionDataIsOpen} setDecisionPageIsOpen={setViewDecisionDataIsOpen} initiative={selectedInitiative} company={selectedCompany} />
+            <DecisionDataModal title='View Decision Data' isOpen={ViewDecisionDataIsOpen} setDecisionModalIsOpen={setViewDecisionDataIsOpen} initiative={selectedInitiative} company={selectedCompany} />
           </div>
         );
     }
