@@ -1,6 +1,12 @@
 import { TestConstants } from "./TestHelpers";
 
 const consts = TestConstants;
+const decision = {
+  names: [ "Johnny Test" ],
+  description: "Test Decision",
+  resolution: "Decided",
+  date: "2023-04-01"
+}
 
 describe("add decision spec", () => {
   beforeEach(() => {
@@ -9,14 +15,30 @@ describe("add decision spec", () => {
     cy.get('#password').clear().type('password');
     cy.wait(500);
     cy.get('button').contains('Submit').click();
+
+    cy.get("#viewDecisionButton0").click();
+
+    //click on some add button
+    //fill in all fields with decision constant
   })
 
   specify("add decision to initiative", () => {
-
+    //hit the submit button
   })
 
   specify("can't add decision with empty fields", () => {
+    //empty name
+    
+    //empty desc
 
+    //empty resolution
+
+    //empty date
+  })
+
+  specify("must be able to cancel adding", () => {
+    //hit cancel
+    //make sure it didn't get added
   })
 
 })
