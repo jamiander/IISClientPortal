@@ -14,9 +14,7 @@ interface EditInitiativeButtonProps {
 }
 
 export function EditInitiativeButton(props: EditInitiativeButtonProps){
-  //const fakeCompany : Company = {id: -1, name: "N/A", initiatives: []}
-  //const fakeInitiative : Initiative = {id: -1, title: "N/A", totalItems: 0, targetDate: {month: 0, day: 0, year: 0}, itemsCompletedOnDate: []}
-
+  
   const [selectedCompany, setSelectedCompany] = useState<Company>(props.company);
   const [selectedInitiative, setSelectedInitiative] = useState<Initiative>(props.initiative);
   const [EditInitiativeIsOpen, setEditInitiativeIsOpen] = useState(false);
@@ -36,8 +34,6 @@ export function EditInitiativeButton(props: EditInitiativeButtonProps){
     {
       dispatch(updateInitiativeInfo({initiative: initiative, companyId: companyId.toString(), isTest: isTest}))
       setEditInitiativeIsOpen(false);
-      //setSelectedCompany(fakeCompany);
-      //setSelectedInitiative(fakeInitiative);
     }
     else
       ShowToast(ValidationFailedPrefix + validation.message,'Error');

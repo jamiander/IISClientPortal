@@ -16,8 +16,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import TableSortLabel from '@mui/material/TableSortLabel';
-import DecisionDataPage from "./DecisionDataModal";
-import DecisionDataModal from "./DecisionDataModal";
+import { ViewDecisionDataButton } from "./ViewDecisionDataButton";
 
 export const InitiativeTableIds = {
   totalItems: 'initiativeTableTotalItems',
@@ -219,10 +218,10 @@ export default function InitiativesTable(props: InitiativesProps) {
                           <i className="material-icons" style={{fontSize: '15px', marginLeft: '15px', marginTop: '10px'}}>info_outline</i>
                         </TableCell>
                         <TableCell className="w-1/12">
-                          <button id={"viewDecisionButton"+displayItem.id.toString()} className={genericButtonStyle + " h-8 w-full mx-2"} onClick={() => setDecisionDataPageOpen(true)}>View</button>
-                          <DecisionDataModal company={displayItem.company} initiative={displayItem} index={index} setDecisionPageIsOpen={setDecisionDataPageOpen} isOpen={decisionPageOpen}/>
+                          <ViewDecisionDataButton company={displayItem.company} initiative={displayItem} index={index} setDecisionPageIsOpen={setDecisionDataPageOpen} isOpen={decisionPageOpen}/>
                         </TableCell>
-                        <TableCell className="w-1/12" hidden={!props.admin}><EditInitiativeButton company={displayItem.company} initiative={displayItem} index={index} ValidateInitiative={props.ValidateInitiative} /></TableCell>
+                        <TableCell className="w-1/12" hidden={!props.admin}>
+                          <EditInitiativeButton company={displayItem.company} initiative={displayItem} index={index} ValidateInitiative={props.ValidateInitiative} /></TableCell>
                       </TableRow>
                     </Fragment>
                   )
