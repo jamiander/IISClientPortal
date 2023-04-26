@@ -12,7 +12,9 @@ import { cancelButtonStyle, submitButtonStyle } from "../../Styles";
 import { DecisionData } from "../../Services/CompanyService";
 
 export const DecisionModalIds = {
+  modal: "decisionModal",
   addButton: "decisionModalAddButton",
+  submitButton: "decisionModalSubmitButton",
   closeButton: "decisionModalCloseButton"
 }
 
@@ -48,6 +50,7 @@ export default function DecisionDataModal(props: DecisionDataProps) {
     <Fragment>
     <CssBaseline />
         <Dialog
+        id={DecisionModalIds.modal}
         open={props.isOpen}
         onClose={()=>props.setDecisionModalIsOpen(false)}
         fullWidth
@@ -77,8 +80,8 @@ export default function DecisionDataModal(props: DecisionDataProps) {
             </Grid>
           </div>
           <div className="h-10 w-full flex justify-between">
-            <button className={submitButtonStyle} onClick={() => props.Submit(props.initiative.decisions)}>Save</button>
-            <button className={cancelButtonStyle} onClick={() => props.setDecisionModalIsOpen(false)}>Close</button>
+            <button id={DecisionModalIds.submitButton} className={submitButtonStyle} onClick={() => props.Submit(props.initiative.decisions)}>Save</button>
+            <button id={DecisionModalIds.closeButton} className={cancelButtonStyle} onClick={() => props.setDecisionModalIsOpen(false)}>Close</button>
           </div>
         </Dialog>
     </Fragment>
