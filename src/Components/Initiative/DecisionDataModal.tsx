@@ -8,10 +8,11 @@ import Dialog from "@mui/material/Dialog";
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
 import { Company, Initiative, selectAllCompanies } from "../../Store/CompanySlice";
-import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
+//import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
 import Grid from "@mui/material/Grid";
 import { BoxStyle } from "../../Styles";
 import Input from "@mui/material/Input";
+import { Theme, createStyles, makeStyles } from "@mui/material";
 
 interface DecisionDataProps {
     company: Company
@@ -24,27 +25,24 @@ interface DecisionDataProps {
 export default function DecisionDataPage(props: DecisionDataProps) {
   
     
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
+  const styles = {
     root: {
       display: "flex",
       flexWrap: "wrap",
       "& > *": {
-        margin: theme.spacing(3),
+        
       },
     },
-  })
-);
+  };
 
 
-  const classes = useStyles();
   return (
       <Modal
       open={props.isOpen}
       onClose={()=>props.setDecisionPageIsOpen(false)}
       >
           <div style={{margin: '25%'}}>
-            <Box className={classes.root}>
+            <Box sx={styles.root}>
               {
             props.initiative.decisions.map((displayItem,index) => {
               return(
