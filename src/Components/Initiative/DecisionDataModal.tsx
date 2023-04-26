@@ -1,22 +1,13 @@
-import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import CardHeader from "@mui/material/CardHeader";
 import Dialog from "@mui/material/Dialog";
-import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
-import { Company, Initiative, selectAllCompanies } from "../../Store/CompanySlice";
-//import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
+import { Company, Initiative } from "../../Store/CompanySlice";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import { styled } from '@mui/material/styles';
-import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
 import { Fragment } from "react";
-import { Theme, createStyles, makeStyles } from "@mui/material";
-import { DecisionData } from "../../Services/CompanyService";
 
 export const DecisionModalIds = {
   addButton: "decisionModalAddButton",
@@ -39,10 +30,6 @@ export default function DecisionDataModal(props: DecisionDataProps) {
     textAlign: 'center',
     color: 'black',
   }));
-  function Submit(decisions: DecisionData[])
-  {
-
-  }
    
   const styles = {
     root: {
@@ -75,19 +62,13 @@ export default function DecisionDataModal(props: DecisionDataProps) {
                   <Grid item md={4}>
                     <Item>
                       <Typography variant="h5">{displayItem.description}</Typography>
-                    </Item>
-                    <Item>
                       <Typography variant="body1">{displayItem.resolution}</Typography>
-                    </Item>
-                    <Item>
                       <Typography variant="body1">{displayItem.participants}</Typography>
-                    </Item>
-                    <Item>
                       <Typography variant="body2">{displayItem.date.month + "/" + displayItem.date.day + "/" + displayItem.date.year}</Typography>
+                      <CardActions>
+                        <Button>share</Button>
+                      </CardActions>
                     </Item>
-                    <CardActions>
-                      <Button>share</Button>
-                    </CardActions>
                   </Grid>
               )})}
             </Grid>

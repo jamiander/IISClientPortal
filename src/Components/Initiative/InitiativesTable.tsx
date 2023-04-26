@@ -54,8 +54,7 @@ export default function InitiativesTable(props: InitiativesProps) {
 
   const [sortedDisplayItems, setSortedDisplayItems] = useState<InitCompanyDisplay[]>([]);
   const [displayItems, setDisplayItems] = useState<InitCompanyDisplay[]>([])
-  const [decisionModalOpen, setDecisionDataModalOpen] = useState(false);
-
+  
   const resultsLimitOptions: number[] = [5, 10, 25];
   const [pageNumber, setPageNumber] = useState(1);
   const [resultsLimit, setResultsLimit] = useState(10);
@@ -218,7 +217,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                           <i className="material-icons" style={{fontSize: '15px', marginLeft: '15px', marginTop: '10px'}}>info_outline</i>
                         </TableCell>
                         <TableCell className="w-1/12">
-                          <ViewDecisionDataButton company={displayItem.company} initiative={displayItem} index={index} setDecisionModalIsOpen={setDecisionDataModalOpen} isOpen={decisionModalOpen}/>
+                          <ViewDecisionDataButton company={displayItem.company} initiative={displayItem} index={index}/>
                         </TableCell>
                         <TableCell className="w-1/12" hidden={!props.admin}>
                           <EditInitiativeButton company={displayItem.company} initiative={displayItem} index={index} ValidateInitiative={props.ValidateInitiative} /></TableCell>
