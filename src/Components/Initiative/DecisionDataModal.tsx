@@ -1,26 +1,21 @@
-import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import CardHeader from "@mui/material/CardHeader";
 import Dialog from "@mui/material/Dialog";
-import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
-import { Company, Initiative, selectAllCompanies } from "../../Store/CompanySlice";
-//import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
+import { Company, Initiative } from "../../Store/CompanySlice";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import { styled } from '@mui/material/styles';
-import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
 import { Fragment, useEffect, useState } from "react";
-import { Theme, createStyles, makeStyles, TextField } from "@mui/material";
+import { cancelButtonStyle, submitButtonStyle, TextField } from "../../Styles";
 import { DecisionData } from "../../Services/CompanyService";
 import React from "react";
 
 export const DecisionModalIds = {
+  modal: "decisionModal",
   addButton: "decisionModalAddButton",
+  submitButton: "decisionModalSubmitButton",
   closeButton: "decisionModalCloseButton"
 }
 
@@ -30,6 +25,7 @@ interface DecisionDataProps {
     initiative: Initiative 
     isOpen: boolean
     setDecisionModalIsOpen: (value: boolean) => void
+    Submit: (decisions: DecisionData[]) => void
 }
 
 export default function DecisionDataModal(props: DecisionDataProps) {
@@ -69,6 +65,7 @@ export default function DecisionDataModal(props: DecisionDataProps) {
     <Fragment>
     <CssBaseline />
         <Dialog
+        id={DecisionModalIds.modal}
         open={props.isOpen}
         onClose={()=>props.setDecisionModalIsOpen(false)}
         fullWidth
@@ -96,9 +93,17 @@ export default function DecisionDataModal(props: DecisionDataProps) {
                     <CardActions>
                       <Button>share</Button>
                     </CardActions>
-                  </Grid>
+                  </Item>
+                </Grid>
               )})}
+              {
+                props.initiative.decisions.length === 0 && "No decisions to display."
+              }
             </Grid>
+          </div>
+          <div className="h-10 w-full flex justify-between">
+            <button id={DecisionModalIds.submitButton} className={submitButtonStyle} onClick={() => props.Submit(props.initiative.decisions)}>Save</button>
+            <button id={DecisionModalIds.closeButton} className={cancelButtonStyle} onClick={() => props.setDecisionModalIsOpen(false)}>Close</button>
           </div>
         </Dialog>
     </Fragment>

@@ -15,7 +15,7 @@ export const InitiativeDashboardRadioIds = {
 export default function DashboardPage(){
   const user = useAppSelector(selectCurrentUser);
   const companyList = useAppSelector(selectAllCompanies);
-  const company = companyList.find(e=>e.id === user?.companyId);
+  const company = companyList.find(c => c.id === user?.companyId);
   const comp = useAppSelector(selectAllCompanies).filter((company) => company.id === user?.companyId);
   const [radioValue, setRadioValue] = useState("active");
 

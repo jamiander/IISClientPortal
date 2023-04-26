@@ -31,7 +31,7 @@ interface InitiativesProps {
   companyList: Company[],
   radioStatus: string,
   ValidateInitiative: (initiative: Initiative, companyId: number, allCompanies: Company[]) => {success: boolean, message: string}
-  admin: boolean,
+  admin: boolean
 }
 
 interface InitCompanyDisplay extends Initiative {
@@ -45,8 +45,6 @@ interface InitCompanyDisplay extends Initiative {
   }
 
 export default function InitiativesTable(props: InitiativesProps) {
-    
-  const [isCompanyHidden, setCompanyHidden] = useState(false);
   
   const [searchedComp, setSearchedComp] = useState('');
   const [searchedInit, setSearchedInit] = useState('');
@@ -54,21 +52,10 @@ export default function InitiativesTable(props: InitiativesProps) {
 
   const [sortedDisplayItems, setSortedDisplayItems] = useState<InitCompanyDisplay[]>([]);
   const [displayItems, setDisplayItems] = useState<InitCompanyDisplay[]>([])
-  const [decisionModalOpen, setDecisionDataModalOpen] = useState(false);
 
   const resultsLimitOptions: number[] = [5, 10, 25];
   const [pageNumber, setPageNumber] = useState(1);
   const [resultsLimit, setResultsLimit] = useState(10);
-
-  let currentUser : User = useAppSelector(selectCurrentUser) ?? {id: -1, email: 'fake@fake', password: 'fake', companyId: -1};
-
-  useEffect(() => {
-    if (currentUser.id === 0) {
-      setCompanyHidden(false);
-    } else {
-      setCompanyHidden(true);
-    }
-  }, [currentUser.id]);
 
   useEffect(() => {
     UpdateDisplayItems();
@@ -167,7 +154,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                 <TableSortLabel onClick={() => requestSort('title')} active={true} direction={sortConfig.direction === 'descending' ? 'desc' : 'asc'}>
                 </TableSortLabel>
               </TableHeaderStyle>
-              {!isCompanyHidden && <TableHeaderStyle>Company
+              {props.admin && <TableHeaderStyle>Company
                 <TableSortLabel onClick={() => requestSort('companyName')} active={true} direction={sortConfig.direction === 'descending' ? 'desc' : 'asc'}>
                 </TableSortLabel>
               </TableHeaderStyle>}
@@ -185,8 +172,8 @@ export default function InitiativesTable(props: InitiativesProps) {
                 <TableSortLabel onClick={() => requestSort('probabilityValue')} active={true} direction={sortConfig.direction === 'descending' ? 'desc' : 'asc'}>
                 </TableSortLabel>
               </TableHeaderStyle>
-              <TableHeaderStyle>View Decisions</TableHeaderStyle>
-              <TableHeaderStyle hidden={!props.admin}>Edit</TableHeaderStyle>
+              {props.admin && <TableHeaderStyle>View Decisions</TableHeaderStyle>}
+              {props.admin && <TableHeaderStyle>Edit</TableHeaderStyle>}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -209,7 +196,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                           }
                         }}>
                         <TableCell id={InitiativeTableIds.initiativeTitle}>{displayItem.title}</TableCell>
-                        {!isCompanyHidden && <TableCell id={InitiativeTableIds.companyName}>{displayItem.companyName}</TableCell>}
+                        {props.admin && <TableCell id={InitiativeTableIds.companyName}>{displayItem.companyName}</TableCell>}
                         <TableCell>{displayItem.startDate.month + "/" + displayItem.startDate.day + "/" + displayItem.startDate.year}</TableCell>
                         <TableCell>{displayItem.targetDate.month + "/" + displayItem.targetDate.day + "/" + displayItem.targetDate.year}</TableCell>
                         <TableCell id={InitiativeTableIds.totalItems}>{displayItem.totalItems}</TableCell>
@@ -217,11 +204,12 @@ export default function InitiativesTable(props: InitiativesProps) {
                         <TableCell className={tooltipStyle} title={tooltipMessage}>{ probability.value === undefined ? "NA"  : probability.value +  "%" }
                           <i className="material-icons" style={{fontSize: '15px', marginLeft: '15px', marginTop: '10px'}}>info_outline</i>
                         </TableCell>
-                        <TableCell className="w-1/12">
-                          <ViewDecisionDataButton company={displayItem.company} initiative={displayItem} index={index} setDecisionModalIsOpen={setDecisionDataModalOpen} isOpen={decisionModalOpen}/>
-                        </TableCell>
-                        <TableCell className="w-1/12" hidden={!props.admin}>
-                          <EditInitiativeButton company={displayItem.company} initiative={displayItem} index={index} ValidateInitiative={props.ValidateInitiative} /></TableCell>
+                        {props.admin && <TableCell className="w-1/12">
+                          <ViewDecisionDataButton company={displayItem.company} initiative={displayItem} index={index}/>
+                        </TableCell>}
+                        {props.admin && <TableCell className="w-1/12">
+                          <EditInitiativeButton company={displayItem.company} initiative={displayItem} index={index} ValidateInitiative={props.ValidateInitiative} />
+                        </TableCell>}
                       </TableRow>
                     </Fragment>
                   )

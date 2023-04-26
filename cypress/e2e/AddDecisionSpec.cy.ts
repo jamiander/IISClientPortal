@@ -2,6 +2,13 @@ import { TestConstants } from "./TestHelpers";
 
 const consts = TestConstants;
 const modalIds = consts.decisionModalIds;
+const radioIds = consts.initiativeDisplayRadioIds;
+const tableIds = consts.initiativeTableIds;
+
+const init = {
+  companyName: 'Integrity Inspired Solutions',
+}
+
 const decision = {
   names: [ "Johnny Test" ],
   description: "Test Decision",
@@ -17,14 +24,19 @@ describe("add decision spec", () => {
     cy.wait(500);
     cy.get('button').contains('Submit').click();
 
-    cy.get("#viewDecisionButton0").click();
+    cy.get('button').contains('Admin').click();
+    cy.get('button').contains('Initiatives').click();
+    cy.get(radioIds.all).click();
+    cy.get(tableIds.companyNameFilter).type(init.companyName);
+    cy.get('table').contains(init.companyName);
+    cy.get("#viewDecisionDataButton0").click();
 
-    cy.get(modalIds.addButton);
+    //cy.get(modalIds.addButton).click();
     //fill in all fields with decision constant
   })
 
   specify("add decision to initiative", () => {
-    //hit the submit button
+    cy.get(modalIds.submitButton).click();
   })
 
   specify("can't add decision with empty fields", () => {
@@ -38,8 +50,8 @@ describe("add decision spec", () => {
   })
 
   specify("must be able to cancel adding", () => {
-    //hit cancel
-    //make sure it didn't get added
+    cy.get(modalIds.closeButton).click();
+    cy.get(modalIds.modal).should('not.exist');
   })
 
 })
