@@ -14,9 +14,10 @@ import Paper from "@mui/material/Paper";
 import { styled } from '@mui/material/styles';
 import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
-import { Fragment } from "react";
-import { Theme, createStyles, makeStyles } from "@mui/material";
+import { Fragment, useEffect, useState } from "react";
+import { Theme, createStyles, makeStyles, TextField } from "@mui/material";
 import { DecisionData } from "../../Services/CompanyService";
+import React from "react";
 
 export const DecisionModalIds = {
   addButton: "decisionModalAddButton",
@@ -38,21 +39,31 @@ export default function DecisionDataModal(props: DecisionDataProps) {
     padding: 8,
     textAlign: 'center',
     color: 'black',
+    elevation: 5
   }));
+
+  const [description, setDescription] = useState("");
+  const [isDescriptionFocused, setDescriptionFocused] = useState(false);
+  const [selectedInitiative, setSelectedInitiative] = useState<Initiative>(props.initiative);
+
+  useEffect(() => {
+    setSelectedInitiative(props.initiative);
+  },[props.isOpen])
+
   function Submit(decisions: DecisionData[])
   {
 
   }
-   
-  const styles = {
-    root: {
-      display: "flex",
-      flexWrap: "wrap",
-      "& > *": {
-        
-      },
-    },
-  };
+
+  function EditDescription(key: number, newDescription: string) {
+    let selectedInitiativeClone:Initiative = JSON.parse(JSON.stringify(selectedInitiative));
+
+    let index = selectedInitiativeClone.decisions.findIndex(d => d.id === key);
+    if(index !== -1) {
+      selectedInitiativeClone.decisions[index].description = newDescription;
+      setSelectedInitiative(selectedInitiativeClone);
+    }
+  }
 
   return (
     <Fragment>
@@ -64,25 +75,22 @@ export default function DecisionDataModal(props: DecisionDataProps) {
         maxWidth={false}
         >
           <div>
-            <h2>{props.company.name}</h2>
-            <h3>{props.initiative.title}</h3>
+            <h1><strong>{props.company.name}    {selectedInitiative.title}</strong></h1>
           </div>
           <div style={{margin: '5%'}}>
             <Grid container spacing={4}>
               {
-              props.initiative.decisions.map((displayItem) => {
+              selectedInitiative.decisions.map((displayItem, key) => {
               return(
-                  <Grid item md={4}>
+                  <Grid item md={4} key={key}>
                     <Item>
-                      <Typography variant="h5">{displayItem.description}</Typography>
-                    </Item>
-                    <Item>
+                      <TextField
+                        autoFocus={false}
+                        defaultValue={displayItem.description}
+                        onChange={event => EditDescription(displayItem.id, event.target.value)}
+                       />
                       <Typography variant="body1">{displayItem.resolution}</Typography>
-                    </Item>
-                    <Item>
                       <Typography variant="body1">{displayItem.participants}</Typography>
-                    </Item>
-                    <Item>
                       <Typography variant="body2">{displayItem.date.month + "/" + displayItem.date.day + "/" + displayItem.date.year}</Typography>
                     </Item>
                     <CardActions>
