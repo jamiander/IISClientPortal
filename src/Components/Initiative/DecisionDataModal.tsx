@@ -12,6 +12,12 @@ import { Company, Initiative, selectAllCompanies } from "../../Store/CompanySlic
 import Grid from "@mui/material/Grid";
 import { Theme, createStyles, makeStyles } from "@mui/material";
 
+export const DecisionModalIds = {
+  addButton: "decisionModalAddButton",
+  closeButton: "decisionModalCloseButton"
+}
+
+
 interface DecisionDataProps {
     title: string
     company: Company
