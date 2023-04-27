@@ -10,8 +10,8 @@ import { Fragment, RefObject, createRef, useEffect, useRef, useState } from "rea
 import { Item, StyledCard, StyledCardContent, StyledTextField, StyledTextarea, cancelButtonStyle, submitButtonStyle } from "../../Styles";
 import { DateInfo, DecisionData } from "../../Services/CompanyService";
 import TextField from "@mui/material/TextField";
-import { MakeDateString } from "../DateInput";
-import { Card, CardContent, TextareaAutosize } from "@mui/material";
+import { Card, CardContent } from "@mui/material";
+import { MakeDateInfo, MakeDateString } from "../DateInput";
 
 export const DecisionModalIds = {
   modal: "decisionModal",
@@ -33,21 +33,48 @@ export default function DecisionDataModal(props: DecisionDataProps) {
 
   const [selectedInitiative, setSelectedInitiative] = useState<Initiative>(props.initiative);
   const [currentDescription, setCurrentDescription] = useState("");
+  export default function DecisionDataModal(props: DecisionDataProps) {
+    const [currentDescription, setCurrentDescription] = useState("");
+    const [currentResolution, setCurrentResolution] = useState("");
+    const [currentParticipants, setCurrentParticipants] = useState("");
+    const [currentDateString, setCurrentDateString] = useState("");
+  
+    const [selectedInitiative, setSelectedInitiative] = useState<Initiative>(props.initiative);
+    const [editIndex, setEditIndex] = useState(-1);
 
   useEffect(() => {
     setSelectedInitiative(props.initiative);
+    LeaveEditMode();
   },[props.isOpen])
 
+  function EnterEditMode(index: number)
+  {
+    setEditIndex(index);
+    let currentDecision = selectedInitiative.decisions[index];
+    setCurrentDescription(currentDecision.description);
+    setCurrentResolution(currentDecision.resolution);
+    setCurrentParticipants(currentDecision.participants.join(", "));
+    setCurrentDateString(MakeDateString(currentDecision.date));
+  }
 
-  function EditDecision(key: number, newDescription: string, newResolution: string, newParticipants: string[], newDate: DateInfo) {
-    let selectedInitiativeClone:Initiative = JSON.parse(JSON.stringify(selectedInitiative));
+  function LeaveEditMode()
+  {
+    setEditIndex(-1);
+  }
 
-    selectedInitiativeClone.decisions[key].description = newDescription;
-    selectedInitiativeClone.decisions[key].resolution = newResolution;
-    selectedInitiativeClone.decisions[key].participants = newParticipants;
-    selectedInitiativeClone.decisions[key].date = newDate;
+  function EditDecision(key: number, newDescription: string, newResolution: string, newParticipants: string[], newDate?: DateInfo) {
+    let selectedInitiativeClone: Initiative = JSON.parse(JSON.stringify(selectedInitiative));
+    let newDecision = selectedInitiativeClone.decisions[key];
+    
+    newDecision.description = newDescription;
+    newDecision.resolution = newResolution;
+    newDecision.participants = newParticipants;
+    if(newDate)
+      newDecision.date = newDate;
 
     setSelectedInitiative(selectedInitiativeClone);
+
+    LeaveEditMode();
   }
 
   return (
@@ -65,22 +92,46 @@ export default function DecisionDataModal(props: DecisionDataProps) {
             <Grid container spacing={4}>
               {
               selectedInitiative.decisions.map((displayItem, key) => {
+                let isEdit = (key === editIndex);
+                
               return(
-                <Grid item md={6} key={key}>
+                <Grid item md={4} key={key}>
                   <Item>
                     <StyledCard>
                       <StyledCardContent>
-                        <StyledTextarea aria-label="maximum height" placeholder="" defaultValue= {displayItem.description} onChange={e => setCurrentDescription(e.target.value)}/>
-                        <StyledTextarea aria-label="maximum height" placeholder="" defaultValue={displayItem.resolution}/>
-                        <StyledTextField defaultValue={displayItem.participants}/>
-                        <StyledTextField type="date" defaultValue={MakeDateString(displayItem.date)}/>
+                        {isEdit ?
+                        <>
+                          <TextField value={currentDescription} onChange={e => setCurrentDescription(e.target.value)}></TextField>
+                          <TextField value={currentResolution} onChange={e => setCurrentResolution(e.target.value)}></TextField>
+                          <TextField value={currentParticipants} onChange={e => setCurrentParticipants(e.target.value)}></TextField>
+                          <TextField type="date" value={currentDateString} onChange={e => setCurrentDateString(e.target.value)}></TextField>
+                        </>
+                        :
+                        <>
+                          <TextField disabled value={displayItem.description}></TextField>
+                          <TextField disabled value={displayItem.resolution}></TextField>
+                          <TextField disabled value={displayItem.participants.join(", ")}></TextField>
+                          <TextField disabled type="date" value={MakeDateString(displayItem.date)}></TextField>
+                        </>
+                        }
                       </StyledCardContent>
                       <CardActions>
-                        <Button>Share</Button>
-                        <button className={submitButtonStyle} onClick={() => EditDecision(key, currentDescription, displayItem.resolution, displayItem.participants, displayItem.date)}>Save
-                        </button>
+                        {isEdit &&
+                          <div className="flex w-full justify-between">
+                            <button className={submitButtonStyle} onClick={() => EditDecision(key, currentDescription, currentResolution, currentParticipants.split(", "), currentDateString ? MakeDateInfo(currentDateString) : displayItem.date)}>Save</button>
+                            <button className={cancelButtonStyle} onClick={() => LeaveEditMode()}>Cancel</button>
+                          </div>
+                        }
+                        {
+                          !isEdit && editIndex === -1 &&
+                          <div className="flex w-full justify-start">
+                            <button className={submitButtonStyle} onClick={() => EnterEditMode(key)}>Edit</button>
+                          </div>
+                        }
                       </CardActions>
                     </StyledCard>
+                  </Item>
+                    </Card>
                   </Item>
                 </Grid>
               )})}
