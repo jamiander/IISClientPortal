@@ -1,16 +1,10 @@
-import Button from "@mui/material/Button";
 import CardActions from "@mui/material/CardActions";
 import Dialog from "@mui/material/Dialog";
 import { Company, Initiative, updateDecisionData } from "../../Store/CompanySlice";
 import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
-import { styled } from '@mui/material/styles';
-import CssBaseline from "@mui/material/CssBaseline";
-import { Fragment, RefObject, createRef, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Item, StyledCard, StyledCardContent, StyledTextField, StyledTextarea, cancelButtonStyle, submitButtonStyle } from "../../Styles";
 import { DateInfo, DecisionData } from "../../Services/CompanyService";
-import TextField from "@mui/material/TextField";
-import { Card, CardContent } from "@mui/material";
 import { MakeDateInfo, MakeDateString } from "../DateInput";
 import AddIcon from '@mui/icons-material/Add';
 import { ValidateDecisions, ValidationFailedPrefix } from "../../Services/Validation";
@@ -20,8 +14,9 @@ import { useAppDispatch } from "../../Store/Hooks";
 export const DecisionModalIds = {
   modal: "decisionModal",
   addButton: "decisionModalAddButton",
-  submitButton: "decisionModalSubmitButton",
-  closeButton: "decisionModalCloseButton",
+  saveChangesButton: "decisionModalSaveChangesButton",
+  cancelChangesButton: "decisionModalCancelChangesButton",
+  closeModalButton: "decisionModalCloseModalButton",
 }
 
 interface DecisionDataProps {
@@ -137,7 +132,7 @@ interface DecisionDataProps {
         >
           <div className="flex justify-between">
             <h1><strong>{props.company.name}    {selectedInitiative.title}</strong></h1>
-            <button id={DecisionModalIds.addButton} onClick={() => AddEmptyDecision()}><AddIcon /></button>
+            <button disabled={editIndex !== -1} id={DecisionModalIds.addButton} onClick={() => AddEmptyDecision()}><AddIcon /></button>
           </div>
           <div style={{margin: '2%'}}>
             <Grid container spacing={6}>
@@ -169,8 +164,8 @@ interface DecisionDataProps {
                       <CardActions>
                         {isEdit &&
                           <div className="flex w-full justify-between">
-                            <button className={submitButtonStyle} onClick={() => EditDecision(key, currentDescription, currentResolution, currentParticipants.split(", "), currentDateString ? MakeDateInfo(currentDateString) : displayItem.date)}>Save</button>
-                            <button className={cancelButtonStyle} onClick={() => CancelEdit()}>Cancel</button>
+                            <button id={DecisionModalIds.saveChangesButton} className={submitButtonStyle} onClick={() => EditDecision(key, currentDescription, currentResolution, currentParticipants.split(", "), currentDateString ? MakeDateInfo(currentDateString) : displayItem.date)}>Save</button>
+                            <button id={DecisionModalIds.cancelChangesButton} className={cancelButtonStyle} onClick={() => CancelEdit()}>Cancel</button>
                           </div>
                         }
                         {
@@ -190,7 +185,7 @@ interface DecisionDataProps {
             </Grid>
           </div>
           <div className="h-10 w-full flex justify-between">
-            <button id={DecisionModalIds.closeButton} className={cancelButtonStyle} onClick={() => props.setDecisionModalIsOpen(false)}>Close</button>
+            <button id={DecisionModalIds.closeModalButton} className={cancelButtonStyle} onClick={() => props.setDecisionModalIsOpen(false)}>Close</button>
           </div>
         </Dialog>
   );
