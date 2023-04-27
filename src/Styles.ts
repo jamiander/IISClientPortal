@@ -1,7 +1,6 @@
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
-import { makeStyles, styled } from '@mui/material/styles';
-import CardContent from '@mui/material/CardContent';
-import { Paper } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import { Card, CardContent, Paper, TextField, TextareaAutosize } from '@mui/material';
 
 export const modalStyle = {
   content: {
@@ -38,8 +37,31 @@ export const TableHeaderStyle =
     padding: 8,
     textAlign: 'center',
     color: 'black',
-    elevation: 6
+    elevation: 6,
+    height: 300
   }));
+
+  export const StyledCard = styled(Card)(() => ({
+    height: 300
+  }))
+
+  export const StyledCardContent = styled(CardContent)(() => ({
+    height: 200
+  }))
+
+  export const StyledTextField = 
+  styled(TextField)(() => ({
+    padding: 4,
+  }));
+
+  export const StyledTextarea =
+  styled(TextareaAutosize)(() => ({
+    width: 700,
+    height: 200,
+    borderColor: '#4A90E2',
+    borderWidth: 1, 
+  }))
+ 
 
 export const tooltipStyle = "hover:bg-slate-50 cursor-pointer";
 export const inputStyle = "outline rounded outline-1 p-2 hover:outline-2 focus:outline-2";

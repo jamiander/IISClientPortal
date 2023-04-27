@@ -7,11 +7,11 @@ import Paper from "@mui/material/Paper";
 import { styled } from '@mui/material/styles';
 import CssBaseline from "@mui/material/CssBaseline";
 import { Fragment, RefObject, createRef, useEffect, useRef, useState } from "react";
-import { cancelButtonStyle, submitButtonStyle } from "../../Styles";
+import { Item, StyledCard, StyledCardContent, StyledTextField, StyledTextarea, cancelButtonStyle, submitButtonStyle } from "../../Styles";
 import { DateInfo, DecisionData } from "../../Services/CompanyService";
 import TextField from "@mui/material/TextField";
 import { MakeDateString } from "../DateInput";
-import { Card, CardContent } from "@mui/material";
+import { Card, CardContent, TextareaAutosize } from "@mui/material";
 
 export const DecisionModalIds = {
   modal: "decisionModal",
@@ -61,27 +61,27 @@ export default function DecisionDataModal(props: DecisionDataProps) {
           <div>
             <h1><strong>{props.company.name}    {selectedInitiative.title}</strong></h1>
           </div>
-          <div style={{margin: '5%'}}>
-            <Grid container spacing={3}>
+          <div style={{margin: '2%'}}>
+            <Grid container spacing={4}>
               {
               selectedInitiative.decisions.map((displayItem, key) => {
               return(
-                <Grid item md={4} key={key}>
-                  <Paper>
-                    <Card>
-                      <CardContent>
-                        <TextField value={currentDescription} onChange={e => setCurrentDescription(e.target.value)}></TextField>
-                        <TextField defaultValue={displayItem.resolution}></TextField>
-                        <TextField defaultValue={displayItem.participants}></TextField>
-                        <TextField type="date" defaultValue={displayItem.date}></TextField>
-                      </CardContent>
+                <Grid item md={6} key={key}>
+                  <Item>
+                    <StyledCard>
+                      <StyledCardContent>
+                        <StyledTextarea aria-label="maximum height" placeholder="" defaultValue= {displayItem.description} onChange={e => setCurrentDescription(e.target.value)}/>
+                        <StyledTextarea aria-label="maximum height" placeholder="" defaultValue={displayItem.resolution}/>
+                        <StyledTextField defaultValue={displayItem.participants}/>
+                        <StyledTextField type="date" defaultValue={MakeDateString(displayItem.date)}/>
+                      </StyledCardContent>
                       <CardActions>
                         <Button>Share</Button>
                         <button className={submitButtonStyle} onClick={() => EditDecision(key, currentDescription, displayItem.resolution, displayItem.participants, displayItem.date)}>Save
                         </button>
                       </CardActions>
-                    </Card>
-                  </Paper>
+                    </StyledCard>
+                  </Item>
                 </Grid>
               )})}
               {
