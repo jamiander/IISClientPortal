@@ -52,7 +52,7 @@ export const TableHeaderStyle =
 
   export const StyledTextField = 
   styled(TextField)(() => ({
-    padding: 10,
+    marginTop: 10,
   }));
 
   export const StyledTextarea =
@@ -60,10 +60,11 @@ export const TableHeaderStyle =
     width: 900,
     borderColor: '#4A90E2',
     borderWidth: 1, 
-    padding: 10
+    marginBottom: 10
   }))
  
 
+export const labelStyle = "font-bold text-lg";
 export const tooltipStyle = "hover:bg-slate-50 cursor-pointer";
 export const inputStyle = "outline rounded outline-1 p-2 hover:outline-2 focus:outline-2";
 export const selectStyle = "outline rounded outline-1 p-2 hover:outline-2 focus:outline-2";

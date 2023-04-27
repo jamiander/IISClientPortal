@@ -2,11 +2,10 @@ import Dialog from "@mui/material/Dialog";
 import { Company, Initiative, updateDecisionData } from "../../Store/CompanySlice";
 import Grid from "@mui/material/Grid";
 import { useEffect, useState } from "react";
-import { Item, StyledCard, StyledCardActions, StyledCardContent, StyledTextField, StyledTextarea, cancelButtonStyle, genericButtonStyle, submitButtonStyle, yellowButtonStyle } from "../../Styles";
+import { Item, StyledCard, StyledCardActions, StyledCardContent, StyledTextField, StyledTextarea, cancelButtonStyle, genericButtonStyle, submitButtonStyle, yellowButtonStyle, labelStyle } from "../../Styles";
 import { DateInfo, DecisionData } from "../../Services/CompanyService";
 import { Button } from "@mui/material";
 import { MakeDateInfo, MakeDateString } from "../DateInput";
-import AddIcon from '@mui/icons-material/Add';
 import { ValidateDecisions, ValidationFailedPrefix } from "../../Services/Validation";
 import { useOutletContext } from "react-router-dom";
 import { useAppDispatch } from "../../Store/Hooks";
@@ -148,17 +147,19 @@ interface DecisionDataProps {
                       <StyledCardContent>
                         {isEdit ?
                         <>
-                        <h1>Decision Description</h1>
-                          <StyledTextarea value={currentDescription} onChange={e => setCurrentDescription(e.target.value)}/>
-                        <h1>Resolution</h1>
-                          <StyledTextarea value={currentResolution} onChange={e => setCurrentResolution(e.target.value)}/>
-                          <StyledTextField size="medium" label="Participants" value={currentParticipants} onChange={e => setCurrentParticipants(e.target.value)}/>
-                          <StyledTextField size="medium" label="Date Resolved" type="date" value={currentDateString} onChange={e => setCurrentDateString(e.target.value)}/>
+                          <label className={labelStyle} htmlFor="description">Decision Description</label>
+                          <StyledTextarea id="description" value={currentDescription} onChange={e => setCurrentDescription(e.target.value)}/>
+                          <label className={labelStyle} htmlFor="resolution">Resolution</label>
+                          <StyledTextarea id="resolution" value={currentResolution} onChange={e => setCurrentResolution(e.target.value)}/>
+                          <StyledTextField label="Participants" value={currentParticipants} onChange={e => setCurrentParticipants(e.target.value)}/>
+                          <StyledTextField label="Date Resolved" type="date" value={currentDateString} onChange={e => setCurrentDateString(e.target.value)}/>
                         </>
                         :
                         <>
+                          <label className={labelStyle} htmlFor="description">Decision Description</label>
                           <StyledTextarea disabled value={displayItem.description}/>
-                          <StyledTextarea disabled value={displayItem.resolution}/>
+                          <label className={labelStyle} htmlFor="resolution">Resolution</label>
+                          <StyledTextarea id="resolution" disabled value={displayItem.resolution}/>
                           <StyledTextField label="Participants" disabled value={displayItem.participants.join(", ")}/>
                           <StyledTextField label="Date Resolved" disabled type="date" value={MakeDateString(displayItem.date)}/>
                         </>
