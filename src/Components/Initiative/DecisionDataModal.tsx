@@ -159,7 +159,7 @@ interface DecisionDataProps {
                         :
                         <>
                           <label className={labelStyle} htmlFor="description">Decision Description</label>
-                          <StyledTextarea disabled value={displayItem.description}/>
+                          <StyledTextarea id="description" disabled value={displayItem.description}/>
                           <label className={labelStyle} htmlFor="resolution">Resolution</label>
                           <StyledTextarea id="resolution" disabled value={displayItem.resolution}/>
                           <StyledTextField label="Participants" disabled value={displayItem.participants.join(", ")}/>
