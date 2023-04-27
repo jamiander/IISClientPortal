@@ -1,11 +1,15 @@
 import Dialog from "@mui/material/Dialog";
-import { Company, Initiative } from "../../Store/CompanySlice";
+import { Company, Initiative, updateDecisionData } from "../../Store/CompanySlice";
 import Grid from "@mui/material/Grid";
 import { useEffect, useState } from "react";
 import { Item, StyledCard, StyledCardActions, StyledCardContent, StyledTextField, StyledTextarea, cancelButtonStyle, genericButtonStyle, submitButtonStyle, yellowButtonStyle } from "../../Styles";
 import { DateInfo, DecisionData } from "../../Services/CompanyService";
 import { Button } from "@mui/material";
 import { MakeDateInfo, MakeDateString } from "../DateInput";
+import AddIcon from '@mui/icons-material/Add';
+import { ValidateDecisions, ValidationFailedPrefix } from "../../Services/Validation";
+import { useOutletContext } from "react-router-dom";
+import { useAppDispatch } from "../../Store/Hooks";
 
 export const DecisionModalIds = {
   modal: "decisionModal",
@@ -20,10 +24,11 @@ interface DecisionDataProps {
     initiative: Initiative 
     isOpen: boolean
     setDecisionModalIsOpen: (value: boolean) => void
-    Submit: (decisions: DecisionData[]) => void
 }
 
   export default function DecisionDataModal(props: DecisionDataProps) {
+    const dispatch = useAppDispatch();
+    const ShowToast : (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void = useOutletContext();
     const [currentDescription, setCurrentDescription] = useState("");
     const [currentResolution, setCurrentResolution] = useState("");
     const [currentParticipants, setCurrentParticipants] = useState("");
@@ -31,6 +36,7 @@ interface DecisionDataProps {
   
     const [selectedInitiative, setSelectedInitiative] = useState<Initiative>(props.initiative);
     const [editIndex, setEditIndex] = useState(-1);
+    const [isNew, setIsNew] = useState(false);
 
   useEffect(() => {
     setSelectedInitiative(props.initiative);
@@ -46,6 +52,7 @@ interface DecisionDataProps {
     initiativeClone.decisions.push(newDecision);
 
     setSelectedInitiative(initiativeClone);
+    setIsNew(true);
     EnterEditMode(initiativeClone.decisions.length-1,initiativeClone);
   }
 
@@ -62,9 +69,23 @@ interface DecisionDataProps {
   function LeaveEditMode()
   {
     setEditIndex(-1);
+    setIsNew(false);
   }
 
-  function EditDecision(key: number, newDescription: string, newResolution: string, newParticipants: string[], newDate?: DateInfo) {
+  function CancelEdit()
+  {
+    if(isNew)
+    {
+      let initiativeClone: Initiative = JSON.parse(JSON.stringify(selectedInitiative));
+      initiativeClone.decisions.splice(editIndex,1);
+
+      setSelectedInitiative(initiativeClone);
+    }
+    LeaveEditMode();
+  }
+
+  function EditDecision(key: number, newDescription: string, newResolution: string, newParticipants: string[], newDate?: DateInfo)
+  {
     let selectedInitiativeClone: Initiative = JSON.parse(JSON.stringify(selectedInitiative));
     let newDecision = selectedInitiativeClone.decisions[key];
     
@@ -74,9 +95,30 @@ interface DecisionDataProps {
     if(newDate)
       newDecision.date = newDate;
 
-    setSelectedInitiative(selectedInitiativeClone);
+    let successfulSubmit = SubmitDecisionData(selectedInitiativeClone.decisions);
+    if(successfulSubmit)
+      setSelectedInitiative(selectedInitiativeClone);
+    else
+      setSelectedInitiative(selectedInitiative);
+  }
 
-    LeaveEditMode();
+  function SubmitDecisionData(decisions: DecisionData[]): boolean
+  {
+    let isTest = false;
+    if((window as any).Cypress)
+      isTest = true;
+    
+    let validation = ValidateDecisions(decisions);
+    if(validation.success)
+    {
+      dispatch(updateDecisionData({isTest: isTest, companyId: props.company.id.toString(), initiativeId: props.initiative.id, decisions: decisions}));
+      LeaveEditMode();//setViewDecisionDataIsOpen(false);
+      return true;
+    }
+    else
+      ShowToast(ValidationFailedPrefix + validation.message,"Error");
+    
+    return false;
   }
 
   return (
@@ -90,7 +132,7 @@ interface DecisionDataProps {
           <div className="flex col-span-4 mb-4 bg-[#2ed7c3] rounded-md py-6 px-5">
             <div className="w-full flex justify-between">
             <p className="text-5xl font-bold w-1/4">{props.company.name} : {props.initiative.title}</p>
-            <button className={yellowButtonStyle} onClick={() => AddEmptyDecision()}>Add Decision</button>
+            <button id={DecisionModalIds.addButton} className={yellowButtonStyle} onClick={() => AddEmptyDecision()}>Add Decision</button>
             </div>
           </div>
           <div style={{margin: '2%'}}>
@@ -126,7 +168,7 @@ interface DecisionDataProps {
                         {isEdit &&
                           <div className="flex w-full justify-between">
                             <button className={submitButtonStyle} onClick={() => EditDecision(key, currentDescription, currentResolution, currentParticipants.split(", "), currentDateString ? MakeDateInfo(currentDateString) : displayItem.date)}>Save</button>
-                            <button className={cancelButtonStyle} onClick={() => LeaveEditMode()}>Cancel</button>
+                            <button className={cancelButtonStyle} onClick={() => CancelEdit()}>Cancel</button>
                           </div>
                         }
                         {

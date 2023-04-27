@@ -148,7 +148,8 @@ export interface UpdateDecisionDataRequest {
 }
 
 interface UpdateDecisionDataResponse {
-  status: string
+  status: string,
+  idMap: [[number,number]]
 }
 
 export async function UpdateThroughputData(request: UpdateThroughputDataRequest) : Promise<UpdateThroughputDataResponse>

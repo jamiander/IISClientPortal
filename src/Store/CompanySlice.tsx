@@ -69,38 +69,38 @@ export const getCompanyInfo = createAsyncThunk(
 )
 
 export const updateCompanyInfo = createAsyncThunk(
-    'companies/updateCompanyInfo',
-    async (args: UpdateCompanyInfoRequest, {dispatch}): Promise<Company> => {
-        const response = await UpdateCompanyInfo(args);
-        
-        if (response.status.toUpperCase().includes('FAILED'))
-            throw Error;
-        let newId = parseInt(response.id);
-        let newCompany: Company = JSON.parse(JSON.stringify(args.company));
-        newCompany.id = newId;
-        
-        let newUser: User = JSON.parse(JSON.stringify(args.employee));
-        newUser.companyId = newId;
-        newUser.id = newId;   //this stinks; consider having just one id property if they're just going to be identical
+  'companies/updateCompanyInfo',
+  async (args: UpdateCompanyInfoRequest, {dispatch}): Promise<Company> => {
+      const response = await UpdateCompanyInfo(args);
+      
+    if (response.status.toUpperCase().includes('FAILED'))
+      throw Error;
+    let newId = parseInt(response.id);
+    let newCompany: Company = JSON.parse(JSON.stringify(args.company));
+    newCompany.id = newId;
+    
+    let newUser: User = JSON.parse(JSON.stringify(args.employee));
+    newUser.companyId = newId;
+    newUser.id = newId;   //this stinks; consider having just one id property if they're just going to be identical
 
-        dispatch(addUsersToStore([newUser]));
+    dispatch(addUsersToStore([newUser]));
 
-        return newCompany;
-    }
+    return newCompany;
+  }
 )
 
 export const updateInitiativeInfo = createAsyncThunk(
-    'companies/updateInitiativesInfo',
-    async (args: UpdateInitiativeInfoRequest, {}): Promise<{initiative: Initiative, companyId: number}> => {
-        const response = await UpdateInitiativeInfo(args);
+  'companies/updateInitiativesInfo',
+  async (args: UpdateInitiativeInfoRequest, {}): Promise<{initiative: Initiative, companyId: number}> => {
+    const response = await UpdateInitiativeInfo(args);
 
-        if(response.status.toUpperCase().includes('FAILED'))
-            throw Error;
-        
-        let newInitiative: Initiative = JSON.parse(JSON.stringify(args.initiative));
-        newInitiative.id = parseInt(response.initiativeId);
-        return {initiative: newInitiative, companyId: parseInt(args.companyId)};
-    }
+    if(response.status.toUpperCase().includes('FAILED'))
+      throw Error;
+    
+    let newInitiative: Initiative = JSON.parse(JSON.stringify(args.initiative));
+    newInitiative.id = parseInt(response.initiativeId);
+    return {initiative: newInitiative, companyId: parseInt(args.companyId)};
+  }
 )
 
 export const updateThroughputData = createAsyncThunk(
@@ -122,6 +122,14 @@ export const updateDecisionData = createAsyncThunk(
 
     if(response.status.toUpperCase().includes('FAILED'))
       throw Error;
+
+    for(const pair of response.idMap)
+    {
+      let oldId = pair[0];
+      let newId = pair[1];
+      let decisionIndex = args.decisions.findIndex(d => d.id === oldId);
+      args.decisions[decisionIndex].id = newId;
+    }
 
     return {initiativeId: args.initiativeId, companyId: parseInt(args.companyId), data: args.decisions};
   }
@@ -206,6 +214,29 @@ export const companySlice = createSlice({
                       throughputClone.push(item);
                   }
                   matchingInit.itemsCompletedOnDate = throughputClone.filter(data => data.itemsCompleted !== 0);
+                }
+              }
+            })
+            .addCase(updateDecisionData.fulfilled, (state, action) => {
+              const companyId = action.payload.companyId;
+              const initiativeId = action.payload.initiativeId;
+              const matchingCompany = state.companies.find(company => company.id === companyId);
+              if(matchingCompany)
+              {
+                const matchingInit = matchingCompany.initiatives.find(init => init.id === initiativeId);
+                if(matchingInit)
+                {
+                  const decisionsClone: DecisionData[] = JSON.parse(JSON.stringify(matchingInit.decisions));
+                  for(const data of action.payload.data)
+                  {
+                    const dataIndex = decisionsClone.findIndex(entry => data.id === entry.id);
+
+                    if(dataIndex > -1)
+                      decisionsClone[dataIndex] = data;
+                    else
+                      decisionsClone.push(data);
+                  }
+                  matchingInit.decisions = decisionsClone;
                 }
               }
             })

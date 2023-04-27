@@ -20,21 +20,7 @@ export function ViewDecisionDataButton(props: ViewDecisionDataProps){
   const [selectedInitiative, setSelectedInitiative] = useState<Initiative>(props.initiative);
   const [ViewDecisionDataIsOpen, setViewDecisionDataIsOpen] = useState(false);
 
-  function SubmitDecisionData(decisions: DecisionData[])
-  {
-    let isTest = true//false;
-    if((window as any).Cypress)
-      isTest = true;
-    
-    let validation = ValidateDecisions(decisions);
-    if(validation.success)
-    {
-      dispatch(updateDecisionData({isTest: isTest, companyId: props.company.id.toString(), initiativeId: props.initiative.id, decisions: decisions}));
-      setViewDecisionDataIsOpen(false);
-    }
-    else
-      ShowToast(ValidationFailedPrefix + validation.message,"Error");
-  }
+  
 
   function handleViewDecisionData(company: Company, initiative: Initiative)
   {
@@ -50,7 +36,7 @@ export function ViewDecisionDataButton(props: ViewDecisionDataProps){
       >
           View
       </button>
-      <DecisionDataModal title='View Decision Data' isOpen={ViewDecisionDataIsOpen} setDecisionModalIsOpen={setViewDecisionDataIsOpen} initiative={selectedInitiative} company={selectedCompany} Submit={SubmitDecisionData}/>
+      <DecisionDataModal title='View Decision Data' isOpen={ViewDecisionDataIsOpen} setDecisionModalIsOpen={setViewDecisionDataIsOpen} initiative={selectedInitiative} company={selectedCompany}/>
     </div>
   );
 }
