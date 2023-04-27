@@ -41,6 +41,12 @@ describe("add decision spec", () => {
 
   specify("add decision to initiative", () => {
     cy.get(modalIds.saveChangesButton).click();
+    cy.wait(waitTime);
+    cy.get(modalIds.description).contains(decision.description);
+    cy.get(modalIds.closeModalButton).click();
+    
+    cy.get("#viewDecisionDataButton0").click();
+    cy.get(modalIds.description).contains(decision.description);
   })
 
   specify("can't add decision with empty fields", () => {
@@ -71,7 +77,7 @@ describe("add decision spec", () => {
   specify("must be able to cancel adding", () => {
     cy.get(modalIds.cancelChangesButton).click();
     cy.get(modalIds.saveChangesButton).should('not.exist');
-    cy.get(decision.description).should('not.exist');
+    cy.get(modalIds.description).should('not.exist');
   })
 
   specify("close button closes the modal", () => {
