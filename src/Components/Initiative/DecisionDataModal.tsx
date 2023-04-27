@@ -97,7 +97,7 @@ export default function DecisionDataModal(props: DecisionDataProps) {
                 </Grid>
               )})}
               {
-                props.initiative.decisions.length === 0 && "No decisions to display."
+                selectedInitiative.decisions.length === 0 && "No decisions to display."
               }
             </Grid>
           </div>
