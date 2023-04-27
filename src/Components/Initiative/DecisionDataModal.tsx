@@ -29,16 +29,18 @@ interface DecisionDataProps {
     Submit: (decisions: DecisionData[]) => void
 }
 
-export default function DecisionDataModal(props: DecisionDataProps) {
-  const [currentDescription, setCurrentDescription] = useState("");
-  
-  /*const Item = styled(Paper)(() => ({
+  const Item = styled(Paper)(() => ({
     backgroundColor: '#98d6a9',
     padding: 8,
     textAlign: 'center',
     color: 'black',
     elevation: 5
-  }));*/
+  }));
+
+export default function DecisionDataModal(props: DecisionDataProps) {
+  const [currentDescription, setCurrentDescription] = useState("");
+  
+
 
   const [selectedInitiative, setSelectedInitiative] = useState<Initiative>(props.initiative);
 
@@ -75,7 +77,7 @@ export default function DecisionDataModal(props: DecisionDataProps) {
               selectedInitiative.decisions.map((displayItem, key) => {
               return(
                 <Grid item md={4} key={key}>
-                  <Paper>
+                  <Item>
                     <Card>
                       <CardContent>
                         <TextField value={currentDescription} onChange={e => setCurrentDescription(e.target.value)}></TextField>
@@ -89,7 +91,7 @@ export default function DecisionDataModal(props: DecisionDataProps) {
                         </button>
                       </CardActions>
                     </Card>
-                  </Paper>
+                  </Item>
                 </Grid>
               )})}
               {
