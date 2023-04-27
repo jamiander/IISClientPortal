@@ -110,7 +110,7 @@ interface DecisionDataProps {
 
   function SubmitDecisionData(decisions: DecisionData[]): boolean
   {
-    let isTest = true//false;
+    let isTest = false;
     if((window as any).Cypress)
       isTest = true;
     
