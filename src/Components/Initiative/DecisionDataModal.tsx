@@ -1,4 +1,3 @@
-import CardActions from "@mui/material/CardActions";
 import Dialog from "@mui/material/Dialog";
 import { Company, Initiative, updateDecisionData } from "../../Store/CompanySlice";
 import Grid from "@mui/material/Grid";
@@ -14,9 +13,13 @@ import { useAppDispatch } from "../../Store/Hooks";
 export const DecisionModalIds = {
   modal: "decisionModal",
   addButton: "decisionModalAddButton",
+  closeModalButton: "decisionModalCloseModalButton",
   saveChangesButton: "decisionModalSaveChangesButton",
   cancelChangesButton: "decisionModalCancelChangesButton",
-  closeModalButton: "decisionModalCloseModalButton",
+  description: "decisionModalDescription",
+  resolution: "decisionModalResolution",
+  participants: "decisionModalParticipants",
+  date: "decisionModalDate"
 }
 
 interface DecisionDataProps {
@@ -149,21 +152,21 @@ interface DecisionDataProps {
                       <StyledCardContent>
                         {isEdit ?
                         <>
-                          <label className={labelStyle} htmlFor="description">Decision Description</label>
-                          <StyledTextarea id="description" value={currentDescription} onChange={e => setCurrentDescription(e.target.value)}/>
-                          <label className={labelStyle} htmlFor="resolution">Resolution</label>
-                          <StyledTextarea id="resolution" value={currentResolution} onChange={e => setCurrentResolution(e.target.value)}/>
-                          <StyledTextField label="Participants" value={currentParticipants} onChange={e => setCurrentParticipants(e.target.value)}/>
-                          <StyledTextField label="Date Resolved" type="date" value={currentDateString} onChange={e => setCurrentDateString(e.target.value)}/>
+                        <h1>Decision Description</h1>
+                          <StyledTextarea id={DecisionModalIds.description} value={currentDescription} onChange={e => setCurrentDescription(e.target.value)}/>
+                        <h1>Resolution</h1>
+                          <StyledTextarea id={DecisionModalIds.resolution} value={currentResolution} onChange={e => setCurrentResolution(e.target.value)}/>
+                          <StyledTextField id={DecisionModalIds.participants} size="medium" label="Participants" value={currentParticipants} onChange={e => setCurrentParticipants(e.target.value)}/>
+                          <StyledTextField id={DecisionModalIds.date} size="medium" label="Date Resolved" type="date" value={currentDateString} onChange={e => setCurrentDateString(e.target.value)}/>
                         </>
                         :
                         <>
-                          <label className={labelStyle} htmlFor="description">Decision Description</label>
-                          <StyledTextarea id="description" disabled value={displayItem.description}/>
-                          <label className={labelStyle} htmlFor="resolution">Resolution</label>
-                          <StyledTextarea id="resolution" disabled value={displayItem.resolution}/>
-                          <StyledTextField label="Participants" disabled value={displayItem.participants.join(", ")}/>
-                          <StyledTextField label="Date Resolved" disabled type="date" value={MakeDateString(displayItem.date)}/>
+                          <label className={labelStyle} htmlFor={DecisionModalIds.description}>Decision Description</label>
+                          <StyledTextarea id={DecisionModalIds.description} disabled value={displayItem.description}/>
+                          <label className={labelStyle} htmlFor={DecisionModalIds.resolution}>Resolution</label>
+                          <StyledTextarea id={DecisionModalIds.resolution} disabled value={displayItem.resolution}/>
+                          <StyledTextField id={DecisionModalIds.participants} label="Participants" disabled value={displayItem.participants.join(", ")}/>
+                          <StyledTextField id={DecisionModalIds.date} label="Date Resolved" disabled type="date" value={MakeDateString(displayItem.date)}/>
                         </>
                         }
                       </StyledCardContent>

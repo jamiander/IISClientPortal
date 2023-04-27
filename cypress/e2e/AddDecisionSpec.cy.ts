@@ -4,6 +4,7 @@ const consts = TestConstants;
 const modalIds = consts.decisionModalIds;
 const radioIds = consts.initiativeDisplayRadioIds;
 const tableIds = consts.initiativeTableIds;
+const waitTime = 500;
 
 const init = {
   companyName: 'Integrity Inspired Solutions',
@@ -32,7 +33,10 @@ describe("add decision spec", () => {
     cy.get("#viewDecisionDataButton0").click();
 
     cy.get(modalIds.addButton).click();
-    //fill in all fields with decision constant
+    cy.get(modalIds.description).type(decision.description,{force: true});
+    cy.get(modalIds.resolution).type(decision.resolution,{force: true});
+    cy.get(modalIds.participants).type(decision.names[0],{force: true});
+    cy.get(modalIds.date).type(decision.date,{force: true});
   })
 
   specify("add decision to initiative", () => {
@@ -40,16 +44,37 @@ describe("add decision spec", () => {
   })
 
   specify("can't add decision with empty fields", () => {
-    //empty name
-    
-    //empty desc
+    cy.get(modalIds.description).clear({force: true});
+    cy.get(modalIds.saveChangesButton).click();
+    cy.wait(waitTime);
+    cy.get(modalIds.saveChangesButton);
+    cy.get(modalIds.description).type(decision.description,{force: true});
 
-    //empty resolution
+    cy.get(modalIds.resolution).clear({force: true});
+    cy.get(modalIds.saveChangesButton).click();
+    cy.wait(waitTime);
+    cy.get(modalIds.saveChangesButton);
+    cy.get(modalIds.resolution).type(decision.resolution,{force: true});
 
-    //empty date
+    cy.get(modalIds.participants).clear({force: true});
+    cy.get(modalIds.saveChangesButton).click();
+    cy.wait(waitTime);
+    cy.get(modalIds.saveChangesButton);
+    cy.get(modalIds.participants).type(decision.names[0],{force: true});
+
+    /*cy.get(modalIds.date).clear({force: true});
+    cy.get(modalIds.saveChangesButton).click();
+    cy.wait(waitTime);
+    cy.get(modalIds.saveChangesButton);*/
   })
 
   specify("must be able to cancel adding", () => {
+    cy.get(modalIds.cancelChangesButton).click();
+    cy.get(modalIds.saveChangesButton).should('not.exist');
+    cy.get(decision.description).should('not.exist');
+  })
+
+  specify("close button closes the modal", () => {
     cy.get(modalIds.closeModalButton).click();
     cy.get(modalIds.modal).should('not.exist');
   })
