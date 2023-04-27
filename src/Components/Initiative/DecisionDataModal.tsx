@@ -152,12 +152,12 @@ interface DecisionDataProps {
                       <StyledCardContent>
                         {isEdit ?
                         <>
-                        <h1>Decision Description</h1>
+                          <label className={labelStyle} htmlFor={DecisionModalIds.description}>Decision Description</label>
                           <StyledTextarea id={DecisionModalIds.description} value={currentDescription} onChange={e => setCurrentDescription(e.target.value)}/>
-                        <h1>Resolution</h1>
+                          <label className={labelStyle} htmlFor={DecisionModalIds.resolution}>Resolution</label>
                           <StyledTextarea id={DecisionModalIds.resolution} value={currentResolution} onChange={e => setCurrentResolution(e.target.value)}/>
-                          <StyledTextField id={DecisionModalIds.participants} size="medium" label="Participants" value={currentParticipants} onChange={e => setCurrentParticipants(e.target.value)}/>
-                          <StyledTextField id={DecisionModalIds.date} size="medium" label="Date Resolved" type="date" value={currentDateString} onChange={e => setCurrentDateString(e.target.value)}/>
+                          <StyledTextField id={DecisionModalIds.participants} label="Participants" value={currentParticipants} onChange={e => setCurrentParticipants(e.target.value)}/>
+                          <StyledTextField id={DecisionModalIds.date} label="Date Resolved" type="date" value={currentDateString} onChange={e => setCurrentDateString(e.target.value)}/>
                         </>
                         :
                         <>
