@@ -10,7 +10,6 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { Fragment, useEffect, useState } from "react";
 import { cancelButtonStyle, submitButtonStyle } from "../../Styles";
 import { DecisionData } from "../../Services/CompanyService";
-import React from "react";
 import TextField from "@mui/material/TextField";
 
 export const DecisionModalIds = {
@@ -47,19 +46,11 @@ export default function DecisionDataModal(props: DecisionDataProps) {
     setSelectedInitiative(props.initiative);
   },[props.isOpen])
 
-  function Submit(decisions: DecisionData[])
-  {
-
-  }
-
   function EditDescription(key: number, newDescription: string) {
     let selectedInitiativeClone:Initiative = JSON.parse(JSON.stringify(selectedInitiative));
 
-    let index = selectedInitiativeClone.decisions.findIndex(d => d.id === key);
-    if(index !== -1) {
-      selectedInitiativeClone.decisions[index].description = newDescription;
-      setSelectedInitiative(selectedInitiativeClone);
-    }
+    selectedInitiativeClone.decisions[key].description = newDescription;
+    setSelectedInitiative(selectedInitiativeClone);
   }
 
   return (
@@ -80,16 +71,16 @@ export default function DecisionDataModal(props: DecisionDataProps) {
               {
               selectedInitiative.decisions.map((displayItem, key) => {
               return(
-                  <Grid item md={4} key={key}>
-                    <Item>
-                      <TextField
-                        autoFocus={false}
-                        defaultValue={displayItem.description}
-                        onChange={(event: { target: { value: string; }; }) => EditDescription(displayItem.id, event.target.value)}
-                       />
-                      <Typography variant="body1">{displayItem.resolution}</Typography>
-                      <Typography variant="body1">{displayItem.participants}</Typography>
-                      <Typography variant="body2">{displayItem.date.month + "/" + displayItem.date.day + "/" + displayItem.date.year}</Typography>
+                <Grid item md={4} key={key}>
+                  <Item>
+                    <TextField
+                      autoFocus={false}
+                      defaultValue={displayItem.description}
+                      onChange={(event: { target: { value: string; }; }) => EditDescription(key, event.target.value)}
+                      />
+                    <Typography variant="body1">{displayItem.resolution}</Typography>
+                    <Typography variant="body1">{displayItem.participants}</Typography>
+                    <Typography variant="body2">{displayItem.date.month + "/" + displayItem.date.day + "/" + displayItem.date.year}</Typography>
                     <CardActions>
                       <Button>share</Button>
                     </CardActions>
