@@ -42,6 +42,7 @@ interface DecisionDataProps {
   
     const [selectedInitiative, setSelectedInitiative] = useState<Initiative>(props.initiative);
     const [editIndex, setEditIndex] = useState(-1);
+    const [isNew, setIsNew] = useState(false);
 
   useEffect(() => {
     setSelectedInitiative(props.initiative);
@@ -57,6 +58,7 @@ interface DecisionDataProps {
     initiativeClone.decisions.push(newDecision);
 
     setSelectedInitiative(initiativeClone);
+    setIsNew(true);
     EnterEditMode(initiativeClone.decisions.length-1,initiativeClone);
   }
 
@@ -73,9 +75,23 @@ interface DecisionDataProps {
   function LeaveEditMode()
   {
     setEditIndex(-1);
+    setIsNew(false);
   }
 
-  function EditDecision(key: number, newDescription: string, newResolution: string, newParticipants: string[], newDate?: DateInfo) {
+  function CancelEdit()
+  {
+    if(isNew)
+    {
+      let initiativeClone: Initiative = JSON.parse(JSON.stringify(selectedInitiative));
+      initiativeClone.decisions.splice(editIndex,1);
+
+      setSelectedInitiative(initiativeClone);
+    }
+    LeaveEditMode();
+  }
+
+  function EditDecision(key: number, newDescription: string, newResolution: string, newParticipants: string[], newDate?: DateInfo)
+  {
     let selectedInitiativeClone: Initiative = JSON.parse(JSON.stringify(selectedInitiative));
     let newDecision = selectedInitiativeClone.decisions[key];
     
@@ -88,6 +104,8 @@ interface DecisionDataProps {
     let successfulSubmit = SubmitDecisionData(selectedInitiativeClone.decisions);
     if(successfulSubmit)
       setSelectedInitiative(selectedInitiativeClone);
+    else
+      setSelectedInitiative(selectedInitiative);
   }
 
   function SubmitDecisionData(decisions: DecisionData[]): boolean
@@ -152,7 +170,7 @@ interface DecisionDataProps {
                         {isEdit &&
                           <div className="flex w-full justify-between">
                             <button className={submitButtonStyle} onClick={() => EditDecision(key, currentDescription, currentResolution, currentParticipants.split(", "), currentDateString ? MakeDateInfo(currentDateString) : displayItem.date)}>Save</button>
-                            <button className={cancelButtonStyle} onClick={() => LeaveEditMode()}>Cancel</button>
+                            <button className={cancelButtonStyle} onClick={() => CancelEdit()}>Cancel</button>
                           </div>
                         }
                         {
