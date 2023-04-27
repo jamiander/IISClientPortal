@@ -1,7 +1,7 @@
 import Button from "@mui/material/Button";
 import CardActions from "@mui/material/CardActions";
 import Dialog from "@mui/material/Dialog";
-import { Company, Initiative } from "../../Store/CompanySlice";
+import { Company, Initiative, updateDecisionData } from "../../Store/CompanySlice";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import { styled } from '@mui/material/styles';
@@ -13,6 +13,9 @@ import TextField from "@mui/material/TextField";
 import { Card, CardContent } from "@mui/material";
 import { MakeDateInfo, MakeDateString } from "../DateInput";
 import AddIcon from '@mui/icons-material/Add';
+import { ValidateDecisions, ValidationFailedPrefix } from "../../Services/Validation";
+import { useOutletContext } from "react-router-dom";
+import { useAppDispatch } from "../../Store/Hooks";
 
 export const DecisionModalIds = {
   modal: "decisionModal",
@@ -27,10 +30,11 @@ interface DecisionDataProps {
     initiative: Initiative 
     isOpen: boolean
     setDecisionModalIsOpen: (value: boolean) => void
-    Submit: (decisions: DecisionData[]) => void
 }
 
   export default function DecisionDataModal(props: DecisionDataProps) {
+    const dispatch = useAppDispatch();
+    const ShowToast : (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void = useOutletContext();
     const [currentDescription, setCurrentDescription] = useState("");
     const [currentResolution, setCurrentResolution] = useState("");
     const [currentParticipants, setCurrentParticipants] = useState("");
@@ -81,9 +85,28 @@ interface DecisionDataProps {
     if(newDate)
       newDecision.date = newDate;
 
-    setSelectedInitiative(selectedInitiativeClone);
+    let successfulSubmit = SubmitDecisionData(selectedInitiativeClone.decisions);
+    if(successfulSubmit)
+      setSelectedInitiative(selectedInitiativeClone);
+  }
 
-    LeaveEditMode();
+  function SubmitDecisionData(decisions: DecisionData[]): boolean
+  {
+    let isTest = true//false;
+    if((window as any).Cypress)
+      isTest = true;
+    
+    let validation = ValidateDecisions(decisions);
+    if(validation.success)
+    {
+      dispatch(updateDecisionData({isTest: isTest, companyId: props.company.id.toString(), initiativeId: props.initiative.id, decisions: decisions}));
+      LeaveEditMode();//setViewDecisionDataIsOpen(false);
+      return true;
+    }
+    else
+      ShowToast(ValidationFailedPrefix + validation.message,"Error");
+    
+    return false;
   }
 
   return (
@@ -96,7 +119,7 @@ interface DecisionDataProps {
         >
           <div className="flex justify-between">
             <h1><strong>{props.company.name}    {selectedInitiative.title}</strong></h1>
-            <button onClick={() => AddEmptyDecision()}><AddIcon /></button>
+            <button id={DecisionModalIds.addButton} onClick={() => AddEmptyDecision()}><AddIcon /></button>
           </div>
           <div style={{margin: '2%'}}>
             <Grid container spacing={6}>
