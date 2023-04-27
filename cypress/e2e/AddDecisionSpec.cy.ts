@@ -31,12 +31,12 @@ describe("add decision spec", () => {
     cy.get('table').contains(init.companyName);
     cy.get("#viewDecisionDataButton0").click();
 
-    //cy.get(modalIds.addButton).click();
+    cy.get(modalIds.addButton).click();
     //fill in all fields with decision constant
   })
 
   specify("add decision to initiative", () => {
-    cy.get(modalIds.submitButton).click();
+    cy.get(modalIds.saveChangesButton).click();
   })
 
   specify("can't add decision with empty fields", () => {
@@ -50,7 +50,7 @@ describe("add decision spec", () => {
   })
 
   specify("must be able to cancel adding", () => {
-    cy.get(modalIds.closeButton).click();
+    cy.get(modalIds.closeModalButton).click();
     cy.get(modalIds.modal).should('not.exist');
   })
 
