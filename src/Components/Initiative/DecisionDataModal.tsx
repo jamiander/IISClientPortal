@@ -74,15 +74,15 @@ export default function DecisionDataModal(props: DecisionDataProps) {
                 <Grid item md={4} key={key}>
                   <Item>
                     <TextField
-                      autoFocus={false}
-                      defaultValue={displayItem.description}
-                      onChange={(event: { target: { value: string; }; }) => EditDescription(key, event.target.value)}
-                      />
+                      defaultValue={displayItem.description}>
+                      </TextField>
                     <Typography variant="body1">{displayItem.resolution}</Typography>
                     <Typography variant="body1">{displayItem.participants}</Typography>
                     <Typography variant="body2">{displayItem.date.month + "/" + displayItem.date.day + "/" + displayItem.date.year}</Typography>
                     <CardActions>
-                      <Button>share</Button>
+                      <Button>Share</Button>
+                      <button onClick={() => EditDescription(key, displayItem.description)}>Enter Changes
+                      </button>
                     </CardActions>
                   </Item>
                 </Grid>
