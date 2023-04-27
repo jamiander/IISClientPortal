@@ -29,10 +29,6 @@ interface DecisionDataProps {
     Submit: (decisions: DecisionData[]) => void
 }
 
-export default function DecisionDataModal(props: DecisionDataProps) {
-
-  const [selectedInitiative, setSelectedInitiative] = useState<Initiative>(props.initiative);
-  const [currentDescription, setCurrentDescription] = useState("");
   export default function DecisionDataModal(props: DecisionDataProps) {
     const [currentDescription, setCurrentDescription] = useState("");
     const [currentResolution, setCurrentResolution] = useState("");
@@ -89,7 +85,7 @@ export default function DecisionDataModal(props: DecisionDataProps) {
             <h1><strong>{props.company.name}    {selectedInitiative.title}</strong></h1>
           </div>
           <div style={{margin: '2%'}}>
-            <Grid container spacing={4}>
+            <Grid container spacing={6}>
               {
               selectedInitiative.decisions.map((displayItem, key) => {
                 let isEdit = (key === editIndex);
@@ -101,17 +97,17 @@ export default function DecisionDataModal(props: DecisionDataProps) {
                       <StyledCardContent>
                         {isEdit ?
                         <>
-                          <TextField value={currentDescription} onChange={e => setCurrentDescription(e.target.value)}></TextField>
-                          <TextField value={currentResolution} onChange={e => setCurrentResolution(e.target.value)}></TextField>
-                          <TextField value={currentParticipants} onChange={e => setCurrentParticipants(e.target.value)}></TextField>
-                          <TextField type="date" value={currentDateString} onChange={e => setCurrentDateString(e.target.value)}></TextField>
+                          <StyledTextarea value={currentDescription} onChange={e => setCurrentDescription(e.target.value)}/>
+                          <StyledTextarea value={currentResolution} onChange={e => setCurrentResolution(e.target.value)}/>
+                          <StyledTextField value={currentParticipants} onChange={e => setCurrentParticipants(e.target.value)}/>
+                          <StyledTextField type="date" value={currentDateString} onChange={e => setCurrentDateString(e.target.value)}/>
                         </>
                         :
                         <>
-                          <TextField disabled value={displayItem.description}></TextField>
-                          <TextField disabled value={displayItem.resolution}></TextField>
-                          <TextField disabled value={displayItem.participants.join(", ")}></TextField>
-                          <TextField disabled type="date" value={MakeDateString(displayItem.date)}></TextField>
+                          <StyledTextarea disabled value={displayItem.description}/>
+                          <StyledTextarea disabled value={displayItem.resolution}/>
+                          <StyledTextField disabled value={displayItem.participants.join(", ")}/>
+                          <StyledTextField disabled type="date" value={MakeDateString(displayItem.date)}/>
                         </>
                         }
                       </StyledCardContent>
@@ -130,8 +126,6 @@ export default function DecisionDataModal(props: DecisionDataProps) {
                         }
                       </CardActions>
                     </StyledCard>
-                  </Item>
-                    </Card>
                   </Item>
                 </Grid>
               )})}
