@@ -40,7 +40,7 @@ export default function DecisionDataModal(props: DecisionDataProps) {
   const [currentDescription, setCurrentDescription] = useState("");
   const [currentResolution, setCurrentResolution] = useState("");
   const [currentParticipants, setCurrentParticipants] = useState("");
-  const [currentDate, setCurrentDate] = useState<DateInfo>();
+  const [currentDateString, setCurrentDateString] = useState("");
 
   const [selectedInitiative, setSelectedInitiative] = useState<Initiative>(props.initiative);
   const [editIndex, setEditIndex] = useState(-1);
@@ -57,7 +57,7 @@ export default function DecisionDataModal(props: DecisionDataProps) {
     setCurrentDescription(currentDecision.description);
     setCurrentResolution(currentDecision.resolution);
     setCurrentParticipants(currentDecision.participants.join(", "));
-    setCurrentDate(currentDecision.date);
+    setCurrentDateString(MakeDateString(currentDecision.date));
   }
 
   function LeaveEditMode()
@@ -107,7 +107,7 @@ export default function DecisionDataModal(props: DecisionDataProps) {
                           <TextField value={currentDescription} onChange={e => setCurrentDescription(e.target.value)}></TextField>
                           <TextField value={currentResolution} onChange={e => setCurrentResolution(e.target.value)}></TextField>
                           <TextField value={currentParticipants} onChange={e => setCurrentParticipants(e.target.value)}></TextField>
-                          <TextField type="date" value={currentDate ? MakeDateString(currentDate) : ""} onChange={e => setCurrentDate(MakeDateInfo(e.target.value))}></TextField>
+                          <TextField type="date" value={currentDateString} onChange={e => setCurrentDateString(e.target.value)}></TextField>
                         </>
                         :
                         <>
@@ -121,7 +121,7 @@ export default function DecisionDataModal(props: DecisionDataProps) {
                       <CardActions>
                         {isEdit &&
                           <div className="flex w-full justify-between">
-                            <button className={submitButtonStyle} onClick={() => EditDecision(key, currentDescription, currentResolution, currentParticipants.split(", "), currentDate)}>Save</button>
+                            <button className={submitButtonStyle} onClick={() => EditDecision(key, currentDescription, currentResolution, currentParticipants.split(", "), currentDateString ? MakeDateInfo(currentDateString) : displayItem.date)}>Save</button>
                             <button className={cancelButtonStyle} onClick={() => LeaveEditMode()}>Cancel</button>
                           </div>
                         }
