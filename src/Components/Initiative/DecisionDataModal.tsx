@@ -6,8 +6,8 @@ import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import { styled } from '@mui/material/styles';
 import CssBaseline from "@mui/material/CssBaseline";
-import { Fragment, useEffect, useState } from "react";
-import { cancelButtonStyle } from "../../Styles";
+import { Fragment, RefObject, createRef, useEffect, useRef, useState } from "react";
+import { cancelButtonStyle, submitButtonStyle } from "../../Styles";
 import { DateInfo, DecisionData } from "../../Services/CompanyService";
 import TextField from "@mui/material/TextField";
 import { MakeDateString } from "../DateInput";
@@ -32,10 +32,12 @@ interface DecisionDataProps {
 export default function DecisionDataModal(props: DecisionDataProps) {
 
   const [selectedInitiative, setSelectedInitiative] = useState<Initiative>(props.initiative);
-  
+  const [currentDescription, setCurrentDescription] = useState("");
+
   useEffect(() => {
     setSelectedInitiative(props.initiative);
   },[props.isOpen])
+
 
   function EditDecision(key: number, newDescription: string, newResolution: string, newParticipants: string[], newDate: DateInfo) {
     let selectedInitiativeClone:Initiative = JSON.parse(JSON.stringify(selectedInitiative));
@@ -49,9 +51,7 @@ export default function DecisionDataModal(props: DecisionDataProps) {
   }
 
   return (
-    <Fragment>
-    <CssBaseline />
-        <Dialog
+      <Dialog
         id={DecisionModalIds.modal}
         open={props.isOpen}
         onClose={()=>props.setDecisionModalIsOpen(false)}
@@ -66,21 +66,20 @@ export default function DecisionDataModal(props: DecisionDataProps) {
               {
               selectedInitiative.decisions.map((displayItem, key) => {
               return(
-                <Grid item key={key}>
+                <Grid item md={4} key={key}>
                   <Paper>
                     <Card>
                       <CardContent>
-                        <TextField className="m-10" label="Decision Description" defaultValue={displayItem.description}/>
-                        <TextField label="Resolution" defaultValue={displayItem.resolution}/>
-                        <TextField label="Participants" defaultValue={displayItem.participants}/>
-                        <TextField label="Date Resolved" type="date" defaultValue={MakeDateString(displayItem.date)}/>
-                        <CardActions>
-                          <Button>Share</Button>
-                          <Button onClick={() => EditDecision(key, displayItem.description, displayItem.resolution, displayItem.participants, displayItem.date)}>
-                            Submit Changes
-                          </Button>
-                        </CardActions>
-                    </CardContent>
+                        <TextField value={currentDescription} onChange={e => setCurrentDescription(e.target.value)}></TextField>
+                        <TextField defaultValue={displayItem.resolution}></TextField>
+                        <TextField defaultValue={displayItem.participants}></TextField>
+                        <TextField type="date" defaultValue={displayItem.date}></TextField>
+                      </CardContent>
+                      <CardActions>
+                        <Button>Share</Button>
+                        <button className={submitButtonStyle} onClick={() => EditDecision(key, currentDescription, displayItem.resolution, displayItem.participants, displayItem.date)}>Save
+                        </button>
+                      </CardActions>
                     </Card>
                   </Paper>
                 </Grid>
@@ -94,6 +93,5 @@ export default function DecisionDataModal(props: DecisionDataProps) {
             <button id={DecisionModalIds.closeButton} className={cancelButtonStyle} onClick={() => props.setDecisionModalIsOpen(false)}>Close</button>
           </div>
         </Dialog>
-    </Fragment>
   );
 }
