@@ -56,7 +56,7 @@ export default function DecisionDataModal(props: DecisionDataProps) {
     let currentDecision = selectedInitiative.decisions[index];
     setCurrentDescription(currentDecision.description);
     setCurrentResolution(currentDecision.resolution);
-    setCurrentParticipants(currentDecision.participants.join(","));
+    setCurrentParticipants(currentDecision.participants.join(", "));
     setCurrentDate(currentDecision.date);
   }
 
@@ -76,6 +76,8 @@ export default function DecisionDataModal(props: DecisionDataProps) {
       newDecision.date = newDate;
 
     setSelectedInitiative(selectedInitiativeClone);
+
+    LeaveEditMode();
   }
 
   return (
@@ -100,15 +102,26 @@ export default function DecisionDataModal(props: DecisionDataProps) {
                   <Item>
                     <Card>
                       <CardContent>
-                        <TextField value={currentDescription} onChange={e => setCurrentDescription(e.target.value)}></TextField>
-                        <TextField value={currentResolution} onChange={e => setCurrentResolution(e.target.value)}></TextField>
-                        <TextField value={currentParticipants} onChange={e => setCurrentParticipants(e.target.value)}></TextField>
-                        <TextField type="date" value={currentDate ? MakeDateString(currentDate) : ""} onChange={e => setCurrentDate(MakeDateInfo(e.target.value))}></TextField>
+                        {isEdit ?
+                        <>
+                          <TextField value={currentDescription} onChange={e => setCurrentDescription(e.target.value)}></TextField>
+                          <TextField value={currentResolution} onChange={e => setCurrentResolution(e.target.value)}></TextField>
+                          <TextField value={currentParticipants} onChange={e => setCurrentParticipants(e.target.value)}></TextField>
+                          <TextField type="date" value={currentDate ? MakeDateString(currentDate) : ""} onChange={e => setCurrentDate(MakeDateInfo(e.target.value))}></TextField>
+                        </>
+                        :
+                        <>
+                          <TextField disabled value={displayItem.description}></TextField>
+                          <TextField disabled value={displayItem.resolution}></TextField>
+                          <TextField disabled value={displayItem.participants.join(", ")}></TextField>
+                          <TextField disabled type="date" value={MakeDateString(displayItem.date)}></TextField>
+                        </>
+                        }
                       </CardContent>
                       <CardActions>
                         {isEdit &&
                           <div className="flex w-full justify-between">
-                            <button className={submitButtonStyle} onClick={() => EditDecision(key, currentDescription, currentResolution, currentParticipants.split(","), currentDate)}>Save</button>
+                            <button className={submitButtonStyle} onClick={() => EditDecision(key, currentDescription, currentResolution, currentParticipants.split(", "), currentDate)}>Save</button>
                             <button className={cancelButtonStyle} onClick={() => LeaveEditMode()}>Cancel</button>
                           </div>
                         }
