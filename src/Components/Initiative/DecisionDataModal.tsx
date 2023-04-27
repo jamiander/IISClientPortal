@@ -47,9 +47,23 @@ export default function DecisionDataModal(props: DecisionDataProps) {
 
   useEffect(() => {
     setSelectedInitiative(props.initiative);
-    setEditIndex(-1);
+    LeaveEditMode();
   },[props.isOpen])
 
+  function EnterEditMode(index: number)
+  {
+    setEditIndex(index);
+    let currentDecision = selectedInitiative.decisions[index];
+    setCurrentDescription(currentDecision.description);
+    setCurrentResolution(currentDecision.resolution);
+    setCurrentParticipants(currentDecision.participants.join(","));
+    setCurrentDate(currentDecision.date);
+  }
+
+  function LeaveEditMode()
+  {
+    setEditIndex(-1);
+  }
 
   function EditDecision(key: number, newDescription: string, newResolution: string, newParticipants: string[], newDate?: DateInfo) {
     let selectedInitiativeClone: Initiative = JSON.parse(JSON.stringify(selectedInitiative));
@@ -95,13 +109,13 @@ export default function DecisionDataModal(props: DecisionDataProps) {
                         {isEdit &&
                           <div className="flex w-full justify-between">
                             <button className={submitButtonStyle} onClick={() => EditDecision(key, currentDescription, currentResolution, currentParticipants.split(","), currentDate)}>Save</button>
-                            <button className={cancelButtonStyle} onClick={() => setEditIndex(-1)}>Cancel</button>
+                            <button className={cancelButtonStyle} onClick={() => LeaveEditMode()}>Cancel</button>
                           </div>
                         }
                         {
-                          !isEdit &&
+                          !isEdit && editIndex === -1 &&
                           <div className="flex w-full justify-start">
-                            <button className={submitButtonStyle} onClick={() => setEditIndex(key)}>Edit</button>
+                            <button className={submitButtonStyle} onClick={() => EnterEditMode(key)}>Edit</button>
                           </div>
                         }
                       </CardActions>
