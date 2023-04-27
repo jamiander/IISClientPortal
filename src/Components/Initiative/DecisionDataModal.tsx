@@ -9,7 +9,7 @@ import { styled } from '@mui/material/styles';
 import CssBaseline from "@mui/material/CssBaseline";
 import { Fragment, useEffect, useState } from "react";
 import { cancelButtonStyle, submitButtonStyle } from "../../Styles";
-import { DecisionData } from "../../Services/CompanyService";
+import { DateInfo, DecisionData } from "../../Services/CompanyService";
 import TextField from "@mui/material/TextField";
 
 export const DecisionModalIds = {
@@ -38,18 +38,20 @@ export default function DecisionDataModal(props: DecisionDataProps) {
     elevation: 5
   }));
 
-  const [description, setDescription] = useState("");
-  const [isDescriptionFocused, setDescriptionFocused] = useState(false);
   const [selectedInitiative, setSelectedInitiative] = useState<Initiative>(props.initiative);
 
   useEffect(() => {
     setSelectedInitiative(props.initiative);
   },[props.isOpen])
 
-  function EditDescription(key: number, newDescription: string) {
+  function EditDecision(key: number, newDescription: string, newResolution: string, newParticipants: string[], newDate: DateInfo) {
     let selectedInitiativeClone:Initiative = JSON.parse(JSON.stringify(selectedInitiative));
 
     selectedInitiativeClone.decisions[key].description = newDescription;
+    selectedInitiativeClone.decisions[key].resolution = newResolution;
+    selectedInitiativeClone.decisions[key].participants = newParticipants;
+    selectedInitiativeClone.decisions[key].date = newDate;
+
     setSelectedInitiative(selectedInitiativeClone);
   }
 
@@ -73,16 +75,14 @@ export default function DecisionDataModal(props: DecisionDataProps) {
               return(
                 <Grid item md={4} key={key}>
                   <Item>
-                    <TextField
-                      defaultValue={displayItem.description}>
-                      </TextField>
-                    <Typography variant="body1">{displayItem.resolution}</Typography>
-                    <Typography variant="body1">{displayItem.participants}</Typography>
-                    <Typography variant="body2">{displayItem.date.month + "/" + displayItem.date.day + "/" + displayItem.date.year}</Typography>
+                    <TextField defaultValue={displayItem.description}></TextField>
+                    <TextField defaultValue={displayItem.resolution}></TextField>
+                    <TextField defaultValue={displayItem.participants}></TextField>
+                    <TextField type="date" defaultValue={displayItem.date}></TextField>
                     <CardActions>
                       <Button>Share</Button>
-                      <button onClick={() => EditDescription(key, displayItem.description)}>Enter Changes
-                      </button>
+                      <Button onClick={() => EditDecision(key, displayItem.description, displayItem.resolution, displayItem.participants, displayItem.date)}>Submit Changes
+                      </Button>
                     </CardActions>
                   </Item>
                 </Grid>
