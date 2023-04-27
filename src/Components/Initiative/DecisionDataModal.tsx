@@ -1,22 +1,23 @@
 import Button from "@mui/material/Button";
 import CardActions from "@mui/material/CardActions";
 import Dialog from "@mui/material/Dialog";
-import Typography from "@mui/material/Typography";
 import { Company, Initiative } from "../../Store/CompanySlice";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import { styled } from '@mui/material/styles';
 import CssBaseline from "@mui/material/CssBaseline";
 import { Fragment, useEffect, useState } from "react";
-import { cancelButtonStyle, submitButtonStyle } from "../../Styles";
+import { cancelButtonStyle } from "../../Styles";
 import { DateInfo, DecisionData } from "../../Services/CompanyService";
 import TextField from "@mui/material/TextField";
+import { MakeDateString } from "../DateInput";
+import { Card, CardContent } from "@mui/material";
 
 export const DecisionModalIds = {
   modal: "decisionModal",
   addButton: "decisionModalAddButton",
   submitButton: "decisionModalSubmitButton",
-  closeButton: "decisionModalCloseButton"
+  closeButton: "decisionModalCloseButton",
 }
 
 interface DecisionDataProps {
@@ -29,17 +30,9 @@ interface DecisionDataProps {
 }
 
 export default function DecisionDataModal(props: DecisionDataProps) {
-  
-  const Item = styled(Paper)(() => ({
-    backgroundColor: '#98d6a9',
-    padding: 8,
-    textAlign: 'center',
-    color: 'black',
-    elevation: 5
-  }));
 
   const [selectedInitiative, setSelectedInitiative] = useState<Initiative>(props.initiative);
-
+  
   useEffect(() => {
     setSelectedInitiative(props.initiative);
   },[props.isOpen])
@@ -69,22 +62,27 @@ export default function DecisionDataModal(props: DecisionDataProps) {
             <h1><strong>{props.company.name}    {selectedInitiative.title}</strong></h1>
           </div>
           <div style={{margin: '5%'}}>
-            <Grid container spacing={4}>
+            <Grid container spacing={3}>
               {
               selectedInitiative.decisions.map((displayItem, key) => {
               return(
-                <Grid item md={4} key={key}>
-                  <Item>
-                    <TextField defaultValue={displayItem.description}></TextField>
-                    <TextField defaultValue={displayItem.resolution}></TextField>
-                    <TextField defaultValue={displayItem.participants}></TextField>
-                    <TextField type="date" defaultValue={displayItem.date}></TextField>
-                    <CardActions>
-                      <Button>Share</Button>
-                      <Button onClick={() => EditDecision(key, displayItem.description, displayItem.resolution, displayItem.participants, displayItem.date)}>Submit Changes
-                      </Button>
-                    </CardActions>
-                  </Item>
+                <Grid item key={key}>
+                  <Paper>
+                    <Card>
+                      <CardContent>
+                        <TextField className="m-10" label="Decision Description" defaultValue={displayItem.description}/>
+                        <TextField label="Resolution" defaultValue={displayItem.resolution}/>
+                        <TextField label="Participants" defaultValue={displayItem.participants}/>
+                        <TextField label="Date Resolved" type="date" defaultValue={MakeDateString(displayItem.date)}/>
+                        <CardActions>
+                          <Button>Share</Button>
+                          <Button onClick={() => EditDecision(key, displayItem.description, displayItem.resolution, displayItem.participants, displayItem.date)}>
+                            Submit Changes
+                          </Button>
+                        </CardActions>
+                    </CardContent>
+                    </Card>
+                  </Paper>
                 </Grid>
               )})}
               {
@@ -93,7 +91,6 @@ export default function DecisionDataModal(props: DecisionDataProps) {
             </Grid>
           </div>
           <div className="h-10 w-full flex justify-between">
-            <button id={DecisionModalIds.submitButton} className={submitButtonStyle} onClick={() => props.Submit(props.initiative.decisions)}>Save</button>
             <button id={DecisionModalIds.closeButton} className={cancelButtonStyle} onClick={() => props.setDecisionModalIsOpen(false)}>Close</button>
           </div>
         </Dialog>
