@@ -1,18 +1,11 @@
-import Button from "@mui/material/Button";
-import CardActions from "@mui/material/CardActions";
 import Dialog from "@mui/material/Dialog";
 import { Company, Initiative } from "../../Store/CompanySlice";
 import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
-import { styled } from '@mui/material/styles';
-import CssBaseline from "@mui/material/CssBaseline";
-import { Fragment, RefObject, createRef, useEffect, useRef, useState } from "react";
-import { Item, StyledCard, StyledCardContent, StyledTextField, StyledTextarea, cancelButtonStyle, submitButtonStyle } from "../../Styles";
+import { useEffect, useState } from "react";
+import { Item, StyledCard, StyledCardActions, StyledCardContent, StyledTextField, StyledTextarea, cancelButtonStyle, genericButtonStyle, submitButtonStyle, yellowButtonStyle } from "../../Styles";
 import { DateInfo, DecisionData } from "../../Services/CompanyService";
-import TextField from "@mui/material/TextField";
-import { Card, CardContent } from "@mui/material";
+import { Button } from "@mui/material";
 import { MakeDateInfo, MakeDateString } from "../DateInput";
-import AddIcon from '@mui/icons-material/Add';
 
 export const DecisionModalIds = {
   modal: "decisionModal",
@@ -94,9 +87,11 @@ interface DecisionDataProps {
         fullWidth
         maxWidth={false}
         >
-          <div className="flex justify-between">
-            <h1><strong>{props.company.name}    {selectedInitiative.title}</strong></h1>
-            <button onClick={() => AddEmptyDecision()}><AddIcon /></button>
+          <div className="flex col-span-4 mb-4 bg-[#2ed7c3] rounded-md py-6 px-5">
+            <div className="w-full flex justify-between">
+            <p className="text-5xl font-bold w-1/4">{props.company.name} : {props.initiative.title}</p>
+            <button className={yellowButtonStyle} onClick={() => AddEmptyDecision()}>Add Decision</button>
+            </div>
           </div>
           <div style={{margin: '2%'}}>
             <Grid container spacing={6}>
@@ -111,21 +106,23 @@ interface DecisionDataProps {
                       <StyledCardContent>
                         {isEdit ?
                         <>
+                        <h1>Decision Description</h1>
                           <StyledTextarea value={currentDescription} onChange={e => setCurrentDescription(e.target.value)}/>
+                        <h1>Resolution</h1>
                           <StyledTextarea value={currentResolution} onChange={e => setCurrentResolution(e.target.value)}/>
-                          <StyledTextField value={currentParticipants} onChange={e => setCurrentParticipants(e.target.value)}/>
-                          <StyledTextField type="date" value={currentDateString} onChange={e => setCurrentDateString(e.target.value)}/>
+                          <StyledTextField size="medium" label="Participants" value={currentParticipants} onChange={e => setCurrentParticipants(e.target.value)}/>
+                          <StyledTextField size="medium" label="Date Resolved" type="date" value={currentDateString} onChange={e => setCurrentDateString(e.target.value)}/>
                         </>
                         :
                         <>
                           <StyledTextarea disabled value={displayItem.description}/>
                           <StyledTextarea disabled value={displayItem.resolution}/>
-                          <StyledTextField disabled value={displayItem.participants.join(", ")}/>
-                          <StyledTextField disabled type="date" value={MakeDateString(displayItem.date)}/>
+                          <StyledTextField label="Participants" disabled value={displayItem.participants.join(", ")}/>
+                          <StyledTextField label="Date Resolved" disabled type="date" value={MakeDateString(displayItem.date)}/>
                         </>
                         }
                       </StyledCardContent>
-                      <CardActions>
+                      <StyledCardActions>
                         {isEdit &&
                           <div className="flex w-full justify-between">
                             <button className={submitButtonStyle} onClick={() => EditDecision(key, currentDescription, currentResolution, currentParticipants.split(", "), currentDateString ? MakeDateInfo(currentDateString) : displayItem.date)}>Save</button>
@@ -138,7 +135,7 @@ interface DecisionDataProps {
                             <button className={submitButtonStyle} onClick={() => EnterEditMode(key, selectedInitiative)}>Edit</button>
                           </div>
                         }
-                      </CardActions>
+                      </StyledCardActions>
                     </StyledCard>
                   </Item>
                 </Grid>
@@ -149,7 +146,7 @@ interface DecisionDataProps {
             </Grid>
           </div>
           <div className="h-10 w-full flex justify-between">
-            <button id={DecisionModalIds.closeButton} className={cancelButtonStyle} onClick={() => props.setDecisionModalIsOpen(false)}>Close</button>
+            <Button id={DecisionModalIds.closeButton} className={cancelButtonStyle} onClick={() => props.setDecisionModalIsOpen(false)}>Close</Button>
           </div>
         </Dialog>
   );

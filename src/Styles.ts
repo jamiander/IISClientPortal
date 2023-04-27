@@ -1,6 +1,6 @@
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import { styled } from '@mui/material/styles';
-import { Card, CardContent, Paper, TextField, TextareaAutosize } from '@mui/material';
+import { Card, CardActions, CardContent, Paper, TextField, TextareaAutosize } from '@mui/material';
 
 export const modalStyle = {
   content: {
@@ -38,28 +38,29 @@ export const TableHeaderStyle =
     textAlign: 'center',
     color: 'black',
     elevation: 6,
-    height: 300
   }));
 
   export const StyledCard = styled(Card)(() => ({
-    height: 300
   }))
 
   export const StyledCardContent = styled(CardContent)(() => ({
-    height: 200
+  }))
+
+  export const StyledCardActions = styled(CardActions)(() => ({
+    height: 50
   }))
 
   export const StyledTextField = 
   styled(TextField)(() => ({
-    padding: 4,
+    padding: 10,
   }));
 
   export const StyledTextarea =
   styled(TextareaAutosize)(() => ({
-    width: 700,
-    height: 200,
+    width: 900,
     borderColor: '#4A90E2',
     borderWidth: 1, 
+    padding: 10
   }))
  
 
