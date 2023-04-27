@@ -22,7 +22,7 @@ export function ViewDecisionDataButton(props: ViewDecisionDataProps){
 
   function SubmitDecisionData(decisions: DecisionData[])
   {
-    let isTest = false;
+    let isTest = true//false;
     if((window as any).Cypress)
       isTest = true;
     
