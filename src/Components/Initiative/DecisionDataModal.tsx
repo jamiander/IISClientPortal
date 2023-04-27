@@ -11,6 +11,7 @@ import { DateInfo, DecisionData } from "../../Services/CompanyService";
 import TextField from "@mui/material/TextField";
 import { Card, CardContent } from "@mui/material";
 import { MakeDateInfo, MakeDateString } from "../DateInput";
+import AddIcon from '@mui/icons-material/Add';
 
 export const DecisionModalIds = {
   modal: "decisionModal",
@@ -50,10 +51,22 @@ export default function DecisionDataModal(props: DecisionDataProps) {
     LeaveEditMode();
   },[props.isOpen])
 
-  function EnterEditMode(index: number)
+  function AddEmptyDecision()
+  {
+    let initiativeClone: Initiative = JSON.parse(JSON.stringify(selectedInitiative));
+    let decisionIds = initiativeClone.decisions.map(d => d.id);
+    let negativeId = Math.min(...decisionIds,-1) - 1;
+    let newDecision: DecisionData = {id: negativeId, description: "", resolution: "", participants: [], date: MakeDateInfo("2023-04-27")};
+    initiativeClone.decisions.push(newDecision);
+
+    setSelectedInitiative(initiativeClone);
+    EnterEditMode(initiativeClone.decisions.length-1,initiativeClone);
+  }
+
+  function EnterEditMode(index: number, currentInitiative: Initiative)
   {
     setEditIndex(index);
-    let currentDecision = selectedInitiative.decisions[index];
+    let currentDecision = currentInitiative.decisions[index];
     setCurrentDescription(currentDecision.description);
     setCurrentResolution(currentDecision.resolution);
     setCurrentParticipants(currentDecision.participants.join(", "));
@@ -88,8 +101,9 @@ export default function DecisionDataModal(props: DecisionDataProps) {
         fullWidth
         maxWidth={false}
         >
-          <div>
+          <div className="flex justify-between">
             <h1><strong>{props.company.name}    {selectedInitiative.title}</strong></h1>
+            <button onClick={() => AddEmptyDecision()}><AddIcon /></button>
           </div>
           <div style={{margin: '5%'}}>
             <Grid container spacing={4}>
@@ -104,7 +118,7 @@ export default function DecisionDataModal(props: DecisionDataProps) {
                       <CardContent>
                         {isEdit ?
                         <>
-                          <TextField value={currentDescription} onChange={e => setCurrentDescription(e.target.value)}></TextField>
+                          <TextField autoFocus={true} value={currentDescription} onChange={e => setCurrentDescription(e.target.value)}></TextField>
                           <TextField value={currentResolution} onChange={e => setCurrentResolution(e.target.value)}></TextField>
                           <TextField value={currentParticipants} onChange={e => setCurrentParticipants(e.target.value)}></TextField>
                           <TextField type="date" value={currentDateString} onChange={e => setCurrentDateString(e.target.value)}></TextField>
@@ -128,7 +142,7 @@ export default function DecisionDataModal(props: DecisionDataProps) {
                         {
                           !isEdit && editIndex === -1 &&
                           <div className="flex w-full justify-start">
-                            <button className={submitButtonStyle} onClick={() => EnterEditMode(key)}>Edit</button>
+                            <button className={submitButtonStyle} onClick={() => EnterEditMode(key, selectedInitiative)}>Edit</button>
                           </div>
                         }
                       </CardActions>

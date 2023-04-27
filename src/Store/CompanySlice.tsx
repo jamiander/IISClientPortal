@@ -123,7 +123,7 @@ export const updateDecisionData = createAsyncThunk(
     if(response.status.toUpperCase().includes('FAILED'))
       throw Error;
 
-      return {initiativeId: args.initiativeId, companyId: parseInt(args.companyId), data: args.decisions};
+    return {initiativeId: args.initiativeId, companyId: parseInt(args.companyId), data: args.decisions};
   }
 )
 
