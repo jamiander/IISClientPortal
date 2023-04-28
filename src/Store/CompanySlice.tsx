@@ -141,7 +141,6 @@ export const deleteDecisionData = createAsyncThunk(
     const response = await DeleteDecisionData(args);
 
     if(response.status.toUpperCase().includes('FAILED'))
-    console.log(response.status);
       throw Error;
   }
 )
@@ -267,7 +266,7 @@ export const companySlice = createSlice({
                     const dataIndex = decisionsClone.findIndex(entry => decisionId === entry.id);
 
                     if(dataIndex > -1)
-                      decisionsClone.slice(dataIndex);
+                      decisionsClone.splice(dataIndex, 1);
                   }
                   matchingInit.decisions = decisionsClone;
                 }
