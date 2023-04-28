@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useOutletContext } from "react-router-dom";
-import { Company, Initiative, selectAllCompanies, updateInitiativeInfo, updateThroughputData } from "../../Store/CompanySlice";
+import { Company, Initiative, selectAllCompanies, upsertInitiativeInfo, upsertThroughputData } from "../../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
 import InitiativesTable from "./InitiativesTable"
 import ValidateNewInitiative, { ValidateEditThroughputData, ValidateFileThroughputData, ValidationFailedPrefix } from "../../Services/Validation";
@@ -38,7 +38,7 @@ export default function ManageInitiativesDisplay() {
     const validation = ValidateNewInitiative(initiative, companyId, companyList);
     if(validation.success)
     {
-      dispatch(updateInitiativeInfo({initiative: initiative, companyId: companyId.toString(), isTest: isTest}));
+      dispatch(upsertInitiativeInfo({initiative: initiative, companyId: companyId.toString(), isTest: isTest}));
       setAddInitiativeIsOpen(false);
       ShowToast("Update initiative successful", 'Success');
     }
@@ -55,7 +55,7 @@ export default function ManageInitiativesDisplay() {
     const validation = emptyDataCheck ? ValidateFileThroughputData(companyList, companyId, initiativeId, dataList) : ValidateEditThroughputData(companyList, companyId, initiativeId, dataList);
     if(validation.success)
     {
-      dispatch(updateThroughputData({companyId: companyId.toString(), initiativeId: initiativeId, itemsCompletedOnDate: dataList, isTest: isTest}));
+      dispatch(upsertThroughputData({companyId: companyId.toString(), initiativeId: initiativeId, itemsCompletedOnDate: dataList, isTest: isTest}));
       setUploadModalIsOpen(false);
       setEditModalIsOpen(false);
       ShowToast(validation.message, 'Success');

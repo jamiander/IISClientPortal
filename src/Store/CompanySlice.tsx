@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import { AuthenticateUser, AuthenticateUserRequest, DateInfo, GetCompanyInfo, GetCompanyInfoRequest, ThroughputData, DecisionData, UpdateCompanyInfo, UpdateCompanyInfoRequest, UpdateInitiativeInfo, UpdateInitiativeInfoRequest, UpdateThroughputData, UpdateThroughputDataRequest, UpdateDecisionDataRequest, UpdateDecisionData, DeleteDecisionDataRequest, DeleteDecisionData } from "../Services/CompanyService"
+import { AuthenticateUser, AuthenticateUserRequest, DateInfo, GetCompanyInfo, GetCompanyInfoRequest, ThroughputData, DecisionData, UpsertCompanyInfo, UpsertCompanyInfoRequest, UpsertInitiativeInfo, UpsertInitiativeInfoRequest, UpsertThroughputData, UpsertThroughputDataRequest, UpsertDecisionDataRequest, UpsertDecisionData, DeleteDecisionDataRequest, DeleteDecisionData } from "../Services/CompanyService"
 import { RootState } from "./Store"
 import { addUsersToStore, setCurrentUserId, User } from "./UserSlice"
 
@@ -68,10 +68,10 @@ export const getCompanyInfo = createAsyncThunk(
     }
 )
 
-export const updateCompanyInfo = createAsyncThunk(
-  'companies/updateCompanyInfo',
-  async (args: UpdateCompanyInfoRequest, {dispatch}): Promise<Company> => {
-      const response = await UpdateCompanyInfo(args);
+export const upsertCompanyInfo = createAsyncThunk(
+  'companies/upsertCompanyInfo',
+  async (args: UpsertCompanyInfoRequest, {dispatch}): Promise<Company> => {
+      const response = await UpsertCompanyInfo(args);
       
     if (response.status.toUpperCase().includes('FAILED'))
       throw Error;
@@ -89,10 +89,10 @@ export const updateCompanyInfo = createAsyncThunk(
   }
 )
 
-export const updateInitiativeInfo = createAsyncThunk(
-  'companies/updateInitiativesInfo',
-  async (args: UpdateInitiativeInfoRequest, {}): Promise<{initiative: Initiative, companyId: number}> => {
-    const response = await UpdateInitiativeInfo(args);
+export const upsertInitiativeInfo = createAsyncThunk(
+  'companies/upsertInitiativesInfo',
+  async (args: UpsertInitiativeInfoRequest, {}): Promise<{initiative: Initiative, companyId: number}> => {
+    const response = await UpsertInitiativeInfo(args);
 
     if(response.status.toUpperCase().includes('FAILED'))
       throw Error;
@@ -103,10 +103,10 @@ export const updateInitiativeInfo = createAsyncThunk(
   }
 )
 
-export const updateThroughputData = createAsyncThunk(
-  'companies/updateThroughputInfo',
-  async (args: UpdateThroughputDataRequest, {}): Promise<{initiativeId: number, companyId: number, data: ThroughputData[]}> => {
-    const response = await UpdateThroughputData(args);
+export const upsertThroughputData = createAsyncThunk(
+  'companies/upsertThroughputInfo',
+  async (args: UpsertThroughputDataRequest, {}): Promise<{initiativeId: number, companyId: number, data: ThroughputData[]}> => {
+    const response = await UpsertThroughputData(args);
 
     if(response.status.toUpperCase().includes('FAILED'))
       throw Error;
@@ -115,10 +115,10 @@ export const updateThroughputData = createAsyncThunk(
   }
 )
 
-export const updateDecisionData = createAsyncThunk(
-  'companies/updateDecisionData',
-  async (args: UpdateDecisionDataRequest, {}): Promise<{initiativeId: number, companyId: number, data: DecisionData[]}> => {
-    const response = await UpdateDecisionData(args);
+export const upsertDecisionData = createAsyncThunk(
+  'companies/upsertDecisionData',
+  async (args: UpsertDecisionDataRequest, {}): Promise<{initiativeId: number, companyId: number, data: DecisionData[]}> => {
+    const response = await UpsertDecisionData(args);
 
     if(response.status.toUpperCase().includes('FAILED'))
       throw Error;
@@ -183,14 +183,14 @@ export const companySlice = createSlice({
                     state.companies.push(company);
                 }
             })
-            .addCase(updateCompanyInfo.fulfilled, (state, action) => {
+            .addCase(upsertCompanyInfo.fulfilled, (state, action) => {
                 const newCompany = action.payload;
                 const companyIndex = state.companies.findIndex(company => company.id === newCompany.id);
                 if(companyIndex > -1)
                     state.companies.splice(companyIndex, 1);
                 state.companies.push(newCompany);
             })
-            .addCase(updateInitiativeInfo.fulfilled, (state, action) => {
+            .addCase(upsertInitiativeInfo.fulfilled, (state, action) => {
                 const newInitiative = action.payload.initiative;
                 const companyId = action.payload.companyId;
                 const matchingCompany = state.companies.find(company => company.id === companyId);
@@ -202,7 +202,7 @@ export const companySlice = createSlice({
                     matchingCompany.initiatives.push(newInitiative);
                 }
             })
-            .addCase(updateThroughputData.fulfilled, (state, action) => {
+            .addCase(upsertThroughputData.fulfilled, (state, action) => {
               const companyId = action.payload.companyId;
               const initiativeId = action.payload.initiativeId;
               const matchingCompany = state.companies.find(company => company.id === companyId);
@@ -228,7 +228,7 @@ export const companySlice = createSlice({
                 }
               }
             })
-            .addCase(updateDecisionData.fulfilled, (state, action) => {
+            .addCase(upsertDecisionData.fulfilled, (state, action) => {
               const companyId = action.payload.companyId;
               const initiativeId = action.payload.initiativeId;
               const matchingCompany = state.companies.find(company => company.id === companyId);

@@ -1,10 +1,8 @@
 import { useState } from "react"
-import { Company, Initiative, updateDecisionData } from "../../Store/CompanySlice"
+import { Company, Initiative } from "../../Store/CompanySlice"
 import { genericButtonStyle } from "../../Styles";
 import DecisionDataModal from "./DecisionDataModal";
-import { ValidateDecisions, ValidationFailedPrefix } from "../../Services/Validation";
 import { useAppDispatch } from "../../Store/Hooks";
-import { DecisionData } from "../../Services/CompanyService";
 import { useOutletContext } from "react-router-dom";
 
 interface ViewDecisionDataProps {

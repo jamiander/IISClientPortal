@@ -66,18 +66,18 @@ export async function GetCompanyInfo(request?: GetCompanyInfoRequest) : Promise<
   return response.data;
 }
 
-export interface UpdateCompanyInfoRequest {
+export interface UpsertCompanyInfoRequest {
   company: Company,
   employee: User,
   isTest: boolean
 }
 
-interface UpdateCompanyInfoResponse {
+interface UpsertCompanyInfoResponse {
   id: string,
   status: string
 }
 
-export async function UpdateCompanyInfo(request: UpdateCompanyInfoRequest) : Promise<UpdateCompanyInfoResponse> {
+export async function UpsertCompanyInfo(request: UpsertCompanyInfoRequest) : Promise<UpsertCompanyInfoResponse> {
   const company = request.company;
   const employee = request.employee;
   const isTest = request.isTest;
@@ -98,18 +98,18 @@ export async function UpdateCompanyInfo(request: UpdateCompanyInfoRequest) : Pro
   return response.data;
 }
 
-export interface UpdateInitiativeInfoRequest {
+export interface UpsertInitiativeInfoRequest {
   initiative: Initiative,
   companyId: string,
   isTest: boolean
 }
 
-interface UpdateInitiativeInfoResponse {
+interface UpsertInitiativeInfoResponse {
   initiativeId: string,
   status: string
 }
 
-export async function UpdateInitiativeInfo(request: UpdateInitiativeInfoRequest) : Promise<UpdateInitiativeInfoResponse> { 
+export async function UpsertInitiativeInfo(request: UpsertInitiativeInfoRequest) : Promise<UpsertInitiativeInfoResponse> { 
   let baseUrl = BASE_URL + "AddInitiativeDataDB?code=Myq5EJ7IUzofxs4iufiWIiprJxBmItjWZXG9zoTbnwcpAzFu-ZD83w==";
 
   let response = await axios.post(baseUrl, {initiative: request.initiative, companyId: request.companyId, isTest: request.isTest});
@@ -128,25 +128,25 @@ export function FindItemsRemaining(initiative: Initiative | undefined) {
   return NaN;
 }
 
-export interface UpdateThroughputDataRequest {
+export interface UpsertThroughputDataRequest {
   isTest: boolean,
   companyId: string,
   initiativeId: number,
   itemsCompletedOnDate: ThroughputData[]
 }
 
-interface UpdateThroughputDataResponse {
+interface UpsertThroughputDataResponse {
   status: string
 }
 
-export interface UpdateDecisionDataRequest {
+export interface UpsertDecisionDataRequest {
   isTest: boolean,
   companyId: string,
   initiativeId: number,
   decisions: DecisionData[]
 }
 
-interface UpdateDecisionDataResponse {
+interface UpsertDecisionDataResponse {
   status: string,
   idMap: [[number,number]]
 }
@@ -162,7 +162,7 @@ interface DeleteDecisionDataResponse {
   status: string
 }
 
-export async function UpdateThroughputData(request: UpdateThroughputDataRequest) : Promise<UpdateThroughputDataResponse>
+export async function UpsertThroughputData(request: UpsertThroughputDataRequest) : Promise<UpsertThroughputDataResponse>
 {
   let baseUrl = BASE_URL + "AddThroughputDataDB?code=7zfSWKR3W3-8WhgYqHm-8k50IZY6TdtJ_3ylenab25OoAzFuFzdQLA==";
 
@@ -170,7 +170,7 @@ export async function UpdateThroughputData(request: UpdateThroughputDataRequest)
   return response.data;
 }
 
-export async function UpdateDecisionData(request: UpdateDecisionDataRequest) : Promise<UpdateDecisionDataResponse>
+export async function UpsertDecisionData(request: UpsertDecisionDataRequest) : Promise<UpsertDecisionDataResponse>
 {
   let baseUrl = BASE_URL + "AddDecisionDataDB?code=vg1Gfo79pB09asPWVpH-lNaXbl3KTux5RuuMy741kmqIAzFuHnJFvg==";
 

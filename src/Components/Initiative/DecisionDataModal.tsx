@@ -1,5 +1,5 @@
 import Dialog from "@mui/material/Dialog";
-import { Company, Initiative, deleteDecisionData, updateDecisionData } from "../../Store/CompanySlice";
+import { Company, Initiative, deleteDecisionData, upsertDecisionData } from "../../Store/CompanySlice";
 import Grid from "@mui/material/Grid";
 import { useEffect, useState } from "react";
 import { Item, StyledCard, StyledCardActions, StyledCardContent, StyledTextField, StyledTextarea, cancelButtonStyle, genericButtonStyle, submitButtonStyle, yellowButtonStyle, labelStyle, inputStyle } from "../../Styles";
@@ -130,7 +130,7 @@ interface DecisionDataProps {
     let validation = ValidateDecisions(decisions);
     if(validation.success)
     {
-      dispatch(updateDecisionData({isTest: isTest, companyId: props.company.id.toString(), initiativeId: props.initiative.id, decisions: decisions}));
+      dispatch(upsertDecisionData({isTest: isTest, companyId: props.company.id.toString(), initiativeId: props.initiative.id, decisions: decisions}));
       LeaveEditMode();//setViewDecisionDataIsOpen(false);
       return true;
     }

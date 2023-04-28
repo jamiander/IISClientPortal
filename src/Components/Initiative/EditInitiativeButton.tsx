@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import { ValidationFailedPrefix } from "../../Services/Validation";
-import { Company, Initiative, selectAllCompanies, updateInitiativeInfo } from "../../Store/CompanySlice";
+import { Company, Initiative, selectAllCompanies, upsertInitiativeInfo } from "../../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
 import { UpdateInitiativeListModal } from "./UpdateInitiativeListModal";
 import { genericButtonStyle } from "../../Styles";
@@ -32,7 +32,7 @@ export function EditInitiativeButton(props: EditInitiativeButtonProps){
     let validation = props.ValidateInitiative(initiative, companyId, companyList);
     if(validation.success)
     {
-      dispatch(updateInitiativeInfo({initiative: initiative, companyId: companyId.toString(), isTest: isTest}))
+      dispatch(upsertInitiativeInfo({initiative: initiative, companyId: companyId.toString(), isTest: isTest}))
       setEditInitiativeIsOpen(false);
     }
     else
