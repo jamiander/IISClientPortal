@@ -61,6 +61,7 @@ interface DecisionDataProps {
     let newDecision: DecisionData = {id: negativeId, description: "", resolution: "", participants: [], date: MakeDateInfo("2023-04-27")};
     initiativeClone.decisions.push(newDecision);
 
+    setSearchedKeyword("");
     setSelectedInitiative(initiativeClone);
     setIsNew(true);
     EnterEditMode(negativeId,initiativeClone);
@@ -87,10 +88,10 @@ interface DecisionDataProps {
 
   function CancelEdit()
   {
-    if(isNew)
+    if(isNew && decisionToEdit)
     {
       let initiativeClone: Initiative = JSON.parse(JSON.stringify(selectedInitiative));
-      initiativeClone.decisions.filter(d => d.id !== (decisionToEdit?.id ?? -1));
+      initiativeClone.decisions = initiativeClone.decisions.filter(d => d.id !== decisionToEdit.id);
 
       setSelectedInitiative(initiativeClone);
     }
@@ -113,8 +114,6 @@ interface DecisionDataProps {
       let successfulSubmit = SubmitDecisionData(selectedInitiativeClone.decisions);
       if(successfulSubmit)
         setSelectedInitiative(selectedInitiativeClone);
-      else
-        setSelectedInitiative(selectedInitiative);
     }
   }
 
