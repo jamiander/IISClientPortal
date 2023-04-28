@@ -90,7 +90,6 @@ export async function UpdateCompanyInfo(request: UpdateCompanyInfoRequest) : Pro
       employeeEmail: employee.email,
       employeePassword: employee.password
     },
-    //no initiatives; this should be handled by the UpdateInitiativeInfo() method
   }
 
   let baseUrl = BASE_URL + "AddCompanyDataDB?code=Hu3y-USXm491pUrvMF-jQVFDMQvazAvfxEq9pAp58LhWAzFu7kjFvQ==";
@@ -152,6 +151,17 @@ interface UpdateDecisionDataResponse {
   idMap: [[number,number]]
 }
 
+export interface DeleteDecisionDataRequest {
+  isTest: boolean,
+  companyId: string,
+  initiativeId: number,
+  decisions: DecisionData[]
+}
+
+interface DeleteDecisionDataResponse {
+  status: string
+}
+
 export async function UpdateThroughputData(request: UpdateThroughputDataRequest) : Promise<UpdateThroughputDataResponse>
 {
   let baseUrl = BASE_URL + "AddThroughputDataDB?code=7zfSWKR3W3-8WhgYqHm-8k50IZY6TdtJ_3ylenab25OoAzFuFzdQLA==";
@@ -163,9 +173,15 @@ export async function UpdateThroughputData(request: UpdateThroughputDataRequest)
 export async function UpdateDecisionData(request: UpdateDecisionDataRequest) : Promise<UpdateDecisionDataResponse>
 {
   let baseUrl = BASE_URL + "AddDecisionDataDB?code=vg1Gfo79pB09asPWVpH-lNaXbl3KTux5RuuMy741kmqIAzFuHnJFvg==";
-// get correct url
 
   const response = await axios.post(baseUrl,request);
+  return response.data;
+}
+
+export async function DeleteDecisionData(request: DeleteDecisionDataRequest) : Promise<DeleteDecisionDataResponse>
+{
+  let baseUrl = BASE_URL + "AddDecisionDataDB?code=vg1Gfo79pB09asPWVpH-lNaXbl3KTux5RuuMy741kmqIAzFuHnJFvg==";
+  const response = await axios.delete(baseUrl, { data: request});
   return response.data;
 }
 
