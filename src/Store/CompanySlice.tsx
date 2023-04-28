@@ -261,9 +261,9 @@ export const companySlice = createSlice({
                 if(matchingInit)
                 {
                   const decisionsClone: DecisionData[] = JSON.parse(JSON.stringify(matchingInit.decisions));
-                  for(const data of action.meta.arg.decisions)
+                  for(const decisionId of action.meta.arg.decisionIds)
                   {
-                    const dataIndex = decisionsClone.findIndex(entry => data.id === entry.id);
+                    const dataIndex = decisionsClone.findIndex(entry => decisionId === entry.id);
 
                     if(dataIndex > -1)
                       decisionsClone.slice(dataIndex);

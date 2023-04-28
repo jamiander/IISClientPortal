@@ -1,5 +1,5 @@
 import Dialog from "@mui/material/Dialog";
-import { Company, Initiative, updateDecisionData } from "../../Store/CompanySlice";
+import { Company, Initiative, deleteDecisionData, updateDecisionData } from "../../Store/CompanySlice";
 import Grid from "@mui/material/Grid";
 import { useEffect, useState } from "react";
 import { Item, StyledCard, StyledCardActions, StyledCardContent, StyledTextField, StyledTextarea, cancelButtonStyle, genericButtonStyle, submitButtonStyle, yellowButtonStyle, labelStyle } from "../../Styles";
@@ -136,10 +136,16 @@ interface DecisionDataProps {
 
   function DeleteDecision(decisionId: number)
   {
+    let isTest = false;
+    if((window as any).Cypress)
+      isTest = true;
+
     let selectedInitiativeClone: Initiative = JSON.parse(JSON.stringify(selectedInitiative));
     selectedInitiativeClone.decisions = selectedInitiativeClone.decisions.filter(d => d.id !== decisionId);
-    //dispatch will go here
+
+    dispatch(deleteDecisionData({isTest: isTest, companyId: props.company.id.toString(), initiativeId: props.initiative.id, decisionIds: [decisionId]}));
     setSelectedInitiative(selectedInitiativeClone);
+    setDecisionToDelete(undefined);
     setIsDeleteOpen(false);
   }
 

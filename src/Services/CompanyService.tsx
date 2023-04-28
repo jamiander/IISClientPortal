@@ -155,7 +155,7 @@ export interface DeleteDecisionDataRequest {
   isTest: boolean,
   companyId: string,
   initiativeId: number,
-  decisions: DecisionData[]
+  decisionIds: number[]
 }
 
 interface DeleteDecisionDataResponse {
