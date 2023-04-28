@@ -61,7 +61,7 @@ export const TableHeaderStyle =
 
   export const StyledTextarea =
   styled(TextareaAutosize)(() => ({
-    width: 900,
+    width: "100%",
     borderColor: '#4A90E2',
     borderWidth: 1, 
     marginBottom: 10

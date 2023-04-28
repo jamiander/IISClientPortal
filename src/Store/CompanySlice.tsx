@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import { AuthenticateUser, AuthenticateUserRequest, DateInfo, GetCompanyInfo, GetCompanyInfoRequest, ThroughputData, DecisionData, UpdateCompanyInfo, UpdateCompanyInfoRequest, UpdateInitiativeInfo, UpdateInitiativeInfoRequest, UpdateThroughputData, UpdateThroughputDataRequest, UpdateDecisionDataRequest, UpdateDecisionData } from "../Services/CompanyService"
+import { AuthenticateUser, AuthenticateUserRequest, DateInfo, GetCompanyInfo, GetCompanyInfoRequest, ThroughputData, DecisionData, UpdateCompanyInfo, UpdateCompanyInfoRequest, UpdateInitiativeInfo, UpdateInitiativeInfoRequest, UpdateThroughputData, UpdateThroughputDataRequest, UpdateDecisionDataRequest, UpdateDecisionData, DeleteDecisionDataRequest, DeleteDecisionData } from "../Services/CompanyService"
 import { RootState } from "./Store"
 import { addUsersToStore, setCurrentUserId, User } from "./UserSlice"
 
@@ -135,6 +135,16 @@ export const updateDecisionData = createAsyncThunk(
   }
 )
 
+export const deleteDecisionData = createAsyncThunk(
+  'companies/deleteDecisionData',
+  async (args: DeleteDecisionDataRequest, {}) => {
+    const response = await DeleteDecisionData(args);
+
+    if(response.status.toUpperCase().includes('FAILED'))
+      throw Error;
+  }
+)
+
 export const authenticateUser = createAsyncThunk(
   'companies/userAuthentication',
   async (args: AuthenticateUserRequest, {dispatch, getState}) => {
@@ -235,6 +245,28 @@ export const companySlice = createSlice({
                       decisionsClone[dataIndex] = data;
                     else
                       decisionsClone.push(data);
+                  }
+                  matchingInit.decisions = decisionsClone;
+                }
+              }
+            })
+
+            .addCase(deleteDecisionData.fulfilled, (state, action) => {
+              const companyId = action.meta.arg.companyId;
+              const initiativeId = action.meta.arg.initiativeId;
+              const matchingCompany = state.companies.find(company => company.id === parseInt(companyId));
+              if(matchingCompany)
+              {
+                const matchingInit = matchingCompany.initiatives.find(init => init.id === initiativeId);
+                if(matchingInit)
+                {
+                  const decisionsClone: DecisionData[] = JSON.parse(JSON.stringify(matchingInit.decisions));
+                  for(const data of action.meta.arg.decisions)
+                  {
+                    const dataIndex = decisionsClone.findIndex(entry => data.id === entry.id);
+
+                    if(dataIndex > -1)
+                      decisionsClone.slice(dataIndex);
                   }
                   matchingInit.decisions = decisionsClone;
                 }
