@@ -142,8 +142,8 @@ export const deleteDecisionData = createAsyncThunk(
 
     if(response.status.toUpperCase().includes('FAILED'))
       throw Error;
-    }
   
+  }
 )
 
 export const authenticateUser = createAsyncThunk(

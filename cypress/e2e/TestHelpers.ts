@@ -8,6 +8,7 @@ import { UploadThroughputIds } from "../../src/Components/Initiative/UploadThrou
 import { InitiativeTableIds } from "../../src/Components/Initiative/InitiativesTable";
 import { EditThroughputIds } from "../../src/Components/Initiative/EditThroughputModal";
 import { DecisionModalIds } from "../../src/Components/Initiative/DecisionDataModal";
+import { DeleteDecisionAlertIds } from "../../src/Components/Initiative/DeleteDecisionAlert";
 
 //cypress can find items by id using "#id"
 export function AddHash(obj: Record<string,any> | string)
@@ -34,5 +35,6 @@ export const TestConstants = {
   uploadThroughputIds: AddHash(UploadThroughputIds),
   editThroughputIds: AddHash(EditThroughputIds),
   initiativeTableIds: AddHash(InitiativeTableIds),
-  decisionModalIds: AddHash(DecisionModalIds)
+  decisionModalIds: AddHash(DecisionModalIds),
+  deleteDecisionAlertIds: AddHash(DeleteDecisionAlertIds)
 }

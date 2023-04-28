@@ -14,8 +14,11 @@ import { enqueueSnackbar } from "notistack";
 
 export const DecisionModalIds = {
   modal: "decisionModal",
+  keywordFilter: "decisionModalKeywordFilter",
   addButton: "decisionModalAddButton",
   closeModalButton: "decisionModalCloseModalButton",
+  editButton: "decisionModalEditButton",
+  deleteButton: "decisionModalDeleteButton",
   saveChangesButton: "decisionModalSaveChangesButton",
   cancelChangesButton: "decisionModalCancelChangesButton",
   description: "decisionModalDescription",
@@ -174,7 +177,7 @@ interface DecisionDataProps {
             </div>
           </div>
           <div style={{margin: '2%'}}>
-            <StyledTextField disabled={InEditMode()} label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)}/>
+            <StyledTextField id={DecisionModalIds.keywordFilter} disabled={InEditMode()} label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)}/>
             <Grid container spacing={6}>
               {
               selectedInitiative.decisions.filter(d => d.description.toUpperCase().includes(searchedKeyword.toUpperCase()) || d.resolution.toUpperCase().includes(searchedKeyword.toUpperCase())).map((displayItem, key) => {
@@ -215,8 +218,8 @@ interface DecisionDataProps {
                         {
                           !isEdit && !InEditMode() &&
                           <div className="flex w-full justify-between">
-                            <button className={submitButtonStyle} onClick={() => EnterEditMode(displayItem.id, selectedInitiative)}>Edit</button>
-                            <button className={cancelButtonStyle} onClick={() => AttemptDelete(displayItem.id)}>Delete</button>
+                            <button id={DecisionModalIds.editButton} className={submitButtonStyle} onClick={() => EnterEditMode(displayItem.id, selectedInitiative)}>Edit</button>
+                            <button id={DecisionModalIds.deleteButton} className={cancelButtonStyle} onClick={() => AttemptDelete(displayItem.id)}>Delete</button>
                           </div>
                         }
                       </StyledCardActions>

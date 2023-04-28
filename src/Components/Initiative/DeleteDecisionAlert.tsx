@@ -2,6 +2,11 @@ import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } 
 import { cancelButtonStyle, submitButtonStyle } from "../../Styles";
 import { DecisionData } from "../../Services/CompanyService";
 
+export const DeleteDecisionAlertIds = {
+  confirmButton: "deleteDecisionAlertConfirmButton",
+  cancelButton: "deleteDecisionAlertCancelButton"
+}
+
 interface DeleteDecisionAlertProps {
   isOpen: boolean,
   setIsOpen: (value: boolean) => void,
@@ -29,8 +34,8 @@ export function DeleteDecisionAlert(props: DeleteDecisionAlertProps)
       </DialogContent>
       <DialogActions>
         <div className="flex justify-between">
-          <button className={submitButtonStyle} onClick={() => props.DeleteDecision(props.decision?.id ?? -1)}>Yes</button>
-          <button className={cancelButtonStyle} onClick={() => props.setIsOpen(false)}>No</button>
+          <button id={DeleteDecisionAlertIds.confirmButton} className={submitButtonStyle} onClick={() => props.DeleteDecision(props.decision?.id ?? -1)}>Yes</button>
+          <button id={DeleteDecisionAlertIds.cancelButton} className={cancelButtonStyle} onClick={() => props.setIsOpen(false)}>No</button>
         </div>
       </DialogActions>
     </Dialog>
