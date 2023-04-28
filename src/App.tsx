@@ -8,6 +8,7 @@ import NavPanel from './Layout/NavPanel';
 import { getCompanyInfo } from './Store/CompanySlice';
 import { useAppDispatch, useAppSelector } from './Store/Hooks';
 import { selectCurrentUser, selectCurrentUserId } from './Store/UserSlice';
+import { SnackbarProvider } from 'notistack';
 
 function App() {
   const dispatch = useAppDispatch();
@@ -45,6 +46,7 @@ function App() {
         <div className={'bg-[#E4E1E5] min-h-[83.25vh] ' + span}>
           <Content ShowToast={ShowToast}/>
           <Toast toastList={toastList} />
+          <SnackbarProvider />
         </div>
       </div>
       <div className='col-span-5 bg-[#21345b] text-white h-fit mb-1 mx-1'><Footer/></div>
