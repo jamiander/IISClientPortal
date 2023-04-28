@@ -141,6 +141,7 @@ export const deleteDecisionData = createAsyncThunk(
     const response = await DeleteDecisionData(args);
 
     if(response.status.toUpperCase().includes('FAILED'))
+    console.log(response.status);
       throw Error;
   }
 )

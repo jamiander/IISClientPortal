@@ -182,6 +182,7 @@ export async function DeleteDecisionData(request: DeleteDecisionDataRequest) : P
 {
   let baseUrl = BASE_URL + "DeleteDecisionDataDB?code=W_thQCwjUyvN_AsTbRgkXmFkNx6oJ26cV8mQQBTJW5QJAzFu0f9log==";
   const response = await axios.delete(baseUrl, { data: request});
+  console.log(response.data);
   return response.data;
 }
 
