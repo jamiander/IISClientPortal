@@ -10,6 +10,7 @@ import { ValidateDecisions, ValidationFailedPrefix } from "../../Services/Valida
 import { useOutletContext } from "react-router-dom";
 import { useAppDispatch } from "../../Store/Hooks";
 import { DeleteDecisionAlert } from "./DeleteDecisionAlert";
+import { enqueueSnackbar } from "notistack";
 
 export const DecisionModalIds = {
   modal: "decisionModal",
@@ -131,7 +132,7 @@ interface DecisionDataProps {
       return true;
     }
     else
-      ShowToast(ValidationFailedPrefix + validation.message,"Error");
+      enqueueSnackbar(ValidationFailedPrefix + validation.message)//ShowToast(ValidationFailedPrefix + validation.message,"Error");
     
     return false;
   }

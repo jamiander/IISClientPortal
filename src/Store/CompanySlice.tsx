@@ -269,7 +269,7 @@ export const companySlice = createSlice({
                     const dataIndex = decisionsClone.findIndex(entry => decisionId === entry.id);
 
                     if(dataIndex > -1)
-                      decisionsClone.slice(dataIndex);
+                      decisionsClone.splice(dataIndex,1);
                   }
                   matchingInit.decisions = decisionsClone;
                 }
