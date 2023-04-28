@@ -9,6 +9,7 @@ import { MakeDateInfo, MakeDateString } from "../DateInput";
 import { ValidateDecisions, ValidationFailedPrefix } from "../../Services/Validation";
 import { useOutletContext } from "react-router-dom";
 import { useAppDispatch } from "../../Store/Hooks";
+import { DeleteDecisionAlert } from "./DeleteDecisionAlert";
 
 export const DecisionModalIds = {
   modal: "decisionModal",
@@ -41,6 +42,8 @@ interface DecisionDataProps {
     const [selectedInitiative, setSelectedInitiative] = useState<Initiative>(props.initiative);
     const [editIndex, setEditIndex] = useState(-1);
     const [isNew, setIsNew] = useState(false);
+    const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+    const [decisionToDelete, setDecisionToDelete] = useState<DecisionData>();
 
   useEffect(() => {
     setSelectedInitiative(props.initiative);
@@ -125,7 +128,23 @@ interface DecisionDataProps {
     return false;
   }
 
+  function AttemptDelete(index: number)
+  {
+    setIsDeleteOpen(true);
+    setDecisionToDelete(selectedInitiative.decisions[index]);
+  }
+
+  function DeleteDecision(decisionId: number)
+  {
+    let selectedInitiativeClone: Initiative = JSON.parse(JSON.stringify(selectedInitiative));
+    selectedInitiativeClone.decisions = selectedInitiativeClone.decisions.filter(d => d.id !== decisionId);
+    //dispatch will go here
+    setSelectedInitiative(selectedInitiativeClone);
+    setIsDeleteOpen(false);
+  }
+
   return (
+    <>
       <Dialog
         id={DecisionModalIds.modal}
         open={props.isOpen}
@@ -179,8 +198,9 @@ interface DecisionDataProps {
                         }
                         {
                           !isEdit && editIndex === -1 &&
-                          <div className="flex w-full justify-start">
+                          <div className="flex w-full justify-between">
                             <button className={submitButtonStyle} onClick={() => EnterEditMode(key, selectedInitiative)}>Edit</button>
+                            <button className={cancelButtonStyle} onClick={() => AttemptDelete(key)}>Delete</button>
                           </div>
                         }
                       </StyledCardActions>
@@ -197,5 +217,7 @@ interface DecisionDataProps {
             <Button id={DecisionModalIds.closeModalButton} className={cancelButtonStyle} onClick={() => props.setDecisionModalIsOpen(false)}>Close</Button>
           </div>
         </Dialog>
+        <DeleteDecisionAlert isOpen={isDeleteOpen} setIsOpen={setIsDeleteOpen} DeleteDecision={DeleteDecision} decision={decisionToDelete}/>
+      </>
   );
 }
