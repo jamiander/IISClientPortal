@@ -174,11 +174,19 @@ interface DecisionDataProps {
         >
           <div className="flex col-span-4 bg-[#2ed7c3] rounded-md py-6 px-5">
             <div className="w-full flex justify-between">
-            <p className="text-5xl font-bold w-1/4">{props.company.name} : {props.initiative.title}</p>
-            <button disabled={InEditMode()} id={DecisionModalIds.addButton} className={yellowButtonStyle} onClick={() => AddEmptyDecision()}>Add Decision</button>
+              <div className="space-y-2 w-1/2">
+                <p className="text-5xl font-bold w-full">{props.company.name}</p>
+                <p className="text-3xl w-full">{props.initiative.title}</p>
+              </div>
+              <div className="flex flex-col justify-between">
+                <div className="flex justify-end">
+                  <button className="rounded-md transition ease-in-out hover:bg-[#29c2b0] w-1/4" onClick={() => props.setDecisionModalIsOpen(false)}><CloseIcon/></button>
+                </div>
+                <button disabled={InEditMode()} id={DecisionModalIds.addButton} className={yellowButtonStyle} onClick={() => AddEmptyDecision()}>Add Decision</button>
+              </div>
             </div>
           </div>
-          <div className="mx-[2%]">
+          <div className="mx-[2%] mb-[2%]">
             {selectedInitiative.decisions.length !== 0 &&
             <div className="my-2">
               <StyledTextField id={DecisionModalIds.keywordFilter} disabled={InEditMode()} label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)}/>
@@ -238,9 +246,6 @@ interface DecisionDataProps {
             {
               selectedInitiative.decisions.length === 0 && <div className="p-2">No decisions to display.</div>
             }
-          </div>
-          <div className="h-10 w-full flex justify-between">
-            <Button id={DecisionModalIds.closeModalButton} className={cancelButtonStyle} onClick={() => props.setDecisionModalIsOpen(false)}>Close</Button>
           </div>
         </Dialog>
         <DeleteDecisionAlert isOpen={isDeleteOpen} setIsOpen={setIsDeleteOpen} DeleteDecision={DeleteDecision} decision={decisionToDelete}/>
