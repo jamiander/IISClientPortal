@@ -180,7 +180,7 @@ interface DecisionDataProps {
               </div>
               <div className="flex flex-col justify-between">
                 <div className="flex justify-end">
-                  <button className="rounded-md transition ease-in-out hover:bg-[#29c2b0] w-1/4" onClick={() => props.setDecisionModalIsOpen(false)}><CloseIcon/></button>
+                  <button id={DecisionModalIds.closeModalButton} className="rounded-md transition ease-in-out hover:bg-[#29c2b0] w-1/4" onClick={() => props.setDecisionModalIsOpen(false)}><CloseIcon/></button>
                 </div>
                 <button disabled={InEditMode()} id={DecisionModalIds.addButton} className={yellowButtonStyle} onClick={() => AddEmptyDecision()}>Add Decision</button>
               </div>

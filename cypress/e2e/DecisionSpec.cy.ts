@@ -9,6 +9,7 @@ const waitTime = 500;
 
 const init = {
   companyName: 'Integrity Inspired Solutions',
+  id: "1"
 }
 
 const decision = {
@@ -37,9 +38,9 @@ beforeEach(() => {
   cy.get(radioIds.all).click();
   cy.get(tableIds.companyNameFilter).type(init.companyName);
   cy.get('table').contains(init.companyName);
-  cy.get("#viewDecisionDataButton0").click();
+  cy.get("#viewDecisionDataButton"+init.id).click();
 
-  cy.get(modalIds.addButton).click();
+  cy.get(modalIds.addButton).click({force: true});
   cy.get(modalIds.description).type(decision.description,{force: true});
   cy.get(modalIds.resolution).type(decision.resolution,{force: true});
   cy.get(modalIds.participants).type(decision.names,{force: true});
@@ -54,7 +55,7 @@ describe("add decision spec", () => {
     cy.get(modalIds.description).contains(decision.description);
     cy.get(modalIds.closeModalButton).click();
     
-    cy.get("#viewDecisionDataButton0").click();
+    cy.get("#viewDecisionDataButton"+init.id).click();
     cy.get(modalIds.description).contains(decision.description);
   })
 
