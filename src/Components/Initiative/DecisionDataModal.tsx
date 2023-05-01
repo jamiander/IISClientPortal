@@ -243,10 +243,10 @@ interface DecisionDataProps {
                 )
               })}
             </Grid>
-            {
-              selectedInitiative.decisions.length === 0 && <div className="p-2">No decisions to display.</div>
-            }
           </div>
+          {
+            selectedInitiative.decisions.length === 0 && <div className="m-2 p-2">No decisions to display.</div>
+          }
         </Dialog>
         <DeleteDecisionAlert isOpen={isDeleteOpen} setIsOpen={setIsDeleteOpen} DeleteDecision={DeleteDecision} decision={decisionToDelete}/>
       </>
