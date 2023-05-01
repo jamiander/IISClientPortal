@@ -134,7 +134,7 @@ interface DecisionDataProps {
       return true;
     }
     else
-      enqueueSnackbar(ValidationFailedPrefix + validation.message);
+      enqueueSnackbar(ValidationFailedPrefix + validation.message, {variant: "error"});
     
     return false;
   }

@@ -46,7 +46,10 @@ function App() {
         <div className={'bg-[#E4E1E5] min-h-[83.25vh] ' + span}>
           <Content ShowToast={ShowToast}/>
           <Toast toastList={toastList} />
-          <SnackbarProvider />
+          <SnackbarProvider anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'center',
+          }}/>
         </div>
       </div>
       <div className='col-span-5 bg-[#21345b] text-white h-fit mb-1 mx-1'><Footer/></div>
