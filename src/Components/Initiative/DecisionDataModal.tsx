@@ -2,12 +2,10 @@ import Dialog from "@mui/material/Dialog";
 import { Company, Initiative, deleteDecisionData, upsertDecisionData } from "../../Store/CompanySlice";
 import Grid from "@mui/material/Grid";
 import { useEffect, useState } from "react";
-import { Item, StyledCard, StyledCardActions, StyledCardContent, StyledTextField, StyledTextarea, cancelButtonStyle, submitButtonStyle, yellowButtonStyle, labelStyle, inputStyle } from "../../Styles";
+import { Item, StyledCard, StyledCardActions, StyledCardContent, StyledTextField, StyledTextarea, cancelButtonStyle, submitButtonStyle, yellowButtonStyle, labelStyle} from "../../Styles";
 import { DateInfo, DecisionData } from "../../Services/CompanyService";
-import { Button } from "@mui/material";
 import { MakeDateInfo, MakeDateString } from "../DateInput";
 import { ValidateDecisions, ValidationFailedPrefix } from "../../Services/Validation";
-import { useOutletContext } from "react-router-dom";
 import { useAppDispatch } from "../../Store/Hooks";
 import { DeleteDecisionAlert } from "./DeleteDecisionAlert";
 import { enqueueSnackbar } from "notistack";
@@ -38,7 +36,6 @@ interface DecisionDataProps {
 
   export default function DecisionDataModal(props: DecisionDataProps) {
     const dispatch = useAppDispatch();
-    const ShowToast : (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void = useOutletContext();
     const [currentDescription, setCurrentDescription] = useState("");
     const [currentResolution, setCurrentResolution] = useState("");
     const [currentParticipants, setCurrentParticipants] = useState("");
@@ -65,7 +62,7 @@ interface DecisionDataProps {
     let decisionIds = initiativeClone.decisions.map(d => d.id);
     let negativeId = Math.min(...decisionIds,-1) - 1;
     let newDecision: DecisionData = {id: negativeId, description: "", resolution: "", participants: [], date: todayInfo};
-    initiativeClone.decisions.push(newDecision);
+    initiativeClone.decisions.unshift(newDecision);
 
     setSearchedKeyword("");
     setSelectedInitiative(initiativeClone);
@@ -137,7 +134,7 @@ interface DecisionDataProps {
       return true;
     }
     else
-      enqueueSnackbar(ValidationFailedPrefix + validation.message)//ShowToast(ValidationFailedPrefix + validation.message,"Error");
+      enqueueSnackbar(ValidationFailedPrefix + validation.message, {variant: "error"});
     
     return false;
   }
@@ -180,7 +177,7 @@ interface DecisionDataProps {
               </div>
               <div className="flex flex-col justify-between">
                 <div className="flex justify-end">
-                  <button id={DecisionModalIds.closeModalButton} className="rounded-md transition ease-in-out hover:bg-[#29c2b0] w-1/4" onClick={() => props.setDecisionModalIsOpen(false)}><CloseIcon/></button>
+                  <button id={DecisionModalIds.closeModalButton} className="rounded-md transition ease-in-out hover:bg-[#29c2b0] w-fit" onClick={() => props.setDecisionModalIsOpen(false)}><CloseIcon sx={{fontSize: 40}}/></button>
                 </div>
                 <button disabled={InEditMode()} id={DecisionModalIds.addButton} className={yellowButtonStyle} onClick={() => AddEmptyDecision()}>Add Decision</button>
               </div>
