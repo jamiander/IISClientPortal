@@ -2,7 +2,7 @@ import Dialog from "@mui/material/Dialog";
 import { Company, Initiative, deleteDecisionData, upsertDecisionData } from "../../Store/CompanySlice";
 import Grid from "@mui/material/Grid";
 import { useEffect, useState } from "react";
-import { Item, StyledCard, StyledCardActions, StyledCardContent, StyledTextField, StyledTextarea, cancelButtonStyle, genericButtonStyle, submitButtonStyle, yellowButtonStyle, labelStyle, inputStyle } from "../../Styles";
+import { Item, StyledCard, StyledCardActions, StyledCardContent, StyledTextField, StyledTextarea, cancelButtonStyle, submitButtonStyle, yellowButtonStyle, labelStyle, inputStyle } from "../../Styles";
 import { DateInfo, DecisionData } from "../../Services/CompanyService";
 import { Button } from "@mui/material";
 import { MakeDateInfo, MakeDateString } from "../DateInput";
@@ -49,7 +49,8 @@ interface DecisionDataProps {
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
     const [decisionToDelete, setDecisionToDelete] = useState<DecisionData>();
     const InEditMode = () => decisionToEdit !== undefined;
-
+    const today = new Date();
+    const todayInfo: DateInfo = {month: today.getMonth()+1, day: today.getDate(), year: today.getFullYear()}
     const [searchedKeyword, setSearchedKeyword] = useState("");
 
   useEffect(() => {
@@ -62,7 +63,7 @@ interface DecisionDataProps {
     let initiativeClone: Initiative = JSON.parse(JSON.stringify(selectedInitiative));
     let decisionIds = initiativeClone.decisions.map(d => d.id);
     let negativeId = Math.min(...decisionIds,-1) - 1;
-    let newDecision: DecisionData = {id: negativeId, description: "", resolution: "", participants: [], date: MakeDateInfo("2023-04-27")};
+    let newDecision: DecisionData = {id: negativeId, description: "", resolution: "", participants: [], date: todayInfo};
     initiativeClone.decisions.push(newDecision);
 
     setSearchedKeyword("");
@@ -131,7 +132,7 @@ interface DecisionDataProps {
     if(validation.success)
     {
       dispatch(upsertDecisionData({isTest: isTest, companyId: props.company.id.toString(), initiativeId: props.initiative.id, decisions: decisions}));
-      LeaveEditMode();//setViewDecisionDataIsOpen(false);
+      LeaveEditMode();
       return true;
     }
     else
