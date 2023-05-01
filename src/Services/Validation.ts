@@ -154,10 +154,14 @@ export function ValidateThroughputDataUpdate(companyList: Company[], companyId: 
 
 export function ValidateDecisions(decisions: DecisionData[]) : Validation
 {
+  let today = new Date();
+  today.setHours(0,0,0,0);
   for(const decision of decisions)
   {
     if (!ValidateDate(decision.date).success) 
-      return {success: false, message: "All dates must be valid."};
+      return {success: false, message: "Decisions must have a valid date."};
+    if (MakeDate(decision.date) > today)
+      return {success: false, message: "Decisions cannot have dates set in the future."};
     if (!decision.description || !decision.resolution) 
       return {success: false, message: "Decisions cannot have any empty fields."};
     if (decision.participants.length === 0 || decision.participants.every(p => p === ""))
