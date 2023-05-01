@@ -64,7 +64,8 @@ export const TableHeaderStyle =
     width: "100%",
     borderColor: '#4A90E2',
     borderWidth: 1, 
-    marginBottom: 10
+    marginBottom: 10,
+    padding: "0.5rem"
   }))
  
 

@@ -2,8 +2,6 @@ import { useState } from "react"
 import { Company, Initiative } from "../../Store/CompanySlice"
 import { genericButtonStyle } from "../../Styles";
 import DecisionDataModal from "./DecisionDataModal";
-import { useAppDispatch } from "../../Store/Hooks";
-import { useOutletContext } from "react-router-dom";
 
 interface ViewDecisionDataProps {
     company: Company
@@ -12,13 +10,9 @@ interface ViewDecisionDataProps {
 }
 
 export function ViewDecisionDataButton(props: ViewDecisionDataProps){
-  const dispatch = useAppDispatch();
-  const ShowToast : (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void = useOutletContext();
   const [selectedCompany, setSelectedCompany] = useState<Company>(props.company);
   const [selectedInitiative, setSelectedInitiative] = useState<Initiative>(props.initiative);
   const [ViewDecisionDataIsOpen, setViewDecisionDataIsOpen] = useState(false);
-
-  
 
   function handleViewDecisionData(company: Company, initiative: Initiative)
   {
