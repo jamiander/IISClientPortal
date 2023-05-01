@@ -150,6 +150,17 @@ export default function InitiativesTable(props: InitiativesProps) {
       <link href = "https://fonts.googleapis.com/icon?family=Material+Icons" rel = "stylesheet"/> 
         <TableContainer component={Paper}>
         <Table className="table-auto w-full outline outline-3 bg-gray-100">
+        {props.admin && <colgroup>
+          <col style={{width:'17%'}}/>
+          <col style={{width:'17%'}}/>
+          <col style={{width:'12%'}}/>
+          <col style={{width:'12%'}}/>
+          <col style={{width:'9%'}}/>
+          <col style={{width:'10%'}}/>
+          <col style={{width:'7%'}}/>
+          <col style={{width:'8%'}}/>
+          <col style={{width:'8%'}}/>
+        </colgroup>}
           <TableHead className="outline outline-1">
             <TableRow sx={{
                 borderBottom: "2px solid black",
