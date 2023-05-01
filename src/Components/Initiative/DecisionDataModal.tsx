@@ -10,6 +10,7 @@ import { useAppDispatch } from "../../Store/Hooks";
 import { DeleteDecisionAlert } from "./DeleteDecisionAlert";
 import { enqueueSnackbar } from "notistack";
 import CloseIcon from '@mui/icons-material/Close';
+import Button from "@mui/material/Button";
 
 export const DecisionModalIds = {
   modal: "decisionModal",
@@ -222,8 +223,8 @@ interface DecisionDataProps {
                         <StyledCardActions>
                           {isEdit &&
                             <div className="flex w-full justify-between">
-                              <button id={DecisionModalIds.saveChangesButton} className={submitButtonStyle} onClick={() => EditDecision(displayItem.id, currentDescription, currentResolution, currentParticipants.split(", "), currentDateString ? MakeDateInfo(currentDateString) : displayItem.date)}>Save</button>
-                              <button id={DecisionModalIds.cancelChangesButton} className={cancelButtonStyle} onClick={() => CancelEdit()}>Cancel</button>
+                              <Button id={DecisionModalIds.saveChangesButton} className={submitButtonStyle} onClick={() => EditDecision(displayItem.id, currentDescription, currentResolution, currentParticipants.split(", "), currentDateString ? MakeDateInfo(currentDateString) : displayItem.date)}>Save</Button>
+                              <Button id={DecisionModalIds.cancelChangesButton} className={cancelButtonStyle} onClick={() => CancelEdit()}>Cancel</Button>
                             </div>
                           }
                           {
