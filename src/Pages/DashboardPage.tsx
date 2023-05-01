@@ -28,7 +28,7 @@ export default function DashboardPage(){
     }else{
       return(
         <>
-          <InitiativesTable companyList={comp} radioStatus={radioValue} ValidateInitiative={ValidateNewInitiative} admin={false}/>
+          <InitiativesTable companyList={comp} pageNumber={1} radioStatus={radioValue} ValidateInitiative={ValidateNewInitiative} admin={false}/>
         </>
       )
     }

@@ -27,6 +27,7 @@ export const InitiativeTableIds = {
 
 interface InitiativesProps {
   companyList: Company[],
+  pageNumber: number,
   radioStatus: string,
   ValidateInitiative: (initiative: Initiative, companyId: number, allCompanies: Company[]) => {success: boolean, message: string}
   admin: boolean
@@ -111,6 +112,7 @@ export default function InitiativesTable(props: InitiativesProps) {
       });
     }
     setDisplayItems(displayList);
+    ResetPageNumber();
   }
 
   function getHealthIndicator(probability: number | undefined)
