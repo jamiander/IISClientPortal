@@ -15,6 +15,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import { ViewDecisionDataButton } from "./ViewDecisionDataButton";
+import Pagination from "@mui/material/Pagination";
 
 export const InitiativeTableIds = {
   totalItems: 'initiativeTableTotalItems',
@@ -55,6 +56,7 @@ export default function InitiativesTable(props: InitiativesProps) {
   const resultsLimitOptions: number[] = [5, 10, 25];
   const [pageNumber, setPageNumber] = useState(1);
   const [resultsLimit, setResultsLimit] = useState(10);
+  const pageNumbers: number[] = [];
 
   useEffect(() => {
     UpdateDisplayItems();
@@ -127,7 +129,14 @@ export default function InitiativesTable(props: InitiativesProps) {
     setPageNumber(1);
   }
 
-  const pageButtonStyle = "outline outline-[#445362] rounded bg-[#21345b] text-white transition ease-in-out hover:bg-white hover:text-[#445362] px-2";
+  const indexOfLastItem = pageNumber * resultsLimit;
+  const indexOfFirstItem = indexOfLastItem - resultsLimit;
+  const currentItems = sortedDisplayItems.slice(indexOfFirstItem, indexOfLastItem);
+  const count = Math.ceil(sortedDisplayItems.length/resultsLimit);
+
+  const handleChange = (event: any, value: any) => {
+    setPageNumber(value);
+};
 
   return (
     <div className="grid grid-cols-1 w-full h-auto">
@@ -178,10 +187,8 @@ export default function InitiativesTable(props: InitiativesProps) {
           </TableHead>
           <TableBody>
             {
-              sortedDisplayItems.map((displayItem,index) => {
-                if (index < resultsLimit*pageNumber && index >= resultsLimit*(pageNumber-1))
-                {
-                  let probability = {value:displayItem.probabilityValue, status:displayItem.probabilityStatus};
+              currentItems.map((displayItem,index) => {
+                let probability = {value:displayItem.probabilityValue, status:displayItem.probabilityStatus};
                   let healthIndicator = getHealthIndicator(probability.value);
                   let tooltipMessage = probability.value === undefined ? probability.status : 
                   probability.value === 0 ? "Data may be insufficient or may indicate a very low probability of success" : 
@@ -214,7 +221,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                     </Fragment>
                   )
                 }
-              })
+              )
             }
           </TableBody>
         </Table>
@@ -233,9 +240,14 @@ export default function InitiativesTable(props: InitiativesProps) {
             })}
           </select>
           <div className="flex pl-2">
-          <button className={pageButtonStyle} onClick={() => {setPageNumber(Math.max(pageNumber-1,1))}}>{"<"}</button>
-            <p className='px-2'>Page: {pageNumber}</p>
-            <button className={pageButtonStyle} onClick={() => {setPageNumber(pageNumber+1)}}>{">"}</button>
+            <Pagination
+            className="my-3"
+            count={count}
+            page={pageNumber}
+            variant="outlined"
+            shape="rounded"
+            onChange={handleChange}
+          />
           </div>
         </div>
         }
