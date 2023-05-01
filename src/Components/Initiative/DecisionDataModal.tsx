@@ -188,8 +188,8 @@ interface DecisionDataProps {
           </div>
           <div className="mx-[2%] mb-[2%]">
             {selectedInitiative.decisions.length !== 0 &&
-            <div className="my-2">
-              <StyledTextField id={DecisionModalIds.keywordFilter} disabled={InEditMode()} label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)}/>
+            <div className="mt-2 mb-4">
+              <StyledTextField className="w-1/2" id={DecisionModalIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in Description or Resolution" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)}/>
             </div>
             }
             <Grid container spacing={6}>
