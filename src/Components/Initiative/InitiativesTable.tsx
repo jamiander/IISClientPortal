@@ -138,10 +138,10 @@ export default function InitiativesTable(props: InitiativesProps) {
       </div>
       }
       <div className="col-span-1 py-[2%]">
+      <link href = "https://fonts.googleapis.com/icon?family=Material+Icons" rel = "stylesheet"/> 
         <TableContainer component={Paper}>
         <Table className="table-auto w-full outline outline-3 bg-gray-100">
           <TableHead className="outline outline-1">
-          <link href = "https://fonts.googleapis.com/icon?family=Material+Icons" rel = "stylesheet"/> 
             <TableRow sx={{
                 borderBottom: "2px solid black",
                 "& th": {
