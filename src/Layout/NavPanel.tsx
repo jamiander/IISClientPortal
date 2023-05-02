@@ -1,7 +1,8 @@
 import { useLocation, useNavigate } from "react-router-dom"
 import { useAppSelector } from "../Store/Hooks"
-import { selectCurrentUser, selectIsLoggedIn } from "../Store/UserSlice"
+import { selectIsLoggedIn } from "../Store/UserSlice"
 import { IntegrityId } from "../Store/CompanySlice"
+import { selectCurrentUserId } from "../Store/UserSlice"
 
 interface NavProps {
   ShowToast: (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void
@@ -10,7 +11,7 @@ interface NavProps {
 export default function NavPanel(props: NavProps){
   const navigate = useNavigate()
   const isLoggedIn = useAppSelector(selectIsLoggedIn);
-  const currentuser = useAppSelector(selectCurrentUser);
+  const currentUserId = useAppSelector(selectCurrentUserId);
   const navButtonStyle = "text-[#21345b] h-12 w-[90%] hover:bg-[#21345b] hover:text-white";
   const location = useLocation();
 
@@ -39,9 +40,8 @@ export default function NavPanel(props: NavProps){
           onClick={() => NavHandler('/Dashboard')}>
           Dashboard
       </button>
-      
       {
-        currentuser?.companyId === IntegrityId ? 
+        currentUserId === IntegrityId ? 
           <button className={GetNavStyle("/Admin")}
             disabled={!isLoggedIn} onClick={() => NavHandler('/Admin')}>
               Admin
