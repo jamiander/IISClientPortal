@@ -33,7 +33,7 @@ export default function LoginPage(){
   }
 
   useEffect(() => {
-    if(currentUserId !== -1)
+    if(currentUserId !== "-1")
     {
       //dispatch(getCompanyInfo({employeeId: currentUserId}));
       navigate('/Dashboard');

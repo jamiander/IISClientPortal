@@ -11,7 +11,7 @@ interface InitiativeModalProps {
 	initiative?: Initiative
 	initiativeIsOpen: boolean
 	setInitiativeIsOpen: (value: boolean) => void
-	Submit: (initiative: Initiative, companyId: number) => void
+	Submit: (initiative: Initiative, companyId: string) => void
 	company?: Company
 }
 
@@ -30,7 +30,7 @@ export function UpdateInitiativeListModal(props: InitiativeModalProps){
   const today = new Date();
   const todayInfo: DateInfo = {month: today.getMonth() + 1, day: today.getDate(), year: today.getFullYear()};
   const companyList = useAppSelector(selectAllCompanies);
-  const [initiativeCompanyId, setInitiativeCompanyId] = useState(props.company?.id ?? -1);
+  const [initiativeCompanyId, setInitiativeCompanyId] = useState(props.company?.id ?? "-1");
   const [initiativeTitle, setInitiativeTitle] = useState(props.initiative?.title ?? "");
   const [initiativeTargetDate, setInitiativeTargetDate] = useState<DateInfo>(props.initiative?.targetDate ?? todayInfo);
   const [initiativeStartDate, setInitiativeStartDate] = useState<DateInfo>(props.initiative?.startDate ?? todayInfo);
@@ -41,7 +41,7 @@ export function UpdateInitiativeListModal(props: InitiativeModalProps){
     setInitiativeStartDate(props.initiative?.startDate ?? todayInfo)
     setInitiativeTargetDate(props.initiative?.targetDate ?? todayInfo);
     setInitiativeTotalItems(props.initiative?.totalItems ?? 0);
-	  setInitiativeCompanyId(props.company?.id ?? -1);
+	  setInitiativeCompanyId(props.company?.id ?? "-1");
   }, [props.initiative,props.company,props.initiativeIsOpen])
 
 	return (
@@ -56,7 +56,7 @@ export function UpdateInitiativeListModal(props: InitiativeModalProps){
 			<div className='w-full'>
 				<p className='my-1'>Company{props.company ? ": " + props.company.name :
           <div>
-            <select id={InitiativeModalIds.company} onChange={(e) => setInitiativeCompanyId(parseInt(e.target.value))} 
+            <select id={InitiativeModalIds.company} onChange={(e) => setInitiativeCompanyId(e.target.value)} 
             className={selectStyle}
             >
               <option>Select Company</option>

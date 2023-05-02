@@ -15,7 +15,7 @@ interface SelectProps{
 
 export default function SelectCompanyAndInitiative(props:SelectProps){
     
-  function SelectCompany(companyId: number)
+  function SelectCompany(companyId: string)
   {
     props.setSelectedCompany(props.companyList.find(company => company.id === companyId));
     props.setSelectedInitiativeIndex(-1);
@@ -37,7 +37,7 @@ export default function SelectCompanyAndInitiative(props:SelectProps){
   return (
   <div className="space-y-5">
         <div className="space-x-5 flex w-full">
-          <select id={props.companyElementId} onChange={(e) => SelectCompany(parseInt((e.target as HTMLSelectElement).value))} className={selectStyle + " w-56 h-10"}>
+          <select id={props.companyElementId} onChange={(e) => SelectCompany((e.target as HTMLSelectElement).value)} className={selectStyle + " w-56 h-10"}>
             <option>Select Company</option>
               {props.companyList.map((company,index)=>{
                 return(

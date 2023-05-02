@@ -13,8 +13,8 @@ interface EditUserButtonProps{
   handleCloseEditUser:() => void
 }
 export default function EditUserButton(props:EditUserButtonProps){
-  const fakeUser : User = {id: -1, email: '', password: '', companyId: -1};
-  const fakeCompany : Company = {id: -1, name: "", initiatives: []}
+  const fakeUser : User = {id: "-1", email: '', password: '', companyId: "-1"};
+  const fakeCompany : Company = {id: "-1", name: "", initiatives: []}
 
   const [isEdit, setIsEdit] = useState(false);
   const [EditUserIsOpen, setEditUserIsOpen] = useState(false);

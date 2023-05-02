@@ -20,7 +20,7 @@ interface ThroughputModalProps{
   companyList: Company[];
   uploadIsOpen: boolean,
   setUploadIsOpen: (value: boolean) => void,
-  Submit: (companyId: number, initiativeId: number, dataList: ThroughputData[], emptyDataCheck: boolean) => void
+  Submit: (companyId: string, initiativeId: number, dataList: ThroughputData[], emptyDataCheck: boolean) => void
 }
 
 export default function UploadThroughputModal(props:ThroughputModalProps){
@@ -123,7 +123,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){
             <p className="text-2xl w-full">Upload CSV File</p>
             <input className="w-full" ref={fileRef} type={'file'} accept={'.csv'} onChange={(e) => ReceiveFile(e.target.value)}/>
             <div className="grid justify-end h-1/2">
-              <button id={UploadThroughputIds.fileSubmit} className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives.at(selectedInitiativeIndex)?.id ?? -1, fileData, true)}>Submit</button>
+              <button id={UploadThroughputIds.fileSubmit} className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? "-1", selectedCompany?.initiatives.at(selectedInitiativeIndex)?.id ?? -1, fileData, true)}>Submit</button>
             </div>
           </div>
         </div>

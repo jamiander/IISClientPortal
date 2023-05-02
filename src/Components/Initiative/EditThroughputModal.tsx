@@ -32,7 +32,7 @@ export const EditThroughputIds = {
     companyList: Company[],
     editIsOpen: boolean,
     setEditIsOpen: (value: boolean) => void,
-    Submit: (companyId: number, initiativeId: number, dataList: ThroughputData[], emptyDataCheck: boolean) => void
+    Submit: (companyId: string, initiativeId: number, dataList: ThroughputData[], emptyDataCheck: boolean) => void
   }
 
 export default function EditThroughputModal(this: any, props: ThroughputModalProps){
@@ -104,7 +104,7 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
   function AddThroughputEntry()
   {
     let initiative = GetInitiativeFromCompany(selectedCompany,selectedInitiativeIndex);
-    let validate = ValidateEditThroughputData(props.companyList, selectedCompany?.id ?? -1, initiative?.id ?? -1, [manualEntry]);
+    let validate = ValidateEditThroughputData(props.companyList, selectedCompany?.id ?? "-1", initiative?.id ?? -1, [manualEntry]);
     if(validate.success)
     {
       ShowToast("New data added!", "Success");
@@ -224,7 +224,7 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
           </div>
         </div>
         <div className="h-10 w-full flex justify-between">
-          <button id={EditThroughputIds.submitButton} className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives[selectedInitiativeIndex]?.id ?? -1, GetInitiativeFromCompany(selectedCompany,selectedInitiativeIndex)?.itemsCompletedOnDate ?? [], false)}>Save</button>
+          <button id={EditThroughputIds.submitButton} className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? "-1", selectedCompany?.initiatives[selectedInitiativeIndex]?.id ?? -1, GetInitiativeFromCompany(selectedCompany,selectedInitiativeIndex)?.itemsCompletedOnDate ?? [], false)}>Save</button>
           <button id={EditThroughputIds.closeButton} className={cancelButtonStyle} onClick={() => props.setEditIsOpen(false)}>Cancel</button>
         </div>
       </div>

@@ -5,9 +5,8 @@ import Content from './Layout/Content';
 import Footer from './Layout/Footer';
 import Header from './Layout/Header';
 import NavPanel from './Layout/NavPanel';
-import { getCompanyInfo } from './Store/CompanySlice';
 import { useAppDispatch, useAppSelector } from './Store/Hooks';
-import { selectCurrentUser, selectCurrentUserId } from './Store/UserSlice';
+import { selectCurrentUserId } from './Store/UserSlice';
 import { SnackbarProvider } from 'notistack';
 
 function App() {
@@ -17,7 +16,7 @@ function App() {
   const [toastList, setToastList] = useState(emptyToast);
   const currentUserId = useAppSelector(selectCurrentUserId);
   const navigate = useNavigate();
-  const isLoggedIn = () => currentUserId !== -1;
+  const isLoggedIn = () => currentUserId !== "-1";
 
   function ShowToast(message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') {
     const id = Math.floor((Math.random() * 101) + 1);

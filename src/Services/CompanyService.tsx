@@ -36,7 +36,7 @@ export interface DecisionData {
 }
 
 export interface GetCompanyInfoRequest {
-  companyId?: number,
+  companyId?: string,
   employeeId?: number
 }
 

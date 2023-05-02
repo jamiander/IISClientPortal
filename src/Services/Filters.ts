@@ -8,10 +8,11 @@ export function CompanyFilter(userlist: User[], isActive: string){
     var activeCompanies: Company[] = [];
     var activeUsers: User[] = [];
     const companyList = useAppSelector(selectAllCompanies);
-    const fakeCompany : Company = {id: -1, name: "", initiatives: []}
     
     userlist.forEach(user=>{
-        const company = companyList.find(e=>e.id === user.companyId) ?? fakeCompany;
+      const company = companyList.find(e=>e.id === user.companyId);
+      if(company !== undefined)
+      {
         initiatives = InitiativeFilter(company.initiatives, isActive);
         
         if(isActive === 'all'){
@@ -27,13 +28,13 @@ export function CompanyFilter(userlist: User[], isActive: string){
                 activeCompanies.push(company)
             }
         }
-        
+      }
     })
     activeCompanies.forEach(company=>{
-        const user = userlist.find(e=>e.companyId === company.id);
-        if(user !== undefined){
-            activeUsers.push(user);
-        }
+      const user = userlist.find(e=>e.companyId === company.id);
+      if(user !== undefined){
+          activeUsers.push(user);
+      }
     })
     return activeUsers
 }

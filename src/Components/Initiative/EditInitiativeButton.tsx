@@ -10,7 +10,7 @@ interface EditInitiativeButtonProps {
     company: Company
     initiative: Initiative
     index: number
-    ValidateInitiative : (initiative: Initiative, companyId: number, allCompanies: Company[]) => {success: boolean, message: string}
+    ValidateInitiative : (initiative: Initiative, companyId: string, allCompanies: Company[]) => {success: boolean, message: string}
 }
 
 export function EditInitiativeButton(props: EditInitiativeButtonProps){
@@ -23,7 +23,7 @@ export function EditInitiativeButton(props: EditInitiativeButtonProps){
   const companyList = useAppSelector(selectAllCompanies);
   const ShowToast : (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void = useOutletContext();
 
-  function SubmitUpdateInitiative(initiative: Initiative, companyId: number)
+  function SubmitUpdateInitiative(initiative: Initiative, companyId: string)
   {
     let isTest = false;
     if((window as any).Cypress)
