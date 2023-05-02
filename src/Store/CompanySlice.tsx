@@ -149,7 +149,7 @@ export const deleteDecisionData = createAsyncThunk(
 )
 
 export const authenticateUser = createAsyncThunk(
-  'companies/userAuthentication',
+  'companies/authenticateUser',
   async (args: AuthenticateUserRequest, {dispatch, getState}) => {
     const response = await AuthenticateUser(args);
     
@@ -158,7 +158,7 @@ export const authenticateUser = createAsyncThunk(
     
     const companyId = response.companyId;
     if(companyId !== IntegrityId)   //Admins see all
-      dispatch(getCompanyInfo({companyId: companyId}));
+      dispatch(getCompanyInfo({companyId: companyId, initiativeIds: response.initiativeIds}));
     else
       dispatch(getCompanyInfo({companyId: "-1"}));
     dispatch(setCurrentUserId(companyId));
