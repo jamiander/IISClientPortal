@@ -37,7 +37,7 @@ export interface DecisionData {
 
 export interface GetCompanyInfoRequest {
   companyId?: string,
-  employeeId?: number
+  initiativeIds?: string[]
 }
 
 interface GetCompanyInfoResponse {
@@ -58,8 +58,8 @@ export async function GetCompanyInfo(request?: GetCompanyInfoRequest) : Promise<
   }*/
 
   let req = {
-    companyId: (request?.companyId ?? -1).toString(),
-    employeeId: (request?.employeeId ?? -1).toString(),
+    companyId: request?.companyId ?? "-1",
+    initiativeIds: request?.initiativeIds ?? []
   }
 
   let response = await axios.post(baseUrl,req)//get(baseUrl); //using post since I couldn't get query parameters to work with the cosmos sql
@@ -195,6 +195,7 @@ export interface AuthenticateUserRequest {
 
 interface AuthenticateUserResponse {
   companyId: string,
+  initiativeIds: string[],
   status: string
 }
 
