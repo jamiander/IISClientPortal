@@ -7,6 +7,7 @@ export interface User {
     email: string
     password: string
     companyId: string
+    initiativeIds?: string[]
     name?: string
     phoneNumber?: string
 }
