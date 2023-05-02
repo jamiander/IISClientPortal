@@ -56,7 +56,6 @@ export default function InitiativesTable(props: InitiativesProps) {
   const resultsLimitOptions: number[] = [5, 10, 25];
   const [pageNumber, setPageNumber] = useState(1);
   const [resultsLimit, setResultsLimit] = useState(10);
-  const pageNumbers: number[] = [];
 
   useEffect(() => {
     UpdateDisplayItems();
@@ -140,27 +139,24 @@ export default function InitiativesTable(props: InitiativesProps) {
 
   return (
     <div className="grid grid-cols-1 w-full h-auto">
-      {props.admin &&
       <div className="col-span-1 h-[4vh] px-2 pb-[2%] space-x-2">
         <input id={InitiativeTableIds.initiativeTitleFilter} className={inputStyle} type={'text'} placeholder="Filter by Title" onChange={(e) => setSearchedInit(e.target.value)}/>
         <input id={InitiativeTableIds.companyNameFilter} className={inputStyle} type={'text'} placeholder="Filter by Company" onChange={(e) => setSearchedComp(e.target.value)}/>
       </div>
-      }
       <div className="col-span-1 py-[2%]">
       <link href = "https://fonts.googleapis.com/icon?family=Material+Icons" rel = "stylesheet"/> 
         <TableContainer component={Paper}>
         <Table className="table-auto w-full outline outline-3 bg-gray-100">
-        {props.admin && <colgroup>
-          <col style={{width:'17%'}}/>
-          <col style={{width:'17%'}}/>
-          <col style={{width:'12%'}}/>
-          <col style={{width:'12%'}}/>
-          <col style={{width:'9%'}}/>
-          <col style={{width:'10%'}}/>
-          <col style={{width:'7%'}}/>
-          <col style={{width:'8%'}}/>
-          <col style={{width:'8%'}}/>
-        </colgroup>}
+          <colgroup>
+            <col style={{width:'18%'}}/>
+            <col style={{width:'15%'}}/>
+            <col style={{width:'11%'}}/>
+            <col style={{width:'11%'}}/>
+            <col style={{width:'8%'}}/>
+            <col style={{width:'10%'}}/>
+            <col style={{width:'11%'}}/>
+            <col style={{width:'4%'}}/>
+          </colgroup>
           <TableHead className="outline outline-1">
             <TableRow sx={{
                 borderBottom: "2px solid black",
@@ -192,8 +188,8 @@ export default function InitiativesTable(props: InitiativesProps) {
                 <TableSortLabel onClick={() => requestSort('probabilityValue')} active={true} direction={sortConfig.direction === 'descending' ? 'desc' : 'asc'}>
                 </TableSortLabel>
               </TableHeaderStyle>
-              {props.admin && <TableHeaderStyle>View Decisions</TableHeaderStyle>}
-              {props.admin && <TableHeaderStyle>Edit</TableHeaderStyle>}
+              <TableHeaderStyle>View Decisions</TableHeaderStyle>
+              <TableHeaderStyle>Edit</TableHeaderStyle>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -222,12 +218,12 @@ export default function InitiativesTable(props: InitiativesProps) {
                         <TableCell className={tooltipStyle} title={tooltipMessage}>{ probability.value === undefined ? "NA"  : probability.value +  "%" }
                           <i className="material-icons" style={{fontSize: '15px', marginLeft: '15px', marginTop: '10px'}}>info_outline</i>
                         </TableCell>
-                        {props.admin && <TableCell className="w-1/12">
+                        <TableCell className="w-1/12">
                           <ViewDecisionDataButton company={displayItem.company} initiative={displayItem} index={index}/>
-                        </TableCell>}
-                        {props.admin && <TableCell className="w-1/12">
+                        </TableCell>
+                        <TableCell className="w-1/12">
                           <EditInitiativeButton company={displayItem.company} initiative={displayItem} index={index} ValidateInitiative={props.ValidateInitiative} />
-                        </TableCell>}
+                        </TableCell>
                       </TableRow>
                     </Fragment>
                   )
