@@ -200,7 +200,7 @@ interface AuthenticateUserResponse {
 
 export async function AuthenticateUser(request: AuthenticateUserRequest) : Promise<AuthenticateUserResponse>
 {
-  let baseUrl = BASE_URL + "UserAuthentication?code=iqcIvAsZ41saejn9tQunqf70l-WeFVqYz62IGmKCLiu2AzFuLOqw7g==";
+  let baseUrl = BASE_URL + "AuthenticateUser?code=Yii5WyJ84vXw42ujOwPcttVh18kVIi0tD1d4uMN18h52AzFuELZqaQ==";
 
   const response = await axios.post(baseUrl,request);
   return response.data;
