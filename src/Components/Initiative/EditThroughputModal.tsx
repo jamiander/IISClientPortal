@@ -33,7 +33,7 @@ export const EditThroughputIds = {
     companyList: Company[],
     editIsOpen: boolean,
     setEditIsOpen: (value: boolean) => void,
-    Submit: (companyId: number, initiativeId: string, dataList: ThroughputData[], emptyDataCheck: boolean) => void
+    Submit: (companyId: string, initiativeId: string, dataList: ThroughputData[], emptyDataCheck: boolean) => void
   }
 
 export default function EditThroughputModal(this: any, props: ThroughputModalProps){
@@ -107,7 +107,7 @@ let myUuid = uuidV4();
   function AddThroughputEntry()
   {
     let initiative = GetInitiativeFromCompany(selectedCompany,selectedInitiativeIndex);
-    let validate = ValidateEditThroughputData(props.companyList, selectedCompany?.id ?? -1, initiative?.id ?? myUuid, [manualEntry]);
+    let validate = ValidateEditThroughputData(props.companyList, selectedCompany?.id ?? "-1", initiative?.id ?? myUuid, [manualEntry]);
     if(validate.success)
     {
       ShowToast("New data added!", "Success");
@@ -227,7 +227,7 @@ let myUuid = uuidV4();
           </div>
         </div>
         <div className="h-10 w-full flex justify-between">
-          <button id={EditThroughputIds.submitButton} className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives[selectedInitiativeIndex]?.id ?? myUuid, GetInitiativeFromCompany(selectedCompany,selectedInitiativeIndex)?.itemsCompletedOnDate ?? [], false)}>Save</button>
+          <button id={EditThroughputIds.submitButton} className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? "-1", selectedCompany?.initiatives[selectedInitiativeIndex]?.id ?? myUuid, GetInitiativeFromCompany(selectedCompany,selectedInitiativeIndex)?.itemsCompletedOnDate ?? [], false)}>Save</button>
           <button id={EditThroughputIds.closeButton} className={cancelButtonStyle} onClick={() => props.setEditIsOpen(false)}>Cancel</button>
         </div>
       </div>

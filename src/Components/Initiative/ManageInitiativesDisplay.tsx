@@ -29,7 +29,7 @@ export default function ManageInitiativesDisplay() {
   const ShowToast : (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void = useOutletContext();
   const [radioValue, setRadioValue] = useState('active');
 
-  function SubmitUpdateInitiative(initiative: Initiative, companyId: number)
+  function SubmitUpdateInitiative(initiative: Initiative, companyId: string)
   {
     let isTest = false;
     if((window as any).Cypress)
@@ -46,7 +46,7 @@ export default function ManageInitiativesDisplay() {
       ShowToast(ValidationFailedPrefix + validation.message,'Error');
   }
 
-  function SubmitUpdateThroughput(companyId: number, initiativeId: string, dataList: ThroughputData[], emptyDataCheck: boolean = true)
+  function SubmitUpdateThroughput(companyId: string, initiativeId: string, dataList: ThroughputData[], emptyDataCheck: boolean = true)
   {
     let isTest = false;
     if((window as any).Cypress)
@@ -55,7 +55,7 @@ export default function ManageInitiativesDisplay() {
     const validation = emptyDataCheck ? ValidateFileThroughputData(companyList, companyId, initiativeId, dataList) : ValidateEditThroughputData(companyList, companyId, initiativeId, dataList);
     if(validation.success)
     {
-      dispatch(upsertThroughputData({companyId: companyId.toString(), initiativeId: initiativeId, itemsCompletedOnDate: dataList, isTest: isTest}));
+      dispatch(upsertThroughputData({companyId: companyId, initiativeId: initiativeId, itemsCompletedOnDate: dataList, isTest: isTest}));
       setUploadModalIsOpen(false);
       setEditModalIsOpen(false);
       ShowToast(validation.message, 'Success');

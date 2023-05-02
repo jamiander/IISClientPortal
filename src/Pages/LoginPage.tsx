@@ -25,7 +25,7 @@ export default function LoginPage(){
   }
 
   useEffect(() => {
-    if(currentUserId !== -1)
+    if(currentUserId !== "-1")
     {
       navigate('/Dashboard');
     }

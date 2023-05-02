@@ -4,7 +4,7 @@ import { RootState } from "./Store"
 import { addUsersToStore, setCurrentUserId, User } from "./UserSlice"
 
 export interface Company {
-    id: number,
+    id: string,
     name: string,
     initiatives: Initiative[]
 }
@@ -29,6 +29,8 @@ const initialState: CompanyState = {
     logInAttempts: 0
 }
 
+export const IntegrityId = "53beceb7-054b-4740-830f-98a1dc0cc991"; //We should probably change how we handle this in the future
+
 export const getCompanyInfo = createAsyncThunk(
     'companies/getCompanyInfo',
     async (args: GetCompanyInfoRequest, {dispatch}) => {
@@ -42,12 +44,12 @@ export const getCompanyInfo = createAsyncThunk(
         let companies: Company[] = [];
         for(const info of companyInfo)
         {
-            let company: Company = {id: parseInt(info.id), name: info.companyName, initiatives: []};
+            let company: Company = {id: info.id, name: info.companyName, initiatives: []};
             companies.push(company);
 
             let employee = info.employeeInfo;
             let user: User = {
-                id: parseInt(employee.employeeId),
+                id: employee.employeeId,
                 companyId: company.id,
                 email: employee.employeeEmail,
                 password: employee.employeePassword
@@ -75,7 +77,7 @@ export const upsertCompanyInfo = createAsyncThunk(
       
     if (response.status.toUpperCase().includes('FAILED'))
       throw Error;
-    let newId = parseInt(response.id);
+    let newId = response.id;
     let newCompany: Company = JSON.parse(JSON.stringify(args.company));
     newCompany.id = newId;
     
@@ -91,7 +93,7 @@ export const upsertCompanyInfo = createAsyncThunk(
 
 export const upsertInitiativeInfo = createAsyncThunk(
   'companies/upsertInitiativesInfo',
-  async (args: UpsertInitiativeInfoRequest, {}): Promise<{initiative: Initiative, companyId: number}> => {
+  async (args: UpsertInitiativeInfoRequest, {}): Promise<{initiative: Initiative, companyId: string}> => {
     const response = await UpsertInitiativeInfo(args);
 
     if(response.status.toUpperCase().includes('FAILED'))
@@ -99,25 +101,25 @@ export const upsertInitiativeInfo = createAsyncThunk(
     
     let newInitiative: Initiative = JSON.parse(JSON.stringify(args.initiative));
     newInitiative.id = response.initiativeId;
-    return {initiative: newInitiative, companyId: parseInt(args.companyId)};
+    return {initiative: newInitiative, companyId: args.companyId};
   }
 )
 
 export const upsertThroughputData = createAsyncThunk(
   'companies/upsertThroughputInfo',
-  async (args: UpsertThroughputDataRequest, {}): Promise<{initiativeId: string, companyId: number, data: ThroughputData[]}> => {
+  async (args: UpsertThroughputDataRequest, {}): Promise<{initiativeId: string, companyId: string, data: ThroughputData[]}> => {
     const response = await UpsertThroughputData(args);
 
     if(response.status.toUpperCase().includes('FAILED'))
       throw Error;
 
-    return {initiativeId: args.initiativeId, companyId: parseInt(args.companyId), data: args.itemsCompletedOnDate};
+    return {initiativeId: args.initiativeId, companyId: args.companyId, data: args.itemsCompletedOnDate};
   }
 )
 
 export const upsertDecisionData = createAsyncThunk(
   'companies/upsertDecisionData',
-  async (args: UpsertDecisionDataRequest, {}): Promise<{initiativeId: string, companyId: number, data: DecisionData[]}> => {
+  async (args: UpsertDecisionDataRequest, {}): Promise<{initiativeId: string, companyId: string, data: DecisionData[]}> => {
     const response = await UpsertDecisionData(args);
 
     if(response.status.toUpperCase().includes('FAILED'))
@@ -131,7 +133,7 @@ export const upsertDecisionData = createAsyncThunk(
       args.decisions[decisionIndex].id = newId;
     }
 
-    return {initiativeId: args.initiativeId, companyId: parseInt(args.companyId), data: args.decisions};
+    return {initiativeId: args.initiativeId, companyId: args.companyId, data: args.decisions};
   }
 )
 
@@ -154,11 +156,11 @@ export const authenticateUser = createAsyncThunk(
     if(response.status.toUpperCase().includes("FAILED"))
       throw Error;
     
-    const companyId = parseInt(response.companyId);
-    if(companyId !== 0)   //Admins see all
+    const companyId = response.companyId;
+    if(companyId !== IntegrityId)   //Admins see all
       dispatch(getCompanyInfo({companyId: companyId}));
     else
-      dispatch(getCompanyInfo({companyId: -1}));
+      dispatch(getCompanyInfo({companyId: "-1"}));
     dispatch(setCurrentUserId(companyId));
   }
 )
@@ -251,11 +253,10 @@ export const companySlice = createSlice({
                 }
               }
             })
-
             .addCase(deleteDecisionData.fulfilled, (state, action) => {
               const companyId = action.meta.arg.companyId;
               const initiativeId = action.meta.arg.initiativeId.toString();
-              const matchingCompany = state.companies.find(company => company.id === parseInt(companyId));
+              const matchingCompany = state.companies.find(company => company.id === companyId);
               if(matchingCompany)
               {
                 const matchingInit = matchingCompany.initiatives.find(init => init.id === initiativeId);
