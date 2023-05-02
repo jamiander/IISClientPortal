@@ -20,7 +20,7 @@ export default function DashboardPage(){
   const [radioValue, setRadioValue] = useState("active");
 
   function Dashboard(){
-    if(company?.initiatives === undefined || company.initiatives.length === 0){
+    if(companyList.flatMap(c => c.initiatives).length === 0){
       
       return(
         <p className="text-4xl">No Current Initiatives</p>
@@ -28,7 +28,7 @@ export default function DashboardPage(){
     }else{
       return(
         <>
-          <InitiativesTable companyList={comp} pageNumber={1} radioStatus={radioValue} ValidateInitiative={ValidateNewInitiative} admin={false}/>
+          <InitiativesTable companyList={companyList} pageNumber={1} radioStatus={radioValue} ValidateInitiative={ValidateNewInitiative} admin={false}/>
         </>
       )
     }
