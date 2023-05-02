@@ -15,18 +15,20 @@ export default function ProfileInfoDisplay(){
   return(
     <div>
       <table className="table-auto border-separate border border-spacing-2 border-transparent">
-        <tr>
-          <td>Company:</td>
-          <td>{company?.name}</td>
-        </tr>
-        <tr>
-          <td>Email:</td>
-          <td>{user?.email}</td>
-        </tr>
-        <tr>
-          <td>Password:</td>
-          <td><input disabled type={passwordShown ? 'text' : 'password'} value={user?.password} className="bg-[#445362] w-40"/></td>
-        </tr>
+        <tbody>
+          <tr>
+            <td>Company:</td>
+            <td>{company?.name}</td>
+          </tr>
+          <tr>
+            <td>Email:</td>
+            <td>{user?.email}</td>
+          </tr>
+          <tr>
+            <td>Password:</td>
+            <td><input disabled type={passwordShown ? 'text' : 'password'} value={user?.password} className="bg-[#445362] w-40"/></td>
+          </tr>
+        </tbody>
       </table>
       <div className="ml-2">
         <label className="flex">
