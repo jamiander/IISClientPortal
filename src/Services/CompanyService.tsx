@@ -131,7 +131,7 @@ export function FindItemsRemaining(initiative: Initiative | undefined) {
 export interface UpsertThroughputDataRequest {
   isTest: boolean,
   companyId: string,
-  initiativeId: number,
+  initiativeId: string,
   itemsCompletedOnDate: ThroughputData[]
 }
 
@@ -142,7 +142,7 @@ interface UpsertThroughputDataResponse {
 export interface UpsertDecisionDataRequest {
   isTest: boolean,
   companyId: string,
-  initiativeId: number,
+  initiativeId: string,
   decisions: DecisionData[]
 }
 
@@ -154,7 +154,7 @@ interface UpsertDecisionDataResponse {
 export interface DeleteDecisionDataRequest {
   isTest: boolean,
   companyId: string,
-  initiativeId: number,
+  initiativeId: string,
   decisionIds: number[]
 }
 

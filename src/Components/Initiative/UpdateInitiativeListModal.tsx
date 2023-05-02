@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { DateInput } from "../DateInput";
 import { DateInfo } from "../../Services/CompanyService";
 import { useAppSelector } from "../../Store/Hooks";
+import {v4 as uuidv4 } from "uuid";
 
 interface InitiativeModalProps {
 	title: string
@@ -43,6 +44,9 @@ export function UpdateInitiativeListModal(props: InitiativeModalProps){
     setInitiativeTotalItems(props.initiative?.totalItems ?? 0);
 	  setInitiativeCompanyId(props.company?.id ?? -1);
   }, [props.initiative,props.company,props.initiativeIsOpen])
+
+  let myUuid = uuidv4();
+
 
 	return (
 		<Modal
@@ -96,7 +100,7 @@ export function UpdateInitiativeListModal(props: InitiativeModalProps){
           <button id={InitiativeModalIds.submitButton} className={submitButtonStyle} 
             onClick={() => {
               let initiative : Initiative = {
-                id: props.initiative?.id ?? -1,
+                id: props.initiative?.id ?? myUuid,
                 title: initiativeTitle,
                 targetDate: initiativeTargetDate,
                 startDate: initiativeStartDate,

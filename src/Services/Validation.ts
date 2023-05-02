@@ -102,7 +102,7 @@ export function ValidateThroughputData(dataList: ThroughputData[]) : Validation
   return {success: true, message: "All data is valid."}
 }
 
-export function ValidateFileThroughputData(companyList: Company[], companyId: number, initiativeId: number, dataList: ThroughputData[]): Validation
+export function ValidateFileThroughputData(companyList: Company[], companyId: number, initiativeId: string, dataList: ThroughputData[]): Validation
 {
   if(dataList.length === 0)
     return {success: false, message: "A set of data could not be derived from the selected file, or no file was selected."}
@@ -110,7 +110,7 @@ export function ValidateFileThroughputData(companyList: Company[], companyId: nu
   return ValidateEditThroughputData(companyList, companyId, initiativeId, dataList);
 }
 
-export function ValidateEditThroughputData(companyList: Company[], companyId: number, initiativeId: number, dataList: ThroughputData[]): Validation
+export function ValidateEditThroughputData(companyList: Company[], companyId: number, initiativeId: string, dataList: ThroughputData[]): Validation
 {
   const dataValidation = ValidateThroughputData(dataList);
   if(dataValidation.success)
@@ -125,7 +125,7 @@ export function ValidateEditThroughputData(companyList: Company[], companyId: nu
   return {success: true, message: "Successfully validated throughput data; all good!"}
 }
 
-export function ValidateCompanyAndInitiative(companyList: Company[], companyId: number, initiativeId: number) : Validation
+export function ValidateCompanyAndInitiative(companyList: Company[], companyId: number, initiativeId: string) : Validation
 {
     const matchingCompany = companyList.find(company => company.id === companyId);
     if(!matchingCompany)
@@ -138,7 +138,7 @@ export function ValidateCompanyAndInitiative(companyList: Company[], companyId: 
   return {success: true, message: "Successfully validated throughput data; all good!"}
 }
 
-export function ValidateThroughputDataUpdate(companyList: Company[], companyId: number, initiativeId: number, dataList: ThroughputData[]): Validation
+export function ValidateThroughputDataUpdate(companyList: Company[], companyId: number, initiativeId: string, dataList: ThroughputData[]): Validation
 {
   if(dataList.length === 0)
     return {success: false, message: "A set of data could not be derived from the selected file, or no file was selected."}

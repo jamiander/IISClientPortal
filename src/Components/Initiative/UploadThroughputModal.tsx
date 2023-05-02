@@ -6,6 +6,7 @@ import { DateInfo, ThroughputData } from "../../Services/CompanyService";
 import { useOutletContext } from "react-router-dom";
 import { ValidationFailedPrefix } from "../../Services/Validation";
 import SelectCompanyAndInitiative from "./SelectCompanyAndInitiative";
+import { v4 as uuidV4} from "uuid";
 
 export const UploadThroughputIds = {
   modal: "uploadThroughputModal",
@@ -20,7 +21,7 @@ interface ThroughputModalProps{
   companyList: Company[];
   uploadIsOpen: boolean,
   setUploadIsOpen: (value: boolean) => void,
-  Submit: (companyId: number, initiativeId: number, dataList: ThroughputData[], emptyDataCheck: boolean) => void
+  Submit: (companyId: number, initiativeId: string, dataList: ThroughputData[], emptyDataCheck: boolean) => void
 }
 
 export default function UploadThroughputModal(props:ThroughputModalProps){
@@ -107,6 +108,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){
     reader.readAsText(file);
   }
 
+  let myUuid = uuidV4();
   return(
     <Modal
     id={UploadThroughputIds.modal}
@@ -123,7 +125,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){
             <p className="text-2xl w-full">Upload CSV File</p>
             <input className="w-full" ref={fileRef} type={'file'} accept={'.csv'} onChange={(e) => ReceiveFile(e.target.value)}/>
             <div className="grid justify-end h-1/2">
-              <button id={UploadThroughputIds.fileSubmit} className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives.at(selectedInitiativeIndex)?.id ?? -1, fileData, true)}>Submit</button>
+              <button id={UploadThroughputIds.fileSubmit} className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? -1, selectedCompany?.initiatives.at(selectedInitiativeIndex)?.id ?? myUuid, fileData, true)}>Submit</button>
             </div>
           </div>
         </div>
