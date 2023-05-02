@@ -14,6 +14,7 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { Paper } from "@mui/material";
+import { v4 as uuidV4 } from "uuid";
 
 export const EditThroughputIds = {
     modal: "editThroughputModal",
@@ -32,7 +33,7 @@ export const EditThroughputIds = {
     companyList: Company[],
     editIsOpen: boolean,
     setEditIsOpen: (value: boolean) => void,
-    Submit: (companyId: string, initiativeId: number, dataList: ThroughputData[], emptyDataCheck: boolean) => void
+    Submit: (companyId: string, initiativeId: string, dataList: ThroughputData[], emptyDataCheck: boolean) => void
   }
 
 export default function EditThroughputModal(this: any, props: ThroughputModalProps){
@@ -95,6 +96,8 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
     }
   },[selectedInitiativeIndex])
 
+let myUuid = uuidV4();
+
   function GetInitiativeFromCompany(company: Company | undefined, initiativeIndex: number) : Initiative | undefined
   {
     let initiatives = company?.initiatives[initiativeIndex];
@@ -104,7 +107,7 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
   function AddThroughputEntry()
   {
     let initiative = GetInitiativeFromCompany(selectedCompany,selectedInitiativeIndex);
-    let validate = ValidateEditThroughputData(props.companyList, selectedCompany?.id ?? "-1", initiative?.id ?? -1, [manualEntry]);
+    let validate = ValidateEditThroughputData(props.companyList, selectedCompany?.id ?? "-1", initiative?.id ?? myUuid, [manualEntry]);
     if(validate.success)
     {
       ShowToast("New data added!", "Success");
@@ -224,7 +227,7 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
           </div>
         </div>
         <div className="h-10 w-full flex justify-between">
-          <button id={EditThroughputIds.submitButton} className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? "-1", selectedCompany?.initiatives[selectedInitiativeIndex]?.id ?? -1, GetInitiativeFromCompany(selectedCompany,selectedInitiativeIndex)?.itemsCompletedOnDate ?? [], false)}>Save</button>
+          <button id={EditThroughputIds.submitButton} className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? "-1", selectedCompany?.initiatives[selectedInitiativeIndex]?.id ?? myUuid, GetInitiativeFromCompany(selectedCompany,selectedInitiativeIndex)?.itemsCompletedOnDate ?? [], false)}>Save</button>
           <button id={EditThroughputIds.closeButton} className={cancelButtonStyle} onClick={() => props.setEditIsOpen(false)}>Cancel</button>
         </div>
       </div>

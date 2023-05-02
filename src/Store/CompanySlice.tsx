@@ -15,7 +15,7 @@ export interface CompanyState {
 }
 
 export interface Initiative {
-    id: number,
+    id: string,
     title: string,
     targetDate: DateInfo,
     startDate: DateInfo,
@@ -100,14 +100,14 @@ export const upsertInitiativeInfo = createAsyncThunk(
       throw Error;
     
     let newInitiative: Initiative = JSON.parse(JSON.stringify(args.initiative));
-    newInitiative.id = parseInt(response.initiativeId);
+    newInitiative.id = response.initiativeId;
     return {initiative: newInitiative, companyId: args.companyId};
   }
 )
 
 export const upsertThroughputData = createAsyncThunk(
   'companies/upsertThroughputInfo',
-  async (args: UpsertThroughputDataRequest, {}): Promise<{initiativeId: number, companyId: string, data: ThroughputData[]}> => {
+  async (args: UpsertThroughputDataRequest, {}): Promise<{initiativeId: string, companyId: string, data: ThroughputData[]}> => {
     const response = await UpsertThroughputData(args);
 
     if(response.status.toUpperCase().includes('FAILED'))
@@ -119,7 +119,7 @@ export const upsertThroughputData = createAsyncThunk(
 
 export const upsertDecisionData = createAsyncThunk(
   'companies/upsertDecisionData',
-  async (args: UpsertDecisionDataRequest, {}): Promise<{initiativeId: number, companyId: string, data: DecisionData[]}> => {
+  async (args: UpsertDecisionDataRequest, {}): Promise<{initiativeId: string, companyId: string, data: DecisionData[]}> => {
     const response = await UpsertDecisionData(args);
 
     if(response.status.toUpperCase().includes('FAILED'))
@@ -206,7 +206,7 @@ export const companySlice = createSlice({
             })
             .addCase(upsertThroughputData.fulfilled, (state, action) => {
               const companyId = action.payload.companyId;
-              const initiativeId = action.payload.initiativeId;
+              const initiativeId = action.payload.initiativeId.toString();
               const matchingCompany = state.companies.find(company => company.id === companyId);
               if(matchingCompany)
               {
@@ -232,7 +232,7 @@ export const companySlice = createSlice({
             })
             .addCase(upsertDecisionData.fulfilled, (state, action) => {
               const companyId = action.payload.companyId;
-              const initiativeId = action.payload.initiativeId;
+              const initiativeId = action.payload.initiativeId.toString();
               const matchingCompany = state.companies.find(company => company.id === companyId);
               if(matchingCompany)
               {
@@ -255,7 +255,7 @@ export const companySlice = createSlice({
             })
             .addCase(deleteDecisionData.fulfilled, (state, action) => {
               const companyId = action.meta.arg.companyId;
-              const initiativeId = action.meta.arg.initiativeId;
+              const initiativeId = action.meta.arg.initiativeId.toString();
               const matchingCompany = state.companies.find(company => company.id === companyId);
               if(matchingCompany)
               {

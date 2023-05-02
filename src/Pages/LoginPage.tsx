@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { authenticateUser, getCompanyInfo, selectLogInAttempts } from "../Store/CompanySlice";
+import { authenticateUser, selectLogInAttempts } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks"
-import { selectAllUsers, selectCurrentUserId, setCurrentUserId } from "../Store/UserSlice";
+import { selectAllUsers, selectCurrentUserId } from "../Store/UserSlice";
 import { genericButtonStyle } from "../Styles";
 
 export default function LoginPage(){
@@ -11,7 +11,6 @@ export default function LoginPage(){
   const currentUserId = useAppSelector(selectCurrentUserId);
   const [userEmail, setUserEmail] = useState('info@integrityinspired.com');
   const [password, setPassword] = useState('password');
-  const userList = useAppSelector(selectAllUsers);
   const [passwordShown,setPasswordShown] = useState(false);
   const selectStyle = "outline outline-1 h-10 w-60 p-2 mb-4 hover:outline-2 focus:outline-2";
   const logInAttempts = useAppSelector(selectLogInAttempts);
@@ -23,19 +22,11 @@ export default function LoginPage(){
   function Login()
   {
     dispatch(authenticateUser({creds: { username: userEmail, password: password }}))
-
-    /*let currentUser = userList.find(user => (user.email === userEmail) && (user.password === password));
-    if(currentUser){
-      dispatch(setCurrentUserId(currentUser.id));
-      dispatch(getCompanyInfo({employeeId: currentUser.id}));
-      navigate('/Dashboard');
-    }*/
   }
 
   useEffect(() => {
     if(currentUserId !== "-1")
     {
-      //dispatch(getCompanyInfo({employeeId: currentUserId}));
       navigate('/Dashboard');
     }
   },[currentUserId]);

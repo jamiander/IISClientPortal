@@ -46,7 +46,7 @@ export default function ManageInitiativesDisplay() {
       ShowToast(ValidationFailedPrefix + validation.message,'Error');
   }
 
-  function SubmitUpdateThroughput(companyId: string, initiativeId: number, dataList: ThroughputData[], emptyDataCheck: boolean = true)
+  function SubmitUpdateThroughput(companyId: string, initiativeId: string, dataList: ThroughputData[], emptyDataCheck: boolean = true)
   {
     let isTest = false;
     if((window as any).Cypress)
