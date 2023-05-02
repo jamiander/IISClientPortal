@@ -26,7 +26,7 @@ export default function ManageUsersDisplay() {
   const userList = useAppSelector(selectAllUsers);
   const companyList = useAppSelector(selectAllCompanies);
 
-  const fakeUser : User = {id: "-1", email: '', password: '', companyId: "-1"};
+  const fakeUser : User = {id: "-1", email: '', password: '', companyId: "-1", initiativeIds: []};
   const fakeCompany : Company = {id: "-1", name: "", initiatives: []}
 
   const [selectedUser, setSelectedUser] = useState(fakeUser);
