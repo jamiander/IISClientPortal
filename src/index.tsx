@@ -10,6 +10,7 @@ import { store } from './Store/Store';
 import AdminPage from './Pages/AdminPage';
 import ProfilePage from './Pages/ProfilePage';
 import LoginPage from './Pages/LoginPage';
+import { CompanyPage } from './Pages/CompanyPage';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -32,7 +33,7 @@ const router = createBrowserRouter([
         element: <DashboardPage/>,
         errorElement: <ErrorPage/>,
       },
-      {
+      /*{
         path: '/Admin',
         element: <AdminPage/>,
         errorElement: <ErrorPage/>,
@@ -41,6 +42,11 @@ const router = createBrowserRouter([
         path:'/Profile',
         element:<ProfilePage/>,
         errorElement: <ErrorPage/>,
+      },*/
+      {
+        path: '/Company',
+        element:<CompanyPage/>,
+        errorElement: <ErrorPage/>
       }
     ]
   }

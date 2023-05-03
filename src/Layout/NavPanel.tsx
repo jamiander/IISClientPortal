@@ -43,8 +43,8 @@ export default function NavPanel(props: NavProps){
       </button>
       {
         currentUser?.email === "admin@integrityinspired.com" &&
-        <button className={GetNavStyle("/")}
-          onClick={() => NavHandler('/')}>
+        <button className={GetNavStyle("/Company")}
+          onClick={() => NavHandler('/Company')}>
           Client and User Management
         </button>
       }

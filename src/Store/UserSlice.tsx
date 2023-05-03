@@ -4,25 +4,25 @@ import { getCompanyByInitiativeIds, IntegrityId } from "./CompanySlice";
 import { AuthenticateUser, AuthenticateUserRequest, DeleteUserInfo, DeleteUserInfoRequest, GetUserById, GetUserByIdRequest, UpsertUserInfo, UpsertUserInfoRequest } from "../Services/UserService";
 
 export interface User {
-    id: string
-    email: string
-    password: string
-    companyId: string
-    initiativeIds?: string[]
-    name?: string
-    phoneNumber?: string
+  id: string
+  email: string
+  password: string
+  companyId: string
+  initiativeIds: string[]
+  name?: string
+  phoneNumber?: string
 }
 
 export interface UserState{
-    users: User[]
-    currentUserId: string
-    logInAttempts: number
+  users: User[]
+  currentUserId: string
+  logInAttempts: number
 }
 
 const initialState: UserState = {
-    users: [],
-    currentUserId: "-1",
-    logInAttempts: 0
+  users: [],
+  currentUserId: "-1",
+  logInAttempts: 0
 }
 
 export const getUserById = createAsyncThunk(
