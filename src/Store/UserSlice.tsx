@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "./Store";
-import { clearCompanies, getCompanyByInitiativeIds, IntegrityId } from "./CompanySlice";
-import { AuthenticateUser, AuthenticateUserRequest, GetUserById, GetUserByIdRequest } from "../Services/UserService";
+import { getCompanyByInitiativeIds, IntegrityId } from "./CompanySlice";
+import { AuthenticateUser, AuthenticateUserRequest, GetUserById, GetUserByIdRequest, UpsertUserInfo, UpsertUserInfoRequest } from "../Services/UserService";
 
 export interface User {
     id: string
@@ -55,6 +55,21 @@ export const authenticateUser = createAsyncThunk(
   }
 )
 
+export const upsertUserInfo = createAsyncThunk(
+  'users/upsertUserInfo',
+  async (args: UpsertUserInfoRequest, {dispatch}): Promise<User> => {
+    const response = await UpsertUserInfo(args);
+
+    if (response.status.toUpperCase().includes('FAILED'))
+      throw Error;
+
+      let newUser: User = JSON.parse(JSON.stringify(args.user));
+      newUser.id = response.userId;
+      dispatch(addUsersToStore([newUser]));
+      return newUser
+  }
+)
+
 export const userSlice = createSlice({
     name: "users",
     initialState: initialState,
@@ -89,6 +104,12 @@ export const userSlice = createSlice({
         })
         .addCase(authenticateUser.rejected, (state, action) => {
           state.logInAttempts++;
+        })
+        .addCase(upsertUserInfo.fulfilled, (state, action) => {
+          const newUser = action.payload;
+          const userIndex = state.users.findIndex(user => user.id === newUser.id);
+          if(userIndex > -1) state.users.splice(userIndex, 1);
+          state.users.push(newUser);
         })
     },
 });

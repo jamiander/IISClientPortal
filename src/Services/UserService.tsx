@@ -40,3 +40,17 @@ export async function AuthenticateUser(request: AuthenticateUserRequest) : Promi
   return response.data;
 }
 
+export interface UpsertUserInfoRequest {
+  user: User
+}
+
+interface UpsertUserInfoResponse {
+  userId: string,
+  status: string
+}
+
+export async function UpsertUserInfo(request: UpsertUserInfoRequest) : Promise<UpsertUserInfoResponse> {
+  let baseUrl = BASE_URL + "AddUserData?code=0DxuosCHuDX2GjYbeUu0aqu45wAg95xIAf4B2ecRjO-vAzFu3q_cJQ==";
+  const response = await axios.post(baseUrl,request);
+  return response.data;
+}
