@@ -27,10 +27,8 @@ export function CompanyPage()
             <Fragment key={index}>
               <Grid item md={4}>
                 <Card>
-                  <CardHeader>
-                    {company.name}
-                  </CardHeader>
                   <CardContent>
+                    <p className="text-2xl">{company.name}</p>
                     <Grid container spacing={6}>
                     {
                       usersAtCompany.map((user,jndex) => {
