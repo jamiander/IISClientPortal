@@ -39,20 +39,11 @@ interface GetCompanyByIdResponse {
 export async function GetCompanyById(request?: GetCompanyByIdRequest) : Promise<GetCompanyByIdResponse> {
   let baseUrl = BASE_URL + "GetCompanyDataDB?code=yxbqHLA5Vp_XyQwwR8TrGLamOrTxv9Dbqw53RhEOYy9CAzFuckblhQ==";
 
-  let query = [];/*
-  if (request)
-  {
-    if (request.companyId !== undefined) query.push(`companyId=${request.companyId}`);
-    if (request.employeeId !== undefined) query.push(`employeeId=${request.employeeId}`);
-
-    if (query.length > 0) baseUrl += "&" + query.join("&");
-  }*/
-
   let req = {
     companyId: request?.companyId ?? "-1",
   }
 
-  let response = await axios.post(baseUrl,req)//get(baseUrl); //using post since I couldn't get query parameters to work with the cosmos sql
+  let response = await axios.post(baseUrl,req)
   return response.data;
 }
 

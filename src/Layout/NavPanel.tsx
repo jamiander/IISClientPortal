@@ -53,7 +53,7 @@ export default function NavPanel(props: NavProps){
               Admin
           </button> :
 
-/*           leaving Profile code-use later for admin functions?  */
+           leaving Profile code-use later for admin functions?  
 
           <button className={GetNavStyle("/Profile")} 
              onClick={() => NavHandler('/Profile')} hidden>
