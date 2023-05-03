@@ -1,13 +1,6 @@
 import axios from "axios";
 import { Company, Initiative } from "../Store/CompanySlice";
-import { User } from "../Store/UserSlice";
 import { BASE_URL } from "./Http";
-
-interface EmployeeInfo {
-  employeeId: string,
-  employeeEmail: string,
-  employeePassword: string
-}
 
 export interface DateInfo {
   month: number,
@@ -18,7 +11,6 @@ export interface DateInfo {
 export interface CompanyInfo {
   id: string,
   companyName: string,
-  employeeInfo: EmployeeInfo,
   initiatives?: Initiative[]
 }
 
@@ -83,7 +75,6 @@ export async function GetCompanyByInitiativeIds(request: GetCompanyByInitiativeI
 
 export interface UpsertCompanyInfoRequest {
   company: Company,
-  employee: User,
   isTest: boolean
 }
 
@@ -94,18 +85,12 @@ interface UpsertCompanyInfoResponse {
 
 export async function UpsertCompanyInfo(request: UpsertCompanyInfoRequest) : Promise<UpsertCompanyInfoResponse> {
   const company = request.company;
-  const employee = request.employee;
   const isTest = request.isTest;
   
   const info: CompanyInfo = {
     id: company.id.toString(),
-    companyName: company.name,
-    employeeInfo: {
-      employeeId: employee.id.toString(),
-      employeeEmail: employee.email,
-      employeePassword: employee.password
-    },
-  }
+    companyName: company.name
+    }
 
   let baseUrl = BASE_URL + "AddCompanyDataDB?code=Hu3y-USXm491pUrvMF-jQVFDMQvazAvfxEq9pAp58LhWAzFu7kjFvQ==";
 

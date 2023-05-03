@@ -46,8 +46,11 @@ export default function NavPanel(props: NavProps){
             disabled={!isLoggedIn} onClick={() => NavHandler('/Admin')}>
               Admin
           </button> :
+
+/*           leaving Profile code-use later for admin functions?  */
+
           <button className={GetNavStyle("/Profile")} 
-            onClick={() => NavHandler('/Profile')}>
+             onClick={() => NavHandler('/Profile')} hidden>
               Profile
           </button>
       }
