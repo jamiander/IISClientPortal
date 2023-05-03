@@ -55,3 +55,18 @@ export async function UpsertUserInfo(request: UpsertUserInfoRequest) : Promise<U
   const response = await axios.post(baseUrl,request);
   return response.data;
 }
+
+export interface DeleteUserInfoRequest {
+  userIds: string[],
+  isTest: boolean
+}
+
+interface DeleteUserInfoResponse {
+  status: string
+}
+
+export async function DeleteUserInfo(request: DeleteUserInfoRequest) : Promise<DeleteUserInfoResponse> {
+  let baseUrl = BASE_URL + "DeleteUserData?code=IEWMcaPAbEmpSopN_hCw-ltu09BWB8bKbkIkahtQj_tDAzFuPGcLYA==";
+  const response = await axios.delete(baseUrl,{data: request});
+  return response.data;
+}
