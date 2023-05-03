@@ -208,7 +208,7 @@ interface DecisionDataProps {
                             <StyledTextarea id={DecisionModalIds.description} value={currentDescription} onChange={e => setCurrentDescription(e.target.value)}/>
                             <label className={labelStyle} htmlFor={DecisionModalIds.resolution}>Resolution</label>
                             <StyledTextarea id={DecisionModalIds.resolution} value={currentResolution} onChange={e => setCurrentResolution(e.target.value)}/>
-                            <StyledTextField id={DecisionModalIds.participants} label="Participants" value={currentParticipants} onChange={e => setCurrentParticipants(e.target.value)}/>
+                            <StyledTextField id={DecisionModalIds.participants} label="Participants-separate by comma" value={currentParticipants} onChange={e => setCurrentParticipants(e.target.value)}/>
                             <StyledTextField id={DecisionModalIds.date} label="Date Resolved" type="date" value={currentDateString} onChange={e => setCurrentDateString(e.target.value)}/>
                           </>
                           :
