@@ -23,21 +23,17 @@ export default function ManageUsersDisplay() {
 
   const [radioValue, setRadioValue] = useState('active')
 
-  const userList = useAppSelector(selectAllUsers);
   const companyList = useAppSelector(selectAllCompanies);
 
-  const fakeUser : User = {id: "-1", email: '', password: '', companyId: "-1", initiativeIds: []};
   const fakeCompany : Company = {id: "-1", name: "", initiatives: []}
 
-  const [selectedUser, setSelectedUser] = useState(fakeUser);
   const [selectedCompany, setSelectedCompany] = useState(fakeCompany);
 
   const ShowToast : (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void = useOutletContext();
 
-  function SubmitUpdateUser(companyName: string, email: string, password: string)
+  function SubmitUpdateUser(companyName: string)
   {
     const company: Company = {...selectedCompany, name: companyName};
-    const user: User = {...selectedUser, email: email, password: password};
 
     let isTest = false;
     if((window as any).Cypress)
@@ -45,35 +41,32 @@ export default function ManageUsersDisplay() {
 
     let validation;
 
-    const userToValidate : User = {...user, "companyId": company.id};
-    if (isEdit) validation = ValidateEditUser(company.name, userToValidate, userList, companyList);
-    else validation = ValidateNewUser(company.name, user.email, user.password, companyList, userList);
+    if (isEdit) validation = ValidateEditUser(company.name, companyList);
+    else validation = ValidateNewUser(company.name, companyList);
 
     if(validation.success) {
-      dispatch(upsertCompanyInfo({ company: company, employee: user, isTest: isTest}));
+      dispatch(upsertCompanyInfo({ company: company, isTest: isTest}));
       handleCloseEditUser();
     }
     else
       ShowToast(ValidationFailedPrefix + validation.message, 'Error');
   }
   
-  function handleEditUser(user: User, company?: Company) 
+  function handleEditUser(company?: Company) 
     {
       if(company)
       {
         setIsEdit(true);
         setEditUserIsOpen(true);
         setSelectedCompany(company);
-        setSelectedUser(user);
       }
       else
-        console.log("Couldn't find company for user " + user.id + "in handleEditClient (adminpage)")
+        console.log("Couldn't find company for user in handleEditClient (adminpage)")
     }
   
   function handleCloseEditUser() {
     setEditUserIsOpen(false);
     setSelectedCompany(fakeCompany);
-    setSelectedUser(fakeUser);
   }
 
   return (
@@ -96,8 +89,8 @@ export default function ManageUsersDisplay() {
       </div>
       
       <div className="col-span-4 py-3 flex">
-        <UsersTable userList={Sorter({users:userList})} companyList={companyList} radioStatus={radioValue} SubmitUpdateUser={SubmitUpdateUser} handleEditUser={handleEditUser} handleCloseEditUser={handleCloseEditUser}/>
-        <UpdateUserListModal EditUserIsOpen={EditUserIsOpen} handleCloseEditUser={handleCloseEditUser} user={selectedUser} company={selectedCompany} SubmitUser={SubmitUpdateUser} isEdit={isEdit} />
+        <UsersTable companyList={companyList} radioStatus={radioValue} SubmitUpdateUser={SubmitUpdateUser} handleEditUser={handleEditUser} handleCloseEditUser={handleCloseEditUser}/>
+        <UpdateUserListModal EditUserIsOpen={EditUserIsOpen} handleCloseEditUser={handleCloseEditUser} company={selectedCompany} SubmitUser={SubmitUpdateUser} isEdit={isEdit} />
       </div>
     </div>
   )

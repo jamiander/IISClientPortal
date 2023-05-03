@@ -17,11 +17,10 @@ export const UserTableIds = {
 }
 
 interface UsersTableProps {
-  userList: User[],
   companyList: Company[],
   radioStatus: string,
-  SubmitUpdateUser:(companyName: string, email: string, password: string) => void,
-  handleEditUser:(user:User,company?:Company) => void,
+  SubmitUpdateUser:(companyName: string) => void,
+  handleEditUser:(company?:Company) => void,
   handleCloseEditUser:() => void
 }
 
@@ -66,36 +65,30 @@ export default function UsersTable(props: UsersTableProps){
                     }
                   }}>
               <TableHeaderStyle>Company</TableHeaderStyle>
-              <TableHeaderStyle>Email</TableHeaderStyle>
-              <TableHeaderStyle>Password</TableHeaderStyle>
+              
               <TableHeaderStyle>Edit</TableHeaderStyle>
             </TableRow>
           </TableHead>
           <TableBody>
-            {CompanyFilter(props.userList,props.radioStatus).map((user, index)=>{
-              const company = filteredCompanies.find(company => company.id === user.companyId);
-              if(company)
-              {
+             {
+              filteredCompanies.map((display,index) => {
+             
                 return(
-                  <TableRow key={index} className={defaultRowStyle} sx={{
+                  <TableRow className={defaultRowStyle} sx={{
                     borderBottom: "1px solid black",
                       "& td": {
                         fontSize: "1.1rem",
                         fontFamily: "Arial, Helvetica" 
                       }
                     }}>
-                    <TableCell>{company?.name}</TableCell>
-                    <TableCell>{user.email}</TableCell>
+                    <TableCell>{display?.name}</TableCell>
+                    
                     <TableCell>
-                      <PasswordDisplay {...(user)}/>
-                    </TableCell>
-                    <TableCell>
-                      <EditUserButton index={index} user={user} company={company} SubmitUpdateUser={props.SubmitUpdateUser} handleEditUser={props.handleEditUser} handleCloseEditUser={props.handleCloseEditUser}/>
+                      <EditUserButton company={display} SubmitUpdateUser={props.SubmitUpdateUser} handleEditUser={props.handleEditUser} handleCloseEditUser={props.handleCloseEditUser} index={index}/>
                     </TableCell>
                   </TableRow>
                 )
-              }
-            })}
+              })}
             </TableBody>
           </Table>
         </TableContainer>

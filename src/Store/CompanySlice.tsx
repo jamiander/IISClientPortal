@@ -31,28 +31,18 @@ export const IntegrityId = "53beceb7-054b-4740-830f-98a1dc0cc991"; //We should p
 
 export const getCompanyById = createAsyncThunk(
   'companies/getCompanyById',
-  async (args: GetCompanyByIdRequest, {dispatch}) => {
+  async (args: GetCompanyByIdRequest, {}) => {
     const response = await GetCompanyById(args);
     const companyInfo = response.info;
         
     if (response.status.toUpperCase().includes('FAILED'))
       throw Error;
 
-    let users: User[] = [];
     let companies: Company[] = [];
     for(const info of companyInfo)
     {
       let company: Company = {id: info.id, name: info.companyName, initiatives: []};
       companies.push(company);
-
-      let employee = info.employeeInfo;
-      let user: User = {
-        id: employee.employeeId,
-        companyId: company.id,
-        email: employee.employeeEmail,
-        password: employee.employeePassword
-      }
-      users.push(user);
 
       if(info.initiatives)
       {
@@ -62,36 +52,25 @@ export const getCompanyById = createAsyncThunk(
         }
       }
     }
-    dispatch(addUsersToStore(users));
-
+    
     return companies;
   }
 )
 
 export const getCompanyByInitiativeIds = createAsyncThunk(
   'companies/getCompanyByInitiativeIds',
-  async (args: GetCompanyByInitiativeIdsRequest, {dispatch}) => {
+  async (args: GetCompanyByInitiativeIdsRequest, {}) => {
     const response = await GetCompanyByInitiativeIds(args);
     const companyInfo = response.companies;
 
     if (response.status.toUpperCase().includes('FAILED'))
       throw Error;
 
-    let users: User[] = [];
     let companies: Company[] = [];
     for(const info of companyInfo)
     {
       let company: Company = {id: info.id, name: info.companyName, initiatives: []};
       companies.push(company);
-
-      let employee = info.employeeInfo;
-      let user: User = {
-        id: employee.employeeId,
-        companyId: company.id,
-        email: employee.employeeEmail,
-        password: employee.employeePassword
-      }
-      users.push(user);
 
       if(info.initiatives)
       {
@@ -101,29 +80,21 @@ export const getCompanyByInitiativeIds = createAsyncThunk(
         }
       }
     }
-    dispatch(addUsersToStore(users));
-
+    
     return companies;
   }
 )
 
 export const upsertCompanyInfo = createAsyncThunk(
   'companies/upsertCompanyInfo',
-  async (args: UpsertCompanyInfoRequest, {dispatch}): Promise<Company> => {
+  async (args: UpsertCompanyInfoRequest, {}): Promise<Company> => {
       const response = await UpsertCompanyInfo(args);
       
     if (response.status.toUpperCase().includes('FAILED'))
       throw Error;
-    let newId = response.id;
     let newCompany: Company = JSON.parse(JSON.stringify(args.company));
-    newCompany.id = newId;
-    
-    let newUser: User = JSON.parse(JSON.stringify(args.employee));
-    newUser.companyId = newId;
-    newUser.id = newId;   //this stinks; consider having just one id property if they're just going to be identical
-
-    dispatch(addUsersToStore([newUser]));
-
+    newCompany.id = response.id;
+  
     return newCompany;
   }
 )

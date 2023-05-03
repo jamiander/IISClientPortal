@@ -56,31 +56,20 @@ export function ValidateDate(date: DateInfo) : Validation
   return {success: true, message: "Date is all good!"}
 }
 
-export function ValidateNewUser(newCompanyName: string, newEmail: string, newPassword: string, companyList: Company[], userList: User[]) : Validation
+export function ValidateNewUser(newCompanyName: string, companyList: Company[]) : Validation
 {
   let matchingCompany = companyList.find(company => company.name.toUpperCase() === newCompanyName.toUpperCase());
   if(matchingCompany)
     return {success: false, message: "Cannot use the name of an existing company."};
 
-  let matchingUser = userList.find(user => user.email.toUpperCase() === newEmail.toUpperCase());
-  if(matchingUser)
-    return {success: false, message: "Cannot use the email of an existing user."};
-
-  if(newCompanyName && newEmail && newPassword)
-    return {success: true, message: "Successfully validated new user!"}
-  
   return {success: false, message: "Cannot leave any fields blank."};
 }
 
-export function ValidateEditUser(companyName: string, user: User, userList: User[], companyList: Company[]) : Validation
+export function ValidateEditUser(companyName: string, companyList: Company[]) : Validation
 {
-  if(companyName && user.email && user.password && user.id !== "-1" && user.companyId !== "-1")
+  if(companyName)
   {
-    let matchingUser = userList.find(indexedUser => indexedUser.email.toUpperCase() === user.email.toUpperCase() && indexedUser.id !== user.id);
-    if(matchingUser)
-      return {success: false, message: "Cannot use the email of an existing user."};
-
-    let matchingCompany = companyList.find(indexedCompany => indexedCompany.name.toUpperCase() === companyName.toUpperCase() && indexedCompany.id !== user.companyId)
+    let matchingCompany = companyList.find(indexedCompany => indexedCompany.name.toUpperCase() === companyName.toUpperCase())
     if(matchingCompany)
       return {success: false, message: "Cannot use the name of an existing company."};
 

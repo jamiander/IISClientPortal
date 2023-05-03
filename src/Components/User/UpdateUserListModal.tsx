@@ -7,17 +7,14 @@ import { User } from "../../Store/UserSlice";
 interface EditUserProps {
   EditUserIsOpen: boolean,
   handleCloseEditUser: () => void,
-  user: User,
   company: Company,
-  SubmitUser: (companyName: string, email: string, password: string) => void,
+  SubmitUser: (companyName: string) => void,
   isEdit: Boolean
 }
 
 export const EditUserModalIds = {
   modal: "editUserModal",
   company: "editUserModalCompany",
-  email: "editUserModalEmail",
-  password: "editUserModalPassword"
 }
 
 export default function UpdateUserListModal(props: EditUserProps) {
@@ -27,10 +24,8 @@ export default function UpdateUserListModal(props: EditUserProps) {
 
   useEffect(() => {
     setCompanyName(props.company.name);
-    setEmail(props.user.email);
-    setPassword(props.user.password);
 
-  }, [props.company,props.user])
+  }, [props.company])
 
   let headerText;
   if (props.isEdit) {headerText = "Edit User";}
@@ -50,19 +45,13 @@ export default function UpdateUserListModal(props: EditUserProps) {
         <div className="w-full">
           <p className='my-1'>Company Name:</p>
           <input defaultValue={props.company.name} onChange={(e) => setCompanyName(e.target.value)} id={EditUserModalIds.company}  className={inputStyle + " w-full"}/>
-
-          <p className='my-1'>Email:</p>            
-          <input defaultValue={props.user.email} onChange={(e) => setEmail(e.target.value)}  id={EditUserModalIds.email}  className={inputStyle + " w-full"}/>
-
-          <p className='my-1'>Password:</p>
-          <input defaultValue={props.user.password} onChange={(e) => setPassword(e.target.value)}  id={EditUserModalIds.password} className={inputStyle + " w-full"}/>
         </div>
-
+          
         <div className='mt-2 h-10 flex justify-between'>
           <button className={submitButtonStyle} 
             onClick={() => {
               console.log('company:', companyName, '\nemail:', email, '\npassword:', password);
-              props.SubmitUser(companyName, email, password);}}>Submit</button>
+              props.SubmitUser(companyName);}}>Submit</button>
           <button className={cancelButtonStyle}
             onClick={() => {props.handleCloseEditUser();}}>Close</button> 
         </div>
