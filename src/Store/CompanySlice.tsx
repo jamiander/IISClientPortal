@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import { AuthenticateUser, AuthenticateUserRequest, DateInfo, ThroughputData, DecisionData, UpsertCompanyInfo, UpsertCompanyInfoRequest, UpsertInitiativeInfo, UpsertInitiativeInfoRequest, UpsertThroughputData, UpsertThroughputDataRequest, UpsertDecisionDataRequest, UpsertDecisionData, DeleteDecisionDataRequest, DeleteDecisionData, GetCompanyByIdRequest, GetCompanyById, GetCompanyByInitiativeIds, GetCompanyByInitiativeIdsRequest } from "../Services/CompanyService"
+import { DateInfo, ThroughputData, DecisionData, UpsertCompanyInfo, UpsertCompanyInfoRequest, UpsertInitiativeInfo, UpsertInitiativeInfoRequest, UpsertThroughputData, UpsertThroughputDataRequest, UpsertDecisionDataRequest, UpsertDecisionData, DeleteDecisionDataRequest, DeleteDecisionData, GetCompanyByIdRequest, GetCompanyById, GetCompanyByInitiativeIds, GetCompanyByInitiativeIdsRequest } from "../Services/CompanyService"
 import { RootState } from "./Store"
 import { addUsersToStore, setCurrentUserId, User } from "./UserSlice"
 
@@ -10,8 +10,7 @@ export interface Company {
 }
 
 export interface CompanyState {
-    companies: Company[],
-    logInAttempts: number
+    companies: Company[]
 }
 
 export interface Initiative {
@@ -25,8 +24,7 @@ export interface Initiative {
 }
 
 const initialState: CompanyState = {
-    companies: [],
-    logInAttempts: 0
+    companies: []
 }
 
 export const IntegrityId = "53beceb7-054b-4740-830f-98a1dc0cc991"; //We should probably change how we handle this in the future
@@ -187,23 +185,6 @@ export const deleteDecisionData = createAsyncThunk(
   }
 )
 
-export const authenticateUser = createAsyncThunk(
-  'companies/authenticateUser',
-  async (args: AuthenticateUserRequest, {dispatch, getState}) => {
-    const response = await AuthenticateUser(args);
-    
-    if(response.status.toUpperCase().includes("FAILED"))
-      throw Error;
-    
-    const companyId = response.companyId;
-    if(companyId !== IntegrityId)   //Admins see all
-      dispatch(getCompanyByInitiativeIds({initiativeIds: response.initiativeIds}));
-    else
-      dispatch(getCompanyByInitiativeIds({initiativeIds: []}));
-    dispatch(setCurrentUserId(companyId));
-  }
-)
-
 export const companySlice = createSlice({
     name: "companies",
     initialState: initialState,
@@ -323,18 +304,11 @@ export const companySlice = createSlice({
                 }
               }
             })
-            .addCase(authenticateUser.fulfilled, (state, action) => {
-              state.logInAttempts = 0;
-            })
-            .addCase(authenticateUser.rejected, (state, action) => {
-              state.logInAttempts++;
-            })
     }
 });
 
 export const { clearCompanies } = companySlice.actions;
 
 export const selectAllCompanies = (state: RootState) => state.companies.companies;
-export const selectLogInAttempts = (state: RootState) => state.companies.logInAttempts;
 
 export default companySlice.reducer;

@@ -96,7 +96,7 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
     }
   },[selectedInitiativeIndex])
 
-let myUuid = uuidV4();
+  let myUuid = uuidV4();
 
   function GetInitiativeFromCompany(company: Company | undefined, initiativeIndex: number) : Initiative | undefined
   {

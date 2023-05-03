@@ -154,6 +154,14 @@ interface UpsertThroughputDataResponse {
   status: string
 }
 
+export async function UpsertThroughputData(request: UpsertThroughputDataRequest) : Promise<UpsertThroughputDataResponse>
+{
+  let baseUrl = BASE_URL + "AddThroughputDataDB?code=7zfSWKR3W3-8WhgYqHm-8k50IZY6TdtJ_3ylenab25OoAzFuFzdQLA==";
+
+  const response = await axios.post(baseUrl,request);
+  return response.data;
+}
+
 export interface UpsertDecisionDataRequest {
   isTest: boolean,
   companyId: string,
@@ -164,6 +172,15 @@ export interface UpsertDecisionDataRequest {
 interface UpsertDecisionDataResponse {
   status: string,
   idMap: [[number,number]]
+}
+
+
+export async function UpsertDecisionData(request: UpsertDecisionDataRequest) : Promise<UpsertDecisionDataResponse>
+{
+  let baseUrl = BASE_URL + "AddDecisionDataDB?code=vg1Gfo79pB09asPWVpH-lNaXbl3KTux5RuuMy741kmqIAzFuHnJFvg==";
+
+  const response = await axios.post(baseUrl,request);
+  return response.data;
 }
 
 export interface DeleteDecisionDataRequest {
@@ -177,47 +194,10 @@ interface DeleteDecisionDataResponse {
   status: string
 }
 
-export async function UpsertThroughputData(request: UpsertThroughputDataRequest) : Promise<UpsertThroughputDataResponse>
-{
-  let baseUrl = BASE_URL + "AddThroughputDataDB?code=7zfSWKR3W3-8WhgYqHm-8k50IZY6TdtJ_3ylenab25OoAzFuFzdQLA==";
-
-  const response = await axios.post(baseUrl,request);
-  return response.data;
-}
-
-export async function UpsertDecisionData(request: UpsertDecisionDataRequest) : Promise<UpsertDecisionDataResponse>
-{
-  let baseUrl = BASE_URL + "AddDecisionDataDB?code=vg1Gfo79pB09asPWVpH-lNaXbl3KTux5RuuMy741kmqIAzFuHnJFvg==";
-
-  const response = await axios.post(baseUrl,request);
-  return response.data;
-}
-
 export async function DeleteDecisionData(request: DeleteDecisionDataRequest) : Promise<DeleteDecisionDataResponse>
 {
   let baseUrl = BASE_URL + "DeleteDecisionDataDB?code=W_thQCwjUyvN_AsTbRgkXmFkNx6oJ26cV8mQQBTJW5QJAzFu0f9log==";
   const response = await axios.delete(baseUrl, { data: request});
   console.log(response.data);
-  return response.data;
-}
-
-export interface AuthenticateUserRequest {
-  creds: {
-    username: string,
-    password: string
-  }
-}
-
-interface AuthenticateUserResponse {
-  companyId: string,
-  initiativeIds: string[],
-  status: string
-}
-
-export async function AuthenticateUser(request: AuthenticateUserRequest) : Promise<AuthenticateUserResponse>
-{
-  let baseUrl = BASE_URL + "AuthenticateUser?code=Yii5WyJ84vXw42ujOwPcttVh18kVIi0tD1d4uMN18h52AzFuELZqaQ==";
-
-  const response = await axios.post(baseUrl,request);
   return response.data;
 }

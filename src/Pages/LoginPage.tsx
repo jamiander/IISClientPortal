@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { authenticateUser, selectLogInAttempts } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks"
-import { selectAllUsers, selectCurrentUserId } from "../Store/UserSlice";
+import { authenticateUser, selectAllUsers, selectCurrentUserId, selectLogInAttempts } from "../Store/UserSlice";
 import { genericButtonStyle } from "../Styles";
 
 export default function LoginPage(){
