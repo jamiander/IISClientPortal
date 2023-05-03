@@ -28,24 +28,23 @@ export interface ThroughputData {
 }
 
 export interface DecisionData {
-  id: number,
+  id: string,
   description: string,
   resolution: string,
   participants: string[],
   date: DateInfo
 }
 
-export interface GetCompanyInfoRequest {
-  companyId?: string,
-  initiativeIds?: string[]
+export interface GetCompanyByIdRequest {
+  companyId?: string
 }
 
-interface GetCompanyInfoResponse {
+interface GetCompanyByIdResponse {
   info: CompanyInfo[],
   status: string
 }
 
-export async function GetCompanyInfo(request?: GetCompanyInfoRequest) : Promise<GetCompanyInfoResponse> {
+export async function GetCompanyById(request?: GetCompanyByIdRequest) : Promise<GetCompanyByIdResponse> {
   let baseUrl = BASE_URL + "GetCompanyDataDB?code=yxbqHLA5Vp_XyQwwR8TrGLamOrTxv9Dbqw53RhEOYy9CAzFuckblhQ==";
 
   let query = [];/*
@@ -59,10 +58,26 @@ export async function GetCompanyInfo(request?: GetCompanyInfoRequest) : Promise<
 
   let req = {
     companyId: request?.companyId ?? "-1",
-    initiativeIds: request?.initiativeIds ?? []
   }
 
   let response = await axios.post(baseUrl,req)//get(baseUrl); //using post since I couldn't get query parameters to work with the cosmos sql
+  return response.data;
+}
+
+export interface GetCompanyByInitiativeIdsRequest {
+  initiativeIds: string[]
+}
+
+interface GetCompanyByInitiativeIdsResponse {
+  companies: CompanyInfo[],
+  status: string
+}
+
+export async function GetCompanyByInitiativeIds(request: GetCompanyByInitiativeIdsRequest) : Promise<GetCompanyByInitiativeIdsResponse>
+{
+  let baseUrl = BASE_URL + "GetCompanyDataByInitiativeIds?code=wcatNw26L7SrWt4WmlVv7e78esr3_zfmD-TFDDiXSzgOAzFuKl1EOQ==";
+
+  let response = await axios.post(baseUrl,request);
   return response.data;
 }
 
@@ -147,15 +162,15 @@ export interface UpsertDecisionDataRequest {
 }
 
 interface UpsertDecisionDataResponse {
-  status: string,
-  idMap: [[number,number]]
+  decisionId: string,
+  status: string
 }
 
 export interface DeleteDecisionDataRequest {
   isTest: boolean,
   companyId: string,
   initiativeId: string,
-  decisionIds: number[]
+  decisionIds: string[]
 }
 
 interface DeleteDecisionDataResponse {

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import { AuthenticateUser, AuthenticateUserRequest, DateInfo, GetCompanyInfo, GetCompanyInfoRequest, ThroughputData, DecisionData, UpsertCompanyInfo, UpsertCompanyInfoRequest, UpsertInitiativeInfo, UpsertInitiativeInfoRequest, UpsertThroughputData, UpsertThroughputDataRequest, UpsertDecisionDataRequest, UpsertDecisionData, DeleteDecisionDataRequest, DeleteDecisionData } from "../Services/CompanyService"
+import { AuthenticateUser, AuthenticateUserRequest, DateInfo, ThroughputData, DecisionData, UpsertCompanyInfo, UpsertCompanyInfoRequest, UpsertInitiativeInfo, UpsertInitiativeInfoRequest, UpsertThroughputData, UpsertThroughputDataRequest, UpsertDecisionDataRequest, UpsertDecisionData, DeleteDecisionDataRequest, DeleteDecisionData, GetCompanyByIdRequest, GetCompanyById, GetCompanyByInitiativeIds, GetCompanyByInitiativeIdsRequest } from "../Services/CompanyService"
 import { RootState } from "./Store"
 import { addUsersToStore, setCurrentUserId, User } from "./UserSlice"
 
@@ -31,43 +31,82 @@ const initialState: CompanyState = {
 
 export const IntegrityId = "53beceb7-054b-4740-830f-98a1dc0cc991"; //We should probably change how we handle this in the future
 
-export const getCompanyInfo = createAsyncThunk(
-    'companies/getCompanyInfo',
-    async (args: GetCompanyInfoRequest, {dispatch}) => {
-        const response = await GetCompanyInfo(args);
-        const companyInfo = response.info;
+export const getCompanyById = createAsyncThunk(
+  'companies/getCompanyById',
+  async (args: GetCompanyByIdRequest, {dispatch}) => {
+    const response = await GetCompanyById(args);
+    const companyInfo = response.info;
         
-        if (response.status.toUpperCase().includes('FAILED'))
-            throw Error;
+    if (response.status.toUpperCase().includes('FAILED'))
+      throw Error;
 
-        let users: User[] = [];
-        let companies: Company[] = [];
-        for(const info of companyInfo)
+    let users: User[] = [];
+    let companies: Company[] = [];
+    for(const info of companyInfo)
+    {
+      let company: Company = {id: info.id, name: info.companyName, initiatives: []};
+      companies.push(company);
+
+      let employee = info.employeeInfo;
+      let user: User = {
+        id: employee.employeeId,
+        companyId: company.id,
+        email: employee.employeeEmail,
+        password: employee.employeePassword
+      }
+      users.push(user);
+
+      if(info.initiatives)
+      {
+        for(const initiative of info.initiatives)
         {
-            let company: Company = {id: info.id, name: info.companyName, initiatives: []};
-            companies.push(company);
-
-            let employee = info.employeeInfo;
-            let user: User = {
-                id: employee.employeeId,
-                companyId: company.id,
-                email: employee.employeeEmail,
-                password: employee.employeePassword
-            }
-            users.push(user);
-
-            if(info.initiatives)
-            {
-                for(const initiative of info.initiatives)
-                {
-                  company.initiatives.push(initiative);
-                }
-            }
+          company.initiatives.push(initiative);
         }
-        dispatch(addUsersToStore(users));
-
-        return companies;
+      }
     }
+    dispatch(addUsersToStore(users));
+
+    return companies;
+  }
+)
+
+export const getCompanyByInitiativeIds = createAsyncThunk(
+  'companies/getCompanyByInitiativeIds',
+  async (args: GetCompanyByInitiativeIdsRequest, {dispatch}) => {
+    const response = await GetCompanyByInitiativeIds(args);
+    const companyInfo = response.companies;
+
+    if (response.status.toUpperCase().includes('FAILED'))
+      throw Error;
+
+    let users: User[] = [];
+    let companies: Company[] = [];
+    for(const info of companyInfo)
+    {
+      let company: Company = {id: info.id, name: info.companyName, initiatives: []};
+      companies.push(company);
+
+      let employee = info.employeeInfo;
+      let user: User = {
+        id: employee.employeeId,
+        companyId: company.id,
+        email: employee.employeeEmail,
+        password: employee.employeePassword
+      }
+      users.push(user);
+
+      if(info.initiatives)
+      {
+        for(const initiative of info.initiatives)
+        {
+          company.initiatives.push(initiative);
+        }
+      }
+    }
+    dispatch(addUsersToStore(users));
+
+    return companies;
+  }
 )
 
 export const upsertCompanyInfo = createAsyncThunk(
@@ -125,14 +164,6 @@ export const upsertDecisionData = createAsyncThunk(
     if(response.status.toUpperCase().includes('FAILED'))
       throw Error;
 
-    for(const pair of response.idMap)
-    {
-      let oldId = pair[0];
-      let newId = pair[1];
-      let decisionIndex = args.decisions.findIndex(d => d.id === oldId);
-      args.decisions[decisionIndex].id = newId;
-    }
-
     return {initiativeId: args.initiativeId, companyId: args.companyId, data: args.decisions};
   }
 )
@@ -158,9 +189,9 @@ export const authenticateUser = createAsyncThunk(
     
     const companyId = response.companyId;
     if(companyId !== IntegrityId)   //Admins see all
-      dispatch(getCompanyInfo({companyId: companyId, initiativeIds: response.initiativeIds}));
+      dispatch(getCompanyByInitiativeIds({initiativeIds: response.initiativeIds}));
     else
-      dispatch(getCompanyInfo({companyId: "-1"}));
+      dispatch(getCompanyByInitiativeIds({initiativeIds: []}));
     dispatch(setCurrentUserId(companyId));
   }
 )
@@ -175,22 +206,32 @@ export const companySlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(getCompanyInfo.fulfilled, (state, action) => {
-                const newCompanies = action.payload;
-                for(const company of newCompanies)
-                {
-                    let companyIndex = state.companies.findIndex(c => c.id === company.id);
-                    if(companyIndex > -1)
-                        state.companies.splice(companyIndex,1);
-                    state.companies.push(company);
-                }
+            .addCase(getCompanyById.fulfilled, (state, action) => {
+              const newCompanies = action.payload;
+              for(const company of newCompanies)
+              {
+                let companyIndex = state.companies.findIndex(c => c.id === company.id);
+                if(companyIndex > -1)
+                  state.companies.splice(companyIndex,1);
+                state.companies.push(company);
+              }
+            })
+            .addCase(getCompanyByInitiativeIds.fulfilled, (state, action) => {
+              const newCompanies = action.payload;
+              for(const company of newCompanies)
+              {
+                let companyIndex = state.companies.findIndex(c => c.id === company.id);
+                if(companyIndex > -1)
+                  state.companies.splice(companyIndex,1);
+                state.companies.push(company);
+              }
             })
             .addCase(upsertCompanyInfo.fulfilled, (state, action) => {
-                const newCompany = action.payload;
-                const companyIndex = state.companies.findIndex(company => company.id === newCompany.id);
-                if(companyIndex > -1)
-                    state.companies.splice(companyIndex, 1);
-                state.companies.push(newCompany);
+              const newCompany = action.payload;
+              const companyIndex = state.companies.findIndex(company => company.id === newCompany.id);
+              if(companyIndex > -1)
+                state.companies.splice(companyIndex, 1);
+              state.companies.push(newCompany);
             })
             .addCase(upsertInitiativeInfo.fulfilled, (state, action) => {
                 const newInitiative = action.payload.initiative;
