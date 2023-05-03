@@ -35,6 +35,8 @@ export const getUserById = createAsyncThunk(
     
     const users = response.users;
     dispatch(addUsersToStore(users));
+
+    return users;
   }
 )
 
