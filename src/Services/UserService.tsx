@@ -29,6 +29,7 @@ export interface AuthenticateUserRequest {
 interface AuthenticateUserResponse {
   companyId: string,
   initiativeIds: string[],
+  userId: string,
   status: string
 }
 

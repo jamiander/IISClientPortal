@@ -46,12 +46,16 @@ export const authenticateUser = createAsyncThunk(
     if(response.status.toUpperCase().includes("FAILED"))
       throw Error;
     
-    const companyId = response.companyId;
-    if(companyId !== IntegrityId)   //Admins see all
-      dispatch(getCompanyByInitiativeIds({initiativeIds: response.initiativeIds}));
-    else
-      dispatch(getCompanyByInitiativeIds({initiativeIds: []}));
-    dispatch(setCurrentUserId(companyId));
+    const user: User = {
+      id: response.userId,
+      email: args.creds.username,
+      password: args.creds.password,
+      initiativeIds: response.initiativeIds,
+      companyId: response.companyId
+    }
+    dispatch(getCompanyByInitiativeIds({initiativeIds: response.initiativeIds}));
+    dispatch(addUsersToStore([user]));
+    dispatch(setCurrentUserId(response.userId));
   }
 )
 
