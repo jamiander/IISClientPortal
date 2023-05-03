@@ -11,6 +11,7 @@ import { DeleteDecisionAlert } from "./DeleteDecisionAlert";
 import { enqueueSnackbar } from "notistack";
 import CloseIcon from '@mui/icons-material/Close';
 import Button from "@mui/material/Button";
+import {v4 as UuidV4} from "uuid";
 
 export const DecisionModalIds = {
   modal: "decisionModal",
@@ -52,6 +53,8 @@ interface DecisionDataProps {
     const todayInfo: DateInfo = {month: today.getMonth()+1, day: today.getDate(), year: today.getFullYear()}
     const [searchedKeyword, setSearchedKeyword] = useState("");
 
+    let myUuid = UuidV4();
+
   useEffect(() => {
     setSelectedInitiative(props.initiative);
     LeaveEditMode();
@@ -60,8 +63,7 @@ interface DecisionDataProps {
   function AddEmptyDecision()
   {
     let initiativeClone: Initiative = JSON.parse(JSON.stringify(selectedInitiative));
-    let decisionIds = initiativeClone.decisions.map(d => d.id);
-    let negativeId = Math.min(...decisionIds,-1) - 1;
+    let negativeId = myUuid;
     let newDecision: DecisionData = {id: negativeId, description: "", resolution: "", participants: [], date: todayInfo};
     initiativeClone.decisions.unshift(newDecision);
 
@@ -71,7 +73,7 @@ interface DecisionDataProps {
     EnterEditMode(negativeId,initiativeClone);
   }
 
-  function EnterEditMode(id: number, currentInitiative: Initiative)
+  function EnterEditMode(id: string, currentInitiative: Initiative)
   {
     let currentDecision = currentInitiative.decisions.find(d => d.id === id);
     if(currentDecision)
@@ -102,7 +104,7 @@ interface DecisionDataProps {
     LeaveEditMode();
   }
 
-  function EditDecision(decisionId: number, newDescription: string, newResolution: string, newParticipants: string[], newDate?: DateInfo)
+  function EditDecision(decisionId: string, newDescription: string, newResolution: string, newParticipants: string[], newDate?: DateInfo)
   {
     let selectedInitiativeClone: Initiative = JSON.parse(JSON.stringify(selectedInitiative));
     let newDecision = selectedInitiativeClone.decisions.find(d => d.id === decisionId);
@@ -140,13 +142,13 @@ interface DecisionDataProps {
     return false;
   }
 
-  function AttemptDelete(decisionId: number)
+  function AttemptDelete(decisionId: string)
   {
     setIsDeleteOpen(true);
     setDecisionToDelete(selectedInitiative.decisions.find(d => d.id === decisionId));
   }
 
-  function DeleteDecision(decisionId: number)
+  function DeleteDecision(decisionId: string)
   {
     let isTest = false;
     if((window as any).Cypress)

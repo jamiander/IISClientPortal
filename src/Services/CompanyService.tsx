@@ -28,7 +28,7 @@ export interface ThroughputData {
 }
 
 export interface DecisionData {
-  id: number,
+  id: string,
   description: string,
   resolution: string,
   participants: string[],
@@ -170,8 +170,8 @@ export interface UpsertDecisionDataRequest {
 }
 
 interface UpsertDecisionDataResponse {
-  status: string,
-  idMap: [[number,number]]
+  decisionId: string,
+  status: string
 }
 
 
@@ -187,7 +187,7 @@ export interface DeleteDecisionDataRequest {
   isTest: boolean,
   companyId: string,
   initiativeId: string,
-  decisionIds: number[]
+  decisionIds: string[]
 }
 
 interface DeleteDecisionDataResponse {

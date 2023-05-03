@@ -47,7 +47,6 @@ export function UpdateInitiativeListModal(props: InitiativeModalProps){
 
   let myUuid = uuidv4();
 
-
 	return (
 		<Modal
 			id={InitiativeModalIds.modal}

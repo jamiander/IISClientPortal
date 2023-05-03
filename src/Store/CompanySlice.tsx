@@ -162,14 +162,6 @@ export const upsertDecisionData = createAsyncThunk(
     if(response.status.toUpperCase().includes('FAILED'))
       throw Error;
 
-    for(const pair of response.idMap)
-    {
-      let oldId = pair[0];
-      let newId = pair[1];
-      let decisionIndex = args.decisions.findIndex(d => d.id === oldId);
-      args.decisions[decisionIndex].id = newId;
-    }
-
     return {initiativeId: args.initiativeId, companyId: args.companyId, data: args.decisions};
   }
 )
