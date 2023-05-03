@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom"
 import { useAppSelector } from "../Store/Hooks"
-import { selectIsLoggedIn } from "../Store/UserSlice"
+import { selectCurrentUser, selectIsLoggedIn } from "../Store/UserSlice"
 import { IntegrityId } from "../Store/CompanySlice"
 import { selectCurrentUserId } from "../Store/UserSlice"
 
@@ -12,6 +12,7 @@ export default function NavPanel(props: NavProps){
   const navigate = useNavigate();
   const isLoggedIn = useAppSelector(selectIsLoggedIn);
   const currentUserId = useAppSelector(selectCurrentUserId);
+  const currentUser = useAppSelector(selectCurrentUser);
   const navButtonStyle = "text-[#21345b] h-12 w-[90%] hover:bg-[#21345b] hover:text-white";
   const location = useLocation();
 
@@ -40,10 +41,13 @@ export default function NavPanel(props: NavProps){
         onClick={() => NavHandler('/Dashboard')}>
         Dashboard
       </button>
-      <button className={GetNavStyle("/")}
-        onClick={() => NavHandler('/')}>
-        Client and User Management
-      </button>
+      {
+        currentUser?.email === "admin@integrityinspired.com" &&
+        <button className={GetNavStyle("/")}
+          onClick={() => NavHandler('/')}>
+          Client and User Management
+        </button>
+      }
       {
         
         /*

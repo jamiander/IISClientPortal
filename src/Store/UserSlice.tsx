@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "./Store";
 import { getCompanyByInitiativeIds, IntegrityId } from "./CompanySlice";
-import { AuthenticateUser, AuthenticateUserRequest, GetUserById, GetUserByIdRequest, UpsertUserInfo, UpsertUserInfoRequest } from "../Services/UserService";
+import { AuthenticateUser, AuthenticateUserRequest, DeleteUserInfo, DeleteUserInfoRequest, GetUserById, GetUserByIdRequest, UpsertUserInfo, UpsertUserInfoRequest } from "../Services/UserService";
 
 export interface User {
     id: string
@@ -38,6 +38,33 @@ export const getUserById = createAsyncThunk(
   }
 )
 
+export const upsertUserInfo = createAsyncThunk(
+  'users/upsertUser',
+  async (args: UpsertUserInfoRequest, {dispatch}): Promise<User> => {
+    const response = await UpsertUserInfo(args);
+
+    if (response.status.toUpperCase().includes('FAILED'))
+      throw Error;
+
+    let newUser: User = JSON.parse(JSON.stringify(args.user));
+    newUser.id = response.userId;
+    dispatch(addUsersToStore([newUser]));
+    return newUser;
+  }
+)
+
+export const deleteUserInfo = createAsyncThunk(
+  'users/deleteUser',
+  async (args: DeleteUserInfoRequest, {dispatch}) => {
+    const response = await DeleteUserInfo(args);
+
+    if(response.status.toUpperCase().includes("FAILED"))
+      throw Error;
+    
+    return args.userIds;
+  }
+)
+
 export const authenticateUser = createAsyncThunk(
   'users/authenticateUser',
   async (args: AuthenticateUserRequest, {dispatch, getState}) => {
@@ -46,27 +73,16 @@ export const authenticateUser = createAsyncThunk(
     if(response.status.toUpperCase().includes("FAILED"))
       throw Error;
     
-    const companyId = response.companyId;
-    if(companyId !== IntegrityId)   //Admins see all
-      dispatch(getCompanyByInitiativeIds({initiativeIds: response.initiativeIds}));
-    else
-      dispatch(getCompanyByInitiativeIds({initiativeIds: []}));
-    dispatch(setCurrentUserId(companyId));
-  }
-)
-
-export const upsertUserInfo = createAsyncThunk(
-  'users/upsertUserInfo',
-  async (args: UpsertUserInfoRequest, {dispatch}): Promise<User> => {
-    const response = await UpsertUserInfo(args);
-
-    if (response.status.toUpperCase().includes('FAILED'))
-      throw Error;
-
-      let newUser: User = JSON.parse(JSON.stringify(args.user));
-      newUser.id = response.userId;
-      dispatch(addUsersToStore([newUser]));
-      return newUser
+    const user: User = {
+      id: response.userId,
+      email: args.creds.username,
+      password: args.creds.password,
+      initiativeIds: response.initiativeIds,
+      companyId: response.companyId
+    }
+    dispatch(getCompanyByInitiativeIds({initiativeIds: response.initiativeIds}));
+    dispatch(addUsersToStore([user]));
+    dispatch(setCurrentUserId(response.userId));
   }
 )
 
@@ -99,17 +115,15 @@ export const userSlice = createSlice({
     },
     extraReducers: (builder) => {
       builder
+        .addCase(deleteUserInfo.fulfilled, (state, action) => {
+          const userIds = action.payload;
+          state.users = state.users.filter(user => userIds.find(id => user.id === id) === undefined);
+        })
         .addCase(authenticateUser.fulfilled, (state, action) => {
           state.logInAttempts = 0;
         })
         .addCase(authenticateUser.rejected, (state, action) => {
           state.logInAttempts++;
-        })
-        .addCase(upsertUserInfo.fulfilled, (state, action) => {
-          const newUser = action.payload;
-          const userIndex = state.users.findIndex(user => user.id === newUser.id);
-          if(userIndex > -1) state.users.splice(userIndex, 1);
-          state.users.push(newUser);
         })
     },
 });
