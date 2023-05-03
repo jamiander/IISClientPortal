@@ -9,7 +9,7 @@ interface NavProps {
 }
 
 export default function NavPanel(props: NavProps){
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const isLoggedIn = useAppSelector(selectIsLoggedIn);
   const currentUserId = useAppSelector(selectCurrentUserId);
   const navButtonStyle = "text-[#21345b] h-12 w-[90%] hover:bg-[#21345b] hover:text-white";
@@ -37,10 +37,16 @@ export default function NavPanel(props: NavProps){
     <div className="grid place-items-center p-[2%] py-3 space-y-3">
       
       <button className={GetNavStyle("/Dashboard")}
-          onClick={() => NavHandler('/Dashboard')}>
-          Dashboard
+        onClick={() => NavHandler('/Dashboard')}>
+        Dashboard
+      </button>
+      <button className={GetNavStyle("/")}
+        onClick={() => NavHandler('/')}>
+        Client and User Management
       </button>
       {
+        
+        /*
         currentUserId === IntegrityId ? 
           <button className={GetNavStyle("/Admin")}
             disabled={!isLoggedIn} onClick={() => NavHandler('/Admin')}>
@@ -53,6 +59,7 @@ export default function NavPanel(props: NavProps){
              onClick={() => NavHandler('/Profile')} hidden>
               Profile
           </button>
+          */
       }
       
     </div>  
