@@ -1,6 +1,3 @@
-import { selectAllCompanies } from "../Store/CompanySlice";
-import { useAppSelector } from "../Store/Hooks"
-import { selectCurrentUser } from "../Store/UserSlice";
 import ManageInitiativesDisplay from "../Components/Initiative/ManageInitiativesDisplay";
 
 export const InitiativeDashboardRadioIds = {
@@ -10,22 +7,14 @@ export const InitiativeDashboardRadioIds = {
 }
 
 export default function DashboardPage(){
-  const user = useAppSelector(selectCurrentUser);
-  const companyList = useAppSelector(selectAllCompanies);
-  
   function Dashboard(){
-    if(companyList.flatMap(c => c.initiatives).length === 0){
-      
-      return(
-        <p className="text-4xl">No Current Initiatives</p>
-      )
-    }else{
+    
       return(
         <>
           <ManageInitiativesDisplay/>
         </>
       )
-    }
+    
   }
 
   return(

@@ -1,8 +1,6 @@
 import { InitiativeDisplayRadioIds } from "../../src/Components/Initiative/ManageInitiativesDisplay";
 import { InitiativeModalIds } from "../../src/Components/Initiative/UpdateInitiativeListModal";
 import { ToastIds } from "../../src/Components/Toast";
-import { UserDisplayRadioIds } from "../../src/Components/User/ManageUsersDisplay";
-import { EditUserModalIds } from "../../src/Components/User/UpdateUserListModal";
 import { ValidationFailedPrefix } from "../../src/Services/Validation";
 import { UploadThroughputIds } from "../../src/Components/Initiative/UploadThroughputModal";
 import { InitiativeTableIds } from "../../src/Components/Initiative/InitiativesTable";
@@ -32,8 +30,6 @@ export const TestConstants = {
   toastIds: AddHash(ToastIds),
   initiativeModalIds: AddHash(InitiativeModalIds),
   initiativeDisplayRadioIds: AddHash(InitiativeDisplayRadioIds),
-  userModalIds: AddHash(EditUserModalIds),
-  userDisplayRadioIds: AddHash(UserDisplayRadioIds),
   uploadThroughputIds: AddHash(UploadThroughputIds),
   editThroughputIds: AddHash(EditThroughputIds),
   initiativeTableIds: AddHash(InitiativeTableIds),

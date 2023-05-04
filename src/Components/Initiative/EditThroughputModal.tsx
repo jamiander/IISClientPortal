@@ -105,7 +105,7 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
   function AddThroughputEntry()
   {
     let initiative = GetInitiativeFromCompany(selectedCompany,selectedInitiativeIndex);
-    let validate = ValidateEditThroughputData(props.companyList, selectedCompany?.id ?? "-1", initiative?.id, [manualEntry]);
+    let validate = ValidateEditThroughputData(props.companyList, selectedCompany?.id ?? "-1", initiative?.id ?? "-1", [manualEntry]);
     if(validate.success)
     {
       ShowToast("New data added!", "Success");
