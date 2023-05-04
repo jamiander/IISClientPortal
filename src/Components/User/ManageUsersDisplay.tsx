@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import Sorter from "../../Services/Sorter";
-import { ValidateEditUser, ValidateNewUser, ValidationFailedPrefix } from "../../Services/Validation";
+import { ValidateEditUser, ValidateNewCompany, ValidationFailedPrefix } from "../../Services/Validation";
 import { Company, selectAllCompanies, upsertCompanyInfo } from "../../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
 import { selectAllUsers, User } from "../../Store/UserSlice";
@@ -42,7 +42,7 @@ export default function ManageUsersDisplay() {
     let validation;
 
     if (isEdit) validation = ValidateEditUser(company.name, companyList);
-    else validation = ValidateNewUser(company.name, companyList);
+    else validation = ValidateNewCompany(company.name, companyList);
 
     if(validation.success) {
       dispatch(upsertCompanyInfo({ company: company, isTest: isTest}));

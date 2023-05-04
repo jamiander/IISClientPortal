@@ -56,12 +56,16 @@ export function ValidateDate(date: DateInfo) : Validation
   return {success: true, message: "Date is all good!"}
 }
 
-export function ValidateNewUser(newCompanyName: string, companyList: Company[]) : Validation
+export function ValidateNewCompany(newCompanyName: string, companyList: Company[]): Validation
 {
-  let matchingCompany = companyList.find(company => company.name.toUpperCase() === newCompanyName.toUpperCase());
-  if(matchingCompany)
-    return {success: false, message: "Cannot use the name of an existing company."};
+  if(newCompanyName)
+  {
+    let matchingCompany = companyList.find(company => company.name.toUpperCase() === newCompanyName.toUpperCase());
+    if(matchingCompany)
+      return {success: false, message: "Cannot use the name of an existing company."};
 
+    return {success: true, message: "Successfully validated; all good!"};
+  }
   return {success: false, message: "Cannot leave any fields blank."};
 }
 

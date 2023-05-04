@@ -1,30 +1,29 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { DateInfo, ThroughputData, DecisionData, UpsertCompanyInfo, UpsertCompanyInfoRequest, UpsertInitiativeInfo, UpsertInitiativeInfoRequest, UpsertThroughputData, UpsertThroughputDataRequest, UpsertDecisionDataRequest, UpsertDecisionData, DeleteDecisionDataRequest, DeleteDecisionData, GetCompanyByIdRequest, GetCompanyById, GetCompanyByInitiativeIds, GetCompanyByInitiativeIdsRequest } from "../Services/CompanyService"
 import { RootState } from "./Store"
-import { addUsersToStore, setCurrentUserId, User } from "./UserSlice"
 
 export interface Company {
-    id: string,
-    name: string,
-    initiatives: Initiative[]
+  id: string,
+  name: string,
+  initiatives: Initiative[]
 }
 
 export interface CompanyState {
-    companies: Company[]
+  companies: Company[]
 }
 
 export interface Initiative {
-    id: string,
-    title: string,
-    targetDate: DateInfo,
-    startDate: DateInfo,
-    totalItems: number,
-    itemsCompletedOnDate: ThroughputData[],
-    decisions: DecisionData[]
+  id: string,
+  title: string,
+  targetDate: DateInfo,
+  startDate: DateInfo,
+  totalItems: number,
+  itemsCompletedOnDate: ThroughputData[],
+  decisions: DecisionData[]
 }
 
 const initialState: CompanyState = {
-    companies: []
+  companies: []
 }
 
 export const IntegrityId = "53beceb7-054b-4740-830f-98a1dc0cc991"; //We should probably change how we handle this in the future
@@ -88,7 +87,7 @@ export const getCompanyByInitiativeIds = createAsyncThunk(
 export const upsertCompanyInfo = createAsyncThunk(
   'companies/upsertCompanyInfo',
   async (args: UpsertCompanyInfoRequest, {}): Promise<Company> => {
-      const response = await UpsertCompanyInfo(args);
+    const response = await UpsertCompanyInfo(args);
       
     if (response.status.toUpperCase().includes('FAILED'))
       throw Error;

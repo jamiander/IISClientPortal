@@ -1,43 +1,85 @@
-import { Fragment, useEffect } from "react";
-import { selectAllCompanies } from "../Store/CompanySlice"
+import { Fragment, useEffect, useState } from "react";
+import { Company, selectAllCompanies, upsertCompanyInfo } from "../Store/CompanySlice"
 import { useAppDispatch, useAppSelector } from "../Store/Hooks"
-import { Card, CardActions, CardContent, CardHeader, Grid, Typography } from "@mui/material";
+import { Button, Card, CardActions, CardContent, CardHeader, Grid, Typography } from "@mui/material";
 import { getUserById, selectAllUsers, selectCurrentUser, selectCurrentUserId } from "../Store/UserSlice";
-import { Item, StyledCard, StyledCardActions, StyledCardContent } from "../Styles";
+import { Item, StyledCard, StyledCardActions, StyledCardContent, StyledTextField, yellowButtonStyle } from "../Styles";
+import { ValidateNewCompany, ValidationFailedPrefix } from "../Services/Validation";
+import { enqueueSnackbar } from "notistack";
+import { v4 } from "uuid";
 
 export function CompanyPage()
 {
-  const companies = useAppSelector(selectAllCompanies);
-  const users = useAppSelector(selectAllUsers);
+  const allCompanies = useAppSelector(selectAllCompanies);
+  const allUsers = useAppSelector(selectAllUsers);
   const currentUserId = useAppSelector(selectCurrentUserId);
   const dispatch = useAppDispatch();
 
+  const [addingCompany, setAddingCompany] = useState(false);
+  const [newCompanyName, setNewCompanyName] = useState("");
+
   useEffect(() =>
   {
-    if(users.find(user => user.id === currentUserId)?.email === "admin@integrityinspired.com")
+    if(allUsers.find(user => user.id === currentUserId)?.email === "admin@integrityinspired.com")
       dispatch(getUserById({}));
-  }, [currentUserId])
+  }, [currentUserId]);
+
+  function HandleAddClient()
+  {
+    setNewCompanyName("");
+    setAddingCompany(true);
+  }
+
+  function HandleSaveCompany()
+  {
+    let isTest = false;
+    if((window as any).Cypress)
+      isTest = true;
+    
+    const newCompany: Company = {
+      id: v4(),
+      name: newCompanyName,
+      initiatives: []
+    }
+    const validation = ValidateNewCompany(newCompanyName,allCompanies);
+    if(validation.success)
+    {
+      dispatch(upsertCompanyInfo({isTest: isTest, company: newCompany}));
+      setAddingCompany(false);
+      setNewCompanyName("");
+      enqueueSnackbar("New Client Added!", {variant: "success"});
+    }
+    else
+      enqueueSnackbar(ValidationFailedPrefix + validation.message, {variant: "error"});
+  }
 
   return (
     <div className="my-[1%] mx-[2%] grid grid-cols-4">
-      <div className="col-span-4 p-4">
+      <div className="col-span-4 p-2">
+        <div className="flex justify-end">
+          <button disabled={addingCompany} className={yellowButtonStyle + " mb-4"} onClick={() => HandleAddClient()}>
+            Add New Client
+          </button>
+        </div>
         <Grid container spacing={2}>
         {
-          companies.map((company,index) => {
-            const usersAtCompany = users.filter(user => user.companyId === company.id);
+          allCompanies.map((company,index) => {
+            const usersAtCompany = allUsers.filter(user => user.companyId === company.id);
             return (
               <Fragment key={index}>
                 <Grid item md={4}>
                   <Item>
                     <StyledCard>
                       <StyledCardContent>
-                        <Typography className="text-2xl">{company.name}</Typography>
-                        <Grid container spacing={1}>
+                        <p className="text-2xl font-semibold">{company.name}</p>
+                        <Grid container justifyContent="space-evenly">
                         {
                           usersAtCompany.map((user,jndex) => {
                             return(
                               <Grid item md="auto" key={jndex}>
-                                <Typography>{user.email}</Typography>
+                                <div className="p-2">
+                                  <p>{user.email}</p>
+                                </div>
                               </Grid>
                             )
                           })
@@ -53,9 +95,31 @@ export function CompanyPage()
             )
           })
         }
+        {
+          addingCompany &&
+          <Grid item md={4}>
+            <Item>
+              <StyledCard>
+                <StyledCardContent>
+                  <StyledTextField placeholder="New Client Name" value={newCompanyName} onChange={(e) => setNewCompanyName(e.target.value)}>
+                  </StyledTextField>
+                </StyledCardContent>
+                <StyledCardActions>
+                  <div className="flex justify-between w-full">
+                    <Button onClick={() => HandleSaveCompany()}>
+                      Save
+                    </Button>
+                    <Button onClick={() => setAddingCompany(false)}>
+                      Cancel
+                    </Button>
+                  </div>
+                </StyledCardActions>
+              </StyledCard>
+            </Item>
+          </Grid>
+        }
         </Grid>
       </div>
     </div>
   )
 }
-
