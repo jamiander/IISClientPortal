@@ -7,8 +7,6 @@ import { User, upsertUserInfo } from "../../Store/UserSlice";
 import Button from "@mui/material/Button";
 import { Company } from "../../Store/CompanySlice";
 import {v4 as UuidV4} from "uuid";
-import { AsyncThunkAction, Dispatch, AnyAction } from "@reduxjs/toolkit";
-import { UpsertUserInfoRequest } from "../../Services/UserService";
 import { useAppDispatch } from "../../Store/Hooks";
 
 export const EditUserDataIds = {
@@ -31,20 +29,26 @@ interface EditUserDataProps {
     setEditUserDataModalIsOpen: (value: boolean) => void
 }
 
-export function EditUserDataModal(props: EditUserDataProps){
+export default function EditUserDataModal(props: EditUserDataProps){
     const dispatch = useAppDispatch();
-    const [selectedUser, setSelectedUser] = useState<User>();
+    const [usersList, setUsersList] = useState<User[]>(props.users);
     const [userToEdit, setUserToEdit] = useState<User>();
     const [isNew, setIsNew] = useState(false);
-    const [currentEmail, setCurrentEmail] = useState("");
+    const [currentEmail, setCurrentEmail] =useState("");
     const [currentPassword, setCurrentPassword] = useState("");
     const [currentInitiatives, setCurrentInitiatives] = useState("");
     const InEditMode = () => userToEdit !== undefined;
 
+    useEffect(() => {
+        setUsersList(props.users)
+        LeaveEditMode();
+    },[props.isOpen])
+
     function EnterEditMode(id: string) { 
-        let currentUser = props.users.find(u => u.id === id);
+        let currentUser = usersList.find(u => u.id === id);
         if(currentUser)
         {
+            setUserToEdit(currentUser);
             setCurrentEmail(currentUser.email);
             setCurrentPassword(currentUser.password);
             setCurrentInitiatives(currentUser.initiativeIds.join(", "));
@@ -58,14 +62,17 @@ export function EditUserDataModal(props: EditUserDataProps){
 
     function CancelEdit() {LeaveEditMode()};
 
-    function EditUser(newEmail: string, newPassword: string, newInitiatives: string[]) {
-        let userClone: User = JSON.parse(JSON.stringify(selectedUser));
-        userClone.email = newEmail;
-        userClone.password = newPassword;
-        userClone.initiativeIds = newInitiatives;
+    function EditUser(id: string, newEmail: string, newPassword: string, newInitiatives: string[]) {
+        let usersClone: User[] = JSON.parse(JSON.stringify(usersList));
+        let newUser = usersClone.find(u => u.id === id);
+        if(newUser) {
+            newUser.email = newEmail;
+            newUser.password = newPassword;
+            newUser.initiativeIds = newInitiatives;
 
-        let successfulSubmit = SubmitUserData(userClone)
-        if(successfulSubmit) setSelectedUser(userClone);
+            let successfulSubmit = SubmitUserData(newUser);
+            if(successfulSubmit) setUsersList(usersClone);
+        }
     }
 
     function SubmitUserData(user: User): boolean {
@@ -75,9 +82,11 @@ export function EditUserDataModal(props: EditUserDataProps){
     }
 
     function AddEmptyUser() {
+        let usersClone: User[] = JSON.parse(JSON.stringify(usersList));
         let myUuid = UuidV4();
         let newUser: User = {id: myUuid, email: "", password: "", companyId: props.company.id, initiativeIds: []}
-        props.users.unshift(newUser);
+        usersClone.unshift(newUser);
+        setUsersList(usersClone);
         setIsNew(true);
         EnterEditMode(myUuid);
     }
@@ -110,7 +119,7 @@ export function EditUserDataModal(props: EditUserDataProps){
 
             <Grid container spacing={6}>
               {
-                props.users.map((displayItem, key) => {
+                usersList.map((displayItem, key) => {
                 let isEdit = (displayItem.id === (userToEdit?.id ?? -1));
                 return(
                   <Grid item md={4} key={key}>
@@ -138,7 +147,7 @@ export function EditUserDataModal(props: EditUserDataProps){
                         <StyledCardActions>
                           {isEdit &&
                             <div className="flex w-full justify-between">
-                              <Button id={EditUserDataIds.saveChangesButton} className={submitButtonStyle} onClick={() => EditUser(currentEmail, currentPassword, currentInitiatives.split(",").map(s => s.trim()))}>Save</Button>
+                              <Button id={EditUserDataIds.saveChangesButton} className={submitButtonStyle} onClick={() => EditUser(displayItem.id, currentEmail, currentPassword, currentInitiatives.split(",").map(s => s.trim()))}>Save</Button>
                               <Button id={EditUserDataIds.cancelChangesButton} className={cancelButtonStyle} onClick={() => CancelEdit()}>Cancel</Button>
                             </div>
                           }

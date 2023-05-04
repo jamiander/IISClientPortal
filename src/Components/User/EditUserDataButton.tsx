@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { genericButtonStyle } from "../../Styles";
-import { EditUserDataModal } from "./EditUserDataModal";
+import EditUserDataModal from "./EditUserDataModal";
 import { User } from "../../Store/UserSlice";
 import { Company } from "../../Store/CompanySlice";
 
 interface EditUserDataProps {
   company: Company
+  users: User[]
 }
 
 export function EditUserDataButton(props: EditUserDataProps){
@@ -18,16 +19,14 @@ export function EditUserDataButton(props: EditUserDataProps){
     setSelectedCompany(company);
   }
 
-  const users: User[] = []; 
-
     return (
         <div className={'py-1 flex self-end'}>
           <button id={"editUserDataButton"+props.company.id} className={genericButtonStyle + " h-8 w-full mx-2"}
               onClick={() => handleEditUserData(props.company)}
           >
-              Edit User Information
+              Edit
           </button>
-          <EditUserDataModal title='Edit User Data' users= {users} isOpen={EditUserDataIsOpen} setEditUserDataModalIsOpen={setEditUserDataIsOpen} company={selectedCompany}/>
+          <EditUserDataModal title='Edit User Data' users= {props.users} isOpen={EditUserDataIsOpen} setEditUserDataModalIsOpen={setEditUserDataIsOpen} company={selectedCompany}/>
         </div>
       );
 }

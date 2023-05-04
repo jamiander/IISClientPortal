@@ -95,6 +95,7 @@ export function CompanyPage()
                         </Grid>
                       </StyledCardContent>
                       <StyledCardActions>
+                        <EditUserDataButton company={company} users={usersAtCompany}></EditUserDataButton>
                       </StyledCardActions>
                     </StyledCard>
                   </Item>
