@@ -107,7 +107,7 @@ export const upsertInitiativeInfo = createAsyncThunk(
       throw Error;
     
     let newInitiative: Initiative = JSON.parse(JSON.stringify(args.initiative));
-    newInitiative.id = response.initiativeId;
+    //newInitiative.id = response.initiativeId; //The id is no longer set in the back-end
     return {initiative: newInitiative, companyId: args.companyId};
   }
 )

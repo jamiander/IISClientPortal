@@ -43,9 +43,7 @@ export function UpdateInitiativeListModal(props: InitiativeModalProps){
     setInitiativeTargetDate(props.initiative?.targetDate ?? todayInfo);
     setInitiativeTotalItems(props.initiative?.totalItems ?? 0);
 	  setInitiativeCompanyId(props.company?.id ?? "-1");
-  }, [props.initiative,props.company,props.initiativeIsOpen])
-
-  let myUuid = uuidv4();
+  }, [props.initiative,props.company,props.initiativeIsOpen]);
 
 	return (
 		<Modal
@@ -57,7 +55,7 @@ export function UpdateInitiativeListModal(props: InitiativeModalProps){
 		>
 			<p className='text-3xl'>{props.title}</p>
 			<div className='w-full'>
-				<p className='my-1'>Company{props.company ? ": " + props.company.name :
+				<div className='my-1'>Company{props.company ? ": " + props.company.name :
           <div>
             <select id={InitiativeModalIds.company} onChange={(e) => setInitiativeCompanyId(e.target.value)} 
             className={selectStyle}
@@ -72,7 +70,7 @@ export function UpdateInitiativeListModal(props: InitiativeModalProps){
               }
             </select>
           </div>
-        }</p>
+        }</div>
 				<p className='my-1'>Title</p>
 				<input defaultValue={props.initiative?.title} id={InitiativeModalIds.title} className={inputStyle + ' w-3/4'} placeholder='Initiative Title'
           onChange={(e) => {setInitiativeTitle(e.target.value)}}/>
@@ -99,7 +97,7 @@ export function UpdateInitiativeListModal(props: InitiativeModalProps){
           <button id={InitiativeModalIds.submitButton} className={submitButtonStyle} 
             onClick={() => {
               let initiative : Initiative = {
-                id: props.initiative?.id ?? myUuid,
+                id: props.initiative?.id ?? uuidv4(),
                 title: initiativeTitle,
                 targetDate: initiativeTargetDate,
                 startDate: initiativeStartDate,
