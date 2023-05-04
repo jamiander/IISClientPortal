@@ -76,7 +76,8 @@ export default function EditUserDataModal(props: EditUserDataProps){
     }
 
     function SubmitUserData(user: User): boolean {
-        dispatch(upsertUserInfo({user}))
+        let isTest = false;
+        dispatch(upsertUserInfo({isTest: isTest, user: user}))
         LeaveEditMode();
         return true;
     }
@@ -129,17 +130,17 @@ export default function EditUserDataModal(props: EditUserDataProps){
                           {isEdit ?
                           <>
                             <label className={labelStyle} htmlFor={EditUserDataIds.email}>User Email</label>
-                            <StyledTextarea id={EditUserDataIds.email} value={currentEmail} onChange={e => setCurrentEmail(e.target.value)}/>
+                            <StyledTextField id={EditUserDataIds.email} value={currentEmail} onChange={e => setCurrentEmail(e.target.value)}/>
                             <label className={labelStyle} htmlFor={EditUserDataIds.password}>User Password</label>
-                            <StyledTextarea id={EditUserDataIds.password} value={currentPassword} onChange={e => setCurrentPassword(e.target.value)}/>
+                            <StyledTextField id={EditUserDataIds.password} value={currentPassword} onChange={e => setCurrentPassword(e.target.value)}/>
                             <StyledTextField id={EditUserDataIds.initiativeIds} label="Initiatives" disabled value={displayItem.initiativeIds.join(", ")}/>
                           </>
                           : 
                           <>
                              <label className={labelStyle} htmlFor={EditUserDataIds.email}>User Email</label>
-                            <StyledTextarea id={EditUserDataIds.email} disabled value={displayItem.email}/>
+                            <StyledTextField id={EditUserDataIds.email} disabled value={displayItem.email}/>
                              <label className={labelStyle} htmlFor={EditUserDataIds.password}>User Password</label>
-                            <StyledTextarea id={EditUserDataIds.password} disabled value={displayItem.password}/>
+                            <StyledTextField id={EditUserDataIds.password} disabled value={displayItem.password}/>
                             <StyledTextField id={EditUserDataIds.initiativeIds} label="Initiatives" disabled value={displayItem.initiativeIds.join(", ")}/>
                           </>
                           }

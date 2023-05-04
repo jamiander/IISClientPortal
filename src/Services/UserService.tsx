@@ -20,6 +20,7 @@ export async function GetUserById(request: GetUserByIdRequest) : Promise<GetUser
 }
 
 export interface UpsertUserInfoRequest {
+  isTest: boolean,
   user: User
 }
 
