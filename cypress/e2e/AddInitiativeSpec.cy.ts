@@ -1,4 +1,4 @@
-import { TestConstants } from "./TestHelpers";
+import { IntegrityUser, TestConstants } from "./TestHelpers";
 
 describe('add initiative spec', () => {
   const init = {
@@ -23,16 +23,17 @@ describe('add initiative spec', () => {
   const modalIds = consts.initiativeModalIds;
   const radioIds = consts.initiativeDisplayRadioIds;
   const tableIds = consts.initiativeTableIds;
+  const user = IntegrityUser;
 
   beforeEach(() => {
     cy.visit('http://localhost:3000/Login')
-    cy.get('#email').clear().type('info@integrityinspired.com');
-    cy.get('#password').clear().type('password');
+    cy.get('#email').clear().type(user.email);
+    cy.get('#password').clear().type(user.password);
     cy.wait(500);
     cy.get('button').contains('Submit').click();
 
-    cy.get('button').contains('Admin').click();
-    cy.get('button').contains('Initiatives').click();
+    //cy.get('button').contains('Admin').click();
+    //cy.get('button').contains('Initiatives').click();
     cy.get(radioIds.all).click();
 
     cy.get('button').contains('Add Initiative').click();

@@ -1,4 +1,4 @@
-import { TestConstants } from "./TestHelpers";
+import { AdminUser, TestConstants } from "./TestHelpers";
 
 describe('add company spec', () => {
 
@@ -19,18 +19,20 @@ describe('add company spec', () => {
   const badToastId = consts.toastIds.main;
   const modalIds = consts.userModalIds;
   const radioIds = consts.userDisplayRadioIds;
+  const navIds = consts.navPanelIds;
+  const admin = AdminUser;
 
   beforeEach(() => {
     cy.visit('http://localhost:3000/Login')
-    cy.get('#email').clear().type('info@integrityinspired.com');
-    cy.get('#password').clear().type('password');
+    cy.get('#email').clear().type(admin.email);
+    cy.get('#password').clear().type(admin.password);
     cy.wait(500);
     cy.get('button').contains('Submit').click();
 
-    cy.get('button').contains('Admin').click();
-    cy.get('button').contains('Clients').click();
+    cy.get(navIds.company).click();
+    /*cy.get('button').contains('Clients').click();
     cy.get(radioIds.all).click();
-    cy.get('button').contains('Add Client').click();
+    */cy.get('button').contains('Add Client').click();
   });
 
   specify('add new company', () => {
