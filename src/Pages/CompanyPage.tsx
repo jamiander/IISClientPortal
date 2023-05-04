@@ -8,6 +8,13 @@ import { ValidateNewCompany, ValidationFailedPrefix } from "../Services/Validati
 import { enqueueSnackbar } from "notistack";
 import { v4 } from "uuid";
 
+export const CompanyPageIds = {
+  addClientButton: "CompanyPageAddClientButton",
+  newClientName: "CompanyPageNewClientName",
+  saveNewClientButton: "CompanyPageSaveButton",
+  cancelNewClientButton: "CompanyPageCancelButton"
+}
+
 export function CompanyPage()
 {
   const allCompanies = useAppSelector(selectAllCompanies);
@@ -57,7 +64,7 @@ export function CompanyPage()
     <div className="my-[1%] mx-[2%] grid grid-cols-4">
       <div className="col-span-4 p-2">
         <div className="flex justify-end">
-          <button disabled={addingCompany} className={yellowButtonStyle + " mb-4"} onClick={() => HandleAddClient()}>
+          <button id={CompanyPageIds.addClientButton} disabled={addingCompany} className={yellowButtonStyle + " mb-4"} onClick={() => HandleAddClient()}>
             Add New Client
           </button>
         </div>
@@ -101,15 +108,15 @@ export function CompanyPage()
             <Item>
               <StyledCard>
                 <StyledCardContent>
-                  <StyledTextField placeholder="New Client Name" value={newCompanyName} onChange={(e) => setNewCompanyName(e.target.value)}>
+                  <StyledTextField id={CompanyPageIds.newClientName} placeholder="New Client Name" value={newCompanyName} onChange={(e) => setNewCompanyName(e.target.value)}>
                   </StyledTextField>
                 </StyledCardContent>
                 <StyledCardActions>
                   <div className="flex justify-between w-full">
-                    <Button onClick={() => HandleSaveCompany()}>
+                    <Button id={CompanyPageIds.saveNewClientButton} onClick={() => HandleSaveCompany()}>
                       Save
                     </Button>
-                    <Button onClick={() => setAddingCompany(false)}>
+                    <Button id={CompanyPageIds.cancelNewClientButton} onClick={() => setAddingCompany(false)}>
                       Cancel
                     </Button>
                   </div>
