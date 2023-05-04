@@ -48,24 +48,6 @@ export default function NavPanel(props: NavProps){
           Client and User Management
         </button>
       }
-      {
-        
-        /*
-        currentUserId === IntegrityId ? 
-          <button className={GetNavStyle("/Admin")}
-            disabled={!isLoggedIn} onClick={() => NavHandler('/Admin')}>
-              Admin
-          </button> :
-
-           leaving Profile code-use later for admin functions?  
-
-          <button className={GetNavStyle("/Profile")} 
-             onClick={() => NavHandler('/Profile')} hidden>
-              Profile
-          </button>
-          */
-      }
-      
     </div>  
   )
 }

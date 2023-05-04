@@ -31,7 +31,6 @@ const router = createBrowserRouter([
         element: <DashboardPage/>,
         errorElement: <ErrorPage/>,
       },
-      
       {
         path: '/Company',
         element:<CompanyPage/>,

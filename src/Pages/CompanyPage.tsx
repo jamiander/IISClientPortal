@@ -3,6 +3,7 @@ import { selectAllCompanies } from "../Store/CompanySlice"
 import { useAppDispatch, useAppSelector } from "../Store/Hooks"
 import { Card, CardActions, CardContent, CardHeader } from "@mui/material";
 import { getUserById, selectAllUsers, selectCurrentUser } from "../Store/UserSlice";
+import { EditUserDataButton } from "../Components/User/EditUserDataButton";
 
 export function CompanyPage()
 {
@@ -17,6 +18,8 @@ export function CompanyPage()
       dispatch(getUserById({}));
   }, [currentUser])
 
+  let company = {id: "abc", name: "Company Name", initiatives: []}
+  
   return (
     <>
     {
@@ -30,9 +33,9 @@ export function CompanyPage()
               </CardHeader>
               <CardContent>
                 {
-                  usersAtCompany.map((user,jndex) => {
+                  usersAtCompany.map((user,index) => {
                     return(
-                      <Fragment key={jndex}>
+                      <Fragment key={index}>
                         {user.email}
                       </Fragment>
                     )
@@ -47,6 +50,8 @@ export function CompanyPage()
         )
       })
     }
+    <EditUserDataButton company={company}></EditUserDataButton>
+
     </>
   )
 }
