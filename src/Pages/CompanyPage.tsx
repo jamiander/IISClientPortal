@@ -3,6 +3,7 @@ import { Company, selectAllCompanies, upsertCompanyInfo } from "../Store/Company
 import { useAppDispatch, useAppSelector } from "../Store/Hooks"
 import { Button, Card, CardActions, CardContent, CardHeader, Grid, Typography } from "@mui/material";
 import { getUserById, selectAllUsers, selectCurrentUser, selectCurrentUserId } from "../Store/UserSlice";
+import { EditUserDataButton } from "../Components/User/EditUserDataButton";
 import { Item, StyledCard, StyledCardActions, StyledCardContent, StyledTextField, yellowButtonStyle } from "../Styles";
 import { ValidateNewCompany, ValidationFailedPrefix } from "../Services/Validation";
 import { enqueueSnackbar } from "notistack";

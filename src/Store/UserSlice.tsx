@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "./Store";
-import { getCompanyByInitiativeIds, IntegrityId } from "./CompanySlice";
+import { getCompanyByInitiativeIds } from "./CompanySlice";
 import { AuthenticateUser, AuthenticateUserRequest, DeleteUserInfo, DeleteUserInfoRequest, GetUserById, GetUserByIdRequest, UpsertUserInfo, UpsertUserInfoRequest } from "../Services/UserService";
 
 export interface User {
