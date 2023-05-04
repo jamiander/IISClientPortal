@@ -1,4 +1,4 @@
-import { TestConstants } from "./TestHelpers";
+import { IntegrityUser, TestConstants } from "./TestHelpers";
 
 const consts = TestConstants;
 const modalIds = consts.editThroughputIds;
@@ -10,18 +10,19 @@ const radioIds = consts.initiativeDisplayRadioIds;
 const initiativeTitle = 'IIS Initiative';
 const company = 'Integrity Inspired Solutions';
 const waitTime = 500;
+const user = IntegrityUser;
 
 describe ('add throughput data by manual entry', () => {
   let remainingItemsBefore: number;
 
   before(() => {
     cy.visit('http://localhost:3000/Login');
-    cy.get('#email').clear().type('info@integrityinspired.com');
-    cy.get('#password').clear().type('password');
+    cy.get('#email').clear().type(user.email);
+    cy.get('#password').clear().type(user.password);
     cy.get('button').contains('Submit').click();
 
-    cy.get('button').contains('Admin').click();
-    cy.get('button').contains('Initiatives').click();
+    //cy.get('button').contains('Admin').click();
+    //cy.get('button').contains('Initiatives').click();
     cy.get(radioIds.all).click();
     cy.get(tableIds.initiativeTitleFilter).type(initiativeTitle);
 
@@ -41,6 +42,8 @@ describe ('add throughput data by manual entry', () => {
     cy.get(modalIds.submitButton).click();
 
     cy.wait(waitTime);
+    cy.get(radioIds.all).click();
+    cy.get(tableIds.initiativeTitleFilter).type(initiativeTitle);
     cy.contains('tr', initiativeTitle).find(tableIds.remainingItems).then(($span) => {
       let remainingItemsAfter = Number($span.text());
       expect(remainingItemsBefore-2).to.be.equal(remainingItemsAfter);
@@ -51,12 +54,12 @@ describe ('add throughput data by manual entry', () => {
 describe ('invalid manual entry test', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/Login');
-    cy.get('#email').clear().type('info@integrityinspired.com');
-    cy.get('#password').clear().type('password');
+    cy.get('#email').clear().type(user.email);
+    cy.get('#password').clear().type(user.password);
     cy.get('button').contains('Submit').click();
 
-    cy.get('button').contains('Admin').click();
-    cy.get('button').contains('Initiatives').click();
+    //cy.get('button').contains('Admin').click();
+    //cy.get('button').contains('Initiatives').click();
 
     cy.get('button').contains('Edit Data').click();
     cy.get(modalIds.selectCompany).select(company);
@@ -95,13 +98,13 @@ describe('update throughput data', () => {
 
   beforeEach(() => {
     cy.visit('http://localhost:3000/Login');
-    cy.get('#email').clear().type('info@integrityinspired.com');
-    cy.get('#password').clear().type('password');
+    cy.get('#email').clear().type(user.email);
+    cy.get('#password').clear().type(user.password);
     cy.wait(500);
     cy.get('button').contains('Submit').click();
 
-    cy.get('button').contains('Admin').click();
-    cy.get('button').contains('Initiatives').click();
+    //cy.get('button').contains('Admin').click();
+    //cy.get('button').contains('Initiatives').click();
 
     cy.get('button').contains('Edit Data').click();
     cy.get(modalIds.selectCompany).select(company);

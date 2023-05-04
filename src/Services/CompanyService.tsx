@@ -79,9 +79,9 @@ export async function UpsertCompanyInfo(request: UpsertCompanyInfoRequest) : Pro
   const isTest = request.isTest;
   
   const info: CompanyInfo = {
-    id: company.id.toString(),
+    id: company.id,
     companyName: company.name
-    }
+  }
 
   let baseUrl = BASE_URL + "AddCompanyDataDB?code=Hu3y-USXm491pUrvMF-jQVFDMQvazAvfxEq9pAp58LhWAzFu7kjFvQ==";
 

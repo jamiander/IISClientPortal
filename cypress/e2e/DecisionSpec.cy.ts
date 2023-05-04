@@ -1,4 +1,4 @@
-import { TestConstants } from "./TestHelpers";
+import { IntegrityUser, TestConstants } from "./TestHelpers";
 
 const consts = TestConstants;
 const modalIds = consts.decisionModalIds;
@@ -6,6 +6,7 @@ const alertIds = consts.deleteDecisionAlertIds;
 const radioIds = consts.initiativeDisplayRadioIds;
 const tableIds = consts.initiativeTableIds;
 const waitTime = 500;
+const user = IntegrityUser;
 
 const init = {
   companyName: 'Integrity Inspired Solutions',
@@ -28,13 +29,13 @@ const editedDecision = {
 
 beforeEach(() => {
   cy.visit('http://localhost:3000/Login');
-  cy.get('#email').clear().type('info@integrityinspired.com');
-  cy.get('#password').clear().type('password');
+  cy.get('#email').clear().type(user.email);
+  cy.get('#password').clear().type(user.password);
   cy.wait(500);
   cy.get('button').contains('Submit').click();
 
-  cy.get('button').contains('Admin').click();
-  cy.get('button').contains('Initiatives').click();
+  //cy.get('button').contains('Admin').click();
+  //cy.get('button').contains('Initiatives').click();
   cy.get(radioIds.all).click();
   cy.get(tableIds.companyNameFilter).type(init.companyName);
   cy.get('table').contains(init.companyName);

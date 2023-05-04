@@ -56,12 +56,16 @@ export function ValidateDate(date: DateInfo) : Validation
   return {success: true, message: "Date is all good!"}
 }
 
-export function ValidateNewUser(newCompanyName: string, companyList: Company[]) : Validation
+export function ValidateNewCompany(newCompanyName: string, companyList: Company[]): Validation
 {
-  let matchingCompany = companyList.find(company => company.name.toUpperCase() === newCompanyName.toUpperCase());
-  if(matchingCompany)
-    return {success: false, message: "Cannot use the name of an existing company."};
+  if(newCompanyName)
+  {
+    let matchingCompany = companyList.find(company => company.name.toUpperCase() === newCompanyName.toUpperCase());
+    if(matchingCompany)
+      return {success: false, message: "Cannot use the name of an existing company."};
 
+    return {success: true, message: "Successfully validated; all good!"};
+  }
   return {success: false, message: "Cannot leave any fields blank."};
 }
 
@@ -99,7 +103,7 @@ export function ValidateFileThroughputData(companyList: Company[], companyId: st
   return ValidateEditThroughputData(companyList, companyId, initiativeId, dataList);
 }
 
-export function ValidateEditThroughputData(companyList: Company[], companyId: string, initiativeId: string, dataList: ThroughputData[]): Validation
+export function ValidateEditThroughputData(companyList: Company[], companyId: string | undefined, initiativeId: string | undefined, dataList: ThroughputData[]): Validation
 {
   const dataValidation = ValidateThroughputData(dataList);
   if(dataValidation.success)
@@ -114,14 +118,14 @@ export function ValidateEditThroughputData(companyList: Company[], companyId: st
   return {success: true, message: "Successfully validated throughput data; all good!"}
 }
 
-export function ValidateCompanyAndInitiative(companyList: Company[], companyId: string, initiativeId: string) : Validation
+export function ValidateCompanyAndInitiative(companyList: Company[], companyId: string | undefined, initiativeId: string | undefined) : Validation
 {
     const matchingCompany = companyList.find(company => company.id === companyId);
-    if(!matchingCompany)
+    if(!matchingCompany || companyId === undefined)
       return {success: false, message: "A company must be selected."};
 
     const matchingInitiative = matchingCompany.initiatives.find(init => init.id === initiativeId);
-    if(!matchingInitiative)
+    if(!matchingInitiative || initiativeId === undefined)
       return {success: false, message: "An initiative must be selected."};
 
   return {success: true, message: "Successfully validated throughput data; all good!"}

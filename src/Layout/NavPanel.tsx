@@ -1,8 +1,12 @@
 import { useLocation, useNavigate } from "react-router-dom"
 import { useAppSelector } from "../Store/Hooks"
 import { selectCurrentUser, selectIsLoggedIn } from "../Store/UserSlice"
-import { IntegrityId } from "../Store/CompanySlice"
 import { selectCurrentUserId } from "../Store/UserSlice"
+
+export const NavPanelIds = {
+  dashboard: "navPanelDashboard",
+  company: "navPanelCompany"
+}
 
 interface NavProps {
   ShowToast: (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void
@@ -37,13 +41,13 @@ export default function NavPanel(props: NavProps){
   return(
     <div className="grid place-items-center p-[2%] py-3 space-y-3">
       
-      <button className={GetNavStyle("/Dashboard")}
+      <button id={NavPanelIds.dashboard} className={GetNavStyle("/Dashboard")}
         onClick={() => NavHandler('/Dashboard')}>
         Dashboard
       </button>
       {
         currentUser?.email === "admin@integrityinspired.com" &&
-        <button className={GetNavStyle("/Company")}
+        <button id={NavPanelIds.company} className={GetNavStyle("/Company")}
           onClick={() => NavHandler('/Company')}>
           Client and User Management
         </button>

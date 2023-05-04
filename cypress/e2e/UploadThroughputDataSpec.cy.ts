@@ -1,4 +1,4 @@
-import { TestConstants } from "./TestHelpers";
+import { IntegrityUser, TestConstants } from "./TestHelpers";
 
 function findItemsCompleted(file: string) : number {
   let itemsCompletedInUpload : number = 0;
@@ -19,6 +19,7 @@ const radioIds = consts.initiativeDisplayRadioIds;
 const initiativeTitle = 'IIS Initiative';
 const companyName = 'Integrity Inspired Solutions';
 const waitTime = 500;
+const user = IntegrityUser;
 
 describe('valid upload throughput tests', () => {
 
@@ -26,13 +27,13 @@ describe('valid upload throughput tests', () => {
 
   beforeEach(() => {
     cy.visit('http://localhost:3000/Login');
-    cy.get('#email').clear().type('info@integrityinspired.com');
-    cy.get('#password').clear().type('password');
+    cy.get('#email').clear().type(user.email);
+    cy.get('#password').clear().type(user.password);
     cy.wait(500);
     cy.get('button').contains('Submit').click();
 
-    cy.get('button').contains('Admin').click();
-    cy.get('button').contains('Initiatives').click();
+    //cy.get('button').contains('Admin').click();
+    //cy.get('button').contains('Initiatives').click();
     cy.get(radioIds.all).click();
     cy.get(tableIds.initiativeTitleFilter).type(initiativeTitle);
 
@@ -59,6 +60,8 @@ describe('valid upload throughput tests', () => {
     cy.wait(waitTime);
     cy.get(modalIds.fileSubmit).click();
     cy.wait(waitTime);
+    cy.get(radioIds.all).click();
+    cy.get(tableIds.initiativeTitleFilter).type(initiativeTitle);
     cy.contains('tr', initiativeTitle).find(tableIds.remainingItems).then(($span) => {
       let remainingItemsAfter = Number($span.text());
       expect(remainingItemsBefore-itemsCompletedInUpload).to.be.equal(remainingItemsAfter);
@@ -83,8 +86,8 @@ describe('invalid upload throughput tests', () => {
     cy.get('#password').clear().type('password');
     cy.get('button').contains('Submit').click();
 
-    cy.get('button').contains('Admin').click();
-    cy.get('button').contains('Initiatives').click();
+    //cy.get('button').contains('Admin').click();
+    //cy.get('button').contains('Initiatives').click();
 
     cy.get('button').contains('Upload Data').click();
     cy.get(modalIds.selectCompany).select(companyName);
