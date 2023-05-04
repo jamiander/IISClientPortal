@@ -8,6 +8,7 @@ import Button from "@mui/material/Button";
 import { Company } from "../../Store/CompanySlice";
 import {v4 as UuidV4} from "uuid";
 import { useAppDispatch } from "../../Store/Hooks";
+import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
 
 export const EditUserDataIds = {
     modal: "editUserModal",
@@ -36,7 +37,7 @@ export default function EditUserDataModal(props: EditUserDataProps){
     const [isNew, setIsNew] = useState(false);
     const [currentEmail, setCurrentEmail] =useState("");
     const [currentPassword, setCurrentPassword] = useState("");
-    const [currentInitiatives, setCurrentInitiatives] = useState("");
+    const [currentInitiatives, setCurrentInitiatives] = useState<string[]>([]);
     const InEditMode = () => userToEdit !== undefined;
 
     useEffect(() => {
@@ -51,7 +52,7 @@ export default function EditUserDataModal(props: EditUserDataProps){
             setUserToEdit(currentUser);
             setCurrentEmail(currentUser.email);
             setCurrentPassword(currentUser.password);
-            setCurrentInitiatives(currentUser.initiativeIds.join(", "));
+            setCurrentInitiatives(currentUser.initiativeIds);
         }
     }
 
@@ -90,6 +91,22 @@ export default function EditUserDataModal(props: EditUserDataProps){
         setUsersList(usersClone);
         setIsNew(true);
         EnterEditMode(myUuid);
+    }
+
+    function UpdateCurrentInitiatives(checked: boolean, id: string) {
+      let initiativesClone: string[] = JSON.parse(JSON.stringify(currentInitiatives));
+      let matchingIdIndex = initiativesClone.findIndex(initId => initId === id);
+      if(matchingIdIndex > -1)
+      {
+        if(!checked)
+          initiativesClone.splice(matchingIdIndex,1);
+      }
+      else
+      {
+        if(checked)
+          initiativesClone.push(id);
+      }
+      setCurrentInitiatives(initiativesClone);
     }
 
     return (
@@ -133,22 +150,30 @@ export default function EditUserDataModal(props: EditUserDataProps){
                             <StyledTextField id={EditUserDataIds.email} value={currentEmail} onChange={e => setCurrentEmail(e.target.value)}/>
                             <label className={labelStyle} htmlFor={EditUserDataIds.password}>User Password</label>
                             <StyledTextField id={EditUserDataIds.password} value={currentPassword} onChange={e => setCurrentPassword(e.target.value)}/>
-                            <StyledTextField id={EditUserDataIds.initiativeIds} label="Initiatives" disabled value={displayItem.initiativeIds.join(", ")}/>
+                            <FormGroup>
+                            {
+                              props.company.initiatives.map((initiative,index) => {
+                                return (
+                                  <FormControlLabel key={index} control={<Checkbox checked={currentInitiatives.find(id => initiative.id === id) !== undefined} onChange={(e) => UpdateCurrentInitiatives(e.target.checked,initiative.id)}/>} label={initiative.title} />
+                                )
+                              })
+                            }
+                            </FormGroup>
                           </>
                           : 
                           <>
-                             <label className={labelStyle} htmlFor={EditUserDataIds.email}>User Email</label>
+                            <label className={labelStyle} htmlFor={EditUserDataIds.email}>User Email</label>
                             <StyledTextField id={EditUserDataIds.email} disabled value={displayItem.email}/>
-                             <label className={labelStyle} htmlFor={EditUserDataIds.password}>User Password</label>
+                            <label className={labelStyle} htmlFor={EditUserDataIds.password}>User Password</label>
                             <StyledTextField id={EditUserDataIds.password} disabled value={displayItem.password}/>
-                            <StyledTextField id={EditUserDataIds.initiativeIds} label="Initiatives" disabled value={displayItem.initiativeIds.join(", ")}/>
+                            <StyledTextField id={EditUserDataIds.initiativeIds} label="Initiatives" disabled value={displayItem.initiativeIds.map((id) => { return props.company.initiatives.find(init => init.id === id)?.title ?? "N/A"}).join(", ")}/>
                           </>
                           }
                         </StyledCardContent>
                         <StyledCardActions>
                           {isEdit &&
                             <div className="flex w-full justify-between">
-                              <Button id={EditUserDataIds.saveChangesButton} className={submitButtonStyle} onClick={() => EditUser(displayItem.id, currentEmail, currentPassword, currentInitiatives.split(",").map(s => s.trim()))}>Save</Button>
+                              <Button id={EditUserDataIds.saveChangesButton} className={submitButtonStyle} onClick={() => EditUser(displayItem.id, currentEmail, currentPassword, currentInitiatives)}>Save</Button>
                               <Button id={EditUserDataIds.cancelChangesButton} className={cancelButtonStyle} onClick={() => CancelEdit()}>Cancel</Button>
                             </div>
                           }
