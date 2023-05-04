@@ -198,7 +198,7 @@ export const companySlice = createSlice({
             })
             .addCase(upsertThroughputData.fulfilled, (state, action) => {
               const companyId = action.payload.companyId;
-              const initiativeId = action.payload.initiativeId.toString();
+              const initiativeId = action.payload.initiativeId;
               const matchingCompany = state.companies.find(company => company.id === companyId);
               if(matchingCompany)
               {
@@ -224,7 +224,7 @@ export const companySlice = createSlice({
             })
             .addCase(upsertDecisionData.fulfilled, (state, action) => {
               const companyId = action.payload.companyId;
-              const initiativeId = action.payload.initiativeId.toString();
+              const initiativeId = action.payload.initiativeId;
               const matchingCompany = state.companies.find(company => company.id === companyId);
               if(matchingCompany)
               {
@@ -247,7 +247,7 @@ export const companySlice = createSlice({
             })
             .addCase(deleteDecisionData.fulfilled, (state, action) => {
               const companyId = action.meta.arg.companyId;
-              const initiativeId = action.meta.arg.initiativeId.toString();
+              const initiativeId = action.meta.arg.initiativeId;
               const matchingCompany = state.companies.find(company => company.id === companyId);
               if(matchingCompany)
               {

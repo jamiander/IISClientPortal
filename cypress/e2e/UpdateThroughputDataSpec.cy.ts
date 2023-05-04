@@ -42,6 +42,8 @@ describe ('add throughput data by manual entry', () => {
     cy.get(modalIds.submitButton).click();
 
     cy.wait(waitTime);
+    cy.get(radioIds.all).click();
+    cy.get(tableIds.initiativeTitleFilter).type(initiativeTitle);
     cy.contains('tr', initiativeTitle).find(tableIds.remainingItems).then(($span) => {
       let remainingItemsAfter = Number($span.text());
       expect(remainingItemsBefore-2).to.be.equal(remainingItemsAfter);

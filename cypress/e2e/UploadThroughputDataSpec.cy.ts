@@ -60,6 +60,8 @@ describe('valid upload throughput tests', () => {
     cy.wait(waitTime);
     cy.get(modalIds.fileSubmit).click();
     cy.wait(waitTime);
+    cy.get(radioIds.all).click();
+    cy.get(tableIds.initiativeTitleFilter).type(initiativeTitle);
     cy.contains('tr', initiativeTitle).find(tableIds.remainingItems).then(($span) => {
       let remainingItemsAfter = Number($span.text());
       expect(remainingItemsBefore-itemsCompletedInUpload).to.be.equal(remainingItemsAfter);
@@ -84,8 +86,8 @@ describe('invalid upload throughput tests', () => {
     cy.get('#password').clear().type('password');
     cy.get('button').contains('Submit').click();
 
-    cy.get('button').contains('Admin').click();
-    cy.get('button').contains('Initiatives').click();
+    //cy.get('button').contains('Admin').click();
+    //cy.get('button').contains('Initiatives').click();
 
     cy.get('button').contains('Upload Data').click();
     cy.get(modalIds.selectCompany).select(companyName);

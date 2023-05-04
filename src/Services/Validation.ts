@@ -103,7 +103,7 @@ export function ValidateFileThroughputData(companyList: Company[], companyId: st
   return ValidateEditThroughputData(companyList, companyId, initiativeId, dataList);
 }
 
-export function ValidateEditThroughputData(companyList: Company[], companyId: string, initiativeId: string, dataList: ThroughputData[]): Validation
+export function ValidateEditThroughputData(companyList: Company[], companyId: string | undefined, initiativeId: string | undefined, dataList: ThroughputData[]): Validation
 {
   const dataValidation = ValidateThroughputData(dataList);
   if(dataValidation.success)
@@ -118,14 +118,14 @@ export function ValidateEditThroughputData(companyList: Company[], companyId: st
   return {success: true, message: "Successfully validated throughput data; all good!"}
 }
 
-export function ValidateCompanyAndInitiative(companyList: Company[], companyId: string, initiativeId: string) : Validation
+export function ValidateCompanyAndInitiative(companyList: Company[], companyId: string | undefined, initiativeId: string | undefined) : Validation
 {
     const matchingCompany = companyList.find(company => company.id === companyId);
-    if(!matchingCompany)
+    if(!matchingCompany || companyId === undefined)
       return {success: false, message: "A company must be selected."};
 
     const matchingInitiative = matchingCompany.initiatives.find(init => init.id === initiativeId);
-    if(!matchingInitiative)
+    if(!matchingInitiative || initiativeId === undefined)
       return {success: false, message: "An initiative must be selected."};
 
   return {success: true, message: "Successfully validated throughput data; all good!"}

@@ -32,7 +32,7 @@ describe('update initiative spec', () => {
     //cy.get('button').contains('Admin').click();
     //cy.get('button').contains('Initiatives').click();
     cy.get(radioIds.all).click();
-    cy.get(tableIds.companyNameFilter).type(init.companyName);
+    cy.get(tableIds.companyNameFilter).clear().type(init.companyName);
     cy.get('table').contains(init.companyName);
     cy.get('#editInitiativeButton0').click();
 
@@ -44,7 +44,9 @@ describe('update initiative spec', () => {
 
   specify('update an initiative', () => {
     cy.get('button').contains('Submit').click();
-
+    cy.wait(500);
+    cy.get(radioIds.all).click();
+    cy.get(tableIds.companyNameFilter).clear().type(init.companyName);
     cy.get('table').contains(init.title);
   })
 
