@@ -156,116 +156,116 @@ export const companySlice = createSlice({
       }
     },
     extraReducers: (builder) => {
-        builder
-            .addCase(getCompanyById.fulfilled, (state, action) => {
-              const newCompanies = action.payload;
-              for(const company of newCompanies)
+      builder
+        .addCase(getCompanyById.fulfilled, (state, action) => {
+          const newCompanies = action.payload;
+          for(const company of newCompanies)
+          {
+            let companyIndex = state.companies.findIndex(c => c.id === company.id);
+            if(companyIndex > -1)
+              state.companies.splice(companyIndex,1);
+            state.companies.push(company);
+          }
+        })
+        .addCase(getCompanyByInitiativeIds.fulfilled, (state, action) => {
+          const newCompanies = action.payload;
+          for(const company of newCompanies)
+          {
+            let companyIndex = state.companies.findIndex(c => c.id === company.id);
+            if(companyIndex > -1)
+              state.companies.splice(companyIndex,1);
+            state.companies.push(company);
+          }
+        })
+        .addCase(upsertCompanyInfo.fulfilled, (state, action) => {
+          const newCompany = action.payload;
+          const companyIndex = state.companies.findIndex(company => company.id === newCompany.id);
+          if(companyIndex > -1)
+            state.companies.splice(companyIndex, 1);
+          state.companies.push(newCompany);
+        })
+        .addCase(upsertInitiativeInfo.fulfilled, (state, action) => {
+            const newInitiative = action.payload.initiative;
+            const companyId = action.payload.companyId;
+            const matchingCompany = state.companies.find(company => company.id === companyId);
+            if(matchingCompany)
+            {
+                const initIndex = matchingCompany.initiatives.findIndex(init => init.id === newInitiative.id);
+                if(initIndex > -1)
+                    matchingCompany.initiatives.splice(initIndex,1);
+                matchingCompany.initiatives.push(newInitiative);
+            }
+        })
+        .addCase(upsertThroughputData.fulfilled, (state, action) => {
+          const companyId = action.payload.companyId;
+          const initiativeId = action.payload.initiativeId;
+          const matchingCompany = state.companies.find(company => company.id === companyId);
+          if(matchingCompany)
+          {
+            const matchingInit = matchingCompany.initiatives.find(init => init.id === initiativeId);
+            if(matchingInit)
+            {
+              const throughputClone: ThroughputData[] = JSON.parse(JSON.stringify(matchingInit.itemsCompletedOnDate));
+              for(const item of action.payload.data)
               {
-                let companyIndex = state.companies.findIndex(c => c.id === company.id);
-                if(companyIndex > -1)
-                  state.companies.splice(companyIndex,1);
-                state.companies.push(company);
-              }
-            })
-            .addCase(getCompanyByInitiativeIds.fulfilled, (state, action) => {
-              const newCompanies = action.payload;
-              for(const company of newCompanies)
-              {
-                let companyIndex = state.companies.findIndex(c => c.id === company.id);
-                if(companyIndex > -1)
-                  state.companies.splice(companyIndex,1);
-                state.companies.push(company);
-              }
-            })
-            .addCase(upsertCompanyInfo.fulfilled, (state, action) => {
-              const newCompany = action.payload;
-              const companyIndex = state.companies.findIndex(company => company.id === newCompany.id);
-              if(companyIndex > -1)
-                state.companies.splice(companyIndex, 1);
-              state.companies.push(newCompany);
-            })
-            .addCase(upsertInitiativeInfo.fulfilled, (state, action) => {
-                const newInitiative = action.payload.initiative;
-                const companyId = action.payload.companyId;
-                const matchingCompany = state.companies.find(company => company.id === companyId);
-                if(matchingCompany)
-                {
-                    const initIndex = matchingCompany.initiatives.findIndex(init => init.id === newInitiative.id);
-                    if(initIndex > -1)
-                        matchingCompany.initiatives.splice(initIndex,1);
-                    matchingCompany.initiatives.push(newInitiative);
-                }
-            })
-            .addCase(upsertThroughputData.fulfilled, (state, action) => {
-              const companyId = action.payload.companyId;
-              const initiativeId = action.payload.initiativeId;
-              const matchingCompany = state.companies.find(company => company.id === companyId);
-              if(matchingCompany)
-              {
-                const matchingInit = matchingCompany.initiatives.find(init => init.id === initiativeId);
-                if(matchingInit)
-                {
-                  const throughputClone: ThroughputData[] = JSON.parse(JSON.stringify(matchingInit.itemsCompletedOnDate));
-                  for(const item of action.payload.data)
-                  {
-                    const itemIndex = throughputClone.findIndex(entry => 
-                      entry.date.month === item.date.month &&
-                      entry.date.day === item.date.day &&
-                      entry.date.year === item.date.year);
+                const itemIndex = throughputClone.findIndex(entry => 
+                  entry.date.month === item.date.month &&
+                  entry.date.day === item.date.day &&
+                  entry.date.year === item.date.year);
 
-                    if(itemIndex > -1)
-                      throughputClone[itemIndex].itemsCompleted = item.itemsCompleted;
-                    else
-                      throughputClone.push(item);
-                  }
-                  matchingInit.itemsCompletedOnDate = throughputClone.filter(data => data.itemsCompleted !== 0);
-                }
+                if(itemIndex > -1)
+                  throughputClone[itemIndex].itemsCompleted = item.itemsCompleted;
+                else
+                  throughputClone.push(item);
               }
-            })
-            .addCase(upsertDecisionData.fulfilled, (state, action) => {
-              const companyId = action.payload.companyId;
-              const initiativeId = action.payload.initiativeId;
-              const matchingCompany = state.companies.find(company => company.id === companyId);
-              if(matchingCompany)
+              matchingInit.itemsCompletedOnDate = throughputClone.filter(data => data.itemsCompleted !== 0);
+            }
+          }
+        })
+        .addCase(upsertDecisionData.fulfilled, (state, action) => {
+          const companyId = action.payload.companyId;
+          const initiativeId = action.payload.initiativeId;
+          const matchingCompany = state.companies.find(company => company.id === companyId);
+          if(matchingCompany)
+          {
+            const matchingInit = matchingCompany.initiatives.find(init => init.id === initiativeId);
+            if(matchingInit)
+            {
+              const decisionsClone: DecisionData[] = JSON.parse(JSON.stringify(matchingInit.decisions));
+              for(const data of action.payload.data)
               {
-                const matchingInit = matchingCompany.initiatives.find(init => init.id === initiativeId);
-                if(matchingInit)
-                {
-                  const decisionsClone: DecisionData[] = JSON.parse(JSON.stringify(matchingInit.decisions));
-                  for(const data of action.payload.data)
-                  {
-                    const dataIndex = decisionsClone.findIndex(entry => data.id === entry.id);
+                const dataIndex = decisionsClone.findIndex(entry => data.id === entry.id);
 
-                    if(dataIndex > -1)
-                      decisionsClone[dataIndex] = data;
-                    else
-                      decisionsClone.push(data);
-                  }
-                  matchingInit.decisions = decisionsClone;
-                }
+                if(dataIndex > -1)
+                  decisionsClone[dataIndex] = data;
+                else
+                  decisionsClone.push(data);
               }
-            })
-            .addCase(deleteDecisionData.fulfilled, (state, action) => {
-              const companyId = action.meta.arg.companyId;
-              const initiativeId = action.meta.arg.initiativeId;
-              const matchingCompany = state.companies.find(company => company.id === companyId);
-              if(matchingCompany)
+              matchingInit.decisions = decisionsClone;
+            }
+          }
+        })
+        .addCase(deleteDecisionData.fulfilled, (state, action) => {
+          const companyId = action.meta.arg.companyId;
+          const initiativeId = action.meta.arg.initiativeId;
+          const matchingCompany = state.companies.find(company => company.id === companyId);
+          if(matchingCompany)
+          {
+            const matchingInit = matchingCompany.initiatives.find(init => init.id === initiativeId);
+            if(matchingInit)
+            {
+              const decisionsClone: DecisionData[] = JSON.parse(JSON.stringify(matchingInit.decisions));
+              for(const decisionId of action.meta.arg.decisionIds)
               {
-                const matchingInit = matchingCompany.initiatives.find(init => init.id === initiativeId);
-                if(matchingInit)
-                {
-                  const decisionsClone: DecisionData[] = JSON.parse(JSON.stringify(matchingInit.decisions));
-                  for(const decisionId of action.meta.arg.decisionIds)
-                  {
-                    const dataIndex = decisionsClone.findIndex(entry => decisionId === entry.id);
+                const dataIndex = decisionsClone.findIndex(entry => decisionId === entry.id);
 
-                    if(dataIndex > -1)
-                      decisionsClone.splice(dataIndex,1);
-                  }
-                  matchingInit.decisions = decisionsClone;
-                }
+                if(dataIndex > -1)
+                  decisionsClone.splice(dataIndex,1);
               }
-            })
+              matchingInit.decisions = decisionsClone;
+            }
+          }
+        })
     }
 });
 

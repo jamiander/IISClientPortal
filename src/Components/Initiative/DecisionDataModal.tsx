@@ -36,24 +36,22 @@ interface DecisionDataProps {
     setDecisionModalIsOpen: (value: boolean) => void
 }
 
-  export default function DecisionDataModal(props: DecisionDataProps) {
-    const dispatch = useAppDispatch();
-    const [currentDescription, setCurrentDescription] = useState("");
-    const [currentResolution, setCurrentResolution] = useState("");
-    const [currentParticipants, setCurrentParticipants] = useState("");
-    const [currentDateString, setCurrentDateString] = useState("");
-  
-    const [selectedInitiative, setSelectedInitiative] = useState<Initiative>(props.initiative);
-    const [decisionToEdit, setDecisionToEdit] = useState<DecisionData>();
-    const [isNew, setIsNew] = useState(false);
-    const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-    const [decisionToDelete, setDecisionToDelete] = useState<DecisionData>();
-    const InEditMode = () => decisionToEdit !== undefined;
-    const today = new Date();
-    const todayInfo: DateInfo = {month: today.getMonth()+1, day: today.getDate(), year: today.getFullYear()}
-    const [searchedKeyword, setSearchedKeyword] = useState("");
+export default function DecisionDataModal(props: DecisionDataProps) {
+  const dispatch = useAppDispatch();
+  const [currentDescription, setCurrentDescription] = useState("");
+  const [currentResolution, setCurrentResolution] = useState("");
+  const [currentParticipants, setCurrentParticipants] = useState("");
+  const [currentDateString, setCurrentDateString] = useState("");
 
-    let myUuid = UuidV4();
+  const [selectedInitiative, setSelectedInitiative] = useState<Initiative>(props.initiative);
+  const [decisionToEdit, setDecisionToEdit] = useState<DecisionData>();
+  const [isNew, setIsNew] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [decisionToDelete, setDecisionToDelete] = useState<DecisionData>();
+  const InEditMode = () => decisionToEdit !== undefined;
+  const today = new Date();
+  const todayInfo: DateInfo = {month: today.getMonth()+1, day: today.getDate(), year: today.getFullYear()}
+  const [searchedKeyword, setSearchedKeyword] = useState("");
 
   useEffect(() => {
     setSelectedInitiative(props.initiative);
@@ -63,14 +61,14 @@ interface DecisionDataProps {
   function AddEmptyDecision()
   {
     let initiativeClone: Initiative = JSON.parse(JSON.stringify(selectedInitiative));
-    let negativeId = myUuid;
-    let newDecision: DecisionData = {id: negativeId, description: "", resolution: "", participants: [], date: todayInfo};
+    let newId = UuidV4();
+    let newDecision: DecisionData = {id: newId, description: "", resolution: "", participants: [], date: todayInfo};
     initiativeClone.decisions.unshift(newDecision);
 
     setSearchedKeyword("");
     setSelectedInitiative(initiativeClone);
     setIsNew(true);
-    EnterEditMode(negativeId,initiativeClone);
+    EnterEditMode(newId,initiativeClone);
   }
 
   function EnterEditMode(id: string, currentInitiative: Initiative)
@@ -132,7 +130,7 @@ interface DecisionDataProps {
     let validation = ValidateDecisions(decisions);
     if(validation.success)
     {
-      dispatch(upsertDecisionData({isTest: isTest, companyId: props.company.id.toString(), initiativeId: props.initiative.id, decisions: decisions}));
+      dispatch(upsertDecisionData({isTest: isTest, companyId: props.company.id, initiativeId: props.initiative.id, decisions: decisions}));
       LeaveEditMode();
       return true;
     }
@@ -157,7 +155,7 @@ interface DecisionDataProps {
     let selectedInitiativeClone: Initiative = JSON.parse(JSON.stringify(selectedInitiative));
     selectedInitiativeClone.decisions = selectedInitiativeClone.decisions.filter(d => d.id !== decisionId);
 
-    dispatch(deleteDecisionData({isTest: isTest, companyId: props.company.id.toString(), initiativeId: props.initiative.id, decisionIds: [decisionId]}));
+    dispatch(deleteDecisionData({isTest: isTest, companyId: props.company.id, initiativeId: props.initiative.id, decisionIds: [decisionId]}));
     setSelectedInitiative(selectedInitiativeClone);
     setDecisionToDelete(undefined);
     setIsDeleteOpen(false);

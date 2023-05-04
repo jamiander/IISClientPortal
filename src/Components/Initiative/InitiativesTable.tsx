@@ -28,7 +28,6 @@ export const InitiativeTableIds = {
 
 interface InitiativesProps {
   companyList: Company[],
-  pageNumber: number,
   radioStatus: string,
   ValidateInitiative: (initiative: Initiative, companyId: string, allCompanies: Company[]) => {success: boolean, message: string}
   admin: boolean
