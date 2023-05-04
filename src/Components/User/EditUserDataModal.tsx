@@ -45,8 +45,8 @@ export default function EditUserDataModal(props: EditUserDataProps){
         LeaveEditMode();
     },[props.isOpen])
 
-    function EnterEditMode(id: string) { 
-        let currentUser = usersList.find(u => u.id === id);
+    function EnterEditMode(id: string, users: User[]) { 
+        let currentUser = users.find(u => u.id === id);
         if(currentUser)
         {
             setUserToEdit(currentUser);
@@ -90,7 +90,7 @@ export default function EditUserDataModal(props: EditUserDataProps){
         usersClone.unshift(newUser);
         setUsersList(usersClone);
         setIsNew(true);
-        EnterEditMode(myUuid);
+        EnterEditMode(myUuid,usersClone);
     }
 
     function UpdateCurrentInitiatives(checked: boolean, id: string) {
@@ -180,7 +180,7 @@ export default function EditUserDataModal(props: EditUserDataProps){
                           {
                             !isEdit && !InEditMode() &&
                             <div className="flex w-full justify-between">
-                              <button id={EditUserDataIds.editButton} className={submitButtonStyle} onClick={() => EnterEditMode(displayItem.id)}>Edit</button>
+                              <button id={EditUserDataIds.editButton} className={submitButtonStyle} onClick={() => EnterEditMode(displayItem.id,usersList)}>Edit</button>
 {/*                               <button id={EditUserDataIds.deleteButton} className={cancelButtonStyle} onClick={() => AttemptDelete(displayItem.id)}>Delete</button>
  */}                            </div>
                           }
