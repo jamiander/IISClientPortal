@@ -1,38 +1,63 @@
+import { AdminUser, TestConstants } from "./TestHelpers";
+
 describe('add user spec', () => {
+
+  const company = {
+    id: "53beceb7-054b-4740-830f-98a1dc0cc991"
+  }
+
+  const user = {
+    email: "test@testing.com",
+    password: "password",
+    initaitiveIds: []
+  }
+
+  const consts = TestConstants;
+  const navIds = consts.navPanelIds;
+  const modalIds = consts.editUserModalIds;
+  const failMessage = consts.validationFailedMessage;
+  const badToastId = "#notistack-snackbar";
+  const admin = AdminUser;
+
   beforeEach(() => {
     cy.visit('http://localhost:3000/Login');
-  })
-
-  specify('this spec is currently unused; come back when users are no longer synonymous with companies', () => {
-
-  })
-
-  /*specify('add a new user', () => {
-    cy.get('.m-\\[2\\%\\] > :nth-child(2) > .outline').clear().type('info@integrityinspired.com');
-    cy.get(':nth-child(3) > .outline').clear().type('crowmonitorteam');
+    cy.get('#email').clear().type(admin.email);
+    cy.get('#password').clear().type(admin.password);
+    cy.wait(500);
     cy.get('button').contains('Submit').click();
 
-    cy.get('button').contains('Admin').click();
+    cy.get(navIds.company).click();
+    cy.get("#editUserDataButton"+company.id).click();
+    cy.get(modalIds.addButton).click({force:true});
+  })
 
-    cy.get('button').contains('Add User').click();
-    cy.get('.space-x-3 > :nth-child(4)').select(1);
-    cy.get('.space-x-3 > :nth-child(6)').type('Mr. Test');
-    cy.get('.space-x-3 > :nth-child(8)').type('test@testing.com');
-    cy.get('.space-x-3 > :nth-child(10)').type('ilovetesting');
+  specify('add a new user', () => {
+    cy.get(modalIds.email).type(user.email);
+    cy.get(modalIds.password).type(user.password);
+
+    cy.get(modalIds.saveChangesButton).click();
+    cy.contains(user.email);
+    cy.get(modalIds.saveChangesButton).should('not.exist');
+  })
+
+  specify('cannot add a user with invalid input', () => {
+    cy.get(modalIds.saveChangesButton).click();
+    cy.get(badToastId).contains(failMessage);
+  })
+
+  specify('cannot add multiple users at once', () => {
+    cy.get(modalIds.addButton).should('be.disabled');
+  })
+
+  specify('cancel does not leave behind a blank user', () => {
+    cy.get(modalIds.cancelChangesButton).click();
     
-    cy.get('button').contains('Submit').click();
-
-    cy.contains('Mr. Test');
   })
 
-  specify('clients cannot access admin page', () => {
-    cy.get('.m-\\[2\\%\\] > :nth-child(2) > .outline').clear().type('dummy@fakecompany.com');
-    cy.get(':nth-child(3) > .outline').clear().type('password');
-    cy.get('button').contains('Submit').click();
-
-    cy.get('button').contains('Admin').should('not.exist');
-  });
-*/
+  specify('close button closes the modal', () => {
+    cy.get(modalIds.closeModalButton).click();
+    cy.get(modalIds.modal).should('not.exist');
+  })
 })
 
 export {}

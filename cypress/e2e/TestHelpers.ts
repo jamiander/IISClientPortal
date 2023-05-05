@@ -9,6 +9,7 @@ import { DecisionModalIds } from "../../src/Components/Initiative/DecisionDataMo
 import { DeleteDecisionAlertIds } from "../../src/Components/Initiative/DeleteDecisionAlert";
 import { NavPanelIds } from "../../src/Layout/NavPanel";
 import { CompanyPageIds } from "../../src/Pages/CompanyPage";
+import { EditUserDataIds } from "../../src/Components/User/EditUserDataModal";
 
 //cypress can find items by id using "#id"
 export function AddHash(obj: Record<string,any> | string)
@@ -36,7 +37,8 @@ export const TestConstants = {
   decisionModalIds: AddHash(DecisionModalIds),
   deleteDecisionAlertIds: AddHash(DeleteDecisionAlertIds),
   navPanelIds: AddHash(NavPanelIds),
-  companyPageIds: AddHash(CompanyPageIds)
+  companyPageIds: AddHash(CompanyPageIds),
+  editUserModalIds: AddHash(EditUserDataIds)
 }
 
 export const IntegrityUser = {

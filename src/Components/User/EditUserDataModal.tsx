@@ -13,13 +13,13 @@ import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
 export const EditUserDataIds = {
     modal: "editUserModal",
     closeModalButton: "editUserModalCloseModalButton",
-    email: "email",
-    password: "password",
-    initiativeIds: "initiativeIds",
-    addButton: "addButton",
-    editButton: "editButton",
-    saveChangesButton: "saveChangesButton",
-    cancelChangesButton: "cancelChangesButton"
+    email: "editUserEmail",
+    password: "editUserPassword",
+    initiativeIds: "editUserInitiativeIds",
+    addButton: "editUserAddButton",
+    editButton: "editUserEditButton",
+    saveChangesButton: "editUserSaveChangesButton",
+    cancelChangesButton: "editUserCancelChangesButton"
 }
 
 interface EditUserDataProps {
@@ -77,6 +77,8 @@ export default function EditUserDataModal(props: EditUserDataProps){
 
     function SubmitUserData(users: User[]): boolean {
         let isTest = false;
+        if((window as any).Cypress)
+          isTest = true;
         dispatch(upsertUserInfo({isTest: isTest, users: users}))
         LeaveEditMode();
         return true;
