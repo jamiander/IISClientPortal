@@ -14,8 +14,12 @@ describe('update company spec', () => {
     password: "password"
   }
 
+  const existingCompany2 = {
+    name: "Staples"
+  }
+
   const consts = TestConstants;
-  const failMessage = consts.validationFailedMessage;
+  const failMessage = consts.validationFailedMessage
   const badToastId = "#notistack-snackbar"//consts.toastIds.main;
   const navIds = consts.navPanelIds;
   const pageIds = consts.companyPageIds;
@@ -66,7 +70,7 @@ describe('update company spec', () => {
   })
 
   specify('cannot rename a company the name of another company', () => {
-    cy.get(pageIds.clientNameInput).clear().type(existingCompany.name);
+    cy.get(pageIds.clientNameInput).clear().type(existingCompany2.name);
     cy.get(pageIds.saveClientButton).click();
     cy.get(badToastId).contains(failMessage);
   })
