@@ -56,11 +56,11 @@ export function ValidateDate(date: DateInfo) : Validation
   return {success: true, message: "Date is all good!"}
 }
 
-export function ValidateNewCompany(newCompanyName: string, companyList: Company[]): Validation
+export function ValidateCompany(newCompany: Company, companyList: Company[]): Validation
 {
-  if(newCompanyName)
+  if(newCompany && newCompany.name)
   {
-    let matchingCompany = companyList.find(company => company.name.toUpperCase() === newCompanyName.toUpperCase());
+    let matchingCompany = companyList.find(company => company.name.toUpperCase() === company.name.toUpperCase() && newCompany.id !== company.id);
     if(matchingCompany)
       return {success: false, message: "Cannot use the name of an existing company."};
 
@@ -69,13 +69,13 @@ export function ValidateNewCompany(newCompanyName: string, companyList: Company[
   return {success: false, message: "Cannot leave any fields blank."};
 }
 
-export function ValidateEditUser(companyName: string, companyList: Company[]) : Validation
+export function ValidateUser(newUser: User, userList: User[]) : Validation
 {
-  if(companyName)
+  if(newUser && newUser.email && newUser.password)
   {
-    let matchingCompany = companyList.find(indexedCompany => indexedCompany.name.toUpperCase() === companyName.toUpperCase())
-    if(matchingCompany)
-      return {success: false, message: "Cannot use the name of an existing company."};
+    let matchingUser = userList.find(user => user.email.toUpperCase() === newUser.email.toUpperCase() && newUser.id !== user.id)
+    if(matchingUser)
+      return {success: false, message: "Cannot use the email of an existing user."};
 
     return {success: true, message: "Successfully validated; all good!"};
   }

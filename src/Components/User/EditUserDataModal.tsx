@@ -9,6 +9,8 @@ import { Company } from "../../Store/CompanySlice";
 import {v4 as UuidV4} from "uuid";
 import { useAppDispatch } from "../../Store/Hooks";
 import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
+import { enqueueSnackbar } from "notistack";
+import { ValidateUser, ValidationFailedPrefix } from "../../Services/Validation";
 
 export const EditUserDataIds = {
     modal: "editUserModal",
@@ -70,18 +72,26 @@ export default function EditUserDataModal(props: EditUserDataProps){
             newUser.email = newEmail;
             newUser.password = newPassword;
             newUser.initiativeIds = newInitiatives;
-            let successfulSubmit = SubmitUserData(usersClone);
+            let successfulSubmit = SubmitUserData(newUser);
             if(successfulSubmit) setUsersList(usersClone);
         }
     }
 
-    function SubmitUserData(users: User[]): boolean {
+    function SubmitUserData(user: User): boolean {
         let isTest = false;
         if((window as any).Cypress)
           isTest = true;
-        dispatch(upsertUserInfo({isTest: isTest, users: users}))
-        LeaveEditMode();
-        return true;
+        let validation = ValidateUser(user,usersList);
+        if(validation.success)
+        {
+          dispatch(upsertUserInfo({isTest: isTest, users: [user]}))
+          LeaveEditMode();
+          return true;
+        }
+        else
+          enqueueSnackbar(ValidationFailedPrefix + validation.message, {variant: "error"});
+        
+        return false;
     }
 
     function AddEmptyUser() {

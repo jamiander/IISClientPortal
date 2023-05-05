@@ -5,7 +5,7 @@ import { Button, Card, CardActions, CardContent, CardHeader, Grid, Typography } 
 import { getUserById, selectAllUsers, selectCurrentUser, selectCurrentUserId } from "../Store/UserSlice";
 import { EditUserDataButton } from "../Components/User/EditUserDataButton";
 import { Item, StyledCard, StyledCardActions, StyledCardContent, StyledTextField, yellowButtonStyle } from "../Styles";
-import { ValidateNewCompany, ValidationFailedPrefix } from "../Services/Validation";
+import { ValidateCompany, ValidationFailedPrefix } from "../Services/Validation";
 import { enqueueSnackbar } from "notistack";
 import { v4 } from "uuid";
 import EditIcon from '@mui/icons-material/Edit';
@@ -97,7 +97,7 @@ export function CompanyPage()
     let companyClone: Company = JSON.parse(JSON.stringify(companyToEdit));
     companyClone.name = newCompanyName;
 
-    const validation = ValidateNewCompany(companyClone.name,allCompanies);
+    const validation = ValidateCompany(companyClone,allCompanies);
     if(validation.success && companyToEdit)
     {
       dispatch(upsertCompanyInfo({isTest: isTest, company: companyClone}));
