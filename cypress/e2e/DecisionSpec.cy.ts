@@ -5,6 +5,7 @@ const modalIds = consts.decisionModalIds;
 const alertIds = consts.deleteDecisionAlertIds;
 const radioIds = consts.initiativeDisplayRadioIds;
 const tableIds = consts.initiativeTableIds;
+const badToastId = "#notistack-snackbar";
 const waitTime = 500;
 const user = IntegrityUser;
 
@@ -94,6 +95,11 @@ describe("add decision spec", () => {
   specify("close button closes the modal", () => {
     cy.get(modalIds.closeModalButton).click();
     cy.get(modalIds.modal).should('not.exist');
+  })
+
+  specify("cannot add multiple decisions at once", () => {
+    cy.get(modalIds.addButton).click();
+    cy.get(badToastId);
   })
 
 })

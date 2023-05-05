@@ -47,9 +47,9 @@ export function CompanyPage()
     setDisplayCompanies(allCompanies);
   },[allCompanies])
 
-  function BeginEdit(editableCompany: Company, newState: State)
+  function BeginEdit(editableCompany: Company, newCompany: boolean)
   {
-    setPageState(newState);
+    setPageState(newCompany ? State.add : State.edit);
     setNewCompanyName(editableCompany.name);
     setCompanyToEdit(editableCompany);
   }
@@ -64,7 +64,7 @@ export function CompanyPage()
     }
     companyClones.unshift(newCompany);
     setDisplayCompanies(companyClones);
-    BeginEdit(newCompany,State.add);
+    BeginEdit(newCompany,true);
   }
 
   function HandleEditCompanyButton(companyId: string)
@@ -72,7 +72,7 @@ export function CompanyPage()
     let matchingCompany = displayCompanies.find(company => company.id === companyId);
     if(matchingCompany)
     {
-      BeginEdit(matchingCompany,State.edit);
+      BeginEdit(matchingCompany,false);
     }
   }
 
@@ -121,9 +121,10 @@ export function CompanyPage()
         {
           displayCompanies.map((company,index) => {
             const usersAtCompany = allUsers.filter(user => user.companyId === company.id);
+            const isEdit = (pageState === State.edit || pageState === State.add) && company.id !== companyToEdit?.id;
             return (
               <Fragment key={index}>
-                {company.id !== companyToEdit?.id ?
+                {!isEdit ?
                 <Grid item md={4} id={"companyPageCard"+company.id}>
                   <Item>
                     <StyledCard>

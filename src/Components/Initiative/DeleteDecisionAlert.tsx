@@ -12,6 +12,7 @@ interface DeleteDecisionAlertProps {
   isOpen: boolean,
   setIsOpen: (value: boolean) => void,
   DeleteDecision: (id: string) => void,
+  CancelDelete: () => void,
   decision: DecisionData | undefined
 }
 
@@ -37,7 +38,7 @@ export function DeleteDecisionAlert(props: DeleteDecisionAlertProps)
       <DialogActions>
         <div className="flex justify-between">
           <button id={DeleteDecisionAlertIds.confirmButton} className={submitButtonStyle} onClick={() => props.DeleteDecision(props.decision?.id ?? myUuid)}>Yes</button>
-          <button id={DeleteDecisionAlertIds.cancelButton} className={cancelButtonStyle} onClick={() => props.setIsOpen(false)}>No</button>
+          <button id={DeleteDecisionAlertIds.cancelButton} className={cancelButtonStyle} onClick={() => props.CancelDelete()}>No</button>
         </div>
       </DialogActions>
     </Dialog>

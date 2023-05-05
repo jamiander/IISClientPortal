@@ -38,6 +38,15 @@ interface DecisionDataProps {
 
 export default function DecisionDataModal(props: DecisionDataProps) {
   const dispatch = useAppDispatch();
+
+  enum State {
+    start,
+    edit,
+    add,
+    delete
+  }
+  const [modalState, setModalState] = useState(State.start);
+
   const [currentDescription, setCurrentDescription] = useState("");
   const [currentResolution, setCurrentResolution] = useState("");
   const [currentParticipants, setCurrentParticipants] = useState("");
@@ -45,10 +54,9 @@ export default function DecisionDataModal(props: DecisionDataProps) {
 
   const [selectedInitiative, setSelectedInitiative] = useState<Initiative>(props.initiative);
   const [decisionToEdit, setDecisionToEdit] = useState<DecisionData>();
-  const [isNew, setIsNew] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-  const [decisionToDelete, setDecisionToDelete] = useState<DecisionData>();
-  const InEditMode = () => decisionToEdit !== undefined;
+
+  const InEditMode = () => modalState === State.edit || modalState === State.add;
   const today = new Date();
   const todayInfo: DateInfo = {month: today.getMonth()+1, day: today.getDate(), year: today.getFullYear()}
   const [searchedKeyword, setSearchedKeyword] = useState("");
@@ -58,41 +66,26 @@ export default function DecisionDataModal(props: DecisionDataProps) {
     LeaveEditMode();
   },[props.isOpen])
 
-  function AddEmptyDecision()
+  function HandleAddEmptyDecision()
   {
-    let initiativeClone: Initiative = JSON.parse(JSON.stringify(selectedInitiative));
-    let newId = UuidV4();
-    let newDecision: DecisionData = {id: newId, description: "", resolution: "", participants: [], date: todayInfo};
-    initiativeClone.decisions.unshift(newDecision);
-
-    setSearchedKeyword("");
-    setSelectedInitiative(initiativeClone);
-    setIsNew(true);
-    EnterEditMode(newId,initiativeClone);
-  }
-
-  function EnterEditMode(id: string, currentInitiative: Initiative)
-  {
-    let currentDecision = currentInitiative.decisions.find(d => d.id === id);
-    if(currentDecision)
+    if(modalState === State.start)
     {
-      setDecisionToEdit(currentDecision);
-      setCurrentDescription(currentDecision.description);
-      setCurrentResolution(currentDecision.resolution);
-      setCurrentParticipants(currentDecision.participants.join(", "));
-      setCurrentDateString(MakeDateString(currentDecision.date));
+      let initiativeClone: Initiative = JSON.parse(JSON.stringify(selectedInitiative));
+      let newId = UuidV4();
+      let newDecision: DecisionData = {id: newId, description: "", resolution: "", participants: [], date: todayInfo};
+      initiativeClone.decisions.unshift(newDecision);
+
+      setSearchedKeyword("");
+      setSelectedInitiative(initiativeClone);
+      EnterEditMode(newId,initiativeClone,true);
     }
+    else
+      enqueueSnackbar("Save current changes before adding a new decision.", {variant: "error"});
   }
 
-  function LeaveEditMode()
+  function HandleCancelEdit()
   {
-    setDecisionToEdit(undefined);
-    setIsNew(false);
-  }
-
-  function CancelEdit()
-  {
-    if(isNew && decisionToEdit)
+    if(modalState === State.add && decisionToEdit)
     {
       let initiativeClone: Initiative = JSON.parse(JSON.stringify(selectedInitiative));
       initiativeClone.decisions = initiativeClone.decisions.filter(d => d.id !== decisionToEdit.id);
@@ -102,7 +95,7 @@ export default function DecisionDataModal(props: DecisionDataProps) {
     LeaveEditMode();
   }
 
-  function EditDecision(decisionId: string, newDescription: string, newResolution: string, newParticipants: string[], newDate?: DateInfo)
+  function HandleEditDecision(decisionId: string, newDescription: string, newResolution: string, newParticipants: string[], newDate?: DateInfo)
   {
     let selectedInitiativeClone: Initiative = JSON.parse(JSON.stringify(selectedInitiative));
     let newDecision = selectedInitiativeClone.decisions.find(d => d.id === decisionId);
@@ -119,6 +112,27 @@ export default function DecisionDataModal(props: DecisionDataProps) {
       if(successfulSubmit)
         setSelectedInitiative(selectedInitiativeClone);
     }
+  }
+
+  function EnterEditMode(decisionId: string, currentInitiative: Initiative, newDecision: boolean)
+  {
+    let currentDecision = currentInitiative.decisions.find(d => d.id === decisionId);
+    if(currentDecision)
+    {
+      setModalState(newDecision ? State.add : State.edit);
+      setDecisionToEdit(currentDecision);
+      
+      setCurrentDescription(currentDecision.description);
+      setCurrentResolution(currentDecision.resolution);
+      setCurrentParticipants(currentDecision.participants.join(", "));
+      setCurrentDateString(MakeDateString(currentDecision.date));
+    }
+  }
+
+  function LeaveEditMode()
+  {
+    setDecisionToEdit(undefined);
+    setModalState(State.start);
   }
 
   function SubmitDecisionData(decisions: DecisionData[]): boolean
@@ -140,10 +154,16 @@ export default function DecisionDataModal(props: DecisionDataProps) {
     return false;
   }
 
-  function AttemptDelete(decisionId: string)
+  function HandleAttemptDelete(decisionId: string)
   {
-    setIsDeleteOpen(true);
-    setDecisionToDelete(selectedInitiative.decisions.find(d => d.id === decisionId));
+    if(modalState === State.start)
+    {
+      setIsDeleteOpen(true);
+      setDecisionToEdit(selectedInitiative.decisions.find(d => d.id === decisionId));
+      setModalState(State.delete);
+    }
+    else
+      enqueueSnackbar("Cannot delete with unsaved changes.", {variant: "error"});
   }
 
   function DeleteDecision(decisionId: string)
@@ -157,8 +177,14 @@ export default function DecisionDataModal(props: DecisionDataProps) {
 
     dispatch(deleteDecisionData({isTest: isTest, companyId: props.company.id, initiativeId: props.initiative.id, decisionIds: [decisionId]}));
     setSelectedInitiative(selectedInitiativeClone);
-    setDecisionToDelete(undefined);
     setIsDeleteOpen(false);
+    LeaveEditMode();
+  }
+
+  function CancelDelete()
+  {
+    setIsDeleteOpen(false);
+    LeaveEditMode();
   }
 
   return (
@@ -180,7 +206,7 @@ export default function DecisionDataModal(props: DecisionDataProps) {
                 <div className="flex justify-end">
                   <button id={DecisionModalIds.closeModalButton} className="rounded-md transition ease-in-out hover:bg-[#29c2b0] w-fit" onClick={() => props.setDecisionModalIsOpen(false)}><CloseIcon sx={{fontSize: 40}}/></button>
                 </div>
-                <button disabled={InEditMode()} id={DecisionModalIds.addButton} className={yellowButtonStyle} onClick={() => AddEmptyDecision()}>Add Decision</button>
+                <button id={DecisionModalIds.addButton} className={yellowButtonStyle} onClick={() => HandleAddEmptyDecision()}>Add Decision</button>
               </div>
             </div>
           </div>
@@ -193,7 +219,7 @@ export default function DecisionDataModal(props: DecisionDataProps) {
             <Grid container spacing={6}>
               {
               selectedInitiative.decisions.filter(d => d.description.toUpperCase().includes(searchedKeyword.toUpperCase()) || d.resolution.toUpperCase().includes(searchedKeyword.toUpperCase())).map((displayItem, key) => {
-                let isEdit = (displayItem.id === (decisionToEdit?.id ?? -1));
+                let isEdit = InEditMode() && displayItem.id === (decisionToEdit?.id ?? -1);
                 
                 return(
                   <Grid item md={4} key={key}>
@@ -223,15 +249,15 @@ export default function DecisionDataModal(props: DecisionDataProps) {
                         <StyledCardActions>
                           {isEdit &&
                             <div className="flex w-full justify-between">
-                              <Button id={DecisionModalIds.saveChangesButton} className={submitButtonStyle} onClick={() => EditDecision(displayItem.id, currentDescription, currentResolution, currentParticipants.split(",").map(s => s.trim()), currentDateString ? MakeDateInfo(currentDateString) : displayItem.date)}>Save</Button>
-                              <Button id={DecisionModalIds.cancelChangesButton} className={cancelButtonStyle} onClick={() => CancelEdit()}>Cancel</Button>
+                              <Button id={DecisionModalIds.saveChangesButton} className={submitButtonStyle} onClick={() => HandleEditDecision(displayItem.id, currentDescription, currentResolution, currentParticipants.split(",").map(s => s.trim()), currentDateString ? MakeDateInfo(currentDateString) : displayItem.date)}>Save</Button>
+                              <Button id={DecisionModalIds.cancelChangesButton} className={cancelButtonStyle} onClick={() => HandleCancelEdit()}>Cancel</Button>
                             </div>
                           }
                           {
-                            !isEdit && !InEditMode() &&
+                            !isEdit &&
                             <div className="flex w-full justify-between">
-                              <button id={DecisionModalIds.editButton} className={submitButtonStyle} onClick={() => EnterEditMode(displayItem.id, selectedInitiative)}>Edit</button>
-                              <button id={DecisionModalIds.deleteButton} className={cancelButtonStyle} onClick={() => AttemptDelete(displayItem.id)}>Delete</button>
+                              <button id={DecisionModalIds.editButton} className={submitButtonStyle} onClick={() => EnterEditMode(displayItem.id, selectedInitiative, false)}>Edit</button>
+                              <button id={DecisionModalIds.deleteButton} className={cancelButtonStyle} onClick={() => HandleAttemptDelete(displayItem.id)}>Delete</button>
                             </div>
                           }
                         </StyledCardActions>
@@ -246,7 +272,7 @@ export default function DecisionDataModal(props: DecisionDataProps) {
             selectedInitiative.decisions.length === 0 && <div className="m-2 p-2">No decisions to display.</div>
           }
         </Dialog>
-        <DeleteDecisionAlert isOpen={isDeleteOpen} setIsOpen={setIsDeleteOpen} DeleteDecision={DeleteDecision} decision={decisionToDelete}/>
+        <DeleteDecisionAlert isOpen={isDeleteOpen} setIsOpen={setIsDeleteOpen} DeleteDecision={DeleteDecision} CancelDelete={CancelDelete} decision={decisionToEdit}/>
       </>
   );
 }
