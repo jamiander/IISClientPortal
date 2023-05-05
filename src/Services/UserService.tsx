@@ -61,6 +61,7 @@ interface AuthenticateUserResponse {
   companyId: string,
   initiativeIds: string[],
   userId: string,
+  isAdmin: boolean,
   status: string
 }
 

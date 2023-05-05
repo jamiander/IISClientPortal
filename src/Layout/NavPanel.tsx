@@ -46,7 +46,7 @@ export default function NavPanel(props: NavProps){
         Dashboard
       </button>
       {
-        currentUser?.email === "admin@integrityinspired.com" &&
+        currentUser?.isAdmin === true &&
         <button id={NavPanelIds.company} className={GetNavStyle("/Company")}
           onClick={() => NavHandler('/Company')}>
           Client and User Management

@@ -9,6 +9,7 @@ export interface User {
   password: string
   companyId: string
   initiativeIds: string[]
+  isAdmin: boolean
   name?: string
   phoneNumber?: string
 }
@@ -79,7 +80,8 @@ export const authenticateUser = createAsyncThunk(
       email: args.creds.username,
       password: args.creds.password,
       initiativeIds: response.initiativeIds,
-      companyId: response.companyId
+      companyId: response.companyId,
+      isAdmin: response.isAdmin
     }
     dispatch(getCompanyByInitiativeIds({initiativeIds: response.initiativeIds}));
     dispatch(addUsersToStore([user]));
