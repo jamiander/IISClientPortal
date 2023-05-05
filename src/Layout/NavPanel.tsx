@@ -2,17 +2,14 @@ import { useLocation, useNavigate } from "react-router-dom"
 import { useAppSelector } from "../Store/Hooks"
 import { selectCurrentUser, selectIsLoggedIn } from "../Store/UserSlice"
 import { selectCurrentUserId } from "../Store/UserSlice"
+import { enqueueSnackbar } from "notistack"
 
 export const NavPanelIds = {
   dashboard: "navPanelDashboard",
   company: "navPanelCompany"
 }
 
-interface NavProps {
-  ShowToast: (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void
-}
-
-export default function NavPanel(props: NavProps){
+export default function NavPanel(){
   const navigate = useNavigate();
   const isLoggedIn = useAppSelector(selectIsLoggedIn);
   const currentUserId = useAppSelector(selectCurrentUserId);
@@ -23,7 +20,7 @@ export default function NavPanel(props: NavProps){
   function NavHandler(path: string) {
     if (!isLoggedIn) {
       
-      props.ShowToast('You must login to leave this page', 'Error');
+      enqueueSnackbar('You must login to leave this page', {variant:'error'});
     }
     else navigate(path);
   }

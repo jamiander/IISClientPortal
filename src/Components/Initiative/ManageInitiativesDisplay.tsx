@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useOutletContext } from "react-router-dom";
 import { Company, Initiative, selectAllCompanies, upsertInitiativeInfo, upsertThroughputData } from "../../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
 import InitiativesTable from "./InitiativesTable"
@@ -10,6 +9,7 @@ import { ThroughputData } from "../../Services/CompanyService";
 import EditThroughputModal from "./EditThroughputModal";
 import { RadioSet } from "../RadioSet";
 import { yellowButtonStyle } from "../../Styles";
+import { enqueueSnackbar } from "notistack";
 
 export const InitiativeDisplayRadioIds = {
   all: "initDisplayShowAll",
@@ -26,7 +26,6 @@ export default function ManageInitiativesDisplay() {
   const [EditModalIsOpen, setEditModalIsOpen] = useState(false);
 
   const dispatch = useAppDispatch();
-  const ShowToast : (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void = useOutletContext();
   const [radioValue, setRadioValue] = useState('active');
 
   function SubmitUpdateInitiative(initiative: Initiative, companyId: string)
@@ -40,10 +39,10 @@ export default function ManageInitiativesDisplay() {
     {
       dispatch(upsertInitiativeInfo({initiative: initiative, companyId: companyId.toString(), isTest: isTest}));
       setAddInitiativeIsOpen(false);
-      ShowToast("Update initiative successful", 'Success');
+      enqueueSnackbar("Update initiative successful", {variant: 'success'});
     }
     else
-      ShowToast(ValidationFailedPrefix + validation.message,'Error');
+      enqueueSnackbar(ValidationFailedPrefix + validation.message,{variant:'error'});
   }
 
   function SubmitUpdateThroughput(companyId: string, initiativeId: string, dataList: ThroughputData[], emptyDataCheck: boolean = true)
@@ -58,10 +57,10 @@ export default function ManageInitiativesDisplay() {
       dispatch(upsertThroughputData({companyId: companyId, initiativeId: initiativeId, itemsCompletedOnDate: dataList, isTest: isTest}));
       setUploadModalIsOpen(false);
       setEditModalIsOpen(false);
-      ShowToast(validation.message, 'Success');
+      enqueueSnackbar(validation.message, {variant:'success'});
     }
     else
-      ShowToast(ValidationFailedPrefix + validation.message, 'Error');
+      enqueueSnackbar(ValidationFailedPrefix + validation.message, {variant:'error'});
   }
 
   return (

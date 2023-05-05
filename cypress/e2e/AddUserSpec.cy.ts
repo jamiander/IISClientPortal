@@ -16,7 +16,7 @@ describe('add user spec', () => {
   const navIds = consts.navPanelIds;
   const modalIds = consts.editUserModalIds;
   const failMessage = consts.validationFailedMessage;
-  const badToastId = "#notistack-snackbar";
+  const badToastId = consts.snackbarId;
   const admin = AdminUser;
 
   beforeEach(() => {

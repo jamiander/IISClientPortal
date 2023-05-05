@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { useOutletContext } from "react-router-dom";
 import { ValidationFailedPrefix } from "../../Services/Validation";
 import { Company, Initiative, selectAllCompanies, upsertInitiativeInfo } from "../../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
 import { UpdateInitiativeListModal } from "./UpdateInitiativeListModal";
 import { genericButtonStyle } from "../../Styles";
+import { enqueueSnackbar } from "notistack";
 
 interface EditInitiativeButtonProps {
     company: Company
@@ -21,7 +21,6 @@ export function EditInitiativeButton(props: EditInitiativeButtonProps){
 
   const dispatch = useAppDispatch();
   const companyList = useAppSelector(selectAllCompanies);
-  const ShowToast : (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void = useOutletContext();
 
   function SubmitUpdateInitiative(initiative: Initiative, companyId: string)
   {
@@ -36,7 +35,7 @@ export function EditInitiativeButton(props: EditInitiativeButtonProps){
       setEditInitiativeIsOpen(false);
     }
     else
-      ShowToast(ValidationFailedPrefix + validation.message,'Error');
+      enqueueSnackbar(ValidationFailedPrefix + validation.message,{variant:'error'});
   }
     
   function handleEditInitiative(company: Company, initiative: Initiative) {

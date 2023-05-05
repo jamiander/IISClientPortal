@@ -39,7 +39,7 @@ function App() {
         {
           isLoggedIn() && 
           <div className='bg-[#E4E1E5] ml-1 col-span-1'>
-            <NavPanel ShowToast={ShowToast}/>
+            <NavPanel/>
           </div>
         }
         <div className={'bg-[#E4E1E5] min-h-[83.25vh] ' + span}>

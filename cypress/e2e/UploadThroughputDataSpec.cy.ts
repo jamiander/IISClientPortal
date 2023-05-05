@@ -13,7 +13,7 @@ function findItemsCompleted(file: string) : number {
 const consts = TestConstants;
 const modalIds = consts.uploadThroughputIds;
 const tableIds = consts.initiativeTableIds;
-const badToastId = consts.toastIds.main;
+const badToastId = consts.snackbarId;//consts.toastIds.main;
 const radioIds = consts.initiativeDisplayRadioIds;
 
 const initiativeTitle = 'IIS Initiative';
@@ -61,7 +61,7 @@ describe('valid upload throughput tests', () => {
     cy.get(modalIds.fileSubmit).click();
     cy.wait(waitTime);
     cy.get(radioIds.all).click();
-    cy.get(tableIds.initiativeTitleFilter).type(initiativeTitle);
+    cy.get(tableIds.initiativeTitleFilter).clear().type(initiativeTitle);
     cy.contains('tr', initiativeTitle).find(tableIds.remainingItems).then(($span) => {
       let remainingItemsAfter = Number($span.text());
       expect(remainingItemsBefore-itemsCompletedInUpload).to.be.equal(remainingItemsAfter);

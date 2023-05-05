@@ -121,7 +121,7 @@ export function CompanyPage()
         {
           displayCompanies.map((company,index) => {
             const usersAtCompany = allUsers.filter(user => user.companyId === company.id);
-            const isEdit = (pageState === State.edit || pageState === State.add) && company.id !== companyToEdit?.id;
+            const isEdit = (pageState === State.edit || pageState === State.add) && company.id === companyToEdit?.id;
             return (
               <Fragment key={index}>
                 {!isEdit ?

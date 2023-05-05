@@ -3,10 +3,10 @@ import  Modal  from 'react-modal';
 import { cancelButtonStyle, modalStyle, submitButtonStyle } from "../../Styles";
 import { useEffect, useRef, useState } from "react";
 import { DateInfo, ThroughputData } from "../../Services/CompanyService";
-import { useOutletContext } from "react-router-dom";
 import { ValidationFailedPrefix } from "../../Services/Validation";
 import SelectCompanyAndInitiative from "./SelectCompanyAndInitiative";
 import { v4 as uuidV4} from "uuid";
+import { enqueueSnackbar } from "notistack";
 
 export const UploadThroughputIds = {
   modal: "uploadThroughputModal",
@@ -29,7 +29,6 @@ export default function UploadThroughputModal(props:ThroughputModalProps){
   const [selectedInitiativeIndex, setSelectedInitiativeIndex] = useState(-1);
   const [fileData, setFileData] = useState<ThroughputData[]>([]);
   const [fileWarning, setFileWarning] = useState("");
-  const ShowToast : (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void = useOutletContext();
   const fileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -49,7 +48,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){
       {
         setFileData([]);
         setFileWarning("");
-        ShowToast(ValidationFailedPrefix + "File can only be of type .csv", "Error");
+        enqueueSnackbar(ValidationFailedPrefix + "File can only be of type .csv", {variant:"error"});
         return;
       }
     }
@@ -103,7 +102,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){
         setFileData(parseData);
       }
       else
-        ShowToast("Something went wrong when trying to load that file.","Error");
+        enqueueSnackbar("Something went wrong when trying to load that file.",{variant:"error"});
     }
     reader.readAsText(file);
   }

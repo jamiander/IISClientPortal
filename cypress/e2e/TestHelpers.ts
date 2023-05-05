@@ -29,6 +29,7 @@ export function AddHash(obj: Record<string,any> | string)
 export const TestConstants = {
   validationFailedMessage: ValidationFailedPrefix,
   toastIds: AddHash(ToastIds),
+  snackbarId: "#notistack-snackbar",
   initiativeModalIds: AddHash(InitiativeModalIds),
   initiativeDisplayRadioIds: AddHash(InitiativeDisplayRadioIds),
   uploadThroughputIds: AddHash(UploadThroughputIds),

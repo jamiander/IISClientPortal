@@ -20,7 +20,7 @@ describe('update company spec', () => {
 
   const consts = TestConstants;
   const failMessage = consts.validationFailedMessage
-  const badToastId = "#notistack-snackbar"//consts.toastIds.main;
+  const badToastId = consts.snackbarId;//consts.toastIds.main;
   const navIds = consts.navPanelIds;
   const pageIds = consts.companyPageIds;
   const admin = AdminUser;

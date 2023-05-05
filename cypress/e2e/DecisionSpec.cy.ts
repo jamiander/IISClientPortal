@@ -5,7 +5,7 @@ const modalIds = consts.decisionModalIds;
 const alertIds = consts.deleteDecisionAlertIds;
 const radioIds = consts.initiativeDisplayRadioIds;
 const tableIds = consts.initiativeTableIds;
-const badToastId = "#notistack-snackbar";
+const badToastId = consts.snackbarId;
 const waitTime = 500;
 const user = IntegrityUser;
 

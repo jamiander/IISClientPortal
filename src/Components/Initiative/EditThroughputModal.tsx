@@ -5,7 +5,6 @@ import { cancelButtonStyle, defaultRowStyle, inputStyle, modalStyle, submitButto
 import SelectCompanyAndInitiative from "./SelectCompanyAndInitiative";
 import { CompareDateInfos, DateInput, EqualDateInfos } from "../DateInput";
 import { ValidateDate, ValidateEditThroughputData, ValidationFailedPrefix } from "../../Services/Validation";
-import { useOutletContext } from "react-router-dom";
 import Modal from "react-modal";
 import Table from '@mui/material/Table';
 import TableContainer from '@mui/material/TableContainer';
@@ -14,6 +13,7 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { Paper } from "@mui/material";
+import { enqueueSnackbar } from "notistack";
 
 export const EditThroughputIds = {
   modal: "editThroughputModal",
@@ -44,7 +44,6 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
   const [entryDate, setEntryDate] = useState<DateInfo>(todayInfo);
   const [itemsCompleted, setItemsCompleted] = useState(-1);
   const manualEntry: ThroughputData = { date:entryDate, itemsCompleted:itemsCompleted }
-  const ShowToast : (message: string, type: 'Success' | 'Error' | 'Warning' | 'Info') => void = useOutletContext();
 
   useEffect(() => {
     setSelectedCompany(undefined);
@@ -108,11 +107,11 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
     let validate = ValidateEditThroughputData(props.companyList, selectedCompany?.id ?? "-1", initiative?.id ?? "-1", [manualEntry]);
     if(validate.success)
     {
-      ShowToast("New data added!", "Success");
+      enqueueSnackbar("New data added!", {variant:"success"});
       UpsertThroughput(manualEntry);
     }
     else
-      ShowToast(ValidationFailedPrefix + validate.message, "Error");
+      enqueueSnackbar(ValidationFailedPrefix + validate.message, {variant:"error"});
   }
   
   function UpsertThroughput(newData: ThroughputData)
