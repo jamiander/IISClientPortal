@@ -92,6 +92,10 @@ describe('update company spec', () => {
     cy.get(pageIds.cancelClientButton).click();
     cy.contains(existingCompany.name);
   })
+
+  specify('cannot edit multiple users at once', () => {
+    cy.get('button').contains('Edit').should('not.exist');
+  })
 })
 
 export {}
