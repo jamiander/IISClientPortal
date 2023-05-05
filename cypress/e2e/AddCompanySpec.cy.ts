@@ -40,8 +40,8 @@ describe('add company spec', () => {
     //cy.get(modalIds.company).clear().type(company.name);
     //cy.get(modalIds.email).clear().type(company.email);
     //cy.get(modalIds.password).clear().type(company.password);
-    cy.get(pageIds.newClientName).type(company.name);
-    cy.get(pageIds.saveNewClientButton).click();
+    cy.get(pageIds.clientNameInput).type(company.name);
+    cy.get(pageIds.saveClientButton).click();
 
     cy.contains('Test Company');
   })
@@ -50,9 +50,9 @@ describe('add company spec', () => {
     //cy.get(modalIds.company).clear().type(existingCompany.name);
     //cy.get(modalIds.email).clear().type(company.email);
     //cy.get(modalIds.password).clear().type(company.password);
-    cy.get(pageIds.newClientName).clear().type(existingCompany.name);
+    cy.get(pageIds.clientNameInput).clear().type(existingCompany.name);
 
-    cy.get(pageIds.saveNewClientButton).click();
+    cy.get(pageIds.saveClientButton).click();
     cy.get(badToastId).contains(failMessage);
   })
 
@@ -69,15 +69,15 @@ describe('add company spec', () => {
     //cy.get(modalIds.company).clear();
     //cy.get(modalIds.email).clear();
     //cy.get(modalIds.password).clear();
-    cy.get(pageIds.newClientName).clear();
+    cy.get(pageIds.clientNameInput).clear();
 
-    cy.get(pageIds.saveNewClientButton).click();
+    cy.get(pageIds.saveClientButton).click();
     cy.get(badToastId).contains(failMessage);
   })
 
-  specify('cancel button cancels the changes', () => {
-    cy.get(pageIds.cancelNewClientButton).click();
-    cy.get(pageIds.newClientName).should('not.exist');
+  specify('cancel button does not leave a blank company', () => {
+    cy.get(pageIds.cancelClientButton).click();
+    cy.get(pageIds.clientNameInput).should('not.exist');
   })
 
   specify('cannot add two companies at once', () => {
