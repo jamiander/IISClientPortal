@@ -8,8 +8,8 @@ export default function LoginPage(){
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const currentUserId = useAppSelector(selectCurrentUserId);
-  const [userEmail, setUserEmail] = useState('info@integrityinspired.com');
-  const [password, setPassword] = useState('password');
+  const [userEmail, setUserEmail] = useState('admin@integrityinspired.com');
+  const [password, setPassword] = useState('admin');
   const [passwordShown,setPasswordShown] = useState(false);
   const selectStyle = "outline outline-1 h-10 w-60 p-2 mb-4 hover:outline-2 focus:outline-2";
   const logInAttempts = useAppSelector(selectLogInAttempts);

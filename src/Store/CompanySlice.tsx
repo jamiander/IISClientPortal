@@ -92,7 +92,7 @@ export const upsertCompanyInfo = createAsyncThunk(
     if (response.status.toUpperCase().includes('FAILED'))
       throw Error;
     let newCompany: Company = JSON.parse(JSON.stringify(args.company));
-    newCompany.id = response.id;
+    //newCompany.id = response.id;
   
     return newCompany;
   }
@@ -180,8 +180,9 @@ export const companySlice = createSlice({
           const newCompany = action.payload;
           const companyIndex = state.companies.findIndex(company => company.id === newCompany.id);
           if(companyIndex > -1)
-            state.companies.splice(companyIndex, 1);
-          state.companies.push(newCompany);
+            state.companies.splice(companyIndex, 1, newCompany);
+          else
+            state.companies.push(newCompany);
         })
         .addCase(upsertInitiativeInfo.fulfilled, (state, action) => {
             const newInitiative = action.payload.initiative;

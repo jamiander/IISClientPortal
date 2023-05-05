@@ -26,7 +26,7 @@ export function EditUserDataButton(props: EditUserDataProps){
           >
               Edit
           </button>
-          <EditUserDataModal title='Edit User Data' users= {props.users} isOpen={EditUserDataIsOpen} setEditUserDataModalIsOpen={setEditUserDataIsOpen} company={selectedCompany}/>
+          <EditUserDataModal title='Edit User Data' users={props.users} isOpen={EditUserDataIsOpen} setEditUserDataModalIsOpen={setEditUserDataIsOpen} company={selectedCompany}/>
         </div>
       );
 }
