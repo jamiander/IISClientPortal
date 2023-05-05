@@ -28,7 +28,7 @@ export function CompanyPage()
 
   useEffect(() =>
   {
-    if(allUsers.find(user => user.id === currentUserId)?.email === "admin@integrityinspired.com")
+    if(allUsers.find(user => user.id === currentUserId)?.isAdmin)
       dispatch(getUserById({}));
   }, [currentUserId]);
 

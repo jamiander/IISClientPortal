@@ -85,7 +85,7 @@ export default function EditUserDataModal(props: EditUserDataProps){
     function AddEmptyUser() {
         let usersClone: User[] = JSON.parse(JSON.stringify(usersList));
         let myUuid = UuidV4();
-        let newUser: User = {id: myUuid, email: "", password: "", companyId: props.company.id, initiativeIds: []}
+        let newUser: User = {id: myUuid, email: "", password: "", companyId: props.company.id, initiativeIds: [], isAdmin: false}
         usersClone.unshift(newUser);
         setUsersList(usersClone);
         setIsNew(true);
@@ -145,10 +145,10 @@ export default function EditUserDataModal(props: EditUserDataProps){
                         <StyledCardContent>
                           {isEdit ?
                           <>
-                            <label className={labelStyle} htmlFor={EditUserDataIds.email}>User Email</label>
-                            <StyledTextField id={EditUserDataIds.email} value={currentEmail} onChange={e => setCurrentEmail(e.target.value)}/>
-                            <label className={labelStyle} htmlFor={EditUserDataIds.password}>User Password</label>
-                            <StyledTextField id={EditUserDataIds.password} value={currentPassword} onChange={e => setCurrentPassword(e.target.value)}/>
+                            <label className={labelStyle} htmlFor={EditUserDataIds.email}></label>
+                            <StyledTextField id={EditUserDataIds.email} label="Email" value={currentEmail} onChange={e => setCurrentEmail(e.target.value)}/>
+                            <label className={labelStyle} htmlFor={EditUserDataIds.password}></label>
+                            <StyledTextField id={EditUserDataIds.password} label="Password" value={currentPassword} onChange={e => setCurrentPassword(e.target.value)}/>
                             <FormGroup>
                             {
                               props.company.initiatives.map((initiative,index) => {
@@ -161,11 +161,19 @@ export default function EditUserDataModal(props: EditUserDataProps){
                           </>
                           : 
                           <>
-                            <label className={labelStyle} htmlFor={EditUserDataIds.email}>User Email</label>
-                            <StyledTextField id={EditUserDataIds.email} disabled value={displayItem.email}/>
-                            <label className={labelStyle} htmlFor={EditUserDataIds.password}>User Password</label>
-                            <StyledTextField id={EditUserDataIds.password} disabled value={displayItem.password}/>
-                            <StyledTextField id={EditUserDataIds.initiativeIds} label="Initiatives" disabled value={displayItem.initiativeIds.map((id) => { return props.company.initiatives.find(init => init.id === id)?.title ?? "N/A"}).join(", ")}/>
+                            <label className={labelStyle} htmlFor={EditUserDataIds.email}></label>
+                            <StyledTextField id={EditUserDataIds.email} label="Email" disabled value={displayItem.email}/>
+                            <label className={labelStyle} htmlFor={EditUserDataIds.password}></label>
+                            <StyledTextField id={EditUserDataIds.password} label="Password" disabled value={displayItem.password}/>
+                            <FormGroup>
+                            {
+                              props.company.initiatives.map((initiative,index) => {
+                                return (
+                                  <FormControlLabel key={index} control={<Checkbox disabled checked={currentInitiatives.find(id => initiative.id === id) !== undefined} />} label={initiative.title} />
+                                )
+                              })
+                            }
+                            </FormGroup> 
                           </>
                           }
                         </StyledCardContent>
