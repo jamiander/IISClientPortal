@@ -60,7 +60,7 @@ export function ValidateCompany(newCompany: Company, companyList: Company[]): Va
 {
   if(newCompany && newCompany.name)
   {
-    let matchingCompany = companyList.find(company => company.name.toUpperCase() === company.name.toUpperCase() && newCompany.id !== company.id);
+    let matchingCompany = companyList.find(company => company.name.toUpperCase() === newCompany.name.toUpperCase() && newCompany.id !== company.id);
     if(matchingCompany)
       return {success: false, message: "Cannot use the name of an existing company."};
 
