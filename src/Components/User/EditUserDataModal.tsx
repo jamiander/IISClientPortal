@@ -63,7 +63,16 @@ export default function EditUserDataModal(props: EditUserDataProps){
         setIsNew(false);
     }
 
-    function CancelEdit() {LeaveEditMode()};
+    function CancelEdit() {
+      if(isNew && userToEdit)
+      {
+        let usersClone: User[] = JSON.parse(JSON.stringify(usersList));
+        usersClone = usersClone.filter(user => user.id !== userToEdit.id);
+
+        setUsersList(usersClone);
+      }
+      LeaveEditMode()
+    };
 
     function EditUser(id: string, newEmail: string, newPassword: string, newInitiatives: string[]) {
         let usersClone: User[] = JSON.parse(JSON.stringify(usersList));

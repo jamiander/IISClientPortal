@@ -3,7 +3,7 @@ import { AdminUser, TestConstants } from "./TestHelpers";
 describe('add user spec', () => {
 
   const company = {
-    id: "53beceb7-054b-4740-830f-98a1dc0cc991"
+    id: "82bf634e-77c8-4abe-b55c-e2b5e8020892"//Id of a client WITH NO USERS
   }
 
   const user = {
@@ -38,6 +38,7 @@ describe('add user spec', () => {
     cy.get(modalIds.saveChangesButton).click();
     cy.contains(user.email);
     cy.get(modalIds.saveChangesButton).should('not.exist');
+    cy.get(modalIds.editButton).should('exist');
   })
 
   specify('cannot add a user with invalid input', () => {
@@ -51,7 +52,7 @@ describe('add user spec', () => {
 
   specify('cancel does not leave behind a blank user', () => {
     cy.get(modalIds.cancelChangesButton).click();
-    
+    cy.get(modalIds.editButton).should('not.exist');
   })
 
   specify('close button closes the modal', () => {
