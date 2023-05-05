@@ -31,8 +31,8 @@ describe('update company spec', () => {
     //cy.get('button').contains('Admin').click();
     //cy.get('button').contains('Clients').click();
     cy.get(navIds.company).click();
-    cy.get('#companyPageCard'+existingCompany.id).contains(existingCompany.name).then(() => {
-      cy.get('button').contains('Edit').click();
+    cy.get('#companyPageCard'+existingCompany.id).within(() => {
+      cy.get(pageIds.editClientNameButton).click();
     })
     
   });
@@ -41,34 +41,33 @@ describe('update company spec', () => {
     /*cy.get(modalIds.company).clear().type(company.name);
     cy.get(modalIds.email).clear().type(company.email);
     cy.get(modalIds.password).clear().type(company.password);*/
+    cy.get(pageIds.clientNameInput).clear().type(company.name);
     cy.get(pageIds.saveClientButton).click();
 
-    cy.get('grid').contains(company.name);
+    cy.contains(company.name);
     //cy.get(badToastId).contains('User Update Dispatched');
   })
 
   specify('cannot update with invalid input', () => {
-    //cy.get(modalIds.company).clear();
+    cy.get(pageIds.clientNameInput).clear();
 
     cy.get(pageIds.saveClientButton).click();
     cy.get(badToastId).contains(failMessage);
     //cy.get(modalIds.company).type(company.name);
 
-    //cy.get(modalIds.email).clear();
+    /*cy.get(modalIds.email).clear();
     cy.get(pageIds.saveClientButton).click();
     cy.get(badToastId).contains(failMessage);
     //cy.get(modalIds.email).type(company.email);
 
     //cy.get(modalIds.password).clear();
     cy.get(pageIds.saveClientButton).click();
-    cy.get(badToastId).contains(failMessage);
+    cy.get(badToastId).contains(failMessage);*/
   })
 
   specify('cannot rename a company the name of another company', () => {
-    //cy.get(modalIds.company).clear().type(existingCompany.name);
-
+    cy.get(pageIds.clientNameInput).clear().type(existingCompany.name);
     cy.get(pageIds.saveClientButton).click();
-
     cy.get(badToastId).contains(failMessage);
   })
 
@@ -86,7 +85,8 @@ describe('update company spec', () => {
   })*/
 
   specify('cancel button cancels the changes', () => {
-    
+    cy.get(pageIds.cancelClientButton).click();
+    cy.contains(existingCompany.name);
   })
 })
 

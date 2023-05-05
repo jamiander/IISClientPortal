@@ -48,8 +48,8 @@ export const upsertUserInfo = createAsyncThunk(
     if (response.status.toUpperCase().includes('FAILED'))
       throw Error;
 
-    let newUsers: User = JSON.parse(JSON.stringify(args.users));
-    dispatch(addUsersToStore([newUsers]));
+    let newUsers: User[] = JSON.parse(JSON.stringify(args.users));
+    dispatch(addUsersToStore(newUsers));
     return args.users;
   }
 )
