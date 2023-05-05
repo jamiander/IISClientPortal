@@ -42,16 +42,15 @@ export const getUserById = createAsyncThunk(
 
 export const upsertUserInfo = createAsyncThunk(
   'users/upsertUser',
-  async (args: UpsertUserInfoRequest, {dispatch}): Promise<User> => {
+  async (args: UpsertUserInfoRequest, {dispatch}): Promise<User[]> => {
     const response = await UpsertUserInfo(args);
 
     if (response.status.toUpperCase().includes('FAILED'))
       throw Error;
 
-    let newUser: User = JSON.parse(JSON.stringify(args.user));
-    newUser.id = response.userId;
-    dispatch(addUsersToStore([newUser]));
-    return newUser;
+    let newUsers: User = JSON.parse(JSON.stringify(args.users));
+    dispatch(addUsersToStore([newUsers]));
+    return args.users;
   }
 )
 

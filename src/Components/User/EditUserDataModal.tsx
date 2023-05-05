@@ -70,15 +70,14 @@ export default function EditUserDataModal(props: EditUserDataProps){
             newUser.email = newEmail;
             newUser.password = newPassword;
             newUser.initiativeIds = newInitiatives;
-
-            let successfulSubmit = SubmitUserData(newUser);
+            let successfulSubmit = SubmitUserData(usersClone);
             if(successfulSubmit) setUsersList(usersClone);
         }
     }
 
-    function SubmitUserData(user: User): boolean {
+    function SubmitUserData(users: User[]): boolean {
         let isTest = false;
-        dispatch(upsertUserInfo({isTest: isTest, user: user}))
+        dispatch(upsertUserInfo({isTest: isTest, users: users}))
         LeaveEditMode();
         return true;
     }
