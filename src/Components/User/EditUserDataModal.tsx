@@ -174,7 +174,8 @@ export default function EditUserDataModal(props: EditUserDataProps){
                             {
                               props.company.initiatives.map((initiative,index) => {
                                 return (
-                                  <FormControlLabel key={index} control={<Checkbox checked={currentInitiatives.find(id => initiative.id === id) !== undefined} onChange={(e) => UpdateCurrentInitiatives(e.target.checked,initiative.id)}/>} label={initiative.title} />
+                                  <FormControlLabel key={index} control={<Checkbox checked={currentInitiatives.find(id => initiative.id === id) !== undefined} onChange={(e) => 
+                                    UpdateCurrentInitiatives(e.target.checked,initiative.id)}/>} label={initiative.title} />
                                 )
                               })
                             }
@@ -188,13 +189,16 @@ export default function EditUserDataModal(props: EditUserDataProps){
                             <StyledTextField id={EditUserDataIds.password} label="Password" disabled value={displayItem.password}/>
                             <FormGroup>
                             {
-                              props.company.initiatives.map((initiative,index) => {
+                              props.company.initiatives.map((init, index) => {
+                                let checkedInitId = (displayItem.initiativeIds.find(id => id === init.id));
+                                let checkedInit = props.company.initiatives.find(x => x.id === checkedInitId);
+                                
                                 return (
-                                  <FormControlLabel key={index} control={<Checkbox disabled checked={currentInitiatives.find(id => initiative.id === id) !== undefined} />} label={initiative.title} />
+                                    <FormControlLabel key={index} control={<Checkbox checked={checkedInit !== undefined} />} label={init?.title} />
                                 )
-                              })
+                                })
                             }
-                            </FormGroup> 
+                            </FormGroup>  
                           </>
                           }
                         </StyledCardContent>
