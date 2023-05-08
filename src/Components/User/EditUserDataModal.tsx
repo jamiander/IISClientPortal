@@ -137,7 +137,7 @@ export default function EditUserDataModal(props: EditUserDataProps){
         id={EditUserDataIds.modal}
         open={props.isOpen}
         onClose={()=>props.setEditUserDataModalIsOpen(false)}
-        fullScreen
+        fullWidth
         maxWidth={false}
         >
             <div className="flex col-span-4 bg-[#2ed7c3] rounded-md py-6 px-5">
