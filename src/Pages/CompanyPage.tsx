@@ -1,10 +1,10 @@
 import { Fragment, useEffect, useState } from "react";
 import { Company, selectAllCompanies, upsertCompanyInfo } from "../Store/CompanySlice"
 import { useAppDispatch, useAppSelector } from "../Store/Hooks"
-import { Button, Card, CardActions, CardContent, CardHeader, Grid, Typography } from "@mui/material";
+import { Button, Card, CardActions, CardContent, CardHeader, Grid, List, ListItem, Typography } from "@mui/material";
 import { getUserById, selectAllUsers, selectCurrentUser, selectCurrentUserId } from "../Store/UserSlice";
 import { EditUserDataButton } from "../Components/User/EditUserDataButton";
-import { Item, StyledCard, StyledCardActions, StyledCardContent, StyledTextField, yellowButtonStyle } from "../Styles";
+import { Item, StyledCard, StyledCardActions, StyledCardContent, StyledTextField, UserItem, cancelButtonStyle, labelStyle, submitButtonStyle, yellowButtonStyle } from "../Styles";
 import { ValidateCompany, ValidationFailedPrefix } from "../Services/Validation";
 import { enqueueSnackbar } from "notistack";
 import { v4 } from "uuid";
@@ -15,7 +15,9 @@ export const CompanyPageIds = {
   clientNameInput: "CompanyPageClientNameInput",
   saveClientButton: "CompanyPageSaveButton",
   cancelClientButton: "CompanyPageCancelButton",
-  editClientNameButton: "CompanyPageEditNameButton"
+  editClientNameButton: "CompanyPageEditNameButton",
+  name: "CompanyPageUserName",
+  email: "CompanyPageUserEmail"
 }
 
 export function CompanyPage()
@@ -130,21 +132,23 @@ export function CompanyPage()
                     <StyledCard>
                       <StyledCardContent>
                         <div className="flex justify-center">
-                          <p className="text-2xl font-semibold">{company.name}</p>
-                          <button id={CompanyPageIds.editClientNameButton} onClick={() => HandleEditCompanyButton(company.id)}><EditIcon sx={{fontSize: 18}}/></button>
+                          <h2 className="text-2xl font-semibold mb-6">{company.name}</h2>
+                          <button className="mb-6" id={CompanyPageIds.editClientNameButton} onClick={() => HandleEditCompanyButton(company.id)}><EditIcon sx={{fontSize: '18px', marginLeft: '15px'}}/></button>
                         </div>
                         <Grid container justifyContent="space-evenly">
-                        {
-                          usersAtCompany.map((user,jndex) => {
-                            return(
-                              <Grid item md="auto" key={jndex}>
-                                <div className="p-2">
-                                  <p>{user.email}</p>
-                                </div>
-                              </Grid>
-                            )
-                          })
-                        }
+                          <Grid item md={6}>
+                            {
+                              usersAtCompany.map((user) => {
+                                return(
+                                  <UserItem className="mb-4 w-75%">
+                                    <div className="bg-white">
+                                      {user.name ?? "Unknown"}&nbsp; &nbsp;&nbsp; : &nbsp;&nbsp;&nbsp;{user.email} 
+                                    </div>
+                                  </UserItem>                           
+                                  )
+                              })
+                            }
+                          </Grid>
                         </Grid>
                       </StyledCardContent>
                       <StyledCardActions>
@@ -163,12 +167,12 @@ export function CompanyPage()
                       </StyledCardContent>
                       <StyledCardActions>
                         <div className="flex justify-between w-full">
-                          <Button id={CompanyPageIds.saveClientButton} onClick={() => HandleSaveCompanyButton()}>
+                          <button id={CompanyPageIds.saveClientButton} className={submitButtonStyle} onClick={() => HandleSaveCompanyButton()}>
                             Save
-                          </Button>
-                          <Button id={CompanyPageIds.cancelClientButton} onClick={() => HandleCancelEditCompanyButton()}>
+                          </button>
+                          <button id={CompanyPageIds.cancelClientButton} className={cancelButtonStyle} onClick={() => HandleCancelEditCompanyButton()}>
                             Cancel
-                          </Button>
+                          </button>
                         </div>
                       </StyledCardActions>
                     </StyledCard>

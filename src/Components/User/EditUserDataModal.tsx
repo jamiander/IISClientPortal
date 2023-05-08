@@ -22,7 +22,8 @@ export const EditUserDataIds = {
     editButton: "editUserEditButton",
     saveChangesButton: "editUserSaveChangesButton",
     cancelChangesButton: "editUserCancelChangesButton",
-    keywordFilter: "userDataKeywordFilter"
+/*     deleteButton: "editUserDeleteButton",
+ */    keywordFilter: "userDataKeywordFilter"
 }
 
 interface EditUserDataProps {
@@ -212,8 +213,8 @@ export default function EditUserDataModal(props: EditUserDataProps){
                         <StyledCardActions>
                           {isEdit &&
                             <div className="flex w-full justify-between">
-                              <Button id={EditUserDataIds.saveChangesButton} className={submitButtonStyle} onClick={() => EditUser(displayItem.id, currentEmail, currentPassword, currentInitiatives)}>Save</Button>
-                              <Button id={EditUserDataIds.cancelChangesButton} className={cancelButtonStyle} onClick={() => CancelEdit()}>Cancel</Button>
+                              <button id={EditUserDataIds.saveChangesButton} className={submitButtonStyle} onClick={() => EditUser(displayItem.id, currentEmail, currentPassword, currentInitiatives)}>Save</button>
+                              <button id={EditUserDataIds.cancelChangesButton} className={cancelButtonStyle} onClick={() => CancelEdit()}>Cancel</button>
                             </div>
                           }
                           {
@@ -221,7 +222,7 @@ export default function EditUserDataModal(props: EditUserDataProps){
                             <div className="flex w-full justify-between">
                               <button id={EditUserDataIds.editButton} className={submitButtonStyle} onClick={() => EnterEditMode(displayItem.id,usersList)}>Edit</button>
 {/*                               <button id={EditUserDataIds.deleteButton} className={cancelButtonStyle} onClick={() => AttemptDelete(displayItem.id)}>Delete</button>
- */}                            </div>
+ */}                             </div>
                           }
                         </StyledCardActions>
                       </StyledCard>

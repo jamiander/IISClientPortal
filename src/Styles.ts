@@ -40,6 +40,14 @@ export const TableHeaderStyle =
     elevation: 6,
   }));
 
+  export const UserItem = styled(Paper)(() => ({
+    backgroundColor: '#98d6a9',
+    padding: 2,
+    textAlign: 'center',
+    color: 'black',
+    elevation: 3,
+  }));
+
   export const StyledCard = styled(Card)(() => ({
   }))
 
@@ -56,7 +64,7 @@ export const TableHeaderStyle =
       WebkitTextFillColor: "#000",
       color: "#000"
     },
-    marginTop: 10,
+    marginTop: 20,
     marginLeft: 10,
     marginRight: 10
   }));

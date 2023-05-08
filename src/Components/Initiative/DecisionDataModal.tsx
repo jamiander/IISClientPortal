@@ -249,9 +249,9 @@ export default function DecisionDataModal(props: DecisionDataProps) {
                         <StyledCardActions>
                           {isEdit &&
                             <div className="flex w-full justify-between">
-                              <Button id={DecisionModalIds.saveChangesButton} className={submitButtonStyle} onClick={() => HandleEditDecision(displayItem.id, currentDescription, currentResolution, currentParticipants.split(",").map(s => s.trim()), 
-                              currentDateString ? MakeDateInfo(currentDateString) : displayItem.date)}>Save</Button>
-                              <Button id={DecisionModalIds.cancelChangesButton} className={cancelButtonStyle} onClick={() => HandleCancelEdit()}>Cancel</Button>
+                              <button id={DecisionModalIds.saveChangesButton} className={submitButtonStyle} onClick={() => HandleEditDecision(displayItem.id, currentDescription, currentResolution, currentParticipants.split(",").map(s => s.trim()), 
+                              currentDateString ? MakeDateInfo(currentDateString) : displayItem.date)}>Save</button>
+                              <button id={DecisionModalIds.cancelChangesButton} className={cancelButtonStyle} onClick={() => HandleCancelEdit()}>Cancel</button>
                             </div>
                           }
                           {
