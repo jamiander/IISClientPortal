@@ -21,7 +21,8 @@ export const EditUserDataIds = {
     addButton: "editUserAddButton",
     editButton: "editUserEditButton",
     saveChangesButton: "editUserSaveChangesButton",
-    cancelChangesButton: "editUserCancelChangesButton"
+    cancelChangesButton: "editUserCancelChangesButton",
+    keywordFilter: "userDataKeywordFilter"
 }
 
 interface EditUserDataProps {
@@ -41,6 +42,7 @@ export default function EditUserDataModal(props: EditUserDataProps){
     const [currentPassword, setCurrentPassword] = useState("");
     const [currentInitiatives, setCurrentInitiatives] = useState<string[]>([]);
     const InEditMode = () => userToEdit !== undefined;
+    const [searchedKeyword, setSearchedKeyword] = useState("");
 
     useEffect(() => {
         setUsersList(props.users)
@@ -109,6 +111,7 @@ export default function EditUserDataModal(props: EditUserDataProps){
         let newUser: User = {id: myUuid, email: "", password: "", companyId: props.company.id, initiativeIds: [], isAdmin: false}
         usersClone.unshift(newUser);
         setUsersList(usersClone);
+        setSearchedKeyword("");
         setIsNew(true);
         EnterEditMode(myUuid,usersClone);
     }
@@ -154,10 +157,14 @@ export default function EditUserDataModal(props: EditUserDataProps){
                 </div>
             </div>
             <div className="mx-[2%] mb-[2%]">
-
+                {usersList.length !== 0 &&
+                <div className="mt-2 mb-4">
+                <StyledTextField className="w-1/2" id={EditUserDataIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name or email" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)}/>
+                </div>
+                }
             <Grid container spacing={6}>
               {
-                usersList.map((displayItem, key) => {
+                usersList.filter(u => u.email.toUpperCase().includes(searchedKeyword.toUpperCase()) || u.name?.toUpperCase().includes(searchedKeyword.toUpperCase())).map((displayItem, key) => {
                 let isEdit = (displayItem.id === (userToEdit?.id ?? -1));
                 return(
                   <Grid item md={4} key={key}>
