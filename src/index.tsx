@@ -9,6 +9,7 @@ import { Provider as ReduxProvider } from 'react-redux';
 import { store } from './Store/Store';
 import LoginPage from './Pages/LoginPage';
 import { CompanyPage } from './Pages/CompanyPage';
+import { IntegrityPage } from './Pages/IntegrityPage';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -33,7 +34,12 @@ const router = createBrowserRouter([
       },
       {
         path: '/Company',
-        element:<CompanyPage/>,
+        element: <CompanyPage/>,
+        errorElement: <ErrorPage/>
+      },
+      {
+        path: '/Integrity',
+        element: <IntegrityPage/>,
         errorElement: <ErrorPage/>
       }
     ]

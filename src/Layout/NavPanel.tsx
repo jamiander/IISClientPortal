@@ -6,7 +6,8 @@ import { enqueueSnackbar } from "notistack"
 
 export const NavPanelIds = {
   dashboard: "navPanelDashboard",
-  company: "navPanelCompany"
+  company: "navPanelCompany",
+  integrity: "navPanelIntegrity"
 }
 
 export default function NavPanel(){
@@ -43,11 +44,19 @@ export default function NavPanel(){
         Dashboard
       </button>
       {
-        currentUser?.isAdmin === true &&
+        currentUser?.isAdmin &&
         <button id={NavPanelIds.company} className={GetNavStyle("/Company")}
           onClick={() => NavHandler('/Company')}>
           Client and User Management
         </button>
+      }
+      {
+        currentUser?.isAdmin &&
+        <button id={NavPanelIds.integrity} className={GetNavStyle("/Integrity")}
+          onClick={() => NavHandler('/Integrity')}>
+          Integrity User Management
+        </button>
+      
       }
     </div>  
   )
