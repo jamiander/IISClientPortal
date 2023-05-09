@@ -8,7 +8,7 @@ import Button from "@mui/material/Button";
 import { Company, IntegrityId } from "../../Store/CompanySlice";
 import {v4 as UuidV4} from "uuid";
 import { useAppDispatch } from "../../Store/Hooks";
-import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Checkbox, FormControlLabel, FormGroup } from "@mui/material";
 import { enqueueSnackbar } from "notistack";
 import { ValidateUser, ValidationFailedPrefix } from "../../Services/Validation";
 import { DeleteDecisionAlert } from "../Initiative/DeleteDecisionAlert";
@@ -217,16 +217,21 @@ export default function AdminEditUserDataModal(props: AdminEditUserDataProps){
                             <FormGroup>
                               {props.companies.map((company,index) => {
                                 return (
-                                  <Fragment key={index}>
-                                    {company.name}
-                                    {
-                                      company.initiatives.map((initiative, index) => {
-                                        return (
-                                          <FormControlLabel key={index} control={<Checkbox checked={currentInitiatives.find(id => initiative.id === id) !== undefined} onChange={(e) => UpdateCurrentInitiatives(e.target.checked, initiative.id)} />} label={initiative.title} />
-                                        );
-                                      })
-                                    }
-                                  </Fragment>
+                                  <Accordion key={index}>
+                                    <AccordionSummary>
+                                      {company.name}
+                                    </AccordionSummary>
+                                    <AccordionDetails>
+                                      
+                                      {
+                                        company.initiatives.map((initiative, index) => {
+                                          return (
+                                            <FormControlLabel key={index} control={<Checkbox checked={currentInitiatives.find(id => initiative.id === id) !== undefined} onChange={(e) => UpdateCurrentInitiatives(e.target.checked, initiative.id)} />} label={initiative.title} />
+                                          );
+                                        })
+                                      }
+                                    </AccordionDetails>
+                                  </Accordion>
                                 )
                               })
                               }
