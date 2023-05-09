@@ -37,28 +37,36 @@ interface AdminEditUserDataProps {
 }
 
 export default function AdminEditUserDataModal(props: AdminEditUserDataProps){
+  enum State {
+    edit,
+    add,
+    start
+  }
+
+  const [modalState, setModalState] = useState(State.start);
+
   const dispatch = useAppDispatch();
   const [usersList, setUsersList] = useState<User[]>(props.users);
   const [userToEdit, setUserToEdit] = useState<User>();
-  const [isNew, setIsNew] = useState(false);
   const [currentEmail, setCurrentEmail] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
   const [currentInitiatives, setCurrentInitiatives] = useState<string[]>([]);
   const [currentName, setCurrentName] = useState<string>();
   const [currentPhone, setCurrentPhone] = useState<string>();
-  const InEditMode = () => userToEdit !== undefined;
+  const InEditMode = () => modalState === State.edit || modalState === State.add;
   const [searchedKeyword, setSearchedKeyword] = useState("");
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
   useEffect(() => {
-    setUsersList(props.users)
+    setUsersList(props.users);
     LeaveEditMode();
   },[props.isOpen])
 
-  function EnterEditMode(id: string, users: User[]) { 
+  function EnterEditMode(id: string, users: User[], isNew: boolean) { 
     let currentUser = users.find(u => u.id === id);
     if(currentUser)
     {
+      setModalState(isNew ? State.add : State.edit);
       setUserToEdit(currentUser);
       setCurrentEmail(currentUser.email);
       setCurrentPassword(currentUser.password);
@@ -68,13 +76,13 @@ export default function AdminEditUserDataModal(props: AdminEditUserDataProps){
     }
   }
 
-  function LeaveEditMode() {        
+  function LeaveEditMode() {
+    setModalState(State.start);    
     setUserToEdit(undefined);
-    setIsNew(false);
   }
 
-  function CancelEdit() {
-    if(isNew && userToEdit)
+  function HandleCancelEdit() {
+    if(modalState === State.add && userToEdit)
     {
       let usersClone: User[] = JSON.parse(JSON.stringify(usersList));
       usersClone = usersClone.filter(user => user.id !== userToEdit.id);
@@ -84,7 +92,7 @@ export default function AdminEditUserDataModal(props: AdminEditUserDataProps){
     LeaveEditMode()
   };
 
-  function EditUser(id: string, newEmail: string, newPassword: string, newInitiatives: string[], newName: string | undefined, newPhone: string | undefined) {
+  function HandleEditUser(id: string, newEmail: string, newPassword: string, newInitiatives: string[], newName: string | undefined, newPhone: string | undefined) {
     let usersClone: User[] = JSON.parse(JSON.stringify(usersList));
     let newUser = usersClone.find(u => u.id === id);
     if(newUser) {
@@ -115,15 +123,14 @@ export default function AdminEditUserDataModal(props: AdminEditUserDataProps){
     return false;
   }
 
-  function AddEmptyUser() {
+  function HandleAddEmptyUser() {
     let usersClone: User[] = JSON.parse(JSON.stringify(usersList));
     let myUuid = UuidV4();
-    let newUser: User = {id: myUuid, email: "", password: "", companyId: IntegrityId, initiativeIds: [], isAdmin: false}
+    let newUser: User = {id: myUuid, email: "", password: "", companyId: IntegrityId, initiativeIds: [], name: "", phoneNumber: "", isAdmin: false}
     usersClone.unshift(newUser);
     setUsersList(usersClone);
     setSearchedKeyword("");
-    setIsNew(true);
-    EnterEditMode(myUuid,usersClone);
+    EnterEditMode(myUuid,usersClone,true);
   }
 
   function UpdateCurrentInitiatives(checked: boolean, id: string) {
@@ -181,7 +188,7 @@ export default function AdminEditUserDataModal(props: AdminEditUserDataProps){
                   <CloseIcon sx={{ fontSize: 40 }} />
                 </button>
               </div>
-              <button disabled={InEditMode()} id={AdminEditUserDataIds.addButton} className={yellowButtonStyle} onClick={() => AddEmptyUser()}>Add User</button>
+              <button disabled={InEditMode()} id={AdminEditUserDataIds.addButton} className={yellowButtonStyle} onClick={() => HandleAddEmptyUser()}>Add User</button>
             </div>
           </div>
         </div>
@@ -193,7 +200,7 @@ export default function AdminEditUserDataModal(props: AdminEditUserDataProps){
           }
           <Grid container spacing={6}>
             {usersList.filter(u => u.email.toUpperCase().includes(searchedKeyword.toUpperCase()) || u.name?.toUpperCase().includes(searchedKeyword.toUpperCase())).map((displayItem, key) => {
-              let isEdit = (displayItem.id === (userToEdit?.id ?? -1));
+              let isEdit = (modalState === State.edit || modalState === State.add) && displayItem.id === userToEdit?.id;
               return (
                 <Grid item md={4} key={key}>
                   <Item>
@@ -259,13 +266,13 @@ export default function AdminEditUserDataModal(props: AdminEditUserDataProps){
                       <StyledCardActions>
                         {isEdit &&
                           <div className="flex w-full justify-between">
-                            <button id={AdminEditUserDataIds.saveChangesButton} className={submitButtonStyle} onClick={() => EditUser(displayItem.id, currentEmail, currentPassword, currentInitiatives, currentName, currentPhone)}>Save</button>
-                            <button id={AdminEditUserDataIds.cancelChangesButton} className={cancelButtonStyle} onClick={() => CancelEdit()}>Cancel</button>
+                            <button id={AdminEditUserDataIds.saveChangesButton} className={submitButtonStyle} onClick={() => HandleEditUser(displayItem.id, currentEmail, currentPassword, currentInitiatives, currentName, currentPhone)}>Save</button>
+                            <button id={AdminEditUserDataIds.cancelChangesButton} className={cancelButtonStyle} onClick={() => HandleCancelEdit()}>Cancel</button>
                           </div>
                         }
                         {!isEdit && !InEditMode() &&
                           <div className="flex w-full justify-between">
-                            <button id={AdminEditUserDataIds.editButton} className={submitButtonStyle} onClick={() => EnterEditMode(displayItem.id, usersList)}>Edit</button>
+                            <button id={AdminEditUserDataIds.editButton} className={submitButtonStyle} onClick={() => EnterEditMode(displayItem.id, usersList, false)}>Edit</button>
                             {/*<button id={AdminEditUserDataIds.deleteButton} className={cancelButtonStyle} onClick={() => AttemptDelete(displayItem.id)}>Delete</button>
                           */}</div>
                         }
