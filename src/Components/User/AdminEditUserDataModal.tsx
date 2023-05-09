@@ -1,7 +1,7 @@
 import Dialog from "@mui/material/Dialog"
 import CloseIcon from '@mui/icons-material/Close';
 import { Item, StyledCard, StyledCardActions, StyledCardContent, StyledTextField, StyledTextarea, cancelButtonStyle, labelStyle, submitButtonStyle, yellowButtonStyle } from "../../Styles";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import { User, deleteUserInfo, upsertUserInfo } from "../../Store/UserSlice";
 import Button from "@mui/material/Button";
@@ -14,19 +14,19 @@ import { ValidateUser, ValidationFailedPrefix } from "../../Services/Validation"
 import { DeleteDecisionAlert } from "../Initiative/DeleteDecisionAlert";
 
 export const AdminEditUserDataIds = {
-  modal: "editUserModal",
-  closeModalButton: "editUserModalCloseModalButton",
-  email: "editUserEmail",
-  password: "editUserPassword",
-  initiativeIds: "editUserInitiativeIds",
-  name: "editUserName",
-  phone: "editUserPhone",
-  addButton: "editUserAddButton",
-  editButton: "editUserEditButton",
-  saveChangesButton: "editUserSaveChangesButton",
-  cancelChangesButton: "editUserCancelChangesButton",
-  deleteButton: "editUserDeleteButton",
-  keywordFilter: "userDataKeywordFilter"
+  modal: "adminEditUserModal",
+  closeModalButton: "adminEditUserModalCloseModalButton",
+  email: "adminEditUserEmail",
+  password: "adminEditUserPassword",
+  initiativeIds: "adminEditUserInitiativeIds",
+  name: "adminEditUserName",
+  phone: "adminEditUserPhone",
+  addButton: "adminEditUserAddButton",
+  editButton: "adminEditUserEditButton",
+  saveChangesButton: "adminEditUserSaveChangesButton",
+  cancelChangesButton: "adminEditUserCancelChangesButton",
+  deleteButton: "adminEditUserDeleteButton",
+  keywordFilter: "adminEditUserKeywordFilter"
 }
 
 interface AdminEditUserDataProps {
@@ -208,11 +208,21 @@ export default function AdminEditUserDataModal(props: AdminEditUserDataProps){
                             <StyledTextField id={AdminEditUserDataIds.name} label="Name" value={currentName} onChange={e => setCurrentName(e.target.value)} />
                             <StyledTextField id={AdminEditUserDataIds.phone} label="Phone Number" value={currentPhone} onChange={e => setCurrentPhone(e.target.value)} />
                             <FormGroup>
-                              {/*props.company.initiatives.map((initiative, index) => {
+                              {props.companies.map((company,index) => {
                                 return (
-                                  <FormControlLabel key={index} control={<Checkbox checked={currentInitiatives.find(id => initiative.id === id) !== undefined} onChange={(e) => UpdateCurrentInitiatives(e.target.checked, initiative.id)} />} label={initiative.title} />
-                                );
-                              })*/}
+                                  <Fragment key={index}>
+                                    {company.name}
+                                    {
+                                      company.initiatives.map((initiative, index) => {
+                                        return (
+                                          <FormControlLabel key={index} control={<Checkbox checked={currentInitiatives.find(id => initiative.id === id) !== undefined} onChange={(e) => UpdateCurrentInitiatives(e.target.checked, initiative.id)} />} label={initiative.title} />
+                                        );
+                                      })
+                                    }
+                                  </Fragment>
+                                )
+                              })
+                              }
                             </FormGroup>
                           </>
                         :
@@ -224,14 +234,24 @@ export default function AdminEditUserDataModal(props: AdminEditUserDataProps){
                             <StyledTextField id={AdminEditUserDataIds.name} label="Name" disabled value={displayItem.name} />
                             <StyledTextField id={AdminEditUserDataIds.phone} label="Phone Number" disabled value={displayItem.phoneNumber} />
                             <FormGroup>
-                              {/*props.company.initiatives.map((init, index) => {
-                                let checkedInitId = (displayItem.initiativeIds.find(id => id === init.id));
-                                let checkedInit = props.company.initiatives.find(x => x.id === checkedInitId);
-
+                              {props.companies.map((company,index) => {
                                 return (
-                                  <FormControlLabel key={index} control={<Checkbox checked={checkedInit !== undefined} />} label={init?.title} />
-                                );
-                              })*/}
+                                  <Fragment key={index}>
+                                  {company.name}
+                                  {
+                                    company.initiatives.map((init, index) => {
+                                      let checkedInitId = displayItem.initiativeIds.find(id => id === init.id);
+                                      let checkedInit = company.initiatives.find(x => x.id === checkedInitId);
+
+                                      return (
+                                        <FormControlLabel key={index} control={<Checkbox checked={checkedInit !== undefined} />} label={init?.title} />
+                                      );
+                                    })
+                                  }
+                                  </Fragment>
+                                )
+                              })
+                            }
                             </FormGroup>
                           </>
                         }
