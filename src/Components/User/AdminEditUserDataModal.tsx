@@ -12,6 +12,7 @@ import { Accordion, AccordionDetails, AccordionSummary, Checkbox, FormControlLab
 import { enqueueSnackbar } from "notistack";
 import { ValidateUser, ValidationFailedPrefix } from "../../Services/Validation";
 import { DeleteDecisionAlert } from "../Initiative/DeleteDecisionAlert";
+import { AdminEditInitiativesList } from "./AdminEditInitiativesList";
 
 export const AdminEditUserDataIds = {
   modal: "adminEditUserModal",
@@ -216,24 +217,8 @@ export default function AdminEditUserDataModal(props: AdminEditUserDataProps){
                             <StyledTextField id={AdminEditUserDataIds.phone} label="Phone Number" value={currentPhone} onChange={e => setCurrentPhone(e.target.value)} />
                             <FormGroup>
                               {props.companies.map((company,index) => {
-                                const isCompanyChecked = company.initiatives.find(init => currentInitiatives.find(i => i === init.id) !== undefined);
                                 return (
-                                  <Accordion key={index}>
-                                    <AccordionSummary>
-                                      <p className={isCompanyChecked ? "font-bold" : ""}>
-                                        {company.name}
-                                      </p>
-                                    </AccordionSummary>
-                                    <AccordionDetails>
-                                      {
-                                        company.initiatives.map((initiative, index) => {
-                                          return (
-                                            <FormControlLabel key={index} control={<Checkbox checked={currentInitiatives.find(id => initiative.id === id) !== undefined} onChange={(e) => UpdateCurrentInitiatives(e.target.checked, initiative.id)} />} label={initiative.title} />
-                                          );
-                                        })
-                                      }
-                                    </AccordionDetails>
-                                  </Accordion>
+                                  <AdminEditInitiativesList company={company} initiativeIds={currentInitiatives} key={index} editable={true} updateInitiativeIds={UpdateCurrentInitiatives}/>
                                 )
                               })
                               }
@@ -250,19 +235,7 @@ export default function AdminEditUserDataModal(props: AdminEditUserDataProps){
                             <FormGroup>
                               {props.companies.map((company,index) => {
                                 return (
-                                  <Fragment key={index}>
-                                  {company.name}
-                                  {
-                                    company.initiatives.map((init, index) => {
-                                      let checkedInitId = displayItem.initiativeIds.find(id => id === init.id);
-                                      let checkedInit = company.initiatives.find(x => x.id === checkedInitId);
-
-                                      return (
-                                        <FormControlLabel key={index} control={<Checkbox checked={checkedInit !== undefined} />} label={init?.title} />
-                                      );
-                                    })
-                                  }
-                                  </Fragment>
+                                  <AdminEditInitiativesList company={company} initiativeIds={displayItem.initiativeIds} key={index} editable={false} updateInitiativeIds={UpdateCurrentInitiatives} />
                                 )
                               })
                             }
