@@ -36,7 +36,7 @@ export async function UpsertUserInfo(request: UpsertUserInfoRequest) : Promise<U
 }
 
 export interface DeleteUserInfoRequest {
-  userIds: string[],
+  userId: string,
   isTest: boolean
 }
 

@@ -63,7 +63,7 @@ export const deleteUserInfo = createAsyncThunk(
     if(response.status.toUpperCase().includes("FAILED"))
       throw Error;
     
-    return args.userIds;
+    return args.userId;
   }
 )
 
@@ -119,8 +119,12 @@ export const userSlice = createSlice({
     extraReducers: (builder) => {
       builder
         .addCase(deleteUserInfo.fulfilled, (state, action) => {
-          const userIds = action.payload;
-          state.users = state.users.filter(user => userIds.find(id => user.id === id) === undefined);
+          const userId = action.payload;
+          const usersClone: User[] = JSON.parse(JSON.stringify(state.users));
+          const dataIndex = usersClone.findIndex(entry => userId === entry.id);
+
+          if(dataIndex > -1) usersClone.splice(dataIndex,1);
+          state.users = usersClone;
         })
         .addCase(authenticateUser.fulfilled, (state, action) => {
           state.logInAttempts = 0;

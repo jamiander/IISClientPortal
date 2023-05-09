@@ -273,7 +273,7 @@ export default function DecisionDataModal(props: DecisionDataProps) {
             selectedInitiative.decisions.length === 0 && <div className="m-2 p-2">No decisions to display.</div>
           }
         </Dialog>
-        <DeleteDecisionAlert isOpen={isDeleteOpen} setIsOpen={setIsDeleteOpen} DeleteDecision={DeleteDecision} CancelDelete={CancelDelete} decision={decisionToEdit}/>
+        <DeleteDecisionAlert isOpen={isDeleteOpen} setIsOpen={setIsDeleteOpen} DeleteDecision={DeleteDecision} CancelDelete={CancelDelete} decisionId={decisionToEdit?.id}/>
       </>
   );
 }
