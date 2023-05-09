@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import { User, deleteUserInfo, upsertUserInfo } from "../../Store/UserSlice";
 import Button from "@mui/material/Button";
-import { Company } from "../../Store/CompanySlice";
+import { Company, IntegrityId } from "../../Store/CompanySlice";
 import {v4 as UuidV4} from "uuid";
 import { useAppDispatch } from "../../Store/Hooks";
 import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
@@ -13,31 +13,30 @@ import { enqueueSnackbar } from "notistack";
 import { ValidateUser, ValidationFailedPrefix } from "../../Services/Validation";
 import { DeleteDecisionAlert } from "../Initiative/DeleteDecisionAlert";
 
-export const EditUserDataIds = {
-    modal: "editUserModal",
-    closeModalButton: "editUserModalCloseModalButton",
-    email: "editUserEmail",
-    password: "editUserPassword",
-    initiativeIds: "editUserInitiativeIds",
-    name: "editUserName",
-    phone: "editUserPhone",
-    addButton: "editUserAddButton",
-    editButton: "editUserEditButton",
-    saveChangesButton: "editUserSaveChangesButton",
-    cancelChangesButton: "editUserCancelChangesButton",
-    deleteButton: "editUserDeleteButton",
-    keywordFilter: "userDataKeywordFilter"
+export const AdminEditUserDataIds = {
+  modal: "editUserModal",
+  closeModalButton: "editUserModalCloseModalButton",
+  email: "editUserEmail",
+  password: "editUserPassword",
+  initiativeIds: "editUserInitiativeIds",
+  name: "editUserName",
+  phone: "editUserPhone",
+  addButton: "editUserAddButton",
+  editButton: "editUserEditButton",
+  saveChangesButton: "editUserSaveChangesButton",
+  cancelChangesButton: "editUserCancelChangesButton",
+  deleteButton: "editUserDeleteButton",
+  keywordFilter: "userDataKeywordFilter"
 }
 
-interface EditUserDataProps {
-    title: string
-    isOpen: boolean
-    company: Company
-    users: User[]
-    setEditUserDataModalIsOpen: (value: boolean) => void
+interface AdminEditUserDataProps {
+  isOpen: boolean
+  companies: Company[]
+  users: User[]
+  setIsOpen: (value: boolean) => void
 }
 
-export default function EditUserDataModal(props: EditUserDataProps){
+export default function AdminEditUserDataModal(props: AdminEditUserDataProps){
   const dispatch = useAppDispatch();
   const [usersList, setUsersList] = useState<User[]>(props.users);
   const [userToEdit, setUserToEdit] = useState<User>();
@@ -119,7 +118,7 @@ export default function EditUserDataModal(props: EditUserDataProps){
   function AddEmptyUser() {
     let usersClone: User[] = JSON.parse(JSON.stringify(usersList));
     let myUuid = UuidV4();
-    let newUser: User = {id: myUuid, email: "", password: "", companyId: props.company.id, initiativeIds: [], isAdmin: false}
+    let newUser: User = {id: myUuid, email: "", password: "", companyId: IntegrityId, initiativeIds: [], isAdmin: false}
     usersClone.unshift(newUser);
     setUsersList(usersClone);
     setSearchedKeyword("");
@@ -143,18 +142,6 @@ export default function EditUserDataModal(props: EditUserDataProps){
     setCurrentInitiatives(initiativesClone);
   }
 
-  function AttemptDelete(userId: string)
-  {
-    /* if(modalState === State.start)
-    { */
-      setIsDeleteOpen(true);
-      setUserToEdit(usersList.find(u => u.id === userId));
-      /* setModalState(State.delete); */
-    /* }
-    else
-      enqueueSnackbar("Cannot delete with unsaved changes.", {variant: "error"}); */
-  }
-
   function DeleteUser(userId: string)
   {
     let isTest = false;
@@ -176,32 +163,32 @@ export default function EditUserDataModal(props: EditUserDataProps){
   return (
     <>
       <Dialog
-        id={EditUserDataIds.modal}
+        id={AdminEditUserDataIds.modal}
         open={props.isOpen}
-        onClose={() => props.setEditUserDataModalIsOpen(false)}
+        onClose={() => props.setIsOpen(false)}
         fullWidth
         maxWidth={false}
       >
         <div className="flex col-span-4 bg-[#2ed7c3] rounded-md py-6 px-5">
           <div className="w-full flex justify-between">
             <div className="space-y-2 w-1/2">
-              <p className="text-5xl font-bold w-full">{props.company.name}</p>
+              <p className="text-5xl font-bold w-full">Integrity Inspired Solutions</p>
               <p className="text-3xl w-full">Users</p>
             </div>
             <div className="flex flex-col justify-between">
               <div className="flex justify-end">
-                <button id={EditUserDataIds.closeModalButton} className="rounded-md transition ease-in-out hover:bg-[#29c2b0] w-fit" onClick={() => props.setEditUserDataModalIsOpen(false)}>
+                <button id={AdminEditUserDataIds.closeModalButton} className="rounded-md transition ease-in-out hover:bg-[#29c2b0] w-fit" onClick={() => props.setIsOpen(false)}>
                   <CloseIcon sx={{ fontSize: 40 }} />
                 </button>
               </div>
-              <button disabled={InEditMode()} id={EditUserDataIds.addButton} className={yellowButtonStyle} onClick={() => AddEmptyUser()}>Add User</button>
+              <button disabled={InEditMode()} id={AdminEditUserDataIds.addButton} className={yellowButtonStyle} onClick={() => AddEmptyUser()}>Add User</button>
             </div>
           </div>
         </div>
         <div className="mx-[2%] mb-[2%]">
           {usersList.length !== 0 &&
             <div className="mt-2 mb-4">
-              <StyledTextField className="w-1/2" id={EditUserDataIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name or email" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)} />
+              <StyledTextField className="w-1/2" id={AdminEditUserDataIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name or email" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)} />
             </div>
           }
           <Grid container spacing={6}>
@@ -214,37 +201,37 @@ export default function EditUserDataModal(props: EditUserDataProps){
                       <StyledCardContent>
                         {isEdit ?
                           <>
-                            <label className={labelStyle} htmlFor={EditUserDataIds.email}></label>
-                            <StyledTextField id={EditUserDataIds.email} label="Email" value={currentEmail} onChange={e => setCurrentEmail(e.target.value)} />
-                            <label className={labelStyle} htmlFor={EditUserDataIds.password}></label>
-                            <StyledTextField id={EditUserDataIds.password} label="Password" value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} />
-                            <StyledTextField id={EditUserDataIds.name} label="Name" value={currentName} onChange={e => setCurrentName(e.target.value)} />
-                            <StyledTextField id={EditUserDataIds.phone} label="Phone Number" value={currentPhone} onChange={e => setCurrentPhone(e.target.value)} />
+                            <label className={labelStyle} htmlFor={AdminEditUserDataIds.email}></label>
+                            <StyledTextField id={AdminEditUserDataIds.email} label="Email" value={currentEmail} onChange={e => setCurrentEmail(e.target.value)} />
+                            <label className={labelStyle} htmlFor={AdminEditUserDataIds.password}></label>
+                            <StyledTextField id={AdminEditUserDataIds.password} label="Password" value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} />
+                            <StyledTextField id={AdminEditUserDataIds.name} label="Name" value={currentName} onChange={e => setCurrentName(e.target.value)} />
+                            <StyledTextField id={AdminEditUserDataIds.phone} label="Phone Number" value={currentPhone} onChange={e => setCurrentPhone(e.target.value)} />
                             <FormGroup>
-                              {props.company.initiatives.map((initiative, index) => {
+                              {/*props.company.initiatives.map((initiative, index) => {
                                 return (
                                   <FormControlLabel key={index} control={<Checkbox checked={currentInitiatives.find(id => initiative.id === id) !== undefined} onChange={(e) => UpdateCurrentInitiatives(e.target.checked, initiative.id)} />} label={initiative.title} />
                                 );
-                              })}
+                              })*/}
                             </FormGroup>
                           </>
                         :
                           <>
-                            <label className={labelStyle} htmlFor={EditUserDataIds.email}></label>
-                            <StyledTextField id={EditUserDataIds.email} label="Email" disabled value={displayItem.email} />
-                            <label className={labelStyle} htmlFor={EditUserDataIds.password}></label>
-                            <StyledTextField id={EditUserDataIds.password} label="Password" disabled value={displayItem.password} />
-                            <StyledTextField id={EditUserDataIds.name} label="Name" disabled value={displayItem.name} />
-                            <StyledTextField id={EditUserDataIds.phone} label="Phone Number" disabled value={displayItem.phoneNumber} />
+                            <label className={labelStyle} htmlFor={AdminEditUserDataIds.email}></label>
+                            <StyledTextField id={AdminEditUserDataIds.email} label="Email" disabled value={displayItem.email} />
+                            <label className={labelStyle} htmlFor={AdminEditUserDataIds.password}></label>
+                            <StyledTextField id={AdminEditUserDataIds.password} label="Password" disabled value={displayItem.password} />
+                            <StyledTextField id={AdminEditUserDataIds.name} label="Name" disabled value={displayItem.name} />
+                            <StyledTextField id={AdminEditUserDataIds.phone} label="Phone Number" disabled value={displayItem.phoneNumber} />
                             <FormGroup>
-                              {props.company.initiatives.map((init, index) => {
+                              {/*props.company.initiatives.map((init, index) => {
                                 let checkedInitId = (displayItem.initiativeIds.find(id => id === init.id));
                                 let checkedInit = props.company.initiatives.find(x => x.id === checkedInitId);
 
                                 return (
                                   <FormControlLabel key={index} control={<Checkbox checked={checkedInit !== undefined} />} label={init?.title} />
                                 );
-                              })}
+                              })*/}
                             </FormGroup>
                           </>
                         }
@@ -252,14 +239,14 @@ export default function EditUserDataModal(props: EditUserDataProps){
                       <StyledCardActions>
                         {isEdit &&
                           <div className="flex w-full justify-between">
-                            <button id={EditUserDataIds.saveChangesButton} className={submitButtonStyle} onClick={() => EditUser(displayItem.id, currentEmail, currentPassword, currentInitiatives, currentName, currentPhone)}>Save</button>
-                            <button id={EditUserDataIds.cancelChangesButton} className={cancelButtonStyle} onClick={() => CancelEdit()}>Cancel</button>
+                            <button id={AdminEditUserDataIds.saveChangesButton} className={submitButtonStyle} onClick={() => EditUser(displayItem.id, currentEmail, currentPassword, currentInitiatives, currentName, currentPhone)}>Save</button>
+                            <button id={AdminEditUserDataIds.cancelChangesButton} className={cancelButtonStyle} onClick={() => CancelEdit()}>Cancel</button>
                           </div>
                         }
                         {!isEdit && !InEditMode() &&
                           <div className="flex w-full justify-between">
-                            <button id={EditUserDataIds.editButton} className={submitButtonStyle} onClick={() => EnterEditMode(displayItem.id, usersList)}>Edit</button>
-                            {/*<button id={EditUserDataIds.deleteButton} className={cancelButtonStyle} onClick={() => AttemptDelete(displayItem.id)}>Delete</button>
+                            <button id={AdminEditUserDataIds.editButton} className={submitButtonStyle} onClick={() => EnterEditMode(displayItem.id, usersList)}>Edit</button>
+                            {/*<button id={AdminEditUserDataIds.deleteButton} className={cancelButtonStyle} onClick={() => AttemptDelete(displayItem.id)}>Delete</button>
                           */}</div>
                         }
                       </StyledCardActions>
