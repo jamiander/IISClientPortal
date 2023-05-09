@@ -127,7 +127,7 @@ export function CompanyPage()
             return (
               <Fragment key={index}>
                 {!isEdit ?
-                <Grid item md={4} id={"companyPageCard"+company.id}>
+                <Grid item md={6} id={"companyPageCard"+company.id}>
                   <Item>
                     <StyledCard>
                       <StyledCardContent>
