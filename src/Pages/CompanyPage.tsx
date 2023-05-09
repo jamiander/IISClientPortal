@@ -142,7 +142,7 @@ export function CompanyPage()
                                 return(
                                   <UserItem className="mb-4 w-75%">
                                     <div className="bg-white">
-                                      {user.name ?? "Unknown"}&nbsp; &nbsp;&nbsp; : &nbsp;&nbsp;&nbsp;{user.email} 
+                                      {user.name ?  user.name : "Unknown"}&nbsp; &nbsp;&nbsp; : &nbsp;&nbsp;&nbsp;{user.email} 
                                     </div>
                                   </UserItem>                           
                                   )
