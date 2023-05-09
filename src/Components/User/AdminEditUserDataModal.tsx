@@ -8,7 +8,7 @@ import Button from "@mui/material/Button";
 import { Company, IntegrityId } from "../../Store/CompanySlice";
 import {v4 as UuidV4} from "uuid";
 import { useAppDispatch } from "../../Store/Hooks";
-import { Accordion, AccordionDetails, AccordionSummary, Checkbox, FormControlLabel, FormGroup } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Checkbox, FormControlLabel, FormGroup, Typography } from "@mui/material";
 import { enqueueSnackbar } from "notistack";
 import { ValidateUser, ValidationFailedPrefix } from "../../Services/Validation";
 import { DeleteDecisionAlert } from "../Initiative/DeleteDecisionAlert";
@@ -216,13 +216,15 @@ export default function AdminEditUserDataModal(props: AdminEditUserDataProps){
                             <StyledTextField id={AdminEditUserDataIds.phone} label="Phone Number" value={currentPhone} onChange={e => setCurrentPhone(e.target.value)} />
                             <FormGroup>
                               {props.companies.map((company,index) => {
+                                const isCompanyChecked = company.initiatives.find(init => currentInitiatives.find(i => i === init.id) !== undefined);
                                 return (
                                   <Accordion key={index}>
                                     <AccordionSummary>
-                                      {company.name}
+                                      <p className={isCompanyChecked ? "font-bold" : ""}>
+                                        {company.name}
+                                      </p>
                                     </AccordionSummary>
                                     <AccordionDetails>
-                                      
                                       {
                                         company.initiatives.map((initiative, index) => {
                                           return (
