@@ -4,7 +4,6 @@ import { Item, StyledCard, StyledCardActions, StyledCardContent, StyledTextField
 import { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import { User, deleteUserInfo, upsertUserInfo } from "../../Store/UserSlice";
-import Button from "@mui/material/Button";
 import { Company } from "../../Store/CompanySlice";
 import {v4 as UuidV4} from "uuid";
 import { useAppDispatch } from "../../Store/Hooks";
@@ -116,16 +115,16 @@ export default function EditUserDataModal(props: EditUserDataProps){
     return false;
   }
 
-  function AddEmptyUser() {
-    let usersClone: User[] = JSON.parse(JSON.stringify(usersList));
-    let myUuid = UuidV4();
-    let newUser: User = {id: myUuid, email: "", password: "", companyId: props.company.id, initiativeIds: [], isAdmin: false}
-    usersClone.unshift(newUser);
-    setUsersList(usersClone);
-    setSearchedKeyword("");
-    setIsNew(true);
-    EnterEditMode(myUuid,usersClone);
-  }
+    function AddEmptyUser() {
+        let usersClone: User[] = JSON.parse(JSON.stringify(usersList));
+        let myUuid = UuidV4();
+        let newUser: User = {id: myUuid, email: "", password: "", companyId: props.company.id, initiativeIds: [], name: "", phoneNumber: "", isAdmin: false}
+        usersClone.unshift(newUser);
+        setUsersList(usersClone);
+        setSearchedKeyword("");
+        setIsNew(true);
+        EnterEditMode(myUuid,usersClone);
+    }
 
   function UpdateCurrentInitiatives(checked: boolean, id: string) {
     let initiativesClone: string[] = JSON.parse(JSON.stringify(currentInitiatives));

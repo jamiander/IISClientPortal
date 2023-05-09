@@ -83,7 +83,10 @@ export const authenticateUser = createAsyncThunk(
       companyId: response.companyId,
       isAdmin: response.isAdmin
     }
-    dispatch(getCompanyByInitiativeIds({initiativeIds: response.initiativeIds}));
+    dispatch(getCompanyByInitiativeIds({
+      initiativeIds: response.initiativeIds,
+      isAdmin: response.isAdmin
+    }));
     dispatch(addUsersToStore([user]));
     dispatch(setCurrentUserId(response.userId));
   }
