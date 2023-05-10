@@ -140,11 +140,9 @@ export default function EditUserDataModal(props: EditUserDataProps){
                       <StyledCardContent>
                         {isEdit ?
                           <>
-                            <label className={labelStyle} htmlFor={EditUserDataIds.email}></label>
-                            <StyledTextField id={EditUserDataIds.email} label="Email" value={currentEmail} onChange={e => setCurrentEmail(e.target.value)} />
-                            <label className={labelStyle} htmlFor={EditUserDataIds.password}></label>
-                            <StyledTextField id={EditUserDataIds.password} label="Password" value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} />
                             <StyledTextField id={EditUserDataIds.name} label="Name" value={currentName} onChange={e => setCurrentName(e.target.value)} />
+                            <StyledTextField id={EditUserDataIds.email} label="Email" value={currentEmail} onChange={e => setCurrentEmail(e.target.value)} />
+                            <StyledTextField id={EditUserDataIds.password} label="Password" value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} />
                             <StyledTextField id={EditUserDataIds.phone} label="Phone Number" value={currentPhone} onChange={e => setCurrentPhone(e.target.value)} />
                             <FormGroup>
                               {props.company.initiatives.map((initiative, index) => {
@@ -156,11 +154,9 @@ export default function EditUserDataModal(props: EditUserDataProps){
                           </>
                         :
                           <>
-                            <label className={labelStyle} htmlFor={EditUserDataIds.email}></label>
-                            <StyledTextField id={EditUserDataIds.email} label="Email" disabled value={displayItem.email} />
-                            <label className={labelStyle} htmlFor={EditUserDataIds.password}></label>
-                            <StyledTextField id={EditUserDataIds.password} label="Password" disabled value={displayItem.password} />
                             <StyledTextField id={EditUserDataIds.name} label="Name" disabled value={displayItem.name ? displayItem.name : ""} />
+                            <StyledTextField id={EditUserDataIds.email} label="Email" disabled value={displayItem.email} />
+                            <StyledTextField id={EditUserDataIds.password} label="Password" disabled value={displayItem.password} />
                             <StyledTextField id={EditUserDataIds.phone} label="Phone Number" disabled value={displayItem.phoneNumber ? displayItem.phoneNumber : ""} />
                             <FormGroup>
                               {props.company.initiatives.map((init, index) => {

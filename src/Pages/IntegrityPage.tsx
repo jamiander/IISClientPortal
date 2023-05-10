@@ -105,11 +105,9 @@ export default function IntegrityPage(){
                       <StyledCardContent>
                         {isEdit ?
                           <>
-                            <label className={labelStyle} htmlFor={IntegrityPageIds.email}></label>
-                            <StyledTextField id={IntegrityPageIds.email} label="Email" value={currentEmail} onChange={e => setCurrentEmail(e.target.value)} />
-                            <label className={labelStyle} htmlFor={IntegrityPageIds.password}></label>
-                            <StyledTextField id={IntegrityPageIds.password} label="Password" value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} />
                             <StyledTextField id={IntegrityPageIds.name} label="Name" value={currentName} onChange={e => setCurrentName(e.target.value)} />
+                            <StyledTextField id={IntegrityPageIds.email} label="Email" value={currentEmail} onChange={e => setCurrentEmail(e.target.value)} />
+                            <StyledTextField id={IntegrityPageIds.password} label="Password" value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} />
                             <StyledTextField id={IntegrityPageIds.phone} label="Phone Number" value={currentPhone} onChange={e => setCurrentPhone(e.target.value)} />
                             <FormGroup>
                               Initiatives
@@ -128,14 +126,11 @@ export default function IntegrityPage(){
                           </>
                         :
                           <>
-                            <label className={labelStyle} htmlFor={IntegrityPageIds.email}></label>
-                            <StyledTextField id={IntegrityPageIds.email} label="Email" disabled value={displayItem.email} />
-                            <label className={labelStyle} htmlFor={IntegrityPageIds.password}></label>
-                            <StyledTextField id={IntegrityPageIds.password} label="Password" disabled value={displayItem.password} />
                             <StyledTextField id={IntegrityPageIds.name} label="Name" disabled value={displayItem.name ? displayItem.name : ""} />
+                            <StyledTextField id={IntegrityPageIds.email} label="Email" disabled value={displayItem.email} />
+                            <StyledTextField id={IntegrityPageIds.password} label="Password" disabled value={displayItem.password} />
                             <StyledTextField id={IntegrityPageIds.phone} label="Phone Number" disabled value={displayItem.phoneNumber ? displayItem.phoneNumber : ""} />
                             <FormGroup>
-                              Initiatives
                               {allCompanies.map((company,index) => {
                                 return (
                                   <Fragment key={index}>

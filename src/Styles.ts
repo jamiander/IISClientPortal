@@ -65,6 +65,7 @@ export const TableHeaderStyle =
       color: "#000"
     },
     marginTop: 20,
+    marginBottom: 10,
     marginLeft: 10,
     marginRight: 10
   }));
