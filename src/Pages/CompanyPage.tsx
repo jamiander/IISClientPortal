@@ -140,9 +140,9 @@ export function CompanyPage()
                             {
                               usersAtCompany.map((user,jndex) => {
                                 return(
-                                  <><StyledTextField disabled label="Name" className="bg-white" value={user.name ? user.name : "Unknown"}>
+                                  <Fragment key={jndex}><StyledTextField disabled label="Name" className="bg-white" value={user.name ? user.name : "Unknown"}>
                                   </StyledTextField><StyledTextField disabled label="Email" className="bg-white" value={user.email}>
-                                  </StyledTextField></>    
+                                  </StyledTextField></Fragment>    
                                   )
                               })
                             }
