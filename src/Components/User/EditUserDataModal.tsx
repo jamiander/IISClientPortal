@@ -51,8 +51,8 @@ export default function EditUserDataModal(props: EditUserDataProps){
   const [currentEmail, setCurrentEmail] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
   const [currentInitiatives, setCurrentInitiatives] = useState<string[]>([]);
-  const [currentName, setCurrentName] = useState<string>();
-  const [currentPhone, setCurrentPhone] = useState<string>();
+  const [currentName, setCurrentName] = useState("");
+  const [currentPhone, setCurrentPhone] = useState("");
   const InEditMode = () => modalState === State.edit || modalState === State.add;
   const [searchedKeyword, setSearchedKeyword] = useState("");
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
@@ -71,8 +71,8 @@ export default function EditUserDataModal(props: EditUserDataProps){
       setCurrentEmail(currentUser.email);
       setCurrentPassword(currentUser.password);
       setCurrentInitiatives(currentUser.initiativeIds);
-      setCurrentName(currentUser.name);
-      setCurrentPhone(currentUser.phoneNumber);
+      setCurrentName(currentUser.name ? currentUser.name : "");
+      setCurrentPhone(currentUser.phoneNumber ? currentUser.phoneNumber : "");
     }
   }
 
@@ -90,9 +90,9 @@ export default function EditUserDataModal(props: EditUserDataProps){
       setUsersList(usersClone);
     }
     LeaveEditMode()
-  };
+  }
 
-  function HandleEditUser(id: string, newEmail: string, newPassword: string, newInitiatives: string[], newName: string | undefined, newPhone: string | undefined) {
+  function HandleEditUser(id: string, newEmail: string, newPassword: string, newInitiatives: string[], newName: string, newPhone: string) {
     let usersClone: User[] = JSON.parse(JSON.stringify(usersList));
     let newUser = usersClone.find(u => u.id === id);
     if(newUser) {
@@ -240,8 +240,8 @@ export default function EditUserDataModal(props: EditUserDataProps){
                             <StyledTextField id={EditUserDataIds.email} label="Email" disabled value={displayItem.email} />
                             <label className={labelStyle} htmlFor={EditUserDataIds.password}></label>
                             <StyledTextField id={EditUserDataIds.password} label="Password" disabled value={displayItem.password} />
-                            <StyledTextField id={EditUserDataIds.name} label="Name" disabled value={displayItem.name} />
-                            <StyledTextField id={EditUserDataIds.phone} label="Phone Number" disabled value={displayItem.phoneNumber} />
+                            <StyledTextField id={EditUserDataIds.name} label="Name" disabled value={displayItem.name ? displayItem.name : ""} />
+                            <StyledTextField id={EditUserDataIds.phone} label="Phone Number" disabled value={displayItem.phoneNumber ? displayItem.phoneNumber : ""} />
                             <FormGroup>
                               {props.company.initiatives.map((init, index) => {
                                 let checkedInitId = (displayItem.initiativeIds.find(id => id === init.id));

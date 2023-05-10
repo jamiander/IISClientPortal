@@ -52,8 +52,8 @@ export default function AdminEditUserDataModal(props: AdminEditUserDataProps){
   const [currentEmail, setCurrentEmail] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
   const [currentInitiatives, setCurrentInitiatives] = useState<string[]>([]);
-  const [currentName, setCurrentName] = useState<string>();
-  const [currentPhone, setCurrentPhone] = useState<string>();
+  const [currentName, setCurrentName] = useState("");
+  const [currentPhone, setCurrentPhone] = useState("");
   const InEditMode = () => modalState === State.edit || modalState === State.add;
   const [searchedKeyword, setSearchedKeyword] = useState("");
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
@@ -72,8 +72,8 @@ export default function AdminEditUserDataModal(props: AdminEditUserDataProps){
       setCurrentEmail(currentUser.email);
       setCurrentPassword(currentUser.password);
       setCurrentInitiatives(currentUser.initiativeIds);
-      setCurrentName(currentUser.name);
-      setCurrentPhone(currentUser.phoneNumber);
+      setCurrentName(currentUser.name ? currentUser.name : "");
+      setCurrentPhone(currentUser.phoneNumber ? currentUser.phoneNumber : "");
     }
   }
 
@@ -91,9 +91,9 @@ export default function AdminEditUserDataModal(props: AdminEditUserDataProps){
       setUsersList(usersClone);
     }
     LeaveEditMode()
-  };
+  }
 
-  function HandleEditUser(id: string, newEmail: string, newPassword: string, newInitiatives: string[], newName: string | undefined, newPhone: string | undefined) {
+  function HandleEditUser(id: string, newEmail: string, newPassword: string, newInitiatives: string[], newName: string, newPhone: string) {
     let usersClone: User[] = JSON.parse(JSON.stringify(usersList));
     let newUser = usersClone.find(u => u.id === id);
     if(newUser) {
@@ -230,13 +230,13 @@ export default function AdminEditUserDataModal(props: AdminEditUserDataProps){
                             <StyledTextField id={AdminEditUserDataIds.email} label="Email" disabled value={displayItem.email} />
                             <label className={labelStyle} htmlFor={AdminEditUserDataIds.password}></label>
                             <StyledTextField id={AdminEditUserDataIds.password} label="Password" disabled value={displayItem.password} />
-                            <StyledTextField id={AdminEditUserDataIds.name} label="Name" disabled value={displayItem.name} />
-                            <StyledTextField id={AdminEditUserDataIds.phone} label="Phone Number" disabled value={displayItem.phoneNumber} />
+                            <StyledTextField id={AdminEditUserDataIds.name} label="Name" disabled value={displayItem.name ? displayItem.name : ""} />
+                            <StyledTextField id={AdminEditUserDataIds.phone} label="Phone Number" disabled value={displayItem.phoneNumber ? displayItem.phoneNumber : ""} />
                             <FormGroup>
                               {props.companies.map((company,index) => {
                                 return (
-                                  <AdminEditInitiativesList company={company} initiativeIds={displayItem.initiativeIds} key={index} editable={false} updateInitiativeIds={UpdateCurrentInitiatives} />
-                                )
+                                  <>{/*<AdminEditInitiativesList company={company} initiativeIds={displayItem.initiativeIds} key={index} editable={false} updateInitiativeIds={UpdateCurrentInitiatives} />
+                                */}</>)
                               })
                             }
                             </FormGroup>
