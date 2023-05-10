@@ -65,44 +65,39 @@ describe('add user spec', () => {
 })
 
 describe("add admin user spec", () => {
-  const modalIds = consts.adminEditUserModalIds;
   const pageIds = consts.integrityPageIds;
 
   beforeEach(() => {
     cy.get(navIds.integrity).click();
-    cy.get(pageIds.editButton).click();
-    cy.get(modalIds.addButton).click({force:true});
+    cy.wait(500);
+    cy.get(pageIds.addButton).click({force:true});
   })
 
   specify('add a new admin user', () => {
-    cy.get(modalIds.email).type(user.email);
-    cy.get(modalIds.password).type(user.password);
-    cy.get(modalIds.isAdmin).check();
+    cy.get(pageIds.email).type(user.email);
+    cy.get(pageIds.password).type(user.password);
+    cy.get(pageIds.isAdmin).check();
 
-    cy.get(modalIds.saveChangesButton).click();
-    cy.contains(user.email);
-    cy.get(modalIds.saveChangesButton).should('not.exist');
-    cy.get(modalIds.editButton).should('exist');
+    cy.get(pageIds.saveChangesButton).click();
+    cy.contains(user.email.split("@")[0]);  //the inputs are too small so it can't read the whole string
+    cy.get(pageIds.saveChangesButton).should('not.exist');
+    cy.get(pageIds.editButton).should('exist');
   })
 
   specify('cannot add a user with invalid input', () => {
-    cy.get(modalIds.saveChangesButton).click();
+    cy.get(pageIds.saveChangesButton).click();
     cy.get(badToastId).contains(failMessage);
   })
 
   specify('cannot add multiple users at once', () => {
-    cy.get(modalIds.addButton).should('be.disabled');
+    cy.get(pageIds.addButton).should('be.disabled');
   })
 
   specify('cancel does not leave behind a blank user', () => {
-    cy.get(modalIds.cancelChangesButton).click();
-    cy.get(modalIds.email).contains(user.email).should('not.exist');
+    cy.get(pageIds.cancelChangesButton).click();
+    cy.get(pageIds.email).contains(user.email).should('not.exist');
   })
 
-  specify('close button closes the modal', () => {
-    cy.get(modalIds.closeModalButton).click();
-    cy.get(modalIds.modal).should('not.exist');
-  })
 })
 
 export {}

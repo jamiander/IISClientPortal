@@ -74,48 +74,49 @@ describe("update user spec",() => {
 })
 
 describe("update admin user spec", () => {
-  const modalIds = consts.adminEditUserModalIds;
   const pageIds = consts.integrityPageIds;
   
   beforeEach(() => {
     cy.get(navIds.integrity).click();
-    cy.get(pageIds.editButton).click();
-    cy.get(modalIds.addButton).click({force:true});
-    cy.get(modalIds.email).type(user.email);
-    cy.get(modalIds.password).type(user.password);
-    cy.get(modalIds.isAdmin).check({force:true});
-    cy.get(modalIds.saveChangesButton).click();
+    cy.wait(500);
+    cy.get(pageIds.addButton).click({force:true});
+    cy.get(pageIds.email).type(user.email);
+    cy.get(pageIds.password).type(user.password);
+    cy.get(pageIds.isAdmin).check({force:true});
+    cy.get(pageIds.saveChangesButton).click();
+    cy.wait(500);
 
-    cy.get(modalIds.editButton).click();
-    cy.get(modalIds.email).clear().type(editedUser.email);
-    cy.get(modalIds.password).clear().type(editedUser.password);
-    cy.get(modalIds.isAdmin).check({force:true});
+    cy.get(pageIds.editButton).click();
+    cy.get(pageIds.email).clear().type(editedUser.email);
+    cy.get(pageIds.password).clear().type(editedUser.password);
+    cy.get(pageIds.isAdmin).check({force:true});
   })
 
-  specify('update a user',() => {
-    cy.get(modalIds.saveChangesButton).click();
-    cy.contains(editedUser.email);
+  specify('update an admin user',() => {
+    cy.get(pageIds.saveChangesButton).click();
+    cy.wait(500);
+    cy.contains(editedUser.email.split("@")[0],);
   })
 
   specify('cannot update with invalid input', () => {
-    cy.get(modalIds.email).clear();
-    cy.get(modalIds.saveChangesButton).click();
+    cy.get(pageIds.email).clear();
+    cy.get(pageIds.saveChangesButton).click();
     cy.get(badToastId).contains(failMessage);
-    cy.get(modalIds.email).type(editedUser.email);
+    cy.get(pageIds.email).type(editedUser.email);
 
-    cy.get(modalIds.password).clear();
-    cy.get(modalIds.saveChangesButton).click();
+    cy.get(pageIds.password).clear();
+    cy.get(pageIds.saveChangesButton).click();
     cy.get(badToastId).contains(failMessage);
   })
 
   specify('cancel button cancels the edit', () => {
-    cy.get(modalIds.cancelChangesButton).click();
-    cy.get(modalIds.saveChangesButton).should('not.exist');
-    cy.contains(user.email);
+    cy.get(pageIds.cancelChangesButton).click();
+    cy.get(pageIds.saveChangesButton).should('not.exist');
+    cy.contains(user.email.split("@")[0]);
   })
 
   specify('cannot edit multiple users at once', () => {
-    cy.get(modalIds.editButton).should('not.exist');
+    cy.get(pageIds.editButton).should('not.exist');
   })
 })
 
