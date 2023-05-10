@@ -22,6 +22,7 @@ export const AdminEditUserDataIds = {
   initiativeIds: "adminEditUserInitiativeIds",
   name: "adminEditUserName",
   phone: "adminEditUserPhone",
+  isAdmin: "adminEditIsAdmin",
   addButton: "adminEditUserAddButton",
   editButton: "adminEditUserEditButton",
   saveChangesButton: "adminEditUserSaveChangesButton",
@@ -54,6 +55,7 @@ export default function AdminEditUserDataModal(props: AdminEditUserDataProps){
   const [currentInitiatives, setCurrentInitiatives] = useState<string[]>([]);
   const [currentName, setCurrentName] = useState("");
   const [currentPhone, setCurrentPhone] = useState("");
+  const [currentIsAdmin, setCurrentIsAdmin] = useState(false);
   const InEditMode = () => modalState === State.edit || modalState === State.add;
   const [searchedKeyword, setSearchedKeyword] = useState("");
 
@@ -73,6 +75,7 @@ export default function AdminEditUserDataModal(props: AdminEditUserDataProps){
       setCurrentInitiatives(currentUser.initiativeIds);
       setCurrentName(currentUser.name ? currentUser.name : "");
       setCurrentPhone(currentUser.phoneNumber ? currentUser.phoneNumber : "");
+      setCurrentIsAdmin(currentUser.isAdmin);
     }
   }
 
@@ -92,7 +95,7 @@ export default function AdminEditUserDataModal(props: AdminEditUserDataProps){
     LeaveEditMode()
   }
 
-  function HandleEditUser(id: string, newEmail: string, newPassword: string, newInitiatives: string[], newName: string, newPhone: string) {
+  function HandleEditUser(id: string, newEmail: string, newPassword: string, newInitiatives: string[], newName: string, newPhone: string, isAdmin: boolean) {
     let usersClone: User[] = JSON.parse(JSON.stringify(usersList));
     let newUser = usersClone.find(u => u.id === id);
     if(newUser) {
@@ -101,6 +104,7 @@ export default function AdminEditUserDataModal(props: AdminEditUserDataProps){
       newUser.initiativeIds = newInitiatives;
       newUser.name = newName;
       newUser.phoneNumber = newPhone;
+      newUser.isAdmin = isAdmin;
       let successfulSubmit = SubmitUserData(newUser);
       if(successfulSubmit) setUsersList(usersClone);
     }
@@ -207,6 +211,9 @@ export default function AdminEditUserDataModal(props: AdminEditUserDataProps){
                               })
                               }
                             </FormGroup>
+                            <FormGroup>
+                              <FormControlLabel control={<Checkbox checked={currentIsAdmin} onChange={(e) => setCurrentIsAdmin(e.target.checked)}/>} label="Admin" />
+                            </FormGroup>
                           </>
                         :
                           <>
@@ -227,13 +234,16 @@ export default function AdminEditUserDataModal(props: AdminEditUserDataProps){
                               })
                             }
                             </FormGroup>
+                            <FormGroup>
+                              <FormControlLabel control={<Checkbox checked={displayItem.isAdmin}/>} label="Admin" />
+                            </FormGroup>
                           </>
                         }
                       </StyledCardContent>
                       <StyledCardActions>
                         {isEdit &&
                           <div className="flex w-full justify-between">
-                            <button id={AdminEditUserDataIds.saveChangesButton} className={submitButtonStyle} onClick={() => HandleEditUser(displayItem.id, currentEmail, currentPassword, currentInitiatives, currentName, currentPhone)}>Save</button>
+                            <button id={AdminEditUserDataIds.saveChangesButton} className={submitButtonStyle} onClick={() => HandleEditUser(displayItem.id, currentEmail, currentPassword, currentInitiatives, currentName, currentPhone, currentIsAdmin)}>Save</button>
                             <button id={AdminEditUserDataIds.cancelChangesButton} className={cancelButtonStyle} onClick={() => HandleCancelEdit()}>Cancel</button>
                           </div>
                         }
