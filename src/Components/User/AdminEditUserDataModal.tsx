@@ -56,7 +56,6 @@ export default function AdminEditUserDataModal(props: AdminEditUserDataProps){
   const [currentPhone, setCurrentPhone] = useState("");
   const InEditMode = () => modalState === State.edit || modalState === State.add;
   const [searchedKeyword, setSearchedKeyword] = useState("");
-  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
   useEffect(() => {
     setUsersList(props.users);
@@ -150,24 +149,6 @@ export default function AdminEditUserDataModal(props: AdminEditUserDataProps){
     setCurrentInitiatives(initiativesClone);
   }
 
-  function DeleteUser(userId: string)
-  {
-    let isTest = false;
-    if((window as any).Cypress)
-      isTest = true;
-
-    dispatch(deleteUserInfo({isTest: isTest, userId}));
-    setUserToEdit(userToEdit);
-    setIsDeleteOpen(false);
-    LeaveEditMode();
-  }
- 
-  function CancelDelete()
-  {
-    setIsDeleteOpen(false);
-    LeaveEditMode();
-  }
-
   return (
     <>
       <Dialog
@@ -201,7 +182,7 @@ export default function AdminEditUserDataModal(props: AdminEditUserDataProps){
           }
           <Grid container spacing={6}>
             {usersList.filter(u => u.email.toUpperCase().includes(searchedKeyword.toUpperCase()) || u.name?.toUpperCase().includes(searchedKeyword.toUpperCase())).map((displayItem, key) => {
-              let isEdit = (modalState === State.edit || modalState === State.add) && displayItem.id === userToEdit?.id;
+              let isEdit = InEditMode() && displayItem.id === userToEdit?.id;
               return (
                 <Grid item md={4} key={key}>
                   <Item>
@@ -216,9 +197,12 @@ export default function AdminEditUserDataModal(props: AdminEditUserDataProps){
                             <StyledTextField id={AdminEditUserDataIds.name} label="Name" value={currentName} onChange={e => setCurrentName(e.target.value)} />
                             <StyledTextField id={AdminEditUserDataIds.phone} label="Phone Number" value={currentPhone} onChange={e => setCurrentPhone(e.target.value)} />
                             <FormGroup>
+                              Initiatives
                               {props.companies.map((company,index) => {
                                 return (
-                                  <AdminEditInitiativesList company={company} initiativeIds={currentInitiatives} key={index} editable={true} updateInitiativeIds={UpdateCurrentInitiatives}/>
+                                  <Fragment key={index}>
+                                    <AdminEditInitiativesList company={company} initiativeIds={currentInitiatives} editable={true} updateInitiativeIds={UpdateCurrentInitiatives}/>
+                                  </Fragment>
                                 )
                               })
                               }
@@ -233,10 +217,13 @@ export default function AdminEditUserDataModal(props: AdminEditUserDataProps){
                             <StyledTextField id={AdminEditUserDataIds.name} label="Name" disabled value={displayItem.name ? displayItem.name : ""} />
                             <StyledTextField id={AdminEditUserDataIds.phone} label="Phone Number" disabled value={displayItem.phoneNumber ? displayItem.phoneNumber : ""} />
                             <FormGroup>
+                              Initiatives
                               {props.companies.map((company,index) => {
                                 return (
-                                  <>{/*<AdminEditInitiativesList company={company} initiativeIds={displayItem.initiativeIds} key={index} editable={false} updateInitiativeIds={UpdateCurrentInitiatives} />
-                                */}</>)
+                                  <Fragment key={index}>
+                                    <AdminEditInitiativesList company={company} initiativeIds={displayItem.initiativeIds} editable={false} updateInitiativeIds={UpdateCurrentInitiatives} />
+                                  </Fragment>
+                                )
                               })
                             }
                             </FormGroup>
@@ -253,8 +240,7 @@ export default function AdminEditUserDataModal(props: AdminEditUserDataProps){
                         {!isEdit && !InEditMode() &&
                           <div className="flex w-full justify-between">
                             <button id={AdminEditUserDataIds.editButton} className={submitButtonStyle} onClick={() => EnterEditMode(displayItem.id, usersList, false)}>Edit</button>
-                            {/*<button id={AdminEditUserDataIds.deleteButton} className={cancelButtonStyle} onClick={() => AttemptDelete(displayItem.id)}>Delete</button>
-                          */}</div>
+                          </div>
                         }
                       </StyledCardActions>
                     </StyledCard>
@@ -265,7 +251,6 @@ export default function AdminEditUserDataModal(props: AdminEditUserDataProps){
           </Grid>
         </div>
       </Dialog>
-      <DeleteDecisionAlert isOpen={isDeleteOpen} setIsOpen={setIsDeleteOpen} DeleteDecision={DeleteUser} CancelDelete={CancelDelete} decisionId={userToEdit?.id} />
     </>
   );
 }

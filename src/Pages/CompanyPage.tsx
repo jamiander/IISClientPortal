@@ -138,9 +138,9 @@ export function CompanyPage()
                         <Grid container justifyContent="space-evenly">
                           <Grid item md={6}>
                             {
-                              usersAtCompany.map((user) => {
+                              usersAtCompany.map((user,jndex) => {
                                 return(
-                                  <UserItem className="mb-4 w-75%">
+                                  <UserItem className="mb-4 w-75%" key={jndex}>
                                     <div className="bg-white">
                                       {user.name ?  user.name : "Unknown"}&nbsp; &nbsp;&nbsp; : &nbsp;&nbsp;&nbsp;{user.email} 
                                     </div>
