@@ -90,13 +90,13 @@ export default function IntegrityPage(){
           </div>
         </div>
         <div className="mx-[2%] mb-[2%]">
-          {integrityUsers.length !== 0 &&
+          {usersList.length !== 0 &&
             <div className="mt-2 mb-4">
               <StyledTextField className="w-1/2" id={IntegrityPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name or email" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)} />
             </div>
           }
           <Grid container spacing={4}>
-            {integrityUsers.filter(u => u.email.toUpperCase().includes(searchedKeyword.toUpperCase()) || u.name?.toUpperCase().includes(searchedKeyword.toUpperCase())).map((displayItem, key) => {
+            {usersList.filter(u => u.email.toUpperCase().includes(searchedKeyword.toUpperCase()) || u.name?.toUpperCase().includes(searchedKeyword.toUpperCase())).map((displayItem, key) => {
               let isEdit = InEditMode() && displayItem.id === userToEdit?.id;
               return (
                 <Grid item md={6} key={key}>
