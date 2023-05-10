@@ -3,6 +3,7 @@ import { useAppSelector } from "../Store/Hooks"
 import { selectCurrentUser, selectIsLoggedIn } from "../Store/UserSlice"
 import { selectCurrentUserId } from "../Store/UserSlice"
 import { enqueueSnackbar } from "notistack"
+import { IntegrityId } from "../Store/CompanySlice"
 
 export const NavPanelIds = {
   dashboard: "navPanelDashboard",
@@ -44,19 +45,18 @@ export default function NavPanel(){
         Dashboard
       </button>
       {
-        currentUser?.isAdmin &&
+        currentUser?.isAdmin && currentUser?.companyId === IntegrityId &&
         <button id={NavPanelIds.company} className={GetNavStyle("/Company")}
           onClick={() => NavHandler('/Company')}>
           Client and User Management
         </button>
       }
       {
-        currentUser?.isAdmin &&
+        currentUser?.isAdmin && currentUser?.companyId === IntegrityId &&
         <button id={NavPanelIds.integrity} className={GetNavStyle("/Integrity")}
           onClick={() => NavHandler('/Integrity')}>
           Integrity User Management
         </button>
-      
       }
     </div>  
   )

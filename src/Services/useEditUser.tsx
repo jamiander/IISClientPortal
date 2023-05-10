@@ -31,6 +31,8 @@ type EditUser = {
   setCurrentName: (value: string) => void
   currentPhone: string
   setCurrentPhone: (value: string) => void
+  currentIsAdmin: boolean
+  setCurrentIsAdmin: (value: boolean) => void
   searchedKeyword: string
   setSearchedKeyword: (value: string) => void
 }
@@ -46,6 +48,7 @@ export function useEditUser() : EditUser
   const [currentInitiativeIds, setterCurrentInitiatives] = useState<string[]>([]);
   const [currentName, setCurrentName] = useState("");
   const [currentPhone, setCurrentPhone] = useState("");
+  const [currentIsAdmin, setCurrentIsAdmin] = useState(false);
   const [usersList, setUsersList] = useState<User[]>([]);
   const [searchedKeyword, setSearchedKeyword] = useState("");
   
@@ -69,6 +72,7 @@ export function useEditUser() : EditUser
       setterCurrentInitiatives(currentUser.initiativeIds);
       setCurrentName(currentUser.name ? currentUser.name : "");
       setCurrentPhone(currentUser.phoneNumber ? currentUser.phoneNumber : "");
+      setCurrentIsAdmin(currentUser.isAdmin ? currentUser.isAdmin : false);
     }
   }
 
@@ -94,12 +98,14 @@ export function useEditUser() : EditUser
   {
     let usersClone: User[] = JSON.parse(JSON.stringify(usersList));
     let newUser = usersClone.find(u => u.id === userToEdit?.id);
-    if(newUser) {
+    if(newUser)
+    {
       newUser.email = currentEmail;
       newUser.password = currentPassword;
       newUser.initiativeIds = currentInitiativeIds;
       newUser.name = currentName;
       newUser.phoneNumber = currentPhone;
+      newUser.isAdmin = currentIsAdmin;
 
       let successfulSubmit = SubmitUserData(newUser);
       if(successfulSubmit)
@@ -173,6 +179,8 @@ export function useEditUser() : EditUser
     setCurrentName,
     currentPhone,
     setCurrentPhone,
+    currentIsAdmin,
+    setCurrentIsAdmin,
     searchedKeyword,
     setSearchedKeyword
   }
