@@ -9,6 +9,7 @@ import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
 import { enqueueSnackbar } from "notistack";
 import { ValidateAdminUser, ValidationFailedPrefix } from "../Services/Validation";
 import { AdminEditInitiativesList } from "../Components/User/AdminEditInitiativesList";
+import { useEditUser } from "../Services/useEditUser";
 
 export const IntegrityPageIds = {
   modal: "adminEditUserModal",
@@ -32,25 +33,34 @@ export default function IntegrityPage(){
   const allUsers = useAppSelector(selectAllUsers);
   const [integrityUsers, setIntegrityUsers] = useState<User[]>([]);
   const currentUserId = useAppSelector(selectCurrentUserId);
-  
-  enum State {
-    edit,
-    add,
-    start
-  }
-
-  const [modalState, setModalState] = useState(State.start);
-
   const dispatch = useAppDispatch();
-  const [userToEdit, setUserToEdit] = useState<User>();
-  const [currentEmail, setCurrentEmail] = useState("");
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [currentInitiatives, setCurrentInitiatives] = useState<string[]>([]);
-  const [currentName, setCurrentName] = useState("");
-  const [currentPhone, setCurrentPhone] = useState("");
-  const [currentIsAdmin, setCurrentIsAdmin] = useState(false);
-  const InEditMode = () => modalState === State.edit || modalState === State.add;
-  const [searchedKeyword, setSearchedKeyword] = useState("");
+
+  const {
+    SetupEditUser,
+    EnterEditMode,
+    InEditMode,
+    LeaveEditMode,
+    AddEmptyUser,
+    SaveEdit,
+    CancelEdit,
+    usersList,
+    userToEdit,
+    currentEmail,
+    setCurrentEmail,
+    currentPassword,
+    setCurrentPassword,
+    currentInitiativeIds,
+    setCurrentInitiativeIds,
+    currentName,
+    setCurrentName,
+    currentPhone,
+    setCurrentPhone,
+    currentIsAdmin,
+    setCurrentIsAdmin,
+    searchedKeyword,
+    setSearchedKeyword
+  } = useEditUser();
+
 
   useEffect(() =>
   {
@@ -60,96 +70,10 @@ export default function IntegrityPage(){
 
   useEffect(() => 
   {
-    setIntegrityUsers(allUsers.filter(user => user.companyId === IntegrityId));
+    const newIntegrityUsers = allUsers.filter(user => user.companyId === IntegrityId);
+    setIntegrityUsers(newIntegrityUsers);
+    SetupEditUser(newIntegrityUsers);
   }, [allUsers])
-
-  function EnterEditMode(id: string, users: User[], isNew: boolean) { 
-    let currentUser = users.find(u => u.id === id);
-    if(currentUser)
-    {
-      setModalState(isNew ? State.add : State.edit);
-      setUserToEdit(currentUser);
-      setCurrentEmail(currentUser.email);
-      setCurrentPassword(currentUser.password);
-      setCurrentInitiatives(currentUser.initiativeIds);
-      setCurrentName(currentUser.name ? currentUser.name : "");
-      setCurrentPhone(currentUser.phoneNumber ? currentUser.phoneNumber : "");
-      setCurrentIsAdmin(currentUser.isAdmin);
-    }
-  }
-
-  function LeaveEditMode() {
-    setModalState(State.start);    
-    setUserToEdit(undefined);
-  }
-
-  function HandleCancelEdit() {
-    if(modalState === State.add && userToEdit)
-    {
-      let usersClone: User[] = JSON.parse(JSON.stringify(integrityUsers));
-      usersClone = usersClone.filter(user => user.id !== userToEdit.id);
-      setIntegrityUsers(usersClone);
-    }
-    LeaveEditMode()
-  }
-
-  function HandleEditUser(id: string, newEmail: string, newPassword: string, newInitiatives: string[], newName: string, newPhone: string, isAdmin: boolean) {
-    let usersClone: User[] = JSON.parse(JSON.stringify(integrityUsers));
-    let newUser = usersClone.find(u => u.id === id);
-    if(newUser) {
-      newUser.email = newEmail;
-      newUser.password = newPassword;
-      newUser.initiativeIds = newInitiatives;
-      newUser.name = newName;
-      newUser.phoneNumber = newPhone;
-      newUser.isAdmin = isAdmin;
-      let successfulSubmit = SubmitUserData(newUser);
-      if(successfulSubmit) setIntegrityUsers(usersClone);
-    }
-  }
-
-  function SubmitUserData(user: User): boolean {
-    let isTest = false;
-    if((window as any).Cypress)
-      isTest = true;
-    let validation = ValidateAdminUser(user,integrityUsers);
-    if(validation.success)
-    {
-      dispatch(upsertUserInfo({isTest: isTest, users: [user]}))
-      LeaveEditMode();
-      return true;
-    }
-    else
-      enqueueSnackbar(ValidationFailedPrefix + validation.message, {variant: "error"});
-    
-    return false;
-  }
-
-  function HandleAddEmptyUser() {
-    let usersClone: User[] = JSON.parse(JSON.stringify(integrityUsers));
-    let myUuid = UuidV4();
-    let newUser: User = {id: myUuid, email: "", password: "", companyId: IntegrityId, initiativeIds: [], name: "", phoneNumber: "", isAdmin: false}
-    usersClone.unshift(newUser);
-    setIntegrityUsers(usersClone);
-    setSearchedKeyword("");
-    EnterEditMode(myUuid,usersClone,true);
-  }
-
-  function UpdateCurrentInitiatives(checked: boolean, id: string) {
-    let initiativesClone: string[] = JSON.parse(JSON.stringify(currentInitiatives));
-    let matchingIdIndex = initiativesClone.findIndex(initId => initId === id);
-    if(matchingIdIndex > -1)
-    {
-      if(!checked)
-        initiativesClone.splice(matchingIdIndex,1);
-    }
-    else
-    {
-      if(checked)
-        initiativesClone.push(id);
-    }
-    setCurrentInitiatives(initiativesClone);
-  }
 
   return (
     <>
@@ -161,7 +85,7 @@ export default function IntegrityPage(){
               <p className="text-3xl w-full">Users</p>
             </div>
             <div className="flex flex-col justify-between">
-              <button disabled={InEditMode()} id={IntegrityPageIds.addButton} className={yellowButtonStyle} onClick={() => HandleAddEmptyUser()}>Add User</button>
+              <button disabled={InEditMode()} id={IntegrityPageIds.addButton} className={yellowButtonStyle} onClick={() => AddEmptyUser(IntegrityId)}>Add User</button>
             </div>
           </div>
         </div>
@@ -192,7 +116,7 @@ export default function IntegrityPage(){
                               {allCompanies.map((company,index) => {
                                 return (
                                   <Fragment key={index}>
-                                    <AdminEditInitiativesList company={company} initiativeIds={currentInitiatives} editable={true} updateInitiativeIds={UpdateCurrentInitiatives}/>
+                                    <AdminEditInitiativesList company={company} initiativeIds={currentInitiativeIds} editable={true} updateInitiativeIds={setCurrentInitiativeIds}/>
                                   </Fragment>
                                 )
                               })
@@ -215,7 +139,7 @@ export default function IntegrityPage(){
                               {allCompanies.map((company,index) => {
                                 return (
                                   <Fragment key={index}>
-                                    <AdminEditInitiativesList company={company} initiativeIds={displayItem.initiativeIds} editable={false} updateInitiativeIds={UpdateCurrentInitiatives} />
+                                    <AdminEditInitiativesList company={company} initiativeIds={displayItem.initiativeIds} editable={false} updateInitiativeIds={setCurrentInitiativeIds} />
                                   </Fragment>
                                 )
                               })
@@ -230,8 +154,8 @@ export default function IntegrityPage(){
                       <StyledCardActions>
                         {isEdit &&
                           <div className="flex w-full justify-between">
-                            <button id={IntegrityPageIds.saveChangesButton} className={submitButtonStyle} onClick={() => HandleEditUser(displayItem.id, currentEmail, currentPassword, currentInitiatives, currentName, currentPhone, currentIsAdmin)}>Save</button>
-                            <button id={IntegrityPageIds.cancelChangesButton} className={cancelButtonStyle} onClick={() => HandleCancelEdit()}>Cancel</button>
+                            <button id={IntegrityPageIds.saveChangesButton} className={submitButtonStyle} onClick={() => SaveEdit()}>Save</button>
+                            <button id={IntegrityPageIds.cancelChangesButton} className={cancelButtonStyle} onClick={() => CancelEdit()}>Cancel</button>
                           </div>
                         }
                         {!isEdit && !InEditMode() &&
