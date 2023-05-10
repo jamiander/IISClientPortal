@@ -11,6 +11,7 @@ import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
 import { enqueueSnackbar } from "notistack";
 import { ValidateUser, ValidationFailedPrefix } from "../../Services/Validation";
 import { DeleteDecisionAlert } from "../Initiative/DeleteDecisionAlert";
+import { useEditUser } from "../../Services/useEditUser";
 
 export const EditUserDataIds = {
     modal: "editUserModal",
@@ -37,129 +38,48 @@ interface EditUserDataProps {
 }
 
 export default function EditUserDataModal(props: EditUserDataProps){
-  enum State {
-    edit,
-    add,
-    start
-  }
-
-  const [modalState, setModalState] = useState(State.start);
-
-  const dispatch = useAppDispatch();
-  const [usersList, setUsersList] = useState<User[]>(props.users);
-  const [userToEdit, setUserToEdit] = useState<User>();
-  const [currentEmail, setCurrentEmail] = useState("");
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [currentInitiatives, setCurrentInitiatives] = useState<string[]>([]);
-  const [currentName, setCurrentName] = useState("");
-  const [currentPhone, setCurrentPhone] = useState("");
-  const InEditMode = () => modalState === State.edit || modalState === State.add;
-  const [searchedKeyword, setSearchedKeyword] = useState("");
+  
+  const {
+    SetupEditUser,
+    EnterEditMode,
+    InEditMode,
+    LeaveEditMode,
+    AddEmptyUser,
+    SaveEdit,
+    CancelEdit,
+    usersList,
+    userToEdit,
+    currentEmail,
+    setCurrentEmail,
+    currentPassword,
+    setCurrentPassword,
+    currentInitiativeIds,
+    setCurrentInitiativeIds,
+    currentName,
+    setCurrentName,
+    currentPhone,
+    setCurrentPhone,
+    searchedKeyword,
+    setSearchedKeyword
+  } = useEditUser();
+  
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
   useEffect(() => {
-    setUsersList(props.users);
-    LeaveEditMode();
+    SetupEditUser(props.users)
   },[props.isOpen])
 
-  function EnterEditMode(id: string, users: User[], isNew: boolean) { 
-    let currentUser = users.find(u => u.id === id);
-    if(currentUser)
-    {
-      setModalState(isNew ? State.add : State.edit);
-      setUserToEdit(currentUser);
-      setCurrentEmail(currentUser.email);
-      setCurrentPassword(currentUser.password);
-      setCurrentInitiatives(currentUser.initiativeIds);
-      setCurrentName(currentUser.name ? currentUser.name : "");
-      setCurrentPhone(currentUser.phoneNumber ? currentUser.phoneNumber : "");
-    }
-  }
-
-  function LeaveEditMode() {
-    setModalState(State.start);      
-    setUserToEdit(undefined);
-  }
-
-  function HandleCancelEdit() {
-    if(modalState === State.add && userToEdit)
-    {
-      let usersClone: User[] = JSON.parse(JSON.stringify(usersList));
-      usersClone = usersClone.filter(user => user.id !== userToEdit.id);
-
-      setUsersList(usersClone);
-    }
-    LeaveEditMode()
-  }
-
-  function HandleEditUser(id: string, newEmail: string, newPassword: string, newInitiatives: string[], newName: string, newPhone: string) {
-    let usersClone: User[] = JSON.parse(JSON.stringify(usersList));
-    let newUser = usersClone.find(u => u.id === id);
-    if(newUser) {
-      newUser.email = newEmail;
-      newUser.password = newPassword;
-      newUser.initiativeIds = newInitiatives;
-      newUser.name = newName;
-      newUser.phoneNumber = newPhone;
-      let successfulSubmit = SubmitUserData(newUser);
-      if(successfulSubmit) setUsersList(usersClone);
-    }
-  }
-
-  function SubmitUserData(user: User): boolean {
-    let isTest = false;
-    if((window as any).Cypress)
-      isTest = true;
-    let validation = ValidateUser(user,usersList);
-    if(validation.success)
-    {
-      dispatch(upsertUserInfo({isTest: isTest, users: [user]}))
-      LeaveEditMode();
-      return true;
-    }
-    else
-      enqueueSnackbar(ValidationFailedPrefix + validation.message, {variant: "error"});
-    
-    return false;
-  }
-
-    function HandleAddEmptyUser() {
-      let usersClone: User[] = JSON.parse(JSON.stringify(usersList));
-      let myUuid = UuidV4();
-      let newUser: User = {id: myUuid, email: "", password: "", companyId: props.company.id, initiativeIds: [], name: "", phoneNumber: "", isAdmin: false}
-      usersClone.unshift(newUser);
-      setUsersList(usersClone);
-      setSearchedKeyword("");
-      EnterEditMode(myUuid,usersClone,true);
-    }
-
-  function UpdateCurrentInitiatives(checked: boolean, id: string) {
-    let initiativesClone: string[] = JSON.parse(JSON.stringify(currentInitiatives));
-    let matchingIdIndex = initiativesClone.findIndex(initId => initId === id);
-    if(matchingIdIndex > -1)
-    {
-      if(!checked)
-        initiativesClone.splice(matchingIdIndex,1);
-    }
-    else
-    {
-      if(checked)
-        initiativesClone.push(id);
-    }
-    setCurrentInitiatives(initiativesClone);
-  }
-
-  function AttemptDelete(userId: string)
+  /*function AttemptDelete(userId: string)
   {
     /* if(modalState === State.start)
     { */
-      setIsDeleteOpen(true);
+      /*setIsDeleteOpen(true);
       setUserToEdit(usersList.find(u => u.id === userId));
       /* setModalState(State.delete); */
     /* }
     else
       enqueueSnackbar("Cannot delete with unsaved changes.", {variant: "error"}); */
-  }
+  /*}
 
   function DeleteUser(userId: string)
   {
@@ -177,7 +97,7 @@ export default function EditUserDataModal(props: EditUserDataProps){
   {
     setIsDeleteOpen(false);
     LeaveEditMode();
-  }
+  }*/
 
   return (
     <>
@@ -200,7 +120,7 @@ export default function EditUserDataModal(props: EditUserDataProps){
                   <CloseIcon sx={{ fontSize: 40 }} />
                 </button>
               </div>
-              <button disabled={InEditMode()} id={EditUserDataIds.addButton} className={yellowButtonStyle} onClick={() => HandleAddEmptyUser()}>Add User</button>
+              <button disabled={InEditMode()} id={EditUserDataIds.addButton} className={yellowButtonStyle} onClick={() => AddEmptyUser(props.company.id)}>Add User</button>
             </div>
           </div>
         </div>
@@ -212,7 +132,7 @@ export default function EditUserDataModal(props: EditUserDataProps){
           }
           <Grid container spacing={6}>
             {usersList.filter(u => u.email.toUpperCase().includes(searchedKeyword.toUpperCase()) || u.name?.toUpperCase().includes(searchedKeyword.toUpperCase())).map((displayItem, key) => {
-              let isEdit = (modalState === State.edit || modalState === State.add) && displayItem.id === userToEdit?.id;
+              let isEdit = InEditMode() && displayItem.id === userToEdit?.id;
               return (
                 <Grid item md={4} key={key}>
                   <Item>
@@ -229,7 +149,7 @@ export default function EditUserDataModal(props: EditUserDataProps){
                             <FormGroup>
                               {props.company.initiatives.map((initiative, index) => {
                                 return (
-                                  <FormControlLabel key={index} control={<Checkbox checked={currentInitiatives.find(id => initiative.id === id) !== undefined} onChange={(e) => UpdateCurrentInitiatives(e.target.checked, initiative.id)} />} label={initiative.title} />
+                                  <FormControlLabel key={index} control={<Checkbox checked={currentInitiativeIds.find(id => initiative.id === id) !== undefined} onChange={(e) => setCurrentInitiativeIds(initiative.id,e.target.checked)} />} label={initiative.title} />
                                 );
                               })}
                             </FormGroup>
@@ -258,8 +178,8 @@ export default function EditUserDataModal(props: EditUserDataProps){
                       <StyledCardActions>
                         {isEdit &&
                           <div className="flex w-full justify-between">
-                            <button id={EditUserDataIds.saveChangesButton} className={submitButtonStyle} onClick={() => HandleEditUser(displayItem.id, currentEmail, currentPassword, currentInitiatives, currentName, currentPhone)}>Save</button>
-                            <button id={EditUserDataIds.cancelChangesButton} className={cancelButtonStyle} onClick={() => HandleCancelEdit()}>Cancel</button>
+                            <button id={EditUserDataIds.saveChangesButton} className={submitButtonStyle} onClick={() => SaveEdit()}>Save</button>
+                            <button id={EditUserDataIds.cancelChangesButton} className={cancelButtonStyle} onClick={() => CancelEdit()}>Cancel</button>
                           </div>
                         }
                         {!isEdit && !InEditMode() &&
@@ -277,7 +197,9 @@ export default function EditUserDataModal(props: EditUserDataProps){
           </Grid>
         </div>
       </Dialog>
+      {/*
       <DeleteDecisionAlert isOpen={isDeleteOpen} setIsOpen={setIsDeleteOpen} DeleteDecision={DeleteUser} CancelDelete={CancelDelete} decisionId={userToEdit?.id} />
+          */}
     </>
   );
 }
