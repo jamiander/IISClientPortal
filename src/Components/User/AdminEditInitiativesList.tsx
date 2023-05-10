@@ -19,7 +19,7 @@ export function AdminEditInitiativesList(props: AdminEditInitiativesListProps)
       <UserItem className="mt-2 mb-4"> 
       <Accordion defaultExpanded>
         <AccordionSummary className="hover:bg-[#29c2b0]">
-          <p className={isCompanyChecked ? "font-bold" : ""}>
+          <p className={`text-xl ${isCompanyChecked ? "font-bold" : ""}`}>
             {props.company.name}
           </p>
         </AccordionSummary>
