@@ -127,7 +127,7 @@ export function CompanyPage()
             return (
               <Fragment key={index}>
                 {!isEdit ?
-                <Grid item md={6} id={"companyPageCard"+company.id}>
+                <Grid item md={4} id={"companyPageCard"+company.id}>
                   <Item>
                     <StyledCard>
                       <StyledCardContent>
@@ -135,16 +135,14 @@ export function CompanyPage()
                           <h2 className="text-2xl font-semibold mb-6">{company.name}</h2>
                           <button className="mb-6" id={CompanyPageIds.editClientNameButton} onClick={() => HandleEditCompanyButton(company.id)}><EditIcon sx={{fontSize: '18px', marginLeft: '15px'}}/></button>
                         </div>
-                        <Grid container justifyContent="space-evenly">
-                          <Grid item md={6}>
+                        <Grid container spacing={4}>
+                          <Grid item md={8}>
                             {
                               usersAtCompany.map((user,jndex) => {
                                 return(
-                                  <UserItem className="mb-4 w-75%" key={jndex}>
-                                    <div className="bg-white">
-                                      {user.name ?  user.name : "Unknown"}&nbsp; &nbsp;&nbsp; : &nbsp;&nbsp;&nbsp;{user.email} 
-                                    </div>
-                                  </UserItem>                           
+                                  <><StyledTextField disabled label="Name" className="bg-white" value={user.name ? user.name : "Unknown"}>
+                                  </StyledTextField><StyledTextField disabled label="Email" className="bg-white" value={user.email}>
+                                  </StyledTextField></>    
                                   )
                               })
                             }

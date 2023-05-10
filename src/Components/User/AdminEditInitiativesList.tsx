@@ -1,6 +1,7 @@
 import { Accordion, AccordionDetails, AccordionSummary, Checkbox, FormControlLabel } from "@mui/material";
 import { Company } from "../../Store/CompanySlice";
 import { Fragment } from "react";
+import { UserItem } from "../../Styles";
 
 interface AdminEditInitiativesListProps {
   company: Company
@@ -15,8 +16,9 @@ export function AdminEditInitiativesList(props: AdminEditInitiativesListProps)
   if(isCompanyChecked || props.editable)
   {
     return (
-      <Accordion>
-        <AccordionSummary>
+      <UserItem className="mt-2 mb-4"> 
+      <Accordion defaultExpanded>
+        <AccordionSummary className="hover:bg-[#29c2b0]">
           <p className={isCompanyChecked ? "font-bold" : ""}>
             {props.company.name}
           </p>
@@ -36,13 +38,14 @@ export function AdminEditInitiativesList(props: AdminEditInitiativesListProps)
             else
             {
               return (
-                <FormControlLabel key={index} control={<Checkbox checked={checkedInit !== undefined} />} label={init?.title} />
+                <FormControlLabel disabled key={index} control={<Checkbox checked={checkedInit !== undefined} />} label={init?.title} />
               );
             }
           })
         }
         </AccordionDetails>
       </Accordion>
+      </UserItem>
     )
   }
   else
