@@ -10,7 +10,7 @@ import {v4 as UuidV4} from "uuid";
 import { useAppDispatch } from "../../Store/Hooks";
 import { Accordion, AccordionDetails, AccordionSummary, Checkbox, FormControlLabel, FormGroup, Typography } from "@mui/material";
 import { enqueueSnackbar } from "notistack";
-import { ValidateUser, ValidationFailedPrefix } from "../../Services/Validation";
+import { ValidateAdminUser, ValidateUser, ValidationFailedPrefix } from "../../Services/Validation";
 import { DeleteDecisionAlert } from "../Initiative/DeleteDecisionAlert";
 import { AdminEditInitiativesList } from "./AdminEditInitiativesList";
 
@@ -114,7 +114,7 @@ export default function AdminEditUserDataModal(props: AdminEditUserDataProps){
     let isTest = false;
     if((window as any).Cypress)
       isTest = true;
-    let validation = ValidateUser(user,usersList);
+    let validation = ValidateAdminUser(user,usersList);
     if(validation.success)
     {
       dispatch(upsertUserInfo({isTest: isTest, users: [user]}))

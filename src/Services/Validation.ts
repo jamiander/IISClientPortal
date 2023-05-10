@@ -69,17 +69,31 @@ export function ValidateCompany(newCompany: Company, companyList: Company[]): Va
   return {success: false, message: "Cannot leave any fields blank."};
 }
 
-export function ValidateUser(newUser: User, userList: User[]) : Validation
+export function ValidateUser(newUser: User, allUsers: User[]) : Validation
 {
   if(newUser && newUser.email && newUser.password)
   {
-    let matchingUser = userList.find(user => user.email.toUpperCase() === newUser.email.toUpperCase() && newUser.id !== user.id)
+    let matchingUser = allUsers.find(user => user.email.toUpperCase() === newUser.email.toUpperCase() && newUser.id !== user.id)
     if(matchingUser)
       return {success: false, message: "Cannot use the email of an existing user."};
 
     return {success: true, message: "Successfully validated; all good!"};
   }
   return {success: false, message: "Cannot leave any fields blank."};
+}
+
+export function ValidateAdminUser(newUser: User, allUsers: User[]) : Validation
+{
+  const validation = ValidateUser(newUser, allUsers);
+  if(validation.success)
+  {
+    if(!newUser.isAdmin && allUsers.find(user => user.isAdmin && user.id !== newUser.id) === undefined)
+      return {success: false, message: "Cannot remove admin status if there are no other admins."}
+
+    return {success: true, message: "Successfully validated admin user."}
+  }
+  else
+    return validation;
 }
 
 export function ValidateThroughputData(dataList: ThroughputData[]) : Validation
