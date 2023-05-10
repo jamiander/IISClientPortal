@@ -99,7 +99,7 @@ export default function IntegrityPage(){
             {usersList.filter(u => u.email.toUpperCase().includes(searchedKeyword.toUpperCase()) || u.name?.toUpperCase().includes(searchedKeyword.toUpperCase())).map((displayItem, key) => {
               let isEdit = InEditMode() && displayItem.id === userToEdit?.id;
               return (
-                <Grid item md={6} key={key}>
+                <Grid item md={4} key={key}>
                   <Item>
                     <StyledCard>
                       <StyledCardContent>
@@ -110,7 +110,6 @@ export default function IntegrityPage(){
                             <StyledTextField id={IntegrityPageIds.password} label="Password" value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} />
                             <StyledTextField id={IntegrityPageIds.phone} label="Phone Number" value={currentPhone} onChange={e => setCurrentPhone(e.target.value)} />
                             <FormGroup>
-                              Initiatives
                               {allCompanies.map((company,index) => {
                                 return (
                                   <Fragment key={index}>
