@@ -2,7 +2,7 @@ import { Grid } from "@mui/material";
 import { IntegrityId, selectAllCompanies } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks"
 import { User, getUserById, selectAllUsers, selectCurrentUserId } from "../Store/UserSlice";
-import { Item, StyledCard, StyledCardActions, StyledCardContent, cancelButtonStyle, submitButtonStyle, yellowButtonStyle } from "../Styles";
+import { Item, StyledCard, StyledCardActions, StyledCardContent, UserItem, cancelButtonStyle, submitButtonStyle, yellowButtonStyle } from "../Styles";
 import { useEffect, useState } from "react";
 import AdminEditUserDataModal from "../Components/User/AdminEditUserDataModal";
 
@@ -33,26 +33,26 @@ export function IntegrityPage(){
             Edit Users
           </button>
         </div>
-        <Grid container spacing={2}>
+        <Grid container justifyContent="space-evenly">
+              <Grid item md={4}>
         {
           integrityUsers.map((user, index) => {
             return (
-              <Grid item md={4} key={index}>
-                <Item>
+              <Item className="mb-4">
                   <StyledCard>
                     <StyledCardContent>
-                      {user.email}
+                      {user.name ?  user.name : "Unknown"}&nbsp; &nbsp;&nbsp; : &nbsp;&nbsp;&nbsp;{user.email} 
                     </StyledCardContent>
-                    <StyledCardActions>
+                  <StyledCardActions>
                       
                     </StyledCardActions>
                   </StyledCard>
                 </Item>
-              </Grid>
             )
           })
         }
         </Grid>
+              </Grid>
       </div>
       <AdminEditUserDataModal isOpen={isModalOpen} setIsOpen={setIsModalOpen} companies={allCompanies} users={integrityUsers}/>
     </div>
