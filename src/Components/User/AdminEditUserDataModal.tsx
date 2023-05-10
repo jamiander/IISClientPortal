@@ -212,7 +212,7 @@ export default function AdminEditUserDataModal(props: AdminEditUserDataProps){
                               }
                             </FormGroup>
                             <FormGroup>
-                              <FormControlLabel control={<Checkbox checked={currentIsAdmin} onChange={(e) => setCurrentIsAdmin(e.target.checked)}/>} label="Admin" />
+                              <FormControlLabel control={<Checkbox id={AdminEditUserDataIds.isAdmin} checked={currentIsAdmin} onChange={(e) => setCurrentIsAdmin(e.target.checked)}/>} label="Admin" />
                             </FormGroup>
                           </>
                         :
@@ -235,7 +235,7 @@ export default function AdminEditUserDataModal(props: AdminEditUserDataProps){
                             }
                             </FormGroup>
                             <FormGroup>
-                              <FormControlLabel control={<Checkbox checked={displayItem.isAdmin}/>} label="Admin" />
+                              <FormControlLabel control={<Checkbox id={AdminEditUserDataIds.isAdmin} checked={displayItem.isAdmin}/>} label="Admin" />
                             </FormGroup>
                           </>
                         }

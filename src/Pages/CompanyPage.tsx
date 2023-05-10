@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useState } from "react";
-import { Company, selectAllCompanies, upsertCompanyInfo } from "../Store/CompanySlice"
+import { Company, IntegrityId, selectAllCompanies, upsertCompanyInfo } from "../Store/CompanySlice"
 import { useAppDispatch, useAppSelector } from "../Store/Hooks"
 import { Button, Card, CardActions, CardContent, CardHeader, Grid, List, ListItem, Typography } from "@mui/material";
 import { getUserById, selectAllUsers, selectCurrentUser, selectCurrentUserId } from "../Store/UserSlice";
@@ -46,7 +46,7 @@ export function CompanyPage()
   }, [currentUserId]);
 
   useEffect(() => {
-    setDisplayCompanies(allCompanies);
+    setDisplayCompanies(allCompanies.filter(company => company.id !== IntegrityId));
   },[allCompanies])
 
   function BeginEdit(editableCompany: Company, newCompany: boolean)
