@@ -39,7 +39,11 @@ describe('add user spec', () => {
     cy.get(modalIds.password).type(user.password);
 
     cy.get(modalIds.saveChangesButton).click();
-    cy.contains(user.email);
+    cy.get(modalIds.modal).within(() => {
+      cy.get(modalIds.email)
+      .invoke('val')
+      .should('equal', user.email);
+    })
     cy.get(modalIds.saveChangesButton).should('not.exist');
     cy.get(modalIds.editButton).should('exist');
   })
@@ -79,7 +83,10 @@ describe("add admin user spec", () => {
     cy.get(pageIds.isAdmin).check();
 
     cy.get(pageIds.saveChangesButton).click();
-    cy.contains(user.email.split("@")[0]);  //the inputs are too small so it can't read the whole string
+    cy.get(pageIds.email)
+      .invoke('val')
+      .should('equal', user.email);
+    
     cy.get(pageIds.saveChangesButton).should('not.exist');
     cy.get(pageIds.editButton).should('exist');
   })
