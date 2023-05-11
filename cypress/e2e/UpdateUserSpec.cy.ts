@@ -48,7 +48,9 @@ describe("update user spec",() => {
 
   specify('update a user',() => {
     cy.get(modalIds.saveChangesButton).click();
-    cy.contains(editedUser.email);
+    cy.get(modalIds.email)
+    .invoke('val')
+    .should('equal', editedUser.email);
   })
 
   specify('cannot update with invalid input', () => {
@@ -65,7 +67,9 @@ describe("update user spec",() => {
   specify('cancel button cancels the edit', () => {
     cy.get(modalIds.cancelChangesButton).click();
     cy.get(modalIds.saveChangesButton).should('not.exist');
-    cy.contains(user.email);
+    cy.get(modalIds.email)
+    .invoke('val')
+    .should('equal', user.email);
   })
 
   specify('cannot edit multiple users at once', () => {
@@ -78,7 +82,7 @@ describe("update admin user spec", () => {
   
   beforeEach(() => {
     cy.get(navIds.integrity).click();
-    cy.wait(500);
+    cy.wait(1000);
     cy.get(pageIds.addButton).click({force:true});
     cy.get(pageIds.email).type(user.email);
     cy.get(pageIds.password).type(user.password);
@@ -86,33 +90,48 @@ describe("update admin user spec", () => {
     cy.get(pageIds.saveChangesButton).click();
     cy.wait(500);
 
-    cy.get(pageIds.editButton).click();
-    cy.get(pageIds.email).clear().type(editedUser.email);
-    cy.get(pageIds.password).clear().type(editedUser.password);
-    cy.get(pageIds.isAdmin).check({force:true});
+    cy.get(pageIds.grid).children().last().within(() => {
+      cy.get(pageIds.editButton).click();
+      cy.get(pageIds.email).clear().type(editedUser.email);
+      cy.get(pageIds.password).clear().type(editedUser.password);
+      cy.get(pageIds.isAdmin).check({force:true});
+    })
+    
   })
 
   specify('update an admin user',() => {
     cy.get(pageIds.saveChangesButton).click();
     cy.wait(500);
-    cy.contains(editedUser.email.split("@")[0],);
+    cy.get(pageIds.grid).children().last().within(() => {
+      cy.get(pageIds.email).invoke('val').should('equal',editedUser.email);
+    })
   })
 
   specify('cannot update with invalid input', () => {
-    cy.get(pageIds.email).clear();
-    cy.get(pageIds.saveChangesButton).click();
-    cy.get(badToastId).contains(failMessage);
-    cy.get(pageIds.email).type(editedUser.email);
+    cy.get(pageIds.grid).children().last().within(() => {
+    
+      cy.get(pageIds.email).clear();
+      cy.get(pageIds.saveChangesButton).click();
+    })
 
-    cy.get(pageIds.password).clear();
-    cy.get(pageIds.saveChangesButton).click();
+    cy.get(badToastId).contains(failMessage);
+    
+    cy.get(pageIds.grid).children().last().within(() => {
+      cy.get(pageIds.email).type(editedUser.email);
+
+      cy.get(pageIds.password).clear();
+      cy.get(pageIds.saveChangesButton).click();
+    })
+    
     cy.get(badToastId).contains(failMessage);
   })
 
   specify('cancel button cancels the edit', () => {
     cy.get(pageIds.cancelChangesButton).click();
     cy.get(pageIds.saveChangesButton).should('not.exist');
-    cy.contains(user.email.split("@")[0]);
+    cy.get(pageIds.grid).children().last().within(() => {
+      cy.get(pageIds.email).invoke('val').should('equal',user.email);
+    })
   })
 
   specify('cannot edit multiple users at once', () => {
