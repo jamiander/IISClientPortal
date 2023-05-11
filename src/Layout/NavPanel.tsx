@@ -45,7 +45,7 @@ export default function NavPanel(){
         Dashboard
       </button>
       {
-        currentUser?.isAdmin && currentUser?.companyId === IntegrityId &&
+        currentUser?.isAdmin &&
         <button id={NavPanelIds.company} className={GetNavStyle("/Company")}
           onClick={() => NavHandler('/Company')}>
           Client and User Management
