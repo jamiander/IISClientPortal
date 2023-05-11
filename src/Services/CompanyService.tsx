@@ -50,6 +50,7 @@ export async function GetCompanyById(request?: GetCompanyByIdRequest) : Promise<
 export interface GetCompanyByInitiativeIdsRequest {
   initiativeIds: string[],
   isAdmin: boolean,
+  companyId: string
 }
 
 interface GetCompanyByInitiativeIdsResponse {
