@@ -1,13 +1,10 @@
-import { Item, StyledCard, StyledCardActions, StyledCardContent, StyledTextField, cancelButtonStyle, labelStyle, submitButtonStyle, yellowButtonStyle } from "../Styles";
+import { Item, StyledCard, StyledCardActions, StyledCardContent, StyledTextField, cancelButtonStyle, submitButtonStyle, yellowButtonStyle } from "../Styles";
 import { Fragment, useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
-import { User, getUserById, selectAllUsers, selectCurrentUserId, upsertUserInfo } from "../Store/UserSlice";
+import { User, getUserById, selectAllUsers, selectCurrentUserId } from "../Store/UserSlice";
 import { IntegrityId, selectAllCompanies } from "../Store/CompanySlice";
-import {v4 as UuidV4} from "uuid";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
 import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
-import { enqueueSnackbar } from "notistack";
-import { ValidateAdminUser, ValidationFailedPrefix } from "../Services/Validation";
 import { AdminEditInitiativesList } from "../Components/User/AdminEditInitiativesList";
 import { useEditUser } from "../Services/useEditUser";
 
@@ -40,7 +37,6 @@ export default function IntegrityPage(){
     SetupEditUser,
     EnterEditMode,
     InEditMode,
-    LeaveEditMode,
     AddEmptyUser,
     SaveEdit,
     CancelEdit,
@@ -141,7 +137,7 @@ export default function IntegrityPage(){
                             }
                             </FormGroup>
                             <FormGroup>
-                              <FormControlLabel control={<Checkbox id={IntegrityPageIds.isAdmin} checked={displayItem.isAdmin}/>} label="Admin" />
+                              <FormControlLabel disabled control={<Checkbox id={IntegrityPageIds.isAdmin} checked={displayItem.isAdmin}/>} label="Admin" />
                             </FormGroup>
                           </>
                         }

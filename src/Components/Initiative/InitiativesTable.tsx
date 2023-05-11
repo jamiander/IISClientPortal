@@ -152,14 +152,15 @@ let totalInits: number = companyInits.length;
           <TableContainer component={Paper}>
             <Table className="table-auto w-full outline outline-3 bg-gray-100">
               <colgroup>
-                <col style={{ width: '18%' }} />
                 <col style={{ width: '15%' }} />
-                <col style={{ width: '11%' }} />
-                <col style={{ width: '11%' }} />
-                <col style={{ width: '8%' }} />
-                <col style={{ width: '10%' }} />
-                <col style={{ width: '11%' }} />
-                <col style={{ width: '4%' }} />
+                <col style={{ width: '15%' }} />
+                <col style={{ width: '13%' }} />
+                <col style={{ width: '13%' }} />
+                <col style={{ width: '7%' }} />
+                <col style={{ width: '9%' }} />
+                <col style={{ width: '12%' }} />
+                <col style={{ width: '3%' }} />
+                <col style={{ width: '3%' }} />
               </colgroup>
               <TableHead className="outline outline-1">
                 <TableRow sx={{
@@ -170,14 +171,14 @@ let totalInits: number = companyInits.length;
                     fontFamily: "Arial, Helvetica"
                   }
                 }}>
+                  <TableHeaderStyle>Company
+                    <TableSortLabel onClick={() => requestSort('companyName')} active={true} direction={sortConfig.direction === 'descending' ? 'desc' : 'asc'}>
+                    </TableSortLabel>
+                  </TableHeaderStyle>
                   <TableHeaderStyle>Title
                     <TableSortLabel onClick={() => requestSort('title')} active={true} direction={sortConfig.direction === 'descending' ? 'desc' : 'asc'}>
                     </TableSortLabel>
                   </TableHeaderStyle>
-                  {props.admin && <TableHeaderStyle>Company
-                    <TableSortLabel onClick={() => requestSort('companyName')} active={true} direction={sortConfig.direction === 'descending' ? 'desc' : 'asc'}>
-                    </TableSortLabel>
-                  </TableHeaderStyle>}
                   <TableHeaderStyle>Start Date
                     <TableSortLabel onClick={() => requestSort('startDateTime')} active={true} direction={sortConfig.direction === 'descending' ? 'desc' : 'asc'}>
                     </TableSortLabel>
@@ -212,8 +213,8 @@ let totalInits: number = companyInits.length;
                           fontFamily: "Arial, Helvetica"
                         }
                       }}>
+                        <TableCell id={InitiativeTableIds.companyName}>{displayItem.companyName}</TableCell>
                         <TableCell id={InitiativeTableIds.initiativeTitle}>{displayItem.title}</TableCell>
-                        {props.admin && <TableCell id={InitiativeTableIds.companyName}>{displayItem.companyName}</TableCell>}
                         <TableCell>{displayItem.startDate.month + "/" + displayItem.startDate.day + "/" + displayItem.startDate.year}</TableCell>
                         <TableCell>{displayItem.targetDate.month + "/" + displayItem.targetDate.day + "/" + displayItem.targetDate.year}</TableCell>
                         <TableCell id={InitiativeTableIds.totalItems}>{displayItem.totalItems}</TableCell>
@@ -235,7 +236,6 @@ let totalInits: number = companyInits.length;
               </TableBody>
             </Table>
           </TableContainer>
-          {props.admin &&
             <div className="flex p-2 items-center">
               <p>Results Per Page</p>
               <select value={resultsLimit} onChange={(e) => { setResultsLimit(parseInt(e.target.value)); ResetPageNumber(); } }
@@ -257,7 +257,7 @@ let totalInits: number = companyInits.length;
                   shape="rounded"
                   onChange={handleChange} />
               </div>
-            </div>}
+            </div>
         </div>
       </div>}
       {totalInits === 0 && <div className="m-2 p-2 text-3xl font-bold">No Initiatives to Display</div>}

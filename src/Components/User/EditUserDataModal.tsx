@@ -1,16 +1,11 @@
 import Dialog from "@mui/material/Dialog"
 import CloseIcon from '@mui/icons-material/Close';
-import { Item, StyledCard, StyledCardActions, StyledCardContent, StyledTextField, StyledTextarea, cancelButtonStyle, labelStyle, submitButtonStyle, yellowButtonStyle } from "../../Styles";
+import { Item, StyledCard, StyledCardActions, StyledCardContent, StyledTextField, cancelButtonStyle, submitButtonStyle, yellowButtonStyle } from "../../Styles";
 import { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
-import { User, deleteUserInfo, upsertUserInfo } from "../../Store/UserSlice";
+import { User } from "../../Store/UserSlice";
 import { Company } from "../../Store/CompanySlice";
-import {v4 as UuidV4} from "uuid";
-import { useAppDispatch } from "../../Store/Hooks";
-import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
-import { enqueueSnackbar } from "notistack";
-import { ValidateUser, ValidationFailedPrefix } from "../../Services/Validation";
-import { DeleteDecisionAlert } from "../Initiative/DeleteDecisionAlert";
+import { Checkbox, FormControl, FormControlLabel, FormGroup } from "@mui/material";
 import { useEditUser } from "../../Services/useEditUser";
 
 export const EditUserDataIds = {
@@ -26,7 +21,8 @@ export const EditUserDataIds = {
     saveChangesButton: "editUserSaveChangesButton",
     cancelChangesButton: "editUserCancelChangesButton",
     deleteButton: "editUserDeleteButton",
-    keywordFilter: "userDataKeywordFilter"
+    keywordFilter: "userDataKeywordFilter",
+    isAdmin: "editUserIsAdmin",
 }
 
 interface EditUserDataProps {
@@ -43,7 +39,6 @@ export default function EditUserDataModal(props: EditUserDataProps){
     SetupEditUser,
     EnterEditMode,
     InEditMode,
-    LeaveEditMode,
     AddEmptyUser,
     SaveEdit,
     CancelEdit,
@@ -59,6 +54,8 @@ export default function EditUserDataModal(props: EditUserDataProps){
     setCurrentName,
     currentPhone,
     setCurrentPhone,
+    currentIsAdmin,
+    setCurrentIsAdmin,
     searchedKeyword,
     setSearchedKeyword
   } = useEditUser();
@@ -151,6 +148,9 @@ export default function EditUserDataModal(props: EditUserDataProps){
                                 );
                               })}
                             </FormGroup>
+                            <FormGroup>
+                                <FormControlLabel control={<Checkbox id={EditUserDataIds.isAdmin} checked={currentIsAdmin} onChange={(e) => setCurrentIsAdmin(e.target.checked)}/>} label="Admin" />
+                            </FormGroup>
                           </>
                         :
                           <>
@@ -164,10 +164,15 @@ export default function EditUserDataModal(props: EditUserDataProps){
                                 let checkedInit = props.company.initiatives.find(x => x.id === checkedInitId);
 
                                 return (
-                                  <FormControlLabel key={index} control={<Checkbox checked={checkedInit !== undefined} />} label={init?.title} />
+                                  <FormControlLabel key={index} disabled control={<Checkbox checked={checkedInit !== undefined} />} label={init?.title} />
                                 );
                               })}
                             </FormGroup>
+                            <div>
+                            <FormGroup>
+                              <FormControlLabel disabled control={<Checkbox id={EditUserDataIds.isAdmin} checked={displayItem.isAdmin}/>} label="Admin" />
+                            </FormGroup>
+                            </div>
                           </>
                         }
                       </StyledCardContent>
