@@ -92,16 +92,9 @@ export default function ManageInitiativesDisplay() {
         setter={setRadioValue} name="initiativesDisplay"/>
 
     </div>
-    
-    <div className="col-span-4 py-3 flex">
-    {
-      companyList.length === 0 && <div className="m-2 p-2 text-3xl font-bold">No initiatives to display.</div>
-    }
-    {
-      companyList.length > 0 &&
-      <InitiativesTable companyList={companyList} radioStatus={radioValue} ValidateInitiative={ValidateNewInitiative} admin={true}/>
-    }
-    </div>
+      {companyList.length > 0 &&
+        <InitiativesTable companyList={companyList} radioStatus={radioValue} ValidateInitiative={ValidateNewInitiative} admin={true}/>
+      }
   </div>
   )
 }

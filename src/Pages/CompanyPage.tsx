@@ -135,19 +135,16 @@ export function CompanyPage()
                           <h2 className="text-2xl font-semibold mb-6">{company.name}</h2>
                           <button className="mb-6" id={CompanyPageIds.editClientNameButton} onClick={() => HandleEditCompanyButton(company.id)}><EditIcon sx={{fontSize: '18px', marginLeft: '15px'}}/></button>
                         </div>
-                        <Grid container spacing={4}>
-                          <Grid item md={8}>
                             {
                               usersAtCompany.map((user,jndex) => {
                                 return(
-                                  <Fragment key={jndex}><StyledTextField disabled label="Name" className="bg-white" value={user.name ? user.name : "Unknown"}>
-                                  </StyledTextField><StyledTextField disabled label="Email" className="bg-white" value={user.email}>
-                                  </StyledTextField></Fragment>    
+                                  <Fragment key={jndex}>
+                                    <StyledTextField disabled label="Name and Email" className="bg-white" value={(user.name ? user.name : "Unknown") + "  :  " + user.email}>
+                                    </StyledTextField>
+                                  </Fragment>    
                                   )
                               })
                             }
-                          </Grid>
-                        </Grid>
                       </StyledCardContent>
                       <StyledCardActions>
                         {pageState === State.start && <EditUserDataButton company={company} users={usersAtCompany}></EditUserDataButton>}

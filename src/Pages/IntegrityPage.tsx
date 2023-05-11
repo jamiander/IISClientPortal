@@ -95,7 +95,7 @@ export default function IntegrityPage(){
               <StyledTextField className="w-1/2" id={IntegrityPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name or email" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)} />
             </div>
           }
-          <Grid container spacing={4}>
+          <Grid container spacing={2}>
             {usersList.filter(u => u.email.toUpperCase().includes(searchedKeyword.toUpperCase()) || u.name?.toUpperCase().includes(searchedKeyword.toUpperCase())).map((displayItem, key) => {
               let isEdit = InEditMode() && displayItem.id === userToEdit?.id;
               return (
