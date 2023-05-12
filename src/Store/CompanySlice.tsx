@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import { DateInfo, ThroughputData, DecisionData, UpsertCompanyInfo, UpsertCompanyInfoRequest, UpsertInitiativeInfo, UpsertInitiativeInfoRequest, UpsertThroughputData, UpsertThroughputDataRequest, UpsertDecisionDataRequest, UpsertDecisionData, DeleteDecisionDataRequest, DeleteDecisionData, GetCompanyByIdRequest, GetCompanyById, GetCompanyByInitiativeIds, GetCompanyByInitiativeIdsRequest } from "../Services/CompanyService"
+import { DateInfo, ThroughputData, DecisionData, UpsertCompanyInfo, UpsertCompanyInfoRequest, UpsertInitiativeInfo, UpsertInitiativeInfoRequest, UpsertThroughputData, UpsertThroughputDataRequest, UpsertDecisionDataRequest, UpsertDecisionData, DeleteDecisionDataRequest, DeleteDecisionData, GetCompanyByIdRequest, GetCompanyById, GetCompanyByInitiativeIds, GetCompanyByInitiativeIdsRequest, UploadDocumentsRequest, UploadDocuments, GetDocumentsRequest, GetDocuments } from "../Services/CompanyService"
 import { RootState } from "./Store"
 
 export interface Company {
@@ -143,6 +143,21 @@ export const deleteDecisionData = createAsyncThunk(
     if(response.status.toUpperCase().includes('FAILED'))
       throw Error;
   
+  }
+)
+
+export const uploadDocuments = createAsyncThunk(
+  'companies/uploadDocuments',
+  async (args: UploadDocumentsRequest, {}) => {
+    const response = await UploadDocuments(args);
+  }
+)
+
+export const getDocuments = createAsyncThunk(
+  'companies/getDocuments',
+  async (args: GetDocumentsRequest, {}) => {
+    const response = await GetDocuments(args);
+    
   }
 )
 
