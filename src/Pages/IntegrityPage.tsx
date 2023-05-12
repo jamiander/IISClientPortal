@@ -1,4 +1,4 @@
-import { Item, StyledCard, StyledCardActions, StyledCardContent, StyledTextField, cancelButtonStyle, submitButtonStyle, yellowButtonStyle } from "../Styles";
+import { Item, StyledCard, StyledCardActions, StyledCardContent, StyledFormGroup, StyledTextField, cancelButtonStyle, cardHeader, submitButtonStyle, yellowButtonStyle } from "../Styles";
 import { Fragment, useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import { User, getUserById, selectAllUsers, selectCurrentUserId } from "../Store/UserSlice";
@@ -106,7 +106,11 @@ export default function IntegrityPage(){
                             <StyledTextField id={IntegrityPageIds.email} label="Email" value={currentEmail} onChange={e => setCurrentEmail(e.target.value)} />
                             <StyledTextField id={IntegrityPageIds.password} label="Password" value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} />
                             <StyledTextField id={IntegrityPageIds.phone} label="Phone Number" value={currentPhone} onChange={e => setCurrentPhone(e.target.value)} />
-                            <FormGroup>
+                            <StyledFormGroup >
+                              <FormControlLabel control={<Checkbox id={IntegrityPageIds.isAdmin} checked={currentIsAdmin} onChange={(e) => setCurrentIsAdmin(e.target.checked)}/>} label="Admin" />
+                            </StyledFormGroup>
+                            <FormGroup className="mt-8">
+                            <h2 className={cardHeader}>Associated<br/>Companies and Initiatives</h2>
                               {allCompanies.map((company,index) => {
                                 return (
                                   <Fragment key={index}>
@@ -116,9 +120,6 @@ export default function IntegrityPage(){
                               })
                               }
                             </FormGroup>
-                            <FormGroup>
-                              <FormControlLabel control={<Checkbox id={IntegrityPageIds.isAdmin} checked={currentIsAdmin} onChange={(e) => setCurrentIsAdmin(e.target.checked)}/>} label="Admin" />
-                            </FormGroup>
                           </>
                         :
                           <>
@@ -126,7 +127,11 @@ export default function IntegrityPage(){
                             <StyledTextField id={IntegrityPageIds.email} label="Email" disabled value={displayItem.email} />
                             <StyledTextField id={IntegrityPageIds.password} label="Password" disabled value={displayItem.password} />
                             <StyledTextField id={IntegrityPageIds.phone} label="Phone Number" disabled value={displayItem.phoneNumber ? displayItem.phoneNumber : ""} />
-                            <FormGroup>
+                            <StyledFormGroup>
+                              <FormControlLabel disabled control={<Checkbox id={IntegrityPageIds.isAdmin} checked={displayItem.isAdmin}/>} label="Admin" />
+                            </StyledFormGroup>
+                            <FormGroup className="mt-8">
+                            <h2 className={cardHeader}>Associated<br/>Companies and Initiatives</h2>
                               {allCompanies.map((company,index) => {
                                 return (
                                   <Fragment key={index}>
@@ -135,9 +140,6 @@ export default function IntegrityPage(){
                                 )
                               })
                             }
-                            </FormGroup>
-                            <FormGroup>
-                              <FormControlLabel disabled control={<Checkbox id={IntegrityPageIds.isAdmin} checked={displayItem.isAdmin}/>} label="Admin" />
                             </FormGroup>
                           </>
                         }

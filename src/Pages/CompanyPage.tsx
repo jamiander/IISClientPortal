@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from "../Store/Hooks"
 import { Button, Card, CardActions, CardContent, CardHeader, Grid, List, ListItem, Typography } from "@mui/material";
 import { getUserById, selectAllUsers, selectCurrentUser, selectCurrentUserId } from "../Store/UserSlice";
 import { EditUserDataButton } from "../Components/User/EditUserDataButton";
-import { Item, StyledCard, StyledCardActions, StyledCardContent, StyledTextField, UserItem, cancelButtonStyle, labelStyle, submitButtonStyle, yellowButtonStyle } from "../Styles";
+import { Item, StyledCard, StyledCardActions, StyledCardContent, StyledTextField, UserItem, cancelButtonStyle, cardHeader, labelStyle, submitButtonStyle, yellowButtonStyle } from "../Styles";
 import { ValidateCompany, ValidationFailedPrefix } from "../Services/Validation";
 import { enqueueSnackbar } from "notistack";
 import { v4 } from "uuid";
@@ -132,7 +132,7 @@ export function CompanyPage()
                     <StyledCard>
                       <StyledCardContent>
                         <div className="flex justify-center">
-                          <h2 className="text-2xl font-semibold mb-6">{company.name}</h2>
+                        <h2 className={cardHeader}>{company.name}</h2>
                           <button className="mb-6" id={CompanyPageIds.editClientNameButton} onClick={() => HandleEditCompanyButton(company.id)}><EditIcon sx={{fontSize: '18px', marginLeft: '15px'}}/></button>
                         </div>
                             {

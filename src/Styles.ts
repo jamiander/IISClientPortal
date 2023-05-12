@@ -1,6 +1,8 @@
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
-import { styled } from '@mui/material/styles';
-import { Card, CardActions, CardContent, Paper, TextField, TextareaAutosize } from '@mui/material';
+import { createTheme, styled } from '@mui/material/styles';
+import { Card, CardActions, CardContent, FormGroup, Paper, TextField, TextareaAutosize } from '@mui/material';
+import theme from 'flowbite-react/lib/esm/theme/default';
+import { grey } from '@mui/material/colors';
 
 export const modalStyle = {
   content: {
@@ -24,6 +26,14 @@ export const integrityColors = {
   integrityVeryLightGray: '#E4E1E5'
 }
 
+const globalTheme = createTheme({
+  palette: {
+    primary: {
+      main: grey[300]
+    }
+  }
+})
+
 export const TableHeaderStyle =
   styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -43,6 +53,8 @@ export const TableHeaderStyle =
   export const UserItem = styled(Paper)(() => ({
     backgroundColor: '#98d6a9',
     padding: 2,
+    marginBottom: 1,
+    marginTop: 1,
     textAlign: 'center',
     color: 'black',
     elevation: 3,
@@ -64,10 +76,24 @@ export const TableHeaderStyle =
       WebkitTextFillColor: "#000",
       color: "#000"
     },
-    marginTop: 20,
-    marginBottom: 10,
-    marginLeft: 10,
-    marginRight: 10,
+    marginTop: 5,
+    marginBottom: 5,
+    marginLeft: 2,
+    width: "100%"
+  }));
+
+  export const StyledFormGroup = 
+  styled(FormGroup)(() => ({
+    ".MuiInputBase-input.Mui-disabled": {
+      WebkitTextFillColor: "#000",
+      color: "#000"
+    },
+    border: "2px solid",
+    borderColor: globalTheme.palette.primary.main,
+    borderRadius: 4,
+    marginTop: 3,
+    marginBottom: 12,
+    marginLeft: 2,
     width: "100%"
   }));
 
@@ -79,12 +105,13 @@ export const TableHeaderStyle =
     marginBottom: 10,
     padding: "0.5rem"
   }))
- 
-
+  
+export const boxStyle = "outline outline-[#EEEEEE] outline-2 rounded mt-5 mb-5 ml-2";
 export const labelStyle = "font-bold text-lg";
 export const tooltipStyle = "hover:bg-slate-50 cursor-pointer";
 export const inputStyle = "outline rounded outline-1 p-2 hover:outline-2 focus:outline-2 mt-2 mb-2";
 export const selectStyle = "outline rounded outline-1 p-2 hover:outline-2 focus:outline-2";
+export const cardHeader = "text-2xl font-semibold mb-4";
 
 export const submitButtonStyle = "rounded h-3/4 max-h-7 w-[90px] mx-2 bg-lime-600 text-white hover:bg-lime-700";
 export const cancelButtonStyle = "rounded h-3/4 max-h-7 w-[90px] mx-2 bg-red-600 text-white hover:bg-red-700";

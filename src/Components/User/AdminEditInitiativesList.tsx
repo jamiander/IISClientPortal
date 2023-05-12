@@ -16,7 +16,7 @@ export function AdminEditInitiativesList(props: AdminEditInitiativesListProps)
   if(isCompanyChecked || props.editable)
   {
     return (
-      <UserItem className="mt-2 mb-4"> 
+      <UserItem> 
       <Accordion>
         <AccordionSummary className="hover:bg-[#29c2b0]">
           <p className={`text-xl ${isCompanyChecked ? "font-bold" : ""}`}>

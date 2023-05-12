@@ -1,11 +1,11 @@
 import Dialog from "@mui/material/Dialog"
 import CloseIcon from '@mui/icons-material/Close';
-import { Item, StyledCard, StyledCardActions, StyledCardContent, StyledTextField, cancelButtonStyle, submitButtonStyle, yellowButtonStyle } from "../../Styles";
+import { Item, StyledCard, StyledCardActions, StyledCardContent, StyledFormGroup, StyledTextField, boxStyle, cancelButtonStyle, submitButtonStyle, yellowButtonStyle } from "../../Styles";
 import { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import { User } from "../../Store/UserSlice";
 import { Company } from "../../Store/CompanySlice";
-import { Checkbox, FormControl, FormControlLabel, FormGroup } from "@mui/material";
+import { Checkbox, FormControlLabel } from "@mui/material";
 import { useEditUser } from "../../Services/useEditUser";
 
 export const EditUserDataIds = {
@@ -141,16 +141,16 @@ export default function EditUserDataModal(props: EditUserDataProps){
                             <StyledTextField id={EditUserDataIds.email} label="Email" value={currentEmail} onChange={e => setCurrentEmail(e.target.value)} />
                             <StyledTextField id={EditUserDataIds.password} label="Password" value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} />
                             <StyledTextField id={EditUserDataIds.phone} label="Phone Number" value={currentPhone} onChange={e => setCurrentPhone(e.target.value)} />
-                            <FormGroup>
+                            <StyledFormGroup>
+                                <FormControlLabel control={<Checkbox id={EditUserDataIds.isAdmin} checked={currentIsAdmin} onChange={(e) => setCurrentIsAdmin(e.target.checked)}/>} label="Admin" />
+                            </StyledFormGroup>
+                            <StyledFormGroup>
                               {props.company.initiatives.map((initiative, index) => {
                                 return (
                                   <FormControlLabel key={index} control={<Checkbox checked={currentInitiativeIds.find(id => initiative.id === id) !== undefined} onChange={(e) => setCurrentInitiativeIds(initiative.id,e.target.checked)} />} label={initiative.title} />
                                 );
                               })}
-                            </FormGroup>
-                            <FormGroup>
-                                <FormControlLabel control={<Checkbox id={EditUserDataIds.isAdmin} checked={currentIsAdmin} onChange={(e) => setCurrentIsAdmin(e.target.checked)}/>} label="Admin" />
-                            </FormGroup>
+                            </StyledFormGroup>
                           </>
                         :
                           <>
@@ -158,21 +158,18 @@ export default function EditUserDataModal(props: EditUserDataProps){
                             <StyledTextField id={EditUserDataIds.email} label="Email" disabled value={displayItem.email} />
                             <StyledTextField id={EditUserDataIds.password} label="Password" disabled value={displayItem.password} />
                             <StyledTextField id={EditUserDataIds.phone} label="Phone Number" disabled value={displayItem.phoneNumber ? displayItem.phoneNumber : ""} />
-                            <FormGroup>
+                            <StyledFormGroup>
+                                <FormControlLabel disabled control={<Checkbox id={EditUserDataIds.isAdmin} checked={displayItem.isAdmin} />} label="Admin" />
+                            </StyledFormGroup>
+                            <StyledFormGroup>
                               {props.company.initiatives.map((init, index) => {
                                 let checkedInitId = (displayItem.initiativeIds.find(id => id === init.id));
                                 let checkedInit = props.company.initiatives.find(x => x.id === checkedInitId);
-
                                 return (
                                   <FormControlLabel key={index} disabled control={<Checkbox checked={checkedInit !== undefined} />} label={init?.title} />
                                 );
                               })}
-                            </FormGroup>
-                            <div>
-                            <FormGroup>
-                              <FormControlLabel disabled control={<Checkbox id={EditUserDataIds.isAdmin} checked={displayItem.isAdmin}/>} label="Admin" />
-                            </FormGroup>
-                            </div>
+                            </StyledFormGroup>
                           </>
                         }
                       </StyledCardContent>
