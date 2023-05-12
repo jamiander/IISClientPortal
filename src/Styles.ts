@@ -1,7 +1,6 @@
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import { createTheme, styled } from '@mui/material/styles';
 import { Card, CardActions, CardContent, FormGroup, Paper, TextField, TextareaAutosize } from '@mui/material';
-import theme from 'flowbite-react/lib/esm/theme/default';
 import { grey } from '@mui/material/colors';
 
 export const modalStyle = {
@@ -73,8 +72,8 @@ export const TableHeaderStyle =
   export const StyledTextField = 
   styled(TextField)(() => ({
     ".MuiInputBase-input.Mui-disabled": {
-      WebkitTextFillColor: "#000",
-      color: "#000"
+      WebkitTextFillColor: "#5b5b5b",
+      color: "#5b5b5b"
     },
     marginTop: 5,
     marginBottom: 5,
@@ -85,8 +84,8 @@ export const TableHeaderStyle =
   export const StyledFormGroup = 
   styled(FormGroup)(() => ({
     ".MuiInputBase-input.Mui-disabled": {
-      WebkitTextFillColor: "#000",
-      color: "#000"
+    WebkitTextFillColor: "#5b5b5b",
+    color: "#5b5b5b"
     },
     border: "2px solid",
     borderColor: globalTheme.palette.primary.main,
@@ -106,7 +105,6 @@ export const TableHeaderStyle =
     padding: "0.5rem"
   }))
   
-export const boxStyle = "outline outline-[#EEEEEE] outline-2 rounded mt-5 mb-5 ml-2";
 export const labelStyle = "font-bold text-lg";
 export const tooltipStyle = "hover:bg-slate-50 cursor-pointer";
 export const inputStyle = "outline rounded outline-1 p-2 hover:outline-2 focus:outline-2 mt-2 mb-2";

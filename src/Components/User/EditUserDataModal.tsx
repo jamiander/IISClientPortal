@@ -1,6 +1,6 @@
 import Dialog from "@mui/material/Dialog"
 import CloseIcon from '@mui/icons-material/Close';
-import { Item, StyledCard, StyledCardActions, StyledCardContent, StyledFormGroup, StyledTextField, boxStyle, cancelButtonStyle, submitButtonStyle, yellowButtonStyle } from "../../Styles";
+import { Item, StyledCard, StyledCardActions, StyledCardContent, StyledFormGroup, StyledTextField, cancelButtonStyle, submitButtonStyle, yellowButtonStyle } from "../../Styles";
 import { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import { User } from "../../Store/UserSlice";
