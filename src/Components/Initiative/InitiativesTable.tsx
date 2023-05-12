@@ -136,128 +136,131 @@ export default function InitiativesTable(props: InitiativesProps) {
     setPageNumber(value);
 };
 
+let companyInits: Initiative[] = displayItems;
+let totalInits: number = companyInits.length;
+
   return (
+    <>
     <div className="grid grid-cols-1 w-full h-auto">
-      <div className="col-span-1 h-[4vh] px-2 pb-[2%] space-x-2">
-        <input id={InitiativeTableIds.initiativeTitleFilter} className={inputStyle} type={'text'} placeholder="Filter by Title" onChange={(e) => setSearchedInit(e.target.value)}/>
-        <input id={InitiativeTableIds.companyNameFilter} className={inputStyle} type={'text'} placeholder="Filter by Company" onChange={(e) => setSearchedComp(e.target.value)}/>
-      </div>
-      <div className="col-span-1 py-[2%]">
-      <link href = "https://fonts.googleapis.com/icon?family=Material+Icons" rel = "stylesheet"/> 
-        <TableContainer component={Paper}>
-        <Table className="table-auto w-full outline outline-3 bg-gray-100">
-          <colgroup>
-            <col style={{width:'18%'}}/>
-            <col style={{width:'15%'}}/>
-            <col style={{width:'11%'}}/>
-            <col style={{width:'11%'}}/>
-            <col style={{width:'8%'}}/>
-            <col style={{width:'10%'}}/>
-            <col style={{width:'11%'}}/>
-            <col style={{width:'4%'}}/>
-          </colgroup>
-          <TableHead className="outline outline-1">
-            <TableRow sx={{
-                borderBottom: "2px solid black",
-                "& th": {
-                  fontSize: "1.25rem",
-                  fontWeight: "bold",
-                  fontFamily: "Arial, Helvetica" 
-                }
-              }}>
-              <TableHeaderStyle>Title
-                <TableSortLabel onClick={() => requestSort('title')} active={true} direction={sortConfig.direction === 'descending' ? 'desc' : 'asc'}>
-                </TableSortLabel>
-              </TableHeaderStyle>
-              {props.admin && <TableHeaderStyle>Company
-                <TableSortLabel onClick={() => requestSort('companyName')} active={true} direction={sortConfig.direction === 'descending' ? 'desc' : 'asc'}>
-                </TableSortLabel>
-              </TableHeaderStyle>}
-              <TableHeaderStyle>Start Date
-                <TableSortLabel onClick={() => requestSort('startDateTime')} active={true} direction={sortConfig.direction === 'descending' ? 'desc' : 'asc'}>
-                </TableSortLabel>
-              </TableHeaderStyle>
-              <TableHeaderStyle>Target Completion
-                <TableSortLabel onClick={() => requestSort('targetDateTime')} active={true} direction={sortConfig.direction === 'descending' ? 'desc' : 'asc'}>
-                </TableSortLabel>
-              </TableHeaderStyle>
-              <TableHeaderStyle>Total Items</TableHeaderStyle>
-              <TableHeaderStyle>Items Remaining</TableHeaderStyle>
-              <TableHeaderStyle>Probability
-                <TableSortLabel onClick={() => requestSort('probabilityValue')} active={true} direction={sortConfig.direction === 'descending' ? 'desc' : 'asc'}>
-                </TableSortLabel>
-              </TableHeaderStyle>
-              <TableHeaderStyle>View Decisions</TableHeaderStyle>
-              <TableHeaderStyle>Edit</TableHeaderStyle>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {
-              currentItems.map((displayItem,index) => {
-                let probability = {value:displayItem.probabilityValue, status:displayItem.probabilityStatus};
+        <div className="col-span-1 h-[4vh] px-2 pb-[2%] space-x-2">
+          <input id={InitiativeTableIds.companyNameFilter} className={inputStyle} type={'text'} placeholder="Filter by Company" onChange={(e) => setSearchedComp(e.target.value)} />
+          <input id={InitiativeTableIds.initiativeTitleFilter} className={inputStyle} type={'text'} placeholder="Filter by Title" onChange={(e) => setSearchedInit(e.target.value)} />
+        </div>
+        {totalInits !== 0 &&
+        <div className="col-span-1 py-[2%]">
+          <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+          <TableContainer component={Paper}>
+            <Table className="table-auto w-full outline outline-3 bg-gray-100">
+              <colgroup>
+                <col style={{ width: '15%' }} />
+                <col style={{ width: '15%' }} />
+                <col style={{ width: '13%' }} />
+                <col style={{ width: '13%' }} />
+                <col style={{ width: '7%' }} />
+                <col style={{ width: '9%' }} />
+                <col style={{ width: '12%' }} />
+                <col style={{ width: '3%' }} />
+                <col style={{ width: '3%' }} />
+              </colgroup>
+              <TableHead className="outline outline-1">
+                <TableRow sx={{
+                  borderBottom: "2px solid black",
+                  "& th": {
+                    fontSize: "1.25rem",
+                    fontWeight: "bold",
+                    fontFamily: "Arial, Helvetica"
+                  }
+                }}>
+                  <TableHeaderStyle>Company
+                    <TableSortLabel onClick={() => requestSort('companyName')} active={true} direction={sortConfig.direction === 'descending' ? 'desc' : 'asc'}>
+                    </TableSortLabel>
+                  </TableHeaderStyle>
+                  <TableHeaderStyle>Title
+                    <TableSortLabel onClick={() => requestSort('title')} active={true} direction={sortConfig.direction === 'descending' ? 'desc' : 'asc'}>
+                    </TableSortLabel>
+                  </TableHeaderStyle>
+                  <TableHeaderStyle>Start Date
+                    <TableSortLabel onClick={() => requestSort('startDateTime')} active={true} direction={sortConfig.direction === 'descending' ? 'desc' : 'asc'}>
+                    </TableSortLabel>
+                  </TableHeaderStyle>
+                  <TableHeaderStyle>Target Completion
+                    <TableSortLabel onClick={() => requestSort('targetDateTime')} active={true} direction={sortConfig.direction === 'descending' ? 'desc' : 'asc'}>
+                    </TableSortLabel>
+                  </TableHeaderStyle>
+                  <TableHeaderStyle>Total Items</TableHeaderStyle>
+                  <TableHeaderStyle>Items Remaining</TableHeaderStyle>
+                  <TableHeaderStyle>Probability
+                    <TableSortLabel onClick={() => requestSort('probabilityValue')} active={true} direction={sortConfig.direction === 'descending' ? 'desc' : 'asc'}>
+                    </TableSortLabel>
+                  </TableHeaderStyle>
+                  <TableHeaderStyle>View Decisions</TableHeaderStyle>
+                  <TableHeaderStyle>Edit</TableHeaderStyle>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {currentItems.map((displayItem, index) => {
+                  let probability = { value: displayItem.probabilityValue, status: displayItem.probabilityStatus };
                   let healthIndicator = getHealthIndicator(probability.value);
-                  let tooltipMessage = probability.value === undefined ? probability.status : 
-                  probability.value === 0 ? "Data may be insufficient or may indicate a very low probability of success" : 
-                  probability.value + "%";
-                  return(
+                  let tooltipMessage = probability.value === undefined ? probability.status :
+                    probability.value === 0 ? "Data may be insufficient or may indicate a very low probability of success" :
+                      probability.value + "%";
+                  return (
                     <Fragment key={index}>
                       <TableRow key={index} className={healthIndicator} sx={{
                         borderBottom: "1px solid black",
-                          "& td": {
-                            fontSize: "1.1rem",
-                            fontFamily: "Arial, Helvetica" 
-                          }
-                        }}>
+                        "& td": {
+                          fontSize: "1.1rem",
+                          fontFamily: "Arial, Helvetica"
+                        }
+                      }}>
+                        <TableCell id={InitiativeTableIds.companyName}>{displayItem.companyName}</TableCell>
                         <TableCell id={InitiativeTableIds.initiativeTitle}>{displayItem.title}</TableCell>
-                        {props.admin && <TableCell id={InitiativeTableIds.companyName}>{displayItem.companyName}</TableCell>}
                         <TableCell>{displayItem.startDate.month + "/" + displayItem.startDate.day + "/" + displayItem.startDate.year}</TableCell>
                         <TableCell>{displayItem.targetDate.month + "/" + displayItem.targetDate.day + "/" + displayItem.targetDate.year}</TableCell>
                         <TableCell id={InitiativeTableIds.totalItems}>{displayItem.totalItems}</TableCell>
                         <TableCell id={InitiativeTableIds.remainingItems}>{displayItem.itemsRemaining}</TableCell>
-                        <TableCell className={tooltipStyle} title={tooltipMessage}>{ probability.value === undefined ? "NA"  : probability.value +  "%" }
-                          <i className="material-icons" style={{fontSize: '15px', marginLeft: '15px', marginTop: '10px'}}>info_outline</i>
+                        <TableCell className={tooltipStyle} title={tooltipMessage}>{probability.value === undefined ? "NA" : probability.value + "%"}
+                          <i className="material-icons" style={{ fontSize: '15px', marginLeft: '15px', marginTop: '10px' }}>info_outline</i>
                         </TableCell>
                         <TableCell className="w-1/12">
-                          <ViewDecisionDataButton company={displayItem.company} initiative={displayItem} index={index}/>
+                          <ViewDecisionDataButton company={displayItem.company} initiative={displayItem} index={index} />
                         </TableCell>
                         <TableCell className="w-1/12">
                           <EditInitiativeButton company={displayItem.company} initiative={displayItem} index={index} ValidateInitiative={props.ValidateInitiative} />
                         </TableCell>
                       </TableRow>
                     </Fragment>
-                  )
+                  );
                 }
-              )
-            }
-          </TableBody>
-        </Table>
-        </TableContainer>
-        {props.admin &&
-        <div className="flex p-2 items-center">
-          <p>Results Per Page</p>
-          <select value={resultsLimit} onChange={(e) => { setResultsLimit(parseInt(e.target.value)); ResetPageNumber()}}
-            className='mx-2 rounded-md border border-gray-200 hover:bg-gray-100'>
-            {resultsLimitOptions.map((limit,index) => {
-              return (
-                <option key={index} value={limit}>
-                  {limit}
-                </option>
-              )
-            })}
-          </select>
-          <div className="flex pl-2">
-            <Pagination
-            className="my-3"
-            count={count}
-            page={pageNumber}
-            variant="outlined"
-            shape="rounded"
-            onChange={handleChange}
-          />
-          </div>
-        </div>
-        }
+                )}
+              </TableBody>
+            </Table>
+          </TableContainer>
+            <div className="flex p-2 items-center">
+              <p>Results Per Page</p>
+              <select value={resultsLimit} onChange={(e) => { setResultsLimit(parseInt(e.target.value)); ResetPageNumber(); } }
+                className='mx-2 rounded-md border border-gray-200 hover:bg-gray-100'>
+                {resultsLimitOptions.map((limit, index) => {
+                  return (
+                    <option key={index} value={limit}>
+                      {limit}
+                    </option>
+                  );
+                })}
+              </select>
+              <div className="flex pl-2">
+                <Pagination
+                  className="my-3"
+                  count={count}
+                  page={pageNumber}
+                  variant="outlined"
+                  shape="rounded"
+                  onChange={handleChange} />
+              </div>
+            </div>
+        </div>}
       </div>
-    </div>
+      {totalInits === 0 && <div className="m-2 p-2 text-3xl font-bold">No Initiatives to Display</div>}
+    </>
   )
 }
