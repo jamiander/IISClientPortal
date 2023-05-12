@@ -2,7 +2,7 @@ import { Item, StyledCard, StyledCardActions, StyledCardContent, StyledFormGroup
 import { Fragment, useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import { User, getUserById, selectAllUsers, selectCurrentUserId } from "../Store/UserSlice";
-import { IntegrityId, selectAllCompanies } from "../Store/CompanySlice";
+import { Company, IntegrityId, selectAllCompanies } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
 import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
 import { AdminEditInitiativesList } from "../Components/User/AdminEditInitiativesList";
@@ -72,6 +72,12 @@ export default function IntegrityPage(){
     SetupEditUser(newIntegrityUsers);
   }, [allUsers])
 
+  let sortedUsers = JSON.parse(JSON.stringify(usersList));
+  sortedUsers.sort((a: User, b: User) => a.name! > b.name! ? 1 : -1);
+
+  let sortedCompanies = JSON.parse(JSON.stringify(allCompanies));
+  sortedCompanies.sort((a: Company, b: Company) => a.name > b.name ? 1 : -1);
+
   return (
     <>
       
@@ -87,13 +93,13 @@ export default function IntegrityPage(){
           </div>
         </div>
         <div className="mx-[2%] mb-[2%]">
-          {usersList.length !== 0 &&
+          {sortedUsers.length !== 0 &&
             <div className="mt-2 mb-4">
               <StyledTextField className="w-1/2" id={IntegrityPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name or email" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)} />
             </div>
           }
           <Grid container spacing={2} id={IntegrityPageIds.grid}>
-            {usersList.filter(u => u.email.toUpperCase().includes(searchedKeyword.toUpperCase()) || u.name?.toUpperCase().includes(searchedKeyword.toUpperCase())).map((displayItem, key) => {
+            {sortedUsers.filter((u: { email: string; name: string; }) => u.email.toUpperCase().includes(searchedKeyword.toUpperCase()) || u.name?.toUpperCase().includes(searchedKeyword.toUpperCase())).map((displayItem: any, key: any) => {
               let isEdit = InEditMode() && displayItem.id === userToEdit?.id;
               return (
                 <Grid item md={4} key={key}>
@@ -111,7 +117,7 @@ export default function IntegrityPage(){
                             </StyledFormGroup>
                             <FormGroup className="mt-8">
                             <h2 className={cardHeader}>Associated<br/>Companies and Initiatives</h2>
-                              {allCompanies.map((company,index) => {
+                              {sortedCompanies.map((company: Company,index: number) => {
                                 return (
                                   <Fragment key={index}>
                                     <AdminEditInitiativesList company={company} initiativeIds={currentInitiativeIds} editable={true} updateInitiativeIds={setCurrentInitiativeIds}/>
@@ -132,7 +138,7 @@ export default function IntegrityPage(){
                             </StyledFormGroup>
                             <FormGroup className="mt-8">
                             <h2 className={cardHeader}>Associated<br/>Companies and Initiatives</h2>
-                              {allCompanies.map((company,index) => {
+                              {sortedCompanies.map((company: Company,index: number) => {
                                 return (
                                   <Fragment key={index}>
                                     <AdminEditInitiativesList company={company} initiativeIds={displayItem.initiativeIds} editable={false} updateInitiativeIds={setCurrentInitiativeIds} />
