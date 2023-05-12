@@ -2,11 +2,12 @@ import { Item, StyledCard, StyledCardActions, StyledCardContent, StyledFormGroup
 import { Fragment, useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import { User, getUserById, selectAllUsers, selectCurrentUserId } from "../Store/UserSlice";
-import { Company, IntegrityId, selectAllCompanies } from "../Store/CompanySlice";
+import { Company, IntegrityId, getDocuments, selectAllCompanies, uploadDocuments } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
 import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
 import { AdminEditInitiativesList } from "../Components/User/AdminEditInitiativesList";
 import { useEditUser } from "../Services/useEditUser";
+import { v4 } from "uuid";
 
 export const IntegrityPageIds = {
   modal: "adminEditUserModal",
@@ -78,9 +79,34 @@ export default function IntegrityPage(){
   let sortedCompanies = JSON.parse(JSON.stringify(allCompanies));
   sortedCompanies.sort((a: Company, b: Company) => a.name > b.name ? 1 : -1);
 
+  const [files, setFiles] = useState<FileList>();
+
+  function HandleFile(newFiles: FileList | null)
+  {
+    if(newFiles)
+    {
+      setFiles(newFiles);
+    }
+  }
+
+  function HandleUpload()
+  {
+    if(files)
+    {
+      let documentId = v4();
+      dispatch(uploadDocuments({files: files, documentId: documentId, isTest: true}));
+    }
+  }
+
   return (
     <>
-      
+      <div>
+        <input type="file" onChange={(e) => HandleFile(e.target.files)}/>
+        <button className={yellowButtonStyle} onClick={() => HandleUpload()}>Upload</button>
+      </div>
+      <div>
+        <button className={yellowButtonStyle} onClick={() => dispatch(getDocuments({documentId: ""}))}>Get Documents</button>
+      </div>
         <div className="flex col-span-4 bg-[#2ed7c3] rounded-md py-6 px-5">
           <div className="w-full flex justify-between">
             <div className="space-y-2 w-1/2">
