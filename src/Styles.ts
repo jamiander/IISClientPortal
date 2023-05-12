@@ -72,8 +72,8 @@ export const TableHeaderStyle =
   export const StyledTextField = 
   styled(TextField)(() => ({
     ".MuiInputBase-input.Mui-disabled": {
-      WebkitTextFillColor: "#5b5b5b",
-      color: "#5b5b5b"
+      WebkitTextFillColor: "#828282",
+      color: "#828282"
     },
     marginTop: 5,
     marginBottom: 5,

@@ -141,12 +141,12 @@ let totalInits: number = companyInits.length;
 
   return (
     <>
-      {totalInits !== 0 &&
     <div className="grid grid-cols-1 w-full h-auto">
         <div className="col-span-1 h-[4vh] px-2 pb-[2%] space-x-2">
-          <input id={InitiativeTableIds.initiativeTitleFilter} className={inputStyle} type={'text'} placeholder="Filter by Title" onChange={(e) => setSearchedInit(e.target.value)} />
           <input id={InitiativeTableIds.companyNameFilter} className={inputStyle} type={'text'} placeholder="Filter by Company" onChange={(e) => setSearchedComp(e.target.value)} />
+          <input id={InitiativeTableIds.initiativeTitleFilter} className={inputStyle} type={'text'} placeholder="Filter by Title" onChange={(e) => setSearchedInit(e.target.value)} />
         </div>
+        {totalInits !== 0 &&
         <div className="col-span-1 py-[2%]">
           <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
           <TableContainer component={Paper}>
@@ -258,8 +258,8 @@ let totalInits: number = companyInits.length;
                   onChange={handleChange} />
               </div>
             </div>
-        </div>
-      </div>}
+        </div>}
+      </div>
       {totalInits === 0 && <div className="m-2 p-2 text-3xl font-bold">No Initiatives to Display</div>}
     </>
   )
