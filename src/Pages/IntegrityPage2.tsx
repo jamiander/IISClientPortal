@@ -91,210 +91,185 @@ export default function IntegrityPage(){
   let sortedCompanies = JSON.parse(JSON.stringify(allCompanies));
   sortedCompanies.sort((a: Company, b: Company) => a.name > b.name ? 1 : -1);
 
-  const [files, setFiles] = useState<FileList>();
-
-  function HandleFile(newFiles: FileList | null)
-  {
-    if(newFiles)
-    {
-      setFiles(newFiles);
-    }
-  }
-
-  function HandleUpload()
-  {
-    if(files)
-    {
-      let documentId = v4();
-      dispatch(uploadDocuments({files: files, documentId: documentId, isTest: true}));
-    }
-  }
 
   return (
-  <>
-  <div>
-          <input type="file" onChange={(e) => HandleFile(e.target.files)} />
-          <button className={yellowButtonStyle} onClick={() => HandleUpload()}>Upload</button>
+    <>
+      <div className="flex col-span-4 bg-[#2ed7c3] rounded-md py-6 px-5">
+          <div className="w-full flex justify-between">
+              <div className="space-y-2 w-1/2">
+                  <p className="text-5xl font-bold w-full">Integrity Inspired Solutions</p>
+                  <p className="text-3xl w-full">Users</p>
+              </div>
+              <div className="flex flex-col justify-between">
+                  <button disabled={InEditMode()} id={IntegrityPageIds.addButton} className={yellowButtonStyle} onClick={() => AddEmptyUser(IntegrityId)}>Add User</button>
+              </div>
+          </div>
       </div>
-      <div>
-              <button className={yellowButtonStyle} onClick={() => dispatch(getDocuments({ documentId: "" }))}>Get Documents</button>
-          </div>
-          <div className="flex col-span-4 bg-[#2ed7c3] rounded-md py-6 px-5">
-              <div className="w-full flex justify-between">
-                  <div className="space-y-2 w-1/2">
-                      <p className="text-5xl font-bold w-full">Integrity Inspired Solutions</p>
-                      <p className="text-3xl w-full">Users</p>
-                  </div>
-                  <div className="flex flex-col justify-between">
-                      <button disabled={InEditMode()} id={IntegrityPageIds.addButton} className={yellowButtonStyle} onClick={() => AddEmptyUser(IntegrityId)}>Add User</button>
-                  </div>
-              </div>
-          </div>
-          <div className="mx-[2%] mb-[2%]">
-              {sortedUsers.length !== 0 &&
-                  <div className="mt-2 mb-4">
-                      <StyledTextField className="w-1/2" id={IntegrityPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name or email" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)} />
-                  </div>}
+      <div className="mx-[2%] mb-[2%]">
+          {sortedUsers.length !== 0 &&
+              <div className="mt-2 mb-4">
+                  <StyledTextField className="w-1/2" id={IntegrityPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name or email" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)} />
+              </div>}
 
-              <div className="col-span-1 py-[2%]">
-                  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-                  <TableContainer component={Paper}>
-                      <Table className="table-auto w-full outline outline-3 bg-gray-100">
-                          <colgroup>
-                              <col style={{ width: '15%' }} />
-                              <col style={{ width: '15%' }} />
-                              <col style={{ width: '13%' }} />
-                              <col style={{ width: '13%' }} />
-                              <col style={{ width: '12%' }} />
-                              <col style={{ width: '12%' }} />
-                              <col style={{ width: '10%' }} />
-                          </colgroup>
-                          <TableHead className="outline outline-1">
-                              <TableRow sx={{
-                                  borderBottom: "2px solid black",
-                                  "& th": {
-                                      fontSize: "1.25rem",
-                                      fontWeight: "bold",
-                                      fontFamily: "Arial, Helvetica"
-                                  }
-                              }}>
-                                <TableHeaderStyle>Manage Initiatives</TableHeaderStyle>
-                                <TableHeaderStyle>Name
-                                    {/* <TableSortLabel 
-                                    onClick={() => requestSort('companyName')} active={true} direction={sortConfig.direction === 'descending' ? 'desc' : 'asc'}>
-                                    </TableSortLabel> */}
-                                </TableHeaderStyle>
-                                <TableHeaderStyle>Email</TableHeaderStyle>
-                                <TableHeaderStyle>Password</TableHeaderStyle>
-                                <TableHeaderStyle>Phone</TableHeaderStyle>
-                                <TableHeaderStyle>Admin Status</TableHeaderStyle>
-                                <TableHeaderStyle>Active Status</TableHeaderStyle>
-                              </TableRow>
-                          </TableHead>
-                    <TableBody>
-                        {sortedUsers.filter((u: { email: string; name: string; }) => u.email.toUpperCase().includes(searchedKeyword.toUpperCase()) || u.name?.toUpperCase().includes(searchedKeyword.toUpperCase())).map((displayItem: any, key: any) => {
-                      let isEdit = InEditMode() && displayItem.id === userToEdit?.id;
-                      return (
-                      <TableRow sx={{
-                        borderBottom: "1px solid black",
-                        "& td": {
-                          fontSize: "1.1rem",
-                          fontFamily: "Arial, Helvetica"
-                        }
-                      }}>
-                        {isEdit ? 
-                        <>
-                        <TableCell>
-                            <IconButton onClick={() => SaveEdit()}>
-                                <DoneIcon />
-                            </IconButton>
-                            <IconButton onClick={() => CancelEdit()}>
-                                <CancelIcon />
-                            </IconButton>
-                        </TableCell>
-                        <TableCell> <Input value={currentName} onChange={e => setCurrentName(e.target.value)}/></TableCell>
-                        <TableCell id={IntegrityPageIds.email}>{currentEmail}</TableCell>
-                        <TableCell id={IntegrityPageIds.password}>{currentPassword}</TableCell>
-                        <TableCell id={IntegrityPageIds.phone}>{currentPhone}</TableCell>
-                        <TableCell id={IntegrityPageIds.isAdmin}>Admin</TableCell>
-                        <TableCell id={IntegrityPageIds.isActive}>Active</TableCell>
-                        </>
-                        : 
-                        <>
-                        <TableCell>
-                            <IconButton onClick={() => EnterEditMode(displayItem.id, integrityUsers, false)}>
-                                <EditIcon />
-                            </IconButton>
-                        </TableCell>
-                        <TableCell id={IntegrityPageIds.name}>{displayItem.name}</TableCell>
-                        <TableCell id={IntegrityPageIds.email}>{displayItem.email}</TableCell>
-                        <TableCell id={IntegrityPageIds.password}>{displayItem.password}</TableCell>
-                        <TableCell id={IntegrityPageIds.phone}>{currentPhone}</TableCell>
-                        <TableCell id={IntegrityPageIds.isAdmin}>Admin</TableCell><TableCell id={IntegrityPageIds.isActive}>Active</TableCell>
-                        </>
-                        }
-                    </TableRow>
-                        );
-                    }
-                    )}
-                </TableBody>
-                </Table>
-                </TableContainer>
-              </div>
-          </div>
-          </>           
-        )  
-
-          {/* <Grid container spacing={2} id={IntegrityPageIds.grid}>
-            {sortedUsers.filter((u: { email: string; name: string; }) => u.email.toUpperCase().includes(searchedKeyword.toUpperCase()) || u.name?.toUpperCase().includes(searchedKeyword.toUpperCase())).map((displayItem: any, key: any) => {
-              let isEdit = InEditMode() && displayItem.id === userToEdit?.id;
-              return (
-                <Grid item md={4} key={key}>
-                  <Item>
-                    <StyledCard>
-                      <StyledCardContent>
-                        {isEdit ?
-                          <>
-                            <StyledTextField id={IntegrityPageIds.name} label="Name" value={currentName} onChange={e => setCurrentName(e.target.value)} />
-                            <StyledTextField id={IntegrityPageIds.email} label="Email" value={currentEmail} onChange={e => setCurrentEmail(e.target.value)} />
-                            <StyledTextField id={IntegrityPageIds.password} label="Password" value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} />
-                            <StyledTextField id={IntegrityPageIds.phone} label="Phone Number" value={currentPhone} onChange={e => setCurrentPhone(e.target.value)} />
-                            <StyledFormGroup >
-                              <FormControlLabel control={<Checkbox id={IntegrityPageIds.isAdmin} checked={currentIsAdmin} onChange={(e) => setCurrentIsAdmin(e.target.checked)}/>} label="Admin" />
-                            </StyledFormGroup>
-                            <FormGroup className="mt-8">
-                            <h2 className={cardHeader}>Associated<br/>Companies and Initiatives</h2>
-                              {sortedCompanies.map((company: Company,index: number) => {
-                                return (
-                                  <Fragment key={index}>
-                                    <AdminEditInitiativesList company={company} initiativeIds={currentInitiativeIds} editable={true} updateInitiativeIds={setCurrentInitiativeIds}/>
-                                  </Fragment>
-                                )
-                              })
+          <div className="col-span-1 py-[2%]">
+              <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+              <TableContainer component={Paper}>
+                  <Table className="table-auto w-full outline outline-3 bg-gray-100">
+                      <colgroup>
+                          <col style={{ width: '15%' }} />
+                          <col style={{ width: '15%' }} />
+                          <col style={{ width: '13%' }} />
+                          <col style={{ width: '13%' }} />
+                          <col style={{ width: '12%' }} />
+                          <col style={{ width: '12%' }} />
+                          <col style={{ width: '10%' }} />
+                      </colgroup>
+                      <TableHead className="outline outline-1">
+                          <TableRow sx={{
+                              borderBottom: "2px solid black",
+                              "& th": {
+                                  fontSize: "1.25rem",
+                                  fontWeight: "bold",
+                                  fontFamily: "Arial, Helvetica"
                               }
-                            </FormGroup>
-                          </>
-                        :
-                          <>
-                            <StyledTextField id={IntegrityPageIds.name} label="Name" disabled value={displayItem.name ? displayItem.name : ""} />
-                            <StyledTextField id={IntegrityPageIds.email} label="Email" disabled value={displayItem.email} />
-                            <StyledTextField id={IntegrityPageIds.password} label="Password" disabled value={displayItem.password} />
-                            <StyledTextField id={IntegrityPageIds.phone} label="Phone Number" disabled value={displayItem.phoneNumber ? displayItem.phoneNumber : ""} />
-                            <StyledFormGroup>
-                              <FormControlLabel disabled control={<Checkbox id={IntegrityPageIds.isAdmin} checked={displayItem.isAdmin}/>} label="Admin" />
-                            </StyledFormGroup>
-                            <FormGroup className="mt-8">
-                            <h2 className={cardHeader}>Associated<br/>Companies and Initiatives</h2>
-                              {sortedCompanies.map((company: Company,index: number) => {
-                                return (
-                                  <Fragment key={index}>
-                                    <AdminEditInitiativesList company={company} initiativeIds={displayItem.initiativeIds} editable={false} updateInitiativeIds={setCurrentInitiativeIds} />
-                                  </Fragment>
-                                )
-                              })
-                            }
-                            </FormGroup>
-                          </>
+                          }}>
+                            <TableHeaderStyle>Manage Initiatives</TableHeaderStyle>
+                            <TableHeaderStyle>Name
+                                {/* <TableSortLabel 
+                                onClick={() => requestSort('companyName')} active={true} direction={sortConfig.direction === 'descending' ? 'desc' : 'asc'}>
+                                </TableSortLabel> */}
+                            </TableHeaderStyle>
+                            <TableHeaderStyle>Email</TableHeaderStyle>
+                            <TableHeaderStyle>Password</TableHeaderStyle>
+                            <TableHeaderStyle>Phone</TableHeaderStyle>
+                            <TableHeaderStyle>Admin Status</TableHeaderStyle>
+                            <TableHeaderStyle>Active Status</TableHeaderStyle>
+                          </TableRow>
+                      </TableHead>
+                <TableBody>
+                    {sortedUsers.filter((u: { email: string; name: string; }) => u.email.toUpperCase().includes(searchedKeyword.toUpperCase()) || u.name?.toUpperCase().includes(searchedKeyword.toUpperCase())).map((displayItem: any, key: any) => {
+                  let isEdit = InEditMode() && displayItem.id === userToEdit?.id;
+                  return (
+                  <TableRow sx={{
+                    borderBottom: "1px solid black",
+                    "& td": {
+                      fontSize: "1.1rem",
+                      fontFamily: "Arial, Helvetica"
+                    }
+                  }}>
+                    {isEdit ? 
+                    <>
+                    <TableCell>
+                        <IconButton onClick={() => SaveEdit()}>
+                            <DoneIcon />
+                        </IconButton>
+                        <IconButton onClick={() => CancelEdit()}>
+                            <CancelIcon />
+                        </IconButton>
+                    </TableCell>
+                    <TableCell> <Input value={currentName} onChange={e => setCurrentName(e.target.value)}/></TableCell>
+                    <TableCell id={IntegrityPageIds.email}>{currentEmail}</TableCell>
+                    <TableCell id={IntegrityPageIds.password}>{currentPassword}</TableCell>
+                    <TableCell id={IntegrityPageIds.phone}>{currentPhone}</TableCell>
+                    <TableCell id={IntegrityPageIds.isAdmin}>Admin</TableCell>
+                    <TableCell id={IntegrityPageIds.isActive}>Active</TableCell>
+                    </>
+                    : 
+                    <>
+                    <TableCell>
+                        <IconButton onClick={() => EnterEditMode(displayItem.id, integrityUsers, false)}>
+                            <EditIcon />
+                        </IconButton>
+                    </TableCell>
+                    <TableCell id={IntegrityPageIds.name}>{displayItem.name}</TableCell>
+                    <TableCell id={IntegrityPageIds.email}>{displayItem.email}</TableCell>
+                    <TableCell id={IntegrityPageIds.password}>{displayItem.password}</TableCell>
+                    <TableCell id={IntegrityPageIds.phone}>{currentPhone}</TableCell>
+                    <TableCell id={IntegrityPageIds.isAdmin}>Admin</TableCell><TableCell id={IntegrityPageIds.isActive}>Active</TableCell>
+                    </>
+                    }
+                </TableRow>
+                    );
+                }
+                )}
+            </TableBody>
+            </Table>
+            </TableContainer>
+          </div>
+      </div>
+    </>           
+    )  
+
+      {/* <Grid container spacing={2} id={IntegrityPageIds.grid}>
+        {sortedUsers.filter((u: { email: string; name: string; }) => u.email.toUpperCase().includes(searchedKeyword.toUpperCase()) || u.name?.toUpperCase().includes(searchedKeyword.toUpperCase())).map((displayItem: any, key: any) => {
+          let isEdit = InEditMode() && displayItem.id === userToEdit?.id;
+          return (
+            <Grid item md={4} key={key}>
+              <Item>
+                <StyledCard>
+                  <StyledCardContent>
+                    {isEdit ?
+                      <>
+                        <StyledTextField id={IntegrityPageIds.name} label="Name" value={currentName} onChange={e => setCurrentName(e.target.value)} />
+                        <StyledTextField id={IntegrityPageIds.email} label="Email" value={currentEmail} onChange={e => setCurrentEmail(e.target.value)} />
+                        <StyledTextField id={IntegrityPageIds.password} label="Password" value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} />
+                        <StyledTextField id={IntegrityPageIds.phone} label="Phone Number" value={currentPhone} onChange={e => setCurrentPhone(e.target.value)} />
+                        <StyledFormGroup >
+                          <FormControlLabel control={<Checkbox id={IntegrityPageIds.isAdmin} checked={currentIsAdmin} onChange={(e) => setCurrentIsAdmin(e.target.checked)}/>} label="Admin" />
+                        </StyledFormGroup>
+                        <FormGroup className="mt-8">
+                        <h2 className={cardHeader}>Associated<br/>Companies and Initiatives</h2>
+                          {sortedCompanies.map((company: Company,index: number) => {
+                            return (
+                              <Fragment key={index}>
+                                <AdminEditInitiativesList company={company} initiativeIds={currentInitiativeIds} editable={true} updateInitiativeIds={setCurrentInitiativeIds}/>
+                              </Fragment>
+                            )
+                          })
+                          }
+                        </FormGroup>
+                      </>
+                    :
+                      <>
+                        <StyledTextField id={IntegrityPageIds.name} label="Name" disabled value={displayItem.name ? displayItem.name : ""} />
+                        <StyledTextField id={IntegrityPageIds.email} label="Email" disabled value={displayItem.email} />
+                        <StyledTextField id={IntegrityPageIds.password} label="Password" disabled value={displayItem.password} />
+                        <StyledTextField id={IntegrityPageIds.phone} label="Phone Number" disabled value={displayItem.phoneNumber ? displayItem.phoneNumber : ""} />
+                        <StyledFormGroup>
+                          <FormControlLabel disabled control={<Checkbox id={IntegrityPageIds.isAdmin} checked={displayItem.isAdmin}/>} label="Admin" />
+                        </StyledFormGroup>
+                        <FormGroup className="mt-8">
+                        <h2 className={cardHeader}>Associated<br/>Companies and Initiatives</h2>
+                          {sortedCompanies.map((company: Company,index: number) => {
+                            return (
+                              <Fragment key={index}>
+                                <AdminEditInitiativesList company={company} initiativeIds={displayItem.initiativeIds} editable={false} updateInitiativeIds={setCurrentInitiativeIds} />
+                              </Fragment>
+                            )
+                          })
                         }
-                      </StyledCardContent>
-                      <StyledCardActions>
-                        {isEdit &&
-                          <div className="flex w-full justify-between">
-                            <button id={IntegrityPageIds.saveChangesButton} className={submitButtonStyle} onClick={() => SaveEdit()}>Save</button>
-                            <button id={IntegrityPageIds.cancelChangesButton} className={cancelButtonStyle} onClick={() => CancelEdit()}>Cancel</button>
-                          </div>
-                        }
-                        {!isEdit && !InEditMode() &&
-                          <div className="flex w-full justify-between">
-                            <button id={IntegrityPageIds.editButton} className={submitButtonStyle} onClick={() => EnterEditMode(displayItem.id, integrityUsers, false)}>Edit</button>
-                          </div>
-                        }
-                      </StyledCardActions>
-                    </StyledCard>
-                  </Item>
-                </Grid>
-              );
-            })}
-          </Grid> */}
+                        </FormGroup>
+                      </>
+                    }
+                  </StyledCardContent>
+                  <StyledCardActions>
+                    {isEdit &&
+                      <div className="flex w-full justify-between">
+                        <button id={IntegrityPageIds.saveChangesButton} className={submitButtonStyle} onClick={() => SaveEdit()}>Save</button>
+                        <button id={IntegrityPageIds.cancelChangesButton} className={cancelButtonStyle} onClick={() => CancelEdit()}>Cancel</button>
+                      </div>
+                    }
+                    {!isEdit && !InEditMode() &&
+                      <div className="flex w-full justify-between">
+                        <button id={IntegrityPageIds.editButton} className={submitButtonStyle} onClick={() => EnterEditMode(displayItem.id, integrityUsers, false)}>Edit</button>
+                      </div>
+                    }
+                  </StyledCardActions>
+                </StyledCard>
+              </Item>
+            </Grid>
+          );
+        })}
+      </Grid> */}
         
 }
