@@ -1,13 +1,16 @@
 import { Item, StyledCard, StyledCardActions, StyledCardContent, StyledFormGroup, StyledTextField, cancelButtonStyle, cardHeader, submitButtonStyle, yellowButtonStyle } from "../Styles";
 import { Fragment, useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
-import { User, getUserById, selectAllUsers, selectCurrentUserId } from "../Store/UserSlice";
+import { User, getUserById, selectAllUsers, selectCurrentUserId, upsertUserInfo } from "../Store/UserSlice";
 import { Company, IntegrityId, selectAllCompanies } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
 import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
 import { AdminEditInitiativesList } from "../Components/User/AdminEditInitiativesList";
 import { useEditUser } from "../Services/useEditUser";
 import { DocumentUpload } from "../Components/DocumentUpload";
+import { EditUserInitiativesButton } from "../Components/User/EditUserInitiativesButton";
+import { ValidateUser, ValidationFailedPrefix } from "../Services/Validation";
+import { enqueueSnackbar } from "notistack";
 
 export const IntegrityPageIds = {
   modal: "adminEditUserModal",
@@ -43,6 +46,7 @@ export default function IntegrityPage(){
     CancelEdit,
     usersList,
     userToEdit,
+    SubmitUserData,
     currentEmail,
     setCurrentEmail,
     currentPassword,
@@ -79,6 +83,7 @@ export default function IntegrityPage(){
   let sortedCompanies = JSON.parse(JSON.stringify(allCompanies));
   sortedCompanies.sort((a: Company, b: Company) => a.name > b.name ? 1 : -1);
 
+
   const showFileUpload = false;
 
   return (
@@ -105,7 +110,7 @@ export default function IntegrityPage(){
             </div>
           }
           <Grid container spacing={2} id={IntegrityPageIds.grid}>
-            {sortedUsers.filter((u: { email: string; name: string; }) => u.email.toUpperCase().includes(searchedKeyword.toUpperCase()) || u.name?.toUpperCase().includes(searchedKeyword.toUpperCase())).map((displayItem: any, key: any) => {
+            {sortedUsers.filter((u: { email: string; name: string; }) => u.email.toUpperCase().includes(searchedKeyword.toUpperCase()) || u.name?.toUpperCase().includes(searchedKeyword.toUpperCase())).map((displayItem: User, key: number) => {
               let isEdit = InEditMode() && displayItem.id === userToEdit?.id;
               return (
                 <Grid item md={4} key={key}>
@@ -168,6 +173,7 @@ export default function IntegrityPage(){
                             <button id={IntegrityPageIds.editButton} className={submitButtonStyle} onClick={() => EnterEditMode(displayItem.id, integrityUsers, false)}>Edit</button>
                           </div>
                         }
+                        <EditUserInitiativesButton allCompanies={allCompanies} user={displayItem} SubmitUserData={SubmitUserData}/>
                       </StyledCardActions>
                     </StyledCard>
                   </Item>

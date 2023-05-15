@@ -24,7 +24,7 @@ export function AdminEditInitiativesList(props: AdminEditInitiativesListProps)
           </p>
         </AccordionSummary>
         <AccordionDetails>
-          <FormGroup>
+        <FormGroup>
         {
           props.company.initiatives.map((init, index) => {
             let checkedInitId = props.initiativeIds.find(id => id === init.id);
