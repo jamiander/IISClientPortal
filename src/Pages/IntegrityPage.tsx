@@ -98,15 +98,22 @@ export default function IntegrityPage(){
     }
   }
 
+  const showFileUpload = false;
+
   return (
     <>
-      <div>
-        <input type="file" onChange={(e) => HandleFile(e.target.files)}/>
-        <button className={yellowButtonStyle} onClick={() => HandleUpload()}>Upload</button>
-      </div>
-      <div>
-        <button className={yellowButtonStyle} onClick={() => dispatch(getDocuments({documentId: ""}))}>Get Documents</button>
-      </div>
+    {
+      showFileUpload &&
+      <>
+        <div>
+          <input type="file" onChange={(e) => HandleFile(e.target.files)}/>
+          <button className={yellowButtonStyle} onClick={() => HandleUpload()}>Upload</button>
+        </div>
+        <div>
+          <button className={yellowButtonStyle} onClick={() => dispatch(getDocuments({documentId: ""}))}>Get Documents</button>
+        </div>
+      </>
+      }
         <div className="flex col-span-4 bg-[#2ed7c3] rounded-md py-6 px-5">
           <div className="w-full flex justify-between">
             <div className="space-y-2 w-1/2">

@@ -233,7 +233,6 @@ export async function GetDocuments(request: GetDocumentsRequest) : Promise<GetDo
 
 
   // get list of blobs in container
-  // eslint-disable-next-line
   for await (const blob of containerClient.listBlobsFlat()) {
     console.log(`${blob.name}`);
 
