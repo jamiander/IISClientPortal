@@ -89,10 +89,10 @@ export default function IntegrityPage(){
     SetupEditUser(newIntegrityUsers);
   }, [allUsers])
 
-  let sortedUsers = JSON.parse(JSON.stringify(usersList));
+  let sortedUsers: User[] = JSON.parse(JSON.stringify(usersList));
   sortedUsers.sort((a: User, b: User) => a.name! > b.name! ? 1 : -1);
 
-  let sortedCompanies = JSON.parse(JSON.stringify(allCompanies));
+  let sortedCompanies: Company[] = JSON.parse(JSON.stringify(allCompanies));
   sortedCompanies.sort((a: Company, b: Company) => a.name > b.name ? 1 : -1);
 
 
@@ -152,7 +152,7 @@ export default function IntegrityPage(){
                           </TableRow>
                       </TableHead>
                 <TableBody>
-                    {sortedUsers.filter((u: { email: string; name: string; }) => u.email.toUpperCase().includes(searchedKeyword.toUpperCase()) || u.name?.toUpperCase().includes(searchedKeyword.toUpperCase())).map((displayItem: User, key: number) => {
+                    {sortedUsers.filter(u => u.email.toUpperCase().includes(searchedKeyword.toUpperCase()) || u.name?.toUpperCase().includes(searchedKeyword.toUpperCase())).map((displayItem: User, key: number) => {
                   let isEdit = InEditMode() && displayItem.id === userToEdit?.id;
                   return (
                   <TableRow sx={{

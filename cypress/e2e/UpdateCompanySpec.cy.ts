@@ -1,3 +1,4 @@
+import { IntegrityId } from "../../src/Store/CompanySlice";
 import { AdminUser, TestConstants } from "./TestHelpers";
 
 describe('update company spec', () => {
@@ -8,7 +9,7 @@ describe('update company spec', () => {
   }
 
   const existingCompany = {
-    id: "53beceb7-054b-4740-830f-98a1dc0cc991",
+    id: IntegrityId,
     name: "Integrity Inspired Solutions",
     email: "info@integrityinspired.com",
     password: "password"
