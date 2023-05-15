@@ -10,6 +10,7 @@ import { store } from './Store/Store';
 import LoginPage from './Pages/LoginPage';
 import { CompanyPage } from './Pages/CompanyPage';
 import IntegrityPage from './Pages/IntegrityPage';
+import IntegrityPage2 from './Pages/IntegrityPage2';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -40,6 +41,11 @@ const router = createBrowserRouter([
       {
         path: '/Integrity',
         element: <IntegrityPage/>,
+        errorElement: <ErrorPage/>
+      },
+      {
+        path: '/Integrity2',
+        element: <IntegrityPage2/>,
         errorElement: <ErrorPage/>
       }
     ]
