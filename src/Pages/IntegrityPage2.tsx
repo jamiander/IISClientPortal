@@ -99,24 +99,24 @@ export default function IntegrityPage(){
   return (
     <>
       <div className="flex col-span-4 bg-[#2ed7c3] rounded-md py-6 px-5">
-          <div className="w-full flex justify-between">
-              <div className="space-y-2 w-1/2">
-                  <p className="text-5xl font-bold w-full">Integrity Inspired Solutions</p>
-                  <p className="text-3xl w-full">Users</p>
-              </div>
-              <div className="flex flex-col justify-between">
-                  <button disabled={InEditMode()} id={IntegrityPageIds.addButton} className={yellowButtonStyle} onClick={() => AddEmptyUser(IntegrityId)}>Add User</button>
-              </div>
+        <div className="w-full flex justify-between">
+          <div className="space-y-2 w-1/2">
+            <p className="text-5xl font-bold w-full">Integrity Inspired Solutions</p>
+            <p className="text-3xl w-full">Users</p>
           </div>
+        </div>
       </div>
       <div className="mx-[2%] mb-[2%]">
-          {sortedUsers.length !== 0 &&
-              <div className="mt-2 mb-4">
-                  <StyledTextField className="w-1/2" id={IntegrityPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name or email" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)} />
-              </div>}
-
-          <div className="col-span-1 py-[2%]">
-              <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+        {sortedUsers.length !== 0 &&
+          <div className="mt-2 mb-4">
+            <StyledTextField className="w-1/2" id={IntegrityPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name or email" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)} />
+          </div>
+        }
+        <div className="flex flex-col justify-between">
+          <button disabled={InEditMode()} id={IntegrityPageIds.addButton} className={yellowButtonStyle} onClick={() => AddEmptyUser(IntegrityId)}>Add User</button>
+        </div>
+        <div className="col-span-1 py-[2%]">
+          <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
               <TableContainer component={Paper}>
                   <Table className="table-auto w-full outline outline-3 bg-gray-100">
                       <colgroup>
