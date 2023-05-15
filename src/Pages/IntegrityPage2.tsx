@@ -19,6 +19,7 @@ import Paper from '@mui/material/Paper';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import { useEditUser } from "../Services/useEditUser";
 import { v4 } from "uuid";
+import { EditUserInitiativesButton } from "../Components/User/EditUserInitiativesButton";
 
 export const IntegrityPageIds = {
   modal: "adminEditUserModal",
@@ -55,6 +56,7 @@ export default function IntegrityPage(){
     CancelEdit,
     usersList,
     userToEdit,
+    SubmitUserData,
     currentEmail,
     setCurrentEmail,
     currentPassword,
@@ -146,10 +148,11 @@ export default function IntegrityPage(){
                             <TableHeaderStyle>Phone</TableHeaderStyle>
                             <TableHeaderStyle>Admin Status</TableHeaderStyle>
                             <TableHeaderStyle>Active Status</TableHeaderStyle>
+                            <TableHeaderStyle>Initiatives</TableHeaderStyle>
                           </TableRow>
                       </TableHead>
                 <TableBody>
-                    {sortedUsers.filter((u: { email: string; name: string; }) => u.email.toUpperCase().includes(searchedKeyword.toUpperCase()) || u.name?.toUpperCase().includes(searchedKeyword.toUpperCase())).map((displayItem: any, key: any) => {
+                    {sortedUsers.filter((u: { email: string; name: string; }) => u.email.toUpperCase().includes(searchedKeyword.toUpperCase()) || u.name?.toUpperCase().includes(searchedKeyword.toUpperCase())).map((displayItem: User, key: number) => {
                   let isEdit = InEditMode() && displayItem.id === userToEdit?.id;
                   return (
                   <TableRow sx={{
@@ -175,6 +178,7 @@ export default function IntegrityPage(){
                       <TableCell id={IntegrityPageIds.phone}><Input value={currentPhone} onChange={e => setCurrentPhone(e.target.value)}/></TableCell>
                       <TableCell id={IntegrityPageIds.isAdmin}><Checkbox checked={currentIsAdmin} onChange={e => setCurrentIsAdmin(e.target.checked)}/>Admin</TableCell>
                       <TableCell id={IntegrityPageIds.isActive}><Checkbox checked={currentIsActive} onChange={e => setCurrentIsActive(e.target.checked)}/>Active</TableCell>
+                      <TableCell id={IntegrityPageIds.initiativeIds}></TableCell>
                       </>
                     : 
                     <>
@@ -189,6 +193,7 @@ export default function IntegrityPage(){
                       <TableCell id={IntegrityPageIds.phone}>{displayItem.phoneNumber}</TableCell>
                       <TableCell id={IntegrityPageIds.isAdmin}>{displayItem.isAdmin ? "Admin" : "User"}</TableCell>
                       <TableCell id={IntegrityPageIds.isActive}>{displayItem.isActive ? "Active" : "Inactive"}</TableCell>
+                      <TableCell id={IntegrityPageIds.initiativeIds}><EditUserInitiativesButton user={displayItem} allCompanies={allCompanies} SubmitUserData={SubmitUserData}/></TableCell>
                       </>
                     }
                 </TableRow>
