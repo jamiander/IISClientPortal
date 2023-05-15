@@ -77,7 +77,7 @@ export function useEditUser() : EditUser
       setCurrentName(currentUser.name ? currentUser.name : "");
       setCurrentPhone(currentUser.phoneNumber ? currentUser.phoneNumber : "");
       setCurrentIsAdmin(currentUser.isAdmin ? currentUser.isAdmin : false);
-      setCurrentIsActive(currentUser.isActive ? currentUser.isActive : true);
+      setCurrentIsActive(currentUser.isActive ? currentUser.isActive : false);
     }
   }
 
@@ -143,7 +143,7 @@ export function useEditUser() : EditUser
   {
     let usersClone: User[] = JSON.parse(JSON.stringify(usersList));
     let myUuid = UuidV4();
-    let newUser: User = {id: myUuid, email: "", password: "", companyId: companyId, initiativeIds: [], name: "", phoneNumber: "", isAdmin: false, isActive: false}
+    let newUser: User = {id: myUuid, email: "", password: "", companyId: companyId, initiativeIds: [], name: "", phoneNumber: "", isAdmin: false, isActive: true}
     usersClone.unshift(newUser);
     setUsersList(usersClone);
     setSearchedKeyword("");
