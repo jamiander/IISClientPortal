@@ -41,15 +41,9 @@ export function CompanyPage()
 
   const [pageState, setPageState] = useState(State.start);
 
-  // let sortedUsers: User[] = JSON.parse(JSON.stringify(allUsers));
-  // sortedUsers.sort((a: User, b: User) => a.name! > b.name! ? 1 : -1);
-
-  // let sortedCompanies: Company[] = JSON.parse(JSON.stringify(allCompanies));
-  // sortedCompanies.sort((a: Company, b: Company) => a.name > b.name ? 1 : -1);
-
   useEffect(() => {
     let newSortedUsers: User[] = JSON.parse(JSON.stringify(allUsers));
-    newSortedUsers.sort((a: User, b: User) => a.name! > b.name! ? 1 : -1);
+    newSortedUsers.sort((a: User, b: User) => a.email.toUpperCase() > b.email.toUpperCase() ? 1 : -1);
     setSortedUsers(newSortedUsers);
 
   }, [allUsers])

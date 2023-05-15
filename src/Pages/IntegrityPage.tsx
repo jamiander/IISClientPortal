@@ -33,6 +33,8 @@ export const IntegrityPageIds = {
 export default function IntegrityPage(){
   const allCompanies = useAppSelector(selectAllCompanies);
   const allUsers = useAppSelector(selectAllUsers);
+  const [sortedCompanies, setSortedCompanies] = useState<Company[]>([]);
+  const [sortedUsers, setSortedUsers] = useState<User[]>([]);
   const [integrityUsers, setIntegrityUsers] = useState<User[]>([]);
   const currentUserId = useAppSelector(selectCurrentUserId);
   const dispatch = useAppDispatch();
@@ -77,11 +79,17 @@ export default function IntegrityPage(){
     SetupEditUser(newIntegrityUsers);
   }, [allUsers])
 
-  let sortedUsers: User[] = JSON.parse(JSON.stringify(usersList));
-  sortedUsers.sort((a: User, b: User) => a.name! > b.name! ? 1 : -1);
+  useEffect(() => {
+    let newSortedUsers: User[] = JSON.parse(JSON.stringify(usersList));
+    newSortedUsers.sort((a: User, b: User) => a.email.toUpperCase() > b.email.toUpperCase() ? 1 : -1);
+    setSortedUsers(newSortedUsers);
+  }, [usersList]);
 
-  let sortedCompanies: Company[] = JSON.parse(JSON.stringify(allCompanies));
-  sortedCompanies.sort((a: Company, b: Company) => a.name > b.name ? 1 : -1);
+  useEffect(() => {
+    let newSortedCompanies: Company[] = JSON.parse(JSON.stringify(usersList));
+    newSortedCompanies.sort((a: Company, b: Company) => a.name > b.name ? 1 : -1);
+    setSortedCompanies(newSortedCompanies);
+  }, [allCompanies]);
 
 
   const showFileUpload = false;
