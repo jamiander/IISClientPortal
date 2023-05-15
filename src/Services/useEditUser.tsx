@@ -34,6 +34,8 @@ type EditUser = {
   setCurrentPhone: (value: string) => void
   currentIsAdmin: boolean
   setCurrentIsAdmin: (value: boolean) => void
+  currentIsActive: boolean
+  setCurrentIsActive: (value: boolean) => void
   searchedKeyword: string
   setSearchedKeyword: (value: string) => void
 }
@@ -50,6 +52,7 @@ export function useEditUser() : EditUser
   const [currentName, setCurrentName] = useState("");
   const [currentPhone, setCurrentPhone] = useState("");
   const [currentIsAdmin, setCurrentIsAdmin] = useState(false);
+  const [currentIsActive, setCurrentIsActive] = useState(true);
   const [usersList, setUsersList] = useState<User[]>([]);
   const [searchedKeyword, setSearchedKeyword] = useState("");
   
@@ -74,6 +77,7 @@ export function useEditUser() : EditUser
       setCurrentName(currentUser.name ? currentUser.name : "");
       setCurrentPhone(currentUser.phoneNumber ? currentUser.phoneNumber : "");
       setCurrentIsAdmin(currentUser.isAdmin ? currentUser.isAdmin : false);
+      setCurrentIsActive(currentUser.isActive ? currentUser.isActive : true);
     }
   }
 
@@ -107,6 +111,7 @@ export function useEditUser() : EditUser
       newUser.name = currentName;
       newUser.phoneNumber = currentPhone;
       newUser.isAdmin = currentIsAdmin;
+      newUser.isActive = currentIsActive;
 
       let successfulSubmit = SubmitUserData(newUser);
       if(successfulSubmit)
@@ -138,7 +143,7 @@ export function useEditUser() : EditUser
   {
     let usersClone: User[] = JSON.parse(JSON.stringify(usersList));
     let myUuid = UuidV4();
-    let newUser: User = {id: myUuid, email: "", password: "", companyId: companyId, initiativeIds: [], name: "", phoneNumber: "", isAdmin: false}
+    let newUser: User = {id: myUuid, email: "", password: "", companyId: companyId, initiativeIds: [], name: "", phoneNumber: "", isAdmin: false, isActive: false}
     usersClone.unshift(newUser);
     setUsersList(usersClone);
     setSearchedKeyword("");
@@ -185,6 +190,8 @@ export function useEditUser() : EditUser
     setCurrentPhone,
     currentIsAdmin,
     setCurrentIsAdmin,
+    currentIsActive,
+    setCurrentIsActive,
     searchedKeyword,
     setSearchedKeyword
   }

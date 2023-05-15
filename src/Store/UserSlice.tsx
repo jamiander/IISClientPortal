@@ -10,6 +10,7 @@ export interface User {
   companyId: string
   initiativeIds: string[]
   isAdmin: boolean
+  isActive: boolean
   name?: string
   phoneNumber?: string
 }
@@ -81,7 +82,8 @@ export const authenticateUser = createAsyncThunk(
       password: args.creds.password,
       initiativeIds: response.initiativeIds,
       companyId: response.companyId,
-      isAdmin: response.isAdmin
+      isAdmin: response.isAdmin,
+      isActive: response.isActive
     }
     dispatch(getCompanyByInitiativeIds({
       initiativeIds: response.initiativeIds,
