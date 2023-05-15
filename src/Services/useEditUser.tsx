@@ -21,6 +21,7 @@ type EditUser = {
   CancelEdit: () => void
   usersList: User[]
   userToEdit: User | undefined
+  SubmitUserData: (user: User) => boolean
   currentEmail: string
   setCurrentEmail: (value: string) => void
   currentPassword: string
@@ -109,7 +110,10 @@ export function useEditUser() : EditUser
 
       let successfulSubmit = SubmitUserData(newUser);
       if(successfulSubmit)
+      {
+        LeaveEditMode();
         setUsersList(usersClone);
+      }
     }
   }
 
@@ -122,7 +126,6 @@ export function useEditUser() : EditUser
     if(validation.success)
     {
       dispatch(upsertUserInfo({isTest: isTest, users: [user]}))
-      LeaveEditMode();
       return true;
     }
     else
@@ -169,6 +172,7 @@ export function useEditUser() : EditUser
     CancelEdit,
     usersList,
     userToEdit,
+    SubmitUserData,
     currentEmail,
     setCurrentEmail,
     currentPassword,
