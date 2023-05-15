@@ -67,6 +67,8 @@ export default function IntegrityPage(){
     setCurrentPhone,
     currentIsAdmin,
     setCurrentIsAdmin,
+    currentIsActive,
+    setCurrentIsActive,
     searchedKeyword,
     setSearchedKeyword
   } = useEditUser();
@@ -133,7 +135,7 @@ export default function IntegrityPage(){
                                   fontFamily: "Arial, Helvetica"
                               }
                           }}>
-                            <TableHeaderStyle>Manage Initiatives</TableHeaderStyle>
+                            <TableHeaderStyle>Manage Users</TableHeaderStyle>
                             <TableHeaderStyle>Name
                                 {/* <TableSortLabel 
                                 onClick={() => requestSort('companyName')} active={true} direction={sortConfig.direction === 'descending' ? 'desc' : 'asc'}>
@@ -167,13 +169,13 @@ export default function IntegrityPage(){
                             <CancelIcon />
                         </IconButton>
                     </TableCell>
-                    <TableCell> <Input value={currentName} onChange={e => setCurrentName(e.target.value)}/></TableCell>
-                    <TableCell id={IntegrityPageIds.email}>{currentEmail}</TableCell>
-                    <TableCell id={IntegrityPageIds.password}>{currentPassword}</TableCell>
-                    <TableCell id={IntegrityPageIds.phone}>{currentPhone}</TableCell>
-                    <TableCell id={IntegrityPageIds.isAdmin}>Admin</TableCell>
-                    <TableCell id={IntegrityPageIds.isActive}>Active</TableCell>
-                    </>
+                    <TableCell id={IntegrityPageIds.name}> <Input value={currentName} onChange={e => setCurrentName(e.target.value)}/></TableCell>
+                      <TableCell id={IntegrityPageIds.email}><Input value={currentEmail} onChange={e => setCurrentEmail(e.target.value)}/></TableCell>
+                      <TableCell id={IntegrityPageIds.password}><Input value={currentPassword} onChange={e => setCurrentPassword(e.target.value)}/></TableCell>
+                      <TableCell id={IntegrityPageIds.phone}><Input value={currentPhone} onChange={e => setCurrentPhone(e.target.value)}/></TableCell>
+                      <TableCell id={IntegrityPageIds.isAdmin}><Checkbox checked={currentIsAdmin} onChange={e => setCurrentIsAdmin(e.target.checked)}/>Admin</TableCell>
+                      <TableCell id={IntegrityPageIds.isActive}><Checkbox checked={currentIsActive} onChange={e => setCurrentIsActive(e.target.checked)}/>Active</TableCell>
+                      </>
                     : 
                     <>
                     <TableCell>
@@ -182,11 +184,12 @@ export default function IntegrityPage(){
                         </IconButton>
                     </TableCell>
                     <TableCell id={IntegrityPageIds.name}>{displayItem.name}</TableCell>
-                    <TableCell id={IntegrityPageIds.email}>{displayItem.email}</TableCell>
-                    <TableCell id={IntegrityPageIds.password}>{displayItem.password}</TableCell>
-                    <TableCell id={IntegrityPageIds.phone}>{currentPhone}</TableCell>
-                    <TableCell id={IntegrityPageIds.isAdmin}>Admin</TableCell><TableCell id={IntegrityPageIds.isActive}>Active</TableCell>
-                    </>
+                      <TableCell id={IntegrityPageIds.email}>{displayItem.email}</TableCell>
+                      <TableCell id={IntegrityPageIds.password}>{displayItem.password}</TableCell>
+                      <TableCell id={IntegrityPageIds.phone}>{displayItem.phoneNumber}</TableCell>
+                      <TableCell id={IntegrityPageIds.isAdmin}>{displayItem.isAdmin ? "Admin" : "User"}</TableCell>
+                      <TableCell id={IntegrityPageIds.isActive}>{displayItem.isActive ? "Active" : "Inactive"}</TableCell>
+                      </>
                     }
                 </TableRow>
                     );
