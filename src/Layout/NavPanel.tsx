@@ -45,21 +45,28 @@ export default function NavPanel(){
         Dashboard
       </button>
       {
-        currentUser?.isAdmin &&
+        currentUser?.isAdmin && currentUser?.isActive &&
         <button id={NavPanelIds.company} className={GetNavStyle("/Company")}
           onClick={() => NavHandler('/Company')}>
           Client and User Management
         </button>
       }
       {
-        currentUser?.isAdmin && currentUser?.companyId === IntegrityId &&
+        currentUser?.isAdmin && currentUser?.isActive &&
+        <button id={NavPanelIds.company} className={GetNavStyle("/Company2")}
+          onClick={() => NavHandler('/Company2')}>
+          Client and User Management @
+        </button>
+      }
+      {
+        currentUser?.isAdmin && currentUser?.isActive && currentUser?.companyId === IntegrityId &&
         <button id={NavPanelIds.integrity} className={GetNavStyle("/Integrity")}
           onClick={() => NavHandler('/Integrity')}>
           Integrity User Management
         </button>
       }
       {
-        currentUser?.isAdmin && currentUser?.companyId === IntegrityId &&
+        currentUser?.isAdmin && currentUser?.isActive && currentUser?.companyId === IntegrityId &&
         <button id={NavPanelIds.integrity} className={GetNavStyle("/Integrity2")}
           onClick={() => NavHandler('/Integrity2')}>
           Integrity User Management 2

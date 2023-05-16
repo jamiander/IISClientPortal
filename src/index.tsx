@@ -9,6 +9,7 @@ import { Provider as ReduxProvider } from 'react-redux';
 import { store } from './Store/Store';
 import LoginPage from './Pages/LoginPage';
 import { CompanyPage } from './Pages/CompanyPage';
+import CompanyPage2 from './Pages/CompanyPage2';
 import IntegrityPage from './Pages/IntegrityPage';
 import IntegrityPage2 from './Pages/IntegrityPage2';
 
@@ -36,6 +37,11 @@ const router = createBrowserRouter([
       {
         path: '/Company',
         element: <CompanyPage/>,
+        errorElement: <ErrorPage/>
+      },
+      {
+        path: '/Company2',
+        element: <CompanyPage2/>,
         errorElement: <ErrorPage/>
       },
       {

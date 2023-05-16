@@ -1,4 +1,4 @@
-import { Item, StyledCard, StyledCardActions, StyledCardContent, StyledFormGroup, StyledTextField, TableHeaderStyle, cancelButtonStyle, cardHeader, submitButtonStyle, yellowButtonStyle } from "../Styles";
+import { Item, StyledCard, StyledCardActions, StyledCardContent, StyledFormGroup, StyledTextField, TableHeaderStyle, cancelButtonStyle, cardHeader, defaultRowStyle, submitButtonStyle, yellowButtonStyle } from "../Styles";
 import { Fragment, useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import { User, getUserById, selectAllUsers, selectCurrentUserId } from "../Store/UserSlice";
@@ -152,7 +152,7 @@ export default function IntegrityPage(){
                     {sortedUsers.filter((u: { email: string; name: string; }) => u.email.toUpperCase().includes(searchedKeyword.toUpperCase()) || u.name?.toUpperCase().includes(searchedKeyword.toUpperCase())).map((displayItem: any, key: any) => {
                   let isEdit = InEditMode() && displayItem.id === userToEdit?.id;
                   return (
-                  <TableRow sx={{
+                  <TableRow className={defaultRowStyle} sx={{
                     borderBottom: "1px solid black",
                     "& td": {
                       fontSize: "1.1rem",
