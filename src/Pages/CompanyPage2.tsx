@@ -1,14 +1,12 @@
-import { Item, StyledCard, StyledCardActions, StyledCardContent, StyledFormGroup, StyledTextField, TableHeaderStyle, cancelButtonStyle, cardHeader, defaultRowStyle, submitButtonStyle, yellowButtonStyle } from "../Styles";
-import { Fragment, useEffect, useState } from "react";
-import Grid from "@mui/material/Grid";
+import { StyledTextField, TableHeaderStyle, defaultRowStyle, yellowButtonStyle } from "../Styles";
+import { useEffect, useState } from "react";
 import { User, getUserById, selectAllUsers, selectCurrentUserId } from "../Store/UserSlice";
-import { Company, IntegrityId, getDocuments, selectAllCompanies, uploadDocuments } from "../Store/CompanySlice";
+import { Company, IntegrityId, selectAllCompanies } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
-import { Checkbox, FormControlLabel, FormGroup, IconButton, Input} from "@mui/material";
+import { Checkbox, IconButton, Input} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
-import { AdminEditInitiativesList } from "../Components/User/AdminEditInitiativesList";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -16,10 +14,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import TableSortLabel from '@mui/material/TableSortLabel';
 import { useEditUser } from "../Services/useEditUser";
-import { v4 } from "uuid";
-import Sorter from "../Services/Sorter";
 import { EditUserInitiativesButton } from "../Components/User/EditUserInitiativesButton";
 
 export const CompanyPageIds = {
@@ -57,7 +52,6 @@ export default function CompanyPage2(){
     AddEmptyUser,
     SaveEdit,
     CancelEdit,
-    usersList,
     userToEdit,
     SubmitUserData,
     currentEmail,
@@ -80,13 +74,14 @@ export default function CompanyPage2(){
   {
     SetupEditUser(allUsers);
   }, [allUsers])
+
+  useEffect(() =>
+  {
+    let sortedCompanies: Company[] = JSON.parse(JSON.stringify(allCompanies));
+    sortedCompanies.sort((a: Company, b: Company) => a.name.toUpperCase() > b.name.toUpperCase() ? 1 : -1);
+    setDisplayCompanies(sortedCompanies.filter((company: { id: string; }) => company.id !== IntegrityId));
+  },[allCompanies]); 
   
-  let sortedUsers = JSON.parse(JSON.stringify(usersList));
-  sortedUsers.sort((a: User, b: User) => a.name! > b.name! ? 1 : -1);
-
-  let sortedCompanies = JSON.parse(JSON.stringify(allCompanies));
-  sortedCompanies.sort((a: Company, b: Company) => a.name > b.name ? 1 : -1);
-
   let currentUserCompanyId = allUsers.find(user => user.id === currentUserId)?.companyId;
   let userCompany = displayCompanies.find(x => x.id === currentUserCompanyId)!;
 
@@ -96,16 +91,6 @@ export default function CompanyPage2(){
       dispatch(getUserById({}));
   }, [currentUserId]);
 
-  useEffect(() =>
-  {
-    if(currentUserCompanyId === IntegrityId) {
-        setDisplayCompanies(sortedCompanies)
-    } else {
-        setDisplayCompanies(sortedCompanies.filter((company: { id: string; }) => company.id !== IntegrityId));
-    }
-  },[sortedCompanies])
-
- 
   useEffect(() => 
   {
     if(currentUserCompanyId === IntegrityId){
@@ -179,10 +164,10 @@ export default function CompanyPage2(){
                           </TableRow>
                       </TableHead>
                 <TableBody>
-                    {companyUsers.map((displayItem: any, key: any) => {
-                    let isEdit = InEditMode() && displayItem?.id === userToEdit?.id;
-                    let displayCompany = displayCompanies.find(dc => dc.id === displayItem.companyId)!;
-                   return (
+                    {displayCompanies.map((displayCompany, key) => {
+                        let companyUser = companyUsers.find(cu => cu.companyId === displayCompany.id)!;
+                        let isEdit = InEditMode() && companyUser?.id === userToEdit?.id;
+                        return (
                   <TableRow className={defaultRowStyle} sx={{
                     borderBottom: "1px solid black",
                     "& td": {
@@ -212,18 +197,18 @@ export default function CompanyPage2(){
                       : 
                      <>
                     <TableCell>
-                        <IconButton onClick={() => EnterEditMode(displayItem?.id, companyUsers, false)}>
+                        <IconButton onClick={() => EnterEditMode(companyUser?.id, companyUsers, false)}>
                             <EditIcon />
                         </IconButton>
                     </TableCell>
-                    <TableCell id={CompanyPageIds.company}>{displayCompany?.name}</TableCell>
-                    <TableCell id={CompanyPageIds.name}>{displayItem?.name}</TableCell>
-                    <TableCell id={CompanyPageIds.email}>{displayItem?.email}</TableCell>
-                    <TableCell id={CompanyPageIds.password}>{displayItem?.password}</TableCell>
-                    <TableCell id={CompanyPageIds.phone}>{displayItem?.phoneNumber}</TableCell>
-                    <TableCell id={CompanyPageIds.isAdmin}>{displayItem?.isAdmin ? "Admin" : "User"}</TableCell>
-                    <TableCell id={CompanyPageIds.isActive}>{displayItem?.isActive ? "Active" : "Inactive"}</TableCell>
-                    <TableCell id={CompanyPageIds.initiativeIds}><EditUserInitiativesButton user={displayItem} allCompanies={[displayCompany]} SubmitUserData={SubmitUserData}/></TableCell>
+                    <TableCell id={CompanyPageIds.company}>{displayCompany.name}</TableCell>
+                    <TableCell id={CompanyPageIds.name}>{companyUser?.name}</TableCell>
+                    <TableCell id={CompanyPageIds.email}>{companyUser?.email}</TableCell>
+                    <TableCell id={CompanyPageIds.password}>{companyUser?.password}</TableCell>
+                    <TableCell id={CompanyPageIds.phone}>{companyUser?.phoneNumber}</TableCell>
+                    <TableCell id={CompanyPageIds.isAdmin}>{companyUser?.isAdmin ? "Admin" : "User"}</TableCell>
+                    <TableCell id={CompanyPageIds.isActive}>{companyUser?.isActive ? "Active" : "Inactive"}</TableCell>
+                    <TableCell id={CompanyPageIds.initiativeIds}><EditUserInitiativesButton user={companyUser} allCompanies={[displayCompany]} SubmitUserData={SubmitUserData} expanded={true}/></TableCell>
                     </> 
                 }
                 </TableRow>

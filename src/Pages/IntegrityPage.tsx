@@ -139,7 +139,7 @@ export default function IntegrityPage(){
                               {sortedCompanies.map((company: Company,index: number) => {
                                 return (
                                   <Fragment key={index}>
-                                    <AdminEditInitiativesList company={company} initiativeIds={currentInitiativeIds} editable={true} updateInitiativeIds={setCurrentInitiativeIds}/>
+                                    <AdminEditInitiativesList company={company} initiativeIds={currentInitiativeIds} editable={true} updateInitiativeIds={setCurrentInitiativeIds} expanded={false}/>
                                   </Fragment>
                                 )
                               })
@@ -160,7 +160,7 @@ export default function IntegrityPage(){
                               {sortedCompanies.map((company: Company,index: number) => {
                                 return (
                                   <Fragment key={index}>
-                                    <AdminEditInitiativesList company={company} initiativeIds={displayItem.initiativeIds} editable={false} updateInitiativeIds={setCurrentInitiativeIds} />
+                                    <AdminEditInitiativesList company={company} initiativeIds={displayItem.initiativeIds} editable={false} updateInitiativeIds={setCurrentInitiativeIds} expanded={false} />
                                   </Fragment>
                                 )
                               })
@@ -181,7 +181,7 @@ export default function IntegrityPage(){
                             <button id={IntegrityPageIds.editButton} className={submitButtonStyle} onClick={() => EnterEditMode(displayItem.id, integrityUsers, false)}>Edit</button>
                           </div>
                         }
-                        <EditUserInitiativesButton allCompanies={sortedCompanies} user={displayItem} SubmitUserData={SubmitUserData}/>
+                        <EditUserInitiativesButton allCompanies={sortedCompanies} user={displayItem} SubmitUserData={SubmitUserData} expanded={false}/>
                       </StyledCardActions>
                     </StyledCard>
                   </Item>
