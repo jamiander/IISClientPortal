@@ -25,7 +25,8 @@ export const DecisionModalIds = {
   description: "decisionModalDescription",
   resolution: "decisionModalResolution",
   participants: "decisionModalParticipants",
-  date: "decisionModalDate"
+  date: "decisionModalDate",
+  grid: "decisionModalGrid"
 }
 
 interface DecisionDataProps {
@@ -216,7 +217,7 @@ export default function DecisionDataModal(props: DecisionDataProps) {
               <StyledTextField className="w-1/2" id={DecisionModalIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in Description or Resolution" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)}/>
             </div>
             }
-            <Grid container spacing={6}>
+            <Grid id={DecisionModalIds.grid} container spacing={6}>
               {
               selectedInitiative.decisions.filter(d => d.description.toUpperCase().includes(searchedKeyword.toUpperCase()) || d.resolution.toUpperCase().includes(searchedKeyword.toUpperCase())).map((displayItem, key) => {
                 let isEdit = InEditMode() && displayItem.id === (decisionToEdit?.id ?? -1);
