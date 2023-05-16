@@ -5,7 +5,7 @@ const modalIds = consts.decisionModalIds;
 const alertIds = consts.deleteDecisionAlertIds;
 const radioIds = consts.initiativeDisplayRadioIds;
 const tableIds = consts.initiativeTableIds;
-const badToastId = consts.snackbarId;
+const snackbarId = consts.snackbarId;
 const waitTime = 500;
 const user = IntegrityUser;
 
@@ -35,8 +35,6 @@ beforeEach(() => {
   cy.wait(500);
   cy.get('button').contains('Submit').click();
 
-  //cy.get('button').contains('Admin').click();
-  //cy.get('button').contains('Initiatives').click();
   cy.get(radioIds.all).click();
   cy.get(tableIds.companyNameFilter).type(init.companyName);
   cy.get('table').contains(init.companyName);
@@ -99,7 +97,7 @@ describe("add decision spec", () => {
 
   specify("cannot add multiple decisions at once", () => {
     cy.get(modalIds.addButton).click();
-    cy.get(badToastId);
+    cy.get(snackbarId);
   })
 
 })

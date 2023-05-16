@@ -2,8 +2,7 @@ import { IntegrityUser, TestConstants } from "./TestHelpers";
 
 const consts = TestConstants;
 const modalIds = consts.editThroughputIds;
-const toastId = consts.snackbarId;//consts.toastIds.main;
-const toastCloseId = consts.toastIds.closeButton;
+const snackbarId = consts.snackbarId;
 const failMessage = consts.validationFailedMessage;
 const tableIds = consts.initiativeTableIds;
 const radioIds = consts.initiativeDisplayRadioIds;
@@ -21,8 +20,6 @@ describe ('add throughput data by manual entry', () => {
     cy.get('#password').clear().type(user.password);
     cy.get('button').contains('Submit').click();
 
-    //cy.get('button').contains('Admin').click();
-    //cy.get('button').contains('Initiatives').click();
     cy.get(radioIds.all).click();
     cy.get(tableIds.initiativeTitleFilter).type(initiativeTitle);
 
@@ -72,7 +69,7 @@ describe ('invalid manual entry test', () => {
     cy.get(modalIds.addItemsComplete).clear().type('2');
     cy.get(modalIds.addEntrySubmitButton).click();
     cy.wait(waitTime);
-    cy.get(toastId).contains('Validation Failed');
+    cy.get(snackbarId).contains('Validation Failed');
   })
 
   //Cypress does not allow letters in date pickers
@@ -83,14 +80,14 @@ describe ('invalid manual entry test', () => {
     cy.get(modalIds.itemsComplete).clear().type('2');
     cy.get(modalIds.manualSubmit).click();
     cy.wait(waitTime);
-    cy.get(toastId).contains('Validation Failed');
+    cy.get(snackbarId).contains('Validation Failed');
   })*/
 
   specify('cannot add throughput entry when item completed is invalid', () => {
     cy.get(modalIds.addDate).clear().type("2020-01-01");
     cy.get(modalIds.addEntrySubmitButton).click();
     cy.wait(waitTime);
-    cy.get(toastId).contains('Validation Failed');
+    cy.get(snackbarId).contains('Validation Failed');
   })
 })
 
@@ -116,17 +113,17 @@ describe('update throughput data', () => {
 
     cy.get(modalIds.submitButton).click();
 
-    cy.get(toastId).contains("Success");
+    cy.get(snackbarId).contains("Success");
   })
 
   /*specify('update the date of an entry', () => {
     cy.get(modalIds.tableDate).clear().type("2023-04-30");
-    cy.get(toastId).then(() => {
+    cy.get(snackbarId).then(() => {
       cy.get(toastCloseId).click();
     })
     cy.get(modalIds.submitButton).click();
 
-    cy.get(toastId).contains("Success");
+    cy.get(snackbarId).contains("Success");
   })*/
 
   specify('close button closes modal', () => {
@@ -140,45 +137,45 @@ describe('update throughput data', () => {
   specify('cannot update throughput data if unselected company', () => {
     cy.get(modalIds.selectCompany).select(0);
     cy.get(modalIds.submitButton).click();
-    cy.get(toastId).contains(failMessage);
+    cy.get(snackbarId).contains(failMessage);
   })
 
   specify('cannot update throughput data if unselected initiative', () => {
     cy.get(modalIds.selectInitiative).select(0);
     cy.get(modalIds.submitButton).click();
-    cy.get(toastId).contains(failMessage);
+    cy.get(snackbarId).contains(failMessage);
   })
 
   /*specify('cannot update throughput data to an invalid date', () => {
     cy.get(modalIds.tableDate).clear();
     cy.get(modalIds.submitButton).click();
-    cy.get(toastId).contains(failMessage);
+    cy.get(snackbarId).contains(failMessage);
 
     /*cy.get(modalIds.date).clear().type("2020-03-aa");   //Cypress doesn't allow this
     cy.get(modalIds.submitButton).click();
-    cy.get(toastId).contains(failMessage);*/
+    cy.get(snackbarId).contains(failMessage);*/
 
     /*cy.get(modalIds.date).clear().type("1800-13-32");   //Same here
     cy.get(modalIds.submitButton).click();
-    cy.get(toastId).contains(failMessage);*/
+    cy.get(snackbarId).contains(failMessage);*/
   //})
 
   specify('cannot update throughput data to an invalid completed amount', () => {
     cy.get(modalIds.tableItemsComplete).clear();
     cy.get(modalIds.submitButton).click();
-    cy.get(toastId).contains(failMessage);
+    cy.get(snackbarId).contains(failMessage);
     //cy.get(toastCloseId).click();
 
     cy.wait(waitTime);
     cy.get(modalIds.tableItemsComplete).clear().type("a");
     cy.get(modalIds.submitButton).click();
-    cy.get(toastId).contains(failMessage);
+    cy.get(snackbarId).contains(failMessage);
     //cy.get(toastCloseId).click();
 
     cy.wait(waitTime);
     cy.get(modalIds.tableItemsComplete).clear().type("-2");
     cy.get(modalIds.submitButton).click();
-    //cy.get(toastId).contains(failMessage);
+    //cy.get(snackbarId).contains(failMessage);
   })
 
 });

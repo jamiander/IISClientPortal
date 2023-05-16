@@ -1,4 +1,4 @@
-import { AdminUser, TestConstants } from "./TestHelpers";
+import { AdminUser, MBPICompany, TestConstants } from "./TestHelpers";
 
 describe('add company spec', () => {
 
@@ -8,16 +8,11 @@ describe('add company spec', () => {
     password: "test"
   }
 
-  const existingCompany = {
-    name: "Integrity Inspired Solutions",
-    email: "info@integrityinspired.com",
-    password: "password"
-  }
+  const existingCompany = MBPICompany;
 
   const consts = TestConstants;
   const failMessage = consts.validationFailedMessage;
-  const badToastId = consts.snackbarId//consts.toastIds.main;
-  //const modalIds = consts.userModalIds;
+  const snackbarId = consts.snackbarId;
   //const radioIds = consts.userDisplayRadioIds;
   const navIds = consts.navPanelIds;
   const pageIds = consts.companyPageIds;
@@ -37,9 +32,6 @@ describe('add company spec', () => {
   });
 
   specify('add new company', () => {
-    //cy.get(modalIds.company).clear().type(company.name);
-    //cy.get(modalIds.email).clear().type(company.email);
-    //cy.get(modalIds.password).clear().type(company.password);
     cy.get(pageIds.clientNameInput).type(company.name);
     cy.get(pageIds.saveClientButton).click();
 
@@ -47,32 +39,17 @@ describe('add company spec', () => {
   })
 
   specify('cannot add a company that already exists', () => {
-    //cy.get(modalIds.company).clear().type(existingCompany.name);
-    //cy.get(modalIds.email).clear().type(company.email);
-    //cy.get(modalIds.password).clear().type(company.password);
     cy.get(pageIds.clientNameInput).clear().type(existingCompany.name);
 
     cy.get(pageIds.saveClientButton).click();
-    cy.get(badToastId).contains(failMessage);
+    cy.get(snackbarId).contains(failMessage);
   })
 
-  /*specify('cannot add a company with the same email as another company', () => {
-    cy.get(modalIds.company).clear().type(company.name);
-    cy.get(modalIds.email).clear().type(existingCompany.email);
-    cy.get(modalIds.password).clear().type(company.password);
-
-    cy.get('button').contains('Submit').click();
-    cy.get(badToastId).contains(failMessage);
-  })*/
-
   specify('cannot add a company with invalid input', () => {
-    //cy.get(modalIds.company).clear();
-    //cy.get(modalIds.email).clear();
-    //cy.get(modalIds.password).clear();
     cy.get(pageIds.clientNameInput).clear();
 
     cy.get(pageIds.saveClientButton).click();
-    cy.get(badToastId).contains(failMessage);
+    cy.get(snackbarId).contains(failMessage);
   })
 
   specify('cancel button does not leave a blank company', () => {
@@ -82,6 +59,14 @@ describe('add company spec', () => {
 
   specify('cannot add two companies at once', () => {
     cy.get(pageIds.addClientButton).should('be.disabled');
+  })
+
+  specify('cannot add company as non-Integrity user', () => {
+
+  })
+
+  specify('cannot add company as regular Integrity user', () => {
+
   })
 
 })

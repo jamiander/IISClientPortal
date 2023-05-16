@@ -16,7 +16,7 @@ describe('update initiative spec', () => {
 
   const consts = TestConstants;
   const failMessage = consts.validationFailedMessage;
-  const badToastId = consts.snackbarId;//consts.toastIds.main;
+  const snackbarId = consts.snackbarId;
   const modalIds = consts.initiativeModalIds;
   const radioIds = consts.initiativeDisplayRadioIds;
   const tableIds = consts.initiativeTableIds;
@@ -29,8 +29,6 @@ describe('update initiative spec', () => {
     cy.wait(500);
     cy.get('button').contains('Submit').click();
 
-    //cy.get('button').contains('Admin').click();
-    //cy.get('button').contains('Initiatives').click();
     cy.get(radioIds.all).click();
     cy.get(tableIds.companyNameFilter).clear().type(init.companyName);
     cy.get('table').contains(init.companyName);
@@ -53,22 +51,22 @@ describe('update initiative spec', () => {
   specify('cannot update with blank fields', () => {
     cy.get(modalIds.title).clear();
     cy.get(modalIds.submitButton).click();
-    cy.get(badToastId).contains(failMessage);
+    cy.get(snackbarId).contains(failMessage);
     cy.get(modalIds.title).type(init.title);
 
     cy.get(modalIds.startDate).clear();
     cy.get(modalIds.submitButton).click();
-    cy.get(badToastId).contains(failMessage);
+    cy.get(snackbarId).contains(failMessage);
     cy.get(modalIds.startDate).type(init.startDate);
 
     cy.get(modalIds.targetDate).clear();
     cy.get(modalIds.submitButton).click();
-    cy.get(badToastId).contains(failMessage);
+    cy.get(snackbarId).contains(failMessage);
     cy.get(modalIds.targetDate).type(init.targetDate);
 
     cy.get(modalIds.totalItems).clear();
     cy.get(modalIds.submitButton).click();
-    cy.get(badToastId).contains(failMessage);
+    cy.get(snackbarId).contains(failMessage);
   })
 
   specify('cannot have a target date before a start date', () => {
@@ -76,7 +74,7 @@ describe('update initiative spec', () => {
     cy.get(modalIds.targetDate).clear().type("2023-04-19");
 
     cy.get(modalIds.submitButton).click();
-    cy.get(badToastId).contains(failMessage);
+    cy.get(snackbarId).contains(failMessage);
   })
 
   specify('cannot rename an initative the name of another initiative within that company', () => {
@@ -84,7 +82,7 @@ describe('update initiative spec', () => {
 
     cy.get(modalIds.submitButton).click();
 
-    cy.get(badToastId).contains(failMessage);
+    cy.get(snackbarId).contains(failMessage);
   })
 
   specify('close button closes the modal', () => {

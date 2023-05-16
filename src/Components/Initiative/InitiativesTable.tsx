@@ -148,12 +148,12 @@ let totalInits: number = companyInits.length;
   return (
     <>
     <div className="grid grid-cols-1 w-full h-auto">
-        <div className="col-span-1 h-[4vh] px-2 pb-[2%] space-x-2">
+        <div className="col-span-1 h-[4vh] px-2 pb-[2%] space-x-2 mb-[2%]">
           <input id={InitiativeTableIds.companyNameFilter} className={inputStyle} type={'text'} placeholder="Filter by Company" onChange={(e) => setSearchedComp(e.target.value)} />
           <input id={InitiativeTableIds.initiativeTitleFilter} className={inputStyle} type={'text'} placeholder="Filter by Title" onChange={(e) => setSearchedInit(e.target.value)} />
         </div>
         {totalInits !== 0 &&
-        <div className="col-span-1 py-[2%]">
+        <div className="col-span-1">
           <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
           <TableContainer component={Paper}>
             <Table className="table-auto w-full outline outline-3 bg-gray-100">

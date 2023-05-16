@@ -46,7 +46,7 @@ export const TestConstants = {
 
 export const IntegrityUser = {
   email: "info@integrityinspired.com",
-  password: "password"
+  password: "integrity"
 }
 
 export const AdminUser = {
