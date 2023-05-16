@@ -78,6 +78,12 @@ export default function InitiativesTable(props: InitiativesProps) {
       let aValue = Define(a[sortConfig.key]);
       let bValue = Define(b[sortConfig.key]);
 
+      if(typeof(aValue) === "string")
+        aValue = aValue.toUpperCase();
+
+      if(typeof(bValue) === "string")
+        bValue = bValue.toUpperCase();
+
       if (aValue < bValue) {
         return sortConfig.direction === 'ascending' ? -1 : 1;
       }
