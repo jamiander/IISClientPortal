@@ -55,15 +55,12 @@ export default function IntegrityPage(){
     AddEmptyUser,
     SaveEdit,
     CancelEdit,
-    usersList,
     userToEdit,
     SubmitUserData,
     currentEmail,
     setCurrentEmail,
     currentPassword,
     setCurrentPassword,
-    currentInitiativeIds,
-    setCurrentInitiativeIds,
     currentName,
     setCurrentName,
     currentPhone,
@@ -120,15 +117,16 @@ export default function IntegrityPage(){
           <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
           <TableContainer component={Paper}>
             <Table className="table-auto w-full outline outline-3 bg-gray-100">
-              <colgroup>
-                <col style={{ width: '15%' }} />
-                <col style={{ width: '15%' }} />
-                <col style={{ width: '13%' }} />
-                <col style={{ width: '13%' }} />
-                <col style={{ width: '12%' }} />
-                <col style={{ width: '12%' }} />
+            <colgroup>
+                <col style={{ width: '7%' }} />
+                <col style={{ width: '17%' }} />
+                <col style={{ width: '17%' }} />
+                <col style={{ width: '17%' }} />
                 <col style={{ width: '10%' }} />
-              </colgroup>
+                <col style={{ width: '8%' }} />
+                <col style={{ width: '10%' }} />
+                <col style={{ width: '6%' }} />
+            </colgroup>
               <TableHead className="outline outline-1">
                 <TableRow sx={{
                   borderBottom: "2px solid black",
@@ -138,7 +136,7 @@ export default function IntegrityPage(){
                     fontFamily: "Arial, Helvetica"
                   }
                 }}>
-                  <TableHeaderStyle>Manage Users</TableHeaderStyle>
+                  <TableHeaderStyle>Edit User</TableHeaderStyle>
                   <TableHeaderStyle>Name
                       {/* <TableSortLabel 
                       onClick={() => requestSort('companyName')} active={true} direction={sortConfig.direction === 'descending' ? 'desc' : 'asc'}>
