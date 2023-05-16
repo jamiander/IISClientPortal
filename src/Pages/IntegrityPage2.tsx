@@ -93,7 +93,7 @@ export default function IntegrityPage(){
 
   useEffect(() => {
     let newSortedCompanies: Company[] = JSON.parse(JSON.stringify(allCompanies));
-    newSortedCompanies.sort((a: Company, b: Company) => a.name > b.name ? 1 : -1);
+    newSortedCompanies.sort((a: Company, b: Company) => a.name.toUpperCase() > b.name.toUpperCase() ? 1 : -1);
     setSortedCompanies(newSortedCompanies);
   }, [allCompanies]);
 
