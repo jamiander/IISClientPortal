@@ -165,7 +165,9 @@ export default function CompanyPage2(){
                       </TableHead>
                 <TableBody>
                     {displayCompanies.map((displayCompany, key) => {
-                        let companyUser = companyUsers.find(cu => cu.companyId === displayCompany.id)!;
+                        let companyUserList = companyUsers.filter(cu => cu.companyId === displayCompany.id)!;
+                        return (
+                        companyUserList.map((companyUser,key) => {
                         let isEdit = InEditMode() && companyUser?.id === userToEdit?.id;
                         return (
                   <TableRow className={defaultRowStyle} sx={{
@@ -214,7 +216,7 @@ export default function CompanyPage2(){
                 </TableRow>
                     );
                     }
-                    )}
+                    ))})}
                 </TableBody>
                 </Table>
                 </TableContainer>
