@@ -181,7 +181,7 @@ export default function CompanyPage2(){
                 <TableBody>
                     {companyUsers.map((displayItem: any, key: any) => {
                     let isEdit = InEditMode() && displayItem?.id === userToEdit?.id;
-                    let companyName = displayCompanies.find(dc => dc.id === displayItem.companyId)?.name;
+                    let displayCompany = displayCompanies.find(dc => dc.id === displayItem.companyId)!;
                    return (
                   <TableRow className={defaultRowStyle} sx={{
                     borderBottom: "1px solid black",
@@ -200,7 +200,7 @@ export default function CompanyPage2(){
                             <CancelIcon />
                         </IconButton>
                     </TableCell>
-                    <TableCell id={CompanyPageIds.company}>{companyName}</TableCell>
+                    <TableCell id={CompanyPageIds.company}>{displayCompany?.name}</TableCell>
                     <TableCell id={CompanyPageIds.name}> <Input value={currentName} onChange={e => setCurrentName(e.target.value)}/></TableCell>
                     <TableCell id={CompanyPageIds.email}><Input value={currentEmail} onChange={e => setCurrentEmail(e.target.value)}/></TableCell>
                     <TableCell id={CompanyPageIds.password}><Input value={currentPassword} onChange={e => setCurrentPassword(e.target.value)}/></TableCell>
@@ -216,14 +216,14 @@ export default function CompanyPage2(){
                             <EditIcon />
                         </IconButton>
                     </TableCell>
-                    <TableCell id={CompanyPageIds.company}>{companyName}</TableCell>
+                    <TableCell id={CompanyPageIds.company}>{displayCompany?.name}</TableCell>
                     <TableCell id={CompanyPageIds.name}>{displayItem?.name}</TableCell>
                     <TableCell id={CompanyPageIds.email}>{displayItem?.email}</TableCell>
                     <TableCell id={CompanyPageIds.password}>{displayItem?.password}</TableCell>
                     <TableCell id={CompanyPageIds.phone}>{displayItem?.phoneNumber}</TableCell>
                     <TableCell id={CompanyPageIds.isAdmin}>{displayItem?.isAdmin ? "Admin" : "User"}</TableCell>
                     <TableCell id={CompanyPageIds.isActive}>{displayItem?.isActive ? "Active" : "Inactive"}</TableCell>
-                    <TableCell id={CompanyPageIds.initiativeIds}><EditUserInitiativesButton user={displayItem} allCompanies={displayCompanies} SubmitUserData={SubmitUserData}/></TableCell>
+                    <TableCell id={CompanyPageIds.initiativeIds}><EditUserInitiativesButton user={displayItem} allCompanies={[displayCompany]} SubmitUserData={SubmitUserData}/></TableCell>
                     </> 
                 }
                 </TableRow>

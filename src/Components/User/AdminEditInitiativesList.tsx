@@ -2,6 +2,7 @@ import { Accordion, AccordionDetails, AccordionSummary, Checkbox, FormControlLab
 import { Company } from "../../Store/CompanySlice";
 import { Fragment } from "react";
 import { UserItem } from "../../Styles";
+import ExpandMore from '@mui/icons-material/ExpandMore'
 
 interface AdminEditInitiativesListProps {
   company: Company
@@ -18,7 +19,7 @@ export function AdminEditInitiativesList(props: AdminEditInitiativesListProps)
     return (
       <UserItem> 
       <Accordion>
-        <AccordionSummary className="hover:bg-[#29c2b0]">
+        <AccordionSummary className="hover:bg-[#29c2b0]" expandIcon={<ExpandMore />}>
           <p className={`text-xl ${isCompanyChecked ? "font-bold" : ""}`}>
             {props.company.name}
           </p>
