@@ -8,7 +8,8 @@ import { IntegrityId } from "../Store/CompanySlice"
 export const NavPanelIds = {
   dashboard: "navPanelDashboard",
   company: "navPanelCompany",
-  integrity: "navPanelIntegrity"
+  integrity: "navPanelIntegrity",
+  client: "navPanelClient"
 }
 
 export default function NavPanel(){
@@ -63,6 +64,13 @@ export default function NavPanel(){
         <button id={NavPanelIds.integrity} className={GetNavStyle("/Integrity")}
           onClick={() => NavHandler('/Integrity')}>
           Integrity User Management
+        </button>
+      }
+      {
+        currentUser?.isAdmin && currentUser?.isActive && currentUser?.companyId === IntegrityId &&
+        <button id={NavPanelIds.client} className={GetNavStyle("/ClientPage")}
+          onClick={() => NavHandler('/ClientPage')}>
+          Client Management
         </button>
       }
     </div>  
