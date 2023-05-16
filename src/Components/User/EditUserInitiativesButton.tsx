@@ -16,7 +16,7 @@ export function EditUserInitiativesButton(props: EditUserInitiativesButtonProps)
 
   return (
     <>
-      <button onClick={() => setIsOpen(true)} className={genericButtonStyle + " text-sm"}>Selected Initiatives</button>
+      <button onClick={() => setIsOpen(true)} className={genericButtonStyle + " text-sm"}>View/Edit</button>
       <EditUserInitiativesModal SubmitUserData={props.SubmitUserData} user={props.user} allCompanies={props.allCompanies} isOpen={isOpen} setIsOpen={setIsOpen}/>
     </>
   )

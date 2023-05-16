@@ -20,6 +20,7 @@ import TableSortLabel from '@mui/material/TableSortLabel';
 import { useEditUser } from "../Services/useEditUser";
 import { v4 } from "uuid";
 import Sorter from "../Services/Sorter";
+import { EditUserInitiativesButton } from "../Components/User/EditUserInitiativesButton";
 
 export const CompanyPageIds = {
   modal: "editUserModal",
@@ -58,6 +59,7 @@ export default function CompanyPage2(){
     CancelEdit,
     usersList,
     userToEdit,
+    SubmitUserData,
     currentEmail,
     setCurrentEmail,
     currentPassword,
@@ -129,13 +131,14 @@ export default function CompanyPage2(){
               <TableContainer component={Paper}>
                   <Table className="table-auto w-full outline outline-3 bg-gray-100">
                       <colgroup>
-                          <col style={{ width: '15%' }} />
-                          <col style={{ width: '15%' }} />
-                          <col style={{ width: '13%' }} />
-                          <col style={{ width: '13%' }} />
-                          <col style={{ width: '12%' }} />
-                          <col style={{ width: '12%' }} />
+                          <col style={{ width: '7%' }} />
+                          <col style={{ width: '17%' }} />
+                          <col style={{ width: '17%' }} />
+                          <col style={{ width: '17%' }} />
                           <col style={{ width: '10%' }} />
+                          <col style={{ width: '8%' }} />
+                          <col style={{ width: '10%' }} />
+                          <col style={{ width: '6%' }} />
                       </colgroup>
                       <TableHead className="outline outline-1">
                           <TableRow sx={{
@@ -146,7 +149,7 @@ export default function CompanyPage2(){
                                   fontFamily: "Arial, Helvetica"
                               }
                           }}>
-                            <TableHeaderStyle>Manage Users</TableHeaderStyle>
+                            <TableHeaderStyle>Edit User</TableHeaderStyle>
                             <TableHeaderStyle>Company</TableHeaderStyle>
                             <TableHeaderStyle>Name
                                 {/* <TableSortLabel 
@@ -158,12 +161,13 @@ export default function CompanyPage2(){
                             <TableHeaderStyle>Phone</TableHeaderStyle>
                             <TableHeaderStyle>Admin Status</TableHeaderStyle>
                             <TableHeaderStyle>Active Status</TableHeaderStyle>
+                            <TableHeaderStyle>Assigned Initiatives</TableHeaderStyle>
                           </TableRow>
                       </TableHead>
                 <TableBody>
                     {sortedUsers.filter((u: { email: string; name: string; }) => u.email.toUpperCase().includes(searchedKeyword.toUpperCase()) || u.name?.toUpperCase().includes(searchedKeyword.toUpperCase())).map((displayItem: any, key: any) => {
                     let isEdit = InEditMode() && displayItem.id === userToEdit?.id;
-                    let companyName = allCompanies.find(x => x.id === displayItem.companyId)?.name;
+                    let userCompany = allCompanies.find(x => x.id === displayItem.companyId)!;
                    return (
                   <TableRow className={defaultRowStyle} sx={{
                     borderBottom: "1px solid black",
@@ -182,13 +186,14 @@ export default function CompanyPage2(){
                             <CancelIcon />
                         </IconButton>
                     </TableCell>
-                    <TableCell id={CompanyPageIds.company}>{companyName}</TableCell>
+                    <TableCell id={CompanyPageIds.company}>{userCompany?.name}</TableCell>
                     <TableCell id={CompanyPageIds.name}> <Input value={currentName} onChange={e => setCurrentName(e.target.value)}/></TableCell>
                     <TableCell id={CompanyPageIds.email}><Input value={currentEmail} onChange={e => setCurrentEmail(e.target.value)}/></TableCell>
                     <TableCell id={CompanyPageIds.password}><Input value={currentPassword} onChange={e => setCurrentPassword(e.target.value)}/></TableCell>
                     <TableCell id={CompanyPageIds.phone}><Input value={currentPhone} onChange={e => setCurrentPhone(e.target.value)}/></TableCell>
                     <TableCell id={CompanyPageIds.isAdmin}><Checkbox checked={currentIsAdmin} onChange={e => setCurrentIsAdmin(e.target.checked)}/>Admin</TableCell>
                     <TableCell id={CompanyPageIds.isActive}><Checkbox checked={currentIsActive} onChange={e => setCurrentIsActive(e.target.checked)}/>Active</TableCell>
+                    <TableCell id={CompanyPageIds.initiativeIds}></TableCell>
                     </>
                       : 
                      <>
@@ -197,13 +202,14 @@ export default function CompanyPage2(){
                             <EditIcon />
                         </IconButton>
                     </TableCell>
-                    <TableCell id={CompanyPageIds.company}>{companyName}</TableCell>
+                    <TableCell id={CompanyPageIds.company}>{userCompany?.name}</TableCell>
                     <TableCell id={CompanyPageIds.name}>{displayItem.name}</TableCell>
                     <TableCell id={CompanyPageIds.email}>{displayItem.email}</TableCell>
                     <TableCell id={CompanyPageIds.password}>{displayItem.password}</TableCell>
                     <TableCell id={CompanyPageIds.phone}>{displayItem.phoneNumber}</TableCell>
                     <TableCell id={CompanyPageIds.isAdmin}>{displayItem.isAdmin ? "Admin" : "User"}</TableCell>
                     <TableCell id={CompanyPageIds.isActive}>{displayItem.isActive ? "Active" : "Inactive"}</TableCell>
+                    <TableCell id={CompanyPageIds.initiativeIds}><EditUserInitiativesButton user={displayItem} allCompanies={[userCompany]} SubmitUserData={SubmitUserData}/></TableCell>
                     </> 
                 }
                 </TableRow>

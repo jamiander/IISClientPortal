@@ -72,7 +72,9 @@ export function EditUserInitiativesModal(props: EditUserInitiativesModalProps)
         maxWidth={"sm"}
       >
         <div className="m-2 space-y-2">
-          <p className="text-3xl w-full">Edit Selected Initiatives for {props.user.name ? props.user.name : props.user.email}</p>
+          <p className="text-2xl w-full">Edit Selected Initiatives for {props.user.name ? props.user.name : props.user.email}</p>
+          <p className="text-4sm w-full">Select Company to View Initiatives</p>
+
         {
           props.allCompanies.map((company,index) => {
             return (
