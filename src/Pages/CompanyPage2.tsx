@@ -64,8 +64,6 @@ export default function CompanyPage2(){
     setCurrentEmail,
     currentPassword,
     setCurrentPassword,
-    currentInitiativeIds,
-    setCurrentInitiativeIds,
     currentName,
     setCurrentName,
     currentPhone,
@@ -89,6 +87,9 @@ export default function CompanyPage2(){
   let sortedCompanies = JSON.parse(JSON.stringify(allCompanies));
   sortedCompanies.sort((a: Company, b: Company) => a.name > b.name ? 1 : -1);
 
+  let currentUserCompanyId = allUsers.find(user => user.id === currentUserId)?.companyId;
+  let userCompany = displayCompanies.find(x => x.id === currentUserCompanyId)!;
+
   useEffect(() =>
   {
     if(allUsers.find(user => user.id === currentUserId)?.isAdmin)
@@ -97,14 +98,27 @@ export default function CompanyPage2(){
 
   useEffect(() =>
   {
-    setDisplayCompanies(sortedCompanies.filter((company: { id: string; }) => company.id !== IntegrityId));
+    if(currentUserCompanyId === IntegrityId) {
+        setDisplayCompanies(sortedCompanies)
+    } else {
+        setDisplayCompanies(sortedCompanies.filter((company: { id: string; }) => company.id !== IntegrityId));
+    }
   },[sortedCompanies])
+
  
   useEffect(() => 
   {
-    const otherCompanyUsers = allUsers.filter(user => user.companyId !== IntegrityId);
-    setCompanyUsers(otherCompanyUsers);
-    SetupEditUser(otherCompanyUsers);
+    if(currentUserCompanyId === IntegrityId){
+        const otherCompanyUsers = allUsers.filter(user => user.companyId !== IntegrityId);
+        setCompanyUsers(otherCompanyUsers);
+        SetupEditUser(otherCompanyUsers);
+    }
+    else {
+        const otherCompanyUsers = allUsers.filter(user => user.companyId !== IntegrityId);
+        let filteredUsers = otherCompanyUsers.filter(cu => cu.companyId === userCompany?.id)
+        setCompanyUsers(filteredUsers);
+        SetupEditUser(filteredUsers);
+    }
   }, [allUsers])
 
   return (
@@ -121,7 +135,7 @@ export default function CompanyPage2(){
           </div>
       </div>
       <div className="mx-[2%] mb-[2%]">
-          {sortedUsers.length !== 0 &&
+          {companyUsers.length !== 0 &&
               <div className="mt-2 mb-4">
                   <StyledTextField className="w-1/2" id={CompanyPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name or email" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)} />
               </div>}
@@ -165,9 +179,9 @@ export default function CompanyPage2(){
                           </TableRow>
                       </TableHead>
                 <TableBody>
-                    {sortedUsers.filter((u: { email: string; name: string; }) => u.email.toUpperCase().includes(searchedKeyword.toUpperCase()) || u.name?.toUpperCase().includes(searchedKeyword.toUpperCase())).map((displayItem: any, key: any) => {
-                    let isEdit = InEditMode() && displayItem.id === userToEdit?.id;
-                    let userCompany = allCompanies.find(x => x.id === displayItem.companyId)!;
+                    {companyUsers.map((displayItem: any, key: any) => {
+                    let isEdit = InEditMode() && displayItem?.id === userToEdit?.id;
+                    let companyName = displayCompanies.find(dc => dc.id === displayItem.companyId)?.name;
                    return (
                   <TableRow className={defaultRowStyle} sx={{
                     borderBottom: "1px solid black",
@@ -186,7 +200,7 @@ export default function CompanyPage2(){
                             <CancelIcon />
                         </IconButton>
                     </TableCell>
-                    <TableCell id={CompanyPageIds.company}>{userCompany?.name}</TableCell>
+                    <TableCell id={CompanyPageIds.company}>{companyName}</TableCell>
                     <TableCell id={CompanyPageIds.name}> <Input value={currentName} onChange={e => setCurrentName(e.target.value)}/></TableCell>
                     <TableCell id={CompanyPageIds.email}><Input value={currentEmail} onChange={e => setCurrentEmail(e.target.value)}/></TableCell>
                     <TableCell id={CompanyPageIds.password}><Input value={currentPassword} onChange={e => setCurrentPassword(e.target.value)}/></TableCell>
@@ -198,18 +212,18 @@ export default function CompanyPage2(){
                       : 
                      <>
                     <TableCell>
-                        <IconButton onClick={() => EnterEditMode(displayItem.id, companyUsers, false)}>
+                        <IconButton onClick={() => EnterEditMode(displayItem?.id, companyUsers, false)}>
                             <EditIcon />
                         </IconButton>
                     </TableCell>
-                    <TableCell id={CompanyPageIds.company}>{userCompany?.name}</TableCell>
-                    <TableCell id={CompanyPageIds.name}>{displayItem.name}</TableCell>
-                    <TableCell id={CompanyPageIds.email}>{displayItem.email}</TableCell>
-                    <TableCell id={CompanyPageIds.password}>{displayItem.password}</TableCell>
-                    <TableCell id={CompanyPageIds.phone}>{displayItem.phoneNumber}</TableCell>
-                    <TableCell id={CompanyPageIds.isAdmin}>{displayItem.isAdmin ? "Admin" : "User"}</TableCell>
-                    <TableCell id={CompanyPageIds.isActive}>{displayItem.isActive ? "Active" : "Inactive"}</TableCell>
-                    <TableCell id={CompanyPageIds.initiativeIds}><EditUserInitiativesButton user={displayItem} allCompanies={[userCompany]} SubmitUserData={SubmitUserData}/></TableCell>
+                    <TableCell id={CompanyPageIds.company}>{companyName}</TableCell>
+                    <TableCell id={CompanyPageIds.name}>{displayItem?.name}</TableCell>
+                    <TableCell id={CompanyPageIds.email}>{displayItem?.email}</TableCell>
+                    <TableCell id={CompanyPageIds.password}>{displayItem?.password}</TableCell>
+                    <TableCell id={CompanyPageIds.phone}>{displayItem?.phoneNumber}</TableCell>
+                    <TableCell id={CompanyPageIds.isAdmin}>{displayItem?.isAdmin ? "Admin" : "User"}</TableCell>
+                    <TableCell id={CompanyPageIds.isActive}>{displayItem?.isActive ? "Active" : "Inactive"}</TableCell>
+                    <TableCell id={CompanyPageIds.initiativeIds}><EditUserInitiativesButton user={displayItem} allCompanies={displayCompanies} SubmitUserData={SubmitUserData}/></TableCell>
                     </> 
                 }
                 </TableRow>
