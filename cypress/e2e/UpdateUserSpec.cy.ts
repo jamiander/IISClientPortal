@@ -14,7 +14,7 @@ const editedUser = {
 const consts = TestConstants;
 const navIds = consts.navPanelIds;
 const failMessage = consts.validationFailedMessage;
-const badToastId = consts.snackbarId;
+const snackbarId = consts.snackbarId;
 const admin = AdminUser;
 
 beforeEach(() => {
@@ -56,12 +56,12 @@ describe("update user spec",() => {
   specify('cannot update with invalid input', () => {
     cy.get(modalIds.email).clear();
     cy.get(modalIds.saveChangesButton).click();
-    cy.get(badToastId).contains(failMessage);
+    cy.get(snackbarId).contains(failMessage);
     cy.get(modalIds.email).type(editedUser.email);
 
     cy.get(modalIds.password).clear();
     cy.get(modalIds.saveChangesButton).click();
-    cy.get(badToastId).contains(failMessage);
+    cy.get(snackbarId).contains(failMessage);
   })
 
   specify('cancel button cancels the edit', () => {
@@ -114,7 +114,7 @@ describe("update admin user spec", () => {
       cy.get(pageIds.saveChangesButton).click();
     })
 
-    cy.get(badToastId).contains(failMessage);
+    cy.get(snackbarId).contains(failMessage);
     
     cy.get(pageIds.grid).children().last().within(() => {
       cy.get(pageIds.email).type(editedUser.email);
@@ -123,7 +123,7 @@ describe("update admin user spec", () => {
       cy.get(pageIds.saveChangesButton).click();
     })
     
-    cy.get(badToastId).contains(failMessage);
+    cy.get(snackbarId).contains(failMessage);
   })
 
   specify('cancel button cancels the edit', () => {

@@ -9,7 +9,7 @@ const user = {
 const consts = TestConstants;
 const navIds = consts.navPanelIds;
 const failMessage = consts.validationFailedMessage;
-const badToastId = consts.snackbarId;
+const snackbarId = consts.snackbarId;
 const admin = AdminUser;
 
 beforeEach(() => {
@@ -50,7 +50,7 @@ describe('add user spec', () => {
 
   specify('cannot add a user with invalid input', () => {
     cy.get(modalIds.saveChangesButton).click();
-    cy.get(badToastId).contains(failMessage);
+    cy.get(snackbarId).contains(failMessage);
   })
 
   specify('cannot add multiple users at once', () => {
@@ -93,7 +93,7 @@ describe("add admin user spec", () => {
 
   specify('cannot add a user with invalid input', () => {
     cy.get(pageIds.saveChangesButton).click();
-    cy.get(badToastId).contains(failMessage);
+    cy.get(snackbarId).contains(failMessage);
   })
 
   specify('cannot add multiple users at once', () => {

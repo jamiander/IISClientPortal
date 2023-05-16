@@ -15,7 +15,7 @@ describe('update company spec', () => {
 
   const consts = TestConstants;
   const failMessage = consts.validationFailedMessage
-  const badToastId = consts.snackbarId;//consts.toastIds.main;
+  const snackbarId = consts.snackbarId;
   const navIds = consts.navPanelIds;
   const pageIds = consts.companyPageIds;
   const admin = AdminUser;
@@ -44,30 +44,30 @@ describe('update company spec', () => {
     cy.get(pageIds.saveClientButton).click();
 
     cy.contains(company.name);
-    //cy.get(badToastId).contains('User Update Dispatched');
+    //cy.get(snackbarId).contains('User Update Dispatched');
   })
 
   specify('cannot update with invalid input', () => {
     cy.get(pageIds.clientNameInput).clear();
 
     cy.get(pageIds.saveClientButton).click();
-    cy.get(badToastId).contains(failMessage);
+    cy.get(snackbarId).contains(failMessage);
     //cy.get(modalIds.company).type(company.name);
 
     /*cy.get(modalIds.email).clear();
     cy.get(pageIds.saveClientButton).click();
-    cy.get(badToastId).contains(failMessage);
+    cy.get(snackbarId).contains(failMessage);
     //cy.get(modalIds.email).type(company.email);
 
     //cy.get(modalIds.password).clear();
     cy.get(pageIds.saveClientButton).click();
-    cy.get(badToastId).contains(failMessage);*/
+    cy.get(snackbarId).contains(failMessage);*/
   })
 
   specify('cannot rename a company the name of another company', () => {
     cy.get(pageIds.clientNameInput).clear().type(existingCompany2.name);
     cy.get(pageIds.saveClientButton).click();
-    cy.get(badToastId).contains(failMessage);
+    cy.get(snackbarId).contains(failMessage);
   })
 
   /*specify('cannot rename a user the name of another user', () => {
@@ -75,7 +75,7 @@ describe('update company spec', () => {
 
     cy.get('button').contains('Submit').click();
 
-    cy.get(badToastId).contains(failMessage);
+    cy.get(snackbarId).contains(failMessage);
   })*/
 
   /*specify('close button closes the modal', () => {

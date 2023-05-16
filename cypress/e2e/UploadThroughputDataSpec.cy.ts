@@ -13,7 +13,7 @@ function findItemsCompleted(file: string) : number {
 const consts = TestConstants;
 const modalIds = consts.uploadThroughputIds;
 const tableIds = consts.initiativeTableIds;
-const badToastId = consts.snackbarId;//consts.toastIds.main;
+const snackbarId = consts.snackbarId;
 const radioIds = consts.initiativeDisplayRadioIds;
 
 const initiativeTitle = 'IIS Initiative';
@@ -32,8 +32,6 @@ describe('valid upload throughput tests', () => {
     cy.wait(500);
     cy.get('button').contains('Submit').click();
 
-    //cy.get('button').contains('Admin').click();
-    //cy.get('button').contains('Initiatives').click();
     cy.get(radioIds.all).click();
     cy.get(tableIds.initiativeTitleFilter).type(initiativeTitle);
 
@@ -106,7 +104,7 @@ describe('invalid upload throughput tests', () => {
     cy.wait(waitTime);
     cy.get(modalIds.fileSubmit).click();
     cy.wait(waitTime);
-    cy.get(badToastId).contains('Validation Failed');
+    cy.get(snackbarId).contains('Validation Failed');
   })
 
   specify('cannot add throughput data by file when a field is blank', () => {
@@ -158,7 +156,7 @@ describe('invalid upload throughput tests', () => {
     cy.wait(waitTime);
     cy.get(modalIds.fileSubmit).click();
     cy.wait(waitTime);
-    cy.get(badToastId).contains('Validation Failed');
+    cy.get(snackbarId).contains('Validation Failed');
   })
 
   specify('cannot add throughput data by file when items completed entry is invalid', () => {
@@ -177,7 +175,7 @@ describe('invalid upload throughput tests', () => {
     cy.wait(waitTime);
     cy.get(modalIds.fileSubmit).click();
     cy.wait(waitTime);
-    cy.get(badToastId).contains('Validation Failed');
+    cy.get(snackbarId).contains('Validation Failed');
   })
 })
 
