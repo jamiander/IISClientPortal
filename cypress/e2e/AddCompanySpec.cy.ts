@@ -3,7 +3,7 @@ import { AdminUser, TestConstants } from "./TestHelpers";
 describe('add company spec', () => {
 
   const company = {
-    name: "Test Company",
+    name: "BTest Company",
     email: "test@test.com",
     password: "test"
   }
@@ -43,7 +43,7 @@ describe('add company spec', () => {
     cy.get(pageIds.clientNameInput).type(company.name);
     cy.get(pageIds.saveClientButton).click();
 
-    cy.contains('Test Company');
+    cy.contains(company.name);
   })
 
   specify('cannot add a company that already exists', () => {

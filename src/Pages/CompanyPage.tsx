@@ -30,6 +30,8 @@ export function CompanyPage()
   const [newCompanyName, setNewCompanyName] = useState("");
   const [displayCompanies, setDisplayCompanies] = useState<Company[]>([]);
   const [companyToEdit, setCompanyToEdit] = useState<Company>();
+  
+  const [sortedUsers, setSortedUsers] = useState<User[]>([]);
 
   enum State {
     edit,
@@ -39,21 +41,25 @@ export function CompanyPage()
 
   const [pageState, setPageState] = useState(State.start);
 
-  let sortedUsers = JSON.parse(JSON.stringify(allUsers));
-  sortedUsers.sort((a: User, b: User) => a.name! > b.name! ? 1 : -1);
+  useEffect(() => {
+    let newSortedUsers: User[] = JSON.parse(JSON.stringify(allUsers));
+    newSortedUsers.sort((a: User, b: User) => a.email.toUpperCase() > b.email.toUpperCase() ? 1 : -1);
+    setSortedUsers(newSortedUsers);
 
-  let sortedCompanies = JSON.parse(JSON.stringify(allCompanies));
-  sortedCompanies.sort((a: Company, b: Company) => a.name > b.name ? 1 : -1);
+  }, [allUsers])
 
   useEffect(() =>
   {
-    if(sortedUsers.find((user: { id: string; }) => user.id === currentUserId)?.isAdmin)
+    if(allUsers.find((user: User) => user.id === currentUserId)?.isAdmin)
       dispatch(getUserById({}));
   }, [currentUserId]);
 
   useEffect(() => {
-    setDisplayCompanies(sortedCompanies.filter((company: { id: string; }) => company.id !== IntegrityId));
-  },[sortedCompanies])
+    let sortedCompanies: Company[] = JSON.parse(JSON.stringify(allCompanies));
+    sortedCompanies.sort((a: Company, b: Company) => a.name > b.name ? 1 : -1);
+
+    setDisplayCompanies(sortedCompanies.filter((company: Company) => company.id !== IntegrityId));
+  },[allCompanies])
 
   function BeginEdit(editableCompany: Company, newCompany: boolean)
   {
@@ -105,7 +111,7 @@ export function CompanyPage()
     let companyClone: Company = JSON.parse(JSON.stringify(companyToEdit));
     companyClone.name = newCompanyName;
 
-    const validation = ValidateCompany(companyClone,sortedCompanies);
+    const validation = ValidateCompany(companyClone,allCompanies);
     if(validation.success && companyToEdit)
     {
       dispatch(upsertCompanyInfo({isTest: isTest, company: companyClone}));
@@ -128,7 +134,7 @@ export function CompanyPage()
         <Grid container spacing={2}>
         {
           displayCompanies.map((company,index) => {
-            const usersAtCompany = sortedUsers.filter((user: { companyId: string; }) => user.companyId === company.id);
+            const usersAtCompany = sortedUsers.filter(user => user.companyId === company.id);
             const isEdit = (pageState === State.edit || pageState === State.add) && company.id === companyToEdit?.id;
             return (
               <Fragment key={index}>
@@ -142,7 +148,7 @@ export function CompanyPage()
                           <button className="mb-6" id={CompanyPageIds.editClientNameButton} onClick={() => HandleEditCompanyButton(company.id)}><EditIcon sx={{fontSize: '18px', marginLeft: '15px'}}/></button>
                         </div>
                             {
-                              usersAtCompany.map((user: { name: any; email: string; },jndex: number) => {
+                              usersAtCompany.map((user: User,jndex: number) => {
                                 return(
                                   <Fragment key={jndex}>
                                     <StyledTextField disabled label="Name and Email" className="bg-white" value={(user.name ? user.name : "Unknown") + "  :  " + user.email}>

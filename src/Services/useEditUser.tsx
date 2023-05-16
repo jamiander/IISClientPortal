@@ -65,19 +65,22 @@ export function useEditUser() : EditUser
   const InEditMode = () => state === stateEnum.edit || state === stateEnum.add;
 
   function EnterEditMode(id: string, users: User[], isNew: boolean)
-  { 
-    let currentUser = users.find(u => u.id === id);
-    if(currentUser)
+  {
+    if(!InEditMode())
     {
-      setState(isNew ? stateEnum.add : stateEnum.edit);
-      setUserToEdit(currentUser);
-      setCurrentEmail(currentUser.email);
-      setCurrentPassword(currentUser.password);
-      setterCurrentInitiatives(currentUser.initiativeIds);
-      setCurrentName(currentUser.name ? currentUser.name : "");
-      setCurrentPhone(currentUser.phoneNumber ? currentUser.phoneNumber : "");
-      setCurrentIsAdmin(currentUser.isAdmin ? currentUser.isAdmin : false);
-      setCurrentIsActive(currentUser.isActive ? currentUser.isActive : false);
+      let currentUser = users.find(u => u.id === id);
+      if(currentUser)
+      {
+        setState(isNew ? stateEnum.add : stateEnum.edit);
+        setUserToEdit(currentUser);
+        setCurrentEmail(currentUser.email);
+        setCurrentPassword(currentUser.password);
+        setterCurrentInitiatives(currentUser.initiativeIds);
+        setCurrentName(currentUser.name ? currentUser.name : "");
+        setCurrentPhone(currentUser.phoneNumber ? currentUser.phoneNumber : "");
+        setCurrentIsAdmin(currentUser.isAdmin ? currentUser.isAdmin : false);
+        setCurrentIsActive(currentUser.isActive ? currentUser.isActive : false);
+      }
     }
   }
 

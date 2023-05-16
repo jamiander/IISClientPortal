@@ -53,3 +53,9 @@ export const AdminUser = {
   email: "admin@integrityinspired.com",
   password: "admin"
 }
+
+export const MBPICompany = {
+  name: "MBPI",
+  id: "38cd148a-b402-4f54-9cc9-b639c51837ad"
+  
+}

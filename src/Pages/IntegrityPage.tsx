@@ -33,6 +33,8 @@ export const IntegrityPageIds = {
 export default function IntegrityPage(){
   const allCompanies = useAppSelector(selectAllCompanies);
   const allUsers = useAppSelector(selectAllUsers);
+  const [sortedCompanies, setSortedCompanies] = useState<Company[]>([]);
+  const [sortedUsers, setSortedUsers] = useState<User[]>([]);
   const [integrityUsers, setIntegrityUsers] = useState<User[]>([]);
   const currentUserId = useAppSelector(selectCurrentUserId);
   const dispatch = useAppDispatch();
@@ -77,11 +79,17 @@ export default function IntegrityPage(){
     SetupEditUser(newIntegrityUsers);
   }, [allUsers])
 
-  let sortedUsers = JSON.parse(JSON.stringify(usersList));
-  sortedUsers.sort((a: User, b: User) => a.name! > b.name! ? 1 : -1);
+  useEffect(() => {
+    let newSortedUsers: User[] = JSON.parse(JSON.stringify(usersList));
+    newSortedUsers.sort((a: User, b: User) => a.email.toUpperCase() > b.email.toUpperCase() ? 1 : -1);
+    setSortedUsers(newSortedUsers);
+  }, [usersList]);
 
-  let sortedCompanies = JSON.parse(JSON.stringify(allCompanies));
-  sortedCompanies.sort((a: Company, b: Company) => a.name > b.name ? 1 : -1);
+  useEffect(() => {
+    let newSortedCompanies: Company[] = JSON.parse(JSON.stringify(allCompanies));
+    newSortedCompanies.sort((a: Company, b: Company) => a.name.toUpperCase() > b.name.toUpperCase() ? 1 : -1);
+    setSortedCompanies(newSortedCompanies);
+  }, [allCompanies]);
 
 
   const showFileUpload = false;
@@ -110,7 +118,7 @@ export default function IntegrityPage(){
             </div>
           }
           <Grid container spacing={2} id={IntegrityPageIds.grid}>
-            {sortedUsers.filter((u: { email: string; name: string; }) => u.email.toUpperCase().includes(searchedKeyword.toUpperCase()) || u.name?.toUpperCase().includes(searchedKeyword.toUpperCase())).map((displayItem: User, key: number) => {
+            {sortedUsers.filter(u => u.email.toUpperCase().includes(searchedKeyword.toUpperCase()) || u.name?.toUpperCase().includes(searchedKeyword.toUpperCase())).map((displayItem: User, key: number) => {
               let isEdit = InEditMode() && displayItem.id === userToEdit?.id;
               return (
                 <Grid item md={4} key={key}>
@@ -173,7 +181,7 @@ export default function IntegrityPage(){
                             <button id={IntegrityPageIds.editButton} className={submitButtonStyle} onClick={() => EnterEditMode(displayItem.id, integrityUsers, false)}>Edit</button>
                           </div>
                         }
-                        <EditUserInitiativesButton allCompanies={allCompanies} user={displayItem} SubmitUserData={SubmitUserData}/>
+                        <EditUserInitiativesButton allCompanies={sortedCompanies} user={displayItem} SubmitUserData={SubmitUserData}/>
                       </StyledCardActions>
                     </StyledCard>
                   </Item>
