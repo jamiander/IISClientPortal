@@ -56,6 +56,7 @@ export default function IntegrityPage(){
     SaveEdit,
     CancelEdit,
     userToEdit,
+    usersList,
     SubmitUserData,
     currentEmail,
     setCurrentEmail,
@@ -151,7 +152,7 @@ export default function IntegrityPage(){
                 </TableRow>
               </TableHead>
               <TableBody>
-                {integrityUsers.filter(u => u.email.toUpperCase().includes(searchedKeyword.toUpperCase()) || u.name?.toUpperCase().includes(searchedKeyword.toUpperCase()))
+                {usersList.filter(u => u.email.toUpperCase().includes(searchedKeyword.toUpperCase()) || u.name?.toUpperCase().includes(searchedKeyword.toUpperCase()))
                   .map((displayItem: User, key: number) => {
                   let isEdit = InEditMode() && displayItem.id === userToEdit?.id;
                   return (
