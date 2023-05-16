@@ -37,7 +37,7 @@ export const IntegrityPageIds = {
   cancelChangesButton: "adminEditUserCancelChangesButton",
   deleteButton: "adminEditUserDeleteButton",
   keywordFilter: "adminEditUserKeywordFilter",
-  grid: "adminEditUserGrid"
+  table: "adminEditUserTable"
 }
 
 export default function IntegrityPage(){
@@ -151,7 +151,7 @@ export default function IntegrityPage(){
                   <TableHeaderStyle>Initiatives</TableHeaderStyle>
                 </TableRow>
               </TableHead>
-              <TableBody>
+              <TableBody id={IntegrityPageIds.table}>
                 {usersList.filter(u => u.email.toUpperCase().includes(searchedKeyword.toUpperCase()) || u.name?.toUpperCase().includes(searchedKeyword.toUpperCase()))
                   .map((displayItem: User, key: number) => {
                   let isEdit = InEditMode() && displayItem.id === userToEdit?.id;
@@ -168,25 +168,25 @@ export default function IntegrityPage(){
                       {isEdit ? 
                       <>
                         <TableCell>
-                          <IconButton onClick={() => SaveEdit()}>
+                          <IconButton id={IntegrityPageIds.saveChangesButton} onClick={() => SaveEdit()}>
                             <DoneIcon />
                           </IconButton>
-                          <IconButton onClick={() => CancelEdit()}>
+                          <IconButton id={IntegrityPageIds.cancelChangesButton} onClick={() => CancelEdit()}>
                             <CancelIcon />
                           </IconButton>
                         </TableCell>
-                        <TableCell id={IntegrityPageIds.name}> <Input value={currentName} onChange={e => setCurrentName(e.target.value)}/></TableCell>
-                        <TableCell id={IntegrityPageIds.email}><Input value={currentEmail} onChange={e => setCurrentEmail(e.target.value)}/></TableCell>
-                        <TableCell id={IntegrityPageIds.password}><Input value={currentPassword} onChange={e => setCurrentPassword(e.target.value)}/></TableCell>
-                        <TableCell id={IntegrityPageIds.phone}><Input value={currentPhone} onChange={e => setCurrentPhone(e.target.value)}/></TableCell>
-                        <TableCell id={IntegrityPageIds.isAdmin}><Checkbox checked={currentIsAdmin} onChange={e => setCurrentIsAdmin(e.target.checked)}/>Admin</TableCell>
-                        <TableCell id={IntegrityPageIds.isActive}><Checkbox checked={currentIsActive} onChange={e => setCurrentIsActive(e.target.checked)}/>Active</TableCell>
+                        <TableCell><Input id={IntegrityPageIds.name}value={currentName} onChange={e => setCurrentName(e.target.value)}/></TableCell>
+                        <TableCell><Input id={IntegrityPageIds.email} value={currentEmail} onChange={e => setCurrentEmail(e.target.value)}/></TableCell>
+                        <TableCell><Input id={IntegrityPageIds.password} value={currentPassword} onChange={e => setCurrentPassword(e.target.value)}/></TableCell>
+                        <TableCell><Input id={IntegrityPageIds.phone} value={currentPhone} onChange={e => setCurrentPhone(e.target.value)}/></TableCell>
+                        <TableCell><Checkbox id={IntegrityPageIds.isAdmin} checked={currentIsAdmin} onChange={e => setCurrentIsAdmin(e.target.checked)}/>Admin</TableCell>
+                        <TableCell><Checkbox id={IntegrityPageIds.isActive} checked={currentIsActive} onChange={e => setCurrentIsActive(e.target.checked)}/>Active</TableCell>
                         <TableCell id={IntegrityPageIds.initiativeIds}></TableCell>
                       </>
                       : 
                       <>
                         <TableCell>
-                          <IconButton onClick={() => EnterEditMode(displayItem.id, integrityUsers, false)}>
+                          <IconButton id={IntegrityPageIds.editButton} disabled={InEditMode()} onClick={() => EnterEditMode(displayItem.id, integrityUsers, false)}>
                             <EditIcon />
                           </IconButton>
                         </TableCell>

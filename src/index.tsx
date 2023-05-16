@@ -46,11 +46,6 @@ const router = createBrowserRouter([
       },
       {
         path: '/Integrity',
-        element: <IntegrityPage/>,
-        errorElement: <ErrorPage/>
-      },
-      {
-        path: '/Integrity2',
         element: <IntegrityPage2/>,
         errorElement: <ErrorPage/>
       }
