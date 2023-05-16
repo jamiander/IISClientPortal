@@ -17,6 +17,7 @@ interface EditUserInitiativesModalProps {
   isOpen: boolean
   setIsOpen: (value: boolean) => void
   SubmitUserData: (user: User) => boolean
+  expanded: boolean
 }
 
 export function EditUserInitiativesModal(props: EditUserInitiativesModalProps)
@@ -73,14 +74,14 @@ export function EditUserInitiativesModal(props: EditUserInitiativesModalProps)
         maxWidth={"sm"}
       >
         <div className="m-2 space-y-2">
-          <p className="text-2xl w-full">Edit Selected Initiatives for {props.user.name ? props.user.name : props.user.email}</p>
+          <p className="text-2xl w-full">Edit Selected Initiatives for {props.user?.name ? props.user?.name : props.user?.email}</p>
           <p className="text-4sm w-full">Select Company to View Initiatives</p>
 
         {
           props.allCompanies.map((company,index) => {
             return (
               <Fragment key={index}>
-                <AdminEditInitiativesList company={company} initiativeIds={initiativeIds} updateInitiativeIds={UpdateInitiativeIds} editable={true} />
+                <AdminEditInitiativesList company={company} initiativeIds={initiativeIds} updateInitiativeIds={UpdateInitiativeIds} editable={true} expanded={props.expanded}/>
               </Fragment>
             )
           })

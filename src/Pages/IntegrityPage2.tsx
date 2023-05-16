@@ -8,7 +8,6 @@ import { Checkbox, FormControlLabel, FormGroup, IconButton, Input} from "@mui/ma
 import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
-import { AdminEditInitiativesList } from "../Components/User/AdminEditInitiativesList";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -16,9 +15,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import TableSortLabel from '@mui/material/TableSortLabel';
 import { useEditUser } from "../Services/useEditUser";
-import { v4 } from "uuid";
 import { EditUserInitiativesButton } from "../Components/User/EditUserInitiativesButton";
 
 export const IntegrityPageIds = {
@@ -47,6 +44,7 @@ export default function IntegrityPage(){
   const [integrityUsers, setIntegrityUsers] = useState<User[]>([]);
   const currentUserId = useAppSelector(selectCurrentUserId);
   const dispatch = useAppDispatch();
+  const [expanded, setIsExpanded] = useState(false);
 
   const {
     SetupEditUser,
@@ -196,7 +194,7 @@ export default function IntegrityPage(){
                         <TableCell id={IntegrityPageIds.phone}>{displayItem.phoneNumber}</TableCell>
                         <TableCell id={IntegrityPageIds.isAdmin}>{displayItem.isAdmin ? "Admin" : "User"}</TableCell>
                         <TableCell id={IntegrityPageIds.isActive}>{displayItem.isActive ? "Active" : "Inactive"}</TableCell>
-                        <TableCell id={IntegrityPageIds.initiativeIds}><EditUserInitiativesButton user={displayItem} allCompanies={sortedCompanies} SubmitUserData={SubmitUserData}/></TableCell>
+                        <TableCell id={IntegrityPageIds.initiativeIds}><EditUserInitiativesButton user={displayItem} allCompanies={sortedCompanies} SubmitUserData={SubmitUserData} expanded={false}/></TableCell>
                       </>
                       }
                     </TableRow>

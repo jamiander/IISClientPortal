@@ -1,25 +1,29 @@
 import { Accordion, AccordionDetails, AccordionSummary, Checkbox, FormControlLabel, FormGroup } from "@mui/material";
 import { Company } from "../../Store/CompanySlice";
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { UserItem } from "../../Styles";
 import ExpandMore from '@mui/icons-material/ExpandMore'
+import exp from "constants";
 
 interface AdminEditInitiativesListProps {
   company: Company
   initiativeIds: string[]
   editable: boolean
   updateInitiativeIds: (initId: string, checked: boolean) => void
+  expanded: boolean
 }
 
 export function AdminEditInitiativesList(props: AdminEditInitiativesListProps)
 {
+  const [expanded, setExpanded] = useState(props.expanded);
   const isCompanyChecked = props.company.initiatives.find(init => props.initiativeIds.find(i => i === init.id) !== undefined);
   if(isCompanyChecked || props.editable)
   {
     return (
       <UserItem> 
-      <Accordion>
-        <AccordionSummary className="hover:bg-[#29c2b0]" expandIcon={<ExpandMore />}>
+      <Accordion expanded={expanded}>
+        <AccordionSummary className="hover:bg-[#29c2b0]" expandIcon={<ExpandMore />} onClick={(event) => {
+              setExpanded(!expanded);}}>
           <p className={`text-xl ${isCompanyChecked ? "font-bold" : ""}`}>
             {props.company.name}
           </p>
@@ -28,7 +32,7 @@ export function AdminEditInitiativesList(props: AdminEditInitiativesListProps)
         <FormGroup>
         {
           props.company.initiatives.map((init, index) => {
-            let checkedInitId = props.initiativeIds.find(id => id === init.id);
+            let checkedInitId = props.initiativeIds?.find(id => id === init.id);
             let checkedInit = props.company.initiatives.find(x => x.id === checkedInitId);
 
             if(props.editable)

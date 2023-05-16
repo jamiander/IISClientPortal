@@ -8,6 +8,7 @@ interface EditUserInitiativesButtonProps {
   user: User
   allCompanies: Company[]
   SubmitUserData: (user: User) => boolean
+  expanded: boolean
 }
 
 export function EditUserInitiativesButton(props: EditUserInitiativesButtonProps)
@@ -17,7 +18,7 @@ export function EditUserInitiativesButton(props: EditUserInitiativesButtonProps)
   return (
     <>
       <button onClick={() => setIsOpen(true)} className={genericButtonStyle + " text-sm"}>View/Edit</button>
-      <EditUserInitiativesModal SubmitUserData={props.SubmitUserData} user={props.user} allCompanies={props.allCompanies} isOpen={isOpen} setIsOpen={setIsOpen}/>
+      <EditUserInitiativesModal SubmitUserData={props.SubmitUserData} user={props.user} allCompanies={props.allCompanies} isOpen={isOpen} setIsOpen={setIsOpen} expanded={props.expanded}/>
     </>
   )
 }
