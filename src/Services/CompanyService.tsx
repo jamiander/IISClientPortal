@@ -302,3 +302,13 @@ export async function UploadDocuments(request: UploadDocumentsRequest) : Promise
   
   return {status: status}
 }
+
+export async function UploadDocument(request: UploadDocumentsRequest) : Promise<UploadDocumentsResponse>
+{
+  let formData = new FormData();
+  formData.append("file",request.files[0]);
+
+  const base_url = BASE_URL + "UploadDocument?code=mFtD4EttHnv1RAnrPlfxPuNoIaalHBoNPhv7bEjJkeOsAzFugcQaWw==";
+  const response = await axios.post(base_url,formData,{headers: {'Content-Type': 'multipart/form-data'}});
+  return response.data;
+}

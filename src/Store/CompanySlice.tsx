@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import { DateInfo, ThroughputData, DecisionData, UpsertCompanyInfo, UpsertCompanyInfoRequest, UpsertInitiativeInfo, UpsertInitiativeInfoRequest, UpsertThroughputData, UpsertThroughputDataRequest, UpsertDecisionDataRequest, UpsertDecisionData, DeleteDecisionDataRequest, DeleteDecisionData, GetCompanyByIdRequest, GetCompanyById, GetCompanyByInitiativeIds, GetCompanyByInitiativeIdsRequest, UploadDocumentsRequest, UploadDocuments, GetDocumentsRequest, GetDocuments } from "../Services/CompanyService"
+import { DateInfo, ThroughputData, DecisionData, UpsertCompanyInfo, UpsertCompanyInfoRequest, UpsertInitiativeInfo, UpsertInitiativeInfoRequest, UpsertThroughputData, UpsertThroughputDataRequest, UpsertDecisionDataRequest, UpsertDecisionData, DeleteDecisionDataRequest, DeleteDecisionData, GetCompanyByIdRequest, GetCompanyById, GetCompanyByInitiativeIds, GetCompanyByInitiativeIdsRequest, UploadDocumentsRequest, UploadDocuments, GetDocumentsRequest, GetDocuments, UploadDocument } from "../Services/CompanyService"
 import { RootState } from "./Store"
 
 export interface Company {
@@ -149,7 +149,7 @@ export const deleteDecisionData = createAsyncThunk(
 export const uploadDocuments = createAsyncThunk(
   'companies/uploadDocuments',
   async (args: UploadDocumentsRequest, {}) => {
-    const response = await UploadDocuments(args);
+    const response = await UploadDocument(args);
   }
 )
 
