@@ -1,13 +1,13 @@
 import { AdminUser, TestConstants } from "./TestHelpers";
 
 const user = {
-  email: "test@testing.com",
+  email: "zzztest@testing.com",
   password: "password",
   initaitiveIds: []
 }
 
 const editedUser = {
-  email: "toast@toasting.com",
+  email: "zzztoast@toasting.com",
   password: "p4$$20rd"
 }
 
@@ -90,7 +90,7 @@ describe("update admin user spec", () => {
     cy.get(pageIds.saveChangesButton).click();
     cy.wait(500);
 
-    cy.get(pageIds.grid).children().last().within(() => {
+    cy.get(pageIds.table).children().last().within(() => {
       cy.get(pageIds.editButton).click();
       cy.get(pageIds.email).clear().type(editedUser.email);
       cy.get(pageIds.password).clear().type(editedUser.password);
@@ -102,13 +102,13 @@ describe("update admin user spec", () => {
   specify('update an admin user',() => {
     cy.get(pageIds.saveChangesButton).click();
     cy.wait(500);
-    cy.get(pageIds.grid).children().last().within(() => {
-      cy.get(pageIds.email).invoke('val').should('equal',editedUser.email);
+    cy.get(pageIds.table).children().last().within(() => {
+      cy.get(pageIds.email).should('contain',editedUser.email);
     })
   })
 
   specify('cannot update with invalid input', () => {
-    cy.get(pageIds.grid).children().last().within(() => {
+    cy.get(pageIds.table).children().last().within(() => {
     
       cy.get(pageIds.email).clear();
       cy.get(pageIds.saveChangesButton).click();
@@ -116,7 +116,7 @@ describe("update admin user spec", () => {
 
     cy.get(snackbarId).contains(failMessage);
     
-    cy.get(pageIds.grid).children().last().within(() => {
+    cy.get(pageIds.table).children().last().within(() => {
       cy.get(pageIds.email).type(editedUser.email);
 
       cy.get(pageIds.password).clear();
@@ -129,13 +129,13 @@ describe("update admin user spec", () => {
   specify('cancel button cancels the edit', () => {
     cy.get(pageIds.cancelChangesButton).click();
     cy.get(pageIds.saveChangesButton).should('not.exist');
-    cy.get(pageIds.grid).children().last().within(() => {
-      cy.get(pageIds.email).invoke('val').should('equal',user.email);
+    cy.get(pageIds.table).children().last().within(() => {
+      cy.get(pageIds.email).should('contain',user.email);
     })
   })
 
   specify('cannot edit multiple users at once', () => {
-    cy.get(pageIds.editButton).should('not.exist');
+    cy.get(pageIds.editButton).should('be.disabled');
   })
 })
 

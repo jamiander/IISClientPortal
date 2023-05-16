@@ -24,7 +24,8 @@ export function EditUserInitiativesModal(props: EditUserInitiativesModalProps)
   const [initiativeIds, setInitiativeIds] = useState<string[]>([]);
 
   useEffect(() => {
-    setInitiativeIds(props.user.initiativeIds);
+    if(props.isOpen)
+      setInitiativeIds(props.user.initiativeIds);
   },[props.isOpen])
 
   function UpdateInitiativeIds(initId: string, checked: boolean)

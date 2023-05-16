@@ -65,13 +65,6 @@ export default function NavPanel(){
           Integrity User Management
         </button>
       }
-      {
-        currentUser?.isAdmin && currentUser?.isActive && currentUser?.companyId === IntegrityId &&
-        <button id={NavPanelIds.integrity} className={GetNavStyle("/Integrity2")}
-          onClick={() => NavHandler('/Integrity2')}>
-          Integrity User Management 2
-        </button>
-      }
     </div>  
   )
 }

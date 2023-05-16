@@ -1,7 +1,7 @@
 import { AdminUser, TestConstants } from "./TestHelpers";
 
 const user = {
-  email: "test@testing.com",
+  email: "AAAtest@testing.com",
   password: "password",
   initaitiveIds: []
 }
@@ -74,7 +74,7 @@ describe("add admin user spec", () => {
   beforeEach(() => {
     cy.get(navIds.integrity).click();
     cy.wait(500);
-    cy.get(pageIds.addButton).click({force:true});
+    cy.get(pageIds.addButton).click();
   })
 
   specify('add a new admin user', () => {
@@ -84,8 +84,8 @@ describe("add admin user spec", () => {
 
     cy.get(pageIds.saveChangesButton).click();
     cy.get(pageIds.email)
-      .invoke('val')
-      .should('equal', user.email);
+      //.invoke('val')
+      .should('contain', user.email);
     
     cy.get(pageIds.saveChangesButton).should('not.exist');
     cy.get(pageIds.editButton).should('exist');

@@ -12,7 +12,7 @@ import { EditUserInitiativesButton } from "../Components/User/EditUserInitiative
 import { ValidateUser, ValidationFailedPrefix } from "../Services/Validation";
 import { enqueueSnackbar } from "notistack";
 
-export const IntegrityPageIds = {
+const IntegrityPageIds = {
   modal: "adminEditUserModal",
   closeModalButton: "adminEditUserModalCloseModalButton",
   email: "adminEditUserEmail",

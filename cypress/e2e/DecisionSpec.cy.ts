@@ -11,7 +11,7 @@ const user = IntegrityUser;
 
 const init = {
   companyName: 'Integrity Inspired Solutions',
-  id: "1"
+  title: "IIS Initiative"
 }
 
 const decision = {
@@ -36,15 +36,18 @@ beforeEach(() => {
   cy.get('button').contains('Submit').click();
 
   cy.get(radioIds.all).click();
-  cy.get(tableIds.companyNameFilter).type(init.companyName);
-  cy.get('table').contains(init.companyName);
-  cy.get("#viewDecisionDataButton"+init.id).click();
+  cy.get(tableIds.initiativeTitleFilter).type(init.title);
+  cy.get('table').contains(init.title);
+  cy.get("button").contains("View").click();
 
   cy.get(modalIds.addButton).click({force: true});
-  cy.get(modalIds.description).type(decision.description,{force: true});
-  cy.get(modalIds.resolution).type(decision.resolution,{force: true});
-  cy.get(modalIds.participants).type(decision.names,{force: true});
-  cy.get(modalIds.date).type(decision.date,{force: true});
+  cy.get(modalIds.grid).children().first().within(() => {
+    cy.get(modalIds.description).type(decision.description,{force: true});
+    cy.get(modalIds.resolution).type(decision.resolution,{force: true});
+    cy.get(modalIds.participants).type(decision.names,{force: true});
+    cy.get(modalIds.date).type(decision.date,{force: true});
+  })
+  
 })
 
 describe("add decision spec", () => {
@@ -55,8 +58,10 @@ describe("add decision spec", () => {
     cy.get(modalIds.description).contains(decision.description);
     cy.get(modalIds.closeModalButton).click();
     
-    cy.get("#viewDecisionDataButton"+init.id).click();
-    cy.get(modalIds.description).contains(decision.description);
+    cy.get('button').contains("View").click();
+    cy.get(modalIds.grid).children().last().within(() => {
+      cy.get(modalIds.description).contains(decision.description);
+    })
   })
 
   specify("can't add decision with empty fields", () => {
@@ -87,7 +92,9 @@ describe("add decision spec", () => {
   specify("must be able to cancel adding", () => {
     cy.get(modalIds.cancelChangesButton).click();
     cy.get(modalIds.saveChangesButton).should('not.exist');
-    cy.get(modalIds.description).should('not.exist');
+    cy.get(modalIds.description)
+      .invoke('val')
+      .should('not.eq', decision.description);
   })
 
   specify("close button closes the modal", () => {
@@ -139,7 +146,9 @@ describe("delete decision spec", () => {
 
     cy.get(alertIds.confirmButton).click();
 
-    cy.get(modalIds.description).should("not.exist");
+    cy.get(modalIds.description)
+      .invoke('val')
+      .should('not.eq', decision.description);
   })
 
   specify("hitting no in alert does not delete", () => {
