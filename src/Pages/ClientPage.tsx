@@ -5,9 +5,10 @@ import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
-import { Company, selectAllCompanies } from "../Store/CompanySlice";
+import { Company, selectAllCompanies, upsertCompanyInfo } from "../Store/CompanySlice";
 import { enqueueSnackbar } from "notistack";
 import { v4 } from "uuid";
+import { ValidateCompany, ValidationFailedPrefix } from "../Services/Validation";
 
 export const ClientPageIds = {
   modal: "adminEditUserModal",
@@ -48,6 +49,7 @@ export function ClientPage()
 
   useEffect(() => {
     const companiesClone: Company[] = JSON.parse(JSON.stringify(allCompanies));
+    companiesClone.sort((a: Company, b: Company) => a.name.toUpperCase() > b.name.toUpperCase() ? 1 : -1);
     setDisplayCompanies(companiesClone);
   },[allCompanies]);
 
@@ -61,8 +63,12 @@ export function ClientPage()
     if(state === State.start)
     {
       const foundCompany = companies.find(c => c.id === companyId);
-      setCompanyToEdit(foundCompany);
-      setState(isNew ? State.add : State.edit);
+      if(foundCompany)
+      {
+        setCompanyToEdit(foundCompany);
+        setCurrentName(foundCompany.name);
+        setState(isNew ? State.add : State.edit);
+      }
     }
     else
       enqueueSnackbar("An edit is already in progress.",{variant:"error"});
@@ -89,7 +95,22 @@ export function ClientPage()
 
   function HandleSaveEdit()
   {
-    LeaveEditMode();
+    let isTest = false;
+    if((window as any).Cypress)
+      isTest = true;
+
+    let companyClone: Company = JSON.parse(JSON.stringify(companyToEdit));
+    companyClone.name = currentName;
+
+    const validation = ValidateCompany(companyClone,displayCompanies);
+    if(validation.success && companyToEdit)
+    {
+      dispatch(upsertCompanyInfo({isTest: isTest, company: companyClone}));
+      LeaveEditMode();
+      enqueueSnackbar("New Client Added!", {variant: "success"});
+    }
+    else
+      enqueueSnackbar(ValidationFailedPrefix + validation.message, {variant: "error"});
   }
 
   function HandleCancelEdit()
