@@ -56,7 +56,7 @@ export function CompanyPage()
 
   useEffect(() => {
     let sortedCompanies: Company[] = JSON.parse(JSON.stringify(allCompanies));
-    sortedCompanies.sort((a: Company, b: Company) => a.name > b.name ? 1 : -1);
+    sortedCompanies.sort((a: Company, b: Company) => a.name.toUpperCase() > b.name.toUpperCase() ? 1 : -1);
 
     setDisplayCompanies(sortedCompanies.filter((company: Company) => company.id !== IntegrityId));
   },[allCompanies])

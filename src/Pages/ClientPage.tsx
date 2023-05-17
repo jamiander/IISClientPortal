@@ -5,27 +5,28 @@ import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
-import { Company, selectAllCompanies } from "../Store/CompanySlice";
+import { Company, selectAllCompanies, upsertCompanyInfo } from "../Store/CompanySlice";
 import { enqueueSnackbar } from "notistack";
 import { v4 } from "uuid";
+import { ValidateCompany, ValidationFailedPrefix } from "../Services/Validation";
 
 export const ClientPageIds = {
-  modal: "adminEditUserModal",
-  closeModalButton: "adminEditUserModalCloseModalButton",
-  email: "adminEditUserEmail",
-  password: "adminEditUserPassword",
-  initiativeIds: "adminEditUserInitiativeIds",
-  name: "adminEditUserName",
-  phone: "adminEditUserPhone",
+  modal: "clientPageModal",
+  closeModalButton: "clientPageModalCloseModalButton",
+  email: "clientPageEmail",
+  password: "clientPagePassword",
+  initiativeIds: "clientPageInitiativeIds",
+  name: "clientPageName",
+  phone: "clientPagePhone",
   isAdmin: "adminEditIsAdmin",
-  isActive: "adminEditUserIsActive",
-  addButton: "adminEditUserAddButton",
-  editButton: "adminEditUserEditButton",
-  saveChangesButton: "adminEditUserSaveChangesButton",
-  cancelChangesButton: "adminEditUserCancelChangesButton",
-  deleteButton: "adminEditUserDeleteButton",
-  keywordFilter: "adminEditUserKeywordFilter",
-  table: "adminEditUserTable"
+  isActive: "clientPageIsActive",
+  addClientButton: "clientPageAddButton",
+  editClientButton: "clientPageEditButton",
+  saveClientChangesButton: "clientPageSaveChangesButton",
+  cancelClientChangesButton: "clientPageCancelChangesButton",
+  deleteButton: "clientPageDeleteButton",
+  keywordFilter: "clientPageKeywordFilter",
+  table: "clientPageTable"
 }
 
 export function ClientPage()
@@ -48,6 +49,7 @@ export function ClientPage()
 
   useEffect(() => {
     const companiesClone: Company[] = JSON.parse(JSON.stringify(allCompanies));
+    companiesClone.sort((a: Company, b: Company) => a.name.toUpperCase() > b.name.toUpperCase() ? 1 : -1);
     setDisplayCompanies(companiesClone);
   },[allCompanies]);
 
@@ -61,8 +63,12 @@ export function ClientPage()
     if(state === State.start)
     {
       const foundCompany = companies.find(c => c.id === companyId);
-      setCompanyToEdit(foundCompany);
-      setState(isNew ? State.add : State.edit);
+      if(foundCompany)
+      {
+        setCompanyToEdit(foundCompany);
+        setCurrentName(foundCompany.name);
+        setState(isNew ? State.add : State.edit);
+      }
     }
     else
       enqueueSnackbar("An edit is already in progress.",{variant:"error"});
@@ -89,7 +95,22 @@ export function ClientPage()
 
   function HandleSaveEdit()
   {
-    LeaveEditMode();
+    let isTest = false;
+    if((window as any).Cypress)
+      isTest = true;
+
+    let companyClone: Company = JSON.parse(JSON.stringify(companyToEdit));
+    companyClone.name = currentName;
+
+    const validation = ValidateCompany(companyClone,displayCompanies);
+    if(validation.success && companyToEdit)
+    {
+      dispatch(upsertCompanyInfo({isTest: isTest, company: companyClone}));
+      LeaveEditMode();
+      enqueueSnackbar("New Client Added!", {variant: "success"});
+    }
+    else
+      enqueueSnackbar(ValidationFailedPrefix + validation.message, {variant: "error"});
   }
 
   function HandleCancelEdit()
@@ -118,7 +139,7 @@ export function ClientPage()
           </div>
         }
         <div className="flex flex-col justify-between">
-          <button disabled={InEditMode()} id={ClientPageIds.addButton} className={yellowButtonStyle} onClick={() => HandleAddEmptyClient()}>Add Client</button>
+          <button disabled={InEditMode()} id={ClientPageIds.addClientButton} className={yellowButtonStyle} onClick={() => HandleAddEmptyClient()}>Add Client</button>
         </div>
         <div className="col-span-1 py-[2%]">
           <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
@@ -126,7 +147,6 @@ export function ClientPage()
             <Table className="table-auto w-full outline outline-3 bg-gray-100">
             <colgroup>
                 <col style={{ width: '7%' }} />
-                <col style={{ width: '17%' }} />
                 <col style={{ width: '17%' }} />
             </colgroup>
               <TableHead className="outline outline-1">
@@ -159,10 +179,10 @@ export function ClientPage()
                       {isEdit ? 
                       <>
                         <TableCell>
-                          <IconButton id={ClientPageIds.saveChangesButton} onClick={() => HandleSaveEdit()}>
+                          <IconButton id={ClientPageIds.saveClientChangesButton} onClick={() => HandleSaveEdit()}>
                             <DoneIcon />
                           </IconButton>
-                          <IconButton id={ClientPageIds.cancelChangesButton} onClick={() => HandleCancelEdit()}>
+                          <IconButton id={ClientPageIds.cancelClientChangesButton} onClick={() => HandleCancelEdit()}>
                             <CancelIcon />
                           </IconButton>
                         </TableCell>
@@ -179,7 +199,7 @@ export function ClientPage()
                       : 
                       <>
                         <TableCell>
-                          <IconButton id={ClientPageIds.editButton} disabled={InEditMode()} onClick={() => EnterEditMode(displayItem.id, displayCompanies, false)}>
+                          <IconButton id={ClientPageIds.editClientButton} disabled={InEditMode()} onClick={() => EnterEditMode(displayItem.id, displayCompanies, false)}>
                             <EditIcon />
                           </IconButton>
                         </TableCell>
