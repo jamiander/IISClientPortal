@@ -210,7 +210,7 @@ export default function CompanyPage2(){
                     <TableCell id={CompanyPageIds.phone}>{companyUser?.phoneNumber}</TableCell>
                     <TableCell id={CompanyPageIds.isAdmin}>{companyUser?.isAdmin ? "Admin" : "User"}</TableCell>
                     <TableCell id={CompanyPageIds.isActive}>{companyUser?.isActive ? "Active" : "Inactive"}</TableCell>
-                    <TableCell id={CompanyPageIds.initiativeIds}><EditUserInitiativesButton user={companyUser} allCompanies={displayCompanies} SubmitUserData={SubmitUserData} expanded={true}/></TableCell>
+                    <TableCell id={CompanyPageIds.initiativeIds}><EditUserInitiativesButton user={companyUser} allCompanies={[displayCompany]} SubmitUserData={SubmitUserData} expanded={true}/></TableCell>
                     </> 
                 }
                 </TableRow>
