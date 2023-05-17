@@ -3,6 +3,7 @@ import { yellowButtonStyle } from "../Styles";
 import { v4 } from "uuid";
 import { useAppDispatch } from "../Store/Hooks";
 import { getDocuments, uploadDocuments } from "../Store/DocumentSlice";
+import { IntegrityId } from "../Store/CompanySlice";
 
 export function DocumentUpload()
 {
@@ -22,7 +23,7 @@ export function DocumentUpload()
     if(files)
     {
       let documentId = v4();
-      dispatch(uploadDocuments({files: files, documentId: documentId, isTest: true}));
+      dispatch(uploadDocuments({files: files, companyId: IntegrityId, documentId: documentId, isTest: true}));
     }
   }
 
@@ -33,7 +34,7 @@ export function DocumentUpload()
           <button className={yellowButtonStyle} onClick={() => HandleUpload()}>Upload</button>
         </div>
         <div>
-          <button className={yellowButtonStyle} onClick={() => dispatch(getDocuments({documentId: ""}))}>Get Documents</button>
+          <button className={yellowButtonStyle} onClick={() => dispatch(getDocuments({companyId: IntegrityId}))}>Get Documents</button>
         </div>
     </>
   )
