@@ -11,6 +11,7 @@ import { NavPanelIds } from "../../src/Layout/NavPanel";
 import { CompanyPageIds } from "../../src/Pages/CompanyPage";
 import { EditUserDataIds } from "../../src/Components/User/EditUserDataModal";
 import { IntegrityPageIds } from "../../src/Pages/IntegrityPage2";
+import { ClientPageIds } from "../../src/Pages/ClientPage";
 
 //cypress can find items by id using "#id"
 export function AddHash(obj: Record<string,any> | string)
@@ -41,7 +42,8 @@ export const TestConstants = {
   navPanelIds: AddHash(NavPanelIds),
   companyPageIds: AddHash(CompanyPageIds),
   editUserModalIds: AddHash(EditUserDataIds),
-  integrityPageIds: AddHash(IntegrityPageIds)
+  integrityPageIds: AddHash(IntegrityPageIds),
+  clientPageIds: AddHash(ClientPageIds)
 }
 
 export const IntegrityUser = {
