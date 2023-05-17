@@ -1,6 +1,6 @@
 import { StyledTextField, TableHeaderStyle, defaultRowStyle, yellowButtonStyle } from "../Styles";
 import { useEffect, useState } from "react";
-import { User, getUserById, selectAllUsers, selectCurrentUserId } from "../Store/UserSlice";
+import { User, getUserById, selectAllUsers, selectCurrentUserId, upsertUserInfo } from "../Store/UserSlice";
 import { Company, IntegrityId, selectAllCompanies } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
 import { Checkbox, IconButton, Input} from "@mui/material";
@@ -16,6 +16,10 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { useEditUser } from "../Services/useEditUser";
 import { EditUserInitiativesButton } from "../Components/User/EditUserInitiativesButton";
+import AdminAddUserModal from "../Components/User/AdminAddUserModal";
+import { ValidateUser, ValidationFailedPrefix } from "../Services/Validation";
+import { enqueueSnackbar } from "notistack";
+import { EditUserDataButton } from "../Components/User/EditUserDataButton";
 
 export const CompanyPageIds = {
   modal: "editUserModal",
@@ -44,6 +48,7 @@ export default function CompanyPage2(){
   const [displayCompanies, setDisplayCompanies] = useState<Company[]>([]);
   const currentUserId = useAppSelector(selectCurrentUserId);
   const dispatch = useAppDispatch();
+  const [AdminAddUserModalIsOpen, setAdminAddUserModalIsOpen] = useState(false);
 
   const {
     SetupEditUser,
@@ -107,6 +112,23 @@ export default function CompanyPage2(){
     }
   }, [allUsers])
 
+  function SubmitAddUser(user: User): boolean
+  {
+    let isTest = false;
+    if((window as any).Cypress)
+      isTest = true;
+    let validation = ValidateUser(user,usersList);
+    if(validation.success)
+    {
+      dispatch(upsertUserInfo({isTest: isTest, users: [user]}))
+      return true;
+    }
+    else
+      enqueueSnackbar(ValidationFailedPrefix + validation.message, {variant: "error"});
+    
+    return false;
+  }
+
   return (
     <>
       <div className="flex col-span-4 bg-[#2ed7c3] rounded-md py-6 px-5">
@@ -122,9 +144,16 @@ export default function CompanyPage2(){
               <div className="mt-2 mb-4">
                   <StyledTextField className="w-1/2" id={CompanyPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name or email" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)} />
               </div>}
+              {currentUserCompanyId !== IntegrityId &&
               <div className="flex flex-col justify-between">
                   <button disabled={InEditMode()} id={CompanyPageIds.addButton} className={yellowButtonStyle} onClick={() => AddEmptyUser(currentUserCompanyId)}>Add User</button>
-              </div>
+              </div>}
+              {currentUserCompanyId === IntegrityId &&
+              <div className="flex flex-col justify-between">
+                <button disabled={InEditMode()} id={CompanyPageIds.addButton} className={yellowButtonStyle} onClick={() => setAdminAddUserModalIsOpen(true)}>Add User</button>
+{/*                  <EditUserDataButton company={userCompany} users={usersList}></EditUserDataButton>
+ */}                  <AdminAddUserModal title="Add User" isOpen={AdminAddUserModalIsOpen} setAdminAddUserModalIsOpen={setAdminAddUserModalIsOpen} companies={displayCompanies} Submit={SubmitAddUser} expanded={false}/>
+              </div>}
           <div className="col-span-1 py-[2%]">
               <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
               <TableContainer component={Paper}>

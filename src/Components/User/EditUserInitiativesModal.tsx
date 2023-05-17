@@ -1,4 +1,4 @@
-import { Company } from "../../Store/CompanySlice"
+import { Company, IntegrityId } from "../../Store/CompanySlice"
 import { User } from "../../Store/UserSlice"
 import { Fragment, useEffect, useState } from "react"
 import { AdminEditInitiativesList } from "./AdminEditInitiativesList"
@@ -23,6 +23,7 @@ interface EditUserInitiativesModalProps {
 export function EditUserInitiativesModal(props: EditUserInitiativesModalProps)
 {
   const [initiativeIds, setInitiativeIds] = useState<string[]>([]);
+  const [companyId, setCompanyId] = useState<string>("");
 
   useEffect(() => {
     if(props.isOpen)
@@ -46,6 +47,17 @@ export function EditUserInitiativesModal(props: EditUserInitiativesModalProps)
     setInitiativeIds(initiativesClone);
   }
 
+  function UpdateCompanyId(companyId: string, checked: boolean)
+  {
+    if(checked && props.user.companyId !== IntegrityId) {
+      setCompanyId(companyId);
+    } 
+    else
+    {
+      setCompanyId(IntegrityId);
+    }
+  }
+
   function CancelEdit()
   {
     props.setIsOpen(false);
@@ -57,7 +69,7 @@ export function EditUserInitiativesModal(props: EditUserInitiativesModalProps)
     if(userClone)
     {
       userClone.initiativeIds = initiativeIds;
-
+      userClone.companyId = companyId;
       let successfulSubmit = props.SubmitUserData(userClone);
       if(successfulSubmit)
         props.setIsOpen(false);
@@ -81,7 +93,7 @@ export function EditUserInitiativesModal(props: EditUserInitiativesModalProps)
           props.allCompanies.map((company,index) => {
             return (
               <Fragment key={index}>
-                <AdminEditInitiativesList company={company} initiativeIds={initiativeIds} updateInitiativeIds={UpdateInitiativeIds} editable={true} expanded={props.expanded}/>
+                <AdminEditInitiativesList company={company} initiativeIds={initiativeIds} updateInitiativeIds={UpdateInitiativeIds} updateCompanyId={UpdateCompanyId} editable={true} expanded={props.expanded}/>
               </Fragment>
             )
           })

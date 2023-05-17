@@ -139,7 +139,9 @@ export default function IntegrityPage(){
                               {sortedCompanies.map((company: Company,index: number) => {
                                 return (
                                   <Fragment key={index}>
-                                    <AdminEditInitiativesList company={company} initiativeIds={currentInitiativeIds} editable={true} updateInitiativeIds={setCurrentInitiativeIds} expanded={false}/>
+                                    <AdminEditInitiativesList company={company} initiativeIds={currentInitiativeIds} editable={true} updateInitiativeIds={setCurrentInitiativeIds} expanded={false} updateCompanyId={function (companyId: string): void {
+                                      throw new Error("Function not implemented.");
+                                    } }/>
                                   </Fragment>
                                 )
                               })
@@ -160,7 +162,9 @@ export default function IntegrityPage(){
                               {sortedCompanies.map((company: Company,index: number) => {
                                 return (
                                   <Fragment key={index}>
-                                    <AdminEditInitiativesList company={company} initiativeIds={displayItem.initiativeIds} editable={false} updateInitiativeIds={setCurrentInitiativeIds} expanded={false} />
+                                    <AdminEditInitiativesList company={company} initiativeIds={displayItem.initiativeIds} editable={false} updateInitiativeIds={setCurrentInitiativeIds} expanded={false} updateCompanyId={function (companyId: string): void {
+                                      throw new Error("Function not implemented.");
+                                    } } />
                                   </Fragment>
                                 )
                               })

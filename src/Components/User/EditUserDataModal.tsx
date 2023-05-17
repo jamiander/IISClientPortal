@@ -108,7 +108,7 @@ export default function EditUserDataModal(props: EditUserDataProps){
         <div className="flex col-span-4 bg-[#2ed7c3] rounded-md py-6 px-5">
           <div className="w-full flex justify-between">
             <div className="space-y-2 w-1/2">
-              <p className="text-5xl font-bold w-full">{props.company.name}</p>
+              <p className="text-5xl font-bold w-full">{props.company?.name}</p>
               <p className="text-3xl w-full">Users</p>
             </div>
             <div className="flex flex-col justify-between">
@@ -145,7 +145,7 @@ export default function EditUserDataModal(props: EditUserDataProps){
                                 <FormControlLabel control={<Checkbox id={EditUserDataIds.isAdmin} checked={currentIsAdmin} onChange={(e) => setCurrentIsAdmin(e.target.checked)}/>} label="Admin" />
                             </StyledFormGroup>
                             <StyledFormGroup>
-                              {props.company.initiatives.map((initiative, index) => {
+                              {props.company?.initiatives.map((initiative, index) => {
                                 return (
                                   <FormControlLabel key={index} control={<Checkbox checked={currentInitiativeIds.find(id => initiative.id === id) !== undefined} onChange={(e) => setCurrentInitiativeIds(initiative.id,e.target.checked)} />} label={initiative.title} />
                                 );
@@ -162,9 +162,9 @@ export default function EditUserDataModal(props: EditUserDataProps){
                                 <FormControlLabel disabled control={<Checkbox id={EditUserDataIds.isAdmin} checked={displayItem.isAdmin} />} label="Admin" />
                             </StyledFormGroup>
                             <StyledFormGroup>
-                              {props.company.initiatives.map((init, index) => {
+                              {props.company?.initiatives.map((init, index) => {
                                 let checkedInitId = (displayItem.initiativeIds.find(id => id === init.id));
-                                let checkedInit = props.company.initiatives.find(x => x.id === checkedInitId);
+                                let checkedInit = props.company?.initiatives.find(x => x.id === checkedInitId);
                                 return (
                                   <FormControlLabel key={index} disabled control={<Checkbox checked={checkedInit !== undefined} />} label={init?.title} />
                                 );

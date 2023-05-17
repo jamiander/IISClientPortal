@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { submitButtonStyle } from "../../Styles";
+import { submitButtonStyle, yellowButtonStyle } from "../../Styles";
 import EditUserDataModal from "./EditUserDataModal";
 import { User } from "../../Store/UserSlice";
 import { Company } from "../../Store/CompanySlice";
@@ -21,10 +21,10 @@ export function EditUserDataButton(props: EditUserDataProps){
 
     return (
         <div className={'py-1 flex self-end'}>
-          <button id={"editUserDataButton"+props.company.id} className={submitButtonStyle}
+          <button id={"editUserDataButton"+props.company?.id} className={yellowButtonStyle}
               onClick={() => handleEditUserData(props.company)}
           >
-              Edit
+              Add User
           </button>
           <EditUserDataModal title='Edit User Data' users={props.users} isOpen={EditUserDataIsOpen} setEditUserDataModalIsOpen={setEditUserDataIsOpen} company={selectedCompany}/>
         </div>
