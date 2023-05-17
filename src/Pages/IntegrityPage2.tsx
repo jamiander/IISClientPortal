@@ -1,10 +1,9 @@
-import { Item, StyledCard, StyledCardActions, StyledCardContent, StyledFormGroup, StyledTextField, TableHeaderStyle, cancelButtonStyle, cardHeader, defaultRowStyle, submitButtonStyle, yellowButtonStyle } from "../Styles";
-import { Fragment, useEffect, useState } from "react";
-import Grid from "@mui/material/Grid";
+import { StyledTextField, TableHeaderStyle, defaultRowStyle, yellowButtonStyle } from "../Styles";
+import { useEffect, useState } from "react";
 import { User, getUserById, selectAllUsers, selectCurrentUserId } from "../Store/UserSlice";
-import { Company, IntegrityId, getDocuments, selectAllCompanies, uploadDocuments } from "../Store/CompanySlice";
+import { Company, IntegrityId, selectAllCompanies } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
-import { Checkbox, FormControlLabel, FormGroup, IconButton, Input} from "@mui/material";
+import { Checkbox, IconButton, Input} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
@@ -44,7 +43,6 @@ export default function IntegrityPage(){
   const [integrityUsers, setIntegrityUsers] = useState<User[]>([]);
   const currentUserId = useAppSelector(selectCurrentUserId);
   const dispatch = useAppDispatch();
-  const [expanded, setIsExpanded] = useState(false);
 
   const {
     SetupEditUser,

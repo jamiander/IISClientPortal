@@ -53,6 +53,7 @@ export default function CompanyPage2(){
     SaveEdit,
     CancelEdit,
     userToEdit,
+    usersList,
     SubmitUserData,
     currentEmail,
     setCurrentEmail,
@@ -82,7 +83,7 @@ export default function CompanyPage2(){
     setDisplayCompanies(sortedCompanies.filter((company: { id: string; }) => company.id !== IntegrityId));
   },[allCompanies]); 
   
-  let currentUserCompanyId = allUsers.find(user => user.id === currentUserId)?.companyId;
+  let currentUserCompanyId = allUsers.find(user => user.id === currentUserId)?.companyId!;
   let userCompany = displayCompanies.find(x => x.id === currentUserCompanyId)!;
 
   useEffect(() =>
@@ -114,9 +115,6 @@ export default function CompanyPage2(){
                   <p className="text-5xl font-bold w-full">Integrity Inspired Solutions</p>
                   <p className="text-3xl w-full">Users</p>
               </div>
-              <div className="flex flex-col justify-between">
-                  <button disabled={InEditMode()} id={CompanyPageIds.addButton} className={yellowButtonStyle} onClick={() => AddEmptyUser(IntegrityId)}>Add User</button>
-              </div>
           </div>
       </div>
       <div className="mx-[2%] mb-[2%]">
@@ -124,7 +122,9 @@ export default function CompanyPage2(){
               <div className="mt-2 mb-4">
                   <StyledTextField className="w-1/2" id={CompanyPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name or email" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)} />
               </div>}
-
+              <div className="flex flex-col justify-between">
+                  <button disabled={InEditMode()} id={CompanyPageIds.addButton} className={yellowButtonStyle} onClick={() => AddEmptyUser(currentUserCompanyId)}>Add User</button>
+              </div>
           <div className="col-span-1 py-[2%]">
               <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
               <TableContainer component={Paper}>
@@ -165,7 +165,7 @@ export default function CompanyPage2(){
                       </TableHead>
                 <TableBody>
                     {displayCompanies.map((displayCompany, key) => {
-                        let companyUserList = companyUsers.filter(cu => cu.companyId === displayCompany.id)!;
+                        let companyUserList = usersList.filter(cu => cu.companyId === displayCompany.id)!;
                         return (
                         companyUserList.map((companyUser,key) => {
                         let isEdit = InEditMode() && companyUser?.id === userToEdit?.id;
