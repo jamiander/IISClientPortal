@@ -12,6 +12,7 @@ import { CompanyPageIds } from "../../src/Pages/CompanyPage";
 import { EditUserDataIds } from "../../src/Components/User/EditUserDataModal";
 import { IntegrityPageIds } from "../../src/Pages/IntegrityPage2";
 import { ClientPageIds } from "../../src/Pages/ClientPage";
+import { LoginPageIds } from "../../src/Pages/LoginPage";
 
 //cypress can find items by id using "#id"
 export function AddHash(obj: Record<string,any> | string)
@@ -43,17 +44,23 @@ export const TestConstants = {
   companyPageIds: AddHash(CompanyPageIds),
   editUserModalIds: AddHash(EditUserDataIds),
   integrityPageIds: AddHash(IntegrityPageIds),
-  clientPageIds: AddHash(ClientPageIds)
+  clientPageIds: AddHash(ClientPageIds),
+  loginPageIds: AddHash(LoginPageIds),
 }
 
 export const IntegrityUser = {
-  email: "info@integrityinspired.com",
-  password: "integrity"
+  email: "notanadmin@integrityinspired.com",
+  password: "notadmin"
 }
 
 export const AdminUser = {
   email: "admin@integrityinspired.com",
   password: "admin"
+}
+
+export const MBPIUser = {
+  email: "info@mbpi.com",
+  password: "testingMBPI"
 }
 
 export const MBPICompany = {

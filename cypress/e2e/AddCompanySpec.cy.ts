@@ -1,6 +1,20 @@
-import { AdminUser, MBPICompany, TestConstants } from "./TestHelpers";
+import { AdminUser, IntegrityUser, MBPICompany, MBPIUser, TestConstants } from "./TestHelpers";
 
-describe('add company spec', () => {
+const consts = TestConstants;
+const failMessage = consts.validationFailedMessage;
+const snackbarId = consts.snackbarId;
+//const radioIds = consts.userDisplayRadioIds;
+const navIds = consts.navPanelIds;
+const pageIds = consts.clientPageIds;
+const loginIds = consts.loginPageIds;
+const admin = AdminUser;
+const user = MBPIUser;
+
+beforeEach(() => {
+  cy.visit('http://localhost:3000/Login');
+})
+
+describe('add company spec (as Integrity admin)', () => {
 
   const company = {
     name: "BTest Company",
@@ -10,29 +24,26 @@ describe('add company spec', () => {
 
   const existingCompany = MBPICompany;
 
-  const consts = TestConstants;
-  const failMessage = consts.validationFailedMessage;
-  const snackbarId = consts.snackbarId;
-  //const radioIds = consts.userDisplayRadioIds;
-  const navIds = consts.navPanelIds;
-  const pageIds = consts.clientPageIds;
-  const admin = AdminUser;
+  const init = {
+    title: "My First Init"
+  }
 
   beforeEach(() => {
-    cy.visit('http://localhost:3000/Login')
-    cy.get('#email').clear().type(admin.email);
-    cy.get('#password').clear().type(admin.password);
+    cy.get(loginIds.email).clear().type(admin.email);
+    cy.get(loginIds.password).clear().type(admin.password);
     cy.wait(500);
-    cy.get('button').contains('Submit').click();
+    cy.get(loginIds.submitButton).click();
 
     cy.get(navIds.client).click();
     /*cy.get('button').contains('Clients').click();
     cy.get(radioIds.all).click();
     */cy.get(pageIds.addClientButton).click();
+
+    cy.get(pageIds.name).type(company.name);
+    cy.get(pageIds.initiativeTitle).type(init.title);
   });
 
   specify('add new company', () => {
-    cy.get(pageIds.name).type(company.name);
     cy.get(pageIds.saveClientChangesButton).click();
 
     cy.contains(company.name);
@@ -47,7 +58,11 @@ describe('add company spec', () => {
 
   specify('cannot add a company with invalid input', () => {
     cy.get(pageIds.name).clear();
+    cy.get(pageIds.saveClientChangesButton).click();
+    cy.get(snackbarId).contains(failMessage);
+    cy.get(pageIds.name).type(company.name);
 
+    cy.get(pageIds.initiativeTitle).clear();
     cy.get(pageIds.saveClientChangesButton).click();
     cy.get(snackbarId).contains(failMessage);
   })
@@ -61,12 +76,28 @@ describe('add company spec', () => {
     cy.get(pageIds.addClientButton).should('be.disabled');
   })
 
-  specify('cannot add company as non-Integrity user', () => {
+})
 
+describe('add company spec (as non-Integrity admin)', () => {
+
+  specify('cannot add company as non-Integrity user', () => {
+    cy.get(loginIds.email).clear().type(user.email);
+    cy.get(loginIds.password).clear().type(user.password);
+    cy.wait(500);
+    cy.get(loginIds.submitButton).click();
+    cy.wait(1000);
+    cy.get(navIds.dashboard).should('exist');
+    cy.get(navIds.client).should('not.exist');
   })
 
   specify('cannot add company as regular Integrity user', () => {
-
+    cy.get(loginIds.email).clear().type(IntegrityUser.email);
+    cy.get(loginIds.password).clear().type(IntegrityUser.password);
+    cy.wait(500);
+    cy.get(loginIds.submitButton).click();
+    cy.wait(1000);
+    cy.get(navIds.dashboard).should('exist');
+    cy.get(navIds.client).should('not.exist');
   })
 
 })

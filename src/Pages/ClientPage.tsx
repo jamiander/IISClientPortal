@@ -16,13 +16,8 @@ import { DateToDateInfo, MakeDateInfo } from "../Components/DateInput";
 export const ClientPageIds = {
   modal: "clientPageModal",
   closeModalButton: "clientPageModalCloseModalButton",
-  email: "clientPageEmail",
-  password: "clientPagePassword",
-  initiativeIds: "clientPageInitiativeIds",
   name: "clientPageName",
-  phone: "clientPagePhone",
-  isAdmin: "adminEditIsAdmin",
-  isActive: "clientPageIsActive",
+  initiativeTitle: "clientPageInitiativeTitle",
   addClientButton: "clientPageAddButton",
   editClientButton: "clientPageEditButton",
   saveClientChangesButton: "clientPageSaveChangesButton",
@@ -224,7 +219,7 @@ export function ClientPage()
                         <TableCell><Input id={ClientPageIds.name} value={currentName} onChange={e => setCurrentName(e.target.value)}/></TableCell>
                         {state === State.add &&
                           <TableCell>
-                            <Input value={currentInitiativeTitle} onChange={e => setCurrentInitiativeTitle(e.target.value)}/>
+                            <Input id={ClientPageIds.initiativeTitle} value={currentInitiativeTitle} onChange={e => setCurrentInitiativeTitle(e.target.value)}/>
                           </TableCell>
                         }
                         {/*
@@ -245,6 +240,9 @@ export function ClientPage()
                         </TableCell>
                         
                         <TableCell id={ClientPageIds.name}>{displayItem.name}</TableCell>
+                        {state === State.add &&
+                          <TableCell/>
+                        }
                         {/*
                         <TableCell id={ClientPageIds.email}>{displayItem.email}</TableCell>
                         <TableCell id={ClientPageIds.password}>{displayItem.password}</TableCell>
