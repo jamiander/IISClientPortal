@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { getDocuments, uploadDocuments } from "../Store/CompanySlice";
 import { yellowButtonStyle } from "../Styles";
 import { v4 } from "uuid";
 import { useAppDispatch } from "../Store/Hooks";
+import { getDocuments, uploadDocuments } from "../Store/DocumentSlice";
 
 export function DocumentUpload()
 {

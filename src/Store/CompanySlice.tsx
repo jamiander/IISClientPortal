@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import { DateInfo, ThroughputData, DecisionData, UpsertCompanyInfo, UpsertCompanyInfoRequest, UpsertInitiativeInfo, UpsertInitiativeInfoRequest, UpsertThroughputData, UpsertThroughputDataRequest, UpsertDecisionDataRequest, UpsertDecisionData, DeleteDecisionDataRequest, DeleteDecisionData, GetCompanyByIdRequest, GetCompanyById, GetCompanyByInitiativeIds, GetCompanyByInitiativeIdsRequest, UploadDocumentsRequest, UploadDocuments, GetDocumentsRequest, GetDocuments, UploadDocument } from "../Services/CompanyService"
+import { DateInfo, ThroughputData, DecisionData, UpsertCompanyInfo, UpsertCompanyInfoRequest, UpsertInitiativeInfo, UpsertInitiativeInfoRequest, UpsertThroughputData, UpsertThroughputDataRequest, UpsertDecisionDataRequest, UpsertDecisionData, DeleteDecisionDataRequest, DeleteDecisionData, GetCompanyByIdRequest, GetCompanyById, GetCompanyByInitiativeIds, GetCompanyByInitiativeIdsRequest } from "../Services/CompanyService"
 import { RootState } from "./Store"
 
 export interface Company {
@@ -30,7 +30,7 @@ export const IntegrityId = "53beceb7-054b-4740-830f-98a1dc0cc991"; //We should p
 
 export const getCompanyById = createAsyncThunk(
   'companies/getCompanyById',
-  async (args: GetCompanyByIdRequest, {}) => {
+  async (args: GetCompanyByIdRequest) => {
     const response = await GetCompanyById(args);
     const companyInfo = response.info;
         
@@ -58,7 +58,7 @@ export const getCompanyById = createAsyncThunk(
 
 export const getCompanyByInitiativeIds = createAsyncThunk(
   'companies/getCompanyByInitiativeIds',
-  async (args: GetCompanyByInitiativeIdsRequest, {}) => {
+  async (args: GetCompanyByInitiativeIdsRequest) => {
     const response = await GetCompanyByInitiativeIds(args);
     const companyInfo = response.companies;
 
@@ -86,7 +86,7 @@ export const getCompanyByInitiativeIds = createAsyncThunk(
 
 export const upsertCompanyInfo = createAsyncThunk(
   'companies/upsertCompanyInfo',
-  async (args: UpsertCompanyInfoRequest, {}): Promise<Company> => {
+  async (args: UpsertCompanyInfoRequest): Promise<Company> => {
     const response = await UpsertCompanyInfo(args);
       
     if (response.status.toUpperCase().includes('FAILED'))
@@ -100,7 +100,7 @@ export const upsertCompanyInfo = createAsyncThunk(
 
 export const upsertInitiativeInfo = createAsyncThunk(
   'companies/upsertInitiativesInfo',
-  async (args: UpsertInitiativeInfoRequest, {}): Promise<{initiative: Initiative, companyId: string}> => {
+  async (args: UpsertInitiativeInfoRequest): Promise<{initiative: Initiative, companyId: string}> => {
     const response = await UpsertInitiativeInfo(args);
 
     if(response.status.toUpperCase().includes('FAILED'))
@@ -113,7 +113,7 @@ export const upsertInitiativeInfo = createAsyncThunk(
 
 export const upsertThroughputData = createAsyncThunk(
   'companies/upsertThroughputInfo',
-  async (args: UpsertThroughputDataRequest, {}): Promise<{initiativeId: string, companyId: string, data: ThroughputData[]}> => {
+  async (args: UpsertThroughputDataRequest): Promise<{initiativeId: string, companyId: string, data: ThroughputData[]}> => {
     const response = await UpsertThroughputData(args);
 
     if(response.status.toUpperCase().includes('FAILED'))
@@ -125,7 +125,7 @@ export const upsertThroughputData = createAsyncThunk(
 
 export const upsertDecisionData = createAsyncThunk(
   'companies/upsertDecisionData',
-  async (args: UpsertDecisionDataRequest, {}): Promise<{initiativeId: string, companyId: string, data: DecisionData[]}> => {
+  async (args: UpsertDecisionDataRequest): Promise<{initiativeId: string, companyId: string, data: DecisionData[]}> => {
     const response = await UpsertDecisionData(args);
 
     if(response.status.toUpperCase().includes('FAILED'))
@@ -137,27 +137,12 @@ export const upsertDecisionData = createAsyncThunk(
 
 export const deleteDecisionData = createAsyncThunk(
   'companies/deleteDecisionData',
-  async (args: DeleteDecisionDataRequest, {}) => {
+  async (args: DeleteDecisionDataRequest) => {
     const response = await DeleteDecisionData(args);
 
     if(response.status.toUpperCase().includes('FAILED'))
       throw Error;
   
-  }
-)
-
-export const uploadDocuments = createAsyncThunk(
-  'companies/uploadDocuments',
-  async (args: UploadDocumentsRequest, {}) => {
-    const response = await UploadDocument(args);
-  }
-)
-
-export const getDocuments = createAsyncThunk(
-  'companies/getDocuments',
-  async (args: GetDocumentsRequest, {}) => {
-    const response = await GetDocuments(args);
-    
   }
 )
 
