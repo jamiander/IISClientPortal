@@ -28,9 +28,8 @@ describe('update company spec', () => {
     cy.wait(500);
     cy.get(loginIds.submitButton).click();
 
-    //cy.get('button').contains('Admin').click();
-    //cy.get('button').contains('Clients').click();
     cy.get(navIds.client).click();
+    cy.get(pageIds.radioIds.all).click();
     cy.contains(existingCompany.name).parent().within(() => {
       cy.get(pageIds.editClientButton).click();
     })

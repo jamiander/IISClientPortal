@@ -35,9 +35,8 @@ describe('add company spec (as Integrity admin)', () => {
     cy.get(loginIds.submitButton).click();
 
     cy.get(navIds.client).click();
-    /*cy.get('button').contains('Clients').click();
-    cy.get(radioIds.all).click();
-    */cy.get(pageIds.addClientButton).click();
+    cy.get(pageIds.radioIds.all).click();
+    cy.get(pageIds.addClientButton).click();
 
     cy.get(pageIds.name).type(company.name);
     cy.get(pageIds.initiativeTitle).type(init.title);

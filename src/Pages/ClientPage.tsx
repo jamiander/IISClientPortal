@@ -12,6 +12,8 @@ import ValidateNewInitiative, { ValidateCompany, Validation, ValidationFailedPre
 import { UpdateInitiativeListModal } from "../Components/Initiative/UpdateInitiativeListModal";
 import { DateInfo } from "../Services/CompanyService";
 import { DateToDateInfo, MakeDateInfo } from "../Components/DateInput";
+import { RadioSet } from "../Components/RadioSet";
+import { CompanyFilter } from "../Services/Filters";
 
 export const ClientPageIds = {
   modal: "clientPageModal",
@@ -24,7 +26,13 @@ export const ClientPageIds = {
   cancelClientChangesButton: "clientPageCancelChangesButton",
   deleteButton: "clientPageDeleteButton",
   keywordFilter: "clientPageKeywordFilter",
-  table: "clientPageTable"
+  table: "clientPageTable",
+  radioIds: {
+    active: "clientPageRadioActive",
+    inactive: "clientPageRadioInactive",
+    all: "clientPageRadioAll",
+  },
+
 }
 
 export function ClientPage()
@@ -46,11 +54,13 @@ export function ClientPage()
   const [currentName, setCurrentName] = useState("");
   const [currentInitiativeTitle, setCurrentInitiativeTitle] = useState("");
 
+  const [radioValue,setRadioValue] = useState("active");
+
   useEffect(() => {
-    const companiesClone: Company[] = JSON.parse(JSON.stringify(allCompanies));
+    const companiesClone: Company[] = CompanyFilter(allCompanies,radioValue);
     companiesClone.sort((a: Company, b: Company) => a.name.toUpperCase() > b.name.toUpperCase() ? 1 : -1);
     setDisplayCompanies(companiesClone);
-  },[allCompanies]);
+  },[allCompanies, radioValue]);
 
   function InEditMode()
   {
@@ -91,6 +101,7 @@ export function ClientPage()
     companiesClone.unshift(newCompany);
     setDisplayCompanies(companiesClone);
     EnterEditMode(newCompany.id,companiesClone,true);
+    setSearchedKeyword("");
   }
 
   async function HandleSaveEdit()
@@ -109,7 +120,7 @@ export function ClientPage()
       title: currentInitiativeTitle,
       targetDate: todayInfo,
       startDate: todayInfo,
-      totalItems: 0,
+      totalItems: 1,
       itemsCompletedOnDate: [],
       decisions: []
     }
@@ -152,7 +163,7 @@ export function ClientPage()
 
   return (
     <>
-      <div className="flex col-span-4 bg-[#2ed7c3] rounded-md py-6 px-5">
+      <div className="flex col-span-4 bg-[#2ed7c3] rounded-b-md py-6 px-5">
         <div className="w-full flex justify-between">
           <div className="space-y-2 w-1/2">
             <p className="text-5xl font-bold w-full">Client Management</p>
@@ -160,6 +171,11 @@ export function ClientPage()
         </div>
       </div>
       <div className="mx-[2%] mb-[2%]">
+        <RadioSet dark={true} setter={setRadioValue} name="clientPage" options={[
+          {id: ClientPageIds.radioIds.all, label: "Show All", value: "all"},
+          {id: ClientPageIds.radioIds.active, label: "Only Active", value: "active", default: true},
+          {id: ClientPageIds.radioIds.inactive, label: "Only Inactive", value: "inactive"}
+        ]} />
         {allCompanies.length !== 0 &&
           <div className="mt-2 mb-4">
             <StyledTextField className="w-1/2" id={ClientPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name or email" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)} />
