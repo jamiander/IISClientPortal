@@ -5,10 +5,13 @@ import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
-import { Company, selectAllCompanies, upsertCompanyInfo } from "../Store/CompanySlice";
+import { Company, Initiative, selectAllCompanies, upsertCompanyInfo, upsertInitiativeInfo } from "../Store/CompanySlice";
 import { enqueueSnackbar } from "notistack";
 import { v4 } from "uuid";
-import { ValidateCompany, ValidationFailedPrefix } from "../Services/Validation";
+import ValidateNewInitiative, { ValidateCompany, Validation, ValidationFailedPrefix } from "../Services/Validation";
+import { UpdateInitiativeListModal } from "../Components/Initiative/UpdateInitiativeListModal";
+import { DateInfo } from "../Services/CompanyService";
+import { DateToDateInfo, MakeDateInfo } from "../Components/DateInput";
 
 export const ClientPageIds = {
   modal: "clientPageModal",
@@ -46,6 +49,7 @@ export function ClientPage()
   const [companyToEdit, setCompanyToEdit] = useState<Company>();
 
   const [currentName, setCurrentName] = useState("");
+  const [currentInitiativeTitle, setCurrentInitiativeTitle] = useState("");
 
   useEffect(() => {
     const companiesClone: Company[] = JSON.parse(JSON.stringify(allCompanies));
@@ -67,6 +71,7 @@ export function ClientPage()
       {
         setCompanyToEdit(foundCompany);
         setCurrentName(foundCompany.name);
+        setCurrentInitiativeTitle("");
         setState(isNew ? State.add : State.edit);
       }
     }
@@ -93,7 +98,7 @@ export function ClientPage()
     EnterEditMode(newCompany.id,companiesClone,true);
   }
 
-  function HandleSaveEdit()
+  async function HandleSaveEdit()
   {
     let isTest = false;
     if((window as any).Cypress)
@@ -102,12 +107,39 @@ export function ClientPage()
     let companyClone: Company = JSON.parse(JSON.stringify(companyToEdit));
     companyClone.name = currentName;
 
+    const today = new Date();
+    const todayInfo = DateToDateInfo(today);
+    let newInitiative: Initiative = {
+      id: v4(),
+      title: currentInitiativeTitle,
+      targetDate: todayInfo,
+      startDate: todayInfo,
+      totalItems: 0,
+      itemsCompletedOnDate: [],
+      decisions: []
+    }
+
     const validation = ValidateCompany(companyClone,displayCompanies);
-    if(validation.success && companyToEdit)
+    if(validation.success)
     {
-      dispatch(upsertCompanyInfo({isTest: isTest, company: companyClone}));
-      LeaveEditMode();
-      enqueueSnackbar("New Client Added!", {variant: "success"});
+      const initiativeValidation: Validation = 
+        state === State.add ? ValidateNewInitiative(newInitiative,companyClone.id,[companyClone]) : {message: "There was no initiative to validate.", success: true};
+
+      if(initiativeValidation.success)
+      {
+        let saveMessage = "Changes have been saved.";
+        await dispatch(upsertCompanyInfo({isTest: isTest, company: companyClone}));
+        if(state === State.add)
+        {
+          saveMessage = "New client added!";
+          dispatch(upsertInitiativeInfo({isTest: isTest, initiative: newInitiative, companyId: companyClone.id}));
+        }
+
+        LeaveEditMode();
+        enqueueSnackbar(saveMessage, {variant: "success"});
+      }
+      else
+        enqueueSnackbar(ValidationFailedPrefix + initiativeValidation.message, {variant: "error"});
     }
     else
       enqueueSnackbar(ValidationFailedPrefix + validation.message, {variant: "error"});
@@ -160,6 +192,9 @@ export function ClientPage()
                 }}>
                   <TableHeaderStyle>Edit Client</TableHeaderStyle>
                   <TableHeaderStyle>Name</TableHeaderStyle>
+                  {state === State.add &&
+                    <TableHeaderStyle>New Initiative Name</TableHeaderStyle>
+                  }
                 </TableRow>
               </TableHead>
               <TableBody id={ClientPageIds.table}>
@@ -186,7 +221,12 @@ export function ClientPage()
                             <CancelIcon />
                           </IconButton>
                         </TableCell>
-                        <TableCell><Input id={ClientPageIds.name}value={currentName} onChange={e => setCurrentName(e.target.value)}/></TableCell>
+                        <TableCell><Input id={ClientPageIds.name} value={currentName} onChange={e => setCurrentName(e.target.value)}/></TableCell>
+                        {state === State.add &&
+                          <TableCell>
+                            <Input value={currentInitiativeTitle} onChange={e => setCurrentInitiativeTitle(e.target.value)}/>
+                          </TableCell>
+                        }
                         {/*
                         <TableCell><Input id={ClientPageIds.email} value={currentEmail} onChange={e => setCurrentEmail(e.target.value)}/></TableCell>
                         <TableCell><Input id={ClientPageIds.password} value={currentPassword} onChange={e => setCurrentPassword(e.target.value)}/></TableCell>

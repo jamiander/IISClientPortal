@@ -85,7 +85,7 @@ export const authenticateUser = createAsyncThunk(
       isAdmin: response.isAdmin,
       isActive: response.isActive
     }
-    dispatch(getCompanyByInitiativeIds({
+    await dispatch(getCompanyByInitiativeIds({
       initiativeIds: response.initiativeIds,
       isAdmin: response.isAdmin,
       companyId: response.companyId

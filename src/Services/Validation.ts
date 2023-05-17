@@ -4,11 +4,11 @@ import { User } from "../Store/UserSlice";
 import { DateInfo, DecisionData, ThroughputData } from "./CompanyService";
 
 export const ValidationFailedPrefix = 'Validation Failed: ';
-type Validation = {message: string, success: boolean}
+export type Validation = {message: string, success: boolean}
 
 export default function ValidateNewInitiative(initiative: Initiative, companyId: string, allCompanies: Company[]) : Validation
 {
-  if (!initiative.title || !initiative.targetDate.month || !initiative.targetDate.day || !initiative.targetDate.year || !initiative.totalItems)
+  if (!initiative.title || !initiative.targetDate.month || !initiative.targetDate.day || !initiative.targetDate.year || (!initiative.totalItems && initiative.totalItems !== 0))
     return {success: false, message: "Cannot leave any fields blank."};
 
   let targetDateValidation = ValidateDate(initiative.targetDate);
