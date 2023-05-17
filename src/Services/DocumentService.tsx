@@ -17,15 +17,15 @@ export async function GenerateSASToken(request: GenerateSASTokenRequest) : Promi
   return response.data;
 }
 
-export interface GetDocumentsRequest {
+export interface GetDocumentUrlsRequest {
   companyId: string
 }
 
-interface GetDocumentsResponse {
+interface GetDocumentUrlsResponse {
   documents: {url: string, name: any}[]
 }
 
-export async function GetDocuments(request: GetDocumentsRequest) : Promise<GetDocumentsResponse>
+export async function GetDocumentUrls(request: GetDocumentUrlsRequest) : Promise<GetDocumentUrlsResponse>
 {
   const returnedBlobUrls = [];
   const containerName = `client-portal-data`;
@@ -40,6 +40,25 @@ export async function GetDocuments(request: GetDocumentsRequest) : Promise<GetDo
   const blobService = new BlobServiceClient(uploadUrl);
   const containerClient: ContainerClient = blobService.getContainerClient(containerName);
 
+  let i = 1;
+  for await (const blob of containerClient.findBlobsByTags(`companyId='${request.companyId}'`))
+  {
+    console.log(`Blob ${i++}: ${containerName}`);
+
+    const blobItem = {
+      url: `https://iisclientstorage.blob.core.windows.net/${containerName}/${blob.name}${sasToken}`,
+      name: blob.name
+    }
+    console.log(blob);
+    
+    returnedBlobUrls.push(blobItem);
+  }
+
+  return {documents: returnedBlobUrls};
+}
+
+export async function DownloadDocuments(urls: string[])
+{
   async function blobToString(blob: Blob): Promise<string> {
     const fileReader = new FileReader();
     return new Promise<string>((resolve, reject) => {
@@ -51,22 +70,11 @@ export async function GetDocuments(request: GetDocumentsRequest) : Promise<GetDo
     });
   }
 
-  let i = 1;
-  for await (const blob of containerClient.findBlobsByTags(`companyId='${request.companyId}'`)) {
-    console.log(`Blob ${i++}: ${containerName}`);
+  let downloads = [];
 
-    const blobItem = {
-      url: `https://iisclientstorage.blob.core.windows.net/${containerName}/${blob.name}${sasToken}`,
-      name: blob.name
-    }
-
-    console.log(blob);
-
-    // if image is public, just construct URL
-    returnedBlobUrls.push(blobItem);
-
-    //-------------
-    const blobClient = new BlobClient(blobItem.url);
+  for await (const blobUrl of urls)
+  {
+    const blobClient = new BlobClient(blobUrl);
     // Download and convert a blob to a string
     const downloadBlockBlobResponse = await blobClient.download();
     const downloadedBlob = await downloadBlockBlobResponse.blobBody;
@@ -77,10 +85,11 @@ export async function GetDocuments(request: GetDocumentsRequest) : Promise<GetDo
         "Downloaded blob content",
         downloadedString
       );*/
+      downloads.push(downloadedString);
     }
   }
 
-  return {documents: returnedBlobUrls};
+  return downloads;
 }
 
 export interface UploadDocumentsRequest {

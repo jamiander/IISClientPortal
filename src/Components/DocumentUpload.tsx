@@ -2,7 +2,7 @@ import { useState } from "react";
 import { yellowButtonStyle } from "../Styles";
 import { v4 } from "uuid";
 import { useAppDispatch } from "../Store/Hooks";
-import { getDocuments, uploadDocuments } from "../Store/DocumentSlice";
+import { getDocumentUrls, uploadDocuments } from "../Store/DocumentSlice";
 import { IntegrityId } from "../Store/CompanySlice";
 
 export function DocumentUpload()
@@ -34,7 +34,7 @@ export function DocumentUpload()
           <button className={yellowButtonStyle} onClick={() => HandleUpload()}>Upload</button>
         </div>
         <div>
-          <button className={yellowButtonStyle} onClick={() => dispatch(getDocuments({companyId: IntegrityId}))}>Get Documents</button>
+          <button className={yellowButtonStyle} onClick={() => dispatch(getDocumentUrls({companyId: IntegrityId}))}>Get Documents</button>
         </div>
     </>
   )

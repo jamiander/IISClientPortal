@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { GetDocuments, GetDocumentsRequest, UploadDocuments, UploadDocumentsRequest } from "../Services/DocumentService";
+import { GetDocumentUrls, GetDocumentUrlsRequest, UploadDocuments, UploadDocumentsRequest } from "../Services/DocumentService";
 import { RootState } from "./Store";
 
 
@@ -19,10 +19,10 @@ export const uploadDocuments = createAsyncThunk(
   }
 )
 
-export const getDocuments = createAsyncThunk(
-  'documents/getDocuments',
-  async (args: GetDocumentsRequest, {}) => {
-    const response = await GetDocuments(args);
+export const getDocumentUrls = createAsyncThunk(
+  'documents/getDocumentUrls',
+  async (args: GetDocumentUrlsRequest, {}) => {
+    const response = await GetDocumentUrls(args);
     
   }
 )
