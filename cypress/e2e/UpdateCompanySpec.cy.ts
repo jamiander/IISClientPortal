@@ -17,79 +17,63 @@ describe('update company spec', () => {
   const failMessage = consts.validationFailedMessage
   const snackbarId = consts.snackbarId;
   const navIds = consts.navPanelIds;
-  const pageIds = consts.companyPageIds;
+  const pageIds = consts.clientPageIds;
+  const loginIds = consts.loginPageIds;
   const admin = AdminUser;
 
   beforeEach(() => {
     cy.visit('http://localhost:3000/Login');
-    cy.get('#email').clear().type(admin.email);
-    cy.get('#password').clear().type(admin.password);
+    cy.get(loginIds.email).clear().type(admin.email);
+    cy.get(loginIds.password).clear().type(admin.password);
     cy.wait(500);
-    cy.get('button').contains('Submit').click();
+    cy.get(loginIds.submitButton).click();
 
     //cy.get('button').contains('Admin').click();
     //cy.get('button').contains('Clients').click();
-    cy.get(navIds.company).click();
-    cy.get('#companyPageCard'+existingCompany.id).within(() => {
-      cy.get(pageIds.editClientNameButton).click();
+    cy.get(navIds.client).click();
+    cy.contains(existingCompany.name).parent().within(() => {
+      cy.get(pageIds.editClientButton).click();
     })
     
   });
 
   specify('update a company', () => {
-    /*cy.get(modalIds.company).clear().type(company.name);
-    cy.get(modalIds.email).clear().type(company.email);
-    cy.get(modalIds.password).clear().type(company.password);*/
-    cy.get(pageIds.clientNameInput).clear().type(company.name);
-    cy.get(pageIds.saveClientButton).click();
+    cy.get(pageIds.saveClientChangesButton).parent().parent().within(() => {
+      cy.get(pageIds.name).clear().type(company.name);
+      cy.get(pageIds.saveClientChangesButton).click();
+    });
 
     cy.contains(company.name);
-    //cy.get(snackbarId).contains('User Update Dispatched');
   })
 
   specify('cannot update with invalid input', () => {
-    cy.get(pageIds.clientNameInput).clear();
+    cy.get(pageIds.saveClientChangesButton).parent().parent().within(() => {
+      cy.get(pageIds.name).clear();
+      cy.get(pageIds.saveClientChangesButton).click();
+    });
 
-    cy.get(pageIds.saveClientButton).click();
     cy.get(snackbarId).contains(failMessage);
-    //cy.get(modalIds.company).type(company.name);
+    //cy.get(pageIds.name).type(company.name);
 
-    /*cy.get(modalIds.email).clear();
-    cy.get(pageIds.saveClientButton).click();
-    cy.get(snackbarId).contains(failMessage);
-    //cy.get(modalIds.email).type(company.email);
 
-    //cy.get(modalIds.password).clear();
-    cy.get(pageIds.saveClientButton).click();
-    cy.get(snackbarId).contains(failMessage);*/
   })
 
   specify('cannot rename a company the name of another company', () => {
-    cy.get(pageIds.clientNameInput).clear().type(existingCompany2.name);
-    cy.get(pageIds.saveClientButton).click();
+    cy.get(pageIds.saveClientChangesButton).parent().parent().within(() => {
+      cy.get(pageIds.name).clear().type(existingCompany2.name);
+      cy.get(pageIds.saveClientChangesButton).click();
+    });
+
     cy.get(snackbarId).contains(failMessage);
   })
 
-  /*specify('cannot rename a user the name of another user', () => {
-    //cy.get(modalIds.email).clear().type(existingCompany.email);
-
-    cy.get('button').contains('Submit').click();
-
-    cy.get(snackbarId).contains(failMessage);
-  })*/
-
-  /*specify('close button closes the modal', () => {
-    cy.get('button').contains('Close').click();
-    //cy.get(modalIds.modal).should('not.exist');
-  })*/
-
   specify('cancel button cancels the changes', () => {
-    cy.get(pageIds.cancelClientButton).click();
+    cy.get(pageIds.cancelClientChangesButton).click();
     cy.contains(existingCompany.name);
   })
 
   specify('cannot edit multiple users at once', () => {
-    cy.get('button').contains('Edit').should('not.exist');
+    cy.get(pageIds.editClientButton).should('be.disabled');
   })
 })
 
