@@ -10,12 +10,13 @@ interface RadioSetProps {
   options: RadioInstance[]
   setter: (value: React.SetStateAction<string>) => void
   name: string
+  dark?: boolean
 }
 
 export function RadioSet(props: RadioSetProps)
 {
   return (
-    <div className="w-fit flex justify-center mt-2 py-1 px-5 outline outline-1 outline-white rounded text-white">
+    <div className={"w-fit flex justify-center mt-2 py-1 px-5 outline outline-1 rounded " + (props.dark ? "outline-black text-black" : "outline-white text-white")}>
       {
         props.options.map((radio,index) => {
           return (

@@ -11,20 +11,26 @@ function AddLeadingZero(num: number){
   return ((num < 10) ? "0" : "") + num.toString();
 }
 
-export function MakeDateString(dateInfo: DateInfo)
+export function MakeDateString(dateInfo: DateInfo) : string
 {
   return dateInfo.year + "-" + AddLeadingZero(dateInfo.month) + "-" + AddLeadingZero(dateInfo.day);
 }
 
-export function MakeDate(dateInfo: DateInfo)
+export function MakeDate(dateInfo: DateInfo) : Date
 {
   return new Date(MakeDateString(dateInfo) + "T00:00:00")
 }
 
-export function MakeDateInfo(dateString: string)
+export function MakeDateInfo(dateString: string) : DateInfo
 {
   let dateSplit = dateString.split("-");
   let dateInfo: DateInfo = {year: parseInt(dateSplit[0]), month: parseInt(dateSplit[1]), day: parseInt(dateSplit[2])};
+  return dateInfo;
+}
+
+export function DateToDateInfo(date: Date) : DateInfo
+{
+  let dateInfo: DateInfo = {day: date.getDate(), month: date.getMonth() + 1, year: date.getFullYear()};
   return dateInfo;
 }
 

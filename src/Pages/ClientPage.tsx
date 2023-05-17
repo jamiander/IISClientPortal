@@ -5,28 +5,34 @@ import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
-import { Company, selectAllCompanies, upsertCompanyInfo } from "../Store/CompanySlice";
+import { Company, Initiative, selectAllCompanies, upsertCompanyInfo, upsertInitiativeInfo } from "../Store/CompanySlice";
 import { enqueueSnackbar } from "notistack";
 import { v4 } from "uuid";
-import { ValidateCompany, ValidationFailedPrefix } from "../Services/Validation";
+import ValidateNewInitiative, { ValidateCompany, Validation, ValidationFailedPrefix } from "../Services/Validation";
+import { UpdateInitiativeListModal } from "../Components/Initiative/UpdateInitiativeListModal";
+import { DateInfo } from "../Services/CompanyService";
+import { DateToDateInfo, MakeDateInfo } from "../Components/DateInput";
+import { RadioSet } from "../Components/RadioSet";
+import { CompanyFilter } from "../Services/Filters";
 
 export const ClientPageIds = {
   modal: "clientPageModal",
   closeModalButton: "clientPageModalCloseModalButton",
-  email: "clientPageEmail",
-  password: "clientPagePassword",
-  initiativeIds: "clientPageInitiativeIds",
   name: "clientPageName",
-  phone: "clientPagePhone",
-  isAdmin: "adminEditIsAdmin",
-  isActive: "clientPageIsActive",
+  initiativeTitle: "clientPageInitiativeTitle",
   addClientButton: "clientPageAddButton",
   editClientButton: "clientPageEditButton",
   saveClientChangesButton: "clientPageSaveChangesButton",
   cancelClientChangesButton: "clientPageCancelChangesButton",
   deleteButton: "clientPageDeleteButton",
   keywordFilter: "clientPageKeywordFilter",
-  table: "clientPageTable"
+  table: "clientPageTable",
+  radioIds: {
+    active: "clientPageRadioActive",
+    inactive: "clientPageRadioInactive",
+    all: "clientPageRadioAll",
+  },
+
 }
 
 export function ClientPage()
@@ -46,12 +52,15 @@ export function ClientPage()
   const [companyToEdit, setCompanyToEdit] = useState<Company>();
 
   const [currentName, setCurrentName] = useState("");
+  const [currentInitiativeTitle, setCurrentInitiativeTitle] = useState("");
+
+  const [radioValue,setRadioValue] = useState("active");
 
   useEffect(() => {
-    const companiesClone: Company[] = JSON.parse(JSON.stringify(allCompanies));
+    const companiesClone: Company[] = CompanyFilter(allCompanies,radioValue);
     companiesClone.sort((a: Company, b: Company) => a.name.toUpperCase() > b.name.toUpperCase() ? 1 : -1);
     setDisplayCompanies(companiesClone);
-  },[allCompanies]);
+  },[allCompanies, radioValue]);
 
   function InEditMode()
   {
@@ -67,6 +76,7 @@ export function ClientPage()
       {
         setCompanyToEdit(foundCompany);
         setCurrentName(foundCompany.name);
+        setCurrentInitiativeTitle("");
         setState(isNew ? State.add : State.edit);
       }
     }
@@ -91,9 +101,10 @@ export function ClientPage()
     companiesClone.unshift(newCompany);
     setDisplayCompanies(companiesClone);
     EnterEditMode(newCompany.id,companiesClone,true);
+    setSearchedKeyword("");
   }
 
-  function HandleSaveEdit()
+  async function HandleSaveEdit()
   {
     let isTest = false;
     if((window as any).Cypress)
@@ -102,12 +113,39 @@ export function ClientPage()
     let companyClone: Company = JSON.parse(JSON.stringify(companyToEdit));
     companyClone.name = currentName;
 
+    const today = new Date();
+    const todayInfo = DateToDateInfo(today);
+    let newInitiative: Initiative = {
+      id: v4(),
+      title: currentInitiativeTitle,
+      targetDate: todayInfo,
+      startDate: todayInfo,
+      totalItems: 1,
+      itemsCompletedOnDate: [],
+      decisions: []
+    }
+
     const validation = ValidateCompany(companyClone,displayCompanies);
-    if(validation.success && companyToEdit)
+    if(validation.success)
     {
-      dispatch(upsertCompanyInfo({isTest: isTest, company: companyClone}));
-      LeaveEditMode();
-      enqueueSnackbar("New Client Added!", {variant: "success"});
+      const initiativeValidation: Validation = 
+        state === State.add ? ValidateNewInitiative(newInitiative,companyClone.id,[companyClone]) : {message: "There was no initiative to validate.", success: true};
+
+      if(initiativeValidation.success)
+      {
+        let saveMessage = "Changes have been saved.";
+        await dispatch(upsertCompanyInfo({isTest: isTest, company: companyClone}));
+        if(state === State.add)
+        {
+          saveMessage = "New client added!";
+          dispatch(upsertInitiativeInfo({isTest: isTest, initiative: newInitiative, companyId: companyClone.id}));
+        }
+
+        LeaveEditMode();
+        enqueueSnackbar(saveMessage, {variant: "success"});
+      }
+      else
+        enqueueSnackbar(ValidationFailedPrefix + initiativeValidation.message, {variant: "error"});
     }
     else
       enqueueSnackbar(ValidationFailedPrefix + validation.message, {variant: "error"});
@@ -125,7 +163,7 @@ export function ClientPage()
 
   return (
     <>
-      <div className="flex col-span-4 bg-[#2ed7c3] rounded-md py-6 px-5">
+      <div className="flex col-span-4 bg-[#2ed7c3] rounded-b-md py-6 px-5">
         <div className="w-full flex justify-between">
           <div className="space-y-2 w-1/2">
             <p className="text-5xl font-bold w-full">Client Management</p>
@@ -133,6 +171,11 @@ export function ClientPage()
         </div>
       </div>
       <div className="mx-[2%] mb-[2%]">
+        <RadioSet dark={true} setter={setRadioValue} name="clientPage" options={[
+          {id: ClientPageIds.radioIds.all, label: "Show All", value: "all"},
+          {id: ClientPageIds.radioIds.active, label: "Only Active", value: "active", default: true},
+          {id: ClientPageIds.radioIds.inactive, label: "Only Inactive", value: "inactive"}
+        ]} />
         {allCompanies.length !== 0 &&
           <div className="mt-2 mb-4">
             <StyledTextField className="w-1/2" id={ClientPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name or email" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)} />
@@ -160,6 +203,9 @@ export function ClientPage()
                 }}>
                   <TableHeaderStyle>Edit Client</TableHeaderStyle>
                   <TableHeaderStyle>Name</TableHeaderStyle>
+                  {state === State.add &&
+                    <TableHeaderStyle>New Initiative Name</TableHeaderStyle>
+                  }
                 </TableRow>
               </TableHead>
               <TableBody id={ClientPageIds.table}>
@@ -186,7 +232,12 @@ export function ClientPage()
                             <CancelIcon />
                           </IconButton>
                         </TableCell>
-                        <TableCell><Input id={ClientPageIds.name}value={currentName} onChange={e => setCurrentName(e.target.value)}/></TableCell>
+                        <TableCell><Input id={ClientPageIds.name} value={currentName} onChange={e => setCurrentName(e.target.value)}/></TableCell>
+                        {state === State.add &&
+                          <TableCell>
+                            <Input id={ClientPageIds.initiativeTitle} value={currentInitiativeTitle} onChange={e => setCurrentInitiativeTitle(e.target.value)}/>
+                          </TableCell>
+                        }
                         {/*
                         <TableCell><Input id={ClientPageIds.email} value={currentEmail} onChange={e => setCurrentEmail(e.target.value)}/></TableCell>
                         <TableCell><Input id={ClientPageIds.password} value={currentPassword} onChange={e => setCurrentPassword(e.target.value)}/></TableCell>
@@ -205,6 +256,9 @@ export function ClientPage()
                         </TableCell>
                         
                         <TableCell id={ClientPageIds.name}>{displayItem.name}</TableCell>
+                        {state === State.add &&
+                          <TableCell/>
+                        }
                         {/*
                         <TableCell id={ClientPageIds.email}>{displayItem.email}</TableCell>
                         <TableCell id={ClientPageIds.password}>{displayItem.password}</TableCell>

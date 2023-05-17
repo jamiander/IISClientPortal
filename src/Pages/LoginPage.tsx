@@ -4,6 +4,12 @@ import { useAppDispatch, useAppSelector } from "../Store/Hooks"
 import { authenticateUser, selectAllUsers, selectCurrentUserId, selectLogInAttempts } from "../Store/UserSlice";
 import { genericButtonStyle } from "../Styles";
 
+export const LoginPageIds = {
+  email: "email",
+  password: "password",
+  submitButton: "submitButton"
+}
+
 export default function LoginPage(){
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -37,7 +43,7 @@ export default function LoginPage(){
         <p className="text-5xl mb-5">Login</p>
 
         <p className='my-2'>Email</p>
-        <input id="email" autoFocus value={userEmail} onChange={(e)=>setUserEmail(e.target.value)} onKeyDown={(e)=> {if (e.key === 'Enter') Login()}}
+        <input id={LoginPageIds.email} autoFocus value={userEmail} onChange={(e)=>setUserEmail(e.target.value)} onKeyDown={(e)=> {if (e.key === 'Enter') Login()}}
         className={selectStyle}/>
 
         <div className="flex my-2 space-x-12">
@@ -49,11 +55,11 @@ export default function LoginPage(){
             </label>
           </div>
         </div>
-        <input id="password" value={password} type={passwordShown ? 'text' : 'password'} onChange={(e)=>setPassword(e.target.value)} onKeyDown={(e)=> {if (e.key === 'Enter') Login()}}
+        <input id={LoginPageIds.password} value={password} type={passwordShown ? 'text' : 'password'} onChange={(e)=>setPassword(e.target.value)} onKeyDown={(e)=> {if (e.key === 'Enter') Login()}}
         className={selectStyle}/>
         
         <div className="w-full my-5">
-          <button onClick={()=>Login()} className={genericButtonStyle}>Submit</button>
+          <button id={LoginPageIds.submitButton} onClick={()=>Login()} className={genericButtonStyle}>Submit</button>
         </div>
 
         {logInAttempts > 0 && 

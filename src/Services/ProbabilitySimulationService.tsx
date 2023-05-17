@@ -1,4 +1,4 @@
-import { CompareDateInfos, EqualDateInfos, MakeDate } from "../Components/DateInput";
+import { CompareDateInfos, DateToDateInfo, EqualDateInfos, MakeDate } from "../Components/DateInput";
 import { Initiative } from "../Store/CompanySlice";
 import { DateInfo, ThroughputData } from "./CompanyService";
 
@@ -77,7 +77,7 @@ function AddZeroEntries(initiative: Initiative) : ThroughputData[]
   let lastDateIndex = 0;
   while(currentDate.getTime() < lastDate.getTime())
   {
-    let currentDateInfo: DateInfo = {day: currentDate.getDate(), month: currentDate.getMonth() + 1, year: currentDate.getFullYear()};
+    let currentDateInfo: DateInfo = DateToDateInfo(currentDate);
     let foundDate = false;
     for(let i = lastDateIndex; i < throughput.length; i++)
     {
