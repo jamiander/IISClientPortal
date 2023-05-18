@@ -7,6 +7,7 @@ const failMessage = consts.validationFailedMessage;
 const tableIds = consts.initiativeTableIds;
 const radioIds = consts.initiativeDisplayRadioIds;
 const loginIds = consts.loginPageIds;
+const snackbarWaitTime = consts.snackbarWaitTime;
 const initiativeTitle = 'IIS Initiative';
 const company = 'Integrity Inspired Solutions';
 const waitTime = 500;
@@ -70,7 +71,7 @@ describe ('invalid manual entry test', () => {
     cy.get(modalIds.addItemsComplete).clear().type('2');
     cy.get(modalIds.addEntrySubmitButton).click();
     cy.wait(waitTime);
-    cy.get(snackbarId).contains('Validation Failed');
+    cy.get(snackbarId).should('contain',failMessage);
   })
 
   //Cypress does not allow letters in date pickers
@@ -88,7 +89,7 @@ describe ('invalid manual entry test', () => {
     cy.get(modalIds.addDate).clear().type("2020-01-01");
     cy.get(modalIds.addEntrySubmitButton).click();
     cy.wait(waitTime);
-    cy.get(snackbarId).contains('Validation Failed');
+    cy.get(snackbarId).should('contain',failMessage);
   })
 })
 
@@ -114,7 +115,7 @@ describe('update throughput data', () => {
 
     cy.get(modalIds.submitButton).click();
 
-    cy.get(snackbarId).contains("Success");
+    cy.get(snackbarId).should('contain',"Success");
   })
 
   /*specify('update the date of an entry', () => {
@@ -138,45 +139,29 @@ describe('update throughput data', () => {
   specify('cannot update throughput data if unselected company', () => {
     cy.get(modalIds.selectCompany).select(0);
     cy.get(modalIds.submitButton).click();
-    cy.get(snackbarId).contains(failMessage);
+    cy.get(snackbarId).should('contain',failMessage);
   })
 
   specify('cannot update throughput data if unselected initiative', () => {
     cy.get(modalIds.selectInitiative).select(0);
     cy.get(modalIds.submitButton).click();
-    cy.get(snackbarId).contains(failMessage);
+    cy.get(snackbarId).should('contain',failMessage);
   })
-
-  /*specify('cannot update throughput data to an invalid date', () => {
-    cy.get(modalIds.tableDate).clear();
-    cy.get(modalIds.submitButton).click();
-    cy.get(snackbarId).contains(failMessage);
-
-    /*cy.get(modalIds.date).clear().type("2020-03-aa");   //Cypress doesn't allow this
-    cy.get(modalIds.submitButton).click();
-    cy.get(snackbarId).contains(failMessage);*/
-
-    /*cy.get(modalIds.date).clear().type("1800-13-32");   //Same here
-    cy.get(modalIds.submitButton).click();
-    cy.get(snackbarId).contains(failMessage);*/
-  //})
 
   specify('cannot update throughput data to an invalid completed amount', () => {
     cy.get(modalIds.tableItemsComplete).clear();
     cy.get(modalIds.submitButton).click();
-    cy.get(snackbarId).contains(failMessage);
-    //cy.get(toastCloseId).click();
+    cy.get(snackbarId).should('contain',failMessage);
 
-    cy.wait(waitTime);
     cy.get(modalIds.tableItemsComplete).clear().type("a");
     cy.get(modalIds.submitButton).click();
-    cy.get(snackbarId).contains(failMessage);
-    //cy.get(toastCloseId).click();
+    cy.wait(snackbarWaitTime);
+    cy.get(snackbarId).should('contain',failMessage);
 
-    cy.wait(waitTime);
     cy.get(modalIds.tableItemsComplete).clear().type("-2");
     cy.get(modalIds.submitButton).click();
-    //cy.get(snackbarId).contains(failMessage);
+    cy.wait(snackbarWaitTime);
+    cy.get(snackbarId).should('contain',failMessage);
   })
 
 });

@@ -58,12 +58,13 @@ describe('add company spec (as Integrity admin)', () => {
   specify('cannot add a company with invalid input', () => {
     cy.get(pageIds.name).clear();
     cy.get(pageIds.saveClientChangesButton).click();
-    cy.get(snackbarId).contains(failMessage);
+    cy.get(snackbarId).should('contain',failMessage);
     cy.get(pageIds.name).type(company.name);
 
     cy.get(pageIds.initiativeTitle).clear();
     cy.get(pageIds.saveClientChangesButton).click();
-    cy.get(snackbarId).contains(failMessage);
+    cy.wait(consts.snackbarWaitTime);
+    cy.get(snackbarId).should('contain',failMessage);
   })
 
   specify('cancel button does not leave a blank company', () => {

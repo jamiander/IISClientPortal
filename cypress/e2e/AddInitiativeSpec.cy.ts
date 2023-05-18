@@ -24,6 +24,7 @@ describe('add initiative spec', () => {
   const radioIds = consts.initiativeDisplayRadioIds;
   const tableIds = consts.initiativeTableIds;
   const loginIds = consts.loginPageIds;
+  const snackbarWaitTime = consts.snackbarWaitTime;
   const user = IntegrityUser;
 
   beforeEach(() => {
@@ -63,7 +64,7 @@ describe('add initiative spec', () => {
           cy.get(modalIds.title).clear().type(existingInitTitle);
 
           cy.get('button').contains('Submit').click();
-          cy.get(snackbarId).contains(failMessage);
+          cy.get(snackbarId).should('contain',failMessage);
         });
       });
     });
@@ -72,22 +73,25 @@ describe('add initiative spec', () => {
   specify('cannot add when a field is left blank', () => {
     cy.get(modalIds.title).clear();
     cy.get(modalIds.submitButton).click();
-    cy.get(snackbarId).contains(failMessage);
+    cy.get(snackbarId).should('contain',failMessage);
     cy.get(modalIds.title).type(init.title);
 
     cy.get(modalIds.startDate).clear();
     cy.get(modalIds.submitButton).click();
-    cy.get(snackbarId).contains(failMessage);
+    cy.wait(snackbarWaitTime);
+    cy.get(snackbarId).should('contain',failMessage);
     cy.get(modalIds.startDate).type("2020-01-01");
 
     cy.get(modalIds.targetDate).clear();
     cy.get(modalIds.submitButton).click();
-    cy.get(snackbarId).contains(failMessage);
+    cy.wait(snackbarWaitTime);
+    cy.get(snackbarId).should('contain',failMessage);
     cy.get(modalIds.targetDate).type("2020-01-01");
 
     cy.get(modalIds.totalItems).clear();
     cy.get('button').contains('Submit').click();
-    cy.get(snackbarId).contains(failMessage);
+    cy.wait(snackbarWaitTime);
+    cy.get(snackbarId).should('contain',failMessage);
     cy.get(modalIds.totalItems).type(init.totalItems);
   })
 
@@ -96,14 +100,14 @@ describe('add initiative spec', () => {
     cy.get(modalIds.targetDate).clear().type("2023-04-19");
 
     cy.get(modalIds.submitButton).click();
-    cy.get(snackbarId).contains(failMessage);
+    cy.get(snackbarId).should('contain',failMessage);
   })
 
   specify('cannot add when total items are negative', () => {
     cy.get(modalIds.totalItems).clear().type("-3");
     cy.get('button').contains('Submit').click();
 
-    cy.get(snackbarId).contains(failMessage);
+    cy.get(snackbarId).should('contain',failMessage);
   })
 
   //Cypress does not allow invalid dates in date pickers, so we cannot test for NaN or 2/30/yyyy

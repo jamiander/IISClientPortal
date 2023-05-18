@@ -16,6 +16,7 @@ const navIds = consts.navPanelIds;
 const failMessage = consts.validationFailedMessage;
 const snackbarId = consts.snackbarId;
 const loginIds = consts.loginPageIds;
+const snackbarWaitTime = consts.snackbarWaitTime;
 const admin = AdminUser;
 
 describe("update user spec",() => {
@@ -61,16 +62,17 @@ describe("update user spec",() => {
       cy.get(pageIds.saveChangesButton).click();
     })
 
-    cy.get(snackbarId).contains(failMessage);
+    cy.get(snackbarId).should('contain',failMessage);
     
     cy.get(pageIds.table).children().last().within(() => {
       cy.get(pageIds.email).type(editedUser.email);
 
       cy.get(pageIds.password).clear();
       cy.get(pageIds.saveChangesButton).click();
+      cy.wait(snackbarWaitTime);
     })
     
-    cy.get(snackbarId).contains(failMessage);
+    cy.get(snackbarId).should('contain',failMessage);
   })
 
   specify('cancel button cancels the edit', () => {
@@ -129,16 +131,17 @@ describe("update admin user spec", () => {
       cy.get(pageIds.saveChangesButton).click();
     })
 
-    cy.get(snackbarId).contains(failMessage);
+    cy.get(snackbarId).should('contain',failMessage);
     
     cy.get(pageIds.table).children().last().within(() => {
       cy.get(pageIds.email).type(editedUser.email);
 
       cy.get(pageIds.password).clear();
       cy.get(pageIds.saveChangesButton).click();
+      cy.wait(snackbarWaitTime);
     })
     
-    cy.get(snackbarId).contains(failMessage);
+    cy.get(snackbarId).should('contain',failMessage);
   })
 
   specify('cancel button cancels the edit', () => {

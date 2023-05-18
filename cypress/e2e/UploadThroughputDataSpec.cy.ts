@@ -16,6 +16,7 @@ const tableIds = consts.initiativeTableIds;
 const snackbarId = consts.snackbarId;
 const radioIds = consts.initiativeDisplayRadioIds;
 const loginIds = consts.loginPageIds;
+const failMessage = consts.validationFailedMessage;
 
 const initiativeTitle = 'IIS Initiative';
 const companyName = 'Integrity Inspired Solutions';
@@ -105,7 +106,7 @@ describe('invalid upload throughput tests', () => {
     cy.wait(waitTime);
     cy.get(modalIds.fileSubmit).click();
     cy.wait(waitTime);
-    cy.get(snackbarId).contains('Validation Failed');
+    cy.get(snackbarId).should('contain',failMessage);
   })
 
   specify('cannot add throughput data by file when a field is blank', () => {
@@ -157,7 +158,7 @@ describe('invalid upload throughput tests', () => {
     cy.wait(waitTime);
     cy.get(modalIds.fileSubmit).click();
     cy.wait(waitTime);
-    cy.get(snackbarId).contains('Validation Failed');
+    cy.get(snackbarId).should('contain',failMessage);
   })
 
   specify('cannot add throughput data by file when items completed entry is invalid', () => {
@@ -176,7 +177,7 @@ describe('invalid upload throughput tests', () => {
     cy.wait(waitTime);
     cy.get(modalIds.fileSubmit).click();
     cy.wait(waitTime);
-    cy.get(snackbarId).contains('Validation Failed');
+    cy.get(snackbarId).should('contain',failMessage);
   })
 })
 
