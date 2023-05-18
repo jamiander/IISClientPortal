@@ -13,6 +13,7 @@ import CompanyPage2 from './Pages/CompanyPage2';
 import IntegrityPage from './Pages/IntegrityPage';
 import IntegrityPage2 from './Pages/IntegrityPage2';
 import { ClientPage } from './Pages/ClientPage';
+import UsersPage from './Pages/CompanyPage2';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -41,8 +42,8 @@ const router = createBrowserRouter([
         errorElement: <ErrorPage/>
       },
       {
-        path: '/Company2',
-        element: <CompanyPage2/>,
+        path: '/Users',
+        element: <UsersPage/>,
         errorElement: <ErrorPage/>
       },
       {

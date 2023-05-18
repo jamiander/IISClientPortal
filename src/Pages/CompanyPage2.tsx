@@ -41,7 +41,7 @@ export const CompanyPageIds = {
   grid: "editUserGrid"
 }
 
-export default function CompanyPage2(){
+export default function UsersPage(){
   const allCompanies = useAppSelector(selectAllCompanies);
   const allUsers = useAppSelector(selectAllUsers);
   const [companyUsers, setCompanyUsers] = useState<User[]>([]);
