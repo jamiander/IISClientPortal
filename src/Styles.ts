@@ -1,7 +1,8 @@
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import { createTheme, styled } from '@mui/material/styles';
-import { Card, CardActions, CardContent, FormGroup, Paper, TextField, TextareaAutosize } from '@mui/material';
+import { AccordionSummary, Card, CardActions, CardContent, FormControlLabel, FormGroup, Paper, TextField, TextareaAutosize } from '@mui/material';
 import { grey } from '@mui/material/colors';
+import { Accordion } from 'flowbite-react';
 
 export const modalStyle = {
   content: {
@@ -52,17 +53,20 @@ export const TableHeaderStyle =
   export const UserItem = styled(Paper)(() => ({
     backgroundColor: '#98d6a9',
     padding: 2,
-    marginBottom: 1,
+    marginBottom: 6,
     marginTop: 1,
     textAlign: 'center',
     color: 'black',
     elevation: 3,
+    width: "100%",
+    marginLeft: 4
   }));
 
   export const StyledCard = styled(Card)(() => ({
   }))
 
   export const StyledCardContent = styled(CardContent)(() => ({
+    alignItems: "center"
   }))
 
   export const StyledCardActions = styled(CardActions)(() => ({
@@ -81,19 +85,16 @@ export const TableHeaderStyle =
     width: "100%"
   }));
 
-  export const StyledFormGroup = 
-  styled(FormGroup)(() => ({
+  export const UserTextField = 
+  styled(TextField)(() => ({
     ".MuiInputBase-input.Mui-disabled": {
-    WebkitTextFillColor: "#5b5b5b",
-    color: "#5b5b5b"
+      WebkitTextFillColor: "#828282",
+      color: "#828282"
     },
-    border: "2px solid",
-    borderColor: globalTheme.palette.primary.main,
-    borderRadius: 4,
-    marginTop: 3,
-    marginBottom: 12,
+    marginTop: 5,
+    marginBottom: 5,
     marginLeft: 2,
-    width: "100%"
+    width: "50%"
   }));
 
   export const StyledTextarea =
@@ -103,6 +104,11 @@ export const TableHeaderStyle =
     borderWidth: 1, 
     marginBottom: 10,
     padding: "0.5rem"
+  }));
+
+  export const StyleFormControlLabel =
+  styled(FormControlLabel)(() => ({
+    display: 'block'
   }))
   
 export const labelStyle = "font-bold text-lg";

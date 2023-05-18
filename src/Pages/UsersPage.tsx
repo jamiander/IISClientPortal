@@ -150,8 +150,7 @@ export default function UsersPage(){
               {currentUserCompanyId === IntegrityId &&
               <div className="flex flex-col justify-between">
                 <button disabled={InEditMode()} id={UsersPageIds.addButton} className={yellowButtonStyle} onClick={() => setAdminAddUserModalIsOpen(true)}>Add User</button>
-{/*                  <EditUserDataButton company={userCompany} users={usersList}></EditUserDataButton>
- */}                  <AdminAddUserModal title="Add User" isOpen={AdminAddUserModalIsOpen} setAdminAddUserModalIsOpen={setAdminAddUserModalIsOpen} companies={displayCompanies} Submit={SubmitAddUser} expanded={false}/>
+                  <AdminAddUserModal title="Add User" isOpen={AdminAddUserModalIsOpen} setAdminAddUserModalIsOpen={setAdminAddUserModalIsOpen} companies={displayCompanies} Submit={SubmitAddUser} expanded={false}/>
               </div>}
           <div className="col-span-1 py-[2%]">
               <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
