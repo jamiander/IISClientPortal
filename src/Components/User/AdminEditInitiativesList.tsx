@@ -4,6 +4,7 @@ import { Fragment, useEffect, useState } from "react";
 import { UserItem } from "../../Styles";
 import ExpandMore from '@mui/icons-material/ExpandMore'
 import exp from "constants";
+import { User } from "../../Store/UserSlice";
 
 interface AdminEditInitiativesListProps {
   company: Company
@@ -12,6 +13,7 @@ interface AdminEditInitiativesListProps {
   updateInitiativeIds: (initId: string, checked: boolean) => void
   updateCompanyId: (companyId: string, checked: boolean) => void
   expanded: boolean
+  user: User
 }
 
 export function AdminEditInitiativesList(props: AdminEditInitiativesListProps)

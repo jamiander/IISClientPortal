@@ -141,7 +141,7 @@ export default function IntegrityPage(){
                                   <Fragment key={index}>
                                     <AdminEditInitiativesList company={company} initiativeIds={currentInitiativeIds} editable={true} updateInitiativeIds={setCurrentInitiativeIds} expanded={false} updateCompanyId={function (companyId: string): void {
                                       throw new Error("Function not implemented.");
-                                    } }/>
+                                    } } user={userToEdit!}/>
                                   </Fragment>
                                 )
                               })
@@ -164,7 +164,7 @@ export default function IntegrityPage(){
                                   <Fragment key={index}>
                                     <AdminEditInitiativesList company={company} initiativeIds={displayItem.initiativeIds} editable={false} updateInitiativeIds={setCurrentInitiativeIds} expanded={false} updateCompanyId={function (companyId: string): void {
                                       throw new Error("Function not implemented.");
-                                    } } />
+                                    } } user={userToEdit!} />
                                   </Fragment>
                                 )
                               })

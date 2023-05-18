@@ -47,9 +47,9 @@ export function EditUserInitiativesModal(props: EditUserInitiativesModalProps)
     setInitiativeIds(initiativesClone);
   }
 
-  function UpdateCompanyId(companyId: string, checked: boolean)
+  function UpdateCompanyId(companyId: string)
   {
-    if(checked && props.user.companyId !== IntegrityId) {
+    if(props.user.companyId !== IntegrityId) {
       setCompanyId(companyId);
     } 
     else
@@ -93,7 +93,7 @@ export function EditUserInitiativesModal(props: EditUserInitiativesModalProps)
           props.allCompanies.map((company,index) => {
             return (
               <Fragment key={index}>
-                <AdminEditInitiativesList company={company} initiativeIds={initiativeIds} updateInitiativeIds={UpdateInitiativeIds} updateCompanyId={UpdateCompanyId} editable={true} expanded={props.expanded}/>
+                <AdminEditInitiativesList company={company} initiativeIds={initiativeIds} updateInitiativeIds={UpdateInitiativeIds} updateCompanyId={UpdateCompanyId} editable={true} expanded={props.expanded} user={props.user}/>
               </Fragment>
             )
           })

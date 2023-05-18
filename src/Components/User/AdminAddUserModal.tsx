@@ -44,6 +44,7 @@ export default function AdminAddUserModal(props: AdminAddUserProps){
     const [companyId, setCompanyId] = useState<string>("");
 
     let myUuid = UuidV4();
+    let user = {id: myUuid, name: currentName, email: currentEmail, password: currentPassword, companyId: (selectedCompany?.id ?? "-1"), phoneNumber: currentPhone, isAdmin: currentIsAdmin, isActive: currentIsActive, initiativeIds: [] }
 
     function UpdateInitiativeIds(initId: string, checked: boolean)
   {
@@ -62,10 +63,9 @@ export default function AdminAddUserModal(props: AdminAddUserProps){
     setInitiativeIds(initiativesClone);
   }
 
-  function UpdateCompanyId(companyId: string, checked: boolean)
+  function UpdateCompanyId(companyId: string)
   {
-    if(checked)
-      setCompanyId(companyId);
+    setCompanyId(companyId);
   }
 
 
@@ -76,7 +76,7 @@ export default function AdminAddUserModal(props: AdminAddUserProps){
 
   function SaveEdit()
   {
-    let userClone: User = JSON.parse(JSON.stringify({id: myUuid, name: currentName, email: currentEmail, password: currentPassword, companyId: (selectedCompany?.id ?? "-1"), phoneNumber: currentPhone, isAdmin: currentIsAdmin, isActive: currentIsActive, initiativeIds: [] }));
+    let userClone: User = JSON.parse(JSON.stringify(user));
     if(userClone)
     {
       userClone.initiativeIds = initiativeIds;
@@ -110,7 +110,7 @@ export default function AdminAddUserModal(props: AdminAddUserProps){
           props.companies.map((company,index) => {
             return (
               <Fragment key={index}>
-                <AdminEditInitiativesList company={company} initiativeIds={initiativeIds} updateInitiativeIds={UpdateInitiativeIds} updateCompanyId={UpdateCompanyId} editable={true} expanded={props.expanded}/>
+                <AdminEditInitiativesList company={company} initiativeIds={initiativeIds} updateInitiativeIds={UpdateInitiativeIds} updateCompanyId={UpdateCompanyId} editable={true} expanded={props.expanded} user={user}/>
               </Fragment>
             )
           })
