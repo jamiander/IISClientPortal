@@ -42,7 +42,7 @@ describe('update company spec', () => {
       cy.get(pageIds.saveClientChangesButton).click();
     });
 
-    cy.contains(company.name);
+    cy.get(pageIds.table).should('contain',company.name);
   })
 
   specify('cannot update with invalid input', () => {
@@ -51,10 +51,8 @@ describe('update company spec', () => {
       cy.get(pageIds.saveClientChangesButton).click();
     });
 
-    cy.get(snackbarId).contains(failMessage);
+    cy.get(snackbarId).should('contain',failMessage);
     //cy.get(pageIds.name).type(company.name);
-
-
   })
 
   specify('cannot rename a company the name of another company', () => {
@@ -63,12 +61,12 @@ describe('update company spec', () => {
       cy.get(pageIds.saveClientChangesButton).click();
     });
 
-    cy.get(snackbarId).contains(failMessage);
+    cy.get(snackbarId).should('contain',failMessage);
   })
 
   specify('cancel button cancels the changes', () => {
     cy.get(pageIds.cancelClientChangesButton).click();
-    cy.contains(existingCompany.name);
+    cy.get(pageIds.table).should('contain',existingCompany.name);
   })
 
   specify('cannot edit multiple users at once', () => {

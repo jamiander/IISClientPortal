@@ -45,7 +45,7 @@ function App() {
         <div className={'bg-[#E4E1E5] min-h-[83.25vh] ' + span}>
           <Content ShowToast={ShowToast}/>
           <Toast toastList={toastList} />
-          <SnackbarProvider anchorOrigin={{
+          <SnackbarProvider maxSnack={1} anchorOrigin={{
             vertical: 'bottom',
             horizontal: 'center',
           }}/>

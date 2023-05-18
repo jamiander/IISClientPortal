@@ -11,7 +11,7 @@ describe('update initiative spec', () => {
   }
 
   const existingInit = {
-    title: "IIS Initiative 2"
+    title: "Client Portal"
   }
 
   const consts = TestConstants;
@@ -22,6 +22,7 @@ describe('update initiative spec', () => {
   const tableIds = consts.initiativeTableIds;
   const loginIds = consts.loginPageIds;
   const user = IntegrityUser;
+  const snackbarWaitTime = consts.snackbarWaitTime;
 
   beforeEach(() => {
     cy.visit('http://localhost:3000/Login')
@@ -52,22 +53,25 @@ describe('update initiative spec', () => {
   specify('cannot update with blank fields', () => {
     cy.get(modalIds.title).clear();
     cy.get(modalIds.submitButton).click();
-    cy.get(snackbarId).contains(failMessage);
+    cy.get(snackbarId).should('contain',failMessage);
     cy.get(modalIds.title).type(init.title);
 
     cy.get(modalIds.startDate).clear();
     cy.get(modalIds.submitButton).click();
-    cy.get(snackbarId).contains(failMessage);
+    cy.wait(snackbarWaitTime);
+    cy.get(snackbarId).should('contain',failMessage);
     cy.get(modalIds.startDate).type(init.startDate);
 
     cy.get(modalIds.targetDate).clear();
     cy.get(modalIds.submitButton).click();
-    cy.get(snackbarId).contains(failMessage);
+    cy.wait(snackbarWaitTime);
+    cy.get(snackbarId).should('contain',failMessage);
     cy.get(modalIds.targetDate).type(init.targetDate);
 
     cy.get(modalIds.totalItems).clear();
     cy.get(modalIds.submitButton).click();
-    cy.get(snackbarId).contains(failMessage);
+    cy.wait(snackbarWaitTime);
+    cy.get(snackbarId).should('contain',failMessage);
   })
 
   specify('cannot have a target date before a start date', () => {

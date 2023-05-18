@@ -11,6 +11,7 @@ const navIds = consts.navPanelIds;
 const failMessage = consts.validationFailedMessage;
 const snackbarId = consts.snackbarId;
 const loginIds = consts.loginPageIds;
+const snackbarWaitTime = consts.snackbarWaitTime;
 const admin = AdminUser;
 
 describe('add non-Integrity user as Integrity spec', () => {
@@ -46,7 +47,7 @@ describe('add non-Integrity user as Integrity spec', () => {
 
   specify('cannot add a user with invalid input', () => {
     cy.get(modalIds.saveChangesButton).click();
-    cy.get(snackbarId).contains(failMessage);
+    cy.get(snackbarId).should('contain',failMessage);
   })
 
   specify('cannot add multiple users at once', () => {
@@ -97,7 +98,21 @@ describe("add non-Integrity user as non-Integrity user spec", () => {
 
   specify('cannot add a user with invalid input', () => {
     cy.get(pageIds.saveChangesButton).click();
-    cy.get(snackbarId).contains(failMessage);
+    cy.get(snackbarId).should('contain',failMessage);
+
+    cy.get(pageIds.email).type(user.email);
+    cy.get(pageIds.password).type(user.password);
+
+    cy.get(pageIds.email).clear();
+    cy.get(pageIds.saveChangesButton).click();
+    cy.wait(snackbarWaitTime);
+    cy.get(snackbarId).should('contain',failMessage);
+    cy.get(pageIds.email).type(user.email);
+
+    cy.get(pageIds.password).clear();
+    cy.get(pageIds.saveChangesButton).click();
+    cy.wait(snackbarWaitTime);
+    cy.get(snackbarId).should('contain',failMessage);
   })
 
   specify('cannot add multiple users at once', () => {
@@ -142,7 +157,21 @@ describe("add Integrity user spec", () => {
 
   specify('cannot add a user with invalid input', () => {
     cy.get(pageIds.saveChangesButton).click();
-    cy.get(snackbarId).contains(failMessage);
+    cy.get(snackbarId).should('contain',failMessage);
+
+    cy.get(pageIds.email).type(user.email);
+    cy.get(pageIds.password).type(user.password);
+
+    cy.get(pageIds.email).clear();
+    cy.get(pageIds.saveChangesButton).click();
+    cy.wait(snackbarWaitTime);
+    cy.get(snackbarId).should('contain',failMessage);
+    cy.get(pageIds.email).type(user.email);
+
+    cy.get(pageIds.password).clear();
+    cy.get(pageIds.saveChangesButton).click();
+    cy.wait(snackbarWaitTime);
+    cy.get(snackbarId).should('contain',failMessage);
   })
 
   specify('cannot add multiple users at once', () => {

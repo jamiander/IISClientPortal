@@ -1,11 +1,13 @@
 import { IntegrityUser, TestConstants } from "./TestHelpers";
 
 const consts = TestConstants;
+const failMessage = consts.validationFailedMessage;
 const modalIds = consts.decisionModalIds;
 const alertIds = consts.deleteDecisionAlertIds;
 const radioIds = consts.initiativeDisplayRadioIds;
 const tableIds = consts.initiativeTableIds;
 const snackbarId = consts.snackbarId;
+const snackbarWaitTime = consts.snackbarWaitTime;
 const waitTime = 500;
 const user = IntegrityUser;
 
@@ -60,33 +62,28 @@ describe("add decision spec", () => {
     
     cy.get('button').contains("View").click();
     cy.get(modalIds.grid).children().last().within(() => {
-      cy.get(modalIds.description).contains(decision.description);
+      cy.get(modalIds.description).should('contain',decision.description);
     })
   })
 
   specify("can't add decision with empty fields", () => {
     cy.get(modalIds.description).clear({force: true});
     cy.get(modalIds.saveChangesButton).click();
-    cy.wait(waitTime);
-    cy.get(modalIds.saveChangesButton);
+    cy.wait(snackbarWaitTime);
+    cy.get(snackbarId).should('contain',failMessage);
     cy.get(modalIds.description).type(decision.description,{force: true});
 
     cy.get(modalIds.resolution).clear({force: true});
     cy.get(modalIds.saveChangesButton).click();
-    cy.wait(waitTime);
-    cy.get(modalIds.saveChangesButton);
+    cy.wait(snackbarWaitTime);
+    cy.get(snackbarId).should('contain',failMessage);
     cy.get(modalIds.resolution).type(decision.resolution,{force: true});
 
     cy.get(modalIds.participants).clear({force: true});
     cy.get(modalIds.saveChangesButton).click();
-    cy.wait(waitTime);
-    cy.get(modalIds.saveChangesButton);
+    cy.wait(snackbarWaitTime);
+    cy.get(snackbarId).should('contain',failMessage);
     cy.get(modalIds.participants).type(decision.names,{force: true});
-
-    /*cy.get(modalIds.date).clear({force: true});
-    cy.get(modalIds.saveChangesButton).click();
-    cy.wait(waitTime);
-    cy.get(modalIds.saveChangesButton);*/
   })
 
   specify("must be able to cancel adding", () => {
