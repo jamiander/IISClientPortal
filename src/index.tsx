@@ -8,12 +8,9 @@ import ErrorPage from './Pages/ErrorPage';
 import { Provider as ReduxProvider } from 'react-redux';
 import { store } from './Store/Store';
 import LoginPage from './Pages/LoginPage';
-import { CompanyPage } from './Pages/CompanyPage';
-import CompanyPage2 from './Pages/CompanyPage2';
-import IntegrityPage from './Pages/IntegrityPage';
-import IntegrityPage2 from './Pages/IntegrityPage2';
+import UsersPage from './Pages/UsersPage';
 import { ClientPage } from './Pages/ClientPage';
-import UsersPage from './Pages/CompanyPage2';
+import { IntegrityPage } from './Pages/IntegrityPage';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -37,18 +34,13 @@ const router = createBrowserRouter([
         errorElement: <ErrorPage/>,
       },
       {
-        path: '/Company',
-        element: <CompanyPage/>,
-        errorElement: <ErrorPage/>
-      },
-      {
         path: '/Users',
         element: <UsersPage/>,
         errorElement: <ErrorPage/>
       },
       {
         path: '/Integrity',
-        element: <IntegrityPage2/>,
+        element: <IntegrityPage/>,
         errorElement: <ErrorPage/>
       },
       {

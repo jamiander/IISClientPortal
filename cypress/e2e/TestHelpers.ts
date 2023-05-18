@@ -10,7 +10,7 @@ import { DeleteDecisionAlertIds } from "../../src/Components/Initiative/DeleteDe
 import { NavPanelIds } from "../../src/Layout/NavPanel";
 import { CompanyPageIds } from "../../src/Pages/CompanyPage";
 import { EditUserDataIds } from "../../src/Components/User/EditUserDataModal";
-import { IntegrityPageIds } from "../../src/Pages/IntegrityPage2";
+import { IntegrityPageIds } from "../../src/Pages/IntegrityPage";
 import { ClientPageIds } from "../../src/Pages/ClientPage";
 import { LoginPageIds } from "../../src/Pages/LoginPage";
 
