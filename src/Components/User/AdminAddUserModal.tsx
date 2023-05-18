@@ -1,6 +1,6 @@
 import Dialog from "@mui/material/Dialog";
 import { Company } from "../../Store/CompanySlice";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { User } from "../../Store/UserSlice";
 import { Item, StyledCard, StyledCardContent, cancelButtonStyle, submitButtonStyle } from "../../Styles";
 import Checkbox from "@mui/material/Checkbox";
@@ -46,6 +46,16 @@ export default function AdminAddUserModal(props: AdminAddUserProps){
   const [currentIsActive, setCurrentIsActive] = useState(false);
   const [initiativeIds, setInitiativeIds] = useState<string[]>([]);
   const [companyId, setCompanyId] = useState<string>("");
+
+  useEffect(() => {
+    setCurrentName("");
+    setCurrentEmail("");
+    setCurrentPassword("");
+    setCurrentPhone("");
+    setCurrentIsAdmin(false);
+    setCurrentIsActive(false);
+    setCompanyId("");
+  },[props.isOpen]);
 
   let myUuid = UuidV4();
   let user = {id: myUuid, name: currentName, email: currentEmail, password: currentPassword, companyId: (selectedCompany?.id ?? "-1"), phoneNumber: currentPhone, isAdmin: currentIsAdmin, isActive: currentIsActive, initiativeIds: [] }
