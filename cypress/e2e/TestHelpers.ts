@@ -8,7 +8,6 @@ import { EditThroughputIds } from "../../src/Components/Initiative/EditThroughpu
 import { DecisionModalIds } from "../../src/Components/Initiative/DecisionDataModal";
 import { DeleteDecisionAlertIds } from "../../src/Components/Initiative/DeleteDecisionAlert";
 import { NavPanelIds } from "../../src/Layout/NavPanel";
-import { EditUserDataIds } from "../../src/Components/User/EditUserDataModal";
 import { IntegrityPageIds } from "../../src/Pages/IntegrityPage";
 import { ClientPageIds } from "../../src/Pages/ClientPage";
 import { LoginPageIds } from "../../src/Pages/LoginPage";
@@ -43,7 +42,6 @@ export const TestConstants = {
   deleteDecisionAlertIds: AddHash(DeleteDecisionAlertIds),
   navPanelIds: AddHash(NavPanelIds),
   usersPageIds: AddHash(UsersPageIds),
-  editUserModalIds: AddHash(EditUserDataIds),
   integrityPageIds: AddHash(IntegrityPageIds),
   clientPageIds: AddHash(ClientPageIds),
   loginPageIds: AddHash(LoginPageIds),
