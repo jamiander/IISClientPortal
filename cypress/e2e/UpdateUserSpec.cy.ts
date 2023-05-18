@@ -15,14 +15,15 @@ const consts = TestConstants;
 const navIds = consts.navPanelIds;
 const failMessage = consts.validationFailedMessage;
 const snackbarId = consts.snackbarId;
+const loginIds = consts.loginPageIds;
 const admin = AdminUser;
 
 beforeEach(() => {
   cy.visit('http://localhost:3000/Login');
-  cy.get('#email').clear().type(admin.email);
-  cy.get('#password').clear().type(admin.password);
+  cy.get(loginIds.email).clear().type(admin.email);
+  cy.get(loginIds.password).clear().type(admin.password);
   cy.wait(500);
-  cy.get('button').contains('Submit').click();
+  cy.get(loginIds.submitButton).click();
 })
 
 describe("update user spec",() => {
@@ -34,7 +35,7 @@ describe("update user spec",() => {
   const modalIds = consts.editUserModalIds;
 
   beforeEach(() => {
-    cy.get(navIds.company).click();
+    cy.get(navIds.users).click();
     cy.get("#editUserDataButton"+company.id).click();
     cy.get(modalIds.addButton).click({force:true});
     cy.get(modalIds.email).type(user.email);

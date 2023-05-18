@@ -19,26 +19,25 @@ import { EditUserInitiativesButton } from "../Components/User/EditUserInitiative
 import AdminAddUserModal from "../Components/User/AdminAddUserModal";
 import { ValidateUser, ValidationFailedPrefix } from "../Services/Validation";
 import { enqueueSnackbar } from "notistack";
-import { EditUserDataButton } from "../Components/User/EditUserDataButton";
 
-export const CompanyPageIds = {
-  modal: "editUserModal",
-  closeModalButton: "editUserModalCloseModalButton",
-  company: "editUserCompany",
-  email: "editUserEmail",
-  password: "editUserPassword",
-  initiativeIds: "editUserInitiativeIds",
-  name: "editUserName",
-  phone: "editUserPhone",
-  isAdmin: "editIsAdmin",
-  isActive: "editUserIsActive",
-  addButton: "editUserAddButton",
-  editButton: "editUserEditButton",
-  saveChangesButton: "editUserSaveChangesButton",
-  cancelChangesButton: "editUserCancelChangesButton",
-  deleteButton: "editUserDeleteButton",
-  keywordFilter: "editUserKeywordFilter",
-  grid: "editUserGrid"
+export const UsersPageIds = {
+  company: "usersPageCompany",
+  email: "usersPageEmail",
+  password: "usersPagePassword",
+  initiativeIds: "usersPageInitiativeIds",
+  name: "usersPageName",
+  phone: "usersPagePhone",
+  isAdmin: "usersPageIsAdmin",
+  isActive: "usersPageIsActive",
+  addButton: "usersPageAddButton",
+  editButton: "usersPageEditButton",
+  saveChangesButton: "usersPageSaveChangesButton",
+  cancelChangesButton: "usersPageCancelChangesButton",
+  deleteButton: "usersPageDeleteButton",
+  keywordFilter: "usersPageKeywordFilter",
+  grid: "usersPageGrid",
+  addModal: "usersPageAddModal",
+  
 }
 
 export default function UsersPage(){
@@ -142,15 +141,15 @@ export default function UsersPage(){
       <div className="mx-[2%] mb-[2%]">
           {companyUsers.length !== 0 &&
               <div className="mt-2 mb-4">
-                  <StyledTextField className="w-1/2" id={CompanyPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name or email" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)} />
+                  <StyledTextField className="w-1/2" id={UsersPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name or email" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)} />
               </div>}
               {currentUserCompanyId !== IntegrityId &&
               <div className="flex flex-col justify-between">
-                  <button disabled={InEditMode()} id={CompanyPageIds.addButton} className={yellowButtonStyle} onClick={() => AddEmptyUser(currentUserCompanyId)}>Add User</button>
+                  <button disabled={InEditMode()} id={UsersPageIds.addButton} className={yellowButtonStyle} onClick={() => AddEmptyUser(currentUserCompanyId)}>Add User</button>
               </div>}
               {currentUserCompanyId === IntegrityId &&
               <div className="flex flex-col justify-between">
-                <button disabled={InEditMode()} id={CompanyPageIds.addButton} className={yellowButtonStyle} onClick={() => setAdminAddUserModalIsOpen(true)}>Add User</button>
+                <button disabled={InEditMode()} id={UsersPageIds.addButton} className={yellowButtonStyle} onClick={() => setAdminAddUserModalIsOpen(true)}>Add User</button>
 {/*                  <EditUserDataButton company={userCompany} users={usersList}></EditUserDataButton>
  */}                  <AdminAddUserModal title="Add User" isOpen={AdminAddUserModalIsOpen} setAdminAddUserModalIsOpen={setAdminAddUserModalIsOpen} companies={displayCompanies} Submit={SubmitAddUser} expanded={false}/>
               </div>}
@@ -209,37 +208,37 @@ export default function UsersPage(){
                     {isEdit ?
                      <>
                     <TableCell>
-                        <IconButton onClick={() => SaveEdit()}>
+                        <IconButton id={UsersPageIds.saveChangesButton} onClick={() => SaveEdit()}>
                             <DoneIcon />
                         </IconButton>
-                        <IconButton onClick={() => CancelEdit()}>
+                        <IconButton id={UsersPageIds.cancelChangesButton} onClick={() => CancelEdit()}>
                             <CancelIcon />
                         </IconButton>
                     </TableCell>
-                    <TableCell id={CompanyPageIds.company}>{displayCompany?.name}</TableCell>
-                    <TableCell id={CompanyPageIds.name}> <Input value={currentName} onChange={e => setCurrentName(e.target.value)}/></TableCell>
-                    <TableCell id={CompanyPageIds.email}><Input value={currentEmail} onChange={e => setCurrentEmail(e.target.value)}/></TableCell>
-                    <TableCell id={CompanyPageIds.password}><Input value={currentPassword} onChange={e => setCurrentPassword(e.target.value)}/></TableCell>
-                    <TableCell id={CompanyPageIds.phone}><Input value={currentPhone} onChange={e => setCurrentPhone(e.target.value)}/></TableCell>
-                    <TableCell id={CompanyPageIds.isAdmin}><Checkbox checked={currentIsAdmin} onChange={e => setCurrentIsAdmin(e.target.checked)}/>Admin</TableCell>
-                    <TableCell id={CompanyPageIds.isActive}><Checkbox checked={currentIsActive} onChange={e => setCurrentIsActive(e.target.checked)}/>Active</TableCell>
-                    <TableCell id={CompanyPageIds.initiativeIds}></TableCell>
+                    <TableCell id={UsersPageIds.company}>{displayCompany?.name}</TableCell>
+                    <TableCell id={UsersPageIds.name}> <Input value={currentName} onChange={e => setCurrentName(e.target.value)}/></TableCell>
+                    <TableCell id={UsersPageIds.email}><Input value={currentEmail} onChange={e => setCurrentEmail(e.target.value)}/></TableCell>
+                    <TableCell id={UsersPageIds.password}><Input value={currentPassword} onChange={e => setCurrentPassword(e.target.value)}/></TableCell>
+                    <TableCell id={UsersPageIds.phone}><Input value={currentPhone} onChange={e => setCurrentPhone(e.target.value)}/></TableCell>
+                    <TableCell id={UsersPageIds.isAdmin}><Checkbox checked={currentIsAdmin} onChange={e => setCurrentIsAdmin(e.target.checked)}/>Admin</TableCell>
+                    <TableCell id={UsersPageIds.isActive}><Checkbox checked={currentIsActive} onChange={e => setCurrentIsActive(e.target.checked)}/>Active</TableCell>
+                    <TableCell id={UsersPageIds.initiativeIds}></TableCell>
                     </>
                       : 
                      <>
                     <TableCell>
-                        <IconButton onClick={() => EnterEditMode(companyUser?.id, companyUsers, false)}>
+                        <IconButton id={UsersPageIds.editButton} onClick={() => EnterEditMode(companyUser?.id, companyUsers, false)}>
                             <EditIcon />
                         </IconButton>
                     </TableCell>
-                    <TableCell id={CompanyPageIds.company}>{displayCompany.name}</TableCell>
-                    <TableCell id={CompanyPageIds.name}>{companyUser?.name}</TableCell>
-                    <TableCell id={CompanyPageIds.email}>{companyUser?.email}</TableCell>
-                    <TableCell id={CompanyPageIds.password}>{companyUser?.password}</TableCell>
-                    <TableCell id={CompanyPageIds.phone}>{companyUser?.phoneNumber}</TableCell>
-                    <TableCell id={CompanyPageIds.isAdmin}>{companyUser?.isAdmin ? "Admin" : "User"}</TableCell>
-                    <TableCell id={CompanyPageIds.isActive}>{companyUser?.isActive ? "Active" : "Inactive"}</TableCell>
-                    <TableCell id={CompanyPageIds.initiativeIds}><EditUserInitiativesButton user={companyUser} allCompanies={[displayCompany]} SubmitUserData={SubmitUserData} expanded={true}/></TableCell>
+                    <TableCell id={UsersPageIds.company}>{displayCompany.name}</TableCell>
+                    <TableCell id={UsersPageIds.name}>{companyUser?.name}</TableCell>
+                    <TableCell id={UsersPageIds.email}>{companyUser?.email}</TableCell>
+                    <TableCell id={UsersPageIds.password}>{companyUser?.password}</TableCell>
+                    <TableCell id={UsersPageIds.phone}>{companyUser?.phoneNumber}</TableCell>
+                    <TableCell id={UsersPageIds.isAdmin}>{companyUser?.isAdmin ? "Admin" : "User"}</TableCell>
+                    <TableCell id={UsersPageIds.isActive}>{companyUser?.isActive ? "Active" : "Inactive"}</TableCell>
+                    <TableCell id={UsersPageIds.initiativeIds}><EditUserInitiativesButton user={companyUser} allCompanies={[displayCompany]} SubmitUserData={SubmitUserData} expanded={true}/></TableCell>
                     </> 
                 }
                 </TableRow>

@@ -15,6 +15,7 @@ const modalIds = consts.uploadThroughputIds;
 const tableIds = consts.initiativeTableIds;
 const snackbarId = consts.snackbarId;
 const radioIds = consts.initiativeDisplayRadioIds;
+const loginIds = consts.loginPageIds;
 
 const initiativeTitle = 'IIS Initiative';
 const companyName = 'Integrity Inspired Solutions';
@@ -27,10 +28,10 @@ describe('valid upload throughput tests', () => {
 
   beforeEach(() => {
     cy.visit('http://localhost:3000/Login');
-    cy.get('#email').clear().type(user.email);
-    cy.get('#password').clear().type(user.password);
+    cy.get(loginIds.email).clear().type(user.email);
+    cy.get(loginIds.password).clear().type(user.password);
     cy.wait(500);
-    cy.get('button').contains('Submit').click();
+    cy.get(loginIds.submitButton).click();
 
     cy.get(radioIds.all).click();
     cy.get(tableIds.initiativeTitleFilter).type(initiativeTitle);
@@ -80,9 +81,9 @@ describe('invalid upload throughput tests', () => {
 
   beforeEach(() => {
     cy.visit('http://localhost:3000/Login');
-    cy.get('#email').clear().type('info@integrityinspired.com');
-    cy.get('#password').clear().type('password');
-    cy.get('button').contains('Submit').click();
+    cy.get(loginIds.email).clear().type(user.email);
+    cy.get(loginIds.password).clear().type(user.password);
+    cy.get(loginIds.submitButton).click();
 
     //cy.get('button').contains('Admin').click();
     //cy.get('button').contains('Initiatives').click();

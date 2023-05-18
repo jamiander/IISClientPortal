@@ -6,6 +6,7 @@ const snackbarId = consts.snackbarId;
 const failMessage = consts.validationFailedMessage;
 const tableIds = consts.initiativeTableIds;
 const radioIds = consts.initiativeDisplayRadioIds;
+const loginIds = consts.loginPageIds;
 const initiativeTitle = 'IIS Initiative';
 const company = 'Integrity Inspired Solutions';
 const waitTime = 500;
@@ -16,9 +17,9 @@ describe ('add throughput data by manual entry', () => {
 
   before(() => {
     cy.visit('http://localhost:3000/Login');
-    cy.get('#email').clear().type(user.email);
-    cy.get('#password').clear().type(user.password);
-    cy.get('button').contains('Submit').click();
+    cy.get(loginIds.email).clear().type(user.email);
+    cy.get(loginIds.password).clear().type(user.password);
+    cy.get(loginIds.submitButton).click();
 
     cy.get(radioIds.all).click();
     cy.get(tableIds.initiativeTitleFilter).type(initiativeTitle);
@@ -51,9 +52,9 @@ describe ('add throughput data by manual entry', () => {
 describe ('invalid manual entry test', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/Login');
-    cy.get('#email').clear().type(user.email);
-    cy.get('#password').clear().type(user.password);
-    cy.get('button').contains('Submit').click();
+    cy.get(loginIds.email).clear().type(user.email);
+    cy.get(loginIds.password).clear().type(user.password);
+    cy.get(loginIds.submitButton).click();
 
     //cy.get('button').contains('Admin').click();
     //cy.get('button').contains('Initiatives').click();
@@ -95,10 +96,10 @@ describe('update throughput data', () => {
 
   beforeEach(() => {
     cy.visit('http://localhost:3000/Login');
-    cy.get('#email').clear().type(user.email);
-    cy.get('#password').clear().type(user.password);
+    cy.get(loginIds.email).clear().type(user.email);
+    cy.get(loginIds.password).clear().type(user.password);
     cy.wait(500);
-    cy.get('button').contains('Submit').click();
+    cy.get(loginIds.submitButton).click();
 
     //cy.get('button').contains('Admin').click();
     //cy.get('button').contains('Initiatives').click();

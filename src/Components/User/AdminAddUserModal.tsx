@@ -10,6 +10,7 @@ import {v4 as UuidV4} from "uuid";
 
 
 export const AdminAddUserModalIds = {
+    modal: "adminAddUserModal",
     selectCompany: "adminAddUserSelectCompany",
     selectInitiative: "adminAddUserSelectInitiative",
     name: "adminAddUserName",
@@ -88,7 +89,7 @@ export default function AdminAddUserModal(props: AdminAddUserProps){
   } 
 
     return(
-        <Dialog
+        <Dialog id={AdminAddUserModalIds.modal}
         open={props.isOpen}
         onClose={() => props.setAdminAddUserModalIsOpen(false)}
         maxWidth={false}
