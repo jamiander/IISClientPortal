@@ -1,9 +1,8 @@
 import { Accordion, AccordionDetails, AccordionSummary, Checkbox, FormControlLabel, FormGroup } from "@mui/material";
 import { Company } from "../../Store/CompanySlice";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useState } from "react";
 import { UserItem } from "../../Styles";
 import ExpandMore from '@mui/icons-material/ExpandMore'
-import exp from "constants";
 import { User } from "../../Store/UserSlice";
 
 interface AdminEditInitiativesListProps {
