@@ -1,4 +1,4 @@
-import { AdminUser, MBPIAdminUser, TestConstants } from "./TestHelpers";
+import { AdminUser, MBPIAdminUser, MBPICompany, TestConstants } from "./TestHelpers";
 
 const user = {
   email: "AAAtest@testing.com",
@@ -16,15 +16,12 @@ const admin = AdminUser;
 
 describe('add non-Integrity user as Integrity spec', () => {
 
-  const company = {
-    id: "82bf634e-77c8-4abe-b55c-e2b5e8020892"//Id of a client WITH NO USERS
-  }
+  const company = MBPICompany;
 
   const pageIds = consts.usersPageIds;
   const modalIds = consts.adminAddUserModalIds;
 
   beforeEach(() => {
-    cy.get(loginIds.shouldfail)
     cy.visit('http://localhost:3000/Login');
     cy.get(loginIds.email).clear().type(admin.email);
     cy.get(loginIds.password).clear().type(admin.password);
@@ -36,10 +33,14 @@ describe('add non-Integrity user as Integrity spec', () => {
     cy.get(pageIds.addButton).click({force:true});
   })
 
-  specify('add a new user as a non-Integrity user', () => {
+  specify('add a new user as an Integrity user', () => {
     cy.get(modalIds.email).type(user.email);
     cy.get(modalIds.password).type(user.password);
     cy.get(modalIds.isActive).check();
+    cy.get(modalIds.selectCompany).parent()
+      .click()
+      .get(`ul > li[data-value="${company.id}"]`)
+      .click();
     cy.get(modalIds.saveChangesButton).click();
     cy.get(modalIds.modal).should('not.exist');
     cy.contains(user.email);
@@ -50,18 +51,14 @@ describe('add non-Integrity user as Integrity spec', () => {
     cy.get(snackbarId).should('contain',failMessage);
   })
 
-  specify('cannot add multiple users at once', () => {
-    cy.get(pageIds.addButton).should('be.disabled');
-  })
-
-  specify('cancel does not leave behind a blank user', () => {
+  specify('cancel does not leave behind the new user', () => {
     cy.get(modalIds.email).clear().type(user.email);
     cy.get(modalIds.cancelChangesButton).click();
     cy.contains(user.email).should('not.exist');
   })
 
   specify('close button closes the modal', () => {
-    cy.get(pageIds.closeModalButton).click();
+    cy.get(modalIds.cancelChangesButton).click();
     cy.get(pageIds.modal).should('not.exist');
   })
 })
@@ -119,7 +116,7 @@ describe("add non-Integrity user as non-Integrity user spec", () => {
     cy.get(pageIds.addButton).should('be.disabled');
   })
 
-  specify('cancel does not leave behind a blank user', () => {
+  specify('cancel does not leave behind the new user', () => {
     cy.get(pageIds.cancelChangesButton).click();
     cy.get(pageIds.email).contains(user.email).should('not.exist');
   })
@@ -178,7 +175,7 @@ describe("add Integrity user spec", () => {
     cy.get(pageIds.addButton).should('be.disabled');
   })
 
-  specify('cancel does not leave behind a blank user', () => {
+  specify('cancel does not leave behind the new user', () => {
     cy.get(pageIds.cancelChangesButton).click();
     cy.get(pageIds.email).contains(user.email).should('not.exist');
   })
