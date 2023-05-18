@@ -35,7 +35,7 @@ export const UsersPageIds = {
   cancelChangesButton: "usersPageCancelChangesButton",
   deleteButton: "usersPageDeleteButton",
   keywordFilter: "usersPageKeywordFilter",
-  grid: "usersPageGrid",
+  table: "usersPageTable",
   addModal: "usersPageAddModal",
   
 }
@@ -191,7 +191,7 @@ export default function UsersPage(){
                             <TableHeaderStyle>Assigned Initiatives</TableHeaderStyle>
                           </TableRow>
                       </TableHead>
-                <TableBody>
+                <TableBody id={UsersPageIds.table}>
                     {displayCompanies.map((displayCompany, key) => {
                         let companyUserList = usersList.filter(cu => cu.companyId === displayCompany.id)!;
                         return (
@@ -227,7 +227,7 @@ export default function UsersPage(){
                       : 
                      <>
                     <TableCell>
-                        <IconButton id={UsersPageIds.editButton} onClick={() => EnterEditMode(companyUser?.id, companyUsers, false)}>
+                        <IconButton id={UsersPageIds.editButton} disabled={InEditMode()} onClick={() => EnterEditMode(companyUser?.id, companyUsers, false)}>
                             <EditIcon />
                         </IconButton>
                     </TableCell>
