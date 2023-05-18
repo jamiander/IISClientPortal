@@ -71,15 +71,22 @@ export function ValidateCompany(newCompany: Company, companyList: Company[]): Va
 
 export function ValidateUser(newUser: User, allUsers: User[]) : Validation
 {
-  if(newUser && newUser.email && newUser.password)
+  if(newUser)
   {
+    if(!newUser.email)
+      return {success: false, message: "Email cannot be left blank."};
+    if(!newUser.password)
+      return {success: false, message: "Password cannot be left blank."};
+    if(!newUser.companyId)
+      return {success: false, message: "Company cannot be left blank"};
+
     let matchingUser = allUsers.find(user => user.email.toUpperCase() === newUser.email.toUpperCase() && newUser.id !== user.id)
     if(matchingUser)
       return {success: false, message: "Cannot use the email of an existing user."};
 
     return {success: true, message: "Successfully validated; all good!"};
   }
-  return {success: false, message: "Cannot leave any fields blank."};
+  return {success: false, message: "There was no user to validate."};
 }
 
 export function ValidateAdminUser(newUser: User, allUsers: User[]) : Validation
