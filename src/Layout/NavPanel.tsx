@@ -7,7 +7,7 @@ import { IntegrityId } from "../Store/CompanySlice"
 
 export const NavPanelIds = {
   dashboard: "navPanelDashboard",
-  company: "navPanelCompany",
+  users: "navPanelUsers",
   integrity: "navPanelIntegrity",
   client: "navPanelClient"
 }
@@ -47,16 +47,9 @@ export default function NavPanel(){
       </button>
       {
         currentUser?.isAdmin && currentUser?.isActive &&
-        <button id={NavPanelIds.company} className={GetNavStyle("/Company")}
-          onClick={() => NavHandler('/Company')}>
-          Client and User Management
-        </button>
-      }
-      {
-        currentUser?.isAdmin && currentUser?.isActive &&
-        <button id={NavPanelIds.company} className={GetNavStyle("/Company2")}
-          onClick={() => NavHandler('/Company2')}>
-          Client and User Management @
+        <button id={NavPanelIds.users} className={GetNavStyle("/Users")}
+          onClick={() => NavHandler('/Users')}>
+          User Management
         </button>
       }
       {

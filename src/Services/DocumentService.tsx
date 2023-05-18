@@ -17,15 +17,15 @@ export async function GenerateSASToken(request: GenerateSASTokenRequest) : Promi
   return response.data;
 }
 
-export interface GetDocumentsRequest {
-  documentId: string
+export interface GetDocumentUrlsRequest {
+  companyId: string
 }
 
-interface GetDocumentsResponse {
+interface GetDocumentUrlsResponse {
   documents: {url: string, name: any}[]
 }
 
-export async function GetDocuments(request: GetDocumentsRequest) : Promise<GetDocumentsResponse>
+export async function GetDocumentUrls(request: GetDocumentUrlsRequest) : Promise<GetDocumentUrlsResponse>
 {
   const returnedBlobUrls = [];
   const containerName = `client-portal-data`;
@@ -35,12 +35,30 @@ export async function GetDocuments(request: GetDocumentsRequest) : Promise<GetDo
   let status = tokenResponse.status;
 
   const uploadUrl = `https://iisclientstorage.blob.core.windows.net/${sasToken}`;
-  console.log(uploadUrl);
+  //console.log(uploadUrl);
 
   const blobService = new BlobServiceClient(uploadUrl);
   const containerClient: ContainerClient = blobService.getContainerClient(containerName);
-  
 
+  let i = 1;
+  for await (const blob of containerClient.findBlobsByTags(`companyId='${request.companyId}'`))
+  {
+    console.log(`Blob ${i++}: ${containerName}`);
+
+    const blobItem = {
+      url: `https://iisclientstorage.blob.core.windows.net/${containerName}/${blob.name}${sasToken}`,
+      name: blob.name
+    }
+    console.log(blob);
+    
+    returnedBlobUrls.push(blobItem);
+  }
+
+  return {documents: returnedBlobUrls};
+}
+
+export async function DownloadDocuments(urls: string[])
+{
   async function blobToString(blob: Blob): Promise<string> {
     const fileReader = new FileReader();
     return new Promise<string>((resolve, reject) => {
@@ -52,43 +70,33 @@ export async function GetDocuments(request: GetDocumentsRequest) : Promise<GetDo
     });
   }
 
+  let downloads = [];
 
-  // get list of blobs in container
-  for await (const blob of containerClient.listBlobsFlat()) {
-    console.log(`${blob.name}`);
-
-    const blobItem = {
-      url: `https://iisclientstorage.blob.core.windows.net/${containerName}/${blob.name}${sasToken}`,
-      name: blob.name
-    }
-
-    //console.log(blob);
-
-    // if image is public, just construct URL
-    returnedBlobUrls.push(blobItem);
-
-    //-------------
-    const blobClient = new BlobClient(blobItem.url);
+  for await (const blobUrl of urls)
+  {
+    const blobClient = new BlobClient(blobUrl);
     // Download and convert a blob to a string
     const downloadBlockBlobResponse = await blobClient.download();
     const downloadedBlob = await downloadBlockBlobResponse.blobBody;
     if(downloadedBlob)
     {
       const downloadedString = await blobToString(downloadedBlob);
-      console.log(
+      /*console.log(
         "Downloaded blob content",
         downloadedString
-      );
+      );*/
+      downloads.push(downloadedString);
     }
   }
 
-  return {documents: returnedBlobUrls};
+  return downloads;
 }
 
 export interface UploadDocumentsRequest {
   isTest: boolean
   files: FileList
   documentId: string
+  companyId: string
 }
 
 interface UploadDocumentsResponse {
@@ -111,6 +119,8 @@ export async function UploadDocuments(request: UploadDocumentsRequest) : Promise
     const containerClient: ContainerClient = blobService.getContainerClient(containerName);
     const blobClient = containerClient.getBlockBlobClient(request.documentId+"."+file.name.split(".").at(-1));
     const options = { blobHTTPHeaders: { blobContentType: file.type }}
+    
+    await blobClient.setTags({companyId: request.companyId});
 
     await blobClient.uploadData(file, options);
   
@@ -124,7 +134,8 @@ export async function UploadDocuments(request: UploadDocumentsRequest) : Promise
   return {status: status}
 }
 
-export async function UploadDocument(request: UploadDocumentsRequest) : Promise<UploadDocumentsResponse>
+//Using Azure function app; don't remove yet
+/*export async function UploadDocument(request: UploadDocumentsRequest) : Promise<UploadDocumentsResponse>
 {
   let formData = new FormData();
   formData.append("file",request.files[0]);
@@ -132,4 +143,4 @@ export async function UploadDocument(request: UploadDocumentsRequest) : Promise<
   const base_url = BASE_URL + "UploadDocument?code=mFtD4EttHnv1RAnrPlfxPuNoIaalHBoNPhv7bEjJkeOsAzFugcQaWw==";
   const response = await axios.post(base_url,formData,{headers: {'Content-Type': 'multipart/form-data'}});
   return response.data;
-}
+}*/
