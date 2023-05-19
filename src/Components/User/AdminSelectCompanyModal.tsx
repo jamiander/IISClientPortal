@@ -3,6 +3,7 @@ import { cancelButtonStyle, submitButtonStyle } from "../../Styles";
 import { Company } from "../../Store/CompanySlice";
 
 export const AdminSelectCompanyModalIds = {
+  modal: "adminSelectCompanyModal",
   confirmButton: "adminSelectCompanyConfirmButton",
   cancelButton: "adminSelectCompanyCancelButton",
   select: "adminSelectCompanySelect"
@@ -34,6 +35,7 @@ export function AdminSelectCompanyModal(props: AdminSelectCompanyModalProps)
     open={props.isOpen}
     onClose={()=>props.setIsOpen(false)}
     maxWidth={false}
+    id={AdminSelectCompanyModalIds.modal}
     >
       <DialogTitle>
         Select a Company
