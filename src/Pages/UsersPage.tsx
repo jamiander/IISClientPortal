@@ -1,5 +1,5 @@
 import { StyledTextField, TableHeaderStyle, defaultRowStyle, yellowButtonStyle } from "../Styles";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { User, getUserById, selectAllUsers, selectCurrentUserId, upsertUserInfo } from "../Store/UserSlice";
 import { Company, IntegrityId, selectAllCompanies } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
@@ -138,14 +138,19 @@ export default function UsersPage(){
     if(matchingCompany)
     {
       AddEmptyUser(selectedCompanyId);
+      setTimeout(() => myRef.current?.scrollIntoView(),1);
+      setIsCompanySelectOpen(false);
     }
-    setIsCompanySelectOpen(false);
+    else
+      enqueueSnackbar(ValidationFailedPrefix + "A valid company must be selected.", {variant: "error"})
   }
 
   function CancelSelect()
   {
     setIsCompanySelectOpen(false);
   }
+
+  const myRef = useRef<HTMLElement>(null);
 
   return (
     <>
@@ -227,7 +232,7 @@ export default function UsersPage(){
                   }}>
                     {isEdit ?
                      <>
-                    <TableCell>
+                    <TableCell ref={myRef}>
                         <IconButton id={UsersPageIds.saveChangesButton} onClick={() => SaveEdit()}>
                             <DoneIcon />
                         </IconButton>
