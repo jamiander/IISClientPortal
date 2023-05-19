@@ -54,7 +54,6 @@ export function UpdateInitiativeListModal(props: InitiativeModalProps){
 			appElement={document.getElementById('root') as HTMLElement}
 		>
 			<p className='text-3xl'>{props.title}</p>
-      {initiativeTotalItems}
 			<div className='w-full'>
 				<div className='my-1'>Company{props.company ? ": " + props.company.name :
           <div>

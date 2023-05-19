@@ -16,6 +16,7 @@ import Paper from '@mui/material/Paper';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import { ViewDecisionDataButton } from "./ViewDecisionDataButton";
 import Pagination from "@mui/material/Pagination";
+import { makeStyles } from "@mui/material";
 
 export const InitiativeTableIds = {
   totalItems: 'initiativeTableTotalItems',
@@ -34,14 +35,14 @@ interface InitiativesProps {
 }
 
 interface InitCompanyDisplay extends Initiative {
-    company: Company,
-    companyName: string,
-    startDateTime: Date,
-    targetDateTime: Date,
-    probabilityValue: number | undefined,
-    probabilityStatus: string,
-    itemsRemaining: number
-  }
+  company: Company,
+  companyName: string,
+  startDateTime: Date,
+  targetDateTime: Date,
+  probabilityValue: number | undefined,
+  probabilityStatus: string,
+  itemsRemaining: number
+}
 
 export default function InitiativesTable(props: InitiativesProps) {
   
@@ -84,10 +85,10 @@ export default function InitiativesTable(props: InitiativesProps) {
       if(typeof(bValue) === "string")
         bValue = bValue.toUpperCase();
 
-      if (aValue < bValue) {
+      if (aValue > bValue) {
         return sortConfig.direction === 'ascending' ? -1 : 1;
       }
-      if (aValue > bValue) {
+      if (aValue < bValue) {
         return sortConfig.direction === 'ascending' ? 1 : -1;
       }
       return 0;
@@ -142,6 +143,20 @@ export default function InitiativesTable(props: InitiativesProps) {
     setPageNumber(value);
 };
 
+interface SortProps {
+  sortKey: string
+  heading: string
+}
+
+function SortLabel(props: SortProps)
+{
+  return (
+    <TableSortLabel onClick={() => requestSort(props.sortKey)} active={sortConfig.key === props.sortKey} direction={sortConfig.key === props.sortKey ? (sortConfig.direction === 'descending' ? 'desc' : 'asc') : 'desc'}>
+      {props.heading}
+    </TableSortLabel>
+  )
+}
+
 let companyInits: Initiative[] = displayItems;
 let totalInits: number = companyInits.length;
 
@@ -177,27 +192,22 @@ let totalInits: number = companyInits.length;
                     fontFamily: "Arial, Helvetica"
                   }
                 }}>
-                  <TableHeaderStyle>Company
-                    <TableSortLabel onClick={() => requestSort('companyName')} active={true} direction={sortConfig.direction === 'descending' ? 'desc' : 'asc'}>
-                    </TableSortLabel>
+                  <TableHeaderStyle>
+                    <SortLabel heading="Company" sortKey='companyName'/>
                   </TableHeaderStyle>
-                  <TableHeaderStyle>Title
-                    <TableSortLabel onClick={() => requestSort('title')} active={true} direction={sortConfig.direction === 'descending' ? 'desc' : 'asc'}>
-                    </TableSortLabel>
+                  <TableHeaderStyle>
+                    <SortLabel heading="Title" sortKey='title'/>
                   </TableHeaderStyle>
-                  <TableHeaderStyle>Start Date
-                    <TableSortLabel onClick={() => requestSort('startDateTime')} active={true} direction={sortConfig.direction === 'descending' ? 'desc' : 'asc'}>
-                    </TableSortLabel>
+                  <TableHeaderStyle>
+                    <SortLabel heading="Start Date" sortKey='startDateTime'/>
                   </TableHeaderStyle>
-                  <TableHeaderStyle>Target Completion
-                    <TableSortLabel onClick={() => requestSort('targetDateTime')} active={true} direction={sortConfig.direction === 'descending' ? 'desc' : 'asc'}>
-                    </TableSortLabel>
+                  <TableHeaderStyle>
+                    <SortLabel heading="Target Completion" sortKey='targetDateTime'/>
                   </TableHeaderStyle>
                   <TableHeaderStyle>Total Items</TableHeaderStyle>
                   <TableHeaderStyle>Items Remaining</TableHeaderStyle>
-                  <TableHeaderStyle>Probability
-                    <TableSortLabel onClick={() => requestSort('probabilityValue')} active={true} direction={sortConfig.direction === 'descending' ? 'desc' : 'asc'}>
-                    </TableSortLabel>
+                  <TableHeaderStyle>
+                    <SortLabel heading="Probability" sortKey='probabilityValue'/>
                   </TableHeaderStyle>
                   <TableHeaderStyle>View Decisions</TableHeaderStyle>
                   <TableHeaderStyle>Edit</TableHeaderStyle>

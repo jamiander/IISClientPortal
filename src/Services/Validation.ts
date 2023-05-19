@@ -22,7 +22,7 @@ export default function ValidateNewInitiative(initiative: Initiative, companyId:
   if(MakeDate(initiative.startDate).getTime() > MakeDate(initiative.targetDate).getTime())
     return {success: false, message: "Initiative start date must be before target completion date."};
 
-  if(initiative.totalItems < 0)
+  if(initiative.totalItems <= 0)
     return {success: false, message: "Total items must be a positive value."};
 
   const matchingCompany = allCompanies.find(company => company.id === companyId);
