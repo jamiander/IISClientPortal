@@ -192,7 +192,7 @@ export default function UsersPage(){
                       </TableHead>
                 <TableBody id={UsersPageIds.table}>
                     {displayCompanies.map((displayCompany, key) => {
-                        let companyUserList = usersList.filter(cu => cu.companyId === displayCompany.id)!;
+                        let companyUserList = usersList.filter(u => u.email.toUpperCase().includes(searchedKeyword.toUpperCase()) || u.name?.toUpperCase().includes(searchedKeyword.toUpperCase())).filter(cu => cu.companyId === displayCompany.id)!;
                         return (
                         companyUserList.map((companyUser,key) => {
                         let isEdit = InEditMode() && companyUser?.id === userToEdit?.id;
