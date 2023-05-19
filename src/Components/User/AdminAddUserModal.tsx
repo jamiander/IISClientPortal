@@ -1,11 +1,10 @@
 import Dialog from "@mui/material/Dialog";
 import { Company } from "../../Store/CompanySlice";
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { User } from "../../Store/UserSlice";
 import { Item, StyledCard, StyledCardContent, cancelButtonStyle, submitButtonStyle } from "../../Styles";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import { AdminEditInitiativesList } from "./AdminEditInitiativesList";
 import {v4 as UuidV4} from "uuid";
 import TextField from "@mui/material/TextField";
 import FormGroup from "@mui/material/FormGroup";
@@ -35,9 +34,7 @@ interface AdminAddUserProps {
 }
 export default function AdminAddUserModal(props: AdminAddUserProps){
 
-  const [AdminAddUserIsOpen, setEditUserDataIsOpen] = useState(false);
   const [selectedCompany, setSelectedCompany] = useState<Company>();
-  const [selectedInitiativeIndex, setSelectedInitiativeIndex] = useState(-1);
   const [currentName, setCurrentName] = useState("");
   const [currentEmail, setCurrentEmail] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
@@ -59,29 +56,6 @@ export default function AdminAddUserModal(props: AdminAddUserProps){
 
   let myUuid = UuidV4();
   let user = {id: myUuid, name: currentName, email: currentEmail, password: currentPassword, companyId: (selectedCompany?.id ?? "-1"), phoneNumber: currentPhone, isAdmin: currentIsAdmin, isActive: currentIsActive, initiativeIds: [] }
-
-  function UpdateInitiativeIds(initId: string, checked: boolean)
-  {
-    let initiativesClone: string[] = JSON.parse(JSON.stringify(initiativeIds));
-    let matchingIdIndex = initiativesClone.findIndex(id => id === initId);
-    if(matchingIdIndex > -1)
-    {
-      if(!checked)
-        initiativesClone.splice(matchingIdIndex,1);
-    }
-    else
-    {
-      if(checked)
-        initiativesClone.push(initId);
-    }
-    setInitiativeIds(initiativesClone);
-  }
-
-  function UpdateCompanyId(companyId: string)
-  {
-    setCompanyId(companyId);
-  }
-
 
   function CancelEdit()
   {
