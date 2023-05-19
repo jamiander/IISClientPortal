@@ -19,6 +19,7 @@ import { EditUserInitiativesButton } from "../Components/User/EditUserInitiative
 import AdminAddUserModal from "../Components/User/AdminAddUserModal";
 import { ValidateUser, ValidationFailedPrefix } from "../Services/Validation";
 import { enqueueSnackbar } from "notistack";
+import { AdminSelectCompanyModal } from "../Components/User/AdminSelectCompanyModal";
 
 export const UsersPageIds = {
   company: "usersPageCompany",
@@ -128,6 +129,24 @@ export default function UsersPage(){
     return false;
   }
 
+  const [isCompanySelectOpen, setIsCompanySelectOpen] = useState(false);
+  const [selectedCompanyId, setSelectedCompanyId] = useState("");
+
+  function ConfirmSelect()
+  {
+    const matchingCompany = allCompanies.find(c => c.id === selectedCompanyId);
+    if(matchingCompany)
+    {
+      AddEmptyUser(selectedCompanyId);
+    }
+    setIsCompanySelectOpen(false);
+  }
+
+  function CancelSelect()
+  {
+    setIsCompanySelectOpen(false);
+  }
+
   return (
     <>
       <div className="flex col-span-4 bg-[#2ed7c3] rounded-md py-6 px-5">
@@ -149,8 +168,10 @@ export default function UsersPage(){
               </div>}
               {currentUserCompanyId === IntegrityId &&
               <div className="flex flex-col justify-between">
-                <button disabled={InEditMode()} id={UsersPageIds.addButton} className={yellowButtonStyle} onClick={() => setAdminAddUserModalIsOpen(true)}>Add User</button>
-                  <AdminAddUserModal title="Add User" isOpen={AdminAddUserModalIsOpen} setAdminAddUserModalIsOpen={setAdminAddUserModalIsOpen} companies={displayCompanies} Submit={SubmitAddUser} expanded={false}/>
+                <button disabled={InEditMode()} id={UsersPageIds.addButton} className={yellowButtonStyle} onClick={() => setIsCompanySelectOpen(true)}>Add User</button>
+                  {/*<AdminAddUserModal title="Add User" isOpen={AdminAddUserModalIsOpen} setAdminAddUserModalIsOpen={setAdminAddUserModalIsOpen} companies={displayCompanies} Submit={SubmitAddUser} expanded={false}/>
+                  */}
+                  <AdminSelectCompanyModal isOpen={isCompanySelectOpen} setIsOpen={setIsCompanySelectOpen} companies={allCompanies.filter(c => c.id !== IntegrityId)} companyId={selectedCompanyId} setCompanyId={setSelectedCompanyId} Confirm={ConfirmSelect} Cancel={CancelSelect}/>
               </div>}
           <div className="col-span-1 py-[2%]">
               <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
@@ -192,12 +213,12 @@ export default function UsersPage(){
                       </TableHead>
                 <TableBody id={UsersPageIds.table}>
                     {displayCompanies.map((displayCompany, key) => {
-                        let companyUserList = usersList.filter(u => u.email.toUpperCase().includes(searchedKeyword.toUpperCase()) || u.name?.toUpperCase().includes(searchedKeyword.toUpperCase())).filter(cu => cu.companyId === displayCompany.id)!;
+                        let companyUserList = usersList.filter(cu => cu.companyId === displayCompany.id)!.filter(u => u.email.toUpperCase().includes(searchedKeyword.toUpperCase()) || u.name?.toUpperCase().includes(searchedKeyword.toUpperCase()));
                         return (
                         companyUserList.map((companyUser,key) => {
                         let isEdit = InEditMode() && companyUser?.id === userToEdit?.id;
                         return (
-                  <TableRow className={defaultRowStyle} sx={{
+                  <TableRow className={defaultRowStyle} key={key} sx={{
                     borderBottom: "1px solid black",
                     "& td": {
                       fontSize: "1.1rem",
