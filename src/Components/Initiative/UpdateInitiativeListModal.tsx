@@ -35,13 +35,13 @@ export function UpdateInitiativeListModal(props: InitiativeModalProps){
   const [initiativeTitle, setInitiativeTitle] = useState(props.initiative?.title ?? "");
   const [initiativeTargetDate, setInitiativeTargetDate] = useState<DateInfo>(props.initiative?.targetDate ?? todayInfo);
   const [initiativeStartDate, setInitiativeStartDate] = useState<DateInfo>(props.initiative?.startDate ?? todayInfo);
-  const [initiativeTotalItems, setInitiativeTotalItems] = useState(props.initiative?.totalItems ?? 0);
+  const [initiativeTotalItems, setInitiativeTotalItems] = useState(props.initiative?.totalItems ?? NaN);
 
   useEffect(() => {
     setInitiativeTitle(props.initiative?.title ?? "");
     setInitiativeStartDate(props.initiative?.startDate ?? todayInfo)
     setInitiativeTargetDate(props.initiative?.targetDate ?? todayInfo);
-    setInitiativeTotalItems(props.initiative?.totalItems ?? 0);
+    setInitiativeTotalItems(props.initiative?.totalItems ?? NaN);
 	  setInitiativeCompanyId(props.company?.id ?? "-1");
   }, [props.initiative,props.company,props.initiativeIsOpen]);
 
@@ -54,6 +54,7 @@ export function UpdateInitiativeListModal(props: InitiativeModalProps){
 			appElement={document.getElementById('root') as HTMLElement}
 		>
 			<p className='text-3xl'>{props.title}</p>
+      {initiativeTotalItems}
 			<div className='w-full'>
 				<div className='my-1'>Company{props.company ? ": " + props.company.name :
           <div>
