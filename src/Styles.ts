@@ -1,6 +1,6 @@
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import { createTheme, styled } from '@mui/material/styles';
-import { AccordionSummary, Card, CardActions, CardContent, FormControlLabel, FormGroup, Paper, TextField, TextareaAutosize } from '@mui/material';
+import { AccordionSummary, Card, CardActions, CardContent, FormControlLabel, FormGroup, Paper, TableSortLabel, TextField, TextareaAutosize } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import { Accordion } from 'flowbite-react';
 
