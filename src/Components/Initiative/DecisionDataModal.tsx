@@ -10,7 +10,6 @@ import { useAppDispatch } from "../../Store/Hooks";
 import { DeleteDecisionAlert } from "./DeleteDecisionAlert";
 import { enqueueSnackbar } from "notistack";
 import CloseIcon from '@mui/icons-material/Close';
-import Button from "@mui/material/Button";
 import {v4 as UuidV4} from "uuid";
 
 export const DecisionModalIds = {

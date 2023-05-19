@@ -4,7 +4,6 @@ import { Company, Initiative } from "../../Store/CompanySlice";
 import { cancelButtonStyle, defaultRowStyle, inputStyle, modalStyle, submitButtonStyle, TableHeaderStyle, tooltipStyle } from "../../Styles";
 import SelectCompanyAndInitiative from "./SelectCompanyAndInitiative";
 import { CompareDateInfos, DateInput, EqualDateInfos } from "../DateInput";
-import { ValidateDate, ValidateEditThroughputData, ValidationFailedPrefix } from "../../Services/Validation";
 import Modal from "react-modal";
 import Table from '@mui/material/Table';
 import TableContainer from '@mui/material/TableContainer';
@@ -13,7 +12,6 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { Paper } from "@mui/material";
-import { enqueueSnackbar } from "notistack";
 
 export const EditThroughputIds = {
   modal: "editThroughputModal",
@@ -43,7 +41,6 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
   const todayInfo: DateInfo = {month: today.getMonth()+1, day: today.getDate(), year: today.getFullYear()}
   const [entryDate, setEntryDate] = useState<DateInfo>(todayInfo);
   const [itemsCompleted, setItemsCompleted] = useState(-1);
-  const manualEntry: ThroughputData = { date:entryDate, itemsCompleted:itemsCompleted }
 
   useEffect(() => {
     setSelectedCompany(undefined);
@@ -94,41 +91,10 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
     }
   },[selectedInitiativeIndex])
 
-
   function GetInitiativeFromCompany(company: Company | undefined, initiativeIndex: number) : Initiative | undefined
   {
     let initiatives = company?.initiatives[initiativeIndex];
     return initiatives;
-  }
-
-  function AddThroughputEntry()
-  {
-    let initiative = GetInitiativeFromCompany(selectedCompany,selectedInitiativeIndex);
-    let validate = ValidateEditThroughputData(props.companyList, selectedCompany?.id ?? "-1", initiative?.id ?? "-1", [manualEntry]);
-    if(validate.success)
-    {
-      enqueueSnackbar("New data added!", {variant:"success"});
-      UpsertThroughput(manualEntry);
-    }
-    else
-      enqueueSnackbar(ValidationFailedPrefix + validate.message, {variant:"error"});
-  }
-  
-  function UpsertThroughput(newData: ThroughputData)
-  {
-    let selectedCompanyClone = JSON.parse(JSON.stringify(selectedCompany));
-    let initiative = GetInitiativeFromCompany(selectedCompanyClone,selectedInitiativeIndex)
-    if(initiative)
-    {
-      let existingThroughputIndex = initiative.itemsCompletedOnDate.findIndex((data) => EqualDateInfos(data.date,newData.date));
-      if(existingThroughputIndex === -1)
-        initiative.itemsCompletedOnDate.push(newData);
-      else
-        initiative.itemsCompletedOnDate[existingThroughputIndex] = newData;
-
-      initiative.itemsCompletedOnDate.sort((a:ThroughputData, b:ThroughputData) => CompareDateInfos(a.date,b.date));
-      setSelectedCompany(selectedCompanyClone);
-    }
   }
 
   function EditItems(key: number, newItems: string)
@@ -175,7 +141,7 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
           <div className="grid">
             {dateWarning}
             <button id={EditThroughputIds.addEntrySubmitButton} className={submitButtonStyle + " h-full"} 
-              onClick={() => AddThroughputEntry()}>Submit</button>
+              onClick={() => props.Submit(selectedCompany?.id ?? "-1", selectedCompany?.initiatives[selectedInitiativeIndex]?.id ?? "-1", GetInitiativeFromCompany(selectedCompany,selectedInitiativeIndex)?.itemsCompletedOnDate ?? [], false)}>Submit</button>
           </div>
         </div>
         <div className="outline outline-[#879794] rounded space-y-2 p-2">
