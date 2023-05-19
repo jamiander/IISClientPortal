@@ -151,7 +151,16 @@ interface SortProps {
 function SortLabel(props: SortProps)
 {
   return (
-    <TableSortLabel onClick={() => requestSort(props.sortKey)} active={sortConfig.key === props.sortKey} direction={sortConfig.key === props.sortKey ? (sortConfig.direction === 'descending' ? 'desc' : 'asc') : 'desc'}>
+    <TableSortLabel
+      sx={{ 
+        ".MuiTableSortLabel-icon":{ opacity: '1 !important' },
+        "&.Mui-active":{ 
+          ".MuiTableSortLabel-icon": {
+            fontSize: 26
+          }
+        }
+        }}
+      onClick={() => requestSort(props.sortKey)} active={sortConfig.key === props.sortKey} direction={sortConfig.key === props.sortKey ? (sortConfig.direction === 'descending' ? 'desc' : 'asc') : 'desc'}>
       {props.heading}
     </TableSortLabel>
   )
