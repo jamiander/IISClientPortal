@@ -55,6 +55,7 @@ export default function InitiativesTable(props: InitiativesProps) {
 
   const resultsLimitOptions: number[] = [5, 10, 25];
   const [pageNumber, setPageNumber] = useState(1);
+  const [pageCount, setPageCount] = useState(1);
   const [resultsLimit, setResultsLimit] = useState(10);
 
   useEffect(() => {
@@ -119,7 +120,7 @@ export default function InitiativesTable(props: InitiativesProps) {
       });
     }
     setDisplayItems(displayList);
-    ResetPageNumber();
+    //ResetPageNumber();
   }
 
   function getHealthIndicator(probability: number | undefined)
@@ -137,7 +138,15 @@ export default function InitiativesTable(props: InitiativesProps) {
   const indexOfLastItem = pageNumber * resultsLimit;
   const indexOfFirstItem = indexOfLastItem - resultsLimit;
   const currentItems = sortedDisplayItems.slice(indexOfFirstItem, indexOfLastItem);
-  const count = Math.ceil(sortedDisplayItems.length/resultsLimit);
+
+  useEffect(() => {
+    const count = Math.ceil(sortedDisplayItems.length/resultsLimit);
+    setPageCount(count);
+    if(count < pageNumber)
+    {
+      setPageNumber(count);
+    }
+  },[sortedDisplayItems,resultsLimit])
 
   const handleChange = (event: any, value: any) => {
     setPageNumber(value);
@@ -159,7 +168,7 @@ function SortLabel(props: SortProps)
             fontSize: 26
           }
         }
-        }}
+      }}
       onClick={() => requestSort(props.sortKey)} active={sortConfig.key === props.sortKey} direction={sortConfig.key === props.sortKey ? (sortConfig.direction === 'descending' ? 'desc' : 'asc') : 'desc'}>
       {props.heading}
     </TableSortLabel>
@@ -276,7 +285,7 @@ let totalInits: number = companyInits.length;
               <div className="flex pl-2">
                 <Pagination
                   className="my-3"
-                  count={count}
+                  count={pageCount}
                   page={pageNumber}
                   variant="outlined"
                   shape="rounded"
