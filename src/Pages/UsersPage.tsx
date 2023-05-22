@@ -16,7 +16,6 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { useEditUser } from "../Services/useEditUser";
 import { EditUserInitiativesButton } from "../Components/User/EditUserInitiativesButton";
-import AdminAddUserModal from "../Components/User/AdminAddUserModal";
 import { ValidateUser, ValidationFailedPrefix } from "../Services/Validation";
 import { enqueueSnackbar } from "notistack";
 import { AdminSelectCompanyModal } from "../Components/User/AdminSelectCompanyModal";
@@ -48,7 +47,7 @@ export default function UsersPage(){
   const [displayCompanies, setDisplayCompanies] = useState<Company[]>([]);
   const currentUserId = useAppSelector(selectCurrentUserId);
   const dispatch = useAppDispatch();
-  const [AdminAddUserModalIsOpen, setAdminAddUserModalIsOpen] = useState(false);
+  //const [AdminAddUserModalIsOpen, setAdminAddUserModalIsOpen] = useState(false);
 
   const {
     SetupEditUser,
@@ -100,34 +99,34 @@ export default function UsersPage(){
   useEffect(() => 
   {
     if(currentUserCompanyId === IntegrityId){
-        const otherCompanyUsers = allUsers.filter(user => user.companyId !== IntegrityId);
-        setCompanyUsers(otherCompanyUsers);
-        SetupEditUser(otherCompanyUsers);
+      const otherCompanyUsers = allUsers.filter(user => user.companyId !== IntegrityId);
+      setCompanyUsers(otherCompanyUsers);
+      SetupEditUser(otherCompanyUsers);
     }
     else {
-        const otherCompanyUsers = allUsers.filter(user => user.companyId !== IntegrityId);
-        let filteredUsers = otherCompanyUsers.filter(cu => cu.companyId === userCompany?.id)
-        setCompanyUsers(filteredUsers);
-        SetupEditUser(filteredUsers);
+      const otherCompanyUsers = allUsers.filter(user => user.companyId !== IntegrityId);
+      let filteredUsers = otherCompanyUsers.filter(cu => cu.companyId === userCompany?.id)
+      setCompanyUsers(filteredUsers);
+      SetupEditUser(filteredUsers);
     }
   }, [allUsers])
 
-  function SubmitAddUser(user: User): boolean
-  {
-    let isTest = false;
-    if((window as any).Cypress)
-      isTest = true;
-    let validation = ValidateUser(user,usersList);
-    if(validation.success)
-    {
-      dispatch(upsertUserInfo({isTest: isTest, users: [user]}))
-      return true;
-    }
-    else
-      enqueueSnackbar(ValidationFailedPrefix + validation.message, {variant: "error"});
+  // function SubmitAddUser(user: User): boolean
+  // {
+  //   let isTest = false;
+  //   if((window as any).Cypress)
+  //     isTest = true;
+  //   let validation = ValidateUser(user,usersList);
+  //   if(validation.success)
+  //   {
+  //     dispatch(upsertUserInfo({isTest: isTest, users: [user]}))
+  //     return true;
+  //   }
+  //   else
+  //     enqueueSnackbar(ValidationFailedPrefix + validation.message, {variant: "error"});
     
-    return false;
-  }
+  //   return false;
+  // }
 
   const [isCompanySelectOpen, setIsCompanySelectOpen] = useState(false);
   const [selectedCompanyId, setSelectedCompanyId] = useState("");
