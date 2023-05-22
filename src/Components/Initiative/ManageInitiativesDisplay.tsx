@@ -45,7 +45,7 @@ export default function ManageInitiativesDisplay() {
       enqueueSnackbar(ValidationFailedPrefix + validation.message,{variant:'error'});
   }
 
-  function SubmitUpdateThroughput(companyId: string, initiativeId: string, dataList: ThroughputData[], emptyDataCheck: boolean = true)
+  function SubmitUpdateThroughput(companyId: string, initiativeId: string, dataList: ThroughputData[], emptyDataCheck: boolean = true) : boolean
   {
     let isTest = false;
     if((window as any).Cypress)
@@ -58,9 +58,11 @@ export default function ManageInitiativesDisplay() {
       setUploadModalIsOpen(false);
       setEditModalIsOpen(false);
       enqueueSnackbar(validation.message, {variant:'success'});
+      return true;
     }
     else
       enqueueSnackbar(ValidationFailedPrefix + validation.message, {variant:'error'});
+      return false;
   }
 
   return (

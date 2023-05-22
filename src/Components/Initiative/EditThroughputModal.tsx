@@ -11,7 +11,16 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { Paper } from "@mui/material";
+import { IconButton, Paper } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import DoneIcon from "@mui/icons-material/Done";
+import CancelIcon from "@mui/icons-material/Cancel";
+
+enum stateEnum {
+  start,
+  add,
+  edit
+}
 
 export const EditThroughputIds = {
   modal: "editThroughputModal",
@@ -23,14 +32,16 @@ export const EditThroughputIds = {
   addDate: "editThroughputAddDate",
   addItemsComplete: "editThroughputAddItemsComplete",
   tableDate: "editThroughputTableDate",
-  tableItemsComplete: "editThroughputTableItemsComplete"
+  tableItemsComplete: "editThroughputTableItemsComplete",
+  saveChangesButton: "saveChangesButton",
+  cancelChangesButton: "cancelChangesButton"
 }
   
 interface ThroughputModalProps{
   companyList: Company[],
   editIsOpen: boolean,
   setEditIsOpen: (value: boolean) => void,
-  Submit: (companyId: string, initiativeId: string, dataList: ThroughputData[], emptyDataCheck: boolean) => void
+  Submit: (companyId: string, initiativeId: string, dataList: ThroughputData[], emptyDataCheck: boolean) => boolean
 }
 
 export default function EditThroughputModal(this: any, props: ThroughputModalProps){
@@ -41,6 +52,11 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
   const todayInfo: DateInfo = {month: today.getMonth()+1, day: today.getDate(), year: today.getFullYear()}
   const [entryDate, setEntryDate] = useState<DateInfo>(todayInfo);
   const [itemsCompleted, setItemsCompleted] = useState(-1);
+  const [currentItems, setCurrentItems] = useState<number>();
+  const [currentDate, setCurrentDate] = useState<DateInfo>(todayInfo);
+  const [state, setState] = useState(stateEnum.start);
+  const [throughputToEdit, setThroughputToEdit] = useState<ThroughputData>();
+  const [throughputList, setThroughputList] = useState<ThroughputData[]>([]);
 
   useEffect(() => {
     setSelectedCompany(undefined);
@@ -48,6 +64,7 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
     setDateWarning("");
     setEntryDate(todayInfo);
     setItemsCompleted(-1);
+    setState(stateEnum.start);
   },[props.editIsOpen])
 
   useEffect(() => {
@@ -85,8 +102,8 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
       if(initiative)
       {
         let throughputClone = JSON.parse(JSON.stringify(initiative.itemsCompletedOnDate));
-        initiative.itemsCompletedOnDate = throughputClone.sort((a:ThroughputData, b:ThroughputData) => CompareDateInfos(a.date,b.date));
-        setSelectedCompany(companyClone);
+        initiative.itemsCompletedOnDate = throughputClone.sort((a:ThroughputData, b:ThroughputData) => CompareDateInfos(b.date,a.date));
+        setThroughputList(throughputClone);
       }
     }
   },[selectedInitiativeIndex])
@@ -97,21 +114,75 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
     return initiatives;
   }
 
-  function EditItems(key: number, newItems: string)
+  function AddItem(initiative: Initiative | undefined)
   {
-    let selectedCompanyClone = JSON.parse(JSON.stringify(selectedCompany));
-    let initiative = GetInitiativeFromCompany(selectedCompanyClone,selectedInitiativeIndex);
-    if(initiative)
-    {
-      let changeThroughput = initiative.itemsCompletedOnDate[key];
-      if (changeThroughput)
-      {
-        changeThroughput.itemsCompleted = parseInt(newItems);
+    let newItem: ThroughputData = {date: todayInfo, itemsCompleted: 1};
+    let throughtputClone: ThroughputData[] = JSON.parse(JSON.stringify(initiative?.itemsCompletedOnDate));
+    throughtputClone.unshift(newItem);
+    throughtputClone.sort((a:ThroughputData, b:ThroughputData) => CompareDateInfos(b.date,a.date));
+    setThroughputList(throughtputClone);
+    EnterEditMode(todayInfo, throughtputClone, true)
+  }
 
-        initiative.itemsCompletedOnDate.sort((a:ThroughputData, b:ThroughputData) => CompareDateInfos(a.date,b.date));
-        setSelectedCompany(selectedCompanyClone);
+  const InEditMode = () => state === stateEnum.edit || state === stateEnum.add;
+
+  function EnterEditMode(date: DateInfo, throughputs: ThroughputData[], isNew: boolean) {
+    console.log(InEditMode);
+    if(!InEditMode())
+    {
+      let currentThroughput = throughputs.find(i => i.date === date);
+      if(currentThroughput)
+      {
+        setState(isNew ? stateEnum.add : stateEnum.edit);
+        setThroughputToEdit(currentThroughput);
+        setCurrentDate(currentThroughput.date);
+        setCurrentItems(currentThroughput.itemsCompleted);
       }
     }
+  }
+
+  function LeaveEditMode()
+  {
+    setState(stateEnum.start);
+    setThroughputToEdit(undefined);
+  }
+
+  function CancelEdit() 
+  {
+    if(state === stateEnum.add && throughputToEdit)
+    {
+      let companyClone: Company = JSON.parse(JSON.stringify(selectedCompany));
+      companyClone.initiatives[selectedInitiativeIndex].itemsCompletedOnDate = companyClone.initiatives[selectedInitiativeIndex].itemsCompletedOnDate.filter(throughput => throughput.date === throughputToEdit.date);
+      setSelectedCompany(companyClone);
+    }
+  }
+
+  function SaveEdit()
+  {
+    let selectedThroughputClone = JSON.parse(JSON.stringify(throughputList));
+    let initiative = GetInitiativeFromCompany(selectedCompany,selectedInitiativeIndex)!;
+    let newItem = selectedThroughputClone.find((i: { date: DateInfo; }) => (CompareDateInfos(i.date, throughputToEdit?.date ?? {day: 1, month: 1, year: 1900}) === 0));
+    console.log(newItem);    
+    if(newItem)
+    {
+        newItem.date = currentDate;
+        newItem.itemsCompleted = currentItems ?? 1;
+        selectedThroughputClone.push(newItem);
+        
+        let successful = props.Submit(selectedCompany?.id ?? "-1", initiative.id ?? "-1", selectedThroughputClone, false);   
+
+        if(successful)
+        {
+          selectedThroughputClone.sort((a:ThroughputData, b:ThroughputData) => CompareDateInfos(b.date,a.date));
+          LeaveEditMode();
+          setThroughputList(selectedThroughputClone);
+        }
+    }
+  }
+
+  function Close()
+  {
+    props.setEditIsOpen(false);
   }
 
   return(
@@ -124,26 +195,9 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
       <div className="space-y-5">
         <p className="text-3xl w-full">Edit Throughput Data</p>
         <SelectCompanyAndInitiative companyList={props.companyList} selectedCompany={selectedCompany} selectedInitiativeIndex={selectedInitiativeIndex} setSelectedCompany={setSelectedCompany} setSelectedInitiativeIndex={setSelectedInitiativeIndex} companyElementId={EditThroughputIds.selectCompany} initiativeElementId={EditThroughputIds.selectInitiative}/>
-        <div className="outline outline-[#879794] rounded space-y-2 p-2">
-          <div>
-            <p className="text-2xl">Add Data</p>
-          </div>
-          <div className="flex justify-between h-full">
-            <div>
-              <p>Date</p>
-              <DateInput id={EditThroughputIds.addDate} date={entryDate} setDate={setEntryDate}/>
-            </div>
-            <div>
-              <p>Items Completed</p>
-              <input id={EditThroughputIds.addItemsComplete} type={'number'} className={inputStyle + ' w-1/2'} min={0} onChange={(e) => {setItemsCompleted(parseInt(e.target.value))}}/>
-            </div>
-          </div>
-          <div className="grid">
             {dateWarning}
-            <button id={EditThroughputIds.addEntrySubmitButton} className={submitButtonStyle + " h-full"} 
-              onClick={() => props.Submit(selectedCompany?.id ?? "-1", selectedCompany?.initiatives[selectedInitiativeIndex]?.id ?? "-1", GetInitiativeFromCompany(selectedCompany,selectedInitiativeIndex)?.itemsCompletedOnDate ?? [], false)}>Submit</button>
-          </div>
-        </div>
+        <button id={EditThroughputIds.addEntrySubmitButton} className={submitButtonStyle + " h-full"} disabled={InEditMode()}
+          onClick={() => AddItem(selectedCompany?.initiatives[selectedInitiativeIndex])}>Add New</button>
         <div className="outline outline-[#879794] rounded space-y-2 p-2">
           <div>
           <p className="text-2xl">Edit Data</p>
@@ -165,7 +219,8 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
               </TableRow>
             </TableHead>
             <TableBody>
-                {(selectedInitiativeIndex >= 0) && selectedCompany?.initiatives[selectedInitiativeIndex]?.itemsCompletedOnDate.map((throughput, key) => {
+                {(selectedInitiativeIndex >= 0) && throughputList.map((throughput, key) => {
+                  let isEdit = InEditMode() && throughput.date === throughputToEdit?.date;
                     return (
                     <TableRow key={key} className={defaultRowStyle} sx={{
                       borderBottom: "1px solid black",
@@ -174,13 +229,39 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
                           fontFamily: "Arial, Helvetica" 
                         }
                       }}>
+                        {isEdit ?
+                        <>
+                        <TableCell>
+                        <IconButton id={EditThroughputIds.saveChangesButton} onClick={() => SaveEdit()}>
+                            <DoneIcon />
+                        </IconButton>
+                        <IconButton id={EditThroughputIds.cancelChangesButton} onClick={() => CancelEdit()}>
+                            <CancelIcon />
+                        </IconButton>
+                        </TableCell>
                         <TableCell className="border border-spacing-x-0 border-y-gray-700" id={EditThroughputIds.tableDate}>
                           <p className="px-2 w-full bg-inherit focus:outline-none" id={EditThroughputIds.tableDate}>{throughput.date.month + "/" + throughput.date.day + "/" + throughput.date.year}</p> 
                         </TableCell>
                         <TableCell className={tooltipStyle}>
-                          <input className="px-2 w-full bg-inherit focus:outline-none" id={EditThroughputIds.tableItemsComplete} type="number" min="0" value={throughput.itemsCompleted}
-                          onChange={(e) =>EditItems(key, e.target.value)}/>
+                          <input className="px-2 w-full bg-inherit focus:outline-none" id={EditThroughputIds.tableItemsComplete} type="number" min="0" value={currentItems}
+                          onChange={(e) => setCurrentItems(parseInt(e.target.value))}/>
                         </TableCell>
+                        </>
+                        :
+                        <>
+                        <TableCell>
+                        <IconButton id={EditThroughputIds.saveChangesButton} onClick={() => EnterEditMode(throughput.date, throughputList, false)}>
+                            <EditIcon />
+                        </IconButton>
+                        </TableCell>
+                        <TableCell className="border border-spacing-x-0 border-y-gray-700" id={EditThroughputIds.tableDate}>
+                          <p className="px-2 w-full bg-inherit focus:outline-none" id={EditThroughputIds.tableDate}>{throughput.date.month + "/" + throughput.date.day + "/" + throughput.date.year}</p> 
+                        </TableCell>
+                        <TableCell className={tooltipStyle}>
+                          <input disabled className="px-2 w-full bg-inherit focus:outline-none" id={EditThroughputIds.tableItemsComplete} type="number" min="0" value={throughput.itemsCompleted}/>
+                        </TableCell>
+                        </>
+                      }
                     </TableRow>
                     )
                 })}
@@ -190,8 +271,7 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
           </div>
         </div>
         <div className="h-10 w-full flex justify-between">
-          <button id={EditThroughputIds.submitButton} className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? "-1", selectedCompany?.initiatives[selectedInitiativeIndex]?.id ?? "-1", GetInitiativeFromCompany(selectedCompany,selectedInitiativeIndex)?.itemsCompletedOnDate ?? [], false)}>Save</button>
-          <button id={EditThroughputIds.closeButton} className={cancelButtonStyle} onClick={() => props.setEditIsOpen(false)}>Cancel</button>
+          <button id={EditThroughputIds.closeButton} className={cancelButtonStyle} onClick={() => Close()}>Close</button> 
         </div>
       </div>
     </Modal>
