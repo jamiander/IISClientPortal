@@ -58,8 +58,6 @@ export default function InitiativesTable(props: InitiativesProps) {
   const [pageCount, setPageCount] = useState(1);
   const [resultsLimit, setResultsLimit] = useState(10);
 
-  console.log(pageNumber);
-
   useEffect(() => {
     UpdateDisplayItems();
   },[props.companyList,searchedInit,searchedComp,props.radioStatus]);
