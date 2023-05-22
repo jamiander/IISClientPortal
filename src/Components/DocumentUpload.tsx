@@ -38,7 +38,7 @@ export function DocumentUpload()
   {
     if(docInfo)
     {
-      const result = await dispatch(downloadDocument({documentInfo: docInfo}))
+      const result = await dispatch(downloadDocument({documentInfo: docInfo}));
     }
   }
 

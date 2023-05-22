@@ -117,6 +117,13 @@ export async function DownloadDocument(request: DownloadDocumentRequest) : Promi
 
   // Clean up and remove the link
   link.parentNode?.removeChild(link);
+
+  /*const embed = document.createElement('embed');
+  embed.src = url;
+  embed.width = "250";
+  embed.height = "200";
+  document.body.appendChild(embed);*/
+
   window.URL.revokeObjectURL(url);
 
   return {downloadStrings: downloadStrings};

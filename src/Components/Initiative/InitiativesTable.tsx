@@ -16,7 +16,9 @@ import Paper from '@mui/material/Paper';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import { ViewDecisionDataButton } from "./ViewDecisionDataButton";
 import Pagination from "@mui/material/Pagination";
-import { makeStyles } from "@mui/material";
+import ImportExportIcon from '@mui/icons-material/ImportExport';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 
 export const InitiativeTableIds = {
   totalItems: 'initiativeTableTotalItems',
@@ -165,11 +167,13 @@ function SortLabel(props: SortProps)
         ".MuiTableSortLabel-icon":{ opacity: '1 !important' },
         "&.Mui-active":{ 
           ".MuiTableSortLabel-icon": {
-            fontSize: 26
+            //fontSize: 26
           }
         }
       }}
-      onClick={() => requestSort(props.sortKey)} active={sortConfig.key === props.sortKey} direction={sortConfig.key === props.sortKey ? (sortConfig.direction === 'descending' ? 'desc' : 'asc') : 'desc'}>
+      IconComponent={sortConfig.key === props.sortKey ? ArrowDownwardIcon : ImportExportIcon}
+      onClick={() => requestSort(props.sortKey)} active={sortConfig.key === props.sortKey} 
+      direction={sortConfig.key === props.sortKey ? (sortConfig.direction === 'descending' ? 'desc' : 'asc') : 'desc'}>
       {props.heading}
     </TableSortLabel>
   )
