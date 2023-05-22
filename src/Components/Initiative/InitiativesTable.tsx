@@ -58,6 +58,8 @@ export default function InitiativesTable(props: InitiativesProps) {
   const [pageCount, setPageCount] = useState(1);
   const [resultsLimit, setResultsLimit] = useState(10);
 
+  console.log(pageNumber);
+
   useEffect(() => {
     UpdateDisplayItems();
   },[props.companyList,searchedInit,searchedComp,props.radioStatus]);
@@ -142,7 +144,7 @@ export default function InitiativesTable(props: InitiativesProps) {
   useEffect(() => {
     const count = Math.ceil(sortedDisplayItems.length/resultsLimit);
     setPageCount(count);
-    if(count < pageNumber)
+    if(count < pageNumber && count > 0)
     {
       setPageNumber(count);
     }
