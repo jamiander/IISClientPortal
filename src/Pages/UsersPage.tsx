@@ -155,125 +155,126 @@ export default function UsersPage(){
   return (
     <>
       <div className="flex col-span-4 bg-[#2ed7c3] py-6 px-5">
-          <div className="w-full flex justify-between">
-              <div className="space-y-2 w-1/2">
-                  <p className="text-5xl font-bold w-full">User Management</p>
-              </div>
+        <div className="w-full flex justify-between">
+          <div className="space-y-2 w-1/2">
+            <p className="text-5xl font-bold w-full">User Management</p>
           </div>
+        </div>
       </div>
       <div className="mx-[2%] mb-[2%]">
-          {companyUsers.length !== 0 &&
-              <div className="mt-2 mb-4">
-                  <StyledTextField className="w-1/2" id={UsersPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name or email" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)} />
-              </div>}
-              {currentUserCompanyId !== IntegrityId &&
-              <div className="flex flex-col justify-between">
-                  <button disabled={InEditMode()} id={UsersPageIds.addButton} className={yellowButtonStyle} onClick={() => AddEmptyUser(currentUserCompanyId)}>Add User</button>
-              </div>}
-              {currentUserCompanyId === IntegrityId &&
-              <div className="flex flex-col justify-between">
-                <button disabled={InEditMode()} id={UsersPageIds.addButton} className={yellowButtonStyle} onClick={() => setIsCompanySelectOpen(true)}>Add User</button>
-                  {/*<AdminAddUserModal title="Add User" isOpen={AdminAddUserModalIsOpen} setAdminAddUserModalIsOpen={setAdminAddUserModalIsOpen} companies={displayCompanies} Submit={SubmitAddUser} expanded={false}/>
-                  */}
-                  <AdminSelectCompanyModal isOpen={isCompanySelectOpen} setIsOpen={setIsCompanySelectOpen} companies={allCompanies.filter(c => c.id !== IntegrityId)} companyId={selectedCompanyId} setCompanyId={setSelectedCompanyId} Confirm={ConfirmSelect} Cancel={CancelSelect}/>
-              </div>}
-          <div className="col-span-1 py-[2%]">
-              <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-              <TableContainer component={Paper}>
-                  <Table className="table-auto w-full outline outline-3 bg-gray-100">
-                      <colgroup>
-                          <col style={{ width: '7%' }} />
-                          <col style={{ width: '17%' }} />
-                          <col style={{ width: '17%' }} />
-                          <col style={{ width: '17%' }} />
-                          <col style={{ width: '10%' }} />
-                          <col style={{ width: '8%' }} />
-                          <col style={{ width: '10%' }} />
-                          <col style={{ width: '6%' }} />
-                      </colgroup>
-                      <TableHead className="outline outline-1">
-                          <TableRow sx={{
-                              borderBottom: "2px solid black",
-                              "& th": {
-                                  fontSize: "1.25rem",
-                                  fontWeight: "bold",
-                                  fontFamily: "Arial, Helvetica"
-                              }
-                          }}>
-                            <TableHeaderStyle>Edit User</TableHeaderStyle>
-                            <TableHeaderStyle>Company</TableHeaderStyle>
-                            <TableHeaderStyle>Name
-                                {/* <TableSortLabel 
-                                onClick={() => requestSort('companyName')} active={true} direction={sortConfig.direction === 'descending' ? 'desc' : 'asc'}>
-                                </TableSortLabel> */}
-                            </TableHeaderStyle>
-                            <TableHeaderStyle>Email</TableHeaderStyle>
-                            <TableHeaderStyle>Password</TableHeaderStyle>
-                            <TableHeaderStyle>Phone</TableHeaderStyle>
-                            <TableHeaderStyle>Admin Status</TableHeaderStyle>
-                            <TableHeaderStyle>Active Status</TableHeaderStyle>
-                            <TableHeaderStyle>Assigned Initiatives</TableHeaderStyle>
-                          </TableRow>
-                      </TableHead>
-                <TableBody id={UsersPageIds.table}>
-                    {displayCompanies.map((displayCompany, key) => {
-                        let companyUserList = usersList.filter(cu => cu.companyId === displayCompany.id)!.filter(u => u.email.toUpperCase().includes(searchedKeyword.toUpperCase()) || u.name?.toUpperCase().includes(searchedKeyword.toUpperCase()));
-                        return (
-                        companyUserList.map((companyUser,key) => {
-                        let isEdit = InEditMode() && companyUser?.id === userToEdit?.id;
-                        return (
-                  <TableRow className={defaultRowStyle} key={key} sx={{
-                    borderBottom: "1px solid black",
-                    "& td": {
-                      fontSize: "1.1rem",
-                      fontFamily: "Arial, Helvetica"
-                    }
-                  }}>
-                    {isEdit ?
-                     <>
-                    <TableCell ref={myRef}>
-                        <IconButton id={UsersPageIds.saveChangesButton} onClick={() => SaveEdit()}>
-                            <DoneIcon />
-                        </IconButton>
-                        <IconButton id={UsersPageIds.cancelChangesButton} onClick={() => CancelEdit()}>
-                            <CancelIcon />
-                        </IconButton>
-                    </TableCell>
-                    <TableCell id={UsersPageIds.company}>{displayCompany?.name}</TableCell>
-                    <TableCell id={UsersPageIds.name}> <Input value={currentName} onChange={e => setCurrentName(e.target.value)}/></TableCell>
-                    <TableCell id={UsersPageIds.email}><Input value={currentEmail} onChange={e => setCurrentEmail(e.target.value)}/></TableCell>
-                    <TableCell id={UsersPageIds.password}><Input value={currentPassword} onChange={e => setCurrentPassword(e.target.value)}/></TableCell>
-                    <TableCell id={UsersPageIds.phone}><Input value={currentPhone} onChange={e => setCurrentPhone(e.target.value)}/></TableCell>
-                    <TableCell id={UsersPageIds.isAdmin}><Checkbox checked={currentIsAdmin} onChange={e => setCurrentIsAdmin(e.target.checked)}/>Admin</TableCell>
-                    <TableCell id={UsersPageIds.isActive}><Checkbox checked={currentIsActive} onChange={e => setCurrentIsActive(e.target.checked)}/>Active</TableCell>
-                    <TableCell id={UsersPageIds.initiativeIds}></TableCell>
-                    </>
-                      : 
-                     <>
-                    <TableCell>
-                        <IconButton id={UsersPageIds.editButton} disabled={InEditMode()} onClick={() => EnterEditMode(companyUser?.id, companyUsers, false)}>
-                            <EditIcon />
-                        </IconButton>
-                    </TableCell>
-                    <TableCell id={UsersPageIds.company}>{displayCompany.name}</TableCell>
-                    <TableCell id={UsersPageIds.name}>{companyUser?.name}</TableCell>
-                    <TableCell id={UsersPageIds.email}>{companyUser?.email}</TableCell>
-                    <TableCell id={UsersPageIds.password}>{companyUser?.password}</TableCell>
-                    <TableCell id={UsersPageIds.phone}>{companyUser?.phoneNumber}</TableCell>
-                    <TableCell id={UsersPageIds.isAdmin}>{companyUser?.isAdmin ? "Admin" : "User"}</TableCell>
-                    <TableCell id={UsersPageIds.isActive}>{companyUser?.isActive ? "Active" : "Inactive"}</TableCell>
-                    <TableCell id={UsersPageIds.initiativeIds}><EditUserInitiativesButton user={companyUser} allCompanies={[displayCompany]} SubmitUserData={SubmitUserData} expanded={true}/></TableCell>
-                    </> 
-                }
+        {companyUsers.length !== 0 &&
+        <div className="mt-2 mb-4">
+          <StyledTextField className="w-1/2" id={UsersPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name or email" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)} />
+        </div>}
+        {currentUserCompanyId !== IntegrityId &&
+        <div className="flex flex-col justify-between">
+          <button disabled={InEditMode()} id={UsersPageIds.addButton} className={yellowButtonStyle} onClick={() => AddEmptyUser(currentUserCompanyId)}>Add User</button>
+        </div>}
+        {currentUserCompanyId === IntegrityId &&
+        <div className="flex flex-col justify-between">
+          <button disabled={InEditMode()} id={UsersPageIds.addButton} className={yellowButtonStyle} onClick={() => setIsCompanySelectOpen(true)}>Add User</button>
+            {/*<AdminAddUserModal title="Add User" isOpen={AdminAddUserModalIsOpen} setAdminAddUserModalIsOpen={setAdminAddUserModalIsOpen} companies={displayCompanies} Submit={SubmitAddUser} expanded={false}/>
+            */}
+            <AdminSelectCompanyModal isOpen={isCompanySelectOpen} setIsOpen={setIsCompanySelectOpen} companies={allCompanies.filter(c => c.id !== IntegrityId)} companyId={selectedCompanyId} setCompanyId={setSelectedCompanyId} Confirm={ConfirmSelect} Cancel={CancelSelect}/>
+        </div>}
+        <div className="col-span-1 py-[2%]">
+          <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+          <TableContainer component={Paper}>
+            <Table className="table-auto w-full outline outline-3 bg-gray-100">
+              <colgroup>
+                <col style={{ width: '17%' }} />
+                <col style={{ width: '17%' }} />
+                <col style={{ width: '17%' }} />
+                <col style={{ width: '10%' }} />
+                <col style={{ width: '8%' }} />
+                <col style={{ width: '10%' }} />
+                <col style={{ width: '6%' }} />
+                <col style={{ width: '7%' }} />
+              </colgroup>
+              <TableHead className="outline outline-1">
+                <TableRow sx={{
+                  borderBottom: "2px solid black",
+                  "& th": {
+                    fontSize: "1.25rem",
+                    fontWeight: "bold",
+                    fontFamily: "Arial, Helvetica"
+                  }
+                }}>
+                  <TableHeaderStyle>Company</TableHeaderStyle>
+                  <TableHeaderStyle>Name
+                    {/* <TableSortLabel 
+                    onClick={() => requestSort('companyName')} active={true} direction={sortConfig.direction === 'descending' ? 'desc' : 'asc'}>
+                    </TableSortLabel> */}
+                  </TableHeaderStyle>
+                  <TableHeaderStyle>Email</TableHeaderStyle>
+                  <TableHeaderStyle>Password</TableHeaderStyle>
+                  <TableHeaderStyle>Phone</TableHeaderStyle>
+                  <TableHeaderStyle>Admin Status</TableHeaderStyle>
+                  <TableHeaderStyle>Active Status</TableHeaderStyle>
+                  <TableHeaderStyle>Assigned Initiatives</TableHeaderStyle>
+                  <TableHeaderStyle>Edit User</TableHeaderStyle>
                 </TableRow>
-                    );
-                    }
-                    ))})}
-                </TableBody>
-                </Table>
-                </TableContainer>
-              </div>
-          </div>
-          </>           
-        )       
+              </TableHead>
+              <TableBody id={UsersPageIds.table}>
+                {displayCompanies.map((displayCompany, key) => {
+                  let companyUserList = usersList.filter(cu => cu.companyId === displayCompany.id)!.filter(u => u.email.toUpperCase().includes(searchedKeyword.toUpperCase()) || u.name?.toUpperCase().includes(searchedKeyword.toUpperCase()));
+                  return (
+                    companyUserList.map((companyUser,key) => {
+                      let isEdit = InEditMode() && companyUser?.id === userToEdit?.id;
+                      return (
+                        <TableRow className={defaultRowStyle} key={key} sx={{
+                          borderBottom: "1px solid black",
+                          "& td": {
+                            fontSize: "1.1rem",
+                            fontFamily: "Arial, Helvetica"
+                          }
+                        }}>
+                          {isEdit ?
+                          <>
+                            <TableCell id={UsersPageIds.company}>{displayCompany?.name}</TableCell>
+                            <TableCell id={UsersPageIds.name}> <Input value={currentName} onChange={e => setCurrentName(e.target.value)}/></TableCell>
+                            <TableCell id={UsersPageIds.email}><Input value={currentEmail} onChange={e => setCurrentEmail(e.target.value)}/></TableCell>
+                            <TableCell id={UsersPageIds.password}><Input value={currentPassword} onChange={e => setCurrentPassword(e.target.value)}/></TableCell>
+                            <TableCell id={UsersPageIds.phone}><Input value={currentPhone} onChange={e => setCurrentPhone(e.target.value)}/></TableCell>
+                            <TableCell id={UsersPageIds.isAdmin}><Checkbox checked={currentIsAdmin} onChange={e => setCurrentIsAdmin(e.target.checked)}/>Admin</TableCell>
+                            <TableCell id={UsersPageIds.isActive}><Checkbox checked={currentIsActive} onChange={e => setCurrentIsActive(e.target.checked)}/>Active</TableCell>
+                            <TableCell id={UsersPageIds.initiativeIds}></TableCell>
+                            <TableCell ref={myRef}>
+                              <IconButton id={UsersPageIds.saveChangesButton} onClick={() => SaveEdit()}>
+                                <DoneIcon />
+                              </IconButton>
+                              <IconButton id={UsersPageIds.cancelChangesButton} onClick={() => CancelEdit()}>
+                                <CancelIcon />
+                              </IconButton>
+                            </TableCell>
+                          </>
+                          :
+                          <>
+                            <TableCell id={UsersPageIds.company}>{displayCompany.name}</TableCell>
+                            <TableCell id={UsersPageIds.name}>{companyUser?.name}</TableCell>
+                            <TableCell id={UsersPageIds.email}>{companyUser?.email}</TableCell>
+                            <TableCell id={UsersPageIds.password}>{companyUser?.password}</TableCell>
+                            <TableCell id={UsersPageIds.phone}>{companyUser?.phoneNumber}</TableCell>
+                            <TableCell id={UsersPageIds.isAdmin}>{companyUser?.isAdmin ? "Admin" : "User"}</TableCell>
+                            <TableCell id={UsersPageIds.isActive}>{companyUser?.isActive ? "Active" : "Inactive"}</TableCell>
+                            <TableCell id={UsersPageIds.initiativeIds}><EditUserInitiativesButton user={companyUser} allCompanies={[displayCompany]} SubmitUserData={SubmitUserData} expanded={true}/></TableCell>
+                            <TableCell>
+                              <IconButton id={UsersPageIds.editButton} disabled={InEditMode()} onClick={() => EnterEditMode(companyUser?.id, companyUsers, false)}>
+                                <EditIcon />
+                              </IconButton>
+                            </TableCell>
+                          </>
+                          }
+                        </TableRow>
+                      );
+                    })
+                  )
+                })}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </div>
+      </div>
+    </>           
+  )       
 }
