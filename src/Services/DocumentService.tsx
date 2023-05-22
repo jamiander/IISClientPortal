@@ -1,6 +1,7 @@
 import axios from "axios";
 import { BASE_URL } from "./Http";
 import { BlobClient, BlobServiceClient, ContainerClient } from "@azure/storage-blob";
+import { DocumentInfo } from "../Store/DocumentSlice";
 
 export interface GenerateSASTokenRequest {
 }
@@ -21,8 +22,8 @@ export interface GetDocumentUrlsRequest {
   companyId: string
 }
 
-interface GetDocumentUrlsResponse {
-  documents: {url: string, name: any}[]
+export interface GetDocumentUrlsResponse {
+  documents: DocumentInfo[]
 }
 
 export async function GetDocumentUrls(request: GetDocumentUrlsRequest) : Promise<GetDocumentUrlsResponse>
@@ -43,13 +44,13 @@ export async function GetDocumentUrls(request: GetDocumentUrlsRequest) : Promise
   let i = 1;
   for await (const blob of containerClient.findBlobsByTags(`companyId='${request.companyId}'`))
   {
-    console.log(`Blob ${i++}: ${containerName}`);
+    //console.log(`Blob ${i++}: ${containerName}`);
 
     const blobItem = {
       url: `https://iisclientstorage.blob.core.windows.net/${containerName}/${blob.name}${sasToken}`,
       name: blob.name
     }
-    console.log(blob);
+    //console.log(blob);
     
     returnedBlobUrls.push(blobItem);
   }
@@ -57,7 +58,15 @@ export async function GetDocumentUrls(request: GetDocumentUrlsRequest) : Promise
   return {documents: returnedBlobUrls};
 }
 
-export async function DownloadDocuments(urls: string[])
+export interface DownloadDocumentRequest {
+  documentInfo: DocumentInfo
+}
+
+interface DownloadDocumentResponse {
+  downloadStrings: string[]
+}
+
+export async function DownloadDocument(request: DownloadDocumentRequest) : Promise<DownloadDocumentResponse>
 {
   async function blobToString(blob: Blob): Promise<string> {
     const fileReader = new FileReader();
@@ -70,40 +79,61 @@ export async function DownloadDocuments(urls: string[])
     });
   }
 
-  let downloads = [];
-
-  for await (const blobUrl of urls)
+  let downloadBlobs: Blob[] = [];
+  let downloadStrings: string[] = [];
+  
+  const blobClient = new BlobClient(request.documentInfo.url);
+  // Download and convert a blob to a string
+  const downloadBlockBlobResponse = await blobClient.download();
+  const downloadedBlob = await downloadBlockBlobResponse.blobBody;
+  if(downloadedBlob)
   {
-    const blobClient = new BlobClient(blobUrl);
-    // Download and convert a blob to a string
-    const downloadBlockBlobResponse = await blobClient.download();
-    const downloadedBlob = await downloadBlockBlobResponse.blobBody;
-    if(downloadedBlob)
-    {
-      const downloadedString = await blobToString(downloadedBlob);
-      /*console.log(
-        "Downloaded blob content",
-        downloadedString
-      );*/
-      downloads.push(downloadedString);
-    }
+    const downloadedString = await blobToString(downloadedBlob);
+    /*console.log(
+      "Downloaded blob content",
+      downloadedString
+    );*/
+    downloadBlobs.push(downloadedBlob);
+    downloadStrings.push(downloadedString);
   }
+  
 
-  return downloads;
+  // Create blob link to download
+  const url = window.URL.createObjectURL(
+    downloadBlobs[0]//new Blob([blob]),
+  );
+  const link = document.createElement('a');
+  link.href = url;
+  link.setAttribute(
+    'download',
+    request.documentInfo.name,
+  );
+
+  // Append to html link element page
+  document.body.appendChild(link);
+
+  // Start download
+  link.click();
+
+  // Clean up and remove the link
+  link.parentNode?.removeChild(link);
+  window.URL.revokeObjectURL(url);
+
+  return {downloadStrings: downloadStrings};
 }
 
-export interface UploadDocumentsRequest {
+export interface UploadDocumentRequest {
   isTest: boolean
-  files: FileList
+  file: File
   documentId: string
   companyId: string
 }
 
-interface UploadDocumentsResponse {
+interface UploadDocumentResponse {
   status: string
 }
 
-export async function UploadDocuments(request: UploadDocumentsRequest) : Promise<UploadDocumentsResponse>
+export async function UploadDocument(request: UploadDocumentRequest) : Promise<UploadDocumentResponse>
 {
   const tokenResponse = await GenerateSASToken({});
   const sasToken = tokenResponse.sasToken;
@@ -114,7 +144,7 @@ export async function UploadDocuments(request: UploadDocumentsRequest) : Promise
   console.log(uploadUrl);
 
   try{
-    const file = request.files[0];
+    const file = request.file;
     const blobService = new BlobServiceClient(uploadUrl);
     const containerClient: ContainerClient = blobService.getContainerClient(containerName);
     const blobClient = containerClient.getBlockBlobClient(request.documentId+"."+file.name.split(".").at(-1));

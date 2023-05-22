@@ -99,7 +99,7 @@ export function useEditUser() : EditUser
 
       setUsersList(usersClone);
     }
-    LeaveEditMode()
+    LeaveEditMode();
   }
 
   function SaveEdit()
@@ -133,7 +133,7 @@ export function useEditUser() : EditUser
     let validation = ValidateUser(user,usersList);
     if(validation.success)
     {
-      dispatch(upsertUserInfo({isTest: isTest, users: [user]}))
+      dispatch(upsertUserInfo({isTest: isTest, users: [user]}));
       return true;
     }
     else

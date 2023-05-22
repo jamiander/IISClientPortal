@@ -93,11 +93,10 @@ export function IntegrityPage(){
 
   return (
     <>
-      <div className="flex col-span-4 bg-[#2ed7c3] rounded-md py-6 px-5">
+      <div className="flex col-span-4 bg-[#2ed7c3] py-6 px-5">
         <div className="w-full flex justify-between">
           <div className="space-y-2 w-1/2">
-            <p className="text-5xl font-bold w-full">Integrity Inspired Solutions</p>
-            <p className="text-3xl w-full">Users</p>
+            <p className="text-5xl font-bold w-full">Integrity User Management</p>
           </div>
         </div>
       </div>
@@ -115,7 +114,6 @@ export function IntegrityPage(){
           <TableContainer component={Paper}>
             <Table className="table-auto w-full outline outline-3 bg-gray-100">
             <colgroup>
-                <col style={{ width: '7%' }} />
                 <col style={{ width: '17%' }} />
                 <col style={{ width: '17%' }} />
                 <col style={{ width: '17%' }} />
@@ -123,6 +121,7 @@ export function IntegrityPage(){
                 <col style={{ width: '8%' }} />
                 <col style={{ width: '10%' }} />
                 <col style={{ width: '6%' }} />
+                <col style={{ width: '7%' }} />
             </colgroup>
               <TableHead className="outline outline-1">
                 <TableRow sx={{
@@ -133,7 +132,6 @@ export function IntegrityPage(){
                     fontFamily: "Arial, Helvetica"
                   }
                 }}>
-                  <TableHeaderStyle>Edit User</TableHeaderStyle>
                   <TableHeaderStyle>Name
                       {/* <TableSortLabel 
                       onClick={() => requestSort('companyName')} active={true} direction={sortConfig.direction === 'descending' ? 'desc' : 'asc'}>
@@ -145,6 +143,7 @@ export function IntegrityPage(){
                   <TableHeaderStyle>Admin Status</TableHeaderStyle>
                   <TableHeaderStyle>Active Status</TableHeaderStyle>
                   <TableHeaderStyle>Initiatives</TableHeaderStyle>
+                  <TableHeaderStyle>Edit User</TableHeaderStyle>
                 </TableRow>
               </TableHead>
               <TableBody id={IntegrityPageIds.table}>
@@ -163,6 +162,13 @@ export function IntegrityPage(){
                     >
                       {isEdit ? 
                       <>
+                        <TableCell><Input id={IntegrityPageIds.name}value={currentName} onChange={e => setCurrentName(e.target.value)}/></TableCell>
+                        <TableCell><Input id={IntegrityPageIds.email} value={currentEmail} onChange={e => setCurrentEmail(e.target.value)}/></TableCell>
+                        <TableCell><Input id={IntegrityPageIds.password} value={currentPassword} onChange={e => setCurrentPassword(e.target.value)}/></TableCell>
+                        <TableCell><Input id={IntegrityPageIds.phone} value={currentPhone} onChange={e => setCurrentPhone(e.target.value)}/></TableCell>
+                        <TableCell><Checkbox id={IntegrityPageIds.isAdmin} checked={currentIsAdmin} onChange={e => setCurrentIsAdmin(e.target.checked)}/>Admin</TableCell>
+                        <TableCell><Checkbox id={IntegrityPageIds.isActive} checked={currentIsActive} onChange={e => setCurrentIsActive(e.target.checked)}/>Active</TableCell>
+                        <TableCell id={IntegrityPageIds.initiativeIds}></TableCell>
                         <TableCell>
                           <IconButton id={IntegrityPageIds.saveChangesButton} onClick={() => SaveEdit()}>
                             <DoneIcon />
@@ -171,21 +177,9 @@ export function IntegrityPage(){
                             <CancelIcon />
                           </IconButton>
                         </TableCell>
-                        <TableCell><Input id={IntegrityPageIds.name}value={currentName} onChange={e => setCurrentName(e.target.value)}/></TableCell>
-                        <TableCell><Input id={IntegrityPageIds.email} value={currentEmail} onChange={e => setCurrentEmail(e.target.value)}/></TableCell>
-                        <TableCell><Input id={IntegrityPageIds.password} value={currentPassword} onChange={e => setCurrentPassword(e.target.value)}/></TableCell>
-                        <TableCell><Input id={IntegrityPageIds.phone} value={currentPhone} onChange={e => setCurrentPhone(e.target.value)}/></TableCell>
-                        <TableCell><Checkbox id={IntegrityPageIds.isAdmin} checked={currentIsAdmin} onChange={e => setCurrentIsAdmin(e.target.checked)}/>Admin</TableCell>
-                        <TableCell><Checkbox id={IntegrityPageIds.isActive} checked={currentIsActive} onChange={e => setCurrentIsActive(e.target.checked)}/>Active</TableCell>
-                        <TableCell id={IntegrityPageIds.initiativeIds}></TableCell>
                       </>
                       : 
                       <>
-                        <TableCell>
-                          <IconButton id={IntegrityPageIds.editButton} disabled={InEditMode()} onClick={() => EnterEditMode(displayItem.id, integrityUsers, false)}>
-                            <EditIcon />
-                          </IconButton>
-                        </TableCell>
                         <TableCell id={IntegrityPageIds.name}>{displayItem.name}</TableCell>
                         <TableCell id={IntegrityPageIds.email}>{displayItem.email}</TableCell>
                         <TableCell id={IntegrityPageIds.password}>{displayItem.password}</TableCell>
@@ -193,6 +187,11 @@ export function IntegrityPage(){
                         <TableCell id={IntegrityPageIds.isAdmin}>{displayItem.isAdmin ? "Admin" : "User"}</TableCell>
                         <TableCell id={IntegrityPageIds.isActive}>{displayItem.isActive ? "Active" : "Inactive"}</TableCell>
                         <TableCell id={IntegrityPageIds.initiativeIds}><EditUserInitiativesButton user={displayItem} allCompanies={sortedCompanies} SubmitUserData={SubmitUserData} expanded={false}/></TableCell>
+                        <TableCell>
+                          <IconButton id={IntegrityPageIds.editButton} disabled={InEditMode()} onClick={() => EnterEditMode(displayItem.id, integrityUsers, false)}>
+                            <EditIcon />
+                          </IconButton>
+                        </TableCell>
                       </>
                       }
                     </TableRow>

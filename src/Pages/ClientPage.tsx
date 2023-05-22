@@ -1,5 +1,5 @@
 import { Checkbox, IconButton, Input, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
-import { StyledTextField, TableHeaderStyle, defaultRowStyle, yellowButtonStyle } from "../Styles";
+import { StyledTextField, TableHeaderStyle, defaultRowStyle, genericButtonStyle, yellowButtonStyle } from "../Styles";
 import { useEffect, useState } from "react";
 import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
@@ -14,6 +14,7 @@ import { DateInfo } from "../Services/CompanyService";
 import { DateToDateInfo, MakeDateInfo } from "../Components/DateInput";
 import { RadioSet } from "../Components/RadioSet";
 import { CompanyFilter } from "../Services/Filters";
+import { Link, useNavigate } from "react-router-dom";
 
 export const ClientPageIds = {
   modal: "clientPageModal",
@@ -44,6 +45,7 @@ export function ClientPage()
   }
 
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const allCompanies = useAppSelector(selectAllCompanies);
 
   const [state, setState] = useState<State>(State.start);
@@ -163,7 +165,7 @@ export function ClientPage()
 
   return (
     <>
-      <div className="flex col-span-4 bg-[#2ed7c3] rounded-b-md py-6 px-5">
+      <div className="flex col-span-4 bg-[#2ed7c3] py-6 px-5">
         <div className="w-full flex justify-between">
           <div className="space-y-2 w-1/2">
             <p className="text-5xl font-bold w-full">Client Management</p>
@@ -204,7 +206,10 @@ export function ClientPage()
                   <TableHeaderStyle>Edit Client</TableHeaderStyle>
                   <TableHeaderStyle>Name</TableHeaderStyle>
                   {state === State.add &&
-                    <TableHeaderStyle>New Initiative Name</TableHeaderStyle>
+                    <TableHeaderStyle>First Initiative Name</TableHeaderStyle>
+                  }
+                  {state !== State.add &&
+                    <TableHeaderStyle>Initiatives</TableHeaderStyle>
                   }
                 </TableRow>
               </TableHead>
@@ -238,6 +243,10 @@ export function ClientPage()
                             <Input id={ClientPageIds.initiativeTitle} value={currentInitiativeTitle} onChange={e => setCurrentInitiativeTitle(e.target.value)}/>
                           </TableCell>
                         }
+                        {state !== State.add &&
+                          <TableCell>
+                          </TableCell>
+                        }
                         {/*
                         <TableCell><Input id={ClientPageIds.email} value={currentEmail} onChange={e => setCurrentEmail(e.target.value)}/></TableCell>
                         <TableCell><Input id={ClientPageIds.password} value={currentPassword} onChange={e => setCurrentPassword(e.target.value)}/></TableCell>
@@ -258,6 +267,11 @@ export function ClientPage()
                         <TableCell id={ClientPageIds.name}>{displayItem.name}</TableCell>
                         {state === State.add &&
                           <TableCell/>
+                        }
+                        {state !== State.add &&
+                          <TableCell>
+                            <button className={genericButtonStyle + " text-sm"} onClick={() => navigate("/Dashboard")}>Initiatives Page</button>
+                          </TableCell>
                         }
                         {/*
                         <TableCell id={ClientPageIds.email}>{displayItem.email}</TableCell>

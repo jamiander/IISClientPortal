@@ -18,7 +18,6 @@ interface DeleteDecisionAlertProps {
 
 export function DeleteDecisionAlert(props: DeleteDecisionAlertProps)
 {
-  let myUuid = UuidV4();
 
   return (
     <Dialog
@@ -37,7 +36,7 @@ export function DeleteDecisionAlert(props: DeleteDecisionAlertProps)
       </DialogContent>
       <DialogActions>
         <div className="flex justify-between">
-          <button id={DeleteDecisionAlertIds.confirmButton} className={submitButtonStyle} onClick={() => props.DeleteDecision(props.decisionId ?? myUuid)}>Yes</button>
+          <button id={DeleteDecisionAlertIds.confirmButton} className={submitButtonStyle} onClick={() => props.decisionId ? props.DeleteDecision(props.decisionId) : props.CancelDelete()}>Yes</button>
           <button id={DeleteDecisionAlertIds.cancelButton} className={cancelButtonStyle} onClick={() => props.CancelDelete()}>No</button>
         </div>
       </DialogActions>

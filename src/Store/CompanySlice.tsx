@@ -162,18 +162,20 @@ export const companySlice = createSlice({
           {
             let companyIndex = state.companies.findIndex(c => c.id === company.id);
             if(companyIndex > -1)
-              state.companies.splice(companyIndex,1);
-            state.companies.push(company);
+              state.companies.splice(companyIndex,1,company);
+            else
+              state.companies.push(company);
           }
         })
         .addCase(getCompanyByInitiativeIds.fulfilled, (state, action) => {
           const newCompanies = action.payload;
           for(const company of newCompanies)
           {
-            let companyIndex = state.companies.findIndex(c => c.id === company.id);
+            const companyIndex = state.companies.findIndex(c => c.id === company.id);
             if(companyIndex > -1)
-              state.companies.splice(companyIndex,1);
-            state.companies.push(company);
+              state.companies.splice(companyIndex,1,company);
+            else
+              state.companies.push(company);
           }
         })
         .addCase(upsertCompanyInfo.fulfilled, (state, action) => {
@@ -185,16 +187,17 @@ export const companySlice = createSlice({
             state.companies.push(newCompany);
         })
         .addCase(upsertInitiativeInfo.fulfilled, (state, action) => {
-            const newInitiative = action.payload.initiative;
-            const companyId = action.payload.companyId;
-            const matchingCompany = state.companies.find(company => company.id === companyId);
-            if(matchingCompany)
-            {
-                const initIndex = matchingCompany.initiatives.findIndex(init => init.id === newInitiative.id);
-                if(initIndex > -1)
-                    matchingCompany.initiatives.splice(initIndex,1);
-                matchingCompany.initiatives.push(newInitiative);
-            }
+          const newInitiative = action.payload.initiative;
+          const companyId = action.payload.companyId;
+          const matchingCompany = state.companies.find(company => company.id === companyId);
+          if(matchingCompany)
+          {
+            const initIndex = matchingCompany.initiatives.findIndex(init => init.id === newInitiative.id);
+            if(initIndex > -1)
+              matchingCompany.initiatives.splice(initIndex,1,newInitiative);
+            else
+              matchingCompany.initiatives.push(newInitiative);
+          }
         })
         .addCase(upsertThroughputData.fulfilled, (state, action) => {
           const companyId = action.payload.companyId;

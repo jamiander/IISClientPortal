@@ -116,9 +116,9 @@ export const userSlice = createSlice({
             {
                 let userIndex = state.users.findIndex(u => u.id === user.id);
                 if(userIndex > -1)
-                    state.users.splice(userIndex, 1);
-
-                state.users.push(user);
+                    state.users.splice(userIndex, 1, user);
+                else
+                  state.users.push(user);
             }
         }
     },
