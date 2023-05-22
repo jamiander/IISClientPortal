@@ -1,7 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom"
 import { useAppSelector } from "../Store/Hooks"
 import { selectCurrentUser, selectIsLoggedIn } from "../Store/UserSlice"
-import { selectCurrentUserId } from "../Store/UserSlice"
 import { enqueueSnackbar } from "notistack"
 import { IntegrityId } from "../Store/CompanySlice"
 
@@ -15,7 +14,6 @@ export const NavPanelIds = {
 export default function NavPanel(){
   const navigate = useNavigate();
   const isLoggedIn = useAppSelector(selectIsLoggedIn);
-  const currentUserId = useAppSelector(selectCurrentUserId);
   const currentUser = useAppSelector(selectCurrentUser);
   const navButtonStyle = "text-[#21345b] h-12 w-[90%] hover:bg-[#21345b] hover:text-white";
   const location = useLocation();
@@ -43,7 +41,7 @@ export default function NavPanel(){
       
       <button id={NavPanelIds.dashboard} className={GetNavStyle("/Dashboard")}
         onClick={() => NavHandler('/Dashboard')}>
-        Dashboard
+          Initiative Management
       </button>
       {
         currentUser?.isAdmin && currentUser?.isActive &&
