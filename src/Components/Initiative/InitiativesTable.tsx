@@ -2,7 +2,6 @@ import { Fragment, useEffect, useMemo, useState } from "react";
 import { DateInfo, FindItemsRemaining } from "../../Services/CompanyService";
 import { InitiativeFilter } from "../../Services/Filters";
 import { Company, Initiative, IntegrityId, upsertInitiativeInfo } from "../../Store/CompanySlice";
-import { EditInitiativeButton } from "./EditInitiativeButton";
 import { defaultRowStyle, greenProbabilityStyle, inputStyle, redProbabilityStyle, TableHeaderStyle, tooltipStyle, yellowButtonStyle } from "../../Styles";
 import { GenerateProbability } from "../../Services/ProbabilitySimulationService";
 import { DateInput, DateToDateInfo, MakeDate } from "../DateInput";
