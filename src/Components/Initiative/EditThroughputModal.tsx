@@ -28,15 +28,16 @@ export const EditThroughputIds = {
   modal: "editThroughputModal",
   selectCompany: "editThroughputCompanySelect",
   selectInitiative: "editThroughputInititia",
-  addEntrySubmitButton: "editThroughputAdd",
+  addNewEntryButton: "editThroughputAdd",
   submitButton: "editThroughputSubmitButton",
   closeButton: "editThroughputCloseButton",
-  addDate: "editThroughputAddDate",
-  addItemsComplete: "editThroughputAddItemsComplete",
+  //addDate: "editThroughputAddDate",
+  //addItemsComplete: "editThroughputAddItemsComplete",
   tableDate: "editThroughputTableDate",
   tableItemsComplete: "editThroughputTableItemsComplete",
-  saveChangesButton: "saveChangesButton",
-  cancelChangesButton: "cancelChangesButton"
+  saveChangesButton: "editThroughputSaveChangesButton",
+  cancelChangesButton: "editThroughputCancelChangesButton",
+  editButton: "editThroughputEditButton"
 }
   
 interface ThroughputModalProps{
@@ -202,7 +203,7 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
         <p className="text-3xl w-full">Edit Throughput Data</p>
         <SelectCompanyAndInitiative companyList={props.companyList} selectedCompany={selectedCompany} selectedInitiativeIndex={selectedInitiativeIndex} setSelectedCompany={setSelectedCompany} setSelectedInitiativeIndex={setSelectedInitiativeIndex} companyElementId={EditThroughputIds.selectCompany} initiativeElementId={EditThroughputIds.selectInitiative}/>
             {dateWarning}
-        <button id={EditThroughputIds.addEntrySubmitButton} className={submitButtonStyle + " h-full"} disabled={InEditMode()}
+        <button id={EditThroughputIds.addNewEntryButton} className={submitButtonStyle + " h-full"} disabled={InEditMode()}
           onClick={() => AddItem(selectedCompany?.initiatives[selectedInitiativeIndex])}>Add New</button>
         <div className="outline outline-[#879794] rounded space-y-2 p-2">
           <div>
@@ -246,7 +247,7 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
                             <CancelIcon />
                         </IconButton>
                         </TableCell>
-                        <TableCell className="border border-spacing-x-0 border-y-gray-700" id={EditThroughputIds.tableDate}>
+                        <TableCell className="border border-spacing-x-0 border-y-gray-700">
                           {state === stateEnum.add ?
                             <DateInput date={currentDate} setDate={setCurrentDate} id={EditThroughputIds.tableDate}></DateInput> 
                           :
@@ -261,11 +262,11 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
                         :
                         <>
                         <TableCell>
-                        <IconButton id={EditThroughputIds.saveChangesButton} onClick={() => EnterEditMode(throughput.date, throughputList, false)}>
+                        <IconButton id={EditThroughputIds.editButton} onClick={() => EnterEditMode(throughput.date, throughputList, false)}>
                             <EditIcon />
                         </IconButton>
                         </TableCell>
-                        <TableCell className="border border-spacing-x-0 border-y-gray-700" id={EditThroughputIds.tableDate}>
+                        <TableCell className="border border-spacing-x-0 border-y-gray-700">
                           <p className="px-2 w-full bg-inherit focus:outline-none" id={EditThroughputIds.tableDate}>{throughput.date.month + "/" + throughput.date.day + "/" + throughput.date.year}</p> 
                         </TableCell>
                         <TableCell className={tooltipStyle}>

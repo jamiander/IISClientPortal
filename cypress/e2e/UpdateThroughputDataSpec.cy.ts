@@ -32,14 +32,14 @@ describe ('add throughput data by manual entry', () => {
     cy.get('button').contains('Edit Data').click();
     cy.get(modalIds.selectCompany).select(company);
     cy.get(modalIds.selectInitiative).select(initiativeTitle);
+    cy.get(modalIds.addNewEntryButton).click();
   })
 
   specify('add throughput data by manual entry', () => {
-    cy.get(modalIds.addDate).clear().type("2020-01-01");
-    cy.get(modalIds.addItemsComplete).clear().type('2');
-    cy.get(modalIds.addEntrySubmitButton).click();
-    cy.get(modalIds.submitButton).click();
-
+    cy.get(modalIds.tableDate).clear().type("2020-01-01");
+    cy.get(modalIds.tableItemsComplete).clear().type('2');
+    cy.get(modalIds.saveChangesButton).click();
+    cy.get(modalIds.closeButton).click();
     cy.wait(waitTime);
     cy.get(radioIds.all).click();
     cy.get(tableIds.initiativeTitleFilter).clear().type(initiativeTitle);
@@ -63,13 +63,14 @@ describe ('invalid manual entry test', () => {
     cy.get('button').contains('Edit Data').click();
     cy.get(modalIds.selectCompany).select(company);
     cy.get(modalIds.selectInitiative).select(initiativeTitle);
+    cy.get(modalIds.addNewEntryButton).click();
   })
 
   specify('cannot add throughput entry when date is invalid', () => {
-    cy.get(modalIds.addDate).clear();
+    cy.get(modalIds.tableDate).clear();
 
-    cy.get(modalIds.addItemsComplete).clear().type('2');
-    cy.get(modalIds.addEntrySubmitButton).click();
+    cy.get(modalIds.tableItemsComplete).clear().type('2');
+    cy.get(modalIds.saveChangesButton).click();
     cy.wait(waitTime);
     cy.get(snackbarId).should('contain',failMessage);
   })
@@ -86,8 +87,9 @@ describe ('invalid manual entry test', () => {
   })*/
 
   specify('cannot add throughput entry when item completed is invalid', () => {
-    cy.get(modalIds.addDate).clear().type("2020-01-01");
-    cy.get(modalIds.addEntrySubmitButton).click();
+    cy.get(modalIds.tableItemsComplete).clear();
+    cy.get(modalIds.tableDate).clear().type("2020-01-01");
+    cy.get(modalIds.saveChangesButton).click();
     cy.wait(waitTime);
     cy.get(snackbarId).should('contain',failMessage);
   })
@@ -108,12 +110,13 @@ describe('update throughput data', () => {
     cy.get('button').contains('Edit Data').click();
     cy.get(modalIds.selectCompany).select(company);
     cy.get(modalIds.selectInitiative).select(initiativeTitle);
+    cy.get(modalIds.editButton).click();
   })
 
   specify('update completed amount', () => {
     cy.get(modalIds.tableItemsComplete).clear().type("33");
 
-    cy.get(modalIds.submitButton).click();
+    cy.get(modalIds.saveChangesButton).click();
 
     cy.get(snackbarId).should('contain',"Success");
   })
@@ -129,7 +132,7 @@ describe('update throughput data', () => {
   })*/
 
   specify('close button closes modal', () => {
-    cy.get(modalIds.modal);
+    cy.get(modalIds.modal).should('exist');
     cy.get(modalIds.closeButton).click();
     cy.wait(waitTime);
 
@@ -138,28 +141,28 @@ describe('update throughput data', () => {
 
   specify('cannot update throughput data if unselected company', () => {
     cy.get(modalIds.selectCompany).select(0);
-    cy.get(modalIds.submitButton).click();
-    cy.get(snackbarId).should('contain',failMessage);
+    cy.get(modalIds.editButton).should('not.exist');
+    //cy.get(snackbarId).should('contain',failMessage);
   })
 
   specify('cannot update throughput data if unselected initiative', () => {
     cy.get(modalIds.selectInitiative).select(0);
-    cy.get(modalIds.submitButton).click();
-    cy.get(snackbarId).should('contain',failMessage);
+    cy.get(modalIds.editButton).should('not.exist');
+    //cy.get(snackbarId).should('contain',failMessage);
   })
 
   specify('cannot update throughput data to an invalid completed amount', () => {
     cy.get(modalIds.tableItemsComplete).clear();
-    cy.get(modalIds.submitButton).click();
+    cy.get(modalIds.saveChangesButton).click();
     cy.get(snackbarId).should('contain',failMessage);
 
     cy.get(modalIds.tableItemsComplete).clear().type("a");
-    cy.get(modalIds.submitButton).click();
+    cy.get(modalIds.saveChangesButton).click();
     cy.wait(snackbarWaitTime);
     cy.get(snackbarId).should('contain',failMessage);
 
     cy.get(modalIds.tableItemsComplete).clear().type("-2");
-    cy.get(modalIds.submitButton).click();
+    cy.get(modalIds.saveChangesButton).click();
     cy.wait(snackbarWaitTime);
     cy.get(snackbarId).should('contain',failMessage);
   })
