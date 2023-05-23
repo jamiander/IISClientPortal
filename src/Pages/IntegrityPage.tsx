@@ -16,6 +16,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { useEditUser } from "../Services/useEditUser";
 import { EditUserInitiativesButton } from "../Components/User/EditUserInitiativesButton";
+import { DocumentUpload } from "../Components/DocumentUpload";
 
 export const IntegrityPageIds = {
   modal: "adminEditUserModal",
@@ -93,6 +94,7 @@ export function IntegrityPage(){
 
   return (
     <>
+    <DocumentUpload />
       <div className="flex col-span-4 bg-[#2ed7c3] py-6 px-5">
         <div className="w-full flex justify-between">
           <div className="space-y-2 w-1/2">
