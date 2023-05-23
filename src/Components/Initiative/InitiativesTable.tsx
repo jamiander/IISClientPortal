@@ -17,19 +17,18 @@ import { ViewDecisionDataButton } from "./ViewDecisionDataButton";
 import Pagination from "@mui/material/Pagination";
 import ImportExportIcon from '@mui/icons-material/ImportExport';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
-import { IconButton, Input } from "@mui/material";
+import { FormControl, IconButton, Input, InputLabel, MenuItem, Select } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { v4 } from "uuid";
-import { AdminSelectCompanyModal } from "../User/AdminSelectCompanyModal";
 import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
 import { selectCurrentUser } from "../../Store/UserSlice";
 import { enqueueSnackbar } from "notistack";
 import ValidateNewInitiative, { ValidationFailedPrefix } from "../../Services/Validation";
 
 export const InitiativeTableIds = {
+  table: "initiativeTable",
   totalItems: 'initiativeTableTotalItems',
   remainingItems: 'initiativesTableRemainingItems',
   initiativeTitle: 'initiativesTableTitle',
@@ -218,7 +217,6 @@ export default function InitiativesTable(props: InitiativesProps) {
   const [currentStartDate, setCurrentStartDate] = useState<DateInfo>();
   const [currentTargetDate, setCurrentTargetDate] = useState<DateInfo>();
   const [currentTotalItems, setCurrentTotalItems] = useState(1);
-  //const [editedCompanies, setEditedCompanies] = useState(props.companyList);
   const [companyToEditId, setCompanyToEditId] = useState("");
   const [isCompanySelectOpen, setIsCompanySelectOpen] = useState(false);
   
@@ -284,8 +282,7 @@ export default function InitiativesTable(props: InitiativesProps) {
         {
           let saveMessage = "Changes have been saved.";
           if(state === stateEnum.add)
-            saveMessage = "New client added!";
-            
+            saveMessage = "New initiative added!";
           
           dispatch(upsertInitiativeInfo({isTest: isTest, initiative: newInitiative, companyId: companyToEditId}));
 
@@ -328,44 +325,17 @@ export default function InitiativesTable(props: InitiativesProps) {
     }
   }
 
-  function ConfirmSelect()
-  {
-    const matchingCompany = props.companyList.find(c => c.id === companyToEditId);
-    if(matchingCompany)
-    {
-      AddEmptyInitiative(companyToEditId);
-      setIsCompanySelectOpen(false);
-    }
-    else
-      enqueueSnackbar(ValidationFailedPrefix + "A valid company must be selected.", {variant: "error"})
-  }
-
-  function CancelSelect()
-  {
-    setIsCompanySelectOpen(false);
-  }
-
   const userCompanyId = currentUser?.companyId;
 
   return (
     <>
       <div className="grid grid-cols-1 w-full h-auto">
         <div className="col-span-1 h-[4vh] pb-[2%] space-x-4 mb-[2%]">
-          <input id={InitiativeTableIds.companyNameFilter} className={inputStyle} type={'text'} placeholder="Filter by Company" onChange={(e) => setSearchedComp(e.target.value)} />
-          <input id={InitiativeTableIds.initiativeTitleFilter} className={inputStyle} type={'text'} placeholder="Filter by Title" onChange={(e) => setSearchedInit(e.target.value)} />
+          <input id={InitiativeTableIds.companyNameFilter} className={inputStyle} type={'text'} placeholder="Filter by Company" value={searchedComp} onChange={(e) => setSearchedComp(e.target.value)} />
+          <input id={InitiativeTableIds.initiativeTitleFilter} className={inputStyle} type={'text'} placeholder="Filter by Title" value={searchedInit} onChange={(e) => setSearchedInit(e.target.value)} />
         </div>
         <div className="flex flex-col justify-between mb-[2%]">
-          {userCompanyId !== IntegrityId &&
-            <>
-              <button disabled={InEditMode()} id={InitiativeTableIds.addButton} className={yellowButtonStyle} onClick={() => userCompanyId ? AddEmptyInitiative(userCompanyId) : ""}>Add Initiative</button>
-            </>
-          }
-          {userCompanyId === IntegrityId &&
-            <>
-              <button disabled={InEditMode()} id={InitiativeTableIds.addButton} className={yellowButtonStyle} onClick={() => setIsCompanySelectOpen(true)}>Add Initiative</button>
-              <AdminSelectCompanyModal isOpen={isCompanySelectOpen} setIsOpen={setIsCompanySelectOpen} companies={props.companyList} companyId={companyToEditId} setCompanyId={setCompanyToEditId} Confirm={ConfirmSelect} Cancel={CancelSelect}/>
-            </>
-          }
+          <button disabled={InEditMode()} id={InitiativeTableIds.addButton} className={yellowButtonStyle} onClick={() => userCompanyId ? AddEmptyInitiative(userCompanyId) : ""}>Add Initiative</button>
         </div>
         {totalInits !== 0 &&
         <div className="col-span-1">
@@ -413,7 +383,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                   <TableHeaderStyle>Edit</TableHeaderStyle>
                 </TableRow>
               </TableHead>
-              <TableBody>
+              <TableBody id={InitiativeTableIds.table}>
                 {currentItems.map((displayItem, index) => {
                   let probability = { value: displayItem.probabilityValue, status: displayItem.probabilityStatus };
                   let healthIndicator = getHealthIndicator(probability.value);
@@ -432,21 +402,39 @@ export default function InitiativesTable(props: InitiativesProps) {
                           fontFamily: "Arial, Helvetica"
                         }
                       }}>
-                        <TableCell id={InitiativeTableIds.companyName}>{displayItem.company.name}</TableCell>
-                        
-                        
-                        {/*<EditInitiativeButton company={displayItem.company} initiative={displayItem} index={index} ValidateInitiative={props.ValidateInitiative} />
-                        */}
                         {
                           isEdit ?
                           <>
+                            <TableCell id={InitiativeTableIds.companyName}>
+                            {(userCompanyId !== IntegrityId || state !== stateEnum.add) &&
+                              <>{displayItem.company.name}</>
+                            }
+                            {(userCompanyId === IntegrityId && state === stateEnum.add) &&
+                              <>
+                                <FormControl fullWidth>
+                                  <InputLabel id="company-select-label">Select Company</InputLabel>
+                                  <Select id={""} labelId="company-select-label" label="Select company" value={companyToEditId} onChange={(e) => setCompanyToEditId(e.target.value)}>
+                                    {
+                                      props.companyList.map((company,index) => {
+                                        return (
+                                          <MenuItem key={index} value={company.id}>
+                                            {company.name}
+                                          </MenuItem>
+                                        )
+                                      })
+                                    }
+                                  </Select>
+                                </FormControl>
+                              </>
+                            }
+                            </TableCell>
                             <TableCell id={InitiativeTableIds.initiativeTitle}>
                               <Input value={currentTitle} onChange={(e) => setCurrentTitle(e.target.value)}/>
                             </TableCell>
                             <TableCell><DateInput id={InitiativeTableIds.startDate} date={currentStartDate} setDate={setCurrentStartDate}/></TableCell>
                             <TableCell><DateInput id={InitiativeTableIds.targetDate} date={currentTargetDate} setDate={setCurrentTargetDate}/></TableCell>
                             <TableCell id={InitiativeTableIds.totalItems}>
-                              <Input type='number' value={currentTotalItems} onChange={(e) => setCurrentTotalItems(parseInt(e.target.value))}/>
+                              <Input type="number" value={currentTotalItems} onChange={(e) => setCurrentTotalItems(parseInt(e.target.value))}/>
                             </TableCell>
                             <TableCell id={InitiativeTableIds.remainingItems}>{displayItem.itemsRemaining}</TableCell>
                             <TableCell className={tooltipStyle} title={tooltipMessage}>{probability.value === undefined ? "NA" : probability.value + "%"}
@@ -466,6 +454,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                           </>
                           :
                           <>
+                            <TableCell id={InitiativeTableIds.companyName}>{displayItem.company.name}</TableCell>
                             <TableCell id={InitiativeTableIds.initiativeTitle}>{displayItem.title}</TableCell>
                             <TableCell id={InitiativeTableIds.startDate}>{displayItem.startDate.month + "/" + displayItem.startDate.day + "/" + displayItem.startDate.year}</TableCell>
                             <TableCell>{displayItem.targetDate.month + "/" + displayItem.targetDate.day + "/" + displayItem.targetDate.year}</TableCell>
