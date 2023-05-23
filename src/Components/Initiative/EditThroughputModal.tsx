@@ -15,6 +15,8 @@ import { IconButton, Paper } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
+import { ValidateEditThroughputData, ValidateFileThroughputData, ValidationFailedPrefix } from "../../Services/Validation";
+import { enqueueSnackbar } from "notistack";
 
 enum stateEnum {
   start,
@@ -116,12 +118,19 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
 
   function AddItem(initiative: Initiative | undefined)
   {
-    let newItem: ThroughputData = {date: todayInfo, itemsCompleted: 1};
-    let throughtputClone: ThroughputData[] = JSON.parse(JSON.stringify(initiative?.itemsCompletedOnDate));
-    throughtputClone.unshift(newItem);
-    throughtputClone.sort((a:ThroughputData, b:ThroughputData) => CompareDateInfos(b.date,a.date));
-    setThroughputList(throughtputClone);
-    EnterEditMode(todayInfo, throughtputClone, true)
+    const validation = ValidateEditThroughputData(props.companyList, selectedCompany?.id ?? "-1", initiative?.id ?? "-1", throughputList);
+    if(validation.success)
+    {
+      let newItem: ThroughputData = {date: todayInfo, itemsCompleted: 1};
+      let throughtputClone: ThroughputData[] = JSON.parse(JSON.stringify(initiative?.itemsCompletedOnDate));
+      throughtputClone.unshift(newItem);
+      throughtputClone.sort((a:ThroughputData, b:ThroughputData) => CompareDateInfos(b.date,a.date));
+      setThroughputList(throughtputClone);
+      EnterEditMode(todayInfo, throughtputClone, true)
+    } else 
+    {
+      enqueueSnackbar(ValidationFailedPrefix + validation.message, {variant: "error"});
+    }
   }
 
   const InEditMode = () => state === stateEnum.edit || state === stateEnum.add;
@@ -150,8 +159,9 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
   {
     if(state === stateEnum.add && throughputToEdit)
     {
-      let selectedThroughputClone = JSON.parse(JSON.stringify(throughputList));
-      selectedThroughputClone = selectedThroughputClone.filter((throughput: { date: DateInfo; }) => (CompareDateInfos(throughput.date, throughputToEdit?.date ?? {day: 1, month: 1, year: 1900}) !== 0));
+      let selectedThroughputClone: ThroughputData[] = JSON.parse(JSON.stringify(throughputList));
+
+      selectedThroughputClone = selectedThroughputClone.splice(1);
       setThroughputList(selectedThroughputClone);
     }
     LeaveEditMode();
@@ -166,8 +176,6 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
     {
         newItem.date = currentDate;
         newItem.itemsCompleted = currentItems ?? 1;
-        selectedThroughputClone.push(newItem);
-        
         let successful = props.Submit(selectedCompany?.id ?? "-1", initiative.id ?? "-1", selectedThroughputClone, false);   
 
         if(successful)
