@@ -18,7 +18,7 @@ import { ViewDecisionDataButton } from "./ViewDecisionDataButton";
 import Pagination from "@mui/material/Pagination";
 import ImportExportIcon from '@mui/icons-material/ImportExport';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import { IconButton, Input } from "@mui/material";
+import { FormControl, IconButton, Input, InputLabel, MenuItem, Select } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
@@ -353,17 +353,7 @@ export default function InitiativesTable(props: InitiativesProps) {
           <input id={InitiativeTableIds.initiativeTitleFilter} className={inputStyle} type={'text'} placeholder="Filter by Title" value={searchedInit} onChange={(e) => setSearchedInit(e.target.value)} />
         </div>
         <div className="flex flex-col justify-between mb-[2%]">
-          {userCompanyId !== IntegrityId &&
-            <>
-              <button disabled={InEditMode()} id={InitiativeTableIds.addButton} className={yellowButtonStyle} onClick={() => userCompanyId ? AddEmptyInitiative(userCompanyId) : ""}>Add Initiative</button>
-            </>
-          }
-          {userCompanyId === IntegrityId &&
-            <>
-              <button disabled={InEditMode()} id={InitiativeTableIds.addButton} className={yellowButtonStyle} onClick={() => setIsCompanySelectOpen(true)}>Add Initiative</button>
-              <AdminSelectCompanyModal isOpen={isCompanySelectOpen} setIsOpen={setIsCompanySelectOpen} companies={props.companyList} companyId={companyToEditId} setCompanyId={setCompanyToEditId} Confirm={ConfirmSelect} Cancel={CancelSelect}/>
-            </>
-          }
+          <button disabled={InEditMode()} id={InitiativeTableIds.addButton} className={yellowButtonStyle} onClick={() => userCompanyId ? AddEmptyInitiative(userCompanyId) : ""}>Add Initiative</button>
         </div>
         {totalInits !== 0 &&
         <div className="col-span-1">
@@ -430,14 +420,32 @@ export default function InitiativesTable(props: InitiativesProps) {
                           fontFamily: "Arial, Helvetica"
                         }
                       }}>
-                        <TableCell id={InitiativeTableIds.companyName}>{displayItem.company.name}</TableCell>
-                        
-                        
-                        {/*<EditInitiativeButton company={displayItem.company} initiative={displayItem} index={index} ValidateInitiative={props.ValidateInitiative} />
-                        */}
                         {
                           isEdit ?
                           <>
+                            <TableCell id={InitiativeTableIds.companyName}>
+                            {userCompanyId !== IntegrityId &&
+                              <>{displayItem.company.name}</>
+                            }
+                            {userCompanyId === IntegrityId &&
+                              <>
+                                <FormControl fullWidth>
+                                  <InputLabel id="company-select-label">Select Company</InputLabel>
+                                  <Select id={""} labelId="company-select-label" label="Select company" value={companyToEditId} onChange={(e) => setCompanyToEditId(e.target.value)}>
+                                    {
+                                      props.companyList.map((company,index) => {
+                                        return (
+                                          <MenuItem key={index} value={company.id}>
+                                            {company.name}
+                                          </MenuItem>
+                                        )
+                                      })
+                                    }
+                                  </Select>
+                                </FormControl>
+                              </>
+                            }
+                            </TableCell>
                             <TableCell id={InitiativeTableIds.initiativeTitle}>
                               <Input value={currentTitle} onChange={(e) => setCurrentTitle(e.target.value)}/>
                             </TableCell>
@@ -464,6 +472,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                           </>
                           :
                           <>
+                            <TableCell id={InitiativeTableIds.companyName}>{displayItem.company.name}</TableCell>
                             <TableCell id={InitiativeTableIds.initiativeTitle}>{displayItem.title}</TableCell>
                             <TableCell id={InitiativeTableIds.startDate}>{displayItem.startDate.month + "/" + displayItem.startDate.day + "/" + displayItem.startDate.year}</TableCell>
                             <TableCell>{displayItem.targetDate.month + "/" + displayItem.targetDate.day + "/" + displayItem.targetDate.year}</TableCell>
