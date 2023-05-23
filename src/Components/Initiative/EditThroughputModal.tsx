@@ -127,7 +127,6 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
   const InEditMode = () => state === stateEnum.edit || state === stateEnum.add;
 
   function EnterEditMode(date: DateInfo, throughputs: ThroughputData[], isNew: boolean) {
-    console.log(InEditMode);
     if(!InEditMode())
     {
       let currentThroughput = throughputs.find(i => i.date === date);
@@ -151,10 +150,11 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
   {
     if(state === stateEnum.add && throughputToEdit)
     {
-      let companyClone: Company = JSON.parse(JSON.stringify(selectedCompany));
-      companyClone.initiatives[selectedInitiativeIndex].itemsCompletedOnDate = companyClone.initiatives[selectedInitiativeIndex].itemsCompletedOnDate.filter(throughput => throughput.date === throughputToEdit.date);
-      setSelectedCompany(companyClone);
+      let selectedThroughputClone = JSON.parse(JSON.stringify(throughputList));
+      selectedThroughputClone = selectedThroughputClone.filter((throughput: { date: DateInfo; }) => (CompareDateInfos(throughput.date, throughputToEdit?.date ?? {day: 1, month: 1, year: 1900}) !== 0));
+      setThroughputList(selectedThroughputClone);
     }
+    LeaveEditMode();
   }
 
   function SaveEdit()
@@ -162,7 +162,6 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
     let selectedThroughputClone = JSON.parse(JSON.stringify(throughputList));
     let initiative = GetInitiativeFromCompany(selectedCompany,selectedInitiativeIndex)!;
     let newItem = selectedThroughputClone.find((i: { date: DateInfo; }) => (CompareDateInfos(i.date, throughputToEdit?.date ?? {day: 1, month: 1, year: 1900}) === 0));
-    console.log(newItem);    
     if(newItem)
     {
         newItem.date = currentDate;
@@ -174,8 +173,8 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
         if(successful)
         {
           selectedThroughputClone.sort((a:ThroughputData, b:ThroughputData) => CompareDateInfos(b.date,a.date));
-          LeaveEditMode();
           setThroughputList(selectedThroughputClone);
+          LeaveEditMode();
         }
     }
   }
@@ -240,8 +239,12 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
                         </IconButton>
                         </TableCell>
                         <TableCell className="border border-spacing-x-0 border-y-gray-700" id={EditThroughputIds.tableDate}>
-                          <p className="px-2 w-full bg-inherit focus:outline-none" id={EditThroughputIds.tableDate}>{throughput.date.month + "/" + throughput.date.day + "/" + throughput.date.year}</p> 
-                        </TableCell>
+                          {state === stateEnum.add ?
+                            <DateInput date={currentDate} setDate={setCurrentDate} id={EditThroughputIds.tableDate}></DateInput> 
+                          :
+                            <p className="px-2 w-full bg-inherit focus:outline-none" id={EditThroughputIds.tableDate}>{throughput.date.month + "/" + throughput.date.day + "/" + throughput.date.year}</p> 
+                          }
+                          </TableCell>
                         <TableCell className={tooltipStyle}>
                           <input className="px-2 w-full bg-inherit focus:outline-none" id={EditThroughputIds.tableItemsComplete} type="number" min="0" value={currentItems}
                           onChange={(e) => setCurrentItems(parseInt(e.target.value))}/>

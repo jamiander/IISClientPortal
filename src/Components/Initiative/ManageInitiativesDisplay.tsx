@@ -56,8 +56,8 @@ export default function ManageInitiativesDisplay() {
     {
       dispatch(upsertThroughputData({companyId: companyId, initiativeId: initiativeId, itemsCompletedOnDate: dataList, isTest: isTest}));
       setUploadModalIsOpen(false);
-      setEditModalIsOpen(false);
-      enqueueSnackbar(validation.message, {variant:'success'});
+/*       setEditModalIsOpen(false);
+ */      enqueueSnackbar(validation.message, {variant:'success'});
       return true;
     }
     else
