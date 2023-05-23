@@ -22,6 +22,8 @@ type EditUser = {
   usersList: User[]
   userToEdit: User | undefined
   SubmitUserData: (user: User) => boolean
+  currentCompanyId: string
+  setCurrentCompanyId: (value: string) => void
   currentEmail: string
   setCurrentEmail: (value: string) => void
   currentPassword: string
@@ -46,6 +48,7 @@ export function useEditUser() : EditUser
   const dispatch = useAppDispatch();
 
   const [userToEdit, setUserToEdit] = useState<User>();
+  const [currentCompanyId, setCurrentCompanyId] = useState<string>("");
   const [currentEmail, setCurrentEmail] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
   const [currentInitiativeIds, setterCurrentInitiatives] = useState<string[]>([]);
@@ -108,6 +111,7 @@ export function useEditUser() : EditUser
     let newUser = usersClone.find(u => u.id === userToEdit?.id);
     if(newUser)
     {
+      newUser.companyId = currentCompanyId;
       newUser.email = currentEmail;
       newUser.password = currentPassword;
       newUser.initiativeIds = currentInitiativeIds;
@@ -181,6 +185,8 @@ export function useEditUser() : EditUser
     usersList,
     userToEdit,
     SubmitUserData,
+    currentCompanyId,
+    setCurrentCompanyId,
     currentEmail,
     setCurrentEmail,
     currentPassword,

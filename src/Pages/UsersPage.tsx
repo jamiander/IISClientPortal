@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { User, getUserById, selectAllUsers, selectCurrentUserId } from "../Store/UserSlice";
 import { Company, IntegrityId, selectAllCompanies } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
-import { Checkbox, IconButton, Input} from "@mui/material";
+import { Checkbox, FormControl, FormControlLabel, IconButton, Input, InputLabel, MenuItem, Select} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
@@ -16,9 +16,6 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { useEditUser } from "../Services/useEditUser";
 import { EditUserInitiativesButton } from "../Components/User/EditUserInitiativesButton";
-import { ValidationFailedPrefix } from "../Services/Validation";
-import { enqueueSnackbar } from "notistack";
-import { AdminSelectCompanyModal } from "../Components/User/AdminSelectCompanyModal";
 
 export const UsersPageIds = {
   company: "usersPageCompany",
@@ -37,6 +34,7 @@ export const UsersPageIds = {
   keywordFilter: "usersPageKeywordFilter",
   table: "usersPageTable",
   addModal: "usersPageAddModal",
+  select: "usersPageSelectCompany"
   
 }
 
@@ -58,6 +56,8 @@ export default function UsersPage(){
     userToEdit,
     usersList,
     SubmitUserData,
+    currentCompanyId,
+    setCurrentCompanyId,
     currentEmail,
     setCurrentEmail,
     currentPassword,
@@ -106,30 +106,10 @@ export default function UsersPage(){
       const otherCompanyUsers = allUsers.filter(user => user.companyId !== IntegrityId);
       let filteredUsers = otherCompanyUsers.filter(cu => cu.companyId === userCompany?.id)
       setCompanyUsers(filteredUsers);
+      setCurrentCompanyId(currentUserCompanyId);
       SetupEditUser(filteredUsers);
     }
   }, [allUsers])
-
-  const [isCompanySelectOpen, setIsCompanySelectOpen] = useState(false);
-  const [selectedCompanyId, setSelectedCompanyId] = useState("");
-
-  function ConfirmSelect()
-  {
-    const matchingCompany = allCompanies.find(c => c.id === selectedCompanyId);
-    if(matchingCompany)
-    {
-      AddEmptyUser(selectedCompanyId);
-      setTimeout(() => myRef.current?.scrollIntoView(),1);
-      setIsCompanySelectOpen(false);
-    }
-    else
-      enqueueSnackbar(ValidationFailedPrefix + "A valid company must be selected.", {variant: "error"})
-  }
-
-  function CancelSelect()
-  {
-    setIsCompanySelectOpen(false);
-  }
 
   const myRef = useRef<HTMLElement>(null);
 
@@ -153,8 +133,7 @@ export default function UsersPage(){
         </div>}
         {currentUserCompanyId === IntegrityId &&
         <div className="flex flex-col justify-between">
-          <button disabled={InEditMode()} id={UsersPageIds.addButton} className={yellowButtonStyle} onClick={() => setIsCompanySelectOpen(true)}>Add User</button>
-            <AdminSelectCompanyModal isOpen={isCompanySelectOpen} setIsOpen={setIsCompanySelectOpen} companies={allCompanies.filter(c => c.id !== IntegrityId)} companyId={selectedCompanyId} setCompanyId={setSelectedCompanyId} Confirm={ConfirmSelect} Cancel={CancelSelect}/>
+          <button disabled={InEditMode()} id={UsersPageIds.addButton} className={yellowButtonStyle} onClick={() => AddEmptyUser("")}>Add User</button>
         </div>}
         <div className="col-span-1 py-[2%]">
           <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
@@ -192,7 +171,9 @@ export default function UsersPage(){
               </TableHead>
               <TableBody id={UsersPageIds.table}>
                 {displayCompanies.map((displayCompany, key) => {
+                  let newUser = usersList.find(u => u.companyId === "");
                   let companyUserList = usersList.filter(cu => cu.companyId === displayCompany.id)!.filter(u => u.email.toUpperCase().includes(searchedKeyword.toUpperCase()) || u.name?.toUpperCase().includes(searchedKeyword.toUpperCase()));
+                  if(key === 0 && newUser != undefined) companyUserList.unshift(newUser);
                   return (
                     companyUserList.map((companyUser,key) => {
                       let isEdit = InEditMode() && companyUser?.id === userToEdit?.id;
@@ -206,7 +187,26 @@ export default function UsersPage(){
                         }}>
                           {isEdit ?
                           <>
-                            <TableCell id={UsersPageIds.company}>{displayCompany?.name}</TableCell>
+                            <TableCell id={UsersPageIds.company}>
+                            {currentUserCompanyId === IntegrityId ?
+                            <FormControl fullWidth>
+                              <InputLabel id="company-select-label">Select Company</InputLabel>
+                              <Select id={UsersPageIds.select} labelId="company-select-label" label="Select company" value={currentCompanyId} onChange={(e) => setCurrentCompanyId(e.target.value)}>
+                                {
+                                  displayCompanies.map((company,index) => {
+                                    return (
+                                      <MenuItem key={index} value={company.id}>
+                                        {company.name}
+                                      </MenuItem>
+                                    )
+                                  })
+                                }
+                              </Select>
+                            </FormControl>
+                              :
+                              <TableCell id={UsersPageIds.company}>{displayCompany.name}</TableCell>
+                            }
+                            </TableCell>
                             <TableCell id={UsersPageIds.name}> <Input value={currentName} onChange={e => setCurrentName(e.target.value)}/></TableCell>
                             <TableCell id={UsersPageIds.email}><Input value={currentEmail} onChange={e => setCurrentEmail(e.target.value)}/></TableCell>
                             <TableCell id={UsersPageIds.password}><Input value={currentPassword} onChange={e => setCurrentPassword(e.target.value)}/></TableCell>
