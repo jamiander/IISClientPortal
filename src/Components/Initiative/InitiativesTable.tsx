@@ -46,11 +46,16 @@ interface InitCompanyDisplay extends Initiative {
   itemsRemaining: number
 }
 
+interface SortConfig {
+  key: string
+  direction: 'asc' | 'desc'
+}
+
 export default function InitiativesTable(props: InitiativesProps) {
   
   const [searchedComp, setSearchedComp] = useState('');
   const [searchedInit, setSearchedInit] = useState('');
-  const [sortConfig, setSortConfig] = useState<Record<string, string>>({'': ''});
+  const [sortConfig, setSortConfig] = useState<SortConfig>({key: '', direction: 'desc'});
 
   const [sortedDisplayItems, setSortedDisplayItems] = useState<InitCompanyDisplay[]>([]);
   const [displayItems, setDisplayItems] = useState<InitCompanyDisplay[]>([])
@@ -89,10 +94,10 @@ export default function InitiativesTable(props: InitiativesProps) {
         bValue = bValue.toUpperCase();
 
       if (aValue > bValue) {
-        return sortConfig.direction === 'ascending' ? -1 : 1;
+        return sortConfig.direction === 'asc' ? -1 : 1;
       }
       if (aValue < bValue) {
-        return sortConfig.direction === 'ascending' ? 1 : -1;
+        return sortConfig.direction === 'asc' ? 1 : -1;
       }
       return 0;
     });
@@ -100,9 +105,9 @@ export default function InitiativesTable(props: InitiativesProps) {
   }, [sortConfig, displayItems]);
   
   const requestSort = (key: string) => {
-    let direction = 'descending';
-    if (sortConfig.key === key && sortConfig.direction === 'descending') {
-      direction = 'ascending';
+    let direction: 'desc' | 'asc' = 'desc';
+    if (sortConfig.key === key && sortConfig.direction === 'desc') {
+      direction = 'asc';
     }
     setSortConfig({ key, direction });
   }
@@ -164,7 +169,10 @@ function SortLabel(props: SortProps)
   return (
     <TableSortLabel
       sx={{ 
-        ".MuiTableSortLabel-icon":{ opacity: '1 !important' },
+        ".MuiTableSortLabel-icon":{
+          opacity: '1 !important',
+          fontSize: 26
+        },
         "&.Mui-active":{ 
           ".MuiTableSortLabel-icon": {
             //fontSize: 26
@@ -173,7 +181,8 @@ function SortLabel(props: SortProps)
       }}
       IconComponent={sortConfig.key === props.sortKey ? ArrowDownwardIcon : ImportExportIcon}
       onClick={() => requestSort(props.sortKey)} active={sortConfig.key === props.sortKey} 
-      direction={sortConfig.key === props.sortKey ? (sortConfig.direction === 'descending' ? 'desc' : 'asc') : 'desc'}>
+      direction={sortConfig.direction}
+    >
       {props.heading}
     </TableSortLabel>
   )
