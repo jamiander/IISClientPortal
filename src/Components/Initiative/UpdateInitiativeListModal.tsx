@@ -33,8 +33,8 @@ export function UpdateInitiativeListModal(props: InitiativeModalProps){
   const companyList = useAppSelector(selectAllCompanies);
   const [initiativeCompanyId, setInitiativeCompanyId] = useState(props.company?.id ?? "-1");
   const [initiativeTitle, setInitiativeTitle] = useState(props.initiative?.title ?? "");
-  const [initiativeTargetDate, setInitiativeTargetDate] = useState<DateInfo>(props.initiative?.targetDate ?? todayInfo);
-  const [initiativeStartDate, setInitiativeStartDate] = useState<DateInfo>(props.initiative?.startDate ?? todayInfo);
+  const [initiativeTargetDate, setInitiativeTargetDate] = useState<DateInfo>();
+  const [initiativeStartDate, setInitiativeStartDate] = useState<DateInfo>();
   const [initiativeTotalItems, setInitiativeTotalItems] = useState(props.initiative?.totalItems ?? NaN);
 
   useEffect(() => {
@@ -96,16 +96,17 @@ export function UpdateInitiativeListModal(props: InitiativeModalProps){
         <div className="p-2 flex justify-between">
           <button id={InitiativeModalIds.submitButton} className={submitButtonStyle} 
             onClick={() => {
-              let initiative : Initiative = {
+              const invalidDate: DateInfo = { day: -1, month: -1, year: -1}
+              const initiative : Initiative = {
                 id: props.initiative?.id ?? uuidv4(),
                 title: initiativeTitle,
-                targetDate: initiativeTargetDate,
-                startDate: initiativeStartDate,
+                targetDate: initiativeTargetDate ?? invalidDate,  //should fail when it gets to validation
+                startDate: initiativeStartDate ?? invalidDate,
                 totalItems: initiativeTotalItems,
                 itemsCompletedOnDate: props.initiative?.itemsCompletedOnDate ?? [],
                 decisions: props.initiative?.decisions ?? []
               }
-              props.Submit(initiative,initiativeCompanyId)
+              props.Submit(initiative,initiativeCompanyId);
             }}> Submit
           </button>
           <button id={InitiativeModalIds.closeButton} className={cancelButtonStyle} onClick={() => props.setInitiativeIsOpen(false)}>Close</button> 

@@ -117,10 +117,10 @@ export const inputStyle = "outline rounded outline-1 p-2 hover:outline-2 focus:o
 export const selectStyle = "outline rounded outline-1 p-2 hover:outline-2 focus:outline-2";
 export const cardHeader = "text-2xl font-semibold mb-4";
 
-export const submitButtonStyle = "rounded h-3/4 max-h-7 w-[90px] mx-2 bg-lime-600 text-white hover:bg-lime-700";
-export const cancelButtonStyle = "rounded h-3/4 max-h-7 w-[90px] mx-2 bg-red-600 text-white hover:bg-red-700";
-export const genericButtonStyle = "outline outline-[#445362] rounded bg-[#21345b] text-white h-10 w-24 transition ease-in-out hover:bg-white hover:text-[#445362]";
-export const yellowButtonStyle = "outline outline-[#445362] h-[40px] w-32 bg-[#FAB947] text-[#445362] rounded-md transition ease-in-out hover:bg-white hover:text-[#445362]";
+export const submitButtonStyle = "rounded h-3/4 max-h-7 w-[90px] mx-2 bg-lime-600 text-white enabled:hover:bg-lime-700 disabled:opacity-75";
+export const cancelButtonStyle = "rounded h-3/4 max-h-7 w-[90px] mx-2 bg-red-600 text-white enabled:hover:bg-red-700 disabled:opacity-75";
+export const genericButtonStyle = "outline outline-[#445362] rounded bg-[#21345b] text-white h-10 w-24 transition ease-in-out enabled:hover:bg-white enabled:hover:text-[#445362] disabled:opacity-75";
+export const yellowButtonStyle = "outline outline-[#445362] h-[40px] w-32 bg-[#FAB947] text-[#445362] rounded-md transition ease-in-out enabled:hover:bg-white enabled:hover:text-[#445362] disabled:opacity-75";
 
 export const defaultRowStyle = "odd:bg-gray-200"
 export const redProbabilityStyle = "bg-red-300";

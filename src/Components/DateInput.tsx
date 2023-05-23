@@ -3,16 +3,18 @@ import { inputStyle } from "../Styles"
 
 interface DateInputProps {
   id: string,
-  date: DateInfo,
-  setDate: (value: React.SetStateAction<DateInfo>) => void,
+  date: DateInfo | undefined,
+  setDate: (value: React.SetStateAction<DateInfo | undefined>) => void,
 }
 
 function AddLeadingZero(num: number){
   return ((num < 10) ? "0" : "") + num.toString();
 }
 
-export function MakeDateString(dateInfo: DateInfo) : string
+export function MakeDateString(dateInfo: DateInfo | undefined) : string
 {
+  if(dateInfo === undefined)
+    return "";
   return dateInfo.year + "-" + AddLeadingZero(dateInfo.month) + "-" + AddLeadingZero(dateInfo.day);
 }
 

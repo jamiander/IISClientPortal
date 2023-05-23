@@ -7,6 +7,7 @@ interface ViewDecisionDataProps {
     company: Company
     initiative: Initiative 
     index: number
+    disabled?: boolean
 }
 
 export function ViewDecisionDataButton(props: ViewDecisionDataProps){
@@ -23,7 +24,7 @@ export function ViewDecisionDataButton(props: ViewDecisionDataProps){
 
   return (
     <div key={props.index} className={'py-1 flex self-end'}>
-      <button id={"viewDecisionDataButton"+props.initiative.id} className={genericButtonStyle + " h-8 w-full mx-2"}
+      <button disabled={props.disabled} id={"viewDecisionDataButton"+props.initiative.id} className={genericButtonStyle + " h-8 w-full mx-2"}
           onClick={() => handleViewDecisionData(props.company, props.initiative)}
       >
           View

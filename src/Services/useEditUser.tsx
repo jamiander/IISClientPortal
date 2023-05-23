@@ -144,13 +144,16 @@ export function useEditUser() : EditUser
 
   function AddEmptyUser(companyId: string)
   {
-    let usersClone: User[] = JSON.parse(JSON.stringify(usersList));
-    let myUuid = UuidV4();
-    let newUser: User = {id: myUuid, email: "", password: "", companyId: companyId, initiativeIds: [], name: "", phoneNumber: "", isAdmin: false, isActive: true}
-    usersClone.unshift(newUser);
-    setUsersList(usersClone);
-    setSearchedKeyword("");
-    EnterEditMode(myUuid,usersClone,true);
+    if(!InEditMode())
+    {
+      let usersClone: User[] = JSON.parse(JSON.stringify(usersList));
+      let myUuid = UuidV4();
+      let newUser: User = {id: myUuid, email: "", password: "", companyId: companyId, initiativeIds: [], name: "", phoneNumber: "", isAdmin: false, isActive: true}
+      usersClone.unshift(newUser);
+      setUsersList(usersClone);
+      setSearchedKeyword("");
+      EnterEditMode(myUuid,usersClone,true);
+    }
   }
 
   function setCurrentInitiativeIds(initId: string, checked: boolean)
