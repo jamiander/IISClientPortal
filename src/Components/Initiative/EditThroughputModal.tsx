@@ -211,7 +211,7 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
           </div>
         <div className="rounded overflow-y-auto max-h-60">
           <TableContainer component={Paper} >
-          <Table className="table-auto w-full rounded-md bg-white overflow-y-auto">
+          <Table className="table-auto w-full outline outline-3 bg-gray-100">
             <TableHead className="outline outline-1">
               <TableRow sx={{
                         borderBottom: "2px solid black",
@@ -221,6 +221,7 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
                             fontFamily: "Arial, Helvetica" 
                           }
                         }}>
+                <TableHeaderStyle>Edit</TableHeaderStyle>
                 <TableHeaderStyle>Date</TableHeaderStyle>
                 <TableHeaderStyle>Items Completed</TableHeaderStyle>
               </TableRow>

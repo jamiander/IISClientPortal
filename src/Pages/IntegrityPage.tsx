@@ -134,11 +134,7 @@ export function IntegrityPage(){
                     fontFamily: "Arial, Helvetica"
                   }
                 }}>
-                  <TableHeaderStyle>Name
-                      {/* <TableSortLabel 
-                      onClick={() => requestSort('companyName')} active={true} direction={sortConfig.direction === 'descending' ? 'desc' : 'asc'}>
-                      </TableSortLabel> */}
-                  </TableHeaderStyle>
+                  <TableHeaderStyle>Name</TableHeaderStyle>
                   <TableHeaderStyle>Email</TableHeaderStyle>
                   <TableHeaderStyle>Password</TableHeaderStyle>
                   <TableHeaderStyle>Phone</TableHeaderStyle>

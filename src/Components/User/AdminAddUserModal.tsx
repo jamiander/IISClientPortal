@@ -122,13 +122,6 @@ export default function AdminAddUserModal(props: AdminAddUserProps){
                       </FormControl>
                     </div>
                   </div>
-                /*props.companies.map((company,index) => {
-                    return (
-                    <Fragment key={index}>
-                        <AdminEditInitiativesList company={company} initiativeIds={initiativeIds} updateInitiativeIds={UpdateInitiativeIds} updateCompanyId={UpdateCompanyId} editable={true} expanded={props.expanded} user={user}/>
-                    </Fragment>
-                    )
-                })*/
                 }
                 <div className="flex w-full justify-between">
                   <button id={AdminAddUserModalIds.saveChangesButton} className={submitButtonStyle} onClick={() => SaveEdit()}>Save</button>
