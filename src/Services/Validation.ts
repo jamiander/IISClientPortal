@@ -11,7 +11,7 @@ export default function ValidateNewInitiative(initiative: Initiative, companyId:
   if (!initiative.title)
     return {success: false, message: "Cannot leave title blank."};
   if(!initiative.totalItems && initiative.totalItems !== 0)
-    return {success: false, message: "The total items must be provided."};
+    return {success: false, message: "Cannot leave total items blank."};
 
   let targetDateValidation = ValidateDate(initiative.targetDate);
   if(!targetDateValidation.success)
