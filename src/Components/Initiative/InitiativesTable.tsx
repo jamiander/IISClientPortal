@@ -2,7 +2,6 @@ import { Fragment, useEffect, useMemo, useState } from "react";
 import { DateInfo, FindItemsRemaining } from "../../Services/CompanyService";
 import { InitiativeFilter } from "../../Services/Filters";
 import { Company, Initiative, IntegrityId, upsertInitiativeInfo } from "../../Store/CompanySlice";
-import { EditInitiativeButton } from "./EditInitiativeButton";
 import { defaultRowStyle, greenProbabilityStyle, inputStyle, redProbabilityStyle, TableHeaderStyle, tooltipStyle, yellowButtonStyle } from "../../Styles";
 import { GenerateProbability } from "../../Services/ProbabilitySimulationService";
 import { DateInput, DateToDateInfo, MakeDate } from "../DateInput";
@@ -447,7 +446,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                             <TableCell><DateInput id={InitiativeTableIds.startDate} date={currentStartDate} setDate={setCurrentStartDate}/></TableCell>
                             <TableCell><DateInput id={InitiativeTableIds.targetDate} date={currentTargetDate} setDate={setCurrentTargetDate}/></TableCell>
                             <TableCell id={InitiativeTableIds.totalItems}>
-                              <Input value={currentTotalItems} onChange={(e) => setCurrentTotalItems(parseInt(e.target.value))}/>
+                              <Input type='number' value={currentTotalItems} onChange={(e) => setCurrentTotalItems(parseInt(e.target.value))}/>
                             </TableCell>
                             <TableCell id={InitiativeTableIds.remainingItems}>{displayItem.itemsRemaining}</TableCell>
                             <TableCell className={tooltipStyle} title={tooltipMessage}>{probability.value === undefined ? "NA" : probability.value + "%"}

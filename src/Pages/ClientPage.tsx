@@ -1,4 +1,4 @@
-import { IconButton, Input, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { Divider, IconButton, Input, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { StyledTextField, TableHeaderStyle, defaultRowStyle, genericButtonStyle, yellowButtonStyle } from "../Styles";
 import { useEffect, useState } from "react";
 import EditIcon from "@mui/icons-material/Edit";
@@ -9,10 +9,11 @@ import { Company, Initiative, selectAllCompanies, upsertCompanyInfo, upsertIniti
 import { enqueueSnackbar } from "notistack";
 import { v4 } from "uuid";
 import ValidateNewInitiative, { ValidateCompany, Validation, ValidationFailedPrefix } from "../Services/Validation";
-import { DateToDateInfo } from "../Components/DateInput";
+import { DateInput, DateToDateInfo, MakeDateString } from "../Components/DateInput";
 import { RadioSet } from "../Components/RadioSet";
 import { CompanyFilter } from "../Services/Filters";
 import { useNavigate } from "react-router-dom";
+import { DateInfo } from "../Services/CompanyService";
 
 export const ClientPageIds = {
   modal: "clientPageModal",
@@ -26,6 +27,8 @@ export const ClientPageIds = {
   deleteButton: "clientPageDeleteButton",
   keywordFilter: "clientPageKeywordFilter",
   table: "clientPageTable",
+  targetDate: "clientPageTargetDate",
+  totalItems: "clientPageTotalItems",
   radioIds: {
     active: "clientPageRadioActive",
     inactive: "clientPageRadioInactive",
@@ -53,7 +56,8 @@ export function ClientPage()
 
   const [currentName, setCurrentName] = useState("");
   const [currentInitiativeTitle, setCurrentInitiativeTitle] = useState("");
-
+  const [currentTargetDate, setCurrentTargetDate] = useState<DateInfo>();
+  const [currentTotalItems, setCurrentTotalItems] = useState<number>();
   const [radioValue,setRadioValue] = useState("active");
 
   useEffect(() => {
@@ -183,15 +187,20 @@ export function ClientPage()
           </div>
         }
         <div className="flex flex-col justify-between">
-          <button disabled={InEditMode()} id={ClientPageIds.addClientButton} className={yellowButtonStyle} onClick={() => HandleAddEmptyClient()}>Add Client</button>
+          <div className="space-x-2 flex flex-wrap">
+            <button disabled={InEditMode()} id={ClientPageIds.addClientButton} className={yellowButtonStyle} onClick={() => HandleAddEmptyClient()}>Add Client</button>
+            <button className={yellowButtonStyle} onClick={() => navigate("/Dashboard")}>Initiatives Page</button>
+          </div>
         </div>
         <div className="col-span-1 py-[2%]">
           <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
           <TableContainer component={Paper}>
             <Table className="table-auto w-full outline outline-3 bg-gray-100">
             <colgroup>
-                <col style={{ width: '7%' }} />
-                <col style={{ width: '17%' }} />
+                <col style={{ width: '10%' }} />
+                <col style={{ width: '20%' }} />
+                <col style={{ width: '20%' }} />
+                <col style={{ width: '20%' }} />
             </colgroup>
               <TableHead className="outline outline-1">
                 <TableRow sx={{
@@ -204,12 +213,9 @@ export function ClientPage()
                 }}>
                   <TableHeaderStyle>Edit Client</TableHeaderStyle>
                   <TableHeaderStyle>Name</TableHeaderStyle>
-                  {state === State.add &&
-                    <TableHeaderStyle>First Initiative Name</TableHeaderStyle>
-                  }
-                  {state !== State.add &&
-                    <TableHeaderStyle>Initiatives</TableHeaderStyle>
-                  }
+                  <TableHeaderStyle>First Initiative Name</TableHeaderStyle>
+                  <TableHeaderStyle>First Initiative Target Completion Date</TableHeaderStyle>
+                  <TableHeaderStyle>First Initiative Total Items</TableHeaderStyle>
                 </TableRow>
               </TableHead>
               <TableBody id={ClientPageIds.table}>
@@ -238,9 +244,17 @@ export function ClientPage()
                         </TableCell>
                         <TableCell><Input id={ClientPageIds.name} value={currentName} onChange={e => setCurrentName(e.target.value)}/></TableCell>
                         {state === State.add &&
-                          <TableCell>
-                            <Input id={ClientPageIds.initiativeTitle} value={currentInitiativeTitle} onChange={e => setCurrentInitiativeTitle(e.target.value)}/>
-                          </TableCell>
+                          <>
+                            <TableCell>
+                              <Input id={ClientPageIds.initiativeTitle} value={currentInitiativeTitle} onChange={e => setCurrentInitiativeTitle(e.target.value)} />
+                            </TableCell>
+                            <TableCell>
+                              <DateInput date={currentTargetDate} setDate={setCurrentTargetDate} id={ClientPageIds.targetDate}></DateInput>
+                            </TableCell>
+                            <TableCell>
+                              <Input type='number' value={currentTotalItems} onChange={e => setCurrentTotalItems(parseInt(e.target.value))}/>
+                            </TableCell>
+                          </>
                         }
                         {state !== State.add &&
                           <TableCell>
@@ -254,16 +268,10 @@ export function ClientPage()
                             <EditIcon />
                           </IconButton>
                         </TableCell>
-                        
                         <TableCell id={ClientPageIds.name}>{displayItem.name}</TableCell>
-                        {state === State.add &&
-                          <TableCell/>
-                        }
-                        {state !== State.add &&
-                          <TableCell>
-                            <button className={genericButtonStyle + " text-sm"} onClick={() => navigate("/Dashboard")}>Initiatives Page</button>
-                          </TableCell>
-                        }
+                        <TableCell id={ClientPageIds.initiativeTitle}>{displayItem.initiatives[0].title}</TableCell>
+                        <TableCell id={ClientPageIds.name}>{displayItem.initiatives[0].targetDate.month + "/" + displayItem.initiatives[0].targetDate.day + "/" + displayItem.initiatives[0].targetDate.year}</TableCell>
+                        <TableCell id={ClientPageIds.name}>{displayItem.initiatives[0].totalItems}</TableCell>
                       </>
                       }
                     </TableRow>
