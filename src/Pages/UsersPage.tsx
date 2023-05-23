@@ -1,6 +1,6 @@
 import { StyledTextField, TableHeaderStyle, defaultRowStyle, yellowButtonStyle } from "../Styles";
 import { useEffect, useRef, useState } from "react";
-import { User, getUserById, selectAllUsers, selectCurrentUserId, upsertUserInfo } from "../Store/UserSlice";
+import { User, getUserById, selectAllUsers, selectCurrentUserId } from "../Store/UserSlice";
 import { Company, IntegrityId, selectAllCompanies } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
 import { Checkbox, IconButton, Input} from "@mui/material";
@@ -16,7 +16,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { useEditUser } from "../Services/useEditUser";
 import { EditUserInitiativesButton } from "../Components/User/EditUserInitiativesButton";
-import { ValidateUser, ValidationFailedPrefix } from "../Services/Validation";
+import { ValidationFailedPrefix } from "../Services/Validation";
 import { enqueueSnackbar } from "notistack";
 import { AdminSelectCompanyModal } from "../Components/User/AdminSelectCompanyModal";
 
@@ -47,7 +47,6 @@ export default function UsersPage(){
   const [displayCompanies, setDisplayCompanies] = useState<Company[]>([]);
   const currentUserId = useAppSelector(selectCurrentUserId);
   const dispatch = useAppDispatch();
-  //const [AdminAddUserModalIsOpen, setAdminAddUserModalIsOpen] = useState(false);
 
   const {
     SetupEditUser,
@@ -111,23 +110,6 @@ export default function UsersPage(){
     }
   }, [allUsers])
 
-  // function SubmitAddUser(user: User): boolean
-  // {
-  //   let isTest = false;
-  //   if((window as any).Cypress)
-  //     isTest = true;
-  //   let validation = ValidateUser(user,usersList);
-  //   if(validation.success)
-  //   {
-  //     dispatch(upsertUserInfo({isTest: isTest, users: [user]}))
-  //     return true;
-  //   }
-  //   else
-  //     enqueueSnackbar(ValidationFailedPrefix + validation.message, {variant: "error"});
-    
-  //   return false;
-  // }
-
   const [isCompanySelectOpen, setIsCompanySelectOpen] = useState(false);
   const [selectedCompanyId, setSelectedCompanyId] = useState("");
 
@@ -172,8 +154,6 @@ export default function UsersPage(){
         {currentUserCompanyId === IntegrityId &&
         <div className="flex flex-col justify-between">
           <button disabled={InEditMode()} id={UsersPageIds.addButton} className={yellowButtonStyle} onClick={() => setIsCompanySelectOpen(true)}>Add User</button>
-            {/*<AdminAddUserModal title="Add User" isOpen={AdminAddUserModalIsOpen} setAdminAddUserModalIsOpen={setAdminAddUserModalIsOpen} companies={displayCompanies} Submit={SubmitAddUser} expanded={false}/>
-            */}
             <AdminSelectCompanyModal isOpen={isCompanySelectOpen} setIsOpen={setIsCompanySelectOpen} companies={allCompanies.filter(c => c.id !== IntegrityId)} companyId={selectedCompanyId} setCompanyId={setSelectedCompanyId} Confirm={ConfirmSelect} Cancel={CancelSelect}/>
         </div>}
         <div className="col-span-1 py-[2%]">
@@ -200,11 +180,7 @@ export default function UsersPage(){
                   }
                 }}>
                   <TableHeaderStyle>Company</TableHeaderStyle>
-                  <TableHeaderStyle>Name
-                    {/* <TableSortLabel 
-                    onClick={() => requestSort('companyName')} active={true} direction={sortConfig.direction === 'descending' ? 'desc' : 'asc'}>
-                    </TableSortLabel> */}
-                  </TableHeaderStyle>
+                  <TableHeaderStyle>Name</TableHeaderStyle>
                   <TableHeaderStyle>Email</TableHeaderStyle>
                   <TableHeaderStyle>Password</TableHeaderStyle>
                   <TableHeaderStyle>Phone</TableHeaderStyle>

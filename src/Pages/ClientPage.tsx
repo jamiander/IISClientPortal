@@ -1,4 +1,4 @@
-import { Checkbox, IconButton, Input, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { IconButton, Input, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { StyledTextField, TableHeaderStyle, defaultRowStyle, genericButtonStyle, yellowButtonStyle } from "../Styles";
 import { useEffect, useState } from "react";
 import EditIcon from "@mui/icons-material/Edit";
@@ -9,12 +9,10 @@ import { Company, Initiative, selectAllCompanies, upsertCompanyInfo, upsertIniti
 import { enqueueSnackbar } from "notistack";
 import { v4 } from "uuid";
 import ValidateNewInitiative, { ValidateCompany, Validation, ValidationFailedPrefix } from "../Services/Validation";
-import { UpdateInitiativeListModal } from "../Components/Initiative/UpdateInitiativeListModal";
-import { DateInfo } from "../Services/CompanyService";
-import { DateToDateInfo, MakeDateInfo } from "../Components/DateInput";
+import { DateToDateInfo } from "../Components/DateInput";
 import { RadioSet } from "../Components/RadioSet";
 import { CompanyFilter } from "../Services/Filters";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export const ClientPageIds = {
   modal: "clientPageModal",
@@ -247,14 +245,6 @@ export function ClientPage()
                           <TableCell>
                           </TableCell>
                         }
-                        {/*
-                        <TableCell><Input id={ClientPageIds.email} value={currentEmail} onChange={e => setCurrentEmail(e.target.value)}/></TableCell>
-                        <TableCell><Input id={ClientPageIds.password} value={currentPassword} onChange={e => setCurrentPassword(e.target.value)}/></TableCell>
-                        <TableCell><Input id={ClientPageIds.phone} value={currentPhone} onChange={e => setCurrentPhone(e.target.value)}/></TableCell>
-                        <TableCell><Checkbox id={ClientPageIds.isAdmin} checked={currentIsAdmin} onChange={e => setCurrentIsAdmin(e.target.checked)}/>Admin</TableCell>
-                        <TableCell><Checkbox id={ClientPageIds.isActive} checked={currentIsActive} onChange={e => setCurrentIsActive(e.target.checked)}/>Active</TableCell>
-                        <TableCell id={ClientPageIds.initiativeIds}></TableCell>
-                        */}
                       </>
                       : 
                       <>
@@ -273,14 +263,6 @@ export function ClientPage()
                             <button className={genericButtonStyle + " text-sm"} onClick={() => navigate("/Dashboard")}>Initiatives Page</button>
                           </TableCell>
                         }
-                        {/*
-                        <TableCell id={ClientPageIds.email}>{displayItem.email}</TableCell>
-                        <TableCell id={ClientPageIds.password}>{displayItem.password}</TableCell>
-                        <TableCell id={ClientPageIds.phone}>{displayItem.phoneNumber}</TableCell>
-                        <TableCell id={ClientPageIds.isAdmin}>{displayItem.isAdmin ? "Admin" : "User"}</TableCell>
-                        <TableCell id={ClientPageIds.isActive}>{displayItem.isActive ? "Active" : "Inactive"}</TableCell>
-                        <TableCell id={ClientPageIds.initiativeIds}><EditUserInitiativesButton user={displayItem} allCompanies={sortedCompanies} SubmitUserData={SubmitUserData}/></TableCell>
-                        */}
                       </>
                       }
                     </TableRow>
