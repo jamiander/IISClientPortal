@@ -283,7 +283,7 @@ export default function InitiativesTable(props: InitiativesProps) {
         {
           let saveMessage = "Changes have been saved.";
           if(state === stateEnum.add)
-            saveMessage = "New client added!";
+            saveMessage = "New initiative added!";
           
           dispatch(upsertInitiativeInfo({isTest: isTest, initiative: newInitiative, companyId: companyToEditId}));
 
@@ -324,23 +324,6 @@ export default function InitiativesTable(props: InitiativesProps) {
         EnterEditMode(myUuid,companyId,displayClone,true);
       }
     }
-  }
-
-  function ConfirmSelect()
-  {
-    const matchingCompany = props.companyList.find(c => c.id === companyToEditId);
-    if(matchingCompany)
-    {
-      AddEmptyInitiative(companyToEditId);
-      setIsCompanySelectOpen(false);
-    }
-    else
-      enqueueSnackbar(ValidationFailedPrefix + "A valid company must be selected.", {variant: "error"})
-  }
-
-  function CancelSelect()
-  {
-    setIsCompanySelectOpen(false);
   }
 
   const userCompanyId = currentUser?.companyId;
@@ -424,10 +407,10 @@ export default function InitiativesTable(props: InitiativesProps) {
                           isEdit ?
                           <>
                             <TableCell id={InitiativeTableIds.companyName}>
-                            {userCompanyId !== IntegrityId &&
+                            {(userCompanyId !== IntegrityId || state !== stateEnum.add) &&
                               <>{displayItem.company.name}</>
                             }
-                            {userCompanyId === IntegrityId &&
+                            {(userCompanyId === IntegrityId && state === stateEnum.add) &&
                               <>
                                 <FormControl fullWidth>
                                   <InputLabel id="company-select-label">Select Company</InputLabel>
