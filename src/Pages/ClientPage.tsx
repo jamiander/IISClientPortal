@@ -60,6 +60,7 @@ export function ClientPage()
     const companiesClone: Company[] = CompanyFilter(allCompanies,radioValue);
     companiesClone.sort((a: Company, b: Company) => a.name.toUpperCase() > b.name.toUpperCase() ? 1 : -1);
     setDisplayCompanies(companiesClone);
+    LeaveEditMode();
   },[allCompanies, radioValue]);
 
   function InEditMode()

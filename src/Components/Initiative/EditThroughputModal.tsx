@@ -3,7 +3,7 @@ import { DateInfo, ThroughputData } from "../../Services/CompanyService";
 import { Company, Initiative } from "../../Store/CompanySlice";
 import { cancelButtonStyle, defaultRowStyle, inputStyle, modalStyle, submitButtonStyle, TableHeaderStyle, tooltipStyle } from "../../Styles";
 import SelectCompanyAndInitiative from "./SelectCompanyAndInitiative";
-import { CompareDateInfos, DateInput, EqualDateInfos } from "../DateInput";
+import { CompareDateInfos, DateInput, DateToDateInfo, EqualDateInfos } from "../DateInput";
 import Modal from "react-modal";
 import Table from '@mui/material/Table';
 import TableContainer from '@mui/material/TableContainer';
@@ -50,12 +50,11 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
   const [selectedCompany, setSelectedCompany] = useState<Company>();
   const [selectedInitiativeIndex, setSelectedInitiativeIndex] = useState(-1);
   const [dateWarning, setDateWarning] = useState("");
-  const today = new Date();
-  const todayInfo: DateInfo = {month: today.getMonth()+1, day: today.getDate(), year: today.getFullYear()}
+  const todayInfo: DateInfo = DateToDateInfo(new Date);
   const [entryDate, setEntryDate] = useState<DateInfo>(todayInfo);
   const [itemsCompleted, setItemsCompleted] = useState(-1);
   const [currentItems, setCurrentItems] = useState<number>();
-  const [currentDate, setCurrentDate] = useState<DateInfo>(todayInfo);
+  const [currentDate, setCurrentDate] = useState<DateInfo>();
   const [state, setState] = useState(stateEnum.start);
   const [throughputToEdit, setThroughputToEdit] = useState<ThroughputData>();
   const [throughputList, setThroughputList] = useState<ThroughputData[]>([]);
