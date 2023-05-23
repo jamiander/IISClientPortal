@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useMemo, useState } from "react";
 import { DateInfo, FindItemsRemaining } from "../../Services/CompanyService";
 import { InitiativeFilter } from "../../Services/Filters";
-import { Company, Initiative, IntegrityId } from "../../Store/CompanySlice";
+import { Company, Initiative, IntegrityId, upsertInitiativeInfo } from "../../Store/CompanySlice";
 import { EditInitiativeButton } from "./EditInitiativeButton";
 import { defaultRowStyle, greenProbabilityStyle, inputStyle, redProbabilityStyle, TableHeaderStyle, tooltipStyle, yellowButtonStyle } from "../../Styles";
 import { GenerateProbability } from "../../Services/ProbabilitySimulationService";
@@ -28,7 +28,7 @@ import { AdminSelectCompanyModal } from "../User/AdminSelectCompanyModal";
 import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
 import { selectCurrentUser } from "../../Store/UserSlice";
 import { enqueueSnackbar } from "notistack";
-import { ValidationFailedPrefix } from "../../Services/Validation";
+import ValidateNewInitiative, { ValidationFailedPrefix } from "../../Services/Validation";
 
 export const InitiativeTableIds = {
   totalItems: 'initiativeTableTotalItems',
@@ -139,6 +139,7 @@ export default function InitiativesTable(props: InitiativesProps) {
       });
     }
     setDisplayItems(displayList);
+    LeaveEditMode();
     //ResetPageNumber();
   }
 
@@ -219,7 +220,7 @@ export default function InitiativesTable(props: InitiativesProps) {
   const [currentTargetDate, setCurrentTargetDate] = useState<DateInfo>();
   const [currentTotalItems, setCurrentTotalItems] = useState(1);
   //const [editedCompanies, setEditedCompanies] = useState(props.companyList);
-  const [companyToEditId, setCompanyToEditId] = useState(IntegrityId);
+  const [companyToEditId, setCompanyToEditId] = useState("");
   const [isCompanySelectOpen, setIsCompanySelectOpen] = useState(false);
   
   function InEditMode()
@@ -254,8 +255,48 @@ export default function InitiativesTable(props: InitiativesProps) {
 
   function SaveEdit()
   {
-    //submit
-    LeaveEditMode();
+    let isTest = false;
+    if((window as any).Cypress)
+      isTest = true;
+
+    const matchingCompany = props.companyList.find(c => c.id === companyToEditId);
+    if(matchingCompany)
+    {
+      let matchingInit = matchingCompany.initiatives.find(i => i.id === initToEditId) ?? displayItems.find(i => i.id === initToEditId);
+      if(matchingInit)
+      {
+        const invalidDate: DateInfo = {
+          day: -1,
+          month: -1,
+          year: -1
+        }
+        let newInitiative: Initiative = {
+          id: matchingInit.id,
+          title: currentTitle,
+          targetDate: currentTargetDate ?? invalidDate,
+          startDate: currentStartDate ?? invalidDate,
+          totalItems: currentTotalItems,
+          itemsCompletedOnDate: matchingInit.itemsCompletedOnDate,
+          decisions: matchingInit.decisions
+        }
+
+        const validation = ValidateNewInitiative(newInitiative, companyToEditId, props.companyList);
+        if(validation.success)
+        {
+          let saveMessage = "Changes have been saved.";
+          if(state === stateEnum.add)
+            saveMessage = "New client added!";
+            
+          
+          dispatch(upsertInitiativeInfo({isTest: isTest, initiative: newInitiative, companyId: companyToEditId}));
+
+          LeaveEditMode();
+          enqueueSnackbar(saveMessage, {variant: "success"});
+        }
+        else
+          enqueueSnackbar(ValidationFailedPrefix + validation.message, {variant: "error"});
+      }
+    }
   }
 
   function CancelEdit()
@@ -310,14 +351,14 @@ export default function InitiativesTable(props: InitiativesProps) {
   return (
     <>
       <div className="grid grid-cols-1 w-full h-auto">
-        <div className="col-span-1 h-[4vh] px-2 pb-[2%] space-x-2 mb-[2%]">
+        <div className="col-span-1 h-[4vh] pb-[2%] space-x-4 mb-[2%]">
           <input id={InitiativeTableIds.companyNameFilter} className={inputStyle} type={'text'} placeholder="Filter by Company" onChange={(e) => setSearchedComp(e.target.value)} />
           <input id={InitiativeTableIds.initiativeTitleFilter} className={inputStyle} type={'text'} placeholder="Filter by Title" onChange={(e) => setSearchedInit(e.target.value)} />
         </div>
-        <div className="flex flex-col justify-between">
+        <div className="flex flex-col justify-between mb-[2%]">
           {userCompanyId !== IntegrityId &&
             <>
-              <button disabled={InEditMode()} id={InitiativeTableIds.addButton} className={yellowButtonStyle} onClick={() => AddEmptyInitiative(companyToEditId)}>Add Initiative</button>
+              <button disabled={InEditMode()} id={InitiativeTableIds.addButton} className={yellowButtonStyle} onClick={() => userCompanyId ? AddEmptyInitiative(userCompanyId) : ""}>Add Initiative</button>
             </>
           }
           {userCompanyId === IntegrityId &&

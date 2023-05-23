@@ -70,9 +70,6 @@ export default function ManageInitiativesDisplay() {
       <div className="w-full flex justify-between">
         <p className="text-3xl text-white">Initiatives</p>
         <div className="space-x-2 flex flex-wrap">
-          <button onClick={() => setAddInitiativeIsOpen(true)} className={yellowButtonStyle}>
-            Add Initiative
-          </button>
           <button onClick={() => setUploadModalIsOpen(true)} className={yellowButtonStyle}>
             Upload Data File
           </button>
