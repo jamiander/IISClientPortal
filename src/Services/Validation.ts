@@ -8,8 +8,10 @@ export type Validation = {message: string, success: boolean}
 
 export default function ValidateNewInitiative(initiative: Initiative, companyId: string, allCompanies: Company[]) : Validation
 {
-  if (!initiative.title || !initiative.targetDate.month || !initiative.targetDate.day || !initiative.targetDate.year || (!initiative.totalItems && initiative.totalItems !== 0))
-    return {success: false, message: "Cannot leave any fields blank."};
+  if (!initiative.title)
+    return {success: false, message: "Cannot leave title blank."};
+  if(!initiative.totalItems && initiative.totalItems !== 0)
+    return {success: false, message: "The total items must be provided."};
 
   let targetDateValidation = ValidateDate(initiative.targetDate);
   if(!targetDateValidation.success)
@@ -39,19 +41,19 @@ export default function ValidateNewInitiative(initiative: Initiative, companyId:
 export function ValidateDate(date: DateInfo) : Validation
 {
   if(date === null || date === undefined)
-    return {success: false, message: "A date was not provided"};
+    return {success: false, message: "A date was not provided."};
   
   let month = date.month;
   if(!month || month < 1 || month > 12 || Number.isNaN(month))
-    return {success: false, message: "Month must be between 1 and 12"};
+    return {success: false, message: "A date must have a month between 1 and 12."};
 
   let day = date.day;
   if(!day || day < 1 || day > 31 || Number.isNaN(day))
-    return {success: false, message: "Day must be between 1 and 31"};
+    return {success: false, message: "A date must have a day between 1 and 31."};
 
   let year = date.year;    //TODO: there's probably a better way to validate years
   if(!year || year < 1900 || year > 2100 || Number.isNaN(year))
-    return {success: false, message: "Year must be between 1900 and 2100"};
+    return {success: false, message: "A date must have a year between 1900 and 2100."};
 
   return {success: true, message: "Date is all good!"}
 }

@@ -18,19 +18,18 @@ import { ViewDecisionDataButton } from "./ViewDecisionDataButton";
 import Pagination from "@mui/material/Pagination";
 import ImportExportIcon from '@mui/icons-material/ImportExport';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import { IconButton, Input } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { v4 } from "uuid";
-import { AdminSelectCompanyModal } from "../User/AdminSelectCompanyModal";
 import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
 import { selectCurrentUser } from "../../Store/UserSlice";
 import { enqueueSnackbar } from "notistack";
 import ValidateNewInitiative, { ValidationFailedPrefix } from "../../Services/Validation";
 
 export const InitiativeTableIds = {
+  table: "initiativeTable",
   totalItems: 'initiativeTableTotalItems',
   remainingItems: 'initiativesTableRemainingItems',
   initiativeTitle: 'initiativesTableTitle',
@@ -219,7 +218,6 @@ export default function InitiativesTable(props: InitiativesProps) {
   const [currentStartDate, setCurrentStartDate] = useState<DateInfo>();
   const [currentTargetDate, setCurrentTargetDate] = useState<DateInfo>();
   const [currentTotalItems, setCurrentTotalItems] = useState(1);
-  //const [editedCompanies, setEditedCompanies] = useState(props.companyList);
   const [companyToEditId, setCompanyToEditId] = useState("");
   const [isCompanySelectOpen, setIsCompanySelectOpen] = useState(false);
   
@@ -286,7 +284,6 @@ export default function InitiativesTable(props: InitiativesProps) {
           let saveMessage = "Changes have been saved.";
           if(state === stateEnum.add)
             saveMessage = "New client added!";
-            
           
           dispatch(upsertInitiativeInfo({isTest: isTest, initiative: newInitiative, companyId: companyToEditId}));
 
@@ -352,8 +349,8 @@ export default function InitiativesTable(props: InitiativesProps) {
     <>
       <div className="grid grid-cols-1 w-full h-auto">
         <div className="col-span-1 h-[4vh] pb-[2%] space-x-4 mb-[2%]">
-          <input id={InitiativeTableIds.companyNameFilter} className={inputStyle} type={'text'} placeholder="Filter by Company" onChange={(e) => setSearchedComp(e.target.value)} />
-          <input id={InitiativeTableIds.initiativeTitleFilter} className={inputStyle} type={'text'} placeholder="Filter by Title" onChange={(e) => setSearchedInit(e.target.value)} />
+          <input id={InitiativeTableIds.companyNameFilter} className={inputStyle} type={'text'} placeholder="Filter by Company" value={searchedComp} onChange={(e) => setSearchedComp(e.target.value)} />
+          <input id={InitiativeTableIds.initiativeTitleFilter} className={inputStyle} type={'text'} placeholder="Filter by Title" value={searchedInit} onChange={(e) => setSearchedInit(e.target.value)} />
         </div>
         <div className="flex flex-col justify-between mb-[2%]">
           {userCompanyId !== IntegrityId &&
@@ -414,7 +411,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                   <TableHeaderStyle>Edit</TableHeaderStyle>
                 </TableRow>
               </TableHead>
-              <TableBody>
+              <TableBody id={InitiativeTableIds.table}>
                 {currentItems.map((displayItem, index) => {
                   let probability = { value: displayItem.probabilityValue, status: displayItem.probabilityStatus };
                   let healthIndicator = getHealthIndicator(probability.value);
@@ -447,7 +444,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                             <TableCell><DateInput id={InitiativeTableIds.startDate} date={currentStartDate} setDate={setCurrentStartDate}/></TableCell>
                             <TableCell><DateInput id={InitiativeTableIds.targetDate} date={currentTargetDate} setDate={setCurrentTargetDate}/></TableCell>
                             <TableCell id={InitiativeTableIds.totalItems}>
-                              <Input value={currentTotalItems} onChange={(e) => setCurrentTotalItems(parseInt(e.target.value))}/>
+                              <Input type="number" value={currentTotalItems} onChange={(e) => setCurrentTotalItems(parseInt(e.target.value))}/>
                             </TableCell>
                             <TableCell id={InitiativeTableIds.remainingItems}>{displayItem.itemsRemaining}</TableCell>
                             <TableCell className={tooltipStyle} title={tooltipMessage}>{probability.value === undefined ? "NA" : probability.value + "%"}

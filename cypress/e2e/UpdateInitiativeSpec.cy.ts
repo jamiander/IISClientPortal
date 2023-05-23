@@ -17,7 +17,6 @@ describe('update initiative spec', () => {
   const consts = TestConstants;
   const failMessage = consts.validationFailedMessage;
   const snackbarId = consts.snackbarId;
-  const modalIds = consts.initiativeModalIds;
   const radioIds = consts.initiativeDisplayRadioIds;
   const tableIds = consts.initiativeTableIds;
   const loginIds = consts.loginPageIds;
@@ -33,66 +32,67 @@ describe('update initiative spec', () => {
 
     cy.get(radioIds.all).click();
     cy.get(tableIds.companyNameFilter).clear().type(init.companyName);
-    cy.get('table').contains(init.companyName);
-    cy.get('#editInitiativeButton0').click();
+    cy.get(tableIds.table).contains(init.companyName).parent().within(() => {
+      cy.get(tableIds.editButton).click();
+    });
 
-    cy.get(modalIds.title).clear().type(init.title);
-    cy.get(modalIds.startDate).clear().type(init.startDate);
-    cy.get(modalIds.targetDate).clear().type(init.targetDate);
-    cy.get(modalIds.totalItems).clear().type(init.totalItems);
+    cy.get(tableIds.initiativeTitle).clear().type(init.title);
+    cy.get(tableIds.startDate).clear().type(init.startDate);
+    cy.get(tableIds.targetDate).clear().type(init.targetDate);
+    cy.get(tableIds.totalItems).clear().type(init.totalItems);
   });
 
   specify('update an initiative', () => {
-    cy.get(modalIds.submitButton).click();
+    cy.get(tableIds.saveChangesButton).click();
     cy.wait(500);
     cy.get(radioIds.all).click();
     cy.get(tableIds.companyNameFilter).clear().type(init.companyName);
-    cy.get('table').contains(init.title);
+    cy.get(tableIds.table).should('contain',init.title);
   })
 
   specify('cannot update with blank fields', () => {
-    cy.get(modalIds.title).clear();
-    cy.get(modalIds.submitButton).click();
+    cy.get(tableIds.initiativeTitle).clear();
+    cy.get(tableIds.saveChangesButton).click();
     cy.get(snackbarId).should('contain',failMessage);
-    cy.get(modalIds.title).type(init.title);
+    cy.get(tableIds.initiativeTitle).type(init.title);
 
-    cy.get(modalIds.startDate).clear();
-    cy.get(modalIds.submitButton).click();
+    cy.get(tableIds.startDate).clear();
+    cy.get(tableIds.saveChangesButton).click();
     cy.wait(snackbarWaitTime);
     cy.get(snackbarId).should('contain',failMessage);
-    cy.get(modalIds.startDate).type(init.startDate);
+    cy.get(tableIds.startDate).type(init.startDate);
 
-    cy.get(modalIds.targetDate).clear();
-    cy.get(modalIds.submitButton).click();
+    cy.get(tableIds.targetDate).clear();
+    cy.get(tableIds.saveChangesButton).click();
     cy.wait(snackbarWaitTime);
     cy.get(snackbarId).should('contain',failMessage);
-    cy.get(modalIds.targetDate).type(init.targetDate);
+    cy.get(tableIds.targetDate).type(init.targetDate);
 
-    cy.get(modalIds.totalItems).clear();
-    cy.get(modalIds.submitButton).click();
+    cy.get(tableIds.totalItems).clear();
+    cy.get(tableIds.saveChangesButton).click();
     cy.wait(snackbarWaitTime);
     cy.get(snackbarId).should('contain',failMessage);
   })
 
   specify('cannot have a target date before a start date', () => {
-    cy.get(modalIds.startDate).clear().type("2023-04-20");
-    cy.get(modalIds.targetDate).clear().type("2023-04-19");
+    cy.get(tableIds.startDate).clear().type("2023-04-20");
+    cy.get(tableIds.targetDate).clear().type("2023-04-19");
 
-    cy.get(modalIds.submitButton).click();
-    cy.get(snackbarId).contains(failMessage);
+    cy.get(tableIds.saveChangesButton).click();
+    cy.get(snackbarId).should('contain',failMessage);
   })
 
   specify('cannot rename an initative the name of another initiative within that company', () => {
-    cy.get(modalIds.title).clear().type(existingInit.title); //TODO: figure out how to get an existing init for this company
+    cy.get(tableIds.initiativeTitle).clear().type(existingInit.title); //TODO: figure out how to get an existing init for this company
 
-    cy.get(modalIds.submitButton).click();
+    cy.get(tableIds.saveChangesButton).click();
 
-    cy.get(snackbarId).contains(failMessage);
+    cy.get(snackbarId).should('contain',failMessage);
   })
 
-  specify('close button closes the modal', () => {
-    cy.get(modalIds.closeButton).click();
-    cy.get(modalIds.modal).should('not.exist');
+  specify('cancel button does not save changes', () => {
+    cy.get(tableIds.cancelChangesButton).click();
+    cy.get(tableIds.table).should('not.contain',init.title);
   })
 })
 
