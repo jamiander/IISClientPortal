@@ -40,14 +40,14 @@ export default function LoginPage(){
     <div className="m-[2%] grid grid-cols-4">
       <div className="col-span-1">
 
-        <p className="text-5xl mb-5">Login</p>
+        <p className="text-5xl text-[#21345b] mb-5">Login</p>
 
-        <p className='my-2'>Email</p>
+        <p className='my-2 text-[#21345b]'>Email</p>
         <input id={LoginPageIds.email} autoFocus value={userEmail} onChange={(e)=>setUserEmail(e.target.value)} onKeyDown={(e)=> {if (e.key === 'Enter') Login()}}
         className={selectStyle}/>
 
         <div className="flex my-2 space-x-12">
-          <p className="">Password</p>
+          <p className="text-[#21345b]">Password</p>
           <div className="flex">
             <label>
               <input type='checkbox' className='mr-2' onChange={togglePasswordVisibility}/>
@@ -70,7 +70,7 @@ export default function LoginPage(){
 
       </div>
 
-      <div className="col-span-3 w-auto h-fit py-6 px-5 rounded-md bg-[#2ed7c3] m-5">
+      <div className="col-span-3 w-auto h-fit py-6 px-5 rounded-md bg-[#69D5C3] m-5">
         <p className="text-center text-4xl">Welcome to the Integrity Inspired Solutions Client Portal!</p>
         <p className="text-center text-xl mt-2">To view the information on your project, please log in.</p>
         <p className="w-full text-center text-xl">

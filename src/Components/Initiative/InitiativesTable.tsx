@@ -400,7 +400,8 @@ export default function InitiativesTable(props: InitiativesProps) {
                         borderBottom: "1px solid black",
                         "& td": {
                           fontSize: "1.1rem",
-                          fontFamily: "Arial, Helvetica"
+                          fontFamily: "Arial, Helvetica",
+                          color: "#21345b"
                         }
                       }}>
                         {

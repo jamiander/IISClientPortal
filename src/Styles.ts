@@ -12,7 +12,7 @@ export const modalStyle = {
     bottom: 'auto',
     marginRight: '-50%',
     transform: 'translate(-50%, -50%)',
-    outline : '3px solid #2ed7c3',
+    outline : '3px solid #879794',
   }
 }
 
@@ -38,26 +38,26 @@ export const TableHeaderStyle =
   styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
       backgroundColor: theme.palette.common.white,
-      color: theme.palette.common.black,
+      color: '#21345b'
     }
   })); 
 
   export const Item = styled(Paper)(() => ({
-    backgroundColor: '#98d6a9',
+    backgroundColor: '#E4E1E5',
     padding: 8,
     textAlign: 'center',
     color: 'black',
-    elevation: 6,
+    elevation: 8,
   }));
 
   export const UserItem = styled(Paper)(() => ({
-    backgroundColor: '#98d6a9',
+    backgroundColor: '#E4E1E5',
     padding: 2,
     marginBottom: 6,
     marginTop: 1,
     textAlign: 'center',
     color: 'black',
-    elevation: 3,
+    elevation: 8,
     width: "100%",
     marginLeft: 4
   }));
@@ -76,8 +76,8 @@ export const TableHeaderStyle =
   export const StyledTextField = 
   styled(TextField)(() => ({
     ".MuiInputBase-input.Mui-disabled": {
-      WebkitTextFillColor: "#828282",
-      color: "#828282"
+      WebkitTextFillColor: "#65665E",
+      color: "#65665E"
     },
     marginTop: 5,
     marginBottom: 5,
@@ -88,8 +88,8 @@ export const TableHeaderStyle =
   export const UserTextField = 
   styled(TextField)(() => ({
     ".MuiInputBase-input.Mui-disabled": {
-      WebkitTextFillColor: "#828282",
-      color: "#828282"
+      WebkitTextFillColor: "#65665E",
+      color: "#65665E"
     },
     marginTop: 5,
     marginBottom: 5,

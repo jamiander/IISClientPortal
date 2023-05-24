@@ -33,7 +33,7 @@ function App() {
   if (isLoggedIn()) span = 'col-span-4 mr-1'; else span = 'col-span-5 mx-1'
   
   return (
-    <div className='grid grid-cols-5 gap-[.5vh] bg-[#2ed7c3]'>
+    <div className='grid grid-cols-5 gap-[.7vh] bg-[#ebeff2]'>
       <div className='col-span-5 bg-[#E4E1E5] h-fit mt-1 mx-1 py-1'><Header/></div>
       <div className='contents col-span-5 bg-white mx-1'>
         {

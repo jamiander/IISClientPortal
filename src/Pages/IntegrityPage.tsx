@@ -93,10 +93,10 @@ export function IntegrityPage(){
 
   return (
     <>
-      <div className="flex col-span-4 bg-[#2ed7c3] py-6 px-5">
+      <div className="flex col-span-4 bg-[#69D5C3] py-6 px-5">
         <div className="w-full flex justify-between">
           <div className="space-y-2 w-1/2">
-            <p className="text-5xl font-bold w-full">Integrity User Management</p>
+            <p className="text-5xl text-[#21345b] font-bold w-full">Integrity User Management</p>
           </div>
         </div>
       </div>
@@ -151,7 +151,8 @@ export function IntegrityPage(){
                       borderBottom: "1px solid black",
                       "& td": {
                         fontSize: "1.1rem",
-                        fontFamily: "Arial, Helvetica"
+                        fontFamily: "Arial, Helvetica",
+                        color: "#21345b"
                       }
                     }}
                       key={key}

@@ -196,7 +196,7 @@ export default function DecisionDataModal(props: DecisionDataProps) {
         fullWidth
         maxWidth={false}
         >
-          <div className="flex col-span-4 bg-[#2ed7c3] rounded-md py-6 px-5">
+          <div className="flex col-span-4 bg-[#69D5C3] rounded-md py-6 px-5">
             <div className="w-full flex justify-between">
               <div className="space-y-2 w-1/2">
                 <p className="text-5xl font-bold w-full">{props.company.name}</p>
