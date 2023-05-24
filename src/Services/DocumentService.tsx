@@ -155,12 +155,10 @@ export async function UploadDocument(request: UploadDocumentRequest) : Promise<U
     const blobService = new BlobServiceClient(uploadUrl);
     const containerClient: ContainerClient = blobService.getContainerClient(containerName);
     const blobClient = containerClient.getBlockBlobClient(request.documentId+"."+file.name.split(".").at(-1));
-    const options = { blobHTTPHeaders: { blobContentType: file.type }}
-    
-    await blobClient.setTags({companyId: request.companyId});
+    const options = { blobHTTPHeaders: { blobContentType: file.type }};
 
     await blobClient.uploadData(file, options);
-  
+    await blobClient.setTags({companyId: request.companyId});
   }
   catch (e)
   {
