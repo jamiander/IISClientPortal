@@ -157,8 +157,8 @@ describe("update admin user spec", () => {
 describe('add non-Integrity user as Integrity', () => {
 
   const pageIds = consts.usersPageIds;
-  const company = MBPICompany;
-  const company2 = StaplesCompany;
+  const editedCompany = MBPICompany;
+  const company = StaplesCompany;
 
   beforeEach(() => {
     cy.visit('http://localhost:3000/Login');
@@ -174,7 +174,7 @@ describe('add non-Integrity user as Integrity', () => {
     cy.get(pageIds.password).type(user.password);   
     cy.get(pageIds.selectCompany).parent()
       .click()
-      .get(`ul > li[data-value="${company2.id}"]`)
+      .get(`ul > li[data-value="${company.id}"]`)
       .click();
     cy.get(pageIds.saveChangesButton).click();
     cy.wait(500);
@@ -191,14 +191,14 @@ describe('add non-Integrity user as Integrity', () => {
   specify("update a user's company", () => {
     cy.get(pageIds.selectCompany).parent()
       .click()
-      .get(`ul > li[data-value="${company.id}"]`)
+      .get(`ul > li[data-value="${editedCompany.id}"]`)
       .click();
     cy.get(pageIds.saveChangesButton).click();
     cy.wait(500);
-    cy.get(pageIds.keywordFilter).clear().type(user.email);
+    cy.get(pageIds.keywordFilter).clear().type(editedUser.email);
     cy.get(pageIds.table).children().last().within(() => {
       cy.get(pageIds.email).contains(editedUser.email).parent().within(($row) => {
-        cy.wrap($row).should('contain',company.id)
+        cy.wrap($row).should('contain',editedCompany.name);
       });
     })
   })
