@@ -44,7 +44,7 @@ describe('add company spec (as Integrity admin)', () => {
 
   specify('add new company', () => {
     cy.get(pageIds.saveClientChangesButton).click();
-
+    cy.get(pageIds.table).should('contain',company.name);
     cy.get(pageIds.saveClientChangesButton).should('not.exist');
   })
 

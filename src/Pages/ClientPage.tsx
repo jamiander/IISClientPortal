@@ -257,8 +257,11 @@ export function ClientPage()
                           </>
                         }
                         {state !== State.add &&
-                          <TableCell>
-                          </TableCell>
+                          <>
+                            <TableCell></TableCell>
+                            <TableCell></TableCell>
+                            <TableCell></TableCell>
+                          </>
                         }
                       </>
                       : 
@@ -269,9 +272,9 @@ export function ClientPage()
                           </IconButton>
                         </TableCell>
                         <TableCell id={ClientPageIds.name}>{displayItem.name}</TableCell>
-                        <TableCell id={ClientPageIds.initiativeTitle}>{displayItem.initiatives[0].title}</TableCell>
-                        <TableCell id={ClientPageIds.name}>{displayItem.initiatives[0].targetDate.month + "/" + displayItem.initiatives[0].targetDate.day + "/" + displayItem.initiatives[0].targetDate.year}</TableCell>
-                        <TableCell id={ClientPageIds.name}>{displayItem.initiatives[0].totalItems}</TableCell>
+                        <TableCell id={ClientPageIds.initiativeTitle}>{displayItem.initiatives.at(0)?.title}</TableCell>
+                        <TableCell id={ClientPageIds.name}>{displayItem.initiatives.at(0) !== undefined ? (displayItem.initiatives.at(0)!.targetDate.month + "/" + displayItem.initiatives.at(0)!.targetDate.day + "/" + displayItem.initiatives.at(0)!.targetDate.year) : ""}</TableCell>
+                        <TableCell id={ClientPageIds.name}>{displayItem.initiatives.at(0)?.totalItems}</TableCell>
                       </>
                       }
                     </TableRow>
