@@ -33,6 +33,7 @@ export const InitiativeTableIds = {
   remainingItems: 'initiativesTableRemainingItems',
   initiativeTitle: 'initiativesTableTitle',
   companyName: 'initiativesTableCompanyName',
+  companySelect: "initiativesTableCompanySelect",
   startDate: "initiativesTableStartDate",
   targetDate: "initiativesTableTargetDate",
   initiativeTitleFilter: "initiativesTableFilterTitle",
@@ -413,7 +414,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                               <>
                                 <FormControl fullWidth>
                                   <InputLabel id="company-select-label">Select Company</InputLabel>
-                                  <Select id={""} labelId="company-select-label" label="Select company" value={companyToEditId} onChange={(e) => setCompanyToEditId(e.target.value)}>
+                                  <Select id={InitiativeTableIds.companySelect} labelId="company-select-label" label="Select company" value={companyToEditId} onChange={(e) => setCompanyToEditId(e.target.value)}>
                                     {
                                       props.companyList.map((company,index) => {
                                         return (
@@ -428,18 +429,16 @@ export default function InitiativesTable(props: InitiativesProps) {
                               </>
                             }
                             </TableCell>
-                            <TableCell id={InitiativeTableIds.initiativeTitle}>
-                              <Input value={currentTitle} onChange={(e) => setCurrentTitle(e.target.value)}/>
+                            <TableCell>
+                              <Input id={InitiativeTableIds.initiativeTitle} value={currentTitle} onChange={(e) => setCurrentTitle(e.target.value)}/>
                             </TableCell>
                             <TableCell><DateInput id={InitiativeTableIds.startDate} date={currentStartDate} setDate={setCurrentStartDate}/></TableCell>
                             <TableCell><DateInput id={InitiativeTableIds.targetDate} date={currentTargetDate} setDate={setCurrentTargetDate}/></TableCell>
-                            <TableCell id={InitiativeTableIds.totalItems}>
-                              <Input type="number" value={currentTotalItems} onChange={(e) => setCurrentTotalItems(parseInt(e.target.value))}/>
+                            <TableCell>
+                              <Input id={InitiativeTableIds.totalItems} type="number" value={currentTotalItems} onChange={(e) => setCurrentTotalItems(parseInt(e.target.value))}/>
                             </TableCell>
                             <TableCell id={InitiativeTableIds.remainingItems}>{displayItem.itemsRemaining}</TableCell>
-                            <TableCell className={tooltipStyle} title={tooltipMessage}>{probability.value === undefined ? "NA" : probability.value + "%"}
-                              <i className="material-icons" style={{ fontSize: '15px', marginLeft: '15px', marginTop: '10px' }}>info_outline</i>
-                            </TableCell>
+                            <TableCell></TableCell>
                             <TableCell className="w-1/12">
                               <ViewDecisionDataButton disabled={true} company={displayItem.company} initiative={displayItem} index={index} />
                             </TableCell>

@@ -11,7 +11,7 @@ describe('update initiative spec', () => {
   }
 
   const existingInit = {
-    title: "Client Portal"
+    title: "IIS Initiative"
   }
 
   const consts = TestConstants;

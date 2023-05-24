@@ -12,8 +12,6 @@ import { IntegrityPageIds } from "../../src/Pages/IntegrityPage";
 import { ClientPageIds } from "../../src/Pages/ClientPage";
 import { LoginPageIds } from "../../src/Pages/LoginPage";
 import { UsersPageIds } from "../../src/Pages/UsersPage";
-import { AdminAddUserModalIds } from "../../src/Components/User/AdminAddUserModal";
-import { AdminSelectCompanyModalIds } from "../../src/Components/User/AdminSelectCompanyModal";
 
 //cypress can find items by id using "#id"
 export function AddHash(obj: Record<string,any> | string)
@@ -46,8 +44,6 @@ export const TestConstants = {
   integrityPageIds: AddHash(IntegrityPageIds),
   clientPageIds: AddHash(ClientPageIds),
   loginPageIds: AddHash(LoginPageIds),
-  adminAddUserModalIds: AddHash(AdminAddUserModalIds),
-  adminSelectCompanyModalIds: AddHash(AdminSelectCompanyModalIds),
   snackbarWaitTime: 1000,   //how long it should wait for the snackbar to go away after requesting a new one
 }
 
