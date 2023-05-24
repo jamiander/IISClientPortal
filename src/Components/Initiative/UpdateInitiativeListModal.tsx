@@ -8,7 +8,6 @@ import { useAppSelector } from "../../Store/Hooks";
 import {v4 as uuidv4 } from "uuid";
 
 interface InitiativeModalProps {
-	title: string
 	initiative?: Initiative
 	initiativeIsOpen: boolean
 	setInitiativeIsOpen: (value: boolean) => void
@@ -19,7 +18,6 @@ interface InitiativeModalProps {
 export const InitiativeModalIds = {
 	modal: "initModal",
 	company: "initModalCompany",
-	title: "initModalTitle",
   startDate: "initModalStartDate",
 	targetDate: "initModalTargetDate",
 	totalItems: "initModalTotalItems",
@@ -53,7 +51,6 @@ export function UpdateInitiativeListModal(props: InitiativeModalProps){
 			style={{'content': {...modalStyle.content, 'width' : '25%'}}}
 			appElement={document.getElementById('root') as HTMLElement}
 		>
-			<p className='text-3xl'>{props.title}</p>
 			<div className='w-full'>
 				<div className='my-1'>Company{props.company ? ": " + props.company.name :
           <div>
@@ -72,7 +69,7 @@ export function UpdateInitiativeListModal(props: InitiativeModalProps){
           </div>
         }</div>
 				<p className='my-1'>Title</p>
-				<input defaultValue={props.initiative?.title} id={InitiativeModalIds.title} className={inputStyle + ' w-3/4'} placeholder='Initiative Title'
+				<input defaultValue={props.initiative?.title} className={inputStyle + ' w-3/4'} placeholder='Initiative Title'
           onChange={(e) => {setInitiativeTitle(e.target.value)}}/>
         <div className='my-2'>
             <p className=''>Start Date</p>

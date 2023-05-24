@@ -4,7 +4,7 @@ import { InitiativeFilter } from "../../Services/Filters";
 import { Company, Initiative, IntegrityId, upsertInitiativeInfo } from "../../Store/CompanySlice";
 import { defaultRowStyle, greenProbabilityStyle, inputStyle, redProbabilityStyle, TableHeaderStyle, tooltipStyle, yellowButtonStyle } from "../../Styles";
 import { GenerateProbability } from "../../Services/ProbabilitySimulationService";
-import { DateInput, DateToDateInfo, MakeDate } from "../DateInput";
+import { DateInput, DateToDateInfo } from "../DateInput";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -330,12 +330,12 @@ export default function InitiativesTable(props: InitiativesProps) {
   return (
     <>
       <div className="grid grid-cols-1 w-full h-auto">
+        <div className="flex flex-col justify-between mb-[2%]">
+          <button disabled={InEditMode()} id={InitiativeTableIds.addButton} className={yellowButtonStyle + " mt-4"} onClick={() => userCompanyId ? AddEmptyInitiative(userCompanyId) : ""}>Add Initiative</button>
+        </div>
         <div className="col-span-1 h-[4vh] pb-[2%] space-x-4 mb-[2%]">
           <input id={InitiativeTableIds.companyNameFilter} className={inputStyle} type={'text'} placeholder="Filter by Company" value={searchedComp} onChange={(e) => setSearchedComp(e.target.value)} />
           <input id={InitiativeTableIds.initiativeTitleFilter} className={inputStyle} type={'text'} placeholder="Filter by Title" value={searchedInit} onChange={(e) => setSearchedInit(e.target.value)} />
-        </div>
-        <div className="flex flex-col justify-between mb-[2%]">
-          <button disabled={InEditMode()} id={InitiativeTableIds.addButton} className={yellowButtonStyle} onClick={() => userCompanyId ? AddEmptyInitiative(userCompanyId) : ""}>Add Initiative</button>
         </div>
         {totalInits !== 0 &&
         <div className="col-span-1">

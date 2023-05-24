@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { User, getUserById, selectAllUsers, selectCurrentUserId } from "../Store/UserSlice";
 import { Company, IntegrityId, selectAllCompanies } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
-import { Checkbox, FormControl, FormControlLabel, IconButton, Input, InputLabel, MenuItem, Select} from "@mui/material";
+import { Checkbox, FormControl, IconButton, Input, InputLabel, MenuItem, Select} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
@@ -16,6 +16,8 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { useEditUser } from "../Services/useEditUser";
 import { EditUserInitiativesButton } from "../Components/User/EditUserInitiativesButton";
+import { RadioSet } from "../Components/RadioSet";
+import { UserFilter } from "../Services/Filters";
 
 export const UsersPageIds = {
   company: "usersPageCompany",
@@ -34,14 +36,19 @@ export const UsersPageIds = {
   keywordFilter: "usersPageKeywordFilter",
   table: "usersPageTable",
   addModal: "usersPageAddModal",
-  select: "usersPageSelectCompany"
-  
+  select: "usersPageSelectCompany",
+  radioIds: {
+    active: "userPageRadioActive",
+    inactive: "userPageRadioInactive",
+    all: "userPageRadioAll"
+  }
 }
 
 export default function UsersPage(){
   const allCompanies = useAppSelector(selectAllCompanies);
   const allUsers = useAppSelector(selectAllUsers);
   const [companyUsers, setCompanyUsers] = useState<User[]>([]);
+  const [radioValue,setRadioValue] = useState("active");
   const [displayCompanies, setDisplayCompanies] = useState<Company[]>([]);
   const currentUserId = useAppSelector(selectCurrentUserId);
   const dispatch = useAppDispatch();
@@ -123,6 +130,11 @@ export default function UsersPage(){
         </div>
       </div>
       <div className="mx-[2%] mb-[2%]">
+      <RadioSet dark={true} setter={setRadioValue} name="clientPage" options={[
+          {id: UsersPageIds.radioIds.all, label: "Show All", value: "all"},
+          {id: UsersPageIds.radioIds.active, label: "Only Active", value: "active", default: true},
+          {id: UsersPageIds.radioIds.inactive, label: "Only Inactive", value: "inactive"}
+        ]} />
         {companyUsers.length !== 0 &&
         <div className="mt-2 mb-4">
           <StyledTextField className="w-1/2" id={UsersPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name or email" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)} />
