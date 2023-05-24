@@ -104,19 +104,21 @@ export default function UsersPage(){
 
   useEffect(() => 
   {
-    if(currentUserCompanyId === IntegrityId){
-      const otherCompanyUsers = allUsers.filter(user => user.companyId !== IntegrityId);
+    if(currentUserCompanyId === IntegrityId){ 
+      const otherCompanyUsers = UserFilter(allUsers, radioValue);
+      otherCompanyUsers.filter(user => user.companyId !== IntegrityId);
       setCompanyUsers(otherCompanyUsers);
       SetupEditUser(otherCompanyUsers);
-    }
+     }
     else {
-      const otherCompanyUsers = allUsers.filter(user => user.companyId !== IntegrityId);
+      const otherCompanyUsers = UserFilter(allUsers, radioValue);
+      otherCompanyUsers.filter(user => user.companyId !== IntegrityId);
       let filteredUsers = otherCompanyUsers.filter(cu => cu.companyId === userCompany?.id)
       setCompanyUsers(filteredUsers);
       setCurrentCompanyId(currentUserCompanyId);
       SetupEditUser(filteredUsers);
-    }
-  }, [allUsers])
+    } 
+  }, [allUsers, radioValue])
 
   const myRef = useRef<HTMLElement>(null);
 

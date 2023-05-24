@@ -49,8 +49,7 @@ export function InitiativeFilter(initiativesList: Initiative[], isActive: String
 
 export function UserFilter(usersList: User[], isActive: String) {
   let filteredUsers: User[] = [];
-  console.log(usersList);
-    filteredUsers = usersList.filter((user) => {
+    usersList.forEach((user) => {
       if(isActive === 'all') {
         filteredUsers.push(user)
       }
@@ -58,9 +57,8 @@ export function UserFilter(usersList: User[], isActive: String) {
         if(user.isActive === true) filteredUsers.push(user);
       }
       if(isActive === 'inactive') {
-        if(user.isActive === false) filteredUsers.push(user);
+        if(user.isActive !== true) filteredUsers.push(user);
       }
   })
-  console.log(filteredUsers);
   return filteredUsers;
 }
