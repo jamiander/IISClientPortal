@@ -33,8 +33,7 @@ export const UsersPageIds = {
   deleteButton: "usersPageDeleteButton",
   keywordFilter: "usersPageKeywordFilter",
   table: "usersPageTable",
-  addModal: "usersPageAddModal",
-  select: "usersPageSelectCompany"
+  selectCompany: "usersPageSelectCompany"
   
 }
 
@@ -191,7 +190,7 @@ export default function UsersPage(){
                             {currentUserCompanyId === IntegrityId ?
                             <FormControl fullWidth>
                               <InputLabel id="company-select-label">Select Company</InputLabel>
-                              <Select id={UsersPageIds.select} labelId="company-select-label" label="Select company" value={currentCompanyId} onChange={(e) => setCurrentCompanyId(e.target.value)}>
+                              <Select id={UsersPageIds.selectCompany} labelId="company-select-label" label="Select company" value={currentCompanyId} onChange={(e) => setCurrentCompanyId(e.target.value)}>
                                 {
                                   displayCompanies.map((company,index) => {
                                     return (

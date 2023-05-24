@@ -83,6 +83,7 @@ export function useEditUser() : EditUser
         setCurrentPhone(currentUser.phoneNumber ? currentUser.phoneNumber : "");
         setCurrentIsAdmin(currentUser.isAdmin ? currentUser.isAdmin : false);
         setCurrentIsActive(currentUser.isActive ? currentUser.isActive : false);
+        setCurrentCompanyId(currentUser.companyId);
       }
     }
   }
@@ -157,6 +158,7 @@ export function useEditUser() : EditUser
       setUsersList(usersClone);
       setSearchedKeyword("");
       EnterEditMode(myUuid,usersClone,true);
+      setCurrentCompanyId(companyId);
     }
   }
 

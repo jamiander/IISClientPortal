@@ -19,7 +19,6 @@ describe('add non-Integrity user as Integrity spec', () => {
   const company = MBPICompany;
 
   const pageIds = consts.usersPageIds;
-  const modalIds = consts.adminSelectCompanyModalIds;
 
   beforeEach(() => {
     cy.visit('http://localhost:3000/Login');
@@ -29,17 +28,16 @@ describe('add non-Integrity user as Integrity spec', () => {
     cy.get(loginIds.submitButton).click();
     
     cy.get(navIds.users).click();
+    cy.wait(500);
     //cy.get("#editUserDataButton"+company.id).click();
     cy.get(pageIds.addButton).click();
   })
 
   specify('add a new user as an Integrity user', () => {
-    cy.get(modalIds.select).parent()
+    cy.get(pageIds.selectCompany).parent()
       .click()
       .get(`ul > li[data-value="${company.id}"]`)
       .click();
-    cy.get(modalIds.confirmButton).click();
-    cy.get(modalIds.modal).should('not.exist');
 
     cy.get(pageIds.saveChangesButton).parent().parent().within(() => {
       cy.get(pageIds.email).type(user.email);
@@ -52,17 +50,21 @@ describe('add non-Integrity user as Integrity spec', () => {
   })
 
   specify('cannot add a user with invalid input', () => {
-    cy.get(modalIds.confirmButton).click();
+    cy.get(pageIds.saveChangesButton).parent().parent().within(() => {
+      cy.get(pageIds.email).type(user.email);
+      cy.get(pageIds.password).type(user.password);
+    })
+
+    cy.get(pageIds.saveChangesButton).click();
     cy.get(snackbarId).should('contain',failMessage);
-    cy.get(modalIds.select).parent()
+    cy.get(pageIds.selectCompany).parent()
       .click()
       .get(`ul > li[data-value="${company.id}"]`)
       .click();
-    cy.get(modalIds.confirmButton).click();
-    cy.get(modalIds.modal).should('not.exist');
 
     cy.get(pageIds.saveChangesButton).parent().parent().within(() => {
-      cy.get(pageIds.password).type(user.password);
+      cy.get(pageIds.email).clear();
+      cy.get(pageIds.password).clear().type(user.password);
     })
     cy.get(pageIds.saveChangesButton).click();
     cy.wait(snackbarWaitTime);
@@ -70,7 +72,7 @@ describe('add non-Integrity user as Integrity spec', () => {
 
     cy.get(pageIds.saveChangesButton).parent().parent().within(() => {
       cy.get(pageIds.password).clear();
-      cy.get(pageIds.email).type(user.email);
+      cy.get(pageIds.email).clear().type(user.email);
     })
     cy.get(pageIds.saveChangesButton).click();
     cy.wait(snackbarWaitTime);
@@ -79,12 +81,10 @@ describe('add non-Integrity user as Integrity spec', () => {
   })
 
   specify('cancel does not leave behind the new user', () => {
-    cy.get(modalIds.select).parent()
+    cy.get(pageIds.selectCompany).parent()
       .click()
       .get(`ul > li[data-value="${company.id}"]`)
       .click();
-    cy.get(modalIds.confirmButton).click();
-    cy.get(modalIds.modal).should('not.exist');
 
     cy.get(pageIds.saveChangesButton).parent().parent().within(() => {
       cy.get(pageIds.email).type(user.email);
@@ -93,12 +93,6 @@ describe('add non-Integrity user as Integrity spec', () => {
 
     cy.get(pageIds.cancelChangesButton).click();
     cy.contains(user.email).should('not.exist');
-    cy.get(pageIds.saveChangesButton).should('not.exist');
-  })
-
-  specify('close button closes the modal', () => {
-    cy.get(modalIds.cancelButton).click();
-    cy.get(modalIds.modal).should('not.exist');
     cy.get(pageIds.saveChangesButton).should('not.exist');
   })
 })
@@ -118,7 +112,7 @@ describe("add non-Integrity user as non-Integrity user spec", () => {
     cy.get(navIds.users).click();
     //cy.get("#editUserDataButton"+company.id).click();
     cy.wait(1000);
-    cy.get(pageIds.addButton).click({force:true});
+    cy.get(pageIds.addButton).click();
   })
 
   specify('add a new non-Integrity user as non-Integrity user',  () => {

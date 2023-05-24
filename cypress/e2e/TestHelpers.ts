@@ -70,5 +70,9 @@ export const MBPIAdminUser = {
 export const MBPICompany = {
   name: "MBPI",
   id: "38cd148a-b402-4f54-9cc9-b639c51837ad"
-  
+}
+
+export const StaplesCompany = {
+  name: "Staples",
+  id: "a9093993-0295-47b8-8a7a-4237094da43f"
 }
