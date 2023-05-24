@@ -65,31 +65,26 @@ export default function ManageInitiativesDisplay() {
   }
 
   return (
-  <div className="col-span-4">
-    <div className="bg-[#445362] rounded-md py-3 px-5">
-      <div className="w-full flex justify-between">
-        <p className="text-3xl text-white">Initiatives</p>
-        <div className="space-x-2 flex flex-wrap">
-          <button onClick={() => setUploadModalIsOpen(true)} className={yellowButtonStyle}>
-            Upload Data File
-          </button>
-          <button onClick={() => setEditModalIsOpen(true)} className={yellowButtonStyle}>
-            Add/Edit Data
-          </button>
-          <UpdateInitiativeListModal title='Add Initiative' initiativeIsOpen={AddInitiativeIsOpen} setInitiativeIsOpen={setAddInitiativeIsOpen} Submit={SubmitUpdateInitiative}/>
-          <UploadThroughputModal companyList={companyList} uploadIsOpen={UploadModalIsOpen} setUploadIsOpen={setUploadModalIsOpen} Submit={SubmitUpdateThroughput}/>
-          <EditThroughputModal companyList={companyList} editIsOpen={EditModalIsOpen} setEditIsOpen={setEditModalIsOpen} Submit={SubmitUpdateThroughput}/>
-        </div>
-      </div>
-
-      <RadioSet options={[
+  <div>
+    <div>
+      <UploadThroughputModal companyList={companyList} uploadIsOpen={UploadModalIsOpen} setUploadIsOpen={setUploadModalIsOpen} Submit={SubmitUpdateThroughput}/>
+      <EditThroughputModal companyList={companyList} editIsOpen={EditModalIsOpen} setEditIsOpen={setEditModalIsOpen} Submit={SubmitUpdateThroughput}/>
+    </div>
+      <RadioSet dark={true} setter={setRadioValue} name="initiativesDisplay" options={[
         {id: InitiativeDisplayRadioIds.all, label: "Show All", value: "all"},
         {id: InitiativeDisplayRadioIds.active, label: "Only Active", value: "active", default: true},
         {id: InitiativeDisplayRadioIds.inactive, label: "Only Inactive", value: "inactive"}
-        ]} 
-        setter={setRadioValue} name="initiativesDisplay"/>
+        ]} />
+        {/* <button onClick={() => setAddInitiativeIsOpen(true)} className={yellowButtonStyle}>
+          Add Initiative
+        </button> */}
+        <button onClick={() => setUploadModalIsOpen(true)} className={yellowButtonStyle}>
+            Upload Data File
+        </button>
+        <button onClick={() => setEditModalIsOpen(true)} className={yellowButtonStyle}>
+          Add/Edit Data
+        </button>
 
-    </div>
       {companyList.length > 0 &&
         <InitiativesTable companyList={companyList} radioStatus={radioValue} ValidateInitiative={ValidateNewInitiative} admin={true}/>
       }

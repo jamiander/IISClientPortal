@@ -1,4 +1,6 @@
+import { filter } from "cypress/types/bluebird";
 import { Company, Initiative } from "../Store/CompanySlice";
+import { User } from "../Store/UserSlice";
 import { FindItemsRemaining } from "./CompanyService";
 
 export function CompanyFilter(companyList: Company[], isActive: string){
@@ -43,4 +45,20 @@ export function InitiativeFilter(initiativesList: Initiative[], isActive: String
   })
 
   return filteredInitiatives;
+}
+
+export function UserFilter(usersList: User[], isActive: String) {
+  let filteredUsers: User[] = [];
+    usersList.forEach((user) => {
+      if(isActive === 'all') {
+        filteredUsers.push(user)
+      }
+      if(isActive === 'active') {
+        if(user.isActive === true) filteredUsers.push(user);
+      }
+      if(isActive === 'inactive') {
+        if(user.isActive !== true) filteredUsers.push(user);
+      }
+  })
+  return filteredUsers;
 }

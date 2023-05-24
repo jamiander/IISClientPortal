@@ -54,7 +54,7 @@ export function EditInitiativeButton(props: EditInitiativeButtonProps){
         >
             Edit
         </button>
-        <UpdateInitiativeListModal title='Edit Initiative' initiativeIsOpen={EditInitiativeIsOpen} setInitiativeIsOpen={setEditInitiativeIsOpen} initiative={selectedInitiative} company={selectedCompany} Submit={SubmitUpdateInitiative} />
+        <UpdateInitiativeListModal initiativeIsOpen={EditInitiativeIsOpen} setInitiativeIsOpen={setEditInitiativeIsOpen} initiative={selectedInitiative} company={selectedCompany} Submit={SubmitUpdateInitiative} />
       </div>
     );
 }
