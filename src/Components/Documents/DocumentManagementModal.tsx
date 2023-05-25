@@ -1,9 +1,8 @@
 import CloseIcon from '@mui/icons-material/Close';
-import { Dialog, Paper, Table, TableBody, TableContainer, TableHead, TableRow } from '@mui/material';
+import { Dialog, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { Company, Initiative } from '../../Store/CompanySlice';
 import { DocumentUpload } from './DocumentUpload';
 import { TableHeaderStyle, defaultRowStyle } from '../../Styles';
-import { TableCell } from 'flowbite-react/lib/esm/components/Table/TableCell';
 import { useEffect, useState } from 'react';
 import { DocumentInfo, getDocumentUrls } from '../../Store/DocumentSlice';
 import { useAppDispatch } from '../../Store/Hooks';

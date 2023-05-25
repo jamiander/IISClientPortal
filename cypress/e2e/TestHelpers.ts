@@ -1,4 +1,3 @@
-import { InitiativeDisplayRadioIds } from "../../src/Components/Initiative/ManageInitiativesDisplay";
 import { InitiativeModalIds } from "../../src/Components/Initiative/UpdateInitiativeListModal";
 import { ToastIds } from "../../src/Components/Toast";
 import { ValidationFailedPrefix } from "../../src/Services/Validation";
@@ -12,6 +11,7 @@ import { IntegrityPageIds } from "../../src/Pages/IntegrityPage";
 import { ClientPageIds } from "../../src/Pages/ClientPage";
 import { LoginPageIds } from "../../src/Pages/LoginPage";
 import { UsersPageIds } from "../../src/Pages/UsersPage";
+import { InitiativeDisplayRadioIds } from "../../src/Pages/InitiativesPage";
 
 //cypress can find items by id using "#id"
 export function AddHash(obj: Record<string,any> | string)
