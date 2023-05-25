@@ -131,7 +131,6 @@ export async function DownloadDocument(request: DownloadDocumentRequest) : Promi
 }
 
 export interface UploadDocumentRequest {
-  isTest: boolean
   file: File
   documentId: string
   companyId: string
