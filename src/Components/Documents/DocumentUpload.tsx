@@ -8,31 +8,23 @@ import { useAppDispatch } from "../../Store/Hooks";
 import { yellowButtonStyle } from "../../Styles";
 
 interface DocumentUploadProps {
-
+  GetData: () => void
 }
 
 export function DocumentUpload(props: DocumentUploadProps)
 {
   const dispatch = useAppDispatch();
   const [file, setFile] = useState<File | null>(null);
-  const [docInfo, setDocInfo] = useState<DocumentInfo>();
-
-  function HandleUpload()
+  async function HandleUpload()
   {
     if(file)
     {
       let documentId = v4();
-      dispatch(uploadDocument({file: file, companyId: IntegrityId, documentId: documentId, isTest: true}));
+      await dispatch(uploadDocument({file: file, companyId: IntegrityId, documentId: documentId, isTest: true}));
+      props.GetData();
+      setFile(null);
     }
   }
-
-  async function HandleGet()
-  {
-    const docs = (await dispatch(getDocumentUrls({companyId: IntegrityId}))).payload as DocumentInfo[];
-    setDocInfo(docs[0]);
-  }
-
-
 
   return (
     <>

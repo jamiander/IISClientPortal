@@ -2,6 +2,12 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Dialog, Paper, Table, TableBody, TableContainer, TableHead, TableRow } from '@mui/material';
 import { Company, Initiative } from '../../Store/CompanySlice';
 import { DocumentUpload } from './DocumentUpload';
+import { TableHeaderStyle } from '../../Styles';
+import { TableCell } from 'flowbite-react/lib/esm/components/Table/TableCell';
+import { useEffect, useState } from 'react';
+import { DocumentInfo, getDocumentUrls } from '../../Store/DocumentSlice';
+import { useAppDispatch } from '../../Store/Hooks';
+import { DocumentDownload } from './DocumentDownload';
 
 
 
@@ -14,6 +20,25 @@ interface DocumentManagementModalProps {
 
 export function DocumentManagementModal(props: DocumentManagementModalProps)
 {
+  const dispatch = useAppDispatch();
+  const [docInfos, setDocInfos] = useState<DocumentInfo[]>([]);
+
+  useEffect(() => {
+
+    if(props.isOpen)
+      GetData();
+    else
+      setDocInfos([]);
+
+  },[props.isOpen]);
+
+  async function GetData()
+  {
+    const docs = (await dispatch(getDocumentUrls({companyId: props.company.id}))).payload as DocumentInfo[];
+    setDocInfos(docs);
+  }
+
+
   return (
     <Dialog 
       open={props.isOpen}
@@ -34,8 +59,9 @@ export function DocumentManagementModal(props: DocumentManagementModalProps)
         </div>
       </div>
       <div className="col-span-4">
-        <div className="flex justify-center">
-          <DocumentUpload/>
+        <DocumentUpload GetData={GetData}/>
+        {
+          docInfos.length !== 0 &&
           <TableContainer component={Paper}>
             <Table className="table-auto w-full outline outline-3 bg-gray-100">
               <TableHead className="outline outline-1">
@@ -47,14 +73,30 @@ export function DocumentManagementModal(props: DocumentManagementModalProps)
                     fontFamily: "Arial, Helvetica"
                   }
                 }}>
+                  <TableHeaderStyle>
+                    File Name
+                  </TableHeaderStyle>
                 </TableRow>
               </TableHead>
               <TableBody>
-               
+              {
+                docInfos.map((doc, index) => {
+                  return (
+                    <TableRow>
+                      <TableCell key={index}>
+                        <div className="flex justify-between">
+                          <p>{doc.name}</p>
+                          <DocumentDownload docInfo={doc}/>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  )
+                })
+              }
               </TableBody>
             </Table>
           </TableContainer>
-        </div>
+        }
       </div>
     </Dialog>
   )

@@ -21,8 +21,7 @@ export function DocumentDownload(props: DocumentDownloadProps)
 
   return (
     <>
-      <button className={yellowButtonStyle} onClick={() => HandleDownload()}>Download {props.docInfo?.name}</button>
-      <DownloadIcon sx={{ fontSize: 26 }}/>
+      <DownloadIcon className="hover:text-gray-400" onClick={() => HandleDownload()} sx={{ fontSize: 28 }}/>
     </>
   )
 }
