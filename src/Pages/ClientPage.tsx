@@ -14,6 +14,7 @@ import { RadioSet } from "../Components/RadioSet";
 import { CompanyFilter } from "../Services/Filters";
 import { useNavigate } from "react-router-dom";
 import { DateInfo } from "../Services/CompanyService";
+import { DocumentManagementButton } from "../Components/Documents/DocumentManagementButton";
 
 export const ClientPageIds = {
   modal: "clientPageModal",
@@ -216,6 +217,7 @@ export function ClientPage()
                   <TableHeaderStyle>First Initiative Target Completion Date</TableHeaderStyle>
                   <TableHeaderStyle>First Initiative Total Items</TableHeaderStyle>
                   <TableHeaderStyle>Edit Client</TableHeaderStyle>
+                  <TableHeaderStyle>Documents</TableHeaderStyle>
                 </TableRow>
               </TableHead>
               <TableBody id={ClientPageIds.table}>
@@ -278,6 +280,9 @@ export function ClientPage()
                         </TableCell>
                       </>
                       }
+                      <TableCell>
+                        <DocumentManagementButton company={displayItem}/>
+                      </TableCell>
                     </TableRow>
                     
                   );
