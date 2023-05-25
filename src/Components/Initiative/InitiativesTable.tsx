@@ -48,14 +48,13 @@ interface InitiativesProps {
   companyList: Company[],
   radioStatus: string,
   ValidateInitiative: (initiative: Initiative, companyId: string, allCompanies: Company[]) => {success: boolean, message: string}
-  admin: boolean
+  admin: boolean,
+  addInitiative: boolean,
+  setAddInitiative: (value: boolean) => void
 }
 
 interface InitCompanyDisplay extends Initiative {
   company: Company,
-  //companyName: string,
-  //startDateTime: Date,
-  //targetDateTime: Date,
   probabilityValue: number | undefined,
   probabilityStatus: string,
   itemsRemaining: number
@@ -84,6 +83,28 @@ export default function InitiativesTable(props: InitiativesProps) {
   useEffect(() => {
     UpdateDisplayItems();
   },[props.companyList,searchedInit,searchedComp,props.radioStatus]);
+
+  useEffect(() => {
+    if(!InEditMode() && props.addInitiative === true)
+    {
+      const displayClone: InitCompanyDisplay[] = JSON.parse(JSON.stringify(displayItems));
+      const myUuid = v4();
+      const todayInfo = DateToDateInfo(new Date());
+      let matchingCompany = props.companyList.find(c => c.id === currentUser?.companyId);
+      if(matchingCompany?.id === IntegrityId) matchingCompany = {id: "", name: "", initiatives: ([])};
+      if(matchingCompany)
+      {
+        const newInitiative: InitCompanyDisplay = {id: myUuid, title: "", targetDate: todayInfo, startDate: todayInfo, totalItems: 1, itemsCompletedOnDate: [], decisions: [], company: matchingCompany, itemsRemaining: 0, probabilityStatus: "", probabilityValue: -1};
+        displayClone.unshift(newInitiative);
+        setDisplayItems(displayClone);
+        setSearchedComp("");
+        setSearchedInit("");
+        ResetPageNumber();
+        if(currentUser !== undefined)
+          EnterEditMode(myUuid,matchingCompany.id,displayClone,true);
+      }
+    }
+  },[props.addInitiative]);
 
   useMemo(() => {
     let sortedItems = JSON.parse(JSON.stringify(displayItems));
@@ -139,13 +160,13 @@ export default function InitiativesTable(props: InitiativesProps) {
     }
     setDisplayItems(displayList);
     LeaveEditMode();
-    //ResetPageNumber();
+    ResetPageNumber();
   }
 
   function getHealthIndicator(probability: number | undefined)
   {
-    if (probability === undefined) return defaultRowStyle;
-    if (probability < 50) return redProbabilityStyle;
+    if (probability === undefined || probability < 0) return defaultRowStyle;
+    if (probability < 50 && probability >= 0) return redProbabilityStyle;
     else if (probability > 90) return greenProbabilityStyle;
   }
 
@@ -203,9 +224,6 @@ export default function InitiativesTable(props: InitiativesProps) {
   let companyInits: Initiative[] = displayItems;
   let totalInits: number = companyInits.length;
 
-
-
-
   enum stateEnum {
     start,
     edit,
@@ -219,7 +237,6 @@ export default function InitiativesTable(props: InitiativesProps) {
   const [currentTargetDate, setCurrentTargetDate] = useState<DateInfo>();
   const [currentTotalItems, setCurrentTotalItems] = useState(1);
   const [companyToEditId, setCompanyToEditId] = useState("");
-  const [isCompanySelectOpen, setIsCompanySelectOpen] = useState(false);
   
   function InEditMode()
   {
@@ -286,7 +303,7 @@ export default function InitiativesTable(props: InitiativesProps) {
             saveMessage = "New initiative added!";
           
           dispatch(upsertInitiativeInfo({isTest: isTest, initiative: newInitiative, companyId: companyToEditId}));
-
+          props.setAddInitiative(false);
           LeaveEditMode();
           enqueueSnackbar(saveMessage, {variant: "success"});
         }
@@ -298,32 +315,13 @@ export default function InitiativesTable(props: InitiativesProps) {
 
   function CancelEdit()
   {
-    if(state === stateEnum.add && initToEditId !== "" && companyToEditId !== "")
+    if(state === stateEnum.add && initToEditId !== "")
     {
       const displayClone: InitCompanyDisplay[] = displayItems.filter(i => i.id !== initToEditId);
       setDisplayItems(displayClone);
     }
+    props.setAddInitiative(false);
     LeaveEditMode();
-  }
-
-  function AddEmptyInitiative(companyId: string)
-  {
-    if(!InEditMode())
-    {
-      const displayClone: InitCompanyDisplay[] = JSON.parse(JSON.stringify(displayItems));
-      const myUuid = v4();
-      const todayInfo = DateToDateInfo(new Date());
-      const matchingCompany = props.companyList.find(c => c.id === companyId);
-      if(matchingCompany)
-      {
-        const newInitiative: InitCompanyDisplay = {id: myUuid, title: "", targetDate: todayInfo, startDate: todayInfo, totalItems: 1, itemsCompletedOnDate: [], decisions: [], company: matchingCompany, itemsRemaining: 0, probabilityStatus: "", probabilityValue: 0};
-        displayClone.unshift(newInitiative);
-        setDisplayItems(displayClone);
-        setSearchedComp("");
-        setSearchedInit("");
-        EnterEditMode(myUuid,companyId,displayClone,true);
-      }
-    }
   }
 
   const userCompanyId = currentUser?.companyId;
@@ -331,9 +329,6 @@ export default function InitiativesTable(props: InitiativesProps) {
   return (
     <>
       <div className="grid grid-cols-1 w-full h-auto">
-        <div className="flex flex-col justify-between mb-[2%]">
-          <button disabled={InEditMode()} id={InitiativeTableIds.addButton} className={yellowButtonStyle + " mt-4"} onClick={() => userCompanyId ? AddEmptyInitiative(userCompanyId) : ""}>Add Initiative</button>
-        </div>
         <div className="col-span-1 h-[4vh] pb-[2%] space-x-4 mb-[2%]">
           <input id={InitiativeTableIds.companyNameFilter} className={inputStyle} type={'text'} placeholder="Filter by Company" value={searchedComp} onChange={(e) => setSearchedComp(e.target.value)} />
           <input id={InitiativeTableIds.initiativeTitleFilter} className={inputStyle} type={'text'} placeholder="Filter by Title" value={searchedInit} onChange={(e) => setSearchedInit(e.target.value)} />
@@ -387,7 +382,7 @@ export default function InitiativesTable(props: InitiativesProps) {
               <TableBody id={InitiativeTableIds.table}>
                 {currentItems.map((displayItem, index) => {
                   let probability = { value: displayItem.probabilityValue, status: displayItem.probabilityStatus };
-                  let healthIndicator = getHealthIndicator(probability.value);
+                  let healthIndicator =  getHealthIndicator(probability.value);
                   let tooltipMessage = probability.value === undefined ? probability.status :
                     probability.value === 0 ? "Data may be insufficient or may indicate a very low probability of success" :
                       probability.value + "%";
@@ -404,8 +399,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                           color: "#21345b"
                         }
                       }}>
-                        {
-                          isEdit ?
+                        { isEdit ?
                           <>
                             <TableCell id={InitiativeTableIds.companyName}>
                             {(userCompanyId !== IntegrityId || state !== stateEnum.add) &&

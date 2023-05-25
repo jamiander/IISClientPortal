@@ -183,13 +183,13 @@ export function ClientPage()
         ]} />
         {allCompanies.length !== 0 &&
           <div className="mt-2 mb-4">
-            <StyledTextField className="w-1/2" id={ClientPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name or email" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)} />
+            <StyledTextField className="w-1/2" id={ClientPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)} />
           </div>
         }
         <div className="flex flex-col justify-between">
           <div className="space-x-2 flex flex-wrap">
             <button disabled={InEditMode()} id={ClientPageIds.addClientButton} className={yellowButtonStyle} onClick={() => HandleAddEmptyClient()}>Add Client</button>
-            <button className={yellowButtonStyle} onClick={() => navigate("/Dashboard")}>Initiatives Page</button>
+            <button className={yellowButtonStyle} onClick={() => navigate("/Initiatives")}>Initiatives Page</button>
           </div>
         </div>
         <div className="col-span-1 py-[2%]">
@@ -197,10 +197,10 @@ export function ClientPage()
           <TableContainer component={Paper}>
             <Table className="table-auto w-full outline outline-3 bg-gray-100">
             <colgroup>
+                <col style={{ width: '25%' }} />
+                <col style={{ width: '25%' }} />
+                <col style={{ width: '20%' }} />
                 <col style={{ width: '10%' }} />
-                <col style={{ width: '20%' }} />
-                <col style={{ width: '20%' }} />
-                <col style={{ width: '20%' }} />
             </colgroup>
               <TableHead className="outline outline-1">
                 <TableRow sx={{
@@ -211,11 +211,11 @@ export function ClientPage()
                     fontFamily: "Arial, Helvetica"
                   }
                 }}>
-                  <TableHeaderStyle>Edit Client</TableHeaderStyle>
                   <TableHeaderStyle>Name</TableHeaderStyle>
                   <TableHeaderStyle>First Initiative Name</TableHeaderStyle>
                   <TableHeaderStyle>First Initiative Target Completion Date</TableHeaderStyle>
                   <TableHeaderStyle>First Initiative Total Items</TableHeaderStyle>
+                  <TableHeaderStyle>Edit Client</TableHeaderStyle>
                 </TableRow>
               </TableHead>
               <TableBody id={ClientPageIds.table}>
@@ -235,14 +235,6 @@ export function ClientPage()
                     >
                       {isEdit ? 
                       <>
-                        <TableCell>
-                          <IconButton id={ClientPageIds.saveClientChangesButton} onClick={() => HandleSaveEdit()}>
-                            <DoneIcon />
-                          </IconButton>
-                          <IconButton id={ClientPageIds.cancelClientChangesButton} onClick={() => HandleCancelEdit()}>
-                            <CancelIcon />
-                          </IconButton>
-                        </TableCell>
                         <TableCell><Input id={ClientPageIds.name} value={currentName} onChange={e => setCurrentName(e.target.value)}/></TableCell>
                         {state === State.add &&
                           <>
@@ -255,6 +247,14 @@ export function ClientPage()
                             <TableCell>
                               <Input type='number' value={currentTotalItems} onChange={e => setCurrentTotalItems(parseInt(e.target.value))}/>
                             </TableCell>
+                            <TableCell>
+                          <IconButton id={ClientPageIds.saveClientChangesButton} onClick={() => HandleSaveEdit()}>
+                            <DoneIcon />
+                          </IconButton>
+                          <IconButton id={ClientPageIds.cancelClientChangesButton} onClick={() => HandleCancelEdit()}>
+                            <CancelIcon />
+                          </IconButton>
+                        </TableCell>
                           </>
                         }
                         {state !== State.add &&
@@ -267,15 +267,15 @@ export function ClientPage()
                       </>
                       : 
                       <>
+                        <TableCell id={ClientPageIds.name}>{displayItem.name}</TableCell>
+                        <TableCell id={ClientPageIds.initiativeTitle}>{displayItem.initiatives.at(0)?.title}</TableCell>
+                        <TableCell id={ClientPageIds.name}>{displayItem.initiatives.at(0) !== undefined ? (displayItem.initiatives.at(0)!.targetDate.month + "/" + displayItem.initiatives.at(0)!.targetDate.day + "/" + displayItem.initiatives.at(0)!.targetDate.year) : ""}</TableCell>
+                        <TableCell id={ClientPageIds.name}>{displayItem.initiatives.at(0)?.totalItems}</TableCell>
                         <TableCell>
                           <IconButton id={ClientPageIds.editClientButton} disabled={InEditMode()} onClick={() => EnterEditMode(displayItem.id, displayCompanies, false)}>
                             <EditIcon />
                           </IconButton>
                         </TableCell>
-                        <TableCell id={ClientPageIds.name}>{displayItem.name}</TableCell>
-                        <TableCell id={ClientPageIds.initiativeTitle}>{displayItem.initiatives.at(0)?.title}</TableCell>
-                        <TableCell id={ClientPageIds.name}>{displayItem.initiatives.at(0) !== undefined ? (displayItem.initiatives.at(0)!.targetDate.month + "/" + displayItem.initiatives.at(0)!.targetDate.day + "/" + displayItem.initiatives.at(0)!.targetDate.year) : ""}</TableCell>
-                        <TableCell id={ClientPageIds.name}>{displayItem.initiatives.at(0)?.totalItems}</TableCell>
                       </>
                       }
                     </TableRow>
