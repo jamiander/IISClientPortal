@@ -110,7 +110,6 @@ export function IntegrityPage(){
           <button disabled={InEditMode()} id={IntegrityPageIds.addButton} className={yellowButtonStyle} onClick={() => AddEmptyUser(IntegrityId)}>Add User</button>
         </div>
         <div className="col-span-1 py-[2%]">
-          <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
           <TableContainer component={Paper}>
             <Table className="table-auto w-full outline outline-3 bg-gray-100">
             <colgroup>

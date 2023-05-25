@@ -79,6 +79,7 @@ export default function InitiativesTable(props: InitiativesProps) {
   const [pageNumber, setPageNumber] = useState(1);
   const [pageCount, setPageCount] = useState(1);
   const [resultsLimit, setResultsLimit] = useState(10);
+  const [initiativesLoaded, setInitiativesLoaded] = useState(false);
 
   useEffect(() => {
     UpdateDisplayItems();
@@ -147,7 +148,6 @@ export default function InitiativesTable(props: InitiativesProps) {
     const displayList: InitCompanyDisplay[] = [];
     const filteredCompanies = props.companyList.filter(e => e.name.toLowerCase().includes(searchedComp.toLowerCase()))
       .sort((a, b) => a.name.localeCompare(b.name));
-  
     for(let company of filteredCompanies)
     {
       let initiatives = InitiativeFilter(company.initiatives.filter(e => e.title.toLowerCase().includes(searchedInit.toLowerCase()))
@@ -159,6 +159,7 @@ export default function InitiativesTable(props: InitiativesProps) {
       });
     }
     setDisplayItems(displayList);
+    setInitiativesLoaded(true);
     LeaveEditMode();
     ResetPageNumber();
   }
@@ -335,7 +336,6 @@ export default function InitiativesTable(props: InitiativesProps) {
         </div>
         {totalInits !== 0 &&
         <div className="col-span-1">
-          <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
           <TableContainer component={Paper}>
             <Table className="table-auto w-full outline outline-3 bg-gray-100">
               <colgroup>
@@ -499,7 +499,7 @@ export default function InitiativesTable(props: InitiativesProps) {
             </div>
         </div>}
       </div>
-      {totalInits === 0 && <div className="m-2 p-2 text-3xl font-bold">No Initiatives to Display</div>}
+      {totalInits === 0 && initiativesLoaded === true && <div className="m-2 p-2 text-3xl font-bold">No Initiatives to Display</div>}
     </>
   )
 }
