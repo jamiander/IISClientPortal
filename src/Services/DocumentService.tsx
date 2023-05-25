@@ -4,6 +4,7 @@ import { BlobClient, BlobServiceClient, ContainerClient } from "@azure/storage-b
 import { DocumentInfo } from "../Store/DocumentSlice";
 
 export interface GenerateSASTokenRequest {
+  write: boolean
 }
 
 interface GenerateSASTokenResponse {
@@ -31,7 +32,7 @@ export async function GetDocumentUrls(request: GetDocumentUrlsRequest) : Promise
   const returnedBlobUrls = [];
   const containerName = `client-portal-data`;
 
-  const tokenResponse = await GenerateSASToken({});
+  const tokenResponse = await GenerateSASToken({write: false});
   const sasToken = tokenResponse.sasToken;
   let status = tokenResponse.status;
 
@@ -142,7 +143,7 @@ interface UploadDocumentResponse {
 
 export async function UploadDocument(request: UploadDocumentRequest) : Promise<UploadDocumentResponse>
 {
-  const tokenResponse = await GenerateSASToken({});
+  const tokenResponse = await GenerateSASToken({write: true});
   const sasToken = tokenResponse.sasToken;
   let status = tokenResponse.status;
 
