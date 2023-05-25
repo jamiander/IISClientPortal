@@ -1,8 +1,7 @@
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import { createTheme, styled } from '@mui/material/styles';
-import { AccordionSummary, Card, CardActions, CardContent, FormControlLabel, FormGroup, Paper, TableSortLabel, TextField, TextareaAutosize } from '@mui/material';
+import { Card, CardActions, CardContent, FormControlLabel, Paper, TextField, TextareaAutosize } from '@mui/material';
 import { grey } from '@mui/material/colors';
-import { Accordion } from 'flowbite-react';
 
 export const modalStyle = {
   content: {
@@ -122,6 +121,6 @@ export const cancelButtonStyle = "rounded h-3/4 max-h-7 w-[90px] mx-2 bg-red-600
 export const genericButtonStyle = "outline outline-[#445362] rounded bg-[#21345b] text-white h-10 w-24 transition ease-in-out enabled:hover:bg-white enabled:hover:text-[#445362] disabled:opacity-75";
 export const yellowButtonStyle = "outline outline-[#445362] h-[40px] w-32 bg-[#FAB947] text-[#445362] rounded-md transition ease-in-out enabled:hover:bg-white enabled:hover:text-[#445362] disabled:opacity-75";
 
-export const defaultRowStyle = "odd:bg-gray-200"
+export const defaultRowStyle = "odd:bg-gray-200";
 export const redProbabilityStyle = "bg-red-300";
 export const greenProbabilityStyle = "bg-green-200";

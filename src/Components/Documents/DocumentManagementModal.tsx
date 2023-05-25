@@ -2,14 +2,12 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Dialog, Paper, Table, TableBody, TableContainer, TableHead, TableRow } from '@mui/material';
 import { Company, Initiative } from '../../Store/CompanySlice';
 import { DocumentUpload } from './DocumentUpload';
-import { TableHeaderStyle } from '../../Styles';
+import { TableHeaderStyle, defaultRowStyle } from '../../Styles';
 import { TableCell } from 'flowbite-react/lib/esm/components/Table/TableCell';
 import { useEffect, useState } from 'react';
 import { DocumentInfo, getDocumentUrls } from '../../Store/DocumentSlice';
 import { useAppDispatch } from '../../Store/Hooks';
 import { DocumentDownload } from './DocumentDownload';
-
-
 
 interface DocumentManagementModalProps {
   company: Company
@@ -59,7 +57,7 @@ export function DocumentManagementModal(props: DocumentManagementModalProps)
         </div>
       </div>
       <div className="col-span-4">
-        <DocumentUpload GetData={GetData}/>
+        <DocumentUpload company={props.company} GetData={GetData}/>
         {
           docInfos.length !== 0 &&
           <TableContainer component={Paper}>
@@ -82,8 +80,17 @@ export function DocumentManagementModal(props: DocumentManagementModalProps)
               {
                 docInfos.map((doc, index) => {
                   return (
-                    <TableRow>
-                      <TableCell key={index}>
+                    <TableRow className={defaultRowStyle} sx={{
+                      borderBottom: "1px solid black",
+                      "& td": {
+                        fontSize: "1.1rem",
+                        fontFamily: "Arial, Helvetica",
+                        color: "#21345b"
+                      }
+                    }}
+                      key={index}
+                    >
+                      <TableCell>
                         <div className="flex justify-between">
                           <p>{doc.name}</p>
                           <DocumentDownload docInfo={doc}/>
