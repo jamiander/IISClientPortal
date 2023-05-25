@@ -5,7 +5,7 @@ import { enqueueSnackbar } from "notistack"
 import { IntegrityId } from "../Store/CompanySlice"
 
 export const NavPanelIds = {
-  dashboard: "navPanelDashboard",
+  initiatives: "navPanelInitiatives",
   users: "navPanelUsers",
   integrity: "navPanelIntegrity",
   client: "navPanelClient"
@@ -37,30 +37,33 @@ export default function NavPanel(){
   }
 
   return(
-    <div className="grid place-items-center p-[2%] py-3 space-y-3">
-      
-      <button id={NavPanelIds.dashboard} className={GetNavStyle("/Dashboard")}
-        onClick={() => NavHandler('/Dashboard')}>
+    <div className="grid place-items-left p-[2%] py-3 space-y-3">
+      <button style={{ fontSize: '20px', marginTop: '30px', marginLeft: '10px', textAlign: "left"}} id={NavPanelIds.initiatives} className={GetNavStyle("/Initiatives")}
+        onClick={() => NavHandler('/Initiatives')}>
+          <i className="material-icons" style={{ fontSize: '40px', marginRight: '25px'}}>info_outline</i>
           Initiative Management
       </button>
       {
         currentUser?.isAdmin && currentUser?.isActive &&
-        <button id={NavPanelIds.users} className={GetNavStyle("/Users")}
+        <button style={{ fontSize: '20px', marginTop: '30px', marginLeft: '10px', textAlign: "left"}} id={NavPanelIds.users} className={GetNavStyle("/Users")}
           onClick={() => NavHandler('/Users')}>
+          <i className="material-icons" style={{ fontSize: '40px', marginRight: '25px'}}>person_outline</i>
           User Management
         </button>
       }
       {
         currentUser?.isAdmin && currentUser?.isActive && currentUser?.companyId === IntegrityId &&
-        <button id={NavPanelIds.integrity} className={GetNavStyle("/Integrity")}
+        <button style={{ fontSize: '20px', marginTop: '30px', marginLeft: '10px', textAlign: "left"}} id={NavPanelIds.integrity} className={GetNavStyle("/Integrity")}
           onClick={() => NavHandler('/Integrity')}>
+          <i className="material-icons" style={{ fontSize: '40px', marginRight: '25px'}}>admin_panel_settings</i>
           Integrity User Management
         </button>
       }
       {
         currentUser?.isAdmin && currentUser?.isActive && currentUser?.companyId === IntegrityId &&
-        <button id={NavPanelIds.client} className={GetNavStyle("/ClientPage")}
+        <button style={{ fontSize: '20px', marginTop: '30px', marginLeft: '10px', textAlign: "left"}} id={NavPanelIds.client} className={GetNavStyle("/ClientPage")}
           onClick={() => NavHandler('/ClientPage')}>
+          <i className="material-icons" style={{ fontSize: '40px', marginRight: '25px'}}>add_business</i>
           Client Management
         </button>
       }

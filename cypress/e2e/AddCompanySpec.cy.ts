@@ -86,7 +86,7 @@ describe('add company spec (as non-Integrity admin)', () => {
     cy.wait(500);
     cy.get(loginIds.submitButton).click();
     cy.wait(1000);
-    cy.get(navIds.dashboard).should('exist');
+    cy.get(navIds.initiatives).should('exist');
     cy.get(navIds.client).should('not.exist');
   })
 
@@ -96,7 +96,7 @@ describe('add company spec (as non-Integrity admin)', () => {
     cy.wait(500);
     cy.get(loginIds.submitButton).click();
     cy.wait(1000);
-    cy.get(navIds.dashboard).should('exist');
+    cy.get(navIds.initiatives).should('exist');
     cy.get(navIds.client).should('not.exist');
   })
 

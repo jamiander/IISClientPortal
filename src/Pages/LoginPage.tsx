@@ -32,7 +32,7 @@ export default function LoginPage(){
   useEffect(() => {
     if(currentUserId !== "-1")
     {
-      navigate('/Dashboard');
+      navigate('/Initiatives');
     }
   },[currentUserId]);
 

@@ -14,7 +14,7 @@ export default function Header(){
   const company = companyList.find(e=>e.id === user?.companyId);
   var hrs = new Date().getHours();
   var greet;
-  let imageLink = './Dashboard';
+  let imageLink = './Initiatives';
 
   if(hrs < 12)
     greet = 'Good Morning ' + company?.name;
