@@ -4,7 +4,8 @@ import { selectCurrentUser, selectIsLoggedIn } from "../Store/UserSlice"
 import { enqueueSnackbar } from "notistack"
 import { IntegrityId } from "../Store/CompanySlice"
 import { useState } from "react"
-import { Menu } from "@mui/material"
+import { IconButton, Menu } from "@mui/material"
+import MenuIcon from '@mui/icons-material/Menu';
 
 export const NavPanelIds = {
   initiatives: "navPanelInitiatives",
@@ -20,6 +21,14 @@ export default function NavPanel(){
   const navButtonStyle = "text-[#21345b] h-12 w-[90%] hover:bg-[#21345b] hover:text-white";
   const location = useLocation();
   const [navbarOpen, setNavbarOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   function NavHandler(path: string) {
     if (!isLoggedIn) {
@@ -45,8 +54,22 @@ export default function NavPanel(){
 
   return(
     <div className="grid place-items-left p-[2%] py-3 space-y-3">
-      <button onClick={() => setNavbarOpen(!navbarOpen)}>{navbarOpen ? 'close' : 'open'}</button>
-      <Menu className={navbarOpen ? 'menuStyle' : 'closeMenuStyle'} open={navbarOpen}>
+    <IconButton
+        id="basic-button"
+        aria-controls={open ? 'basic-menu' : undefined}
+        aria-haspopup="true"
+        aria-expanded={open ? 'true' : undefined}
+        onClick={handleClick}
+      >
+        <MenuIcon/>
+      </IconButton>      
+      <Menu id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        MenuListProps={{
+          'aria-labelledby': 'basic-button',
+        }}>
       <button style={{ fontSize: '20px', marginTop: '30px', marginLeft: '10px', textAlign: "left"}} id={NavPanelIds.initiatives} className={GetNavStyle("/Initiatives")}
         onClick={() => NavHandler('/Initiatives')}>
           <i className="material-icons" style={{ fontSize: '30px', marginRight: '25px'}}>info_outline</i>
