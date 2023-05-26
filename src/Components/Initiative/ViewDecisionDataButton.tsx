@@ -2,11 +2,11 @@ import { useState } from "react"
 import { Company, Initiative } from "../../Store/CompanySlice"
 import { genericButtonStyle } from "../../Styles";
 import DecisionDataModal from "./DecisionDataModal";
+import { Button } from "@mui/material";
 
 interface ViewDecisionDataProps {
     company: Company
-    initiative: Initiative 
-    index: number
+    initiative: Initiative
     disabled?: boolean
 }
 
@@ -23,12 +23,12 @@ export function ViewDecisionDataButton(props: ViewDecisionDataProps){
   }
 
   return (
-    <div key={props.index} className={'py-1 flex self-end'}>
-      <button disabled={props.disabled} id={"viewDecisionDataButton"+props.initiative.id} className={genericButtonStyle + " h-8 w-full mx-2"}
+    <div className={'py-1 flex self-end'}>
+      <Button disabled={props.disabled} id={"viewDecisionDataButton"+props.initiative.id} className={genericButtonStyle + " h-8 w-full mx-2"}
           onClick={() => handleViewDecisionData(props.company, props.initiative)}
       >
-          View
-      </button>
+        Decisions
+      </Button>
       <DecisionDataModal title='View Decision Data' isOpen={ViewDecisionDataIsOpen} setDecisionModalIsOpen={setViewDecisionDataIsOpen} initiative={selectedInitiative} company={selectedCompany}/>
     </div>
   );
