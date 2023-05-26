@@ -4,11 +4,13 @@ import { RootState } from "./Store";
 
 export interface DocumentInfo {
   url: string,
-  name: string
+  blobName: string,
+  fileName: string,
+  initiativeId?: string
 }
 
 export interface DocumentState {
-  documents: Blob[]
+  documents: DocumentInfo[]
 }
 
 const initialState: DocumentState = {
