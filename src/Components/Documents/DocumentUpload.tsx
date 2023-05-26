@@ -1,15 +1,14 @@
 import { useState } from "react";
-import { MuiFileInput } from "mui-file-input";
 import UploadFileIcon from '@mui/icons-material/UploadFile';
-import { DocumentInfo, getDocumentUrls, uploadDocument } from "../../Store/DocumentSlice";
+import { uploadDocument } from "../../Store/DocumentSlice";
 import { v4 } from "uuid";
-import { Company, IntegrityId } from "../../Store/CompanySlice";
+import { Company, Initiative } from "../../Store/CompanySlice";
 import { useAppDispatch } from "../../Store/Hooks";
-import { yellowButtonStyle } from "../../Styles";
 import { IconButton } from "@mui/material";
 
 interface DocumentUploadProps {
   company: Company
+  initiative?: Initiative
   GetData: () => void
 }
 
@@ -28,17 +27,24 @@ export function DocumentUpload(props: DocumentUploadProps)
     }
   }
 
+  function HandleFiles(files: FileList | null)
+  {
+    if(files)
+      setFile(files[0]);
+  }
+
   return (
     <>
-      <div className="flex justify-center h-full">
-        <MuiFileInput 
-          value={file}
-          onChange={setFile}
+      <div className="flex  h-full">
+        <input type="file" className="block align-middle text-sm text-slate-500 file:mt-4
+          file:mr-2 file:py-2 file:px-4
+          file:rounded-full file:border-0
+          file:text-sm file:font-semibold
+          file:bg-gray-50 file:text-gray-700
+          hover:file:bg-gray-100"
+          onChange={(e) => HandleFiles(e.target.files)}
         />
-          <IconButton className="align-middle" disabled={file === null} onClick={() => HandleUpload()}>
-            <UploadFileIcon sx={{ fontSize:28 }}></UploadFileIcon>
-          </IconButton>
-        
+        <UploadFileIcon className={(file === null ? "text-gray-400" : "hover:text-gray-400") + " block-inline align-baseline mt-4"} onClick={() => HandleUpload()} sx={{ fontSize:28 }}></UploadFileIcon>
       </div>
     </>
   )
