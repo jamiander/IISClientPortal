@@ -215,8 +215,8 @@ export function ClientPage()
                   <TableHeaderStyle>First Initiative Name</TableHeaderStyle>
                   <TableHeaderStyle>First Initiative Target Completion Date</TableHeaderStyle>
                   <TableHeaderStyle>First Initiative Total Items</TableHeaderStyle>
-                  <TableHeaderStyle>Edit Client</TableHeaderStyle>
                   <TableHeaderStyle>Documents</TableHeaderStyle>
+                  <TableHeaderStyle>Edit Client</TableHeaderStyle>
                 </TableRow>
               </TableHead>
               <TableBody id={ClientPageIds.table}>
@@ -248,14 +248,6 @@ export function ClientPage()
                             <TableCell>
                               <Input type='number' value={currentTotalItems} onChange={e => setCurrentTotalItems(parseInt(e.target.value))}/>
                             </TableCell>
-                            <TableCell>
-                          <IconButton id={ClientPageIds.saveClientChangesButton} onClick={() => HandleSaveEdit()}>
-                            <DoneIcon />
-                          </IconButton>
-                          <IconButton id={ClientPageIds.cancelClientChangesButton} onClick={() => HandleCancelEdit()}>
-                            <CancelIcon />
-                          </IconButton>
-                        </TableCell>
                           </>
                         }
                         {state !== State.add &&
@@ -265,6 +257,17 @@ export function ClientPage()
                             <TableCell></TableCell>
                           </>
                         }
+                        <TableCell>
+                          <DocumentManagementButton disabled={true} company={displayItem}/>
+                        </TableCell>
+                        <TableCell>
+                          <IconButton id={ClientPageIds.saveClientChangesButton} onClick={() => HandleSaveEdit()}>
+                            <DoneIcon />
+                          </IconButton>
+                          <IconButton id={ClientPageIds.cancelClientChangesButton} onClick={() => HandleCancelEdit()}>
+                            <CancelIcon />
+                          </IconButton>
+                        </TableCell>
                       </>
                       : 
                       <>
@@ -273,15 +276,15 @@ export function ClientPage()
                         <TableCell id={ClientPageIds.name}>{displayItem.initiatives.at(0) !== undefined ? (displayItem.initiatives.at(0)!.targetDate.month + "/" + displayItem.initiatives.at(0)!.targetDate.day + "/" + displayItem.initiatives.at(0)!.targetDate.year) : ""}</TableCell>
                         <TableCell id={ClientPageIds.name}>{displayItem.initiatives.at(0)?.totalItems}</TableCell>
                         <TableCell>
+                          <DocumentManagementButton company={displayItem}/>
+                        </TableCell>
+                        <TableCell>
                           <IconButton id={ClientPageIds.editClientButton} disabled={InEditMode()} onClick={() => EnterEditMode(displayItem.id, displayCompanies, false)}>
                             <EditIcon />
                           </IconButton>
                         </TableCell>
                       </>
                       }
-                      <TableCell>
-                        <DocumentManagementButton company={displayItem}/>
-                      </TableCell>
                     </TableRow>
                     
                   );
