@@ -49,6 +49,8 @@ export function ClientPage()
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const allCompanies = useAppSelector(selectAllCompanies);
+  const today = new Date();
+  const todayInfo = DateToDateInfo(today);
 
   const [state, setState] = useState<State>(State.start);
   const [searchedKeyword, setSearchedKeyword] = useState("");
@@ -92,6 +94,11 @@ export function ClientPage()
 
   function LeaveEditMode()
   {
+    if(state === State.add) 
+    {
+      setCurrentTargetDate(todayInfo);
+      setCurrentTotalItems(1);
+    }
     setState(State.start);
     setCompanyToEdit(undefined);
   }
@@ -119,14 +126,12 @@ export function ClientPage()
     let companyClone: Company = JSON.parse(JSON.stringify(companyToEdit));
     companyClone.name = currentName;
 
-    const today = new Date();
-    const todayInfo = DateToDateInfo(today);
     let newInitiative: Initiative = {
       id: v4(),
       title: currentInitiativeTitle,
-      targetDate: todayInfo,
+      targetDate: currentTargetDate ?? todayInfo,
       startDate: todayInfo,
-      totalItems: 1,
+      totalItems: currentTotalItems ?? 1,
       itemsCompletedOnDate: [],
       decisions: []
     }
@@ -248,14 +253,7 @@ export function ClientPage()
                             <TableCell>
                               <Input type='number' value={currentTotalItems} onChange={e => setCurrentTotalItems(parseInt(e.target.value))}/>
                             </TableCell>
-                            <TableCell>
-                          <IconButton id={ClientPageIds.saveClientChangesButton} onClick={() => HandleSaveEdit()}>
-                            <DoneIcon />
-                          </IconButton>
-                          <IconButton id={ClientPageIds.cancelClientChangesButton} onClick={() => HandleCancelEdit()}>
-                            <CancelIcon />
-                          </IconButton>
-                        </TableCell>
+                            
                           </>
                         }
                         {state !== State.add &&
@@ -265,6 +263,15 @@ export function ClientPage()
                             <TableCell></TableCell>
                           </>
                         }
+
+                        <TableCell>
+                          <IconButton id={ClientPageIds.saveClientChangesButton} onClick={() => HandleSaveEdit()}>
+                            <DoneIcon />
+                          </IconButton>
+                          <IconButton id={ClientPageIds.cancelClientChangesButton} onClick={() => HandleCancelEdit()}>
+                            <CancelIcon />
+                          </IconButton>
+                        </TableCell>
                       </>
                       : 
                       <>
@@ -283,7 +290,6 @@ export function ClientPage()
                         <DocumentManagementButton company={displayItem}/>
                       </TableCell>
                     </TableRow>
-                    
                   );
                 })}
               </TableBody>

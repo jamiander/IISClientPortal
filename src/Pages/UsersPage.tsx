@@ -153,11 +153,11 @@ export default function UsersPage(){
             <Table className="table-auto w-full outline outline-3 bg-gray-100">
               <colgroup>
                 <col style={{ width: '17%' }} />
+                <col style={{ width: '16%' }} />
                 <col style={{ width: '17%' }} />
-                <col style={{ width: '17%' }} />
+                <col style={{ width: '10%' }} />
                 <col style={{ width: '10%' }} />
                 <col style={{ width: '8%' }} />
-                <col style={{ width: '10%' }} />
                 <col style={{ width: '6%' }} />
                 <col style={{ width: '7%' }} />
               </colgroup>
