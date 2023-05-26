@@ -29,20 +29,17 @@ function App() {
       navigate('/Login');
   }, [currentUserId])
 
-  let span;
-  if (isLoggedIn()) span = 'col-span-4 mr-1'; else span = 'col-span-5 mx-1'
-  
   return (
-    <div className='grid grid-cols-5 gap-[.7vh] bg-[#ebeff2]'>
-      <div className='col-span-5 bg-[#E4E1E5] h-fit mt-1 mx-1 py-1'><Header/></div>
-      <div className='contents col-span-5 bg-white mx-1'>
+    <div className='gap-[.7vh] bg-[#ebeff2]'>
+      <div className='bg-[#E4E1E5] h-fit mt-1 mx-1 py-1'><Header/></div>
+      <div className='contents bg-white mx-1'>
         {
           isLoggedIn() && 
-          <div className='bg-[#E4E1E5] ml-1 col-span-1'>
+          <div className='ml-10 text-left'>
             <NavPanel/>
           </div>
         }
-        <div className={'bg-[#E4E1E5] min-h-[83.25vh] ' + span}>
+        <div className={'bg-[#E4E1E5] min-h-[83.25vh] mx-1'}>
           <Content ShowToast={ShowToast}/>
           <Toast toastList={toastList} />
           <SnackbarProvider maxSnack={1} anchorOrigin={{
@@ -51,7 +48,7 @@ function App() {
           }}/>
         </div>
       </div>
-      <div className='col-span-5 bg-[#21345b] text-white h-fit mb-1 mx-1'><Footer/></div>
+      <div className='bg-[#21345b] text-white h-fit mb-1 mx-1'><Footer/></div>
     </div>
   );
 }
