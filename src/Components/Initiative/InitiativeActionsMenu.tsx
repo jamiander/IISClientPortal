@@ -9,6 +9,7 @@ interface InitiativeActionsMenuProps {
   company: Company
   initiative: Initiative
   disabled?: boolean
+  isAdmin: boolean
 }
 
 export function InitiativeActionsMenu(props: InitiativeActionsMenuProps)
@@ -47,7 +48,7 @@ export function InitiativeActionsMenu(props: InitiativeActionsMenuProps)
           <ViewDecisionDataButton company={props.company} initiative={props.initiative}/>
         </MenuItem>
         <MenuItem>
-          <DocumentManagementButton company={props.company} initiative={props.initiative}/>
+          <DocumentManagementButton company={props.company} initiative={props.initiative} isAdmin={props.isAdmin}/>
         </MenuItem>
       </Menu>
     </>

@@ -79,7 +79,7 @@ export default function InitiativesPage(){
         </div>
         </div>
         {companyList.length > 0 &&
-          <InitiativesTable addInitiative={addInitiative} companyList={companyList} radioStatus={radioValue} ValidateInitiative={ValidateNewInitiative} admin={true} setAddInitiative={setAddInitiative} />}
+          <InitiativesTable addInitiative={addInitiative} companyList={companyList} radioStatus={radioValue} ValidateInitiative={ValidateNewInitiative} setAddInitiative={setAddInitiative} />}
         </div>
       </div>
       </>

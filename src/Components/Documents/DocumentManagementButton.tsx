@@ -8,6 +8,7 @@ interface DocumentManagementButtonProps {
   company: Company
   initiative?: Initiative
   disabled?: boolean
+  isAdmin: boolean
 }
 
 export function DocumentManagementButton(props: DocumentManagementButtonProps)
@@ -19,7 +20,7 @@ export function DocumentManagementButton(props: DocumentManagementButtonProps)
       <Button disabled={props.disabled} className={genericButtonStyle} onClick={() => setIsOpen(true)}>
         Documents
       </Button>
-      <DocumentManagementModal company={props.company} initiative={props.initiative} isOpen={isOpen} setIsOpen={setIsOpen}/>
+      <DocumentManagementModal company={props.company} initiative={props.initiative} isAdmin={props.isAdmin} isOpen={isOpen} setIsOpen={setIsOpen}/>
     </div>
   )
 }

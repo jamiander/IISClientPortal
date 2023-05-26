@@ -11,6 +11,7 @@ import { DocumentDownload } from './DocumentDownload';
 interface DocumentManagementModalProps {
   company: Company
   initiative?: Initiative
+  isAdmin: boolean
   isOpen: boolean
   setIsOpen: (value: boolean) => void
 }
@@ -66,7 +67,9 @@ export function DocumentManagementModal(props: DocumentManagementModalProps)
         </div>
       </div>
       <div className="col-span-4">
-        <DocumentUpload company={props.company} initiative={props.initiative} GetData={GetData}/>
+        {props.isAdmin &&
+          <DocumentUpload company={props.company} initiative={props.initiative} GetData={GetData}/>
+        }
         {
           docInfos.length !== 0 &&
           <TableContainer component={Paper}>
