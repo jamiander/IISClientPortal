@@ -1,6 +1,6 @@
 import axios from "axios";
 import { BASE_URL } from "./Http";
-import { BlobClient, BlobServiceClient, ContainerClient } from "@azure/storage-blob";
+import { BlobClient, BlobServiceClient, ContainerClient, Tags } from "@azure/storage-blob";
 import { DocumentInfo } from "../Store/DocumentSlice";
 
 export interface GenerateSASTokenRequest {
@@ -21,6 +21,7 @@ export async function GenerateSASToken(request: GenerateSASTokenRequest) : Promi
 
 export interface GetDocumentUrlsRequest {
   companyId: string
+  initiativeId?: string
 }
 
 export interface GetDocumentUrlsResponse {
@@ -29,7 +30,7 @@ export interface GetDocumentUrlsResponse {
 
 export async function GetDocumentUrls(request: GetDocumentUrlsRequest) : Promise<GetDocumentUrlsResponse>
 {
-  const returnedBlobUrls = [];
+  const docs: DocumentInfo[] = [];
   const containerName = `client-portal-data`;
 
   const tokenResponse = await GenerateSASToken({write: false});
@@ -37,26 +38,39 @@ export async function GetDocumentUrls(request: GetDocumentUrlsRequest) : Promise
   let status = tokenResponse.status;
 
   const uploadUrl = `https://iisclientstorage.blob.core.windows.net/${sasToken}`;
-  //console.log(uploadUrl);
 
   const blobService = new BlobServiceClient(uploadUrl);
   const containerClient: ContainerClient = blobService.getContainerClient(containerName);
 
-  let i = 1;
-  for await (const blob of containerClient.findBlobsByTags(`companyId='${request.companyId}'`))
-  {
-    //console.log(`Blob ${i++}: ${containerName}`);
+  let query = `companyId='${request.companyId}'`;
+  if(request.initiativeId)
+    query += ` AND initiativeId='${request.initiativeId}'`;
 
-    const blobItem = {
-      url: `https://iisclientstorage.blob.core.windows.net/${containerName}/${blob.name}${sasToken}`,
-      name: blob.name
-    }
-    //console.log(blob);
+  let i = 1;
+  for await (const blob of containerClient.findBlobsByTags(query))
+  {
+    const url = `https://iisclientstorage.blob.core.windows.net/${containerName}/${blob.name}${sasToken}`
     
-    returnedBlobUrls.push(blobItem);
+    const blobClient = new BlobClient(url);
+    
+    const properties = await blobClient.getProperties();
+    let fileName = "";
+    if(properties.metadata?.filename)
+      fileName = properties.metadata.filename;
+
+    const tags = await blobClient.getTags();
+
+    const docItem: DocumentInfo = {
+      url: url,
+      blobName: blob.name,
+      fileName: fileName,
+      initiativeId: tags.tags.initiativeId
+    }
+    
+    docs.push(docItem);
   }
 
-  return {documents: returnedBlobUrls};
+  return {documents: docs};
 }
 
 export interface DownloadDocumentRequest {
@@ -107,7 +121,7 @@ export async function DownloadDocument(request: DownloadDocumentRequest) : Promi
   link.href = url;
   link.setAttribute(
     'download',
-    request.documentInfo.name,
+    request.documentInfo.fileName,
   );
 
   // Append to html link element page
@@ -134,6 +148,7 @@ export interface UploadDocumentRequest {
   file: File
   documentId: string
   companyId: string
+  initiativeId?: string
 }
 
 interface UploadDocumentResponse {
@@ -158,7 +173,12 @@ export async function UploadDocument(request: UploadDocumentRequest) : Promise<U
     const options = { blobHTTPHeaders: { blobContentType: file.type }};
 
     await blobClient.uploadData(file, options);
-    await blobClient.setTags({companyId: request.companyId});
+
+    let tags: any = {companyId: request.companyId};
+    if(request.initiativeId)
+      tags = {companyId: request.companyId, initiativeId: request.initiativeId};
+    await blobClient.setTags(tags);
+    await blobClient.setMetadata({fileName: file.name});
   }
   catch (e)
   {

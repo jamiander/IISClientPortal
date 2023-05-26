@@ -4,7 +4,6 @@ import { uploadDocument } from "../../Store/DocumentSlice";
 import { v4 } from "uuid";
 import { Company, Initiative } from "../../Store/CompanySlice";
 import { useAppDispatch } from "../../Store/Hooks";
-import { IconButton } from "@mui/material";
 
 interface DocumentUploadProps {
   company: Company
@@ -21,7 +20,7 @@ export function DocumentUpload(props: DocumentUploadProps)
     if(file)
     {
       let documentId = v4();
-      await dispatch(uploadDocument({file: file, companyId: props.company.id, documentId: documentId}));
+      await dispatch(uploadDocument({file: file, companyId: props.company.id, initiativeId: props.initiative?.id, documentId: documentId}));
       props.GetData();
       setFile(null);
     }

@@ -31,8 +31,18 @@ export function DocumentManagementModal(props: DocumentManagementModalProps)
 
   async function GetData()
   {
-    const docs = (await dispatch(getDocumentUrls({companyId: props.company.id}))).payload as DocumentInfo[];
-    setDocInfos(docs);
+    try{
+      const response = await dispatch(getDocumentUrls({companyId: props.company.id, initiativeId: props.initiative?.id}));
+      if(response.payload)
+      {
+        const docs = response.payload as DocumentInfo[];
+        setDocInfos(docs);
+      }
+    }
+    catch(e)
+    {
+      console.log((e as Error).message);
+    } 
   }
 
 
@@ -56,7 +66,7 @@ export function DocumentManagementModal(props: DocumentManagementModalProps)
         </div>
       </div>
       <div className="col-span-4">
-        <DocumentUpload company={props.company} GetData={GetData}/>
+        <DocumentUpload company={props.company} initiative={props.initiative} GetData={GetData}/>
         {
           docInfos.length !== 0 &&
           <TableContainer component={Paper}>
@@ -96,13 +106,15 @@ export function DocumentManagementModal(props: DocumentManagementModalProps)
                     >
                       <TableCell>
                         <div className="flex justify-between">
-                          <p>{doc.name}</p>
+                          <p>{doc.fileName}</p>
                           <DocumentDownload docInfo={doc}/>
                         </div>
                       </TableCell>
                       {!props.initiative &&
                       <TableCell>
-                        N/A
+                        {
+                          doc.initiativeId ? (props.company.initiatives.find(i => i.id === doc.initiativeId)?.title ?? "N/A") : "N/A"
+                        }
                       </TableCell>
                       }
                     </TableRow>
