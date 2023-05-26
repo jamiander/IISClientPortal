@@ -149,7 +149,7 @@ export default function UsersPage(){
           <button disabled={InEditMode()} id={UsersPageIds.addButton} className={yellowButtonStyle} onClick={() => AddEmptyUser("")}>Add User</button>
         </div>}
         <div className="col-span-1 py-[2%]">
-          <TableContainer component={Paper}>
+          <TableContainer elevation={10} component={Paper}>
             <Table className="table-auto w-full outline outline-3 bg-gray-100">
               <colgroup>
                 <col style={{ width: '17%' }} />

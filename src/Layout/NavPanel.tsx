@@ -52,8 +52,8 @@ export default function NavPanel(){
   }
 
   return(
-    <div className="grid place-items-left p-[2%] py-3 space-y-3">
-    <IconButton
+    <div className="mx-auto space-x-2 flex flex-wrap mt-4 mb-4">
+    <IconButton className="text-2xl"
       id="basic-button"
       aria-controls={open ? 'basic-menu' : undefined}
       aria-haspopup="true"
