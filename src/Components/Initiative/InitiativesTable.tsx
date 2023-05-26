@@ -26,6 +26,7 @@ import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
 import { selectCurrentUser } from "../../Store/UserSlice";
 import { enqueueSnackbar } from "notistack";
 import ValidateNewInitiative, { ValidationFailedPrefix } from "../../Services/Validation";
+import { InitiativeActionsMenu } from "./InitiativeActionsMenu";
 
 export const InitiativeTableIds = {
   table: "initiativeTable",
@@ -375,7 +376,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                   <TableHeaderStyle>
                     <SortLabel heading="Probability" sortKey='probabilityValue'/>
                   </TableHeaderStyle>
-                  <TableHeaderStyle>View Decisions</TableHeaderStyle>
+                  <TableHeaderStyle>Actions</TableHeaderStyle>
                   <TableHeaderStyle>Edit</TableHeaderStyle>
                 </TableRow>
               </TableHead>
@@ -435,7 +436,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                             <TableCell id={InitiativeTableIds.remainingItems}>{displayItem.itemsRemaining}</TableCell>
                             <TableCell></TableCell>
                             <TableCell className="w-1/12">
-                              <ViewDecisionDataButton disabled={true} company={displayItem.company} initiative={displayItem} index={index} />
+                              <InitiativeActionsMenu disabled={true} company={displayItem.company} initiative={displayItem}/>
                             </TableCell>
                             <TableCell className="w-1/12">
                               <IconButton id={InitiativeTableIds.saveChangesButton} onClick={() => SaveEdit()}>
@@ -458,7 +459,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                               <i className="material-icons" style={{ fontSize: '15px', marginLeft: '15px', marginTop: '10px' }}>info_outline</i>
                             </TableCell>
                             <TableCell className="w-1/12">
-                              <ViewDecisionDataButton company={displayItem.company} initiative={displayItem} index={index} />
+                              <InitiativeActionsMenu company={displayItem.company} initiative={displayItem}/>
                             </TableCell>
                             <TableCell className="w-1/12">
                               <IconButton id={InitiativeTableIds.editButton} disabled={InEditMode()} onClick={() => EnterEditMode(displayItem.id, displayItem.company.id, displayItems, false)}>
