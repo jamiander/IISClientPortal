@@ -4,6 +4,7 @@ import { User } from "../Store/UserSlice";
 
 export interface GetUserByIdRequest {
   userId?: string
+  companyId?: string
 }
 
 interface GetUserByIdResponse {

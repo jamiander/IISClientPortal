@@ -1,6 +1,6 @@
 import { StyledTextField, TableHeaderStyle, defaultRowStyle, yellowButtonStyle } from "../Styles";
 import { useEffect, useRef, useState } from "react";
-import { User, getUserById, selectAllUsers, selectCurrentUserId } from "../Store/UserSlice";
+import { User, getUserById, selectAllUsers, selectCurrentUser } from "../Store/UserSlice";
 import { Company, IntegrityId, selectAllCompanies } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
 import { Checkbox, FormControl, IconButton, Input, InputLabel, MenuItem, Select} from "@mui/material";
@@ -49,7 +49,7 @@ export default function UsersPage(){
   const [companyUsers, setCompanyUsers] = useState<User[]>([]);
   const [radioValue,setRadioValue] = useState("active");
   const [displayCompanies, setDisplayCompanies] = useState<Company[]>([]);
-  const currentUserId = useAppSelector(selectCurrentUserId);
+  const currentUser = useAppSelector(selectCurrentUser);
   const dispatch = useAppDispatch();
 
   const {
@@ -92,31 +92,26 @@ export default function UsersPage(){
     setDisplayCompanies(sortedCompanies.filter((company: { id: string; }) => company.id !== IntegrityId));
   },[allCompanies]); 
   
-  let currentUserCompanyId = allUsers.find(user => user.id === currentUserId)?.companyId!;
-  let userCompany = displayCompanies.find(x => x.id === currentUserCompanyId)!;
+  let currentUserCompanyId = currentUser?.companyId ?? "";
 
   useEffect(() =>
   {
-    if(allUsers.find(user => user.id === currentUserId)?.isAdmin)
-      dispatch(getUserById({}));
-  }, [currentUserId]);
+    if(currentUser?.isAdmin)
+    {
+      if(currentUser.companyId === IntegrityId)
+        dispatch(getUserById({}));
+      else
+        dispatch(getUserById({ companyId: currentUser.companyId }))
+    }
+  }, []);
 
   useEffect(() => 
   {
-    if(currentUserCompanyId === IntegrityId){ 
-      const otherCompanyUsers = UserFilter(allUsers, radioValue);
-      otherCompanyUsers.filter(user => user.companyId !== IntegrityId);
-      setCompanyUsers(otherCompanyUsers);
-      SetupEditUser(otherCompanyUsers);
-     }
-    else {
-      const otherCompanyUsers = UserFilter(allUsers, radioValue);
-      otherCompanyUsers.filter(user => user.companyId !== IntegrityId);
-      let filteredUsers = otherCompanyUsers.filter(cu => cu.companyId === userCompany?.id)
-      setCompanyUsers(filteredUsers);
-      setCurrentCompanyId(currentUserCompanyId);
-      SetupEditUser(filteredUsers);
-    } 
+    const filteredUsers = UserFilter(allUsers, radioValue);
+    setCurrentCompanyId(currentUserCompanyId);
+    setCompanyUsers(filteredUsers);
+    SetupEditUser(filteredUsers);
+    
   }, [allUsers, radioValue])
 
   const myRef = useRef<HTMLElement>(null);
@@ -184,11 +179,12 @@ export default function UsersPage(){
               <TableBody id={UsersPageIds.table}>
                 {displayCompanies.map((displayCompany, key) => {
                   let newUser = usersList.find(u => u.companyId === "");
-                  let companyUserList = usersList.filter(cu => cu.companyId === displayCompany.id)!.filter(u => u.email.toUpperCase().includes(searchedKeyword.toUpperCase()) || u.name?.toUpperCase().includes(searchedKeyword.toUpperCase()));
-                  if(key === 0 && newUser != undefined) companyUserList.unshift(newUser);
+                  let companyUserList = usersList.filter(cu => cu.companyId === displayCompany.id).filter(u => u.email.toUpperCase().includes(searchedKeyword.toUpperCase()) || u.name?.toUpperCase().includes(searchedKeyword.toUpperCase()));
+                  if(key === 0 && newUser !== undefined)
+                    companyUserList.unshift(newUser);
                   return (
                     companyUserList.map((companyUser,key) => {
-                      let isEdit = InEditMode() && companyUser?.id === userToEdit?.id;
+                      let isEdit = InEditMode() && companyUser.id === userToEdit?.id;
                       return (
                         <TableRow className={defaultRowStyle} key={key} sx={{
                           borderBottom: "1px solid black",
