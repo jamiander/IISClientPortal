@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks"
 import { authenticateUser, selectAllUsers, selectCurrentUserId, selectLogInAttempts } from "../Store/UserSlice";
 import { genericButtonStyle } from "../Styles";
+import { CircularProgress } from "@mui/material";
 
 export const LoginPageIds = {
   email: "email",
@@ -19,14 +20,35 @@ export default function LoginPage(){
   const [passwordShown,setPasswordShown] = useState(false);
   const selectStyle = "outline outline-1 h-10 w-60 p-2 mb-4 hover:outline-2 focus:outline-2";
   const logInAttempts = useAppSelector(selectLogInAttempts);
+  const [isLoading, setIsLoading] = useState(false);
 
   const togglePasswordVisibility = () => {
     setPasswordShown(passwordShown ? false : true);
   };
 
-  function Login()
+  async function HandleLogin(key: any)
   {
-    dispatch(authenticateUser({creds: { username: userEmail, password: password }}))
+    if(key === 'Enter')
+    {
+      await Login();
+    }
+  }
+  
+  async function Login()
+  {
+    if(!isLoading)
+    {
+      setIsLoading(true);
+      try
+      {
+        await dispatch(authenticateUser({creds: { username: userEmail, password: password }}));
+      }
+      catch(e)
+      {
+        console.log((e as Error).message);
+      }
+      setIsLoading(false);
+    }
   }
 
   useEffect(() => {
@@ -43,7 +65,7 @@ export default function LoginPage(){
         <p className="text-5xl text-[#21345b] mb-5">Login</p>
 
         <p className='my-2 text-[#21345b]'>Email</p>
-        <input id={LoginPageIds.email} autoFocus value={userEmail} onChange={(e)=>setUserEmail(e.target.value)} onKeyDown={(e)=> {if (e.key === 'Enter') Login()}}
+        <input id={LoginPageIds.email} autoFocus value={userEmail} onChange={e => setUserEmail(e.target.value)} onKeyDown={e => HandleLogin(e.key)}
         className={selectStyle}/>
 
         <div className="flex my-2 space-x-12">
@@ -55,11 +77,16 @@ export default function LoginPage(){
             </label>
           </div>
         </div>
-        <input id={LoginPageIds.password} value={password} type={passwordShown ? 'text' : 'password'} onChange={(e)=>setPassword(e.target.value)} onKeyDown={(e)=> {if (e.key === 'Enter') Login()}}
+        <input id={LoginPageIds.password} value={password} type={passwordShown ? 'text' : 'password'} onChange={e => setPassword(e.target.value)} onKeyDown={e => HandleLogin(e.key)}
         className={selectStyle}/>
         
-        <div className="w-full my-5">
-          <button id={LoginPageIds.submitButton} onClick={()=>Login()} className={genericButtonStyle}>Submit</button>
+        <div className="w-full my-5 flex justify-between">
+          <button id={LoginPageIds.submitButton} disabled={isLoading} onClick={()=>Login()} className={genericButtonStyle}>Submit</button>
+          {isLoading &&
+            <div className="flex justify-center">
+              <CircularProgress color="warning"/>
+            </div>
+          }
         </div>
 
         {logInAttempts > 0 && 
