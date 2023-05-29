@@ -7,6 +7,7 @@ const radioIds = consts.initiativeDisplayRadioIds;
 const tableIds = consts.initiativeTableIds;
 const snackbarWaitTime = consts.snackbarWaitTime;
 const loginIds = consts.loginPageIds;
+const pageIds = consts.initiativesPageIds;
 
 const init = {
   companyId: 0,
@@ -34,7 +35,7 @@ describe('add initiative spec', () => {
 
     cy.get(radioIds.all).click();
 
-    cy.get(tableIds.addButton).click();
+    cy.get(pageIds.addInitiativeButton).click();
   });
 
   specify('add new initiative',() => {
@@ -54,7 +55,7 @@ describe('add initiative spec', () => {
       cy.get(tableIds.initiativeTitle).invoke('text').then(($txt) => { 
         const existingInitTitle = $txt;
 
-        cy.get(tableIds.addButton).click();
+        cy.get(pageIds.addInitiativeButton).click();
         cy.get(tableIds.initiativeTitle).clear().type(existingInitTitle);
         cy.get(tableIds.startDate).clear().type(init.startDate);
         cy.get(tableIds.targetDate).clear().type(init.targetDate);
@@ -143,7 +144,7 @@ describe('add initiatives as Integrity user', () => {
 
     cy.get(radioIds.all).click();
 
-    cy.get(tableIds.addButton).click();
+    cy.get(pageIds.addInitiativeButton).click();
 
     cy.get(tableIds.companySelect).parent()
       .click()
