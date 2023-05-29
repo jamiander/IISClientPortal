@@ -29,7 +29,7 @@ import ValidateNewInitiative, { ValidationFailedPrefix } from "../../Services/Va
 import { InitiativeActionsMenu } from "./InitiativeActionsMenu";
 
 export const InitiativeTableIds = {
-  table: "initiativeTable",
+  table: "initiativesTable",
   totalItems: 'initiativeTableTotalItems',
   remainingItems: 'initiativesTableRemainingItems',
   initiativeTitle: 'initiativesTableTitle',
@@ -42,7 +42,12 @@ export const InitiativeTableIds = {
   addButton: "initiativesTableAddButton",
   editButton: "initiativesTableEditButton",
   saveChangesButton: "initiativesTableSaveChangesButton",
-  cancelChangesButton: "initiativesTableCancelChangesButton"
+  cancelChangesButton: "initiativesTableCancelChangesButton",
+  actionMenu: {
+    menuButton: "initiativesTableMenuButton",
+    decisionButton: "initiativesTableDecisionButton",
+    documentButton: "initiativesTableDocumentButton"
+  }
 }
 
 interface InitiativesProps {
@@ -435,7 +440,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                             <TableCell id={InitiativeTableIds.remainingItems}>{displayItem.itemsRemaining}</TableCell>
                             <TableCell></TableCell>
                             <TableCell className="w-1/12">
-                              <InitiativeActionsMenu disabled={true} company={displayItem.company} initiative={displayItem} isAdmin={false}/>
+                              <InitiativeActionsMenu ids={InitiativeTableIds.actionMenu} disabled={true} company={displayItem.company} initiative={displayItem} isAdmin={false}/>
                             </TableCell>
                             <TableCell className="w-1/12">
                               <IconButton id={InitiativeTableIds.saveChangesButton} onClick={() => SaveEdit()}>
@@ -458,7 +463,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                               <i className="material-icons" style={{ fontSize: '15px', marginLeft: '15px', marginTop: '10px' }}>info_outline</i>
                             </TableCell>
                             <TableCell className="w-1/12">
-                              <InitiativeActionsMenu company={displayItem.company} initiative={displayItem} isAdmin={currentUser?.isAdmin ?? false}/>
+                              <InitiativeActionsMenu ids={InitiativeTableIds.actionMenu} company={displayItem.company} initiative={displayItem} isAdmin={currentUser?.isAdmin ?? false}/>
                             </TableCell>
                             <TableCell className="w-1/12">
                               <IconButton id={InitiativeTableIds.editButton} disabled={InEditMode()} onClick={() => EnterEditMode(displayItem.id, displayItem.company.id, displayItems, false)}>

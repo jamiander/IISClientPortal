@@ -6,6 +6,7 @@ const modalIds = consts.decisionModalIds;
 const alertIds = consts.deleteDecisionAlertIds;
 const radioIds = consts.initiativeDisplayRadioIds;
 const tableIds = consts.initiativeTableIds;
+const loginIds = consts.loginPageIds;
 const snackbarId = consts.snackbarId;
 const snackbarWaitTime = consts.snackbarWaitTime;
 const waitTime = 500;
@@ -32,15 +33,18 @@ const editedDecision = {
 
 beforeEach(() => {
   cy.visit('http://localhost:3000/Login');
-  cy.get('#email').clear().type(user.email);
-  cy.get('#password').clear().type(user.password);
+  cy.get(loginIds.email).clear().type(user.email);
+  cy.get(loginIds.password).clear().type(user.password);
   cy.wait(500);
-  cy.get('button').contains('Submit').click();
+  cy.get(loginIds.submitButton).click();
 
   cy.get(radioIds.all).click();
   cy.get(tableIds.initiativeTitleFilter).type(init.title);
-  cy.get('table').contains(init.title);
-  cy.get("button").contains("View").click();
+  cy.get('table').contains(init.title).then(() => {
+    cy.get(tableIds.actionMenu.menuButton).click();
+    cy.get(tableIds.actionMenu.decisionButton).click();
+  });
+  
 
   cy.get(modalIds.addButton).click({force: true});
   cy.get(modalIds.grid).children().first().within(() => {
@@ -60,7 +64,7 @@ describe("add decision spec", () => {
     cy.get(modalIds.description).contains(decision.description);
     cy.get(modalIds.closeModalButton).click();
     
-    cy.get('button').contains("View").click();
+    cy.get(tableIds.actionMenu.decisionButton).click();
     cy.get(modalIds.grid).children().last().within(() => {
       cy.get(modalIds.description).should('contain',decision.description);
     })
