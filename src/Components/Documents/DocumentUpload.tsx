@@ -69,8 +69,8 @@ export function DocumentUpload(props: DocumentUploadProps)
           file:mr-2 file:py-2 file:px-4
           file:rounded-full file:border-0
           file:text-sm file:font-semibold
-          file:bg-gray-50 file:text-gray-700
-          hover:file:bg-gray-100"
+          file:bg-gray-100 file:text-gray-700
+          hover:file:bg-gray-200"
           onChange={(e) => HandleFiles(e.target.files)}
           ref={fileRef}
         />
