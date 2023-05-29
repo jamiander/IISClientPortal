@@ -38,6 +38,7 @@ export function DocumentManagementModal(props: DocumentManagementModalProps)
       {
         const docs = response.payload as DocumentInfo[];
         setDocInfos(docs);
+        console.log(docs);
       }
     }
     catch(e)
