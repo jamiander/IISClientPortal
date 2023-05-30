@@ -11,7 +11,8 @@ export const NavPanelIds = {
   initiatives: "navPanelInitiatives",
   users: "navPanelUsers",
   integrity: "navPanelIntegrity",
-  client: "navPanelClient"
+  client: "navPanelClient",
+  menuButton: "navPanelMenuButton"
 }
 
 export default function NavPanel(){
@@ -31,7 +32,6 @@ export default function NavPanel(){
 
   function NavHandler(path: string) {
     if (!isLoggedIn) {
-      
       enqueueSnackbar('You must login to leave this page', {variant:'error'});
     }
     else 
@@ -54,7 +54,7 @@ export default function NavPanel(){
   return(
     <div className="mx-auto space-x-2 flex flex-wrap mt-4 mb-4">
     <IconButton className="text-2xl"
-      id="basic-button"
+      id={NavPanelIds.menuButton}
       aria-controls={open ? 'basic-menu' : undefined}
       aria-haspopup="true"
       aria-expanded={open ? 'true' : undefined}
@@ -68,7 +68,7 @@ export default function NavPanel(){
       open={open}
       onClose={handleClose}
       MenuListProps={{
-        'aria-labelledby': 'basic-button',
+        'aria-labelledby': NavPanelIds.menuButton,
       }}>
         <button style={{ fontSize: '20px', marginTop: '30px', marginLeft: '10px', textAlign: "left" }} id={NavPanelIds.initiatives} className={GetNavStyle("/Initiatives")}
           onClick={() => NavHandler('/Initiatives')}>
