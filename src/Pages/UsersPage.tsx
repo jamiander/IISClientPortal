@@ -126,27 +126,24 @@ export default function UsersPage(){
     </div>
     <div className="mx-[2%] mb-[2%]">
         <div className="flex flex-col justify-between mt-5">
-          <div className="space-x-2 flex flex-wrap">
+          <div className="space-x-2 flex flex-wrap position-relative">
             {companyUsers.length !== 0 &&
               currentUserCompanyId !== IntegrityId &&
-              <><div className="flex flex-col justify-between mt-5">
-                <button disabled={InEditMode()} id={UsersPageIds.addButton} className={yellowButtonStyle} onClick={() => AddEmptyUser(currentUserCompanyId)}>Add User</button>
-              </div></>}
+              <><button disabled={InEditMode()} id={UsersPageIds.addButton} className={yellowButtonStyle} onClick={() => AddEmptyUser(currentUserCompanyId)}>Add User</button>
+              </>}
             {companyUsers.length !== 0 &&
               currentUserCompanyId === IntegrityId &&
-              <><div className="flex flex-col justify-between mt-5">
-                <button disabled={InEditMode()} id={UsersPageIds.addButton} className={yellowButtonStyle} onClick={() => AddEmptyUser("")}>Add User</button>
-              </div></>}
-            <RadioSet dark={true} setter={setRadioValue} name="clientPage" options={[
+              <><button disabled={InEditMode()} id={UsersPageIds.addButton} className={yellowButtonStyle} onClick={() => AddEmptyUser("")}>Add User</button>
+              </>}
+            <RadioSet dark={true} setter={setRadioValue} name="userPage" options={[
               { id: UsersPageIds.radioIds.all, label: "Show All", value: "all" },
-              { id: UsersPageIds.radioIds.active, label: "Only Active", value: "active", default: true },
-              { id: UsersPageIds.radioIds.inactive, label: "Only Inactive", value: "inactive" }
+              { id: UsersPageIds.radioIds.active, label: "Active", value: "active", default: true },
+              { id: UsersPageIds.radioIds.inactive, label: "Inactive", value: "inactive" }
             ]} />
-            <div className="flex flex-col justify-between mt-5">
-              <IconButton onClick={() => setSearchBarOpen(!searchBarOpen)}>
+              <IconButton sx={{borderRadius: 5, marginLeft: 5}} onClick={() => setSearchBarOpen(!searchBarOpen)}>
                 <SearchIcon />
+                <div className="text-sm">Search</div>
               </IconButton>
-            </div>
             {searchBarOpen === true &&
               <UserTextField id={UsersPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name or email" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)} />
             }
