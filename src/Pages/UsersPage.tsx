@@ -116,8 +116,6 @@ export default function UsersPage(){
     
   }, [allUsers, radioValue])
 
-  const myRef = useRef<HTMLElement>(null);
-
   return (
       <><div className="flex col-span-4 bg-[#69D5C3] py-6 px-5">
       <div className="w-full flex justify-between">
@@ -231,7 +229,7 @@ export default function UsersPage(){
                                   <TableCell id={UsersPageIds.isAdmin}><Checkbox checked={currentIsAdmin} onChange={e => setCurrentIsAdmin(e.target.checked)} />Admin</TableCell>
                                   <TableCell id={UsersPageIds.isActive}><Checkbox checked={currentIsActive} onChange={e => setCurrentIsActive(e.target.checked)} />Active</TableCell>
                                   <TableCell id={UsersPageIds.initiativeIds}></TableCell>
-                                  <TableCell ref={myRef}>
+                                  <TableCell>
                                     <IconButton id={UsersPageIds.saveChangesButton} onClick={() => SaveEdit()}>
                                       <DoneIcon />
                                     </IconButton>

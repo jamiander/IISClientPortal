@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { DateInfo, ThroughputData } from "../../Services/CompanyService";
 import { Company, Initiative } from "../../Store/CompanySlice";
 import { cancelButtonStyle, defaultRowStyle, modalStyle, submitButtonStyle, TableHeaderStyle, tooltipStyle } from "../../Styles";
@@ -110,6 +110,10 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
           {
             EnterEditMode(matchingThroughput.date, throughputClone, false);
           }
+
+          setTimeout(() => {
+            throughputRef.current?.scrollIntoView()
+          },1);
         }
         else
           enqueueSnackbar(ValidationFailedPrefix + "A valid initiative must be selected.", {variant: "error"});
@@ -180,6 +184,8 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
     props.setEditIsOpen(false);
   }
 
+  const throughputRef = useRef<HTMLElement>(null);
+  
   return(
     <Modal
       id={EditThroughputIds.modal}
@@ -228,18 +234,16 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
                         }}>
                         {isEdit ?
                           <>
-                            <TableCell>
-                            <IconButton id={EditThroughputIds.saveChangesButton} onClick={() => SaveEdit()}>
-                              <DoneIcon />
-                            </IconButton>
-                            <IconButton id={EditThroughputIds.cancelChangesButton} onClick={() => CancelEdit()}>
-                              <CancelIcon />
-                            </IconButton>
+                            <TableCell ref={throughputRef}>
+                              <IconButton id={EditThroughputIds.saveChangesButton} onClick={() => SaveEdit()}>
+                                <DoneIcon />
+                              </IconButton>
+                              <IconButton id={EditThroughputIds.cancelChangesButton} onClick={() => CancelEdit()}>
+                                <CancelIcon />
+                              </IconButton>
                             </TableCell>
                             <TableCell className="border border-spacing-x-0 border-y-gray-700">
-                              {/*state === stateEnum.add ?
-                                <DateInput date={currentDate} setDate={setCurrentDate} id={EditThroughputIds.tableDate}></DateInput> 
-                              :*/
+                              {
                                 <p className="px-2 w-full bg-inherit focus:outline-none" id={EditThroughputIds.tableDate}>{throughput.date.month + "/" + throughput.date.day + "/" + throughput.date.year}</p> 
                               }
                               </TableCell>
