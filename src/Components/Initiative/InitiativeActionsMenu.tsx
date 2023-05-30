@@ -4,6 +4,8 @@ import { useState } from "react";
 import { ViewDecisionDataButton } from "./ViewDecisionDataButton";
 import { Company, Initiative } from "../../Store/CompanySlice";
 import { DocumentManagementButton } from "../Documents/DocumentManagementButton";
+import DecisionDataModal from "./DecisionDataModal";
+import { DocumentManagementModal } from "../Documents/DocumentManagementModal";
 
 interface InitiativeActionsMenuProps {
   ids: {
@@ -28,6 +30,10 @@ export function InitiativeActionsMenu(props: InitiativeActionsMenuProps)
     setAnchorEl(null);
   };
   
+
+  const [viewDecisionDataIsOpen, setViewDecisionDataIsOpen] = useState(false);
+  const [documentModalIsOpen, setDocumentModalIsOpen] = useState(false);
+
   return (
     <>
       <IconButton
@@ -49,13 +55,21 @@ export function InitiativeActionsMenu(props: InitiativeActionsMenuProps)
           'aria-labelledby': 'basic-button',
         }}
       >
-        <MenuItem>
-          <ViewDecisionDataButton id={props.ids.decisionButton} company={props.company} initiative={props.initiative}/>
+        <MenuItem onClick={handleClose}>
+          {/*<ViewDecisionDataButton id={props.ids.decisionButton} company={props.company} initiative={props.initiative}/>*/}
+          <Button id={props.ids.decisionButton} onClick={() => setViewDecisionDataIsOpen(true)}>
+            Decisions
+          </Button>
         </MenuItem>
-        <MenuItem>
-          <DocumentManagementButton id={props.ids.documentButton} company={props.company} initiative={props.initiative} isAdmin={props.isAdmin}/>
+        <MenuItem onClick={handleClose}>
+          {/*<DocumentManagementButton id={props.ids.documentButton} company={props.company} initiative={props.initiative} isAdmin={props.isAdmin}/>*/}
+          <Button id={props.ids.documentButton} onClick={() => setDocumentModalIsOpen(true)}>
+            Documents
+          </Button>
         </MenuItem>
       </Menu>
+      <DecisionDataModal title='View Decision Data' isOpen={viewDecisionDataIsOpen} setDecisionModalIsOpen={setViewDecisionDataIsOpen} initiative={props.initiative} company={props.company}/>
+      <DocumentManagementModal isOpen={documentModalIsOpen} setIsOpen={setDocumentModalIsOpen} company={props.company} initiative={props.initiative} isAdmin={props.isAdmin} />
     </>
   )
 }

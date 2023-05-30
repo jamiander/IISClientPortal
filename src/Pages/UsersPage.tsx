@@ -188,7 +188,7 @@ export default function UsersPage(){
                     {displayCompanies.map((displayCompany, key) => {
                       let newUser = usersList.find(u => u.companyId === "");
                       let companyUserList = usersList.filter(cu => cu.companyId === displayCompany.id)!.filter(u => u.email.toUpperCase().includes(searchedKeyword.toUpperCase()) || u.name?.toUpperCase().includes(searchedKeyword.toUpperCase()));
-                      if (key === 0 && newUser != undefined)
+                      if (key === 0 && newUser !== undefined)
                         companyUserList.unshift(newUser);
                       return (
                         companyUserList.map((companyUser, key) => {

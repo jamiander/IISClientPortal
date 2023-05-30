@@ -64,6 +64,7 @@ describe("add decision spec", () => {
     cy.get(modalIds.description).contains(decision.description);
     cy.get(modalIds.closeModalButton).click();
     
+    cy.get(tableIds.actionMenu.menuButton).click();
     cy.get(tableIds.actionMenu.decisionButton).click();
     cy.get(modalIds.grid).children().last().within(() => {
       cy.get(modalIds.description).should('contain',decision.description);
