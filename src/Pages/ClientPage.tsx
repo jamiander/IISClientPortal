@@ -195,14 +195,13 @@ export function ClientPage()
               </div></>}
               <RadioSet dark={true} setter={setRadioValue} name="clientPage" options={[
               {id: ClientPageIds.radioIds.all, label: "Show All", value: "all"},
-              {id: ClientPageIds.radioIds.active, label: "Only Active", value: "active", default: true},
-              {id: ClientPageIds.radioIds.inactive, label: "Only Inactive", value: "inactive"}
+              {id: ClientPageIds.radioIds.active, label: "Active", value: "active", default: true},
+              {id: ClientPageIds.radioIds.inactive, label: "Inactive", value: "inactive"}
             ]} />
-              <div className="flex flex-col justify-between mt-5">
-                <IconButton onClick={() => setSearchBarOpen(!searchBarOpen)}>
+                <IconButton sx={{borderRadius: 5, marginLeft: 5}} onClick={() => setSearchBarOpen(!searchBarOpen)}>
                   <SearchIcon/>
+                  <div className="text-sm">Search</div>
                 </IconButton>
-              </div>
               {searchBarOpen === true &&
                 <UserTextField id={ClientPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)} />
               }

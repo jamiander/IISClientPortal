@@ -86,8 +86,8 @@ export default function InitiativesPage(){
           </div>
           <RadioSet dark={true} setter={setRadioValue} name="initiativesDisplay" options={[
             { id: InitiativeDisplayRadioIds.all, label: "Show All", value: "all" },
-            { id: InitiativeDisplayRadioIds.active, label: "Only Active", value: "active", default: true },
-            { id: InitiativeDisplayRadioIds.inactive, label: "Only Inactive", value: "inactive" }
+            { id: InitiativeDisplayRadioIds.active, label: "Active", value: "active", default: true },
+            { id: InitiativeDisplayRadioIds.inactive, label: "Inactive", value: "inactive" }
           ]} />
         </div>
         </div>

@@ -26,7 +26,7 @@ export function RadioSet(props: RadioSetProps)
   }
 
   return (
-    <div className={"w-fit flex justify-center mt-5 h-[45px] py-1 text-lg"}>
+    <div className={"w-[35%] absolute right-0 flex justify-center mt-5 h-[45px] py-1 text-lg"}>
       {
         props.options.map((radio,index) => {
           return (

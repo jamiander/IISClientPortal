@@ -107,9 +107,10 @@ export function IntegrityPage(){
           <div className="flex flex-col justify-between">
             <div className="space-x-2 flex flex-wrap mt-5">
               <button disabled={InEditMode()} id={IntegrityPageIds.addButton} className={yellowButtonStyle} onClick={() => AddEmptyUser(IntegrityId)}>Add User</button>
-              <IconButton className="text-3xl" onClick={() => setSearchBarOpen(!searchBarOpen)}>
-                <SearchIcon/>
-              </IconButton>
+                <IconButton sx={{borderRadius: 5, marginLeft: 5}} onClick={() => setSearchBarOpen(!searchBarOpen)}>
+                  <SearchIcon/>
+                  <div className="text-sm">Search</div>
+                </IconButton>
               {searchBarOpen === true &&
                 <UserTextField id={IntegrityPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name or email" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)} />
               }
