@@ -1,4 +1,4 @@
-import { StyledTextField, TableHeaderStyle, defaultRowStyle, yellowButtonStyle } from "../Styles";
+import { StyledTextField, TableHeaderStyle, UserTextField, defaultRowStyle, yellowButtonStyle } from "../Styles";
 import { useEffect, useState } from "react";
 import { User, getUserById, selectAllUsers, selectCurrentUserId } from "../Store/UserSlice";
 import { Company, IntegrityId, selectAllCompanies } from "../Store/CompanySlice";
@@ -7,6 +7,7 @@ import { Checkbox, IconButton, Input} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
+import SearchIcon from '@mui/icons-material/Search';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -41,6 +42,7 @@ export function IntegrityPage(){
   const allUsers = useAppSelector(selectAllUsers);
   const [sortedCompanies, setSortedCompanies] = useState<Company[]>([]);
   const [integrityUsers, setIntegrityUsers] = useState<User[]>([]);
+  const [searchBarOpen, setSearchBarOpen] = useState(false);
   const currentUserId = useAppSelector(selectCurrentUserId);
   const dispatch = useAppDispatch();
 
@@ -102,13 +104,18 @@ export function IntegrityPage(){
       </div>
       <div className="mx-[2%] mb-[2%]">
         {allUsers.length !== 0 &&
-          <div className="mt-2 mb-4">
-            <StyledTextField className="w-1/2" id={IntegrityPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name or email" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)} />
+          <div className="flex flex-col justify-between">
+            <div className="space-x-2 flex flex-wrap mt-5">
+              <button disabled={InEditMode()} id={IntegrityPageIds.addButton} className={yellowButtonStyle} onClick={() => AddEmptyUser(IntegrityId)}>Add User</button>
+              <IconButton className="text-3xl" onClick={() => setSearchBarOpen(!searchBarOpen)}>
+                <SearchIcon/>
+              </IconButton>
+              {searchBarOpen === true &&
+                <UserTextField id={IntegrityPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name or email" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)} />
+              }
+            </div>
           </div>
         }
-        <div className="flex flex-col justify-between">
-          <button disabled={InEditMode()} id={IntegrityPageIds.addButton} className={yellowButtonStyle} onClick={() => AddEmptyUser(IntegrityId)}>Add User</button>
-        </div>
         <div className="col-span-1 py-[2%]">
           <TableContainer elevation={10} component={Paper}>
             <Table className="table-auto w-full outline outline-3 bg-gray-100">
