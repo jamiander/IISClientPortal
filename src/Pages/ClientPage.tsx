@@ -186,20 +186,20 @@ export function ClientPage()
       <div className="mx-[2%] mb-[2%]">
         <div className="flex flex-col justify-between mt-5">
           <div className="space-x-2 flex flex-wrap">
-            <RadioSet dark={true} setter={setRadioValue} name="clientPage" options={[
-              {id: ClientPageIds.radioIds.all, label: "Show All", value: "all"},
-              {id: ClientPageIds.radioIds.active, label: "Only Active", value: "active", default: true},
-              {id: ClientPageIds.radioIds.inactive, label: "Only Inactive", value: "inactive"}
-            ]} />
             {allCompanies.length !== 0 &&
             <><div className="flex flex-col justify-between mt-5">
                 <button disabled={InEditMode()} id={ClientPageIds.addClientButton} className={yellowButtonStyle} onClick={() => HandleAddEmptyClient()}>Add Client</button>
               </div>
               <div className="flex flex-col justify-between mt-5">
-                  <button className={yellowButtonStyle} onClick={() => navigate("/Initiatives")}>Initiatives Page</button>
+                <button className={yellowButtonStyle} onClick={() => navigate("/Initiatives")}>Initiatives Page</button>
               </div></>}
+              <RadioSet dark={true} setter={setRadioValue} name="clientPage" options={[
+              {id: ClientPageIds.radioIds.all, label: "Show All", value: "all"},
+              {id: ClientPageIds.radioIds.active, label: "Only Active", value: "active", default: true},
+              {id: ClientPageIds.radioIds.inactive, label: "Only Inactive", value: "inactive"}
+            ]} />
               <div className="flex flex-col justify-between mt-5">
-                <IconButton className="text-3xl" onClick={() => setSearchBarOpen(!searchBarOpen)}>
+                <IconButton onClick={() => setSearchBarOpen(!searchBarOpen)}>
                   <SearchIcon/>
                 </IconButton>
               </div>
