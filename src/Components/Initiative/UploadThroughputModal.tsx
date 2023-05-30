@@ -25,14 +25,14 @@ interface ThroughputModalProps{
 }
 
 export default function UploadThroughputModal(props:ThroughputModalProps){
-  const [selectedCompany, setSelectedCompany] = useState<Company>();
+  const [selectedCompanyId, setSelectedCompanyId] = useState("");
   const [selectedInitiativeIndex, setSelectedInitiativeIndex] = useState(-1);
   const [fileData, setFileData] = useState<ThroughputData[]>([]);
   const [fileWarning, setFileWarning] = useState("");
   const fileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    setSelectedCompany(undefined);
+    setSelectedCompanyId("");
     setSelectedInitiativeIndex(-1);
     setFileData([]);
     setFileWarning("");
@@ -117,14 +117,14 @@ export default function UploadThroughputModal(props:ThroughputModalProps){
     appElement={document.getElementById('root') as HTMLElement}>
       <div className="space-y-5">
         <p className="text-3xl w-full">Upload Throughput Data</p>
-        <SelectCompanyAndInitiative companyList={props.companyList} selectedCompany={selectedCompany} selectedInitiativeIndex={selectedInitiativeIndex} setSelectedCompany={setSelectedCompany} setSelectedInitiativeIndex={setSelectedInitiativeIndex} companyElementId={UploadThroughputIds.selectCompany} initiativeElementId={UploadThroughputIds.selectInitiative}/>
+        <SelectCompanyAndInitiative companyList={props.companyList} selectedCompanyId={selectedCompanyId} selectedInitiativeIndex={selectedInitiativeIndex} setSelectedCompanyId={setSelectedCompanyId} setSelectedInitiativeIndex={setSelectedInitiativeIndex} companyElementId={UploadThroughputIds.selectCompany} initiativeElementId={UploadThroughputIds.selectInitiative}/>
         {fileWarning}
         <div className="flex">
           <div className="outline outline-[#879794] rounded space-y-2 p-2 w-64">
             <p className="text-2xl w-full">Upload CSV File</p>
             <input className="w-full" ref={fileRef} type={'file'} accept={'.csv'} onChange={(e) => ReceiveFile(e.target.value)}/>
             <div className="grid justify-end h-1/2">
-              <button id={UploadThroughputIds.fileSubmit} className={submitButtonStyle} onClick={() => props.Submit(selectedCompany?.id ?? "-1", selectedCompany?.initiatives.at(selectedInitiativeIndex)?.id ?? myUuid, fileData, true)}>Submit</button>
+              <button id={UploadThroughputIds.fileSubmit} className={submitButtonStyle} onClick={() => props.Submit(selectedCompanyId, props.companyList.find(c => c.id === selectedCompanyId)?.initiatives.at(selectedInitiativeIndex)?.id ?? myUuid, fileData, true)}>Submit</button>
             </div>
           </div>
         </div>

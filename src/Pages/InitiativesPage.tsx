@@ -33,7 +33,7 @@ export default function InitiativesPage(){
   const dispatch = useAppDispatch();
   const [radioValue, setRadioValue] = useState('active');
 
-  function SubmitUpdateThroughput(companyId: string, initiativeId: string, dataList: ThroughputData[], emptyDataCheck: boolean = true) : boolean
+  async function SubmitUpdateThroughput(companyId: string, initiativeId: string, dataList: ThroughputData[], emptyDataCheck: boolean = true) : Promise<boolean>
   {
     let isTest = false;
     if((window as any).Cypress)
@@ -42,9 +42,9 @@ export default function InitiativesPage(){
     const validation = emptyDataCheck ? ValidateFileThroughputData(companyList, companyId, initiativeId, dataList) : ValidateEditThroughputData(companyList, companyId, initiativeId, dataList);
     if(validation.success)
     {
-      dispatch(upsertThroughputData({companyId: companyId, initiativeId: initiativeId, itemsCompletedOnDate: dataList, isTest: isTest}));
+      await dispatch(upsertThroughputData({companyId: companyId, initiativeId: initiativeId, itemsCompletedOnDate: dataList, isTest: isTest}));
       setUploadModalIsOpen(false);
-      enqueueSnackbar(validation.message, {variant:'success'});
+      enqueueSnackbar("Throughput data changes have been saved.", {variant:'success'});
       return true;
     }
     else

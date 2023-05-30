@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { DateInfo, ThroughputData } from "../../Services/CompanyService";
 import { Company, Initiative } from "../../Store/CompanySlice";
-import { cancelButtonStyle, defaultRowStyle, inputStyle, modalStyle, submitButtonStyle, TableHeaderStyle, tooltipStyle } from "../../Styles";
+import { cancelButtonStyle, defaultRowStyle, modalStyle, submitButtonStyle, TableHeaderStyle, tooltipStyle } from "../../Styles";
 import SelectCompanyAndInitiative from "./SelectCompanyAndInitiative";
-import { CompareDateInfos, DateInput, DateToDateInfo, EqualDateInfos } from "../DateInput";
+import { CompareDateInfos, DateInput, EqualDateInfos } from "../DateInput";
 import Modal from "react-modal";
 import Table from '@mui/material/Table';
 import TableContainer from '@mui/material/TableContainer';
@@ -15,7 +15,7 @@ import { IconButton, Paper } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
-import { ValidateCompanyAndInitiative, ValidateDate, ValidateEditThroughputData, ValidationFailedPrefix } from "../../Services/Validation";
+import { ValidateCompanyAndInitiative, ValidateDate, ValidationFailedPrefix } from "../../Services/Validation";
 import { enqueueSnackbar } from "notistack";
 
 enum stateEnum {
@@ -44,11 +44,11 @@ interface ThroughputModalProps{
   companyList: Company[],
   editIsOpen: boolean,
   setEditIsOpen: (value: boolean) => void,
-  Submit: (companyId: string, initiativeId: string, dataList: ThroughputData[], emptyDataCheck: boolean) => boolean
+  Submit: (companyId: string, initiativeId: string, dataList: ThroughputData[], emptyDataCheck: boolean) => Promise<boolean>
 }
 
 export default function EditThroughputModal(this: any, props: ThroughputModalProps){
-  const [selectedCompany, setSelectedCompany] = useState<Company>();
+  const [selectedCompanyId, setSelectedCompanyId] = useState("");
   const [selectedInitiativeIndex, setSelectedInitiativeIndex] = useState(-1);
   const [dateWarning, setDateWarning] = useState("");
   const invalidDate: DateInfo = {day: NaN, month: NaN, year: NaN};
@@ -59,13 +59,13 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
   const [throughputList, setThroughputList] = useState<ThroughputData[]>([]);
 
   useEffect(() => {
-    setSelectedCompany(undefined);
+    setSelectedCompanyId("");
     setSelectedInitiativeIndex(-1);
     setDateWarning("");
     setCurrentDate(undefined);
     setCurrentItems(0);
     setState(stateEnum.start);
-  },[props.editIsOpen])
+  },[props.editIsOpen]);
 
   /*useEffect(() => {
     let warningMessage = "";
@@ -94,35 +94,36 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
     setDateWarning(warningMessage);
   },[entryDate,selectedInitiativeIndex,selectedCompany])*/
 
-  function MakeClone<Type>(obj: Type)
+  function MakeClone<Type>(obj: Type) : Type;
+  function MakeClone<Type>(obj: Type | undefined) : Type | undefined
   {
+    if(obj === undefined)
+      return undefined;
+
     const clone: Type = JSON.parse(JSON.stringify(obj));
     return clone;
   }
 
   useEffect(() => {
-    if(selectedCompany)
+    let initiative = MakeClone(GetInitiativeFromCompany(selectedCompanyId,selectedInitiativeIndex));
+    if(initiative)
     {
-      let companyClone = MakeClone(selectedCompany);
-      let initiative = GetInitiativeFromCompany(companyClone,selectedInitiativeIndex);
-      if(initiative)
-      {
-        let throughputClone = MakeClone(initiative.itemsCompletedOnDate);
-        initiative.itemsCompletedOnDate = throughputClone.sort((a:ThroughputData, b:ThroughputData) => CompareDateInfos(b.date,a.date));
-        setThroughputList(throughputClone);
-      }
+      const throughputClone = MakeClone(initiative.itemsCompletedOnDate);
+      initiative.itemsCompletedOnDate = throughputClone.sort((a:ThroughputData, b:ThroughputData) => CompareDateInfos(b.date,a.date));
+      setThroughputList(throughputClone);
     }
-  },[selectedInitiativeIndex])
+  },[selectedInitiativeIndex,selectedCompanyId]);
 
-  function GetInitiativeFromCompany(company: Company | undefined, initiativeIndex: number) : Initiative | undefined
+  function GetInitiativeFromCompany(companyId: string, initiativeIndex: number) : Initiative | undefined
   {
+    const company = props.companyList.find(c => c.id === companyId);
     const initiatives = company?.initiatives[initiativeIndex];
     return initiatives;
   }
 
   function AddItem(initiative: Initiative | undefined)
   {
-    const validation = ValidateCompanyAndInitiative(props.companyList, selectedCompany?.id ?? "-1", initiative?.id ?? "-1");
+    const validation = ValidateCompanyAndInitiative(props.companyList, selectedCompanyId, initiative?.id ?? "-1");
     if(validation.success)
     {
       const dateValidation = ValidateDate(currentDate);
@@ -188,7 +189,7 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
     LeaveEditMode();
   }
 
-  function SaveEdit()
+  async function SaveEdit()
   {
     if(throughputToEdit)
     {
@@ -198,8 +199,8 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
       {
         newItem.itemsCompleted = currentItems ?? -1;
 
-        const initiative = GetInitiativeFromCompany(selectedCompany,selectedInitiativeIndex);
-        const successful = props.Submit(selectedCompany?.id ?? "-1", initiative?.id ?? "-1", selectedThroughputClone, false);
+        const initiative = GetInitiativeFromCompany(selectedCompanyId,selectedInitiativeIndex);
+        const successful = await props.Submit(selectedCompanyId, initiative?.id ?? "-1", selectedThroughputClone, false);
         if(successful)
         {
           selectedThroughputClone.sort((a:ThroughputData, b:ThroughputData) => CompareDateInfos(b.date,a.date));
@@ -224,11 +225,11 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
       appElement={document.getElementById('root') as HTMLElement}>
       <div className="space-y-5">
         <p className="text-3xl w-full">Edit Throughput Data</p>
-        <SelectCompanyAndInitiative companyList={props.companyList} selectedCompany={selectedCompany} selectedInitiativeIndex={selectedInitiativeIndex} setSelectedCompany={setSelectedCompany} setSelectedInitiativeIndex={setSelectedInitiativeIndex} companyElementId={EditThroughputIds.selectCompany} initiativeElementId={EditThroughputIds.selectInitiative}/>
+        <SelectCompanyAndInitiative companyList={props.companyList} selectedCompanyId={selectedCompanyId} selectedInitiativeIndex={selectedInitiativeIndex} setSelectedCompanyId={setSelectedCompanyId} setSelectedInitiativeIndex={setSelectedInitiativeIndex} companyElementId={EditThroughputIds.selectCompany} initiativeElementId={EditThroughputIds.selectInitiative}/>
         <DateInput id="" disabled={InEditMode()} date={currentDate} setDate={setCurrentDate}/>
           {dateWarning}
         <button id={EditThroughputIds.addNewEntryButton} className={submitButtonStyle + " h-full"} disabled={InEditMode()}
-          onClick={() => AddItem(selectedCompany?.initiatives[selectedInitiativeIndex])}>Add New</button>
+          onClick={() => AddItem(GetInitiativeFromCompany(selectedCompanyId,selectedInitiativeIndex))}>Add New</button>
         <div className="outline outline-[#879794] rounded space-y-2 p-2">
           <div>
             <p className="text-2xl">Edit Data</p>
