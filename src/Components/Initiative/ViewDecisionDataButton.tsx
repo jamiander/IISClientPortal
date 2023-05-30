@@ -5,9 +5,10 @@ import DecisionDataModal from "./DecisionDataModal";
 import { Button } from "@mui/material";
 
 interface ViewDecisionDataProps {
-    company: Company
-    initiative: Initiative
-    disabled?: boolean
+  id: string
+  company: Company
+  initiative: Initiative
+  disabled?: boolean
 }
 
 export function ViewDecisionDataButton(props: ViewDecisionDataProps){
@@ -24,8 +25,8 @@ export function ViewDecisionDataButton(props: ViewDecisionDataProps){
 
   return (
     <div className={'py-1 flex self-end'}>
-      <Button disabled={props.disabled} id={"viewDecisionDataButton"+props.initiative.id} className={genericButtonStyle + " h-8 w-full mx-2"}
-          onClick={() => handleViewDecisionData(props.company, props.initiative)}
+      <Button disabled={props.disabled} id={props.id} className={genericButtonStyle + " h-8 w-full mx-2"}
+        onClick={() => handleViewDecisionData(props.company, props.initiative)}
       >
         Decisions
       </Button>

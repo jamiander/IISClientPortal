@@ -274,7 +274,7 @@ export function ClientPage()
                           </>
                         }
                         <TableCell>
-                          <DocumentManagementButton disabled={true} company={displayItem} isAdmin={false}/>
+                          <DocumentManagementButton id={"documentButton"} disabled={true} company={displayItem} isAdmin={false}/>
                         </TableCell>
                         <TableCell>
                           <IconButton id={ClientPageIds.saveClientChangesButton} onClick={() => HandleSaveEdit()}>
@@ -292,7 +292,7 @@ export function ClientPage()
                         <TableCell id={ClientPageIds.name}>{displayItem.initiatives.at(0) !== undefined ? (displayItem.initiatives.at(0)!.targetDate.month + "/" + displayItem.initiatives.at(0)!.targetDate.day + "/" + displayItem.initiatives.at(0)!.targetDate.year) : ""}</TableCell>
                         <TableCell id={ClientPageIds.name}>{displayItem.initiatives.at(0)?.totalItems}</TableCell>
                         <TableCell>
-                          <DocumentManagementButton company={displayItem} isAdmin={true}/>
+                          <DocumentManagementButton id={"documentButton"} company={displayItem} isAdmin={true}/>
                         </TableCell>
                         <TableCell>
                           <IconButton id={ClientPageIds.editClientButton} disabled={InEditMode()} onClick={() => EnterEditMode(displayItem.id, displayCompanies, false)}>

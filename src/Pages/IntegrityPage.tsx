@@ -1,6 +1,6 @@
 import { StyledTextField, TableHeaderStyle, UserTextField, defaultRowStyle, yellowButtonStyle } from "../Styles";
 import { useEffect, useState } from "react";
-import { User, getUserById, selectAllUsers, selectCurrentUserId } from "../Store/UserSlice";
+import { User, getUserById, selectAllUsers, selectCurrentUser } from "../Store/UserSlice";
 import { Company, IntegrityId, selectAllCompanies } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
 import { Checkbox, IconButton, Input} from "@mui/material";
@@ -43,7 +43,7 @@ export function IntegrityPage(){
   const [sortedCompanies, setSortedCompanies] = useState<Company[]>([]);
   const [integrityUsers, setIntegrityUsers] = useState<User[]>([]);
   const [searchBarOpen, setSearchBarOpen] = useState(false);
-  const currentUserId = useAppSelector(selectCurrentUserId);
+  const currentUser = useAppSelector(selectCurrentUser);
   const dispatch = useAppDispatch();
 
   const {
@@ -75,9 +75,9 @@ export function IntegrityPage(){
 
   useEffect(() =>
   {
-    if(allUsers.find(user => user.id === currentUserId)?.isAdmin)
+    if(currentUser?.isAdmin && currentUser.companyId === IntegrityId)
       dispatch(getUserById({}));
-  }, [currentUserId]);
+  }, []);
 
   useEffect(() => 
   {

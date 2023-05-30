@@ -1,6 +1,6 @@
 import { StyledTextField, TableHeaderStyle, UserTextField, defaultRowStyle, yellowButtonStyle } from "../Styles";
 import { useEffect, useRef, useState } from "react";
-import { User, getUserById, selectAllUsers, selectCurrentUserId } from "../Store/UserSlice";
+import { User, getUserById, selectAllUsers, selectCurrentUser } from "../Store/UserSlice";
 import { Company, IntegrityId, selectAllCompanies } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
 import { Checkbox, FormControl, IconButton, Input, InputLabel, MenuItem, Select} from "@mui/material";
@@ -51,7 +51,7 @@ export default function UsersPage(){
   const [radioValue,setRadioValue] = useState("active");
   const [displayCompanies, setDisplayCompanies] = useState<Company[]>([]);
   const [searchBarOpen, setSearchBarOpen] = useState(false);
-  const currentUserId = useAppSelector(selectCurrentUserId);
+  const currentUser = useAppSelector(selectCurrentUser);
   const dispatch = useAppDispatch();
 
   const {
@@ -94,31 +94,26 @@ export default function UsersPage(){
     setDisplayCompanies(sortedCompanies.filter((company: { id: string; }) => company.id !== IntegrityId));
   },[allCompanies]); 
   
-  let currentUserCompanyId = allUsers.find(user => user.id === currentUserId)?.companyId!;
-  let userCompany = displayCompanies.find(x => x.id === currentUserCompanyId)!;
+  let currentUserCompanyId = currentUser?.companyId ?? "";
 
   useEffect(() =>
   {
-    if(allUsers.find(user => user.id === currentUserId)?.isAdmin)
-      dispatch(getUserById({}));
-  }, [currentUserId]);
+    if(currentUser?.isAdmin)
+    {
+      if(currentUser.companyId === IntegrityId)
+        dispatch(getUserById({}));
+      else
+        dispatch(getUserById({ companyId: currentUser.companyId }))
+    }
+  }, []);
 
   useEffect(() => 
   {
-    if(currentUserCompanyId === IntegrityId){ 
-      const otherCompanyUsers = UserFilter(allUsers, radioValue);
-      otherCompanyUsers.filter(user => user.companyId !== IntegrityId);
-      setCompanyUsers(otherCompanyUsers);
-      SetupEditUser(otherCompanyUsers);
-     }
-    else {
-      const otherCompanyUsers = UserFilter(allUsers, radioValue);
-      otherCompanyUsers.filter(user => user.companyId !== IntegrityId);
-      let filteredUsers = otherCompanyUsers.filter(cu => cu.companyId === userCompany?.id)
-      setCompanyUsers(filteredUsers);
-      setCurrentCompanyId(currentUserCompanyId);
-      SetupEditUser(filteredUsers);
-    } 
+    const filteredUsers = UserFilter(allUsers, radioValue);
+    setCurrentCompanyId(currentUserCompanyId);
+    setCompanyUsers(filteredUsers);
+    SetupEditUser(filteredUsers);
+    
   }, [allUsers, radioValue])
 
   const myRef = useRef<HTMLElement>(null);

@@ -6,6 +6,11 @@ import { Company, Initiative } from "../../Store/CompanySlice";
 import { DocumentManagementButton } from "../Documents/DocumentManagementButton";
 
 interface InitiativeActionsMenuProps {
+  ids: {
+    menuButton: string
+    decisionButton: string
+    documentButton: string
+  }
   company: Company
   initiative: Initiative
   disabled?: boolean
@@ -26,7 +31,7 @@ export function InitiativeActionsMenu(props: InitiativeActionsMenuProps)
   return (
     <>
       <IconButton
-        id="basic-button"
+        id={props.ids.menuButton}
         aria-controls={open ? 'basic-menu' : undefined}
         aria-haspopup="true"
         aria-expanded={open ? 'true' : undefined}
@@ -45,10 +50,10 @@ export function InitiativeActionsMenu(props: InitiativeActionsMenuProps)
         }}
       >
         <MenuItem>
-          <ViewDecisionDataButton company={props.company} initiative={props.initiative}/>
+          <ViewDecisionDataButton id={props.ids.decisionButton} company={props.company} initiative={props.initiative}/>
         </MenuItem>
         <MenuItem>
-          <DocumentManagementButton company={props.company} initiative={props.initiative} isAdmin={props.isAdmin}/>
+          <DocumentManagementButton id={props.ids.documentButton} company={props.company} initiative={props.initiative} isAdmin={props.isAdmin}/>
         </MenuItem>
       </Menu>
     </>

@@ -17,6 +17,7 @@ const snackbarId = consts.snackbarId;
 const radioIds = consts.initiativeDisplayRadioIds;
 const loginIds = consts.loginPageIds;
 const failMessage = consts.validationFailedMessage;
+const pageIds = consts.initiativesPageIds;
 
 const initiativeTitle = 'IIS Initiative';
 const companyName = 'Integrity Inspired Solutions';
@@ -41,7 +42,7 @@ describe('valid upload throughput tests', () => {
       remainingItemsBefore = Number($span.text());
     });
 
-    cy.get('button').contains('Upload Data').click();
+    cy.get(pageIds.uploadThroughputButton).click();
     cy.get(modalIds.selectCompany).select(companyName);
     cy.get(modalIds.selectInitiative).select(initiativeTitle);
   })
@@ -86,10 +87,7 @@ describe('invalid upload throughput tests', () => {
     cy.get(loginIds.password).clear().type(user.password);
     cy.get(loginIds.submitButton).click();
 
-    //cy.get('button').contains('Admin').click();
-    //cy.get('button').contains('Initiatives').click();
-
-    cy.get('button').contains('Upload Data').click();
+    cy.get(pageIds.uploadThroughputButton).click();
     cy.get(modalIds.selectCompany).select(companyName);
     cy.get(modalIds.selectInitiative).select(initiativeTitle);
   })

@@ -7,6 +7,7 @@ const failMessage = consts.validationFailedMessage;
 const tableIds = consts.initiativeTableIds;
 const radioIds = consts.initiativeDisplayRadioIds;
 const loginIds = consts.loginPageIds;
+const pageIds = consts.initiativesPageIds;
 const snackbarWaitTime = consts.snackbarWaitTime;
 const initiativeTitle = 'IIS Initiative';
 const company = 'Integrity Inspired Solutions';
@@ -29,7 +30,7 @@ describe ('add throughput data by manual entry', () => {
       remainingItemsBefore = Number($span.text());
     });
 
-    cy.get('button').contains('Edit Data').click();
+    cy.get(pageIds.editThroughputButton).click();
     cy.get(modalIds.selectCompany).select(company);
     cy.get(modalIds.selectInitiative).select(initiativeTitle);
     cy.get(modalIds.addNewEntryButton).click();
@@ -57,10 +58,7 @@ describe ('invalid manual entry test', () => {
     cy.get(loginIds.password).clear().type(user.password);
     cy.get(loginIds.submitButton).click();
 
-    //cy.get('button').contains('Admin').click();
-    //cy.get('button').contains('Initiatives').click();
-
-    cy.get('button').contains('Edit Data').click();
+    cy.get(pageIds.editThroughputButton).click();
     cy.get(modalIds.selectCompany).select(company);
     cy.get(modalIds.selectInitiative).select(initiativeTitle);
     cy.get(modalIds.addNewEntryButton).click();
@@ -74,17 +72,6 @@ describe ('invalid manual entry test', () => {
     cy.wait(waitTime);
     cy.get(snackbarId).should('contain',failMessage);
   })
-
-  //Cypress does not allow letters in date pickers
-  /*specify('cannot add throughput entry when letters are entered for date', () => {
-    cy.get(modalIds.date.month).clear().type('a');
-    cy.get(modalIds.date.day).clear().type('01');
-    cy.get(modalIds.date.year).clear().type('2020');
-    cy.get(modalIds.itemsComplete).clear().type('2');
-    cy.get(modalIds.manualSubmit).click();
-    cy.wait(waitTime);
-    cy.get(snackbarId).contains('Validation Failed');
-  })*/
 
   specify('cannot add throughput entry when item completed is invalid', () => {
     cy.get(modalIds.tableItemsComplete).clear();
@@ -104,10 +91,7 @@ describe('update throughput data', () => {
     cy.wait(500);
     cy.get(loginIds.submitButton).click();
 
-    //cy.get('button').contains('Admin').click();
-    //cy.get('button').contains('Initiatives').click();
-
-    cy.get('button').contains('Edit Data').click();
+    cy.get(pageIds.editThroughputButton).click();
     cy.get(modalIds.selectCompany).select(company);
     cy.get(modalIds.selectInitiative).select(initiativeTitle);
     cy.get(modalIds.editButton).click();
@@ -120,16 +104,6 @@ describe('update throughput data', () => {
 
     cy.get(snackbarId).should('contain',"Success");
   })
-
-  /*specify('update the date of an entry', () => {
-    cy.get(modalIds.tableDate).clear().type("2023-04-30");
-    cy.get(snackbarId).then(() => {
-      cy.get(toastCloseId).click();
-    })
-    cy.get(modalIds.submitButton).click();
-
-    cy.get(snackbarId).contains("Success");
-  })*/
 
   specify('close button closes modal', () => {
     cy.get(modalIds.modal).should('exist');

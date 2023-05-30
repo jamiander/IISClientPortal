@@ -16,6 +16,12 @@ export const InitiativeDisplayRadioIds = {
   inactive: "initDisplayShowInactive"
 }
 
+export const InitiativesPageIds = {
+  addInitiativeButton: "initiativesPageAddInitiativeButton",
+  uploadThroughputButton: "initiativesPageUploadThroughputButton",
+  editThroughputButton: "initiativesPageEditThroughputButton"
+}
+
 export default function InitiativesPage(){
   
   const companyList : Company[] = useAppSelector(selectAllCompanies);
@@ -47,14 +53,15 @@ export default function InitiativesPage(){
   }
 
   return (
-    <><div className="flex col-span-4 bg-[#69D5C3] py-6 px-5">
-      <div className="w-full flex justify-between">
-        <div className="space-y-2 w-1/2">
-          <p className="text-5xl text-[#21345b] font-bold w-full">Initiative Management</p>
+    <>
+      <div className="flex col-span-4 bg-[#69D5C3] py-6 px-5">
+        <div className="w-full flex justify-between">
+          <div className="space-y-2 w-1/2">
+            <p className="text-5xl text-[#21345b] font-bold w-full">Initiative Management</p>
+          </div>
         </div>
       </div>
-    </div>
-    <div>
+      <div>
         <div>
           <UploadThroughputModal companyList={companyList} uploadIsOpen={UploadModalIsOpen} setUploadIsOpen={setUploadModalIsOpen} Submit={SubmitUpdateThroughput} />
           <EditThroughputModal companyList={companyList} editIsOpen={EditModalIsOpen} setEditIsOpen={setEditModalIsOpen} Submit={SubmitUpdateThroughput} />
@@ -67,13 +74,13 @@ export default function InitiativesPage(){
         ]} />
         <div className="flex flex-col justify-between">
           <div className="space-x-2 flex flex-wrap mt-4 mb-4">
-          <button onClick={() => setAddInitiative(true)} className={yellowButtonStyle}>
+          <button id={InitiativesPageIds.addInitiativeButton} onClick={() => setAddInitiative(true)} className={yellowButtonStyle}>
             Add Initiative
           </button>
-          <button onClick={() => setUploadModalIsOpen(true)} className={yellowButtonStyle}>
+          <button id={InitiativesPageIds.uploadThroughputButton} onClick={() => setUploadModalIsOpen(true)} className={yellowButtonStyle}>
             Upload Data File
           </button>
-          <button onClick={() => setEditModalIsOpen(true)} className={yellowButtonStyle}>
+          <button id={InitiativesPageIds.editThroughputButton} onClick={() => setEditModalIsOpen(true)} className={yellowButtonStyle}>
             Add/Edit Data
           </button>
         </div>
@@ -82,6 +89,6 @@ export default function InitiativesPage(){
           <InitiativesTable addInitiative={addInitiative} companyList={companyList} radioStatus={radioValue} ValidateInitiative={ValidateNewInitiative} setAddInitiative={setAddInitiative} />}
         </div>
       </div>
-      </>
-    ) 
-  }
+    </>
+  )
+}

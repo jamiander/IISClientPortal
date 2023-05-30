@@ -1,5 +1,5 @@
 import CloseIcon from '@mui/icons-material/Close';
-import { Dialog, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { CircularProgress, Dialog, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { Company, Initiative } from '../../Store/CompanySlice';
 import { DocumentUpload } from './DocumentUpload';
 import { TableHeaderStyle, defaultRowStyle } from '../../Styles';
@@ -20,6 +20,7 @@ export function DocumentManagementModal(props: DocumentManagementModalProps)
 {
   const dispatch = useAppDispatch();
   const [docInfos, setDocInfos] = useState<DocumentInfo[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
 
@@ -38,6 +39,7 @@ export function DocumentManagementModal(props: DocumentManagementModalProps)
       {
         const docs = response.payload as DocumentInfo[];
         setDocInfos(docs);
+        setIsLoading(false);
       }
     }
     catch(e)
@@ -53,8 +55,8 @@ export function DocumentManagementModal(props: DocumentManagementModalProps)
       onClose={() => props.setIsOpen(false)}
       maxWidth={false}
     >
-      <div className="flex col-span-4 bg-[#69D5C3] rounded-md py-6 px-5">
-        <div className="w-full flex justify-between">
+      <div className="flex flex-col col-span-4 ">
+        <div className="bg-[#69D5C3] rounded-md py-6 px-5 w-full flex justify-between">
           <div className="space-y-2 w-1/2">
             <p className="text-5xl font-bold w-full">{props.company.name}</p>
             <p className="text-3xl w-full">{props.initiative?.title}</p>
@@ -65,13 +67,19 @@ export function DocumentManagementModal(props: DocumentManagementModalProps)
             </div>
           </div>
         </div>
-      </div>
-      <div className="col-span-4">
+
         {props.isAdmin &&
           <DocumentUpload company={props.company} initiative={props.initiative} GetData={GetData}/>
         }
-        {
-          docInfos.length !== 0 &&
+        {isLoading && docInfos.length === 0 &&
+          <div className="flex justify-center w-full h-full my-2">
+            <CircularProgress size={20} color={"warning"}/>
+          </div>
+        }
+        {!isLoading && docInfos.length === 0 &&
+          <p className="m-2">There are no files to display</p>
+        }
+        {docInfos.length !== 0 &&
           <TableContainer component={Paper}>
             <Table className="table-auto w-full outline outline-3 bg-gray-100">
               <TableHead className="outline outline-1">
