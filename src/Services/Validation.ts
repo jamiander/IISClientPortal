@@ -38,7 +38,7 @@ export default function ValidateNewInitiative(initiative: Initiative, companyId:
   return {success: true, message: "Successfully validated; all good!"};
 }
 
-export function ValidateDate(date: DateInfo) : Validation
+export function ValidateDate(date: DateInfo | undefined) : Validation
 {
   if(date === null || date === undefined)
     return {success: false, message: "A date was not provided."};
@@ -58,7 +58,7 @@ export function ValidateDate(date: DateInfo) : Validation
   return {success: true, message: "Date is all good!"}
 }
 
-export function ValidateCompany(newCompany: Company, companyList: Company[]): Validation
+export function ValidateCompany(newCompany: Company, companyList: Company[]) : Validation
 {
   if(newCompany && newCompany.name)
   {

@@ -5,6 +5,7 @@ interface DateInputProps {
   id: string,
   date: DateInfo | undefined,
   setDate: (value: React.SetStateAction<DateInfo | undefined>) => void,
+  disabled?: boolean
 }
 
 function AddLeadingZero(num: number){
@@ -51,7 +52,7 @@ export function DateInput(props: DateInputProps)
   return (
     <>
       <div className='flex space-x-2'>
-        <input id={props.id} type="date" value={MakeDateString(props.date)} className={inputStyle}
+        <input id={props.id} disabled={props.disabled} type="date" value={MakeDateString(props.date)} className={inputStyle}
           onChange={(e) => { props.setDate(MakeDateInfo(e.target.value) ?? props.date) }}/>
       </div>
     </>
