@@ -1,9 +1,10 @@
 import { Divider, IconButton, Input, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
-import { StyledTextField, TableHeaderStyle, defaultRowStyle, genericButtonStyle, yellowButtonStyle } from "../Styles";
+import { StyledTextField, TableHeaderStyle, UserTextField, defaultRowStyle, genericButtonStyle, yellowButtonStyle } from "../Styles";
 import { useEffect, useState } from "react";
 import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
+import SearchIcon from '@mui/icons-material/Search';
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
 import { Company, Initiative, selectAllCompanies, upsertCompanyInfo, upsertInitiativeInfo } from "../Store/CompanySlice";
 import { enqueueSnackbar } from "notistack";
@@ -56,6 +57,7 @@ export function ClientPage()
   const [searchedKeyword, setSearchedKeyword] = useState("");
   const [displayCompanies, setDisplayCompanies] = useState<Company[]>([]);
   const [companyToEdit, setCompanyToEdit] = useState<Company>();
+  const [searchBarOpen, setSearchBarOpen] = useState(false);
 
   const [currentName, setCurrentName] = useState("");
   const [currentInitiativeTitle, setCurrentInitiativeTitle] = useState("");
@@ -182,22 +184,30 @@ export function ClientPage()
         </div>
       </div>
       <div className="mx-[2%] mb-[2%]">
-        <RadioSet dark={true} setter={setRadioValue} name="clientPage" options={[
-          {id: ClientPageIds.radioIds.all, label: "Show All", value: "all"},
-          {id: ClientPageIds.radioIds.active, label: "Only Active", value: "active", default: true},
-          {id: ClientPageIds.radioIds.inactive, label: "Only Inactive", value: "inactive"}
-        ]} />
-        {allCompanies.length !== 0 &&
-          <div className="mt-2 mb-4">
-            <StyledTextField className="w-1/2" id={ClientPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)} />
-          </div>
-        }
-        <div className="flex flex-col justify-between">
+        <div className="flex flex-col justify-between mt-5">
           <div className="space-x-2 flex flex-wrap">
-            <button disabled={InEditMode()} id={ClientPageIds.addClientButton} className={yellowButtonStyle} onClick={() => HandleAddEmptyClient()}>Add Client</button>
-            <button className={yellowButtonStyle} onClick={() => navigate("/Initiatives")}>Initiatives Page</button>
+            <RadioSet dark={true} setter={setRadioValue} name="clientPage" options={[
+              {id: ClientPageIds.radioIds.all, label: "Show All", value: "all"},
+              {id: ClientPageIds.radioIds.active, label: "Only Active", value: "active", default: true},
+              {id: ClientPageIds.radioIds.inactive, label: "Only Inactive", value: "inactive"}
+            ]} />
+            {allCompanies.length !== 0 &&
+            <><div className="flex flex-col justify-between mt-5">
+                <button disabled={InEditMode()} id={ClientPageIds.addClientButton} className={yellowButtonStyle} onClick={() => HandleAddEmptyClient()}>Add Client</button>
+              </div>
+              <div className="flex flex-col justify-between mt-5">
+                  <button className={yellowButtonStyle} onClick={() => navigate("/Initiatives")}>Initiatives Page</button>
+              </div></>}
+              <div className="flex flex-col justify-between mt-5">
+                <IconButton className="text-3xl" onClick={() => setSearchBarOpen(!searchBarOpen)}>
+                  <SearchIcon/>
+                </IconButton>
+              </div>
+              {searchBarOpen === true &&
+                <UserTextField id={ClientPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)} />
+              }
+            </div>
           </div>
-        </div>
         <div className="col-span-1 py-[2%]">
           <TableContainer elevation={10} component={Paper}>
             <Table className="table-auto w-full outline outline-3 bg-gray-100">

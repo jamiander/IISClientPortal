@@ -26,7 +26,7 @@ export function RadioSet(props: RadioSetProps)
   }
 
   return (
-    <div className={"w-fit flex justify-center mt-2 py-1 px-5 outline outline-1 rounded " + (props.dark ? "outline-black text-black" : "outline-white text-white")}>
+    <div className={"w-fit flex justify-center mt-5 h-[45px] py-1 outline outline-1 rounded " + (props.dark ? "outline-black text-black" : "outline-white text-white")}>
       {
         props.options.map((radio,index) => {
           return (

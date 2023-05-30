@@ -1,4 +1,4 @@
-import { StyledTextField, TableHeaderStyle, defaultRowStyle, yellowButtonStyle } from "../Styles";
+import { StyledTextField, TableHeaderStyle, UserTextField, defaultRowStyle, yellowButtonStyle } from "../Styles";
 import { useEffect, useRef, useState } from "react";
 import { User, getUserById, selectAllUsers, selectCurrentUser } from "../Store/UserSlice";
 import { Company, IntegrityId, selectAllCompanies } from "../Store/CompanySlice";
@@ -7,6 +7,7 @@ import { Checkbox, FormControl, IconButton, Input, InputLabel, MenuItem, Select}
 import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
+import SearchIcon from '@mui/icons-material/Search';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -49,6 +50,7 @@ export default function UsersPage(){
   const [companyUsers, setCompanyUsers] = useState<User[]>([]);
   const [radioValue,setRadioValue] = useState("active");
   const [displayCompanies, setDisplayCompanies] = useState<Company[]>([]);
+  const [searchBarOpen, setSearchBarOpen] = useState(false);
   const currentUser = useAppSelector(selectCurrentUser);
   const dispatch = useAppDispatch();
 
@@ -117,148 +119,152 @@ export default function UsersPage(){
   const myRef = useRef<HTMLElement>(null);
 
   return (
-    <>
-      <div className="flex col-span-4 bg-[#69D5C3] py-6 px-5">
-        <div className="w-full flex justify-between">
-          <div className="space-y-2 w-1/2">
-            <p className="text-5xl text-[#21345b] font-bold w-full">User Management</p>
+      <><div className="flex col-span-4 bg-[#69D5C3] py-6 px-5">
+      <div className="w-full flex justify-between">
+        <div className="space-y-2 w-1/2">
+          <p className="text-5xl text-[#21345b] font-bold w-full">User Management</p>
+        </div>
+      </div>
+    </div><div className="mx-[2%] mb-[2%]">
+        <div className="flex flex-col justify-between">
+          <div className="space-x-2 flex flex-wrap">
+            <RadioSet dark={true} setter={setRadioValue} name="clientPage" options={[
+              { id: UsersPageIds.radioIds.all, label: "Show All", value: "all" },
+              { id: UsersPageIds.radioIds.active, label: "Only Active", value: "active", default: true },
+              { id: UsersPageIds.radioIds.inactive, label: "Only Inactive", value: "inactive" }
+            ]} />
+            <div className="flex flex-col justify-between mt-5">
+              {companyUsers.length !== 0 &&
+                currentUserCompanyId !== IntegrityId &&
+                <button disabled={InEditMode()} id={UsersPageIds.addButton} className={yellowButtonStyle} onClick={() => AddEmptyUser(currentUserCompanyId)}>Add User</button>}
+              </div>            
+              <div className="flex flex-col justify-between mt-5">
+              {companyUsers.length !== 0 &&
+                currentUserCompanyId === IntegrityId &&
+                <button disabled={InEditMode()} id={UsersPageIds.addButton} className={yellowButtonStyle} onClick={() => AddEmptyUser("")}>Add User</button>}
+              </div>            
+              <div className="flex flex-col justify-between mt-5">
+                <IconButton className="text-3xl" onClick={() => setSearchBarOpen(!searchBarOpen)}>
+                  <SearchIcon />
+                </IconButton>
+              </div>
+              {searchBarOpen === true &&
+                <UserTextField id={UsersPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name or email" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)} />
+              }
+            </div>
+          <div className="col-span-1 py-[2%]">
+            <TableContainer elevation={10} component={Paper}>
+              <Table className="table-auto w-full outline outline-3 bg-gray-100">
+                <colgroup>
+                  <col style={{ width: '17%' }} />
+                  <col style={{ width: '16%' }} />
+                  <col style={{ width: '17%' }} />
+                  <col style={{ width: '10%' }} />
+                  <col style={{ width: '10%' }} />
+                  <col style={{ width: '8%' }} />
+                  <col style={{ width: '6%' }} />
+                  <col style={{ width: '7%' }} />
+                </colgroup>
+                <TableHead className="outline outline-1">
+                  <TableRow sx={{
+                    borderBottom: "2px solid black",
+                    "& th": {
+                      fontSize: "1.25rem",
+                      fontWeight: "bold",
+                      fontFamily: "Arial, Helvetica"
+                    }
+                  }}>
+                    <TableHeaderStyle>Company</TableHeaderStyle>
+                    <TableHeaderStyle>Name</TableHeaderStyle>
+                    <TableHeaderStyle>Email</TableHeaderStyle>
+                    <TableHeaderStyle>Password</TableHeaderStyle>
+                    <TableHeaderStyle>Phone</TableHeaderStyle>
+                    <TableHeaderStyle>Admin Status</TableHeaderStyle>
+                    <TableHeaderStyle>Active Status</TableHeaderStyle>
+                    <TableHeaderStyle>Assigned Initiatives</TableHeaderStyle>
+                    <TableHeaderStyle>Edit User</TableHeaderStyle>
+                  </TableRow>
+                </TableHead>
+                <TableBody id={UsersPageIds.table}>
+                  {displayCompanies.map((displayCompany, key) => {
+                    let newUser = usersList.find(u => u.companyId === "");
+                    let companyUserList = usersList.filter(cu => cu.companyId === displayCompany.id)!.filter(u => u.email.toUpperCase().includes(searchedKeyword.toUpperCase()) || u.name?.toUpperCase().includes(searchedKeyword.toUpperCase()));
+                    if (key === 0 && newUser != undefined)
+                      companyUserList.unshift(newUser);
+                    return (
+                      companyUserList.map((companyUser, key) => {
+                        let isEdit = InEditMode() && companyUser?.id === userToEdit?.id;
+                        return (
+                          <TableRow className={defaultRowStyle} key={key} sx={{
+                            borderBottom: "1px solid black",
+                            "& td": {
+                              fontSize: "1.1rem",
+                              fontFamily: "Arial, Helvetica",
+                              color: "#21345b"
+                            }
+                          }}>
+                            {isEdit ?
+                              <>
+                                <TableCell id={UsersPageIds.company}>
+                                  {currentUserCompanyId === IntegrityId ?
+                                    <FormControl fullWidth>
+                                      <InputLabel id="company-select-label">Select Company</InputLabel>
+                                      <Select id={UsersPageIds.selectCompany} labelId="company-select-label" label="Select company" value={currentCompanyId} onChange={(e) => setCurrentCompanyId(e.target.value)}>
+                                        {displayCompanies.map((company, index) => {
+                                          return (
+                                            <MenuItem key={index} value={company.id}>
+                                              {company.name}
+                                            </MenuItem>
+                                          );
+                                        })}
+                                      </Select>
+                                    </FormControl>
+                                    :
+                                    <TableCell id={UsersPageIds.company}>{displayCompany.name}</TableCell>}
+                                </TableCell>
+                                <TableCell id={UsersPageIds.name}> <Input value={currentName} onChange={e => setCurrentName(e.target.value)} /></TableCell>
+                                <TableCell><Input id={UsersPageIds.email} value={currentEmail} onChange={e => setCurrentEmail(e.target.value)} /></TableCell>
+                                <TableCell id={UsersPageIds.password}><Input value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} /></TableCell>
+                                <TableCell id={UsersPageIds.phone}><Input value={currentPhone} onChange={e => setCurrentPhone(e.target.value)} /></TableCell>
+                                <TableCell id={UsersPageIds.isAdmin}><Checkbox checked={currentIsAdmin} onChange={e => setCurrentIsAdmin(e.target.checked)} />Admin</TableCell>
+                                <TableCell id={UsersPageIds.isActive}><Checkbox checked={currentIsActive} onChange={e => setCurrentIsActive(e.target.checked)} />Active</TableCell>
+                                <TableCell id={UsersPageIds.initiativeIds}></TableCell>
+                                <TableCell ref={myRef}>
+                                  <IconButton id={UsersPageIds.saveChangesButton} onClick={() => SaveEdit()}>
+                                    <DoneIcon />
+                                  </IconButton>
+                                  <IconButton id={UsersPageIds.cancelChangesButton} onClick={() => CancelEdit()}>
+                                    <CancelIcon />
+                                  </IconButton>
+                                </TableCell>
+                              </>
+                              :
+                              <>
+                                <TableCell id={UsersPageIds.company}>{displayCompany.name}</TableCell>
+                                <TableCell id={UsersPageIds.name}>{companyUser?.name}</TableCell>
+                                <TableCell id={UsersPageIds.email}>{companyUser?.email}</TableCell>
+                                <TableCell id={UsersPageIds.password}>{companyUser?.password}</TableCell>
+                                <TableCell id={UsersPageIds.phone}>{companyUser?.phoneNumber}</TableCell>
+                                <TableCell id={UsersPageIds.isAdmin}>{companyUser?.isAdmin ? "Admin" : "User"}</TableCell>
+                                <TableCell id={UsersPageIds.isActive}>{companyUser?.isActive ? "Active" : "Inactive"}</TableCell>
+                                <TableCell id={UsersPageIds.initiativeIds}><EditUserInitiativesButton user={companyUser} allCompanies={[displayCompany]} SubmitUserData={SubmitUserData} expanded={true} /></TableCell>
+                                <TableCell>
+                                  <IconButton id={UsersPageIds.editButton} disabled={InEditMode()} onClick={() => EnterEditMode(companyUser?.id, companyUsers, false)}>
+                                    <EditIcon />
+                                  </IconButton>
+                                </TableCell>
+                              </>}
+                          </TableRow>
+                        );
+                      })
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </TableContainer>
           </div>
         </div>
-      </div>
-      <div className="mx-[2%] mb-[2%]">
-      <RadioSet dark={true} setter={setRadioValue} name="clientPage" options={[
-          {id: UsersPageIds.radioIds.all, label: "Show All", value: "all"},
-          {id: UsersPageIds.radioIds.active, label: "Only Active", value: "active", default: true},
-          {id: UsersPageIds.radioIds.inactive, label: "Only Inactive", value: "inactive"}
-        ]} />
-        {companyUsers.length !== 0 &&
-        <div className="mt-2 mb-4">
-          <StyledTextField className="w-1/2" id={UsersPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name or email" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)} />
-        </div>}
-        {currentUserCompanyId !== IntegrityId &&
-        <div className="flex flex-col justify-between">
-          <button disabled={InEditMode()} id={UsersPageIds.addButton} className={yellowButtonStyle} onClick={() => AddEmptyUser(currentUserCompanyId)}>Add User</button>
-        </div>}
-        {currentUserCompanyId === IntegrityId &&
-        <div className="flex flex-col justify-between">
-          <button disabled={InEditMode()} id={UsersPageIds.addButton} className={yellowButtonStyle} onClick={() => AddEmptyUser("")}>Add User</button>
-        </div>}
-        <div className="col-span-1 py-[2%]">
-          <TableContainer elevation={10} component={Paper}>
-            <Table className="table-auto w-full outline outline-3 bg-gray-100">
-              <colgroup>
-                <col style={{ width: '17%' }} />
-                <col style={{ width: '16%' }} />
-                <col style={{ width: '17%' }} />
-                <col style={{ width: '10%' }} />
-                <col style={{ width: '10%' }} />
-                <col style={{ width: '8%' }} />
-                <col style={{ width: '6%' }} />
-                <col style={{ width: '7%' }} />
-              </colgroup>
-              <TableHead className="outline outline-1">
-                <TableRow sx={{
-                  borderBottom: "2px solid black",
-                  "& th": {
-                    fontSize: "1.25rem",
-                    fontWeight: "bold",
-                    fontFamily: "Arial, Helvetica"
-                  }
-                }}>
-                  <TableHeaderStyle>Company</TableHeaderStyle>
-                  <TableHeaderStyle>Name</TableHeaderStyle>
-                  <TableHeaderStyle>Email</TableHeaderStyle>
-                  <TableHeaderStyle>Password</TableHeaderStyle>
-                  <TableHeaderStyle>Phone</TableHeaderStyle>
-                  <TableHeaderStyle>Admin Status</TableHeaderStyle>
-                  <TableHeaderStyle>Active Status</TableHeaderStyle>
-                  <TableHeaderStyle>Assigned Initiatives</TableHeaderStyle>
-                  <TableHeaderStyle>Edit User</TableHeaderStyle>
-                </TableRow>
-              </TableHead>
-              <TableBody id={UsersPageIds.table}>
-                {displayCompanies.map((displayCompany, key) => {
-                  let newUser = usersList.find(u => u.companyId === "");
-                  let companyUserList = usersList.filter(cu => cu.companyId === displayCompany.id).filter(u => u.email.toUpperCase().includes(searchedKeyword.toUpperCase()) || u.name?.toUpperCase().includes(searchedKeyword.toUpperCase()));
-                  if(key === 0 && newUser !== undefined)
-                    companyUserList.unshift(newUser);
-                  return (
-                    companyUserList.map((companyUser,key) => {
-                      let isEdit = InEditMode() && companyUser.id === userToEdit?.id;
-                      return (
-                        <TableRow className={defaultRowStyle} key={key} sx={{
-                          borderBottom: "1px solid black",
-                          "& td": {
-                            fontSize: "1.1rem",
-                            fontFamily: "Arial, Helvetica",
-                            color: "#21345b"
-                          }
-                        }}>
-                          {isEdit ?
-                          <>
-                            <TableCell id={UsersPageIds.company}>
-                            {currentUserCompanyId === IntegrityId ?
-                            <FormControl fullWidth>
-                              <InputLabel id="company-select-label">Select Company</InputLabel>
-                              <Select id={UsersPageIds.selectCompany} labelId="company-select-label" label="Select company" value={currentCompanyId} onChange={(e) => setCurrentCompanyId(e.target.value)}>
-                                {
-                                  displayCompanies.map((company,index) => {
-                                    return (
-                                      <MenuItem key={index} value={company.id}>
-                                        {company.name}
-                                      </MenuItem>
-                                    )
-                                  })
-                                }
-                              </Select>
-                            </FormControl>
-                              :
-                              <TableCell id={UsersPageIds.company}>{displayCompany.name}</TableCell>
-                            }
-                            </TableCell>
-                            <TableCell id={UsersPageIds.name}> <Input value={currentName} onChange={e => setCurrentName(e.target.value)}/></TableCell>
-                            <TableCell><Input id={UsersPageIds.email} value={currentEmail} onChange={e => setCurrentEmail(e.target.value)}/></TableCell>
-                            <TableCell id={UsersPageIds.password}><Input value={currentPassword} onChange={e => setCurrentPassword(e.target.value)}/></TableCell>
-                            <TableCell id={UsersPageIds.phone}><Input value={currentPhone} onChange={e => setCurrentPhone(e.target.value)}/></TableCell>
-                            <TableCell id={UsersPageIds.isAdmin}><Checkbox checked={currentIsAdmin} onChange={e => setCurrentIsAdmin(e.target.checked)}/>Admin</TableCell>
-                            <TableCell id={UsersPageIds.isActive}><Checkbox checked={currentIsActive} onChange={e => setCurrentIsActive(e.target.checked)}/>Active</TableCell>
-                            <TableCell id={UsersPageIds.initiativeIds}></TableCell>
-                            <TableCell ref={myRef}>
-                              <IconButton id={UsersPageIds.saveChangesButton} onClick={() => SaveEdit()}>
-                                <DoneIcon />
-                              </IconButton>
-                              <IconButton id={UsersPageIds.cancelChangesButton} onClick={() => CancelEdit()}>
-                                <CancelIcon />
-                              </IconButton>
-                            </TableCell>
-                          </>
-                          :
-                          <>
-                            <TableCell id={UsersPageIds.company}>{displayCompany.name}</TableCell>
-                            <TableCell id={UsersPageIds.name}>{companyUser?.name}</TableCell>
-                            <TableCell id={UsersPageIds.email}>{companyUser?.email}</TableCell>
-                            <TableCell id={UsersPageIds.password}>{companyUser?.password}</TableCell>
-                            <TableCell id={UsersPageIds.phone}>{companyUser?.phoneNumber}</TableCell>
-                            <TableCell id={UsersPageIds.isAdmin}>{companyUser?.isAdmin ? "Admin" : "User"}</TableCell>
-                            <TableCell id={UsersPageIds.isActive}>{companyUser?.isActive ? "Active" : "Inactive"}</TableCell>
-                            <TableCell id={UsersPageIds.initiativeIds}><EditUserInitiativesButton user={companyUser} allCompanies={[displayCompany]} SubmitUserData={SubmitUserData} expanded={true}/></TableCell>
-                            <TableCell>
-                              <IconButton id={UsersPageIds.editButton} disabled={InEditMode()} onClick={() => EnterEditMode(companyUser?.id, companyUsers, false)}>
-                                <EditIcon />
-                              </IconButton>
-                            </TableCell>
-                          </>
-                          }
-                        </TableRow>
-                      );
-                    })
-                  )
-                })}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </div>
-      </div>
-    </>           
-  )       
+      </div></>
+
+  )
 }
