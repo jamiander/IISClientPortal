@@ -5,9 +5,9 @@ import { selectStyle } from "../../Styles";
 
 interface SelectProps{
     companyList: Company[];
-    selectedCompany: Company | undefined;
+    selectedCompanyId: string;
     selectedInitiativeIndex: number;
-    setSelectedCompany:  (value: React.SetStateAction<Company | undefined>) => void;
+    setSelectedCompanyId: (value: React.SetStateAction<string>) => void;
     setSelectedInitiativeIndex: (value: React.SetStateAction<number>) => void;
     companyElementId: string,
     initiativeElementId: string
@@ -17,15 +17,16 @@ export default function SelectCompanyAndInitiative(props:SelectProps){
     
   function SelectCompany(companyId: string)
   {
-    props.setSelectedCompany(props.companyList.find(company => company.id === companyId));
+    props.setSelectedCompanyId(companyId);
     props.setSelectedInitiativeIndex(-1);
   }
 
   function SelectInitiative(initiativeIndex: number)
   {
-    if(props.selectedCompany)
+    const selectedCompany = props.companyList.find(c => c.id === props.selectedCompanyId);
+    if(selectedCompany)
     {
-      if(props.selectedCompany.initiatives[initiativeIndex])
+      if(selectedCompany.initiatives[initiativeIndex])
       {
         props.setSelectedInitiativeIndex(initiativeIndex);
       }
@@ -47,13 +48,13 @@ export default function SelectCompanyAndInitiative(props:SelectProps){
           </select>
           <select id={props.initiativeElementId} value={props.selectedInitiativeIndex} onChange={(e) => SelectInitiative(parseInt((e.target as HTMLSelectElement).value))} className={selectStyle + " w-56 h-10"}>
             <option>Select Initiative</option>
-              {props.selectedCompany?.initiatives.map((initiative,index)=>{
+              {props.companyList.find(c => c.id === props.selectedCompanyId)?.initiatives.map((initiative,index)=>{
                 return(
                   <option value={index} key={index}>{initiative.title}</option>
                 )
               })}
           </select>
-          {props.selectedInitiativeIndex > -1 && <p className="p-2">Items Remaining: {FindItemsRemaining(props.selectedCompany?.initiatives.at(props.selectedInitiativeIndex) ?? undefined)}</p>}
+          {props.selectedInitiativeIndex > -1 && <p className="p-2">Items Remaining: {FindItemsRemaining(props.companyList.find(c => c.id === props.selectedCompanyId)?.initiatives.at(props.selectedInitiativeIndex) ?? undefined)}</p>}
         </div>
         </div>
         )
