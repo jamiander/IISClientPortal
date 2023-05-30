@@ -27,6 +27,7 @@ describe('add non-Integrity user as Integrity spec', () => {
     cy.wait(500);
     cy.get(loginIds.submitButton).click();
     
+    cy.get(navIds.menuButton).click();
     cy.get(navIds.users).click();
     cy.wait(500);
     //cy.get("#editUserDataButton"+company.id).click();
@@ -109,6 +110,7 @@ describe("add non-Integrity user as non-Integrity user spec", () => {
     cy.wait(500);
     cy.get(loginIds.submitButton).click();
 
+    cy.get(navIds.menuButton).click();
     cy.get(navIds.users).click();
     //cy.get("#editUserDataButton"+company.id).click();
     cy.wait(1000);
@@ -167,6 +169,7 @@ describe("add Integrity user spec", () => {
     cy.wait(500);
     cy.get(loginIds.submitButton).click();
 
+    cy.get(navIds.menuButton).click();
     cy.get(navIds.integrity).click();
     cy.wait(500);
     cy.get(pageIds.addButton).click();
