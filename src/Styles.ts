@@ -46,7 +46,7 @@ export const TableHeaderStyle =
     padding: 8,
     textAlign: 'center',
     color: 'black',
-    elevation: 8,
+    elevation: 12,
   }));
 
   export const UserItem = styled(Paper)(() => ({
@@ -56,7 +56,7 @@ export const TableHeaderStyle =
     marginTop: 1,
     textAlign: 'center',
     color: 'black',
-    elevation: 8,
+    elevation: 12,
     width: "100%",
     marginLeft: 4
   }));

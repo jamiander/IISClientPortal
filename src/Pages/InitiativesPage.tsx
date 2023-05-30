@@ -67,22 +67,28 @@ export default function InitiativesPage(){
           <EditThroughputModal companyList={companyList} editIsOpen={EditModalIsOpen} setEditIsOpen={setEditModalIsOpen} Submit={SubmitUpdateThroughput} />
         </div>
         <div className="mx-[2%] mb-[2%]">
-        <RadioSet dark={true} setter={setRadioValue} name="initiativesDisplay" options={[
-          { id: InitiativeDisplayRadioIds.all, label: "Show All", value: "all" },
-          { id: InitiativeDisplayRadioIds.active, label: "Only Active", value: "active", default: true },
-          { id: InitiativeDisplayRadioIds.inactive, label: "Only Inactive", value: "inactive" }
-        ]} />
         <div className="flex flex-col justify-between">
           <div className="space-x-2 flex flex-wrap mt-4 mb-4">
-          <button id={InitiativesPageIds.addInitiativeButton} onClick={() => setAddInitiative(true)} className={yellowButtonStyle}>
-            Add Initiative
-          </button>
+          <div className="flex flex-col justify-between mt-5">
+            <button id={InitiativesPageIds.addInitiativeButton} onClick={() => setAddInitiative(true)} className={yellowButtonStyle}>
+              Add Initiative
+            </button>
+          </div>
+          <div className="flex flex-col justify-between mt-5">
           <button id={InitiativesPageIds.uploadThroughputButton} onClick={() => setUploadModalIsOpen(true)} className={yellowButtonStyle}>
             Upload Data File
           </button>
+          </div>
+          <div className="flex flex-col justify-between mt-5">
           <button id={InitiativesPageIds.editThroughputButton} onClick={() => setEditModalIsOpen(true)} className={yellowButtonStyle}>
             Add/Edit Data
           </button>
+          </div>
+          <RadioSet dark={true} setter={setRadioValue} name="initiativesDisplay" options={[
+            { id: InitiativeDisplayRadioIds.all, label: "Show All", value: "all" },
+            { id: InitiativeDisplayRadioIds.active, label: "Only Active", value: "active", default: true },
+            { id: InitiativeDisplayRadioIds.inactive, label: "Only Inactive", value: "inactive" }
+          ]} />
         </div>
         </div>
         {companyList.length > 0 &&

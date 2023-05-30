@@ -117,7 +117,7 @@ export function IntegrityPage(){
           </div>
         }
         <div className="col-span-1 py-[2%]">
-          <TableContainer elevation={10} component={Paper}>
+          <TableContainer elevation={12} component={Paper}>
             <Table className="table-auto w-full outline outline-3 bg-gray-100">
             <colgroup>
                 <col style={{ width: '17%' }} />

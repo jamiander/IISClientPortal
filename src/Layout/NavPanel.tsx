@@ -63,6 +63,7 @@ export default function NavPanel(){
       <MenuIcon />
     </IconButton>
     <Menu id="basic-menu"
+      className="w-[25%]"      
       anchorEl={anchorEl}
       open={open}
       onClose={handleClose}

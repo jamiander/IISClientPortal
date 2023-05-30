@@ -134,28 +134,28 @@ export default function UsersPage(){
               <><div className="flex flex-col justify-between mt-5">
                 <button disabled={InEditMode()} id={UsersPageIds.addButton} className={yellowButtonStyle} onClick={() => AddEmptyUser(currentUserCompanyId)}>Add User</button>
               </div></>}
-              {companyUsers.length !== 0 &&
-                currentUserCompanyId === IntegrityId &&
-                <><div className="flex flex-col justify-between mt-5">
-                  <button disabled={InEditMode()} id={UsersPageIds.addButton} className={yellowButtonStyle} onClick={() => AddEmptyUser("")}>Add User</button>
-                </div></>}
-              <RadioSet dark={true} setter={setRadioValue} name="clientPage" options={[
-                { id: UsersPageIds.radioIds.all, label: "Show All", value: "all" },
-                { id: UsersPageIds.radioIds.active, label: "Only Active", value: "active", default: true },
-                { id: UsersPageIds.radioIds.inactive, label: "Only Inactive", value: "inactive" }
-              ]} />
-              <div className="flex flex-col justify-between mt-5">
-                <IconButton onClick={() => setSearchBarOpen(!searchBarOpen)}>
-                  <SearchIcon />
-                </IconButton>
-              </div>
-              {searchBarOpen === true &&
-                <UserTextField id={UsersPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name or email" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)} />
-              }
-              </div>
+            {companyUsers.length !== 0 &&
+              currentUserCompanyId === IntegrityId &&
+              <><div className="flex flex-col justify-between mt-5">
+                <button disabled={InEditMode()} id={UsersPageIds.addButton} className={yellowButtonStyle} onClick={() => AddEmptyUser("")}>Add User</button>
+              </div></>}
+            <RadioSet dark={true} setter={setRadioValue} name="clientPage" options={[
+              { id: UsersPageIds.radioIds.all, label: "Show All", value: "all" },
+              { id: UsersPageIds.radioIds.active, label: "Only Active", value: "active", default: true },
+              { id: UsersPageIds.radioIds.inactive, label: "Only Inactive", value: "inactive" }
+            ]} />
+            <div className="flex flex-col justify-between mt-5">
+              <IconButton onClick={() => setSearchBarOpen(!searchBarOpen)}>
+                <SearchIcon />
+              </IconButton>
             </div>
+            {searchBarOpen === true &&
+              <UserTextField id={UsersPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name or email" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)} />
+            }
+            </div>
+          </div>
             <div className="col-span-1 py-[2%]">
-              <TableContainer elevation={10} component={Paper}>
+              <TableContainer elevation={12} component={Paper}>
                 <Table className="table-auto w-full outline outline-3 bg-gray-100">
                   <colgroup>
                     <col style={{ width: '17%' }} />
