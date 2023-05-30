@@ -31,7 +31,7 @@ export const EditThroughputIds = {
   addNewEntryButton: "editThroughputAdd",
   submitButton: "editThroughputSubmitButton",
   closeButton: "editThroughputCloseButton",
-  //addDate: "editThroughputAddDate",
+  addDate: "editThroughputAddDate",
   //addItemsComplete: "editThroughputAddItemsComplete",
   tableDate: "editThroughputTableDate",
   tableItemsComplete: "editThroughputTableItemsComplete",
@@ -66,33 +66,6 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
     setCurrentItems(0);
     setState(stateEnum.start);
   },[props.editIsOpen]);
-
-  /*useEffect(() => {
-    let warningMessage = "";
-    let initiative = selectedCompany?.initiatives[selectedInitiativeIndex];
-    if(initiative)
-    {
-      let dates = initiative.itemsCompletedOnDate;
-      if(dates)
-      {
-        let dateExists = false;
-        let existingItems = -1;
-        for(let i = 0; i < dates.length; i++)
-        {
-          if(EqualDateInfos(dates[i].date,entryDate))
-          {
-            existingItems = dates[i].itemsCompleted;
-            dateExists = true;
-            break;
-          }
-        }
-
-        if(dateExists)
-          warningMessage = "Warning: This date already has " + existingItems + " item(s). Submitting will overwrite this.";
-      }
-    }
-    setDateWarning(warningMessage);
-  },[entryDate,selectedInitiativeIndex,selectedCompany])*/
 
   function MakeClone<Type>(obj: Type) : Type;
   function MakeClone<Type>(obj: Type | undefined) : Type | undefined
@@ -226,7 +199,7 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
       <div className="space-y-5">
         <p className="text-3xl w-full">Edit Throughput Data</p>
         <SelectCompanyAndInitiative companyList={props.companyList} selectedCompanyId={selectedCompanyId} selectedInitiativeIndex={selectedInitiativeIndex} setSelectedCompanyId={setSelectedCompanyId} setSelectedInitiativeIndex={setSelectedInitiativeIndex} companyElementId={EditThroughputIds.selectCompany} initiativeElementId={EditThroughputIds.selectInitiative}/>
-        <DateInput id="" disabled={InEditMode()} date={currentDate} setDate={setCurrentDate}/>
+        <DateInput id={EditThroughputIds.addDate} disabled={InEditMode()} date={currentDate} setDate={setCurrentDate}/>
           {dateWarning}
         <button id={EditThroughputIds.addNewEntryButton} className={submitButtonStyle + " h-full"} disabled={InEditMode()}
           onClick={() => AddItem(GetInitiativeFromCompany(selectedCompanyId,selectedInitiativeIndex))}>Add New</button>
