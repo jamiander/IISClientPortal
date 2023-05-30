@@ -17,6 +17,7 @@ import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { ValidateCompanyAndInitiative, ValidateDate, ValidationFailedPrefix } from "../../Services/Validation";
 import { enqueueSnackbar } from "notistack";
+import { MakeClone } from "../../Services/Cloning";
 
 enum stateEnum {
   start,
@@ -66,16 +67,6 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
     setCurrentItems(0);
     setState(stateEnum.start);
   },[props.editIsOpen]);
-
-  function MakeClone<Type>(obj: Type) : Type;
-  function MakeClone<Type>(obj: Type | undefined) : Type | undefined
-  {
-    if(obj === undefined)
-      return undefined;
-
-    const clone: Type = JSON.parse(JSON.stringify(obj));
-    return clone;
-  }
 
   useEffect(() => {
     let initiative = MakeClone(GetInitiativeFromCompany(selectedCompanyId,selectedInitiativeIndex));
