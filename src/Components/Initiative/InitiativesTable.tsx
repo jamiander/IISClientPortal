@@ -23,7 +23,7 @@ import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { v4 } from "uuid";
 import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
-import { selectCurrentUser } from "../../Store/UserSlice";
+import { User, selectCurrentUser } from "../../Store/UserSlice";
 import { enqueueSnackbar } from "notistack";
 import ValidateNewInitiative, { ValidationFailedPrefix } from "../../Services/Validation";
 import { InitiativeActionsMenu } from "./InitiativeActionsMenu";
@@ -56,6 +56,7 @@ export const InitiativeTableIds = {
 
 interface InitiativesProps {
   companyList: Company[],
+  currentUser: User | undefined,
   radioStatus: string,
   ValidateInitiative: (initiative: Initiative, companyId: string, allCompanies: Company[]) => {success: boolean, message: string}
   addInitiative: boolean,
@@ -76,7 +77,6 @@ interface SortConfig {
 
 export default function InitiativesTable(props: InitiativesProps) {
   const dispatch = useAppDispatch();
-  const currentUser = useAppSelector(selectCurrentUser);
   const [searchedComp, setSearchedComp] = useState('');
   const [searchedInit, setSearchedInit] = useState('');
   const [sortConfig, setSortConfig] = useState<SortConfig>({key: '', direction: 'desc'});
@@ -100,7 +100,7 @@ export default function InitiativesTable(props: InitiativesProps) {
       const displayClone: InitCompanyDisplay[] = JSON.parse(JSON.stringify(displayItems));
       const myUuid = v4();
       const todayInfo = DateToDateInfo(new Date());
-      let matchingCompany = props.companyList.find(c => c.id === currentUser?.companyId);
+      let matchingCompany = props.companyList.find(c => c.id === props.currentUser?.companyId);
       if(matchingCompany?.id === IntegrityId) matchingCompany = {id: "", name: "", initiatives: ([])};
       if(matchingCompany)
       {
@@ -110,7 +110,7 @@ export default function InitiativesTable(props: InitiativesProps) {
         setSearchedComp("");
         setSearchedInit("");
         ResetPageNumber();
-        if(currentUser !== undefined)
+        if(props.currentUser !== undefined)
           EnterEditMode(myUuid,matchingCompany.id,displayClone,true);
       }
     }
@@ -334,7 +334,8 @@ export default function InitiativesTable(props: InitiativesProps) {
     LeaveEditMode();
   }
 
-  const userCompanyId = currentUser?.companyId;
+  const userCompanyId = props.currentUser?.companyId;
+  const isAdmin = props.currentUser?.isAdmin;
 
   return (
     <>
@@ -356,7 +357,9 @@ export default function InitiativesTable(props: InitiativesProps) {
                 <col style={{ width: '9%' }} />
                 <col style={{ width: '12%' }} />
                 <col style={{ width: '3%' }} />
-                <col style={{ width: '3%' }} />
+                {isAdmin &&
+                  <col style={{ width: '3%' }} />
+                }
               </colgroup>
               <TableHead className="outline outline-1">
                 <TableRow sx={{
@@ -385,7 +388,9 @@ export default function InitiativesTable(props: InitiativesProps) {
                     <SortLabel heading="Probability" sortKey='probabilityValue'/>
                   </TableHeaderStyle>
                   <TableHeaderStyle>Actions</TableHeaderStyle>
-                  <TableHeaderStyle>Edit</TableHeaderStyle>
+                  {isAdmin &&
+                    <TableHeaderStyle>Edit</TableHeaderStyle>
+                  }
                 </TableRow>
               </TableHead>
               <TableBody data-cy={InitiativeTableIds.table}>
@@ -467,13 +472,15 @@ export default function InitiativesTable(props: InitiativesProps) {
                               <i className="material-icons" style={{ fontSize: '15px', marginLeft: '15px', marginTop: '10px' }}>info_outline</i>
                             </TableCell>
                             <TableCell className="w-1/12">
-                              <InitiativeActionsMenu ids={InitiativeTableIds.actionMenu} company={displayItem.company} initiative={displayItem} isAdmin={currentUser?.isAdmin ?? false}/>
+                              <InitiativeActionsMenu ids={InitiativeTableIds.actionMenu} company={displayItem.company} initiative={displayItem} isAdmin={isAdmin ?? false}/>
                             </TableCell>
-                            <TableCell className="w-1/12">
-                              <IconButton data-cy={InitiativeTableIds.editButton} disabled={InEditMode()} onClick={() => EnterEditMode(displayItem.id, displayItem.company.id, displayItems, false)}>
-                                <EditIcon />
-                              </IconButton>
-                            </TableCell>
+                            {isAdmin &&
+                              <TableCell className="w-1/12">
+                                <IconButton data-cy={InitiativeTableIds.editButton} disabled={InEditMode()} onClick={() => EnterEditMode(displayItem.id, displayItem.company.id, displayItems, false)}>
+                                  <EditIcon />
+                                </IconButton>
+                              </TableCell>
+                            }
                           </>
                         }
                       </TableRow>

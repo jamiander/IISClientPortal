@@ -30,7 +30,7 @@ export function ViewDecisionDataButton(props: ViewDecisionDataProps){
       >
         Decisions
       </Button>
-      <DecisionDataModal title='View Decision Data' isOpen={ViewDecisionDataIsOpen} setDecisionModalIsOpen={setViewDecisionDataIsOpen} initiative={selectedInitiative} company={selectedCompany}/>
+      <DecisionDataModal title='View Decision Data' isOpen={ViewDecisionDataIsOpen} setDecisionModalIsOpen={setViewDecisionDataIsOpen} initiative={selectedInitiative} company={selectedCompany} isAdmin={false}/>
     </div>
   );
 }

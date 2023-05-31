@@ -11,6 +11,7 @@ import { yellowButtonStyle } from "../Styles";
 import { Company, selectAllCompanies, upsertThroughputData } from "../Store/CompanySlice";
 import { IconButton } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
+import { selectCurrentUser } from "../Store/UserSlice";
 
 export const InitiativeDisplayRadioIds = {
   all: "initDisplayShowAll",
@@ -27,6 +28,7 @@ export const InitiativesPageIds = {
 export default function InitiativesPage(){
   
   const companyList : Company[] = useAppSelector(selectAllCompanies);
+  const currentUser = useAppSelector(selectCurrentUser);
 
   const [addInitiative, setAddInitiative] = useState(false);
   const [UploadModalIsOpen, setUploadModalIsOpen] = useState(false);
@@ -72,7 +74,7 @@ export default function InitiativesPage(){
         <div className="flex flex-col justify-between">
           <div className="space-x-2 flex flex-wrap mt-4 mb-4">
           <IconButton data-cy={InitiativesPageIds.addInitiativeButton} onClick={() => setAddInitiative(true)}>
-              <AddIcon fontSize="large"/>
+            <AddIcon fontSize="large"/>
           </IconButton>
           <button data-cy={InitiativesPageIds.uploadThroughputButton} onClick={() => setUploadModalIsOpen(true)} className={yellowButtonStyle}>
             Upload Data File
@@ -88,7 +90,7 @@ export default function InitiativesPage(){
         </div>
         </div>
         {companyList.length > 0 &&
-          <InitiativesTable addInitiative={addInitiative} companyList={companyList} radioStatus={radioValue} ValidateInitiative={ValidateNewInitiative} setAddInitiative={setAddInitiative} />}
+          <InitiativesTable addInitiative={addInitiative} currentUser={currentUser} companyList={companyList} radioStatus={radioValue} ValidateInitiative={ValidateNewInitiative} setAddInitiative={setAddInitiative} />}
         </div>
       </div>
     </>

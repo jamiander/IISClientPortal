@@ -34,6 +34,7 @@ interface DecisionDataProps {
     initiative: Initiative 
     isOpen: boolean
     setDecisionModalIsOpen: (value: boolean) => void
+    isAdmin: boolean
 }
 
 export default function DecisionDataModal(props: DecisionDataProps) {
@@ -206,7 +207,9 @@ export default function DecisionDataModal(props: DecisionDataProps) {
                 <div className="flex justify-end">
                   <button data-cy={DecisionModalIds.closeModalButton} className="rounded-md transition ease-in-out hover:bg-[#29c2b0] w-fit" onClick={() => props.setDecisionModalIsOpen(false)}><CloseIcon sx={{fontSize: 40}}/></button>
                 </div>
-                <button data-cy={DecisionModalIds.addButton} className={yellowButtonStyle} onClick={() => HandleAddEmptyDecision()}>Add Decision</button>
+                {props.isAdmin &&
+                  <button data-cy={DecisionModalIds.addButton} className={yellowButtonStyle} onClick={() => HandleAddEmptyDecision()}>Add Decision</button>
+                }
               </div>
             </div>
           </div>
@@ -255,7 +258,7 @@ export default function DecisionDataModal(props: DecisionDataProps) {
                             </div>
                           }
                           {
-                            !isEdit && !InEditMode() &&
+                            !isEdit && !InEditMode() && props.isAdmin &&
                             <div className="flex w-full justify-between">
                               <button data-cy={DecisionModalIds.editButton} className={submitButtonStyle} onClick={() => EnterEditMode(displayItem.id, selectedInitiative, false)}>Edit</button>
                               <button data-cy={DecisionModalIds.deleteButton} className={cancelButtonStyle} onClick={() => HandleAttemptDelete(displayItem.id)}>Delete</button>

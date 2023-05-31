@@ -69,7 +69,7 @@ export function InitiativeActionsMenu(props: InitiativeActionsMenuProps)
           </Button>
         </MenuItem>
       </Menu>
-      <DecisionDataModal title='View Decision Data' isOpen={viewDecisionDataIsOpen} setDecisionModalIsOpen={setViewDecisionDataIsOpen} initiative={props.initiative} company={props.company}/>
+      <DecisionDataModal title='View Decision Data' isOpen={viewDecisionDataIsOpen} setDecisionModalIsOpen={setViewDecisionDataIsOpen} initiative={props.initiative} company={props.company} isAdmin={props.isAdmin}/>
       <DocumentManagementModal isOpen={documentModalIsOpen} setIsOpen={setDocumentModalIsOpen} company={props.company} initiative={props.initiative} isAdmin={props.isAdmin} />
     </>
   )
