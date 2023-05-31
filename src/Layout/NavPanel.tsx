@@ -64,7 +64,6 @@ export default function NavPanel(){
     </IconButton>
     <Menu id="basic-menu"
       className="w-[15%]"
-      disableScrollLock={true}
       anchorEl={anchorEl}
       open={open}
       onClose={handleClose}
