@@ -37,6 +37,10 @@ export const InitiativeTableIds = {
   companySelect: "initiativesTableCompanySelect",
   startDate: "initiativesTableStartDate",
   targetDate: "initiativesTableTargetDate",
+  editInitiativeTitle: "initiativesTableEditTitle",
+  editStartDate: "initiativesTableEditStartDate",
+  editTargetDate: "initiativesTableEditTargetDate",
+  editTotalItems: "initiativesTableEditTotalItems",
   initiativeTitleFilter: "initiativesTableFilterTitle",
   companyNameFilter: "initiativesTableFilterCompanyName",
   addButton: "initiativesTableAddButton",
@@ -336,8 +340,8 @@ export default function InitiativesTable(props: InitiativesProps) {
     <>
       <div className="grid grid-cols-1 w-full h-auto">
         <div className="col-span-1 h-[4vh] pb-[2%] space-x-4 mb-[2%]">
-          <input id={InitiativeTableIds.companyNameFilter} className={inputStyle} type={'text'} placeholder="Filter by Company" value={searchedComp} onChange={(e) => setSearchedComp(e.target.value)} />
-          <input id={InitiativeTableIds.initiativeTitleFilter} className={inputStyle} type={'text'} placeholder="Filter by Title" value={searchedInit} onChange={(e) => setSearchedInit(e.target.value)} />
+          <input data-cy={InitiativeTableIds.companyNameFilter} className={inputStyle} type={'text'} placeholder="Filter by Company" value={searchedComp} onChange={(e) => setSearchedComp(e.target.value)} />
+          <input data-cy={InitiativeTableIds.initiativeTitleFilter} className={inputStyle} type={'text'} placeholder="Filter by Title" value={searchedInit} onChange={(e) => setSearchedInit(e.target.value)} />
         </div>
         {totalInits !== 0 &&
         <div className="col-span-1">
@@ -384,7 +388,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                   <TableHeaderStyle>Edit</TableHeaderStyle>
                 </TableRow>
               </TableHead>
-              <TableBody id={InitiativeTableIds.table}>
+              <TableBody data-cy={InitiativeTableIds.table}>
                 {currentItems.map((displayItem, index) => {
                   let probability = { value: displayItem.probabilityValue, status: displayItem.probabilityStatus };
                   let healthIndicator =  getHealthIndicator(probability.value);
@@ -406,7 +410,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                       }}>
                         { isEdit ?
                           <>
-                            <TableCell id={InitiativeTableIds.companyName}>
+                            <TableCell data-cy={InitiativeTableIds.companyName}>
                             {(userCompanyId !== IntegrityId || state !== stateEnum.add) &&
                               <>{displayItem.company.name}</>
                             }
@@ -414,7 +418,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                               <>
                                 <FormControl fullWidth>
                                   <InputLabel id="company-select-label">Select Company</InputLabel>
-                                  <Select id={InitiativeTableIds.companySelect} labelId="company-select-label" label="Select company" value={companyToEditId} onChange={(e) => setCompanyToEditId(e.target.value)}>
+                                  <Select data-cy={InitiativeTableIds.companySelect} labelId="company-select-label" label="Select company" value={companyToEditId} onChange={(e) => setCompanyToEditId(e.target.value)}>
                                     {
                                       props.companyList.map((company,index) => {
                                         return (
@@ -430,35 +434,35 @@ export default function InitiativesTable(props: InitiativesProps) {
                             }
                             </TableCell>
                             <TableCell>
-                              <Input id={InitiativeTableIds.initiativeTitle} value={currentTitle} onChange={(e) => setCurrentTitle(e.target.value)}/>
+                              <Input data-cy={InitiativeTableIds.editInitiativeTitle} value={currentTitle} onChange={(e) => setCurrentTitle(e.target.value)}/>
                             </TableCell>
-                            <TableCell><DateInput id={InitiativeTableIds.startDate} date={currentStartDate} setDate={setCurrentStartDate}/></TableCell>
-                            <TableCell><DateInput id={InitiativeTableIds.targetDate} date={currentTargetDate} setDate={setCurrentTargetDate}/></TableCell>
+                            <TableCell><DateInput cypressData={InitiativeTableIds.editStartDate} date={currentStartDate} setDate={setCurrentStartDate}/></TableCell>
+                            <TableCell><DateInput cypressData={InitiativeTableIds.editTargetDate} date={currentTargetDate} setDate={setCurrentTargetDate}/></TableCell>
                             <TableCell>
-                              <Input id={InitiativeTableIds.totalItems} type="number" value={currentTotalItems} onChange={(e) => setCurrentTotalItems(parseInt(e.target.value))}/>
+                              <Input data-cy={InitiativeTableIds.editTotalItems} type="number" value={currentTotalItems} onChange={(e) => setCurrentTotalItems(parseInt(e.target.value))}/>
                             </TableCell>
-                            <TableCell id={InitiativeTableIds.remainingItems}>{displayItem.itemsRemaining}</TableCell>
+                            <TableCell data-cy={InitiativeTableIds.remainingItems}>{displayItem.itemsRemaining}</TableCell>
                             <TableCell></TableCell>
                             <TableCell className="w-1/12">
                               <InitiativeActionsMenu ids={InitiativeTableIds.actionMenu} disabled={true} company={displayItem.company} initiative={displayItem} isAdmin={false}/>
                             </TableCell>
                             <TableCell className="w-1/12">
-                              <IconButton id={InitiativeTableIds.saveChangesButton} onClick={() => SaveEdit()}>
+                              <IconButton data-cy={InitiativeTableIds.saveChangesButton} onClick={() => SaveEdit()}>
                                 <DoneIcon />
                               </IconButton>
-                              <IconButton id={InitiativeTableIds.cancelChangesButton} onClick={() => CancelEdit()}>
+                              <IconButton data-cy={InitiativeTableIds.cancelChangesButton} onClick={() => CancelEdit()}>
                                 <CancelIcon />
                               </IconButton>
                             </TableCell>
                           </>
                           :
                           <>
-                            <TableCell id={InitiativeTableIds.companyName}>{displayItem.company.name}</TableCell>
-                            <TableCell id={InitiativeTableIds.initiativeTitle}>{displayItem.title}</TableCell>
-                            <TableCell id={InitiativeTableIds.startDate}>{displayItem.startDate.month + "/" + displayItem.startDate.day + "/" + displayItem.startDate.year}</TableCell>
+                            <TableCell data-cy={InitiativeTableIds.companyName}>{displayItem.company.name}</TableCell>
+                            <TableCell data-cy={InitiativeTableIds.initiativeTitle}>{displayItem.title}</TableCell>
+                            <TableCell data-cy={InitiativeTableIds.startDate}>{displayItem.startDate.month + "/" + displayItem.startDate.day + "/" + displayItem.startDate.year}</TableCell>
                             <TableCell>{displayItem.targetDate.month + "/" + displayItem.targetDate.day + "/" + displayItem.targetDate.year}</TableCell>
-                            <TableCell id={InitiativeTableIds.totalItems}>{displayItem.totalItems}</TableCell>
-                            <TableCell id={InitiativeTableIds.remainingItems}>{displayItem.itemsRemaining}</TableCell>
+                            <TableCell data-cy={InitiativeTableIds.totalItems}>{displayItem.totalItems}</TableCell>
+                            <TableCell data-cy={InitiativeTableIds.remainingItems}>{displayItem.itemsRemaining}</TableCell>
                             <TableCell className={tooltipStyle} title={tooltipMessage}>{probability.value === undefined ? "NA" : probability.value + "%"}
                               <i className="material-icons" style={{ fontSize: '15px', marginLeft: '15px', marginTop: '10px' }}>info_outline</i>
                             </TableCell>
@@ -466,7 +470,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                               <InitiativeActionsMenu ids={InitiativeTableIds.actionMenu} company={displayItem.company} initiative={displayItem} isAdmin={currentUser?.isAdmin ?? false}/>
                             </TableCell>
                             <TableCell className="w-1/12">
-                              <IconButton id={InitiativeTableIds.editButton} disabled={InEditMode()} onClick={() => EnterEditMode(displayItem.id, displayItem.company.id, displayItems, false)}>
+                              <IconButton data-cy={InitiativeTableIds.editButton} disabled={InEditMode()} onClick={() => EnterEditMode(displayItem.id, displayItem.company.id, displayItems, false)}>
                                 <EditIcon />
                               </IconButton>
                             </TableCell>

@@ -106,13 +106,13 @@ export function IntegrityPage(){
         {allUsers.length !== 0 &&
           <div className="flex flex-col justify-between">
             <div className="space-x-2 flex flex-wrap mt-5">
-              <button disabled={InEditMode()} id={IntegrityPageIds.addButton} className={yellowButtonStyle} onClick={() => AddEmptyUser(IntegrityId)}>Add User</button>
+              <button disabled={InEditMode()} data-cy={IntegrityPageIds.addButton} className={yellowButtonStyle} onClick={() => AddEmptyUser(IntegrityId)}>Add User</button>
                 <IconButton sx={{borderRadius: 5, marginLeft: 5}} onClick={() => setSearchBarOpen(!searchBarOpen)}>
                   <SearchIcon/>
                   <div className="text-sm">Search</div>
                 </IconButton>
               {searchBarOpen === true &&
-                <UserTextField id={IntegrityPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name or email" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)} />
+                <UserTextField data-cy={IntegrityPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name or email" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)} />
               }
             </div>
           </div>
@@ -149,7 +149,7 @@ export function IntegrityPage(){
                   <TableHeaderStyle>Edit User</TableHeaderStyle>
                 </TableRow>
               </TableHead>
-              <TableBody id={IntegrityPageIds.table}>
+              <TableBody data-cy={IntegrityPageIds.table}>
                 {usersList.filter(u => u.email.toUpperCase().includes(searchedKeyword.toUpperCase()) || u.name?.toUpperCase().includes(searchedKeyword.toUpperCase()))
                   .map((displayItem: User, key: number) => {
                   let isEdit = InEditMode() && displayItem.id === userToEdit?.id;
@@ -166,33 +166,33 @@ export function IntegrityPage(){
                     >
                       {isEdit ? 
                       <>
-                        <TableCell><Input id={IntegrityPageIds.name}value={currentName} onChange={e => setCurrentName(e.target.value)}/></TableCell>
-                        <TableCell><Input id={IntegrityPageIds.email} value={currentEmail} onChange={e => setCurrentEmail(e.target.value)}/></TableCell>
-                        <TableCell><Input id={IntegrityPageIds.password} value={currentPassword} onChange={e => setCurrentPassword(e.target.value)}/></TableCell>
-                        <TableCell><Input id={IntegrityPageIds.phone} value={currentPhone} onChange={e => setCurrentPhone(e.target.value)}/></TableCell>
-                        <TableCell><Checkbox id={IntegrityPageIds.isAdmin} checked={currentIsAdmin} onChange={e => setCurrentIsAdmin(e.target.checked)}/>Admin</TableCell>
-                        <TableCell><Checkbox id={IntegrityPageIds.isActive} checked={currentIsActive} onChange={e => setCurrentIsActive(e.target.checked)}/>Active</TableCell>
-                        <TableCell id={IntegrityPageIds.initiativeIds}></TableCell>
+                        <TableCell><Input data-cy={IntegrityPageIds.name}value={currentName} onChange={e => setCurrentName(e.target.value)}/></TableCell>
+                        <TableCell><Input data-cy={IntegrityPageIds.email} value={currentEmail} onChange={e => setCurrentEmail(e.target.value)}/></TableCell>
+                        <TableCell><Input data-cy={IntegrityPageIds.password} value={currentPassword} onChange={e => setCurrentPassword(e.target.value)}/></TableCell>
+                        <TableCell><Input data-cy={IntegrityPageIds.phone} value={currentPhone} onChange={e => setCurrentPhone(e.target.value)}/></TableCell>
+                        <TableCell><Checkbox data-cy={IntegrityPageIds.isAdmin} checked={currentIsAdmin} onChange={e => setCurrentIsAdmin(e.target.checked)}/>Admin</TableCell>
+                        <TableCell><Checkbox data-cy={IntegrityPageIds.isActive} checked={currentIsActive} onChange={e => setCurrentIsActive(e.target.checked)}/>Active</TableCell>
+                        <TableCell data-cy={IntegrityPageIds.initiativeIds}></TableCell>
                         <TableCell>
-                          <IconButton id={IntegrityPageIds.saveChangesButton} onClick={() => SaveEdit()}>
+                          <IconButton data-cy={IntegrityPageIds.saveChangesButton} onClick={() => SaveEdit()}>
                             <DoneIcon />
                           </IconButton>
-                          <IconButton id={IntegrityPageIds.cancelChangesButton} onClick={() => CancelEdit()}>
+                          <IconButton data-cy={IntegrityPageIds.cancelChangesButton} onClick={() => CancelEdit()}>
                             <CancelIcon />
                           </IconButton>
                         </TableCell>
                       </>
                       : 
                       <>
-                        <TableCell id={IntegrityPageIds.name}>{displayItem.name}</TableCell>
-                        <TableCell id={IntegrityPageIds.email}>{displayItem.email}</TableCell>
-                        <TableCell id={IntegrityPageIds.password}>{displayItem.password}</TableCell>
-                        <TableCell id={IntegrityPageIds.phone}>{displayItem.phoneNumber}</TableCell>
-                        <TableCell id={IntegrityPageIds.isAdmin}>{displayItem.isAdmin ? "Admin" : "User"}</TableCell>
-                        <TableCell id={IntegrityPageIds.isActive}>{displayItem.isActive ? "Active" : "Inactive"}</TableCell>
-                        <TableCell id={IntegrityPageIds.initiativeIds}><EditUserInitiativesButton user={displayItem} allCompanies={sortedCompanies} SubmitUserData={SubmitUserData} expanded={false}/></TableCell>
+                        <TableCell data-cy={IntegrityPageIds.name}>{displayItem.name}</TableCell>
+                        <TableCell data-cy={IntegrityPageIds.email}>{displayItem.email}</TableCell>
+                        <TableCell data-cy={IntegrityPageIds.password}>{displayItem.password}</TableCell>
+                        <TableCell data-cy={IntegrityPageIds.phone}>{displayItem.phoneNumber}</TableCell>
+                        <TableCell data-cy={IntegrityPageIds.isAdmin}>{displayItem.isAdmin ? "Admin" : "User"}</TableCell>
+                        <TableCell data-cy={IntegrityPageIds.isActive}>{displayItem.isActive ? "Active" : "Inactive"}</TableCell>
+                        <TableCell data-cy={IntegrityPageIds.initiativeIds}><EditUserInitiativesButton user={displayItem} allCompanies={sortedCompanies} SubmitUserData={SubmitUserData} expanded={false}/></TableCell>
                         <TableCell>
-                          <IconButton id={IntegrityPageIds.editButton} disabled={InEditMode()} onClick={() => EnterEditMode(displayItem.id, integrityUsers, false)}>
+                          <IconButton data-cy={IntegrityPageIds.editButton} disabled={InEditMode()} onClick={() => EnterEditMode(displayItem.id, integrityUsers, false)}>
                             <EditIcon />
                           </IconButton>
                         </TableCell>

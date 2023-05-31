@@ -110,7 +110,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){
   let myUuid = uuidV4();
   return(
     <Modal
-    id={UploadThroughputIds.modal}
+    data-cy={UploadThroughputIds.modal}
     isOpen={props.uploadIsOpen}
     onRequestClose={()=>props.setUploadIsOpen(false)}
     style={{'content': {...modalStyle.content, 'width' : 'fit-content', 'height' : 'fit-content'}}}
@@ -124,12 +124,12 @@ export default function UploadThroughputModal(props:ThroughputModalProps){
             <p className="text-2xl w-full">Upload CSV File</p>
             <input className="w-full" ref={fileRef} type={'file'} accept={'.csv'} onChange={(e) => ReceiveFile(e.target.value)}/>
             <div className="grid justify-end h-1/2">
-              <button id={UploadThroughputIds.fileSubmit} className={submitButtonStyle} onClick={() => props.Submit(selectedCompanyId, props.companyList.find(c => c.id === selectedCompanyId)?.initiatives.at(selectedInitiativeIndex)?.id ?? myUuid, fileData, true)}>Submit</button>
+              <button data-cy={UploadThroughputIds.fileSubmit} className={submitButtonStyle} onClick={() => props.Submit(selectedCompanyId, props.companyList.find(c => c.id === selectedCompanyId)?.initiatives.at(selectedInitiativeIndex)?.id ?? myUuid, fileData, true)}>Submit</button>
             </div>
           </div>
         </div>
         <div className="h-10 w-full flex justify-end">
-          <button id={UploadThroughputIds.closeButton} className={cancelButtonStyle} onClick={() => props.setUploadIsOpen(false)}>Close</button>
+          <button data-cy={UploadThroughputIds.closeButton} className={cancelButtonStyle} onClick={() => props.setUploadIsOpen(false)}>Close</button>
         </div>
       </div>
     </Modal>

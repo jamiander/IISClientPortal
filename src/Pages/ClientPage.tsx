@@ -20,8 +20,6 @@ import { DocumentManagementButton } from "../Components/Documents/DocumentManage
 export const ClientPageIds = {
   modal: "clientPageModal",
   closeModalButton: "clientPageModalCloseModalButton",
-  name: "clientPageName",
-  initiativeTitle: "clientPageInitiativeTitle",
   addClientButton: "clientPageAddButton",
   editClientButton: "clientPageEditButton",
   saveClientChangesButton: "clientPageSaveChangesButton",
@@ -29,8 +27,12 @@ export const ClientPageIds = {
   deleteButton: "clientPageDeleteButton",
   keywordFilter: "clientPageKeywordFilter",
   table: "clientPageTable",
+  name: "clientPageName",
+  initiativeTitle: "clientPageInitiativeTitle",
   targetDate: "clientPageTargetDate",
   totalItems: "clientPageTotalItems",
+  editName: "clientPageEditName",
+  editInitiativeTitle: "clientPageEditInitTitle",
   radioIds: {
     active: "clientPageRadioActive",
     inactive: "clientPageRadioInactive",
@@ -187,20 +189,20 @@ export function ClientPage()
         <div className="flex flex-col justify-between mt-5">
           <div className="space-x-2 flex flex-wrap">
             {allCompanies.length !== 0 &&
-            <><button disabled={InEditMode()} id={ClientPageIds.addClientButton} className={yellowButtonStyle} onClick={() => HandleAddEmptyClient()}>Add Client</button>
+            <><button disabled={InEditMode()} data-cy={ClientPageIds.addClientButton} className={yellowButtonStyle} onClick={() => HandleAddEmptyClient()}>Add Client</button>
               <button className={yellowButtonStyle} onClick={() => navigate("/Initiatives")}>Initiatives Page</button>
             </>}
               <RadioSet dark={true} setter={setRadioValue} name="clientPage" options={[
-              {id: ClientPageIds.radioIds.all, label: "Show All", value: "all"},
-              {id: ClientPageIds.radioIds.active, label: "Active", value: "active", default: true},
-              {id: ClientPageIds.radioIds.inactive, label: "Inactive", value: "inactive"}
+              {cypressData: ClientPageIds.radioIds.all, label: "Show All", value: "all"},
+              {cypressData: ClientPageIds.radioIds.active, label: "Active", value: "active", default: true},
+              {cypressData: ClientPageIds.radioIds.inactive, label: "Inactive", value: "inactive"}
             ]} />
                 <IconButton sx={{borderRadius: 5, marginLeft: 5}} onClick={() => setSearchBarOpen(!searchBarOpen)}>
                   <SearchIcon/>
                   <div className="text-sm">Search</div>
                 </IconButton>
               {searchBarOpen === true &&
-                <UserTextField id={ClientPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)} />
+                <UserTextField data-cy={ClientPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)} />
               }
             </div>
           </div>
@@ -230,7 +232,7 @@ export function ClientPage()
                   <TableHeaderStyle>Edit Client</TableHeaderStyle>
                 </TableRow>
               </TableHead>
-              <TableBody id={ClientPageIds.table}>
+              <TableBody data-cy={ClientPageIds.table}>
                 {displayCompanies.filter(c =>  c.name?.toUpperCase().includes(searchedKeyword.toUpperCase()))
                   .map((displayItem: Company, key: number) => {
                   let isEdit = InEditMode() && displayItem.id === companyToEdit?.id;
@@ -247,14 +249,14 @@ export function ClientPage()
                     >
                       {isEdit ? 
                       <>
-                        <TableCell><Input id={ClientPageIds.name} value={currentName} onChange={e => setCurrentName(e.target.value)}/></TableCell>
+                        <TableCell><Input data-cy={ClientPageIds.editName} value={currentName} onChange={e => setCurrentName(e.target.value)}/></TableCell>
                         {state === State.add &&
                           <>
                             <TableCell>
-                              <Input id={ClientPageIds.initiativeTitle} value={currentInitiativeTitle} onChange={e => setCurrentInitiativeTitle(e.target.value)} />
+                              <Input data-cy={ClientPageIds.editInitiativeTitle} value={currentInitiativeTitle} onChange={e => setCurrentInitiativeTitle(e.target.value)} />
                             </TableCell>
                             <TableCell>
-                              <DateInput date={currentTargetDate} setDate={setCurrentTargetDate} id={ClientPageIds.targetDate}></DateInput>
+                              <DateInput date={currentTargetDate} setDate={setCurrentTargetDate} cypressData={ClientPageIds.targetDate}></DateInput>
                             </TableCell>
                             <TableCell>
                               <Input type='number' value={currentTotalItems} onChange={e => setCurrentTotalItems(parseInt(e.target.value))}/>
@@ -273,25 +275,25 @@ export function ClientPage()
                           <DocumentManagementButton id={"documentButton"} disabled={true} company={displayItem} isAdmin={false}/>
                         </TableCell>
                         <TableCell>
-                          <IconButton id={ClientPageIds.saveClientChangesButton} onClick={() => HandleSaveEdit()}>
+                          <IconButton data-cy={ClientPageIds.saveClientChangesButton} onClick={() => HandleSaveEdit()}>
                             <DoneIcon />
                           </IconButton>
-                          <IconButton id={ClientPageIds.cancelClientChangesButton} onClick={() => HandleCancelEdit()}>
+                          <IconButton data-cy={ClientPageIds.cancelClientChangesButton} onClick={() => HandleCancelEdit()}>
                             <CancelIcon />
                           </IconButton>
                         </TableCell>
                       </>
                       : 
                       <>
-                        <TableCell id={ClientPageIds.name}>{displayItem.name}</TableCell>
-                        <TableCell id={ClientPageIds.initiativeTitle}>{displayItem.initiatives.at(0)?.title}</TableCell>
-                        <TableCell id={ClientPageIds.name}>{displayItem.initiatives.at(0) !== undefined ? (displayItem.initiatives.at(0)!.targetDate.month + "/" + displayItem.initiatives.at(0)!.targetDate.day + "/" + displayItem.initiatives.at(0)!.targetDate.year) : ""}</TableCell>
-                        <TableCell id={ClientPageIds.name}>{displayItem.initiatives.at(0)?.totalItems}</TableCell>
+                        <TableCell data-cy={ClientPageIds.name}>{displayItem.name}</TableCell>
+                        <TableCell data-cy={ClientPageIds.initiativeTitle}>{displayItem.initiatives.at(0)?.title}</TableCell>
+                        <TableCell data-cy={ClientPageIds.name}>{displayItem.initiatives.at(0) !== undefined ? (displayItem.initiatives.at(0)!.targetDate.month + "/" + displayItem.initiatives.at(0)!.targetDate.day + "/" + displayItem.initiatives.at(0)!.targetDate.year) : ""}</TableCell>
+                        <TableCell data-cy={ClientPageIds.name}>{displayItem.initiatives.at(0)?.totalItems}</TableCell>
                         <TableCell>
                           <DocumentManagementButton id={"documentButton"} company={displayItem} isAdmin={true}/>
                         </TableCell>
                         <TableCell>
-                          <IconButton id={ClientPageIds.editClientButton} disabled={InEditMode()} onClick={() => EnterEditMode(displayItem.id, displayCompanies, false)}>
+                          <IconButton data-cy={ClientPageIds.editClientButton} disabled={InEditMode()} onClick={() => EnterEditMode(displayItem.id, displayCompanies, false)}>
                             <EditIcon />
                           </IconButton>
                         </TableCell>

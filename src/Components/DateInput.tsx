@@ -2,7 +2,7 @@ import { DateInfo } from "../Services/CompanyService"
 import { inputStyle } from "../Styles"
 
 interface DateInputProps {
-  id: string,
+  cypressData: string,
   date: DateInfo | undefined,
   setDate: (value: React.SetStateAction<DateInfo | undefined>) => void,
   disabled?: boolean
@@ -52,7 +52,7 @@ export function DateInput(props: DateInputProps)
   return (
     <>
       <div className='flex space-x-2'>
-        <input id={props.id} disabled={props.disabled} type="date" value={MakeDateString(props.date)} className={inputStyle}
+        <input data-cy={props.cypressData} disabled={props.disabled} type="date" value={MakeDateString(props.date)} className={inputStyle}
           onChange={(e) => { props.setDate(MakeDateInfo(e.target.value) ?? props.date) }}/>
       </div>
     </>

@@ -69,19 +69,19 @@ export default function InitiativesPage(){
         <div className="mx-[2%] mb-[2%]">
         <div className="flex flex-col justify-between">
           <div className="space-x-2 flex flex-wrap mt-4 mb-4">
-          <button id={InitiativesPageIds.addInitiativeButton} onClick={() => setAddInitiative(true)} className={yellowButtonStyle}>
+          <button data-cy={InitiativesPageIds.addInitiativeButton} onClick={() => setAddInitiative(true)} className={yellowButtonStyle}>
               Add Initiative
             </button>
-          <button id={InitiativesPageIds.uploadThroughputButton} onClick={() => setUploadModalIsOpen(true)} className={yellowButtonStyle}>
+          <button data-cy={InitiativesPageIds.uploadThroughputButton} onClick={() => setUploadModalIsOpen(true)} className={yellowButtonStyle}>
             Upload Data File
           </button>
-          <button id={InitiativesPageIds.editThroughputButton} onClick={() => setEditModalIsOpen(true)} className={yellowButtonStyle}>
+          <button data-cy={InitiativesPageIds.editThroughputButton} onClick={() => setEditModalIsOpen(true)} className={yellowButtonStyle}>
             Add/Edit Data
           </button>
           <RadioSet dark={true} setter={setRadioValue} name="initiativesDisplay" options={[
-            { id: InitiativeDisplayRadioIds.all, label: "Show All", value: "all" },
-            { id: InitiativeDisplayRadioIds.active, label: "Active", value: "active", default: true },
-            { id: InitiativeDisplayRadioIds.inactive, label: "Inactive", value: "inactive" }
+            { cypressData: InitiativeDisplayRadioIds.all, label: "Show All", value: "all" },
+            { cypressData: InitiativeDisplayRadioIds.active, label: "Active", value: "active", default: true },
+            { cypressData: InitiativeDisplayRadioIds.inactive, label: "Inactive", value: "inactive" }
           ]} />
         </div>
         </div>

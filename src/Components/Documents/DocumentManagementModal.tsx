@@ -56,7 +56,7 @@ export function DocumentManagementModal(props: DocumentManagementModalProps)
 
   return (
     <Dialog
-      id={DocumentManagementModalIds.modal}
+      data-cy={DocumentManagementModalIds.modal}
       open={props.isOpen}
       onClose={() => props.setIsOpen(false)}
       maxWidth={false}
@@ -69,7 +69,7 @@ export function DocumentManagementModal(props: DocumentManagementModalProps)
           </div>
           <div className="flex flex-col justify-between">
             <div className="flex justify-end">
-              <button id={DocumentManagementModalIds.closeButton} className="rounded-md transition ease-in-out hover:bg-[#29c2b0] w-fit" onClick={() => props.setIsOpen(false)}><CloseIcon sx={{fontSize: 40}}/></button>
+              <button data-cy={DocumentManagementModalIds.closeButton} className="rounded-md transition ease-in-out hover:bg-[#29c2b0] w-fit" onClick={() => props.setIsOpen(false)}><CloseIcon sx={{fontSize: 40}}/></button>
             </div>
           </div>
         </div>

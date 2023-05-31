@@ -190,7 +190,7 @@ export default function DecisionDataModal(props: DecisionDataProps) {
   return (
     <>
       <Dialog
-        id={DecisionModalIds.modal}
+        data-cy={DecisionModalIds.modal}
         open={props.isOpen}
         onClose={()=>props.setDecisionModalIsOpen(false)}
         fullWidth
@@ -204,19 +204,19 @@ export default function DecisionDataModal(props: DecisionDataProps) {
               </div>
               <div className="flex flex-col justify-between">
                 <div className="flex justify-end">
-                  <button id={DecisionModalIds.closeModalButton} className="rounded-md transition ease-in-out hover:bg-[#29c2b0] w-fit" onClick={() => props.setDecisionModalIsOpen(false)}><CloseIcon sx={{fontSize: 40}}/></button>
+                  <button data-cy={DecisionModalIds.closeModalButton} className="rounded-md transition ease-in-out hover:bg-[#29c2b0] w-fit" onClick={() => props.setDecisionModalIsOpen(false)}><CloseIcon sx={{fontSize: 40}}/></button>
                 </div>
-                <button id={DecisionModalIds.addButton} className={yellowButtonStyle} onClick={() => HandleAddEmptyDecision()}>Add Decision</button>
+                <button data-cy={DecisionModalIds.addButton} className={yellowButtonStyle} onClick={() => HandleAddEmptyDecision()}>Add Decision</button>
               </div>
             </div>
           </div>
           <div className="mx-[2%] mb-[2%]">
             {selectedInitiative.decisions.length !== 0 &&
             <div className="mt-2 mb-4">
-              <StyledTextField className="w-1/2" id={DecisionModalIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in Description or Resolution" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)}/>
+              <StyledTextField className="w-1/2" data-cy={DecisionModalIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in Description or Resolution" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)}/>
             </div>
             }
-            <Grid id={DecisionModalIds.grid} container spacing={6}>
+            <Grid data-cy={DecisionModalIds.grid} container spacing={6}>
               {
               selectedInitiative.decisions.filter(d => d.description.toUpperCase().includes(searchedKeyword.toUpperCase()) || d.resolution.toUpperCase().includes(searchedKeyword.toUpperCase())).map((displayItem, key) => {
                 let isEdit = InEditMode() && displayItem.id === (decisionToEdit?.id ?? -1);
@@ -229,36 +229,36 @@ export default function DecisionDataModal(props: DecisionDataProps) {
                           {isEdit ?
                           <>
                             <label className={labelStyle} htmlFor={DecisionModalIds.description}>Decision Description</label>
-                            <StyledTextarea id={DecisionModalIds.description} value={currentDescription} onChange={e => setCurrentDescription(e.target.value)}/>
+                            <StyledTextarea data-cy={DecisionModalIds.description} value={currentDescription} onChange={e => setCurrentDescription(e.target.value)}/>
                             <label className={labelStyle} htmlFor={DecisionModalIds.resolution}>Resolution</label>
-                            <StyledTextarea id={DecisionModalIds.resolution} value={currentResolution} onChange={e => setCurrentResolution(e.target.value)}/>
-                            <StyledTextField id={DecisionModalIds.participants} label="Participants-separate by comma" value={currentParticipants} onChange={e => setCurrentParticipants(e.target.value)}/>
-                            <StyledTextField id={DecisionModalIds.date} label="Date Resolved" type="date" value={currentDateString} onChange={e => setCurrentDateString(e.target.value)}/>
+                            <StyledTextarea data-cy={DecisionModalIds.resolution} value={currentResolution} onChange={e => setCurrentResolution(e.target.value)}/>
+                            <StyledTextField data-cy={DecisionModalIds.participants} label="Participants-separate by comma" value={currentParticipants} onChange={e => setCurrentParticipants(e.target.value)}/>
+                            <StyledTextField data-cy={DecisionModalIds.date} label="Date Resolved" type="date" value={currentDateString} onChange={e => setCurrentDateString(e.target.value)}/>
                           </>
                           :
                           <>
                             <label className={labelStyle} htmlFor={DecisionModalIds.description}>Decision Description</label>
-                            <StyledTextarea id={DecisionModalIds.description} disabled value={displayItem.description}/>
+                            <StyledTextarea data-cy={DecisionModalIds.description} disabled value={displayItem.description}/>
                             <label className={labelStyle} htmlFor={DecisionModalIds.resolution}>Resolution</label>
-                            <StyledTextarea id={DecisionModalIds.resolution} disabled value={displayItem.resolution}/>
-                            <StyledTextField id={DecisionModalIds.participants} label="Participants" disabled value={displayItem.participants.join(", ")}/>
-                            <StyledTextField id={DecisionModalIds.date} label="Date Resolved" disabled type="date" value={MakeDateString(displayItem.date)}/>
+                            <StyledTextarea data-cy={DecisionModalIds.resolution} disabled value={displayItem.resolution}/>
+                            <StyledTextField data-cy={DecisionModalIds.participants} label="Participants" disabled value={displayItem.participants.join(", ")}/>
+                            <StyledTextField data-cy={DecisionModalIds.date} label="Date Resolved" disabled type="date" value={MakeDateString(displayItem.date)}/>
                           </>
                           }
                         </StyledCardContent>
                         <StyledCardActions>
                           {isEdit &&
                             <div className="flex w-full justify-between">
-                              <button id={DecisionModalIds.saveChangesButton} className={submitButtonStyle} onClick={() => HandleEditDecision(displayItem.id, currentDescription, currentResolution, currentParticipants.split(",").map(s => s.trim()), 
+                              <button data-cy={DecisionModalIds.saveChangesButton} className={submitButtonStyle} onClick={() => HandleEditDecision(displayItem.id, currentDescription, currentResolution, currentParticipants.split(",").map(s => s.trim()), 
                               currentDateString ? MakeDateInfo(currentDateString) : displayItem.date)}>Save</button>
-                              <button id={DecisionModalIds.cancelChangesButton} className={cancelButtonStyle} onClick={() => HandleCancelEdit()}>Cancel</button>
+                              <button data-cy={DecisionModalIds.cancelChangesButton} className={cancelButtonStyle} onClick={() => HandleCancelEdit()}>Cancel</button>
                             </div>
                           }
                           {
                             !isEdit && !InEditMode() &&
                             <div className="flex w-full justify-between">
-                              <button id={DecisionModalIds.editButton} className={submitButtonStyle} onClick={() => EnterEditMode(displayItem.id, selectedInitiative, false)}>Edit</button>
-                              <button id={DecisionModalIds.deleteButton} className={cancelButtonStyle} onClick={() => HandleAttemptDelete(displayItem.id)}>Delete</button>
+                              <button data-cy={DecisionModalIds.editButton} className={submitButtonStyle} onClick={() => EnterEditMode(displayItem.id, selectedInitiative, false)}>Edit</button>
+                              <button data-cy={DecisionModalIds.deleteButton} className={cancelButtonStyle} onClick={() => HandleAttemptDelete(displayItem.id)}>Delete</button>
                             </div>
                           }
                         </StyledCardActions>

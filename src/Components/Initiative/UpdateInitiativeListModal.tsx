@@ -45,7 +45,7 @@ export function UpdateInitiativeListModal(props: InitiativeModalProps){
 
 	return (
 		<Modal
-			id={InitiativeModalIds.modal}
+			data-cy={InitiativeModalIds.modal}
 			isOpen={props.initiativeIsOpen}
 			onRequestClose={() => props.setInitiativeIsOpen(false)}
 			style={{'content': {...modalStyle.content, 'width' : '25%'}}}
@@ -54,7 +54,7 @@ export function UpdateInitiativeListModal(props: InitiativeModalProps){
 			<div className='w-full'>
 				<div className='my-1'>Company{props.company ? ": " + props.company.name :
           <div>
-            <select id={InitiativeModalIds.company} onChange={(e) => setInitiativeCompanyId(e.target.value)} 
+            <select data-cy={InitiativeModalIds.company} onChange={(e) => setInitiativeCompanyId(e.target.value)} 
             className={selectStyle}
             >
               <option>Select Company</option>
@@ -73,16 +73,16 @@ export function UpdateInitiativeListModal(props: InitiativeModalProps){
           onChange={(e) => {setInitiativeTitle(e.target.value)}}/>
         <div className='my-2'>
             <p className=''>Start Date</p>
-            <DateInput id={InitiativeModalIds.startDate} date={initiativeStartDate} setDate={setInitiativeStartDate}/>
+            <DateInput cypressData={InitiativeModalIds.startDate} date={initiativeStartDate} setDate={setInitiativeStartDate}/>
           </div>
         <div className="flex">
           <div className='my-2'>
             <p className=''>Target Completion</p>
-            <DateInput id={InitiativeModalIds.targetDate} date={initiativeTargetDate} setDate={setInitiativeTargetDate}/>
+            <DateInput cypressData={InitiativeModalIds.targetDate} date={initiativeTargetDate} setDate={setInitiativeTargetDate}/>
           </div>
           <div className='w-24 my-2 ml-2'>
             <p>Total Items</p>
-            <input defaultValue={props.initiative?.totalItems} id={InitiativeModalIds.totalItems} type={'number'} placeholder='###'
+            <input defaultValue={props.initiative?.totalItems} data-cy={InitiativeModalIds.totalItems} type={'number'} placeholder='###'
               className={inputStyle + " w-full"} 
               onChange={(e) => {setInitiativeTotalItems(parseInt(e.target.value))}}/>
           </div>
@@ -91,7 +91,7 @@ export function UpdateInitiativeListModal(props: InitiativeModalProps){
       
       <div>
         <div className="p-2 flex justify-between">
-          <button id={InitiativeModalIds.submitButton} className={submitButtonStyle} 
+          <button data-cy={InitiativeModalIds.submitButton} className={submitButtonStyle} 
             onClick={() => {
               const invalidDate: DateInfo = { day: -1, month: -1, year: -1}
               const initiative : Initiative = {
@@ -106,7 +106,7 @@ export function UpdateInitiativeListModal(props: InitiativeModalProps){
               props.Submit(initiative,initiativeCompanyId);
             }}> Submit
           </button>
-          <button id={InitiativeModalIds.closeButton} className={cancelButtonStyle} onClick={() => props.setInitiativeIsOpen(false)}>Close</button> 
+          <button data-cy={InitiativeModalIds.closeButton} className={cancelButtonStyle} onClick={() => props.setInitiativeIsOpen(false)}>Close</button> 
         </div>
       </div>
 		</Modal>

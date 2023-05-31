@@ -10,8 +10,8 @@ describe('document spec', () => {
   beforeEach(() => {
     cy.login(admin);
 
-    cy.get(tableIds.actionMenu.menuButton).click();
-    cy.get(tableIds.actionMenu.documentButton).click();
+    cy.getByData(tableIds.actionMenu.menuButton).click();
+    cy.getByData(tableIds.actionMenu.documentButton).click();
   })
 
   specify('client admins can add initiative documents', () => {
@@ -27,9 +27,9 @@ describe('document spec', () => {
   })
 
   specify('close button closes the modal', () => {
-    cy.get(modalIds.modal).should('exist');
-    cy.get(modalIds.closeButton).click();
-    cy.get(modalIds.modal).should('not.exist');
+    cy.getByData(modalIds.modal).should('exist');
+    cy.getByData(modalIds.closeButton).click();
+    cy.getByData(modalIds.modal).should('not.exist');
   })
 
 })

@@ -1,6 +1,6 @@
 
 export interface RadioInstance {
-  id: string,
+  cypressData: string,
   label: string,
   value: string
   default?: boolean
@@ -31,7 +31,7 @@ export function RadioSet(props: RadioSetProps)
         props.options.map((radio,index) => {
           return (
             <label key={index} className="mr-5 hover:text-[#879794]" onClick={()=>HandleClick(radio.value)}>
-              <input type='radio' id={radio.id} value={radio.value} name={props.name} defaultChecked={radio.default} className="mr-1"/>
+              <input type='radio' data-cy={radio.cypressData} value={radio.value} name={props.name} defaultChecked={radio.default} className="mr-1"/>
               {radio.label}
             </label>
           )

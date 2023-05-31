@@ -37,7 +37,8 @@ export function InitiativeActionsMenu(props: InitiativeActionsMenuProps)
   return (
     <>
       <IconButton
-        id={props.ids.menuButton}
+        data-cy={props.ids.menuButton}
+        id="basic-button"
         aria-controls={open ? 'basic-menu' : undefined}
         aria-haspopup="true"
         aria-expanded={open ? 'true' : undefined}
@@ -57,13 +58,13 @@ export function InitiativeActionsMenu(props: InitiativeActionsMenuProps)
       >
         <MenuItem onClick={handleClose}>
           {/*<ViewDecisionDataButton id={props.ids.decisionButton} company={props.company} initiative={props.initiative}/>*/}
-          <Button id={props.ids.decisionButton} onClick={() => setViewDecisionDataIsOpen(true)}>
+          <Button data-cy={props.ids.decisionButton} onClick={() => setViewDecisionDataIsOpen(true)}>
             Decisions
           </Button>
         </MenuItem>
         <MenuItem onClick={handleClose}>
           {/*<DocumentManagementButton id={props.ids.documentButton} company={props.company} initiative={props.initiative} isAdmin={props.isAdmin}/>*/}
-          <Button id={props.ids.documentButton} onClick={() => setDocumentModalIsOpen(true)}>
+          <Button data-cy={props.ids.documentButton} onClick={() => setDocumentModalIsOpen(true)}>
             Documents
           </Button>
         </MenuItem>

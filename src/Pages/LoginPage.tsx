@@ -65,7 +65,7 @@ export default function LoginPage(){
         <p className="text-5xl text-[#21345b] mb-5">Login</p>
 
         <p className='my-2 text-[#21345b]'>Email</p>
-        <input id={LoginPageIds.email} autoFocus value={userEmail} onChange={e => setUserEmail(e.target.value)} onKeyDown={e => HandleLogin(e.key)}
+        <input data-cy={LoginPageIds.email} autoFocus value={userEmail} onChange={e => setUserEmail(e.target.value)} onKeyDown={e => HandleLogin(e.key)}
         className={selectStyle}/>
 
         <div className="flex my-2 space-x-12">
@@ -77,11 +77,11 @@ export default function LoginPage(){
             </label>
           </div>
         </div>
-        <input id={LoginPageIds.password} value={password} type={passwordShown ? 'text' : 'password'} onChange={e => setPassword(e.target.value)} onKeyDown={e => HandleLogin(e.key)}
+        <input data-cy={LoginPageIds.password} value={password} type={passwordShown ? 'text' : 'password'} onChange={e => setPassword(e.target.value)} onKeyDown={e => HandleLogin(e.key)}
         className={selectStyle}/>
         
         <div className="w-full my-5 flex justify-between">
-          <button id={LoginPageIds.submitButton} disabled={isLoading} onClick={()=>Login()} className={genericButtonStyle}>Submit</button>
+          <button data-cy={LoginPageIds.submitButton} disabled={isLoading} onClick={()=>Login()} className={genericButtonStyle}>Submit</button>
           {isLoading &&
             <div className="flex justify-center">
               <CircularProgress color="warning"/>

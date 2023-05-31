@@ -49,7 +49,7 @@ export default function Toast(props: ToastProps) {
     <div id='toast-container'>
       {
         list.map((toast, index) => 
-          <div key={index} id={ToastIds.main} className="flex absolute bottom-10 right-10 z-50 items-center w-full max-w-xs p-4 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-[#21345b]" role="alert">
+          <div key={index} data-cy={ToastIds.main} className="flex absolute bottom-10 right-10 z-50 items-center w-full max-w-xs p-4 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-[#21345b]" role="alert">
   
             <div className="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-blue-500 bg-blue-100 rounded-lg dark:bg-[#445362] dark:text-blue-200">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="black" className="w-6 h-6">
@@ -59,7 +59,7 @@ export default function Toast(props: ToastProps) {
             
             <div className="ml-3 text-sm font-normal text-black dark:text-white">{toast.message}</div>
 
-            <button type="button" data-dismiss-target={ToastIds.main} id={ToastIds.closeButton} aria-label="Close" onClick={() => deleteToast()}
+            <button type="button" data-dismiss-target={ToastIds.main} data-cy={ToastIds.closeButton} aria-label="Close" onClick={() => deleteToast()}
               className="ml-auto -mx-1.5 -my-1.5 bg-white hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-[#21345b] dark:hover:bg-gray-700">
               <span className="sr-only">Close</span>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">

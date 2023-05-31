@@ -129,23 +129,23 @@ export default function UsersPage(){
           <div className="space-x-2 flex flex-wrap position-relative">
             {companyUsers.length !== 0 &&
               currentUserCompanyId !== IntegrityId &&
-              <><button disabled={InEditMode()} id={UsersPageIds.addButton} className={yellowButtonStyle} onClick={() => AddEmptyUser(currentUserCompanyId)}>Add User</button>
+              <><button disabled={InEditMode()} data-cy={UsersPageIds.addButton} className={yellowButtonStyle} onClick={() => AddEmptyUser(currentUserCompanyId)}>Add User</button>
               </>}
             {companyUsers.length !== 0 &&
               currentUserCompanyId === IntegrityId &&
-              <><button disabled={InEditMode()} id={UsersPageIds.addButton} className={yellowButtonStyle} onClick={() => AddEmptyUser("")}>Add User</button>
+              <><button disabled={InEditMode()} data-cy={UsersPageIds.addButton} className={yellowButtonStyle} onClick={() => AddEmptyUser("")}>Add User</button>
               </>}
             <RadioSet dark={true} setter={setRadioValue} name="userPage" options={[
-              { id: UsersPageIds.radioIds.all, label: "Show All", value: "all" },
-              { id: UsersPageIds.radioIds.active, label: "Active", value: "active", default: true },
-              { id: UsersPageIds.radioIds.inactive, label: "Inactive", value: "inactive" }
+              { cypressData: UsersPageIds.radioIds.all, label: "Show All", value: "all" },
+              { cypressData: UsersPageIds.radioIds.active, label: "Active", value: "active", default: true },
+              { cypressData: UsersPageIds.radioIds.inactive, label: "Inactive", value: "inactive" }
             ]} />
               <IconButton sx={{borderRadius: 5, marginLeft: 5}} onClick={() => setSearchBarOpen(!searchBarOpen)}>
                 <SearchIcon />
                 <div className="text-sm">Search</div>
               </IconButton>
             {searchBarOpen === true &&
-              <UserTextField id={UsersPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name or email" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)} />
+              <UserTextField data-cy={UsersPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name or email" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)} />
             }
             </div>
           </div>
@@ -182,7 +182,7 @@ export default function UsersPage(){
                       <TableHeaderStyle>Edit User</TableHeaderStyle>
                     </TableRow>
                   </TableHead>
-                  <TableBody id={UsersPageIds.table}>
+                  <TableBody data-cy={UsersPageIds.table}>
                     {displayCompanies.map((displayCompany, key) => {
                       let newUser = usersList.find(u => u.companyId === "");
                       let companyUserList = usersList.filter(cu => cu.companyId === displayCompany.id)!.filter(u => u.email.toUpperCase().includes(searchedKeyword.toUpperCase()) || u.name?.toUpperCase().includes(searchedKeyword.toUpperCase()));
@@ -202,11 +202,11 @@ export default function UsersPage(){
                             }}>
                               {isEdit ?
                                 <>
-                                  <TableCell id={UsersPageIds.company}>
+                                  <TableCell data-cy={UsersPageIds.company}>
                                     {currentUserCompanyId === IntegrityId ?
                                       <FormControl fullWidth>
                                         <InputLabel id="company-select-label">Select Company</InputLabel>
-                                        <Select id={UsersPageIds.selectCompany} labelId="company-select-label" label="Select company" value={currentCompanyId} onChange={(e) => setCurrentCompanyId(e.target.value)}>
+                                        <Select data-cy={UsersPageIds.selectCompany} labelId="company-select-label" label="Select company" value={currentCompanyId} onChange={(e) => setCurrentCompanyId(e.target.value)}>
                                           {displayCompanies.map((company, index) => {
                                             return (
                                               <MenuItem key={index} value={company.id}>
@@ -217,36 +217,36 @@ export default function UsersPage(){
                                         </Select>
                                       </FormControl>
                                       :
-                                      <TableCell id={UsersPageIds.company}>{displayCompany.name}</TableCell>}
+                                      <TableCell data-cy={UsersPageIds.company}>{displayCompany.name}</TableCell>}
                                   </TableCell>
-                                  <TableCell id={UsersPageIds.name}> <Input value={currentName} onChange={e => setCurrentName(e.target.value)} /></TableCell>
-                                  <TableCell><Input id={UsersPageIds.email} value={currentEmail} onChange={e => setCurrentEmail(e.target.value)} /></TableCell>
-                                  <TableCell id={UsersPageIds.password}><Input value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} /></TableCell>
-                                  <TableCell id={UsersPageIds.phone}><Input value={currentPhone} onChange={e => setCurrentPhone(e.target.value)} /></TableCell>
-                                  <TableCell id={UsersPageIds.isAdmin}><Checkbox checked={currentIsAdmin} onChange={e => setCurrentIsAdmin(e.target.checked)} />Admin</TableCell>
-                                  <TableCell id={UsersPageIds.isActive}><Checkbox checked={currentIsActive} onChange={e => setCurrentIsActive(e.target.checked)} />Active</TableCell>
-                                  <TableCell id={UsersPageIds.initiativeIds}></TableCell>
+                                  <TableCell data-cy={UsersPageIds.name}> <Input value={currentName} onChange={e => setCurrentName(e.target.value)} /></TableCell>
+                                  <TableCell><Input data-cy={UsersPageIds.email} value={currentEmail} onChange={e => setCurrentEmail(e.target.value)} /></TableCell>
+                                  <TableCell data-cy={UsersPageIds.password}><Input value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} /></TableCell>
+                                  <TableCell data-cy={UsersPageIds.phone}><Input value={currentPhone} onChange={e => setCurrentPhone(e.target.value)} /></TableCell>
+                                  <TableCell data-cy={UsersPageIds.isAdmin}><Checkbox checked={currentIsAdmin} onChange={e => setCurrentIsAdmin(e.target.checked)} />Admin</TableCell>
+                                  <TableCell data-cy={UsersPageIds.isActive}><Checkbox checked={currentIsActive} onChange={e => setCurrentIsActive(e.target.checked)} />Active</TableCell>
+                                  <TableCell data-cy={UsersPageIds.initiativeIds}></TableCell>
                                   <TableCell>
-                                    <IconButton id={UsersPageIds.saveChangesButton} onClick={() => SaveEdit()}>
+                                    <IconButton data-cy={UsersPageIds.saveChangesButton} onClick={() => SaveEdit()}>
                                       <DoneIcon />
                                     </IconButton>
-                                    <IconButton id={UsersPageIds.cancelChangesButton} onClick={() => CancelEdit()}>
+                                    <IconButton data-cy={UsersPageIds.cancelChangesButton} onClick={() => CancelEdit()}>
                                       <CancelIcon />
                                     </IconButton>
                                   </TableCell>
                                 </>
                                 :
                                 <>
-                                  <TableCell id={UsersPageIds.company}>{displayCompany.name}</TableCell>
-                                  <TableCell id={UsersPageIds.name}>{companyUser?.name}</TableCell>
-                                  <TableCell id={UsersPageIds.email}>{companyUser?.email}</TableCell>
-                                  <TableCell id={UsersPageIds.password}>{companyUser?.password}</TableCell>
-                                  <TableCell id={UsersPageIds.phone}>{companyUser?.phoneNumber}</TableCell>
-                                  <TableCell id={UsersPageIds.isAdmin}>{companyUser?.isAdmin ? "Admin" : "User"}</TableCell>
-                                  <TableCell id={UsersPageIds.isActive}>{companyUser?.isActive ? "Active" : "Inactive"}</TableCell>
-                                  <TableCell id={UsersPageIds.initiativeIds}><EditUserInitiativesButton user={companyUser} allCompanies={[displayCompany]} SubmitUserData={SubmitUserData} expanded={true} /></TableCell>
+                                  <TableCell data-cy={UsersPageIds.company}>{displayCompany.name}</TableCell>
+                                  <TableCell data-cy={UsersPageIds.name}>{companyUser?.name}</TableCell>
+                                  <TableCell data-cy={UsersPageIds.email}>{companyUser?.email}</TableCell>
+                                  <TableCell data-cy={UsersPageIds.password}>{companyUser?.password}</TableCell>
+                                  <TableCell data-cy={UsersPageIds.phone}>{companyUser?.phoneNumber}</TableCell>
+                                  <TableCell data-cy={UsersPageIds.isAdmin}>{companyUser?.isAdmin ? "Admin" : "User"}</TableCell>
+                                  <TableCell data-cy={UsersPageIds.isActive}>{companyUser?.isActive ? "Active" : "Inactive"}</TableCell>
+                                  <TableCell data-cy={UsersPageIds.initiativeIds}><EditUserInitiativesButton user={companyUser} allCompanies={[displayCompany]} SubmitUserData={SubmitUserData} expanded={true} /></TableCell>
                                   <TableCell>
-                                    <IconButton id={UsersPageIds.editButton} disabled={InEditMode()} onClick={() => EnterEditMode(companyUser?.id, companyUsers, false)}>
+                                    <IconButton data-cy={UsersPageIds.editButton} disabled={InEditMode()} onClick={() => EnterEditMode(companyUser?.id, companyUsers, false)}>
                                       <EditIcon />
                                     </IconButton>
                                   </TableCell>
