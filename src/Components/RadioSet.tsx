@@ -26,12 +26,12 @@ export function RadioSet(props: RadioSetProps)
   }
 
   return (
-    <div className={"w-[35%] absolute right-0 flex justify-center mt-5 h-[45px] py-1 text-lg"}>
+    <div className={"w-[100%] absolute center-0 flex justify-center mt-5 h-[45px] py-1 text-xl"}>
       {
         props.options.map((radio,index) => {
           return (
             <label key={index} className="mr-5 hover:text-[#879794]" onClick={()=>HandleClick(radio.value)}>
-              <input type='radio' id={radio.id} value={radio.value} name={props.name} defaultChecked={radio.default} className="mr-1"/>
+              <input type='radio' id={radio.id} value={radio.value} name={props.name} defaultChecked={radio.default} className="mr-5 ml-12"/>
               {radio.label}
             </label>
           )

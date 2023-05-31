@@ -1,13 +1,14 @@
-import { StyledTextField, TableHeaderStyle, UserTextField, defaultRowStyle, yellowButtonStyle } from "../Styles";
+import { TableHeaderStyle, UserTextField, defaultRowStyle } from "../Styles";
 import { useEffect, useState } from "react";
 import { User, getUserById, selectAllUsers, selectCurrentUser } from "../Store/UserSlice";
 import { Company, IntegrityId, selectAllCompanies } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
-import { Checkbox, IconButton, Input} from "@mui/material";
+import { Checkbox, IconButton, Input, InputAdornment} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
-import SearchIcon from '@mui/icons-material/Search';
+import AddIcon from "@mui/icons-material/Add";
+import SearchIcon from "@mui/icons-material/Search";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -42,7 +43,6 @@ export function IntegrityPage(){
   const allUsers = useAppSelector(selectAllUsers);
   const [sortedCompanies, setSortedCompanies] = useState<Company[]>([]);
   const [integrityUsers, setIntegrityUsers] = useState<User[]>([]);
-  const [searchBarOpen, setSearchBarOpen] = useState(false);
   const currentUser = useAppSelector(selectCurrentUser);
   const dispatch = useAppDispatch();
 
@@ -104,16 +104,19 @@ export function IntegrityPage(){
       </div>
       <div className="mx-[2%] mb-[2%]">
         {allUsers.length !== 0 &&
-          <div className="flex flex-col justify-between">
-            <div className="space-x-2 flex flex-wrap mt-5">
-              <button disabled={InEditMode()} id={IntegrityPageIds.addButton} className={yellowButtonStyle} onClick={() => AddEmptyUser(IntegrityId)}>Add User</button>
-                <IconButton sx={{borderRadius: 5, marginLeft: 5}} onClick={() => setSearchBarOpen(!searchBarOpen)}>
-                  <SearchIcon/>
-                  <div className="text-sm">Search</div>
-                </IconButton>
-              {searchBarOpen === true &&
-                <UserTextField id={IntegrityPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name or email" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)} />
-              }
+          <div className="flex flex-col justify-content:space-between">
+            <div className="space-x-10 flex flex-wrap mt-5">
+              <IconButton disabled={InEditMode()} id={IntegrityPageIds.addButton} onClick={() => AddEmptyUser(IntegrityId)}>
+                <AddIcon fontSize="large"/>
+              </IconButton>
+              <UserTextField id={IntegrityPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name or email" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon />
+                  </InputAdornment>
+                ),
+              }} />
             </div>
           </div>
         }

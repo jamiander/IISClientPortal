@@ -17,11 +17,11 @@ export default function Header(){
   let imageLink = './Initiatives';
 
   if(hrs < 12)
-    greet = 'Good Morning ' + company?.name;
+    greet = 'Good Morning ' + company?.name + "!";
   else if(hrs >= 12 && hrs <= 17)
-    greet = 'Good Afternoon ' + company?.name;
+    greet = 'Good Afternoon ' + company?.name + "!";
   else
-    greet = 'Good Evening ' + company?.name;
+    greet = 'Good Evening ' + company?.name + "!";
 
   if(!isLoggedIn)
     imageLink = './Login';
@@ -34,19 +34,18 @@ export default function Header(){
 
   return(
   <div className="mr-[1%] ml-[1%] flex">
-    <div className="flex min-h-[100%] h-auto justify-start self-start">
+    <div className="flex w-[25%] min-h-[100%] h-auto justify-start self-start">
       <Link to={imageLink}>
         <img className="min-h-full h-auto" src={logo} alt='Integrity Inspired Solutions Logo'/>
       </Link>
       
     </div>
     <div className="flex w-[50%] justify-center">
-      {/*isLoggedIn && <p className="text-2xl self-center">{greet}</p>*/}
+      {isLoggedIn && <p className="text-3xl self-center">{greet}</p>}
     </div>
-    <div className="flex w-[50%] justify-end self-end">
+    <div className="flex w-[25%] justify-end self-end">
     {
-      !isLoggedIn ?
-        <button className={genericButtonStyle + " my-1"} onClick={() => navigate('/Login')}>Log In</button> :
+      isLoggedIn &&
         <button className={genericButtonStyle + " my-1"} onClick={() => LogOut()}>Log Out</button>
     }
     </div>

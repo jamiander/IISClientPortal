@@ -9,6 +9,8 @@ import ValidateNewInitiative, { ValidateFileThroughputData, ValidateEditThroughp
 import { useAppSelector, useAppDispatch } from "../Store/Hooks";
 import { yellowButtonStyle } from "../Styles";
 import { Company, selectAllCompanies, upsertThroughputData } from "../Store/CompanySlice";
+import { IconButton } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
 
 export const InitiativeDisplayRadioIds = {
   all: "initDisplayShowAll",
@@ -69,9 +71,9 @@ export default function InitiativesPage(){
         <div className="mx-[2%] mb-[2%]">
         <div className="flex flex-col justify-between">
           <div className="space-x-2 flex flex-wrap mt-4 mb-4">
-          <button id={InitiativesPageIds.addInitiativeButton} onClick={() => setAddInitiative(true)} className={yellowButtonStyle}>
-              Add Initiative
-            </button>
+          <IconButton id={InitiativesPageIds.addInitiativeButton} onClick={() => setAddInitiative(true)}>
+              <AddIcon fontSize="large"/>
+          </IconButton>
           <button id={InitiativesPageIds.uploadThroughputButton} onClick={() => setUploadModalIsOpen(true)} className={yellowButtonStyle}>
             Upload Data File
           </button>

@@ -92,9 +92,9 @@ export const TableHeaderStyle =
     },
     marginTop: 5,
     marginBottom: 5,
-    marginLeft: 10,
+    marginLeft: 20,
     height: 10,
-    width: "25%"
+    width: "10%"
   }));
 
   export const StyledTextarea =
