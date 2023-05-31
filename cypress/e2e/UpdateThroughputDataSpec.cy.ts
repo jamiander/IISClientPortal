@@ -6,7 +6,6 @@ const snackbarId = consts.snackbarId;
 const failMessage = consts.validationFailedMessage;
 const tableIds = consts.initiativeTableIds;
 const radioIds = consts.initiativeDisplayRadioIds;
-const loginIds = consts.loginPageIds;
 const pageIds = consts.initiativesPageIds;
 const snackbarWaitTime = consts.snackbarWaitTime;
 const initiativeTitle = 'IIS Initiative';
@@ -20,10 +19,7 @@ describe ('add throughput data by manual entry', () => {
   let remainingItemsBefore: number;
 
   before(() => {
-    cy.visit('http://localhost:3000/Login');
-    cy.get(loginIds.email).clear().type(user.email);
-    cy.get(loginIds.password).clear().type(user.password);
-    cy.get(loginIds.submitButton).click();
+    cy.login(user);
 
     cy.get(radioIds.all).click();
     cy.get(tableIds.initiativeTitleFilter).type(initiativeTitle);
@@ -58,10 +54,7 @@ describe ('add throughput data by manual entry', () => {
 
 describe ('invalid manual entry test', () => {
   beforeEach(() => {
-    cy.visit('http://localhost:3000/Login');
-    cy.get(loginIds.email).clear().type(user.email);
-    cy.get(loginIds.password).clear().type(user.password);
-    cy.get(loginIds.submitButton).click();
+    cy.login(user);
 
     cy.get(pageIds.editThroughputButton).click();
   })
@@ -98,11 +91,7 @@ describe ('invalid manual entry test', () => {
 describe('update throughput data', () => {
 
   beforeEach(() => {
-    cy.visit('http://localhost:3000/Login');
-    cy.get(loginIds.email).clear().type(user.email);
-    cy.get(loginIds.password).clear().type(user.password);
-    cy.wait(500);
-    cy.get(loginIds.submitButton).click();
+    cy.login(user);
 
     cy.get(pageIds.editThroughputButton).click();
     cy.get(modalIds.selectCompany).select(company);

@@ -18,15 +18,10 @@ describe('update company spec', () => {
   const snackbarId = consts.snackbarId;
   const navIds = consts.navPanelIds;
   const pageIds = consts.clientPageIds;
-  const loginIds = consts.loginPageIds;
   const admin = AdminUser;
 
   beforeEach(() => {
-    cy.visit('http://localhost:3000/Login');
-    cy.get(loginIds.email).clear().type(admin.email);
-    cy.get(loginIds.password).clear().type(admin.password);
-    cy.wait(500);
-    cy.get(loginIds.submitButton).click();
+    cy.login(admin);
 
     cy.get(navIds.menuButton).click();
     cy.get(navIds.client).click();

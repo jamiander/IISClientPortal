@@ -6,7 +6,6 @@ const modalIds = consts.decisionModalIds;
 const alertIds = consts.deleteDecisionAlertIds;
 const radioIds = consts.initiativeDisplayRadioIds;
 const tableIds = consts.initiativeTableIds;
-const loginIds = consts.loginPageIds;
 const snackbarId = consts.snackbarId;
 const snackbarWaitTime = consts.snackbarWaitTime;
 const waitTime = 500;
@@ -32,11 +31,7 @@ const editedDecision = {
 }
 
 beforeEach(() => {
-  cy.visit('http://localhost:3000/Login');
-  cy.get(loginIds.email).clear().type(user.email);
-  cy.get(loginIds.password).clear().type(user.password);
-  cy.wait(500);
-  cy.get(loginIds.submitButton).click();
+  cy.login(user);
 
   cy.get(radioIds.all).click();
   cy.get(tableIds.initiativeTitleFilter).type(init.title);
