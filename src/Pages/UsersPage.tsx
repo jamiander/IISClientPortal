@@ -1,13 +1,14 @@
-import { StyledTextField, TableHeaderStyle, UserTextField, defaultRowStyle, yellowButtonStyle } from "../Styles";
-import { useEffect, useRef, useState } from "react";
+import { TableHeaderStyle, UserTextField, defaultRowStyle, yellowButtonStyle } from "../Styles";
+import { useEffect, useState } from "react";
 import { User, getUserById, selectAllUsers, selectCurrentUser } from "../Store/UserSlice";
 import { Company, IntegrityId, selectAllCompanies } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
-import { Checkbox, FormControl, IconButton, Input, InputLabel, MenuItem, Select} from "@mui/material";
+import { Checkbox, FormControl, IconButton, Input, InputAdornment, InputLabel, MenuItem, Select} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
 import SearchIcon from '@mui/icons-material/Search';
+import AddIcon from "@mui/icons-material/Add";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -50,7 +51,6 @@ export default function UsersPage(){
   const [companyUsers, setCompanyUsers] = useState<User[]>([]);
   const [radioValue,setRadioValue] = useState("active");
   const [displayCompanies, setDisplayCompanies] = useState<Company[]>([]);
-  const [searchBarOpen, setSearchBarOpen] = useState(false);
   const currentUser = useAppSelector(selectCurrentUser);
   const dispatch = useAppDispatch();
 
@@ -117,7 +117,7 @@ export default function UsersPage(){
   }, [allUsers, radioValue])
 
   return (
-      <><div className="flex col-span-4 bg-[#69D5C3] py-6 px-5">
+      <><div className="flex col-span-4 bg-[#69D5C3] py-6 px-5 rounded-md">
       <div className="w-full flex justify-between">
         <div className="space-y-2 w-1/2">
           <p className="text-5xl text-[#21345b] font-bold w-full">User Management</p>
@@ -126,27 +126,32 @@ export default function UsersPage(){
     </div>
     <div className="mx-[2%] mb-[2%]">
         <div className="flex flex-col justify-between mt-5">
-          <div className="space-x-2 flex flex-wrap position-relative">
+          <div className="space-x-10 flex flex-wrap position-relative">
             {companyUsers.length !== 0 &&
               currentUserCompanyId !== IntegrityId &&
-              <><button disabled={InEditMode()} data-cy={UsersPageIds.addButton} className={yellowButtonStyle} onClick={() => AddEmptyUser(currentUserCompanyId)}>Add User</button>
-              </>}
+              <IconButton disabled={InEditMode()} data-cy={UsersPageIds.addButton} onClick={() => AddEmptyUser(currentUserCompanyId)}>
+                <AddIcon fontSize="large"/>
+              </IconButton>
+              }
             {companyUsers.length !== 0 &&
               currentUserCompanyId === IntegrityId &&
-              <><button disabled={InEditMode()} data-cy={UsersPageIds.addButton} className={yellowButtonStyle} onClick={() => AddEmptyUser("")}>Add User</button>
-              </>}
+              <IconButton disabled={InEditMode()} data-cy={UsersPageIds.addButton} onClick={() => AddEmptyUser("")}>
+                <AddIcon  fontSize="large"/>
+              </IconButton>
+              }
             <RadioSet dark={true} setter={setRadioValue} name="userPage" options={[
               { cypressData: UsersPageIds.radioIds.all, label: "Show All", value: "all" },
               { cypressData: UsersPageIds.radioIds.active, label: "Active", value: "active", default: true },
               { cypressData: UsersPageIds.radioIds.inactive, label: "Inactive", value: "inactive" }
             ]} />
-              <IconButton sx={{borderRadius: 5, marginLeft: 5}} onClick={() => setSearchBarOpen(!searchBarOpen)}>
-                <SearchIcon />
-                <div className="text-sm">Search</div>
-              </IconButton>
-            {searchBarOpen === true &&
-              <UserTextField data-cy={UsersPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name or email" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)} />
-            }
+              <UserTextField data-cy={UsersPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name or email" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon />
+                  </InputAdornment>
+                ),
+              }} />
             </div>
           </div>
             <div className="col-span-1 py-[2%]">

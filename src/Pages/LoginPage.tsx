@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks"
 import { authenticateUser, selectAllUsers, selectCurrentUserId, selectLogInAttempts } from "../Store/UserSlice";
 import { genericButtonStyle } from "../Styles";
-import { CircularProgress } from "@mui/material";
+import { Box, Button, Checkbox, CircularProgress, Container, FormControlLabel, Grid, TextField, Typography } from "@mui/material";
 
 export const LoginPageIds = {
   email: "email",
@@ -58,46 +58,9 @@ export default function LoginPage(){
     }
   },[currentUserId]);
 
-  return(
-    <div className="m-[2%] grid grid-cols-4">
-      <div className="col-span-1">
-
-        <p className="text-5xl text-[#21345b] mb-5">Login</p>
-
-        <p className='my-2 text-[#21345b]'>Email</p>
-        <input data-cy={LoginPageIds.email} autoFocus value={userEmail} onChange={e => setUserEmail(e.target.value)} onKeyDown={e => HandleLogin(e.key)}
-        className={selectStyle}/>
-
-        <div className="flex my-2 space-x-12">
-          <p className="text-[#21345b]">Password</p>
-          <div className="flex">
-            <label>
-              <input type='checkbox' className='mr-2' onChange={togglePasswordVisibility}/>
-              Show Password
-            </label>
-          </div>
-        </div>
-        <input data-cy={LoginPageIds.password} value={password} type={passwordShown ? 'text' : 'password'} onChange={e => setPassword(e.target.value)} onKeyDown={e => HandleLogin(e.key)}
-        className={selectStyle}/>
-        
-        <div className="w-full my-5 flex justify-between">
-          <button data-cy={LoginPageIds.submitButton} disabled={isLoading} onClick={()=>Login()} className={genericButtonStyle}>Submit</button>
-          {isLoading &&
-            <div className="flex justify-center">
-              <CircularProgress color="warning"/>
-            </div>
-          }
-        </div>
-
-        {logInAttempts > 0 && 
-        <div className="outline rounded outline-red-600 p-2 flex justify-center w-3/4">
-          <p className="text-red-600">Incorrect Email or Password</p>
-        </div>
-        }
-
-      </div>
-
-      <div className="col-span-3 w-auto h-fit py-6 px-5 rounded-md bg-[#69D5C3] m-5">
+  return (
+    <>
+    <div className="col-span-1 w-auto h-fit py-6 px-5 rounded-md bg-[#69D5C3] m-5">
         <p className="text-center text-4xl text-[#21345b]">Welcome to the Integrity Inspired Solutions Client Portal!</p>
         <p className="text-center text-xl text-[#21345b] mt-2">To view the information on your project, please log in.</p>
         <p className="w-full text-center text-[#21345b] text-xl">
@@ -105,7 +68,58 @@ export default function LoginPage(){
           <a className="text-blue-600 visited:text-purple-600 underline" href="https://www.integrityinspired.com/">here.</a>
         </p>
       </div>
-
-    </div>    
-  )
+      <Container component="main" maxWidth="xs">
+      <Box
+        sx={{
+          marginTop: 8,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Typography component="h1" variant="h5">
+          Sign in
+        </Typography>
+        <Box component="form" onSubmit={HandleLogin} noValidate sx={{ mt: 1 }}>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id={LoginPageIds.email}
+            label="Email Address"
+            name="email"
+            autoComplete="email"
+            autoFocus value={userEmail}
+            onChange={e => setUserEmail(e.target.value)}
+            onKeyDown={e => HandleLogin(e.key)} />
+          <TextField margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Password"
+            id={LoginPageIds.password}
+            autoComplete="current-password"
+            value={password}
+            type={passwordShown ? 'text' : 'password'}
+            onChange={e => setPassword(e.target.value)}
+            onKeyDown={e => HandleLogin(e.key)} />
+          <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Remember me" />
+          <FormControlLabel control={<Checkbox value="show" color="primary" onChange={togglePasswordVisibility}/>} label="Show Password" />
+          <Button type="submit" id={LoginPageIds.submitButton} disabled={isLoading} fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} 
+            onClick={() => Login()} className={genericButtonStyle}>
+            Sign In
+          </Button>
+          {isLoading &&
+            <div className="flex justify-center">
+              <CircularProgress color="warning" />
+            </div>}
+          {logInAttempts > 0 &&
+            <div className="outline rounded outline-red-600 p-2 flex justify-center w-3/4">
+              <p className="text-red-600">Incorrect Email or Password</p>
+            </div>}
+        </Box>
+      </Box>
+    </Container>
+    </>
+  );
 }

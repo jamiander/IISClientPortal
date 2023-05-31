@@ -9,6 +9,8 @@ import ValidateNewInitiative, { ValidateFileThroughputData, ValidateEditThroughp
 import { useAppSelector, useAppDispatch } from "../Store/Hooks";
 import { yellowButtonStyle } from "../Styles";
 import { Company, selectAllCompanies, upsertThroughputData } from "../Store/CompanySlice";
+import { IconButton } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
 
 export const InitiativeDisplayRadioIds = {
   all: "initDisplayShowAll",
@@ -54,7 +56,7 @@ export default function InitiativesPage(){
 
   return (
     <>
-      <div className="flex col-span-4 bg-[#69D5C3] py-6 px-5">
+      <div className="flex col-span-4 bg-[#69D5C3] py-6 px-5 rounded-md">
         <div className="w-full flex justify-between">
           <div className="space-y-2 w-1/2">
             <p className="text-5xl text-[#21345b] font-bold w-full">Initiative Management</p>
@@ -69,9 +71,9 @@ export default function InitiativesPage(){
         <div className="mx-[2%] mb-[2%]">
         <div className="flex flex-col justify-between">
           <div className="space-x-2 flex flex-wrap mt-4 mb-4">
-          <button data-cy={InitiativesPageIds.addInitiativeButton} onClick={() => setAddInitiative(true)} className={yellowButtonStyle}>
-              Add Initiative
-            </button>
+          <IconButton data-cy={InitiativesPageIds.addInitiativeButton} onClick={() => setAddInitiative(true)}>
+              <AddIcon fontSize="large"/>
+          </IconButton>
           <button data-cy={InitiativesPageIds.uploadThroughputButton} onClick={() => setUploadModalIsOpen(true)} className={yellowButtonStyle}>
             Upload Data File
           </button>

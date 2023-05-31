@@ -1,16 +1,17 @@
-import { Divider, IconButton, Input, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
-import { StyledTextField, TableHeaderStyle, UserTextField, defaultRowStyle, genericButtonStyle, yellowButtonStyle } from "../Styles";
+import { IconButton, Input, InputAdornment, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { TableHeaderStyle, UserTextField, defaultRowStyle, yellowButtonStyle } from "../Styles";
 import { useEffect, useState } from "react";
 import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
 import SearchIcon from '@mui/icons-material/Search';
+import AddIcon from "@mui/icons-material/Add";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
 import { Company, Initiative, selectAllCompanies, upsertCompanyInfo, upsertInitiativeInfo } from "../Store/CompanySlice";
 import { enqueueSnackbar } from "notistack";
 import { v4 } from "uuid";
 import ValidateNewInitiative, { ValidateCompany, Validation, ValidationFailedPrefix } from "../Services/Validation";
-import { DateInput, DateToDateInfo, MakeDateString } from "../Components/DateInput";
+import { DateInput, DateToDateInfo } from "../Components/DateInput";
 import { RadioSet } from "../Components/RadioSet";
 import { CompanyFilter } from "../Services/Filters";
 import { useNavigate } from "react-router-dom";
@@ -59,7 +60,6 @@ export function ClientPage()
   const [searchedKeyword, setSearchedKeyword] = useState("");
   const [displayCompanies, setDisplayCompanies] = useState<Company[]>([]);
   const [companyToEdit, setCompanyToEdit] = useState<Company>();
-  const [searchBarOpen, setSearchBarOpen] = useState(false);
 
   const [currentName, setCurrentName] = useState("");
   const [currentInitiativeTitle, setCurrentInitiativeTitle] = useState("");
@@ -187,23 +187,25 @@ export function ClientPage()
       </div>
       <div className="mx-[2%] mb-[2%]">
         <div className="flex flex-col justify-between mt-5">
-          <div className="space-x-2 flex flex-wrap">
+          <div className="space-x-10 flex flex-wrap">
             {allCompanies.length !== 0 &&
-            <><button disabled={InEditMode()} data-cy={ClientPageIds.addClientButton} className={yellowButtonStyle} onClick={() => HandleAddEmptyClient()}>Add Client</button>
-              <button className={yellowButtonStyle} onClick={() => navigate("/Initiatives")}>Initiatives Page</button>
-            </>}
+            <IconButton disabled={InEditMode()} data-cy={ClientPageIds.addClientButton} onClick={() => HandleAddEmptyClient()}>
+              <AddIcon fontSize="large"/>
+            </IconButton>
+            }
               <RadioSet dark={true} setter={setRadioValue} name="clientPage" options={[
               {cypressData: ClientPageIds.radioIds.all, label: "Show All", value: "all"},
               {cypressData: ClientPageIds.radioIds.active, label: "Active", value: "active", default: true},
               {cypressData: ClientPageIds.radioIds.inactive, label: "Inactive", value: "inactive"}
             ]} />
-                <IconButton sx={{borderRadius: 5, marginLeft: 5}} onClick={() => setSearchBarOpen(!searchBarOpen)}>
-                  <SearchIcon/>
-                  <div className="text-sm">Search</div>
-                </IconButton>
-              {searchBarOpen === true &&
-                <UserTextField data-cy={ClientPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)} />
-              }
+                <UserTextField data-cy={ClientPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)} 
+                InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon />
+                  </InputAdornment>
+                ),
+              }} />
             </div>
           </div>
         <div className="col-span-1 py-[2%]">
@@ -212,8 +214,8 @@ export function ClientPage()
             <colgroup>
                 <col style={{ width: '25%' }} />
                 <col style={{ width: '25%' }} />
-                <col style={{ width: '20%' }} />
                 <col style={{ width: '10%' }} />
+                <col style={{ width: '15%' }} />
             </colgroup>
               <TableHead className="outline outline-1">
                 <TableRow sx={{
