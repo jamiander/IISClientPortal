@@ -6,7 +6,6 @@ const snackbarId = consts.snackbarId;
 const radioIds = consts.initiativeDisplayRadioIds;
 const tableIds = consts.initiativeTableIds;
 const snackbarWaitTime = consts.snackbarWaitTime;
-const loginIds = consts.loginPageIds;
 const pageIds = consts.initiativesPageIds;
 
 const init = {
@@ -27,11 +26,7 @@ describe('add initiative spec', () => {
   const user = MBPIUser;
 
   beforeEach(() => {
-    cy.visit('http://localhost:3000/Login');
-    cy.get(loginIds.email).clear().type(user.email);
-    cy.get(loginIds.password).clear().type(user.password);
-    cy.wait(500);
-    cy.get(loginIds.submitButton).click();
+    cy.login(user);
 
     cy.get(radioIds.all).click();
 
@@ -136,11 +131,7 @@ describe('add initiatives as Integrity user', () => {
   const company = MBPICompany;
   
   beforeEach(() => {
-    cy.visit('http://localhost:3000/Login');
-    cy.get(loginIds.email).clear().type(admin.email);
-    cy.get(loginIds.password).clear().type(admin.password);
-    cy.wait(500);
-    cy.get(loginIds.submitButton).click();
+    cy.login(admin);
 
     cy.get(radioIds.all).click();
 

@@ -15,7 +15,6 @@ const consts = TestConstants;
 const navIds = consts.navPanelIds;
 const failMessage = consts.validationFailedMessage;
 const snackbarId = consts.snackbarId;
-const loginIds = consts.loginPageIds;
 const snackbarWaitTime = consts.snackbarWaitTime;
 const admin = AdminUser;
 
@@ -23,11 +22,7 @@ describe("update user spec",() => {
   const pageIds = consts.usersPageIds;
   
   beforeEach(() => {
-    cy.visit('http://localhost:3000/Login');
-    cy.get(loginIds.email).clear().type(MBPIAdminUser.email);
-    cy.get(loginIds.password).clear().type(MBPIAdminUser.password);
-    cy.wait(500);
-    cy.get(loginIds.submitButton).click();
+    cy.login(MBPIAdminUser);
 
     cy.get(navIds.menuButton).click();
     cy.get(navIds.users).click();
@@ -90,11 +85,7 @@ describe("update admin user spec", () => {
   const pageIds = consts.integrityPageIds;
   
   beforeEach(() => {
-    cy.visit('http://localhost:3000/Login');
-    cy.get(loginIds.email).clear().type(admin.email);
-    cy.get(loginIds.password).clear().type(admin.password);
-    cy.wait(500);
-    cy.get(loginIds.submitButton).click();
+    cy.login(admin);
 
     cy.get(navIds.menuButton).click();
     cy.get(navIds.integrity).click();
@@ -163,11 +154,7 @@ describe('add non-Integrity user as Integrity', () => {
   const company = StaplesCompany;
 
   beforeEach(() => {
-    cy.visit('http://localhost:3000/Login');
-    cy.get(loginIds.email).clear().type(admin.email);
-    cy.get(loginIds.password).clear().type(admin.password);
-    cy.wait(500);
-    cy.get(loginIds.submitButton).click();
+    cy.login(admin);
 
     cy.get(navIds.menuButton).click();
     cy.get(navIds.users).click();

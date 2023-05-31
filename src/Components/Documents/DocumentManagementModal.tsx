@@ -9,6 +9,7 @@ import { useAppDispatch } from '../../Store/Hooks';
 import { DocumentDownload } from './DocumentDownload';
 
 export const DocumentManagementModalIds = {
+  modal: "documentManagementModal",
   closeButton: "documentManagementModalCloseButton"
 }
 
@@ -54,7 +55,8 @@ export function DocumentManagementModal(props: DocumentManagementModalProps)
 
 
   return (
-    <Dialog 
+    <Dialog
+      id={DocumentManagementModalIds.modal}
       open={props.isOpen}
       onClose={() => props.setIsOpen(false)}
       maxWidth={false}

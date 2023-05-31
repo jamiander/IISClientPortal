@@ -6,13 +6,8 @@ const snackbarId = consts.snackbarId;
 //const radioIds = consts.userDisplayRadioIds;
 const navIds = consts.navPanelIds;
 const pageIds = consts.clientPageIds;
-const loginIds = consts.loginPageIds;
 const admin = AdminUser;
 const user = MBPIUser;
-
-beforeEach(() => {
-  cy.visit('http://localhost:3000/Login');
-})
 
 describe('add company spec (as Integrity admin)', () => {
 
@@ -29,10 +24,7 @@ describe('add company spec (as Integrity admin)', () => {
   }
 
   beforeEach(() => {
-    cy.get(loginIds.email).clear().type(admin.email);
-    cy.get(loginIds.password).clear().type(admin.password);
-    cy.wait(500);
-    cy.get(loginIds.submitButton).click();
+    cy.login(admin);
 
     cy.get(navIds.menuButton).click();
     cy.get(navIds.client).click();
@@ -82,22 +74,16 @@ describe('add company spec (as Integrity admin)', () => {
 describe('add company spec (as non-Integrity admin)', () => {
 
   specify('cannot add company as non-Integrity user', () => {
-    cy.get(loginIds.email).clear().type(user.email);
-    cy.get(loginIds.password).clear().type(user.password);
-    cy.wait(500);
-    cy.get(loginIds.submitButton).click();
-    cy.wait(1000);
+    cy.login(user);
+
     cy.get(navIds.menuButton).click();
     cy.get(navIds.initiatives).should('exist');
     cy.get(navIds.client).should('not.exist');
   })
 
   specify('cannot add company as regular Integrity user', () => {
-    cy.get(loginIds.email).clear().type(IntegrityUser.email);
-    cy.get(loginIds.password).clear().type(IntegrityUser.password);
-    cy.wait(500);
-    cy.get(loginIds.submitButton).click();
-    cy.wait(1000);
+    cy.login(IntegrityUser);
+
     cy.get(navIds.menuButton).click();
     cy.get(navIds.initiatives).should('exist');
     cy.get(navIds.client).should('not.exist');

@@ -15,7 +15,6 @@ const modalIds = consts.uploadThroughputIds;
 const tableIds = consts.initiativeTableIds;
 const snackbarId = consts.snackbarId;
 const radioIds = consts.initiativeDisplayRadioIds;
-const loginIds = consts.loginPageIds;
 const failMessage = consts.validationFailedMessage;
 const pageIds = consts.initiativesPageIds;
 
@@ -29,11 +28,7 @@ describe('valid upload throughput tests', () => {
   let remainingItemsBefore: number;
 
   beforeEach(() => {
-    cy.visit('http://localhost:3000/Login');
-    cy.get(loginIds.email).clear().type(user.email);
-    cy.get(loginIds.password).clear().type(user.password);
-    cy.wait(500);
-    cy.get(loginIds.submitButton).click();
+    cy.login(user);
 
     cy.get(radioIds.all).click();
     cy.get(tableIds.initiativeTitleFilter).type(initiativeTitle);
@@ -82,10 +77,7 @@ describe('valid upload throughput tests', () => {
 describe('invalid upload throughput tests', () => {
 
   beforeEach(() => {
-    cy.visit('http://localhost:3000/Login');
-    cy.get(loginIds.email).clear().type(user.email);
-    cy.get(loginIds.password).clear().type(user.password);
-    cy.get(loginIds.submitButton).click();
+    cy.login(user);
 
     cy.get(pageIds.uploadThroughputButton).click();
     cy.get(modalIds.selectCompany).select(companyName);

@@ -19,16 +19,11 @@ describe('update initiative spec', () => {
   const snackbarId = consts.snackbarId;
   const radioIds = consts.initiativeDisplayRadioIds;
   const tableIds = consts.initiativeTableIds;
-  const loginIds = consts.loginPageIds;
   const user = IntegrityUser;
   const snackbarWaitTime = consts.snackbarWaitTime;
 
   beforeEach(() => {
-    cy.visit('http://localhost:3000/Login')
-    cy.get(loginIds.email).clear().type(user.email);
-    cy.get(loginIds.password).clear().type(user.password);
-    cy.wait(500);
-    cy.get(loginIds.submitButton).click();
+    cy.login(user);
 
     cy.get(radioIds.all).click();
     cy.get(tableIds.companyNameFilter).clear().type(init.companyName);
