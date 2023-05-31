@@ -48,7 +48,6 @@ export function InitiativeActionsMenu(props: InitiativeActionsMenuProps)
       </IconButton>
       <Menu
         id="basic-menu"
-        disableScrollLock={true}
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
