@@ -12,6 +12,7 @@ import { ClientPageIds } from "../../src/Pages/ClientPage";
 import { LoginPageIds } from "../../src/Pages/LoginPage";
 import { UsersPageIds } from "../../src/Pages/UsersPage";
 import { InitiativeDisplayRadioIds, InitiativesPageIds } from "../../src/Pages/InitiativesPage";
+import { DocumentManagementModalIds } from "../../src/Components/Documents/DocumentManagementModal";
 
 //cypress can find items by id using "#id"
 export function AddHash(obj: Record<string,any> | string)
@@ -45,6 +46,7 @@ export const TestConstants = {
   clientPageIds: AddHash(ClientPageIds),
   loginPageIds: AddHash(LoginPageIds),
   initiativesPageIds: AddHash(InitiativesPageIds),
+  documentModalIds: AddHash(DocumentManagementModalIds),
   snackbarWaitTime: 1000,   //how long it should wait for the snackbar to go away after requesting a new one
 }
 
