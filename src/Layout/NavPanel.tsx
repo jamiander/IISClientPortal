@@ -54,7 +54,7 @@ export default function NavPanel(){
 
   return(
     <div className="ml-8 space-x-2 flex flex-wrap mt-4 mb-4">
-    {currentUser?.isAdmin === true && currentUser?.isActive === true &&
+    {(currentUser?.isAdmin || currentUser?.companyId === IntegrityId) && currentUser?.isActive === true &&
     <IconButton className="text-2xl"
           id="basic-button"
       data-cy={NavPanelIds.menuButton}
@@ -91,7 +91,7 @@ export default function NavPanel(){
                 <i className="material-icons" style={{ fontSize: '30px', marginRight: '25px' }}>keyboard</i>
                 Developer Management
               </button>}
-            {currentUser?.isAdmin && currentUser?.isActive && currentUser?.companyId === IntegrityId &&
+            {currentUser?.isActive && currentUser?.companyId === IntegrityId &&
               <button style={{ fontSize: '20px', marginTop: '30px', marginLeft: '10px', textAlign: "left" }} data-cy={NavPanelIds.client} className={GetNavStyle("/ClientPage")}
                 onClick={() => NavHandler('/ClientPage')}>
                 <i className="material-icons" style={{ fontSize: '40px', marginRight: '25px' }}>manage_accounts</i>

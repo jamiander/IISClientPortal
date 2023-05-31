@@ -7,7 +7,7 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from "@mui/icons-material/Add";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
-import { Company, Initiative, selectAllCompanies, upsertCompanyInfo, upsertInitiativeInfo } from "../Store/CompanySlice";
+import { Company, Initiative, IntegrityId, selectAllCompanies, upsertCompanyInfo, upsertInitiativeInfo } from "../Store/CompanySlice";
 import { enqueueSnackbar } from "notistack";
 import { v4 } from "uuid";
 import ValidateNewInitiative, { ValidateCompany, Validation, ValidationFailedPrefix } from "../Services/Validation";
@@ -17,6 +17,7 @@ import { CompanyFilter } from "../Services/Filters";
 import { useNavigate } from "react-router-dom";
 import { DateInfo } from "../Services/CompanyService";
 import { DocumentManagementButton } from "../Components/Documents/DocumentManagementButton";
+import { selectCurrentUser } from "../Store/UserSlice";
 
 export const ClientPageIds = {
   modal: "clientPageModal",
@@ -53,6 +54,7 @@ export function ClientPage()
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const allCompanies = useAppSelector(selectAllCompanies);
+  const currentUser = useAppSelector(selectCurrentUser);
   const today = new Date();
   const todayInfo = DateToDateInfo(today);
 
@@ -176,6 +178,11 @@ export function ClientPage()
     LeaveEditMode();
   }
 
+  function IsReadOnly()
+  {
+    return currentUser?.companyId !== IntegrityId || !currentUser?.isAdmin;
+  }
+
   return (
     <>
       <div className="flex col-span-4 bg-[#69D5C3] py-6 px-5">
@@ -188,7 +195,7 @@ export function ClientPage()
       <div className="mx-[2%] mb-[2%]">
         <div className="flex flex-col justify-between mt-5">
           <div className="space-x-10 flex flex-wrap">
-            {allCompanies.length !== 0 &&
+            {allCompanies.length !== 0 && !IsReadOnly() &&
             <IconButton disabled={InEditMode()} data-cy={ClientPageIds.addClientButton} onClick={() => HandleAddEmptyClient()}>
               <AddIcon fontSize="large"/>
             </IconButton>
@@ -231,7 +238,9 @@ export function ClientPage()
                   <TableHeaderStyle>First Initiative Target Completion Date</TableHeaderStyle>
                   <TableHeaderStyle>First Initiative Total Items</TableHeaderStyle>
                   <TableHeaderStyle>Documents</TableHeaderStyle>
-                  <TableHeaderStyle>Edit Client</TableHeaderStyle>
+                  {!IsReadOnly() &&
+                    <TableHeaderStyle>Edit Client</TableHeaderStyle>
+                  }
                 </TableRow>
               </TableHead>
               <TableBody data-cy={ClientPageIds.table}>
@@ -292,13 +301,15 @@ export function ClientPage()
                         <TableCell data-cy={ClientPageIds.name}>{displayItem.initiatives.at(0) !== undefined ? (displayItem.initiatives.at(0)!.targetDate.month + "/" + displayItem.initiatives.at(0)!.targetDate.day + "/" + displayItem.initiatives.at(0)!.targetDate.year) : ""}</TableCell>
                         <TableCell data-cy={ClientPageIds.name}>{displayItem.initiatives.at(0)?.totalItems}</TableCell>
                         <TableCell>
-                          <DocumentManagementButton id={"documentButton"} company={displayItem} isAdmin={true}/>
+                          <DocumentManagementButton id={"documentButton"} company={displayItem} isAdmin={!IsReadOnly()}/>
                         </TableCell>
+                        {!IsReadOnly() &&
                         <TableCell>
                           <IconButton data-cy={ClientPageIds.editClientButton} disabled={InEditMode()} onClick={() => EnterEditMode(displayItem.id, displayCompanies, false)}>
                             <EditIcon />
                           </IconButton>
                         </TableCell>
+                        }
                       </>
                       }
                     </TableRow>
