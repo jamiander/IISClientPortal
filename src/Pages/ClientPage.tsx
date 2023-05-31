@@ -187,12 +187,9 @@ export function ClientPage()
         <div className="flex flex-col justify-between mt-5">
           <div className="space-x-2 flex flex-wrap">
             {allCompanies.length !== 0 &&
-            <><div className="flex flex-col justify-between mt-5">
-                <button disabled={InEditMode()} id={ClientPageIds.addClientButton} className={yellowButtonStyle} onClick={() => HandleAddEmptyClient()}>Add Client</button>
-              </div>
-              <div className="flex flex-col justify-between mt-5">
-                <button className={yellowButtonStyle} onClick={() => navigate("/Initiatives")}>Initiatives Page</button>
-              </div></>}
+            <><button disabled={InEditMode()} id={ClientPageIds.addClientButton} className={yellowButtonStyle} onClick={() => HandleAddEmptyClient()}>Add Client</button>
+              <button className={yellowButtonStyle} onClick={() => navigate("/Initiatives")}>Initiatives Page</button>
+            </>}
               <RadioSet dark={true} setter={setRadioValue} name="clientPage" options={[
               {id: ClientPageIds.radioIds.all, label: "Show All", value: "all"},
               {id: ClientPageIds.radioIds.active, label: "Active", value: "active", default: true},
