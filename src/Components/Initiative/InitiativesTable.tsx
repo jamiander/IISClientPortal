@@ -4,7 +4,7 @@ import { InitiativeFilter } from "../../Services/Filters";
 import { Company, Initiative, IntegrityId, upsertInitiativeInfo } from "../../Store/CompanySlice";
 import { defaultRowStyle, greenProbabilityStyle, inputStyle, redProbabilityStyle, TableHeaderStyle, tooltipStyle, yellowButtonStyle } from "../../Styles";
 import { GenerateProbability } from "../../Services/ProbabilitySimulationService";
-import { DateInput, DateToDateInfo } from "../DateInput";
+import { DateInput } from "../DateInput";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -27,6 +27,7 @@ import { User, selectCurrentUser } from "../../Store/UserSlice";
 import { enqueueSnackbar } from "notistack";
 import ValidateNewInitiative, { ValidationFailedPrefix } from "../../Services/Validation";
 import { InitiativeActionsMenu } from "./InitiativeActionsMenu";
+import { DateToDateInfo } from "../../Services/DateHelpers";
 
 export const InitiativeTableIds = {
   table: "initiativesTable",

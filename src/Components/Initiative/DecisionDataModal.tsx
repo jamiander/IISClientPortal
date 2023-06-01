@@ -4,13 +4,13 @@ import Grid from "@mui/material/Grid";
 import { useEffect, useState } from "react";
 import { Item, StyledCard, StyledCardActions, StyledCardContent, StyledTextField, StyledTextarea, cancelButtonStyle, submitButtonStyle, yellowButtonStyle, labelStyle} from "../../Styles";
 import { DateInfo, DecisionData } from "../../Services/CompanyService";
-import { MakeDateInfo, MakeDateString } from "../DateInput";
 import { ValidateDecisions, ValidationFailedPrefix } from "../../Services/Validation";
 import { useAppDispatch } from "../../Store/Hooks";
 import { DeleteDecisionAlert } from "./DeleteDecisionAlert";
 import { enqueueSnackbar } from "notistack";
 import CloseIcon from '@mui/icons-material/Close';
 import {v4 as UuidV4} from "uuid";
+import { MakeDateInfo, MakeDateString } from "../../Services/DateHelpers";
 
 export const DecisionModalIds = {
   modal: "decisionModal",

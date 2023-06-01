@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { DateInfo, ThroughputData } from "../../Services/CompanyService";
 import { Company, Initiative } from "../../Store/CompanySlice";
 import { cancelButtonStyle, defaultRowStyle, modalStyle, submitButtonStyle, TableHeaderStyle, tooltipStyle } from "../../Styles";
-import { CompareDateInfos, DateInput, EqualDateInfos } from "../DateInput";
+import { DateInput } from "../DateInput";
 import Modal from "react-modal";
 import Table from '@mui/material/Table';
 import TableContainer from '@mui/material/TableContainer';
@@ -17,6 +17,7 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import { ValidateCompanyAndInitiative, ValidateDate, ValidationFailedPrefix } from "../../Services/Validation";
 import { enqueueSnackbar } from "notistack";
 import { MakeClone } from "../../Services/Cloning";
+import { CompareDateInfos, EqualDateInfos } from "../../Services/DateHelpers";
 
 enum stateEnum {
   start,

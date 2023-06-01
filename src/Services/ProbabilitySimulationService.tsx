@@ -1,4 +1,4 @@
-import { CompareDateInfos, DateToDateInfo, EqualDateInfos, MakeDate } from "../Components/DateInput";
+import { CompareDateInfos, DateToDateInfo, EqualDateInfos, MakeDate } from "../Services/DateHelpers"
 import { Initiative } from "../Store/CompanySlice";
 import { DateInfo, ThroughputData } from "./CompanyService";
 
