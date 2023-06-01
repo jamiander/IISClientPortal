@@ -37,25 +37,6 @@ export default function InitiativesPage(){
   const dispatch = useAppDispatch();
   const [radioValue, setRadioValue] = useState('active');
 
-  async function SubmitUpdateThroughput(companyId: string, initiativeId: string, dataList: ThroughputData[], emptyDataCheck: boolean = true) : Promise<boolean>
-  {
-    let isTest = false;
-    if((window as any).Cypress)
-      isTest = true;
-
-    const validation = emptyDataCheck ? ValidateFileThroughputData(companyList, companyId, initiativeId, dataList) : ValidateEditThroughputData(companyList, companyId, initiativeId, dataList);
-    if(validation.success)
-    {
-      await dispatch(upsertThroughputData({companyId: companyId, initiativeId: initiativeId, itemsCompletedOnDate: dataList, isTest: isTest}));
-      setUploadModalIsOpen(false);
-      enqueueSnackbar("Throughput data changes have been saved.", {variant:'success'});
-      return true;
-    }
-    else
-      enqueueSnackbar(ValidationFailedPrefix + validation.message, {variant:'error'});
-      return false;
-  }
-
   return (
     <>
       <div className="flex col-span-4 bg-[#21355B] py-6 px-5 rounded-md">
@@ -67,8 +48,8 @@ export default function InitiativesPage(){
       </div>
       <div>
         <div>
-          <UploadThroughputModal companyList={companyList} uploadIsOpen={UploadModalIsOpen} setUploadIsOpen={setUploadModalIsOpen} Submit={SubmitUpdateThroughput} />
-          <EditThroughputModal companyList={companyList} editIsOpen={EditModalIsOpen} setEditIsOpen={setEditModalIsOpen} Submit={SubmitUpdateThroughput} />
+          {/*<UploadThroughputModal companyList={companyList} uploadIsOpen={UploadModalIsOpen} setUploadIsOpen={setUploadModalIsOpen} Submit={SubmitUpdateThroughput} />
+          <EditThroughputModal companyList={companyList} editIsOpen={EditModalIsOpen} setEditIsOpen={setEditModalIsOpen} Submit={SubmitUpdateThroughput} />*/}
         </div>
         <div className="mx-[2%] mb-[2%]">
          <div className="flex flex-col justify-between mx-1 h-[45px]">
