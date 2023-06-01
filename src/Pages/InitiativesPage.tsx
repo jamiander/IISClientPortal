@@ -70,7 +70,7 @@ export default function InitiativesPage(){
               { cypressData: InitiativeDisplayRadioIds.inactive, label: "Inactive", value: "inactive" }
             ]} />          
             <IconButton data-cy={InitiativesPageIds.addInitiativeButton} onClick={() => setAddInitiative(true)}>
-                <AddIcon fontSize="large"/>
+              <AddIcon fontSize="large"/>
             </IconButton>
           </Box>
          </div>

@@ -10,7 +10,7 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { IconButton, Paper } from "@mui/material";
+import { Dialog, IconButton, Paper } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
@@ -18,6 +18,8 @@ import { ValidateCompanyAndInitiative, ValidateDate, ValidationFailedPrefix } fr
 import { enqueueSnackbar } from "notistack";
 import { MakeClone } from "../../Services/Cloning";
 import { CompareDateInfos, EqualDateInfos } from "../../Services/DateHelpers";
+import AddIcon from "@mui/icons-material/Add";
+import CloseIcon from '@mui/icons-material/Close';
 
 enum stateEnum {
   start,
@@ -172,18 +174,25 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
   const throughputRef = useRef<HTMLElement>(null);
   
   return(
-    <Modal
-      
-      isOpen={props.editIsOpen}
-      onRequestClose={()=>props.setEditIsOpen(false)}
-      style={{'content': {...modalStyle.content, 'width' : 'fit-content', 'height' : 'fit-content'}}}
-      appElement={document.getElementById('root') as HTMLElement}>
-      <div className="space-y-5" data-cy={EditThroughputIds.modal}>
-        <p className="text-3xl w-full">Edit Throughput Data</p>
-        <DateInput cypressData={EditThroughputIds.addDate} disabled={InEditMode()} date={currentDate} setDate={setCurrentDate}/>
-          {dateWarning}
-        <button data-cy={EditThroughputIds.addNewEntryButton} className={submitButtonStyle + " h-full"} disabled={InEditMode()}
-          onClick={() => AddItem()}>Add New</button>
+    <Dialog
+      data-cy={EditThroughputIds.modal}
+      open={props.editIsOpen}
+      onClose={() => props.setEditIsOpen(false)}
+      >
+      <div className="space-y-5">
+        <div className="flex justify-between">
+          <p className="text-3xl w-full">Edit Throughput Data</p>
+          <div className="flex justify-end">
+            <button data-cy={EditThroughputIds.closeButton} className="rounded-md transition ease-in-out hover:bg-[#29c2b0] w-fit" onClick={() => props.setEditIsOpen(false)}><CloseIcon sx={{fontSize: 40}}/></button>
+          </div>
+        </div>
+        <div className="flex mx-2">
+          {/*dateWarning*/}
+          <IconButton data-cy={EditThroughputIds.addNewEntryButton} disabled={InEditMode()} onClick={() => AddItem()}>
+            <AddIcon fontSize="large"/>
+          </IconButton>
+          <DateInput cypressData={EditThroughputIds.addDate} disabled={InEditMode()} date={currentDate} setDate={setCurrentDate}/>
+        </div>
         <div className="outline outline-[#879794] rounded space-y-2 p-2">
           <div>
             <p className="text-2xl">Edit Data</p>
@@ -259,10 +268,7 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
             </TableContainer>
           </div>
         </div>
-        <div className="h-10 w-full flex justify-between">
-          <button data-cy={EditThroughputIds.closeButton} className={cancelButtonStyle} onClick={() => Close()}>Close</button> 
-        </div>
       </div>
-    </Modal>
+    </Dialog>
   )
 }

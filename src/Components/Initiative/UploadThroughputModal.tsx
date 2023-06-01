@@ -6,6 +6,8 @@ import { DateInfo, ThroughputData } from "../../Services/CompanyService";
 import { ValidationFailedPrefix } from "../../Services/Validation";
 import { v4 as uuidV4} from "uuid";
 import { enqueueSnackbar } from "notistack";
+import { Dialog } from "@mui/material";
+import CloseIcon from '@mui/icons-material/Close';
 
 export const UploadThroughputIds = {
   modal: "uploadThroughputModal",
@@ -106,13 +108,18 @@ export default function UploadThroughputModal(props:ThroughputModalProps){
 
   let myUuid = uuidV4();
   return(
-    <Modal
-    isOpen={props.uploadIsOpen}
-    onRequestClose={()=>props.setUploadIsOpen(false)}
-    style={{'content': {...modalStyle.content, 'width' : 'fit-content', 'height' : 'fit-content'}}}
-    appElement={document.getElementById('root') as HTMLElement}>
-      <div className="space-y-5" data-cy={UploadThroughputIds.modal}>
-        <p className="text-3xl w-full">Upload Throughput Data</p>
+    <Dialog
+    data-cy={UploadThroughputIds.modal}
+    open={props.uploadIsOpen}
+    onClose={()=>props.setUploadIsOpen(false)}
+    >
+      <div className="space-y-5">
+        <div className="flex justify-between">
+          <p className="text-3xl w-full">Upload Throughput Data</p>
+          <div className="flex justify-end">
+            <button data-cy={UploadThroughputIds.closeButton} className="rounded-md transition ease-in-out hover:bg-[#29c2b0] w-fit" onClick={() => props.setUploadIsOpen(false)}><CloseIcon sx={{fontSize: 40}}/></button>
+          </div>
+        </div>
         {fileWarning}
         <div className="flex">
           <div className="outline outline-[#879794] rounded space-y-2 p-2 w-64">
@@ -123,10 +130,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){
             </div>
           </div>
         </div>
-        <div className="h-10 w-full flex justify-end">
-          <button data-cy={UploadThroughputIds.closeButton} className={cancelButtonStyle} onClick={() => props.setUploadIsOpen(false)}>Close</button>
-        </div>
       </div>
-    </Modal>
+    </Dialog>
   )
 }
