@@ -18,9 +18,7 @@ export function MakeDate(dateInfo: DateInfo) : Date
 
 export function MakeDateInfo(dateString: string) : DateInfo
 {
-  console.log(dateString);
-  let dateString2 = "2020-02-02";
-  let dateSplit = dateString2.split("-");
+  let dateSplit = dateString.split("-");
   let dateInfo: DateInfo = {year: parseInt(dateSplit[0]), month: parseInt(dateSplit[1]), day: parseInt(dateSplit[2])};
   return dateInfo;
 }
