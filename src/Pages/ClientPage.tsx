@@ -40,7 +40,7 @@ export const ClientPageIds = {
     inactive: "clientPageRadioInactive",
     all: "clientPageRadioAll",
   },
-
+  documentButton: "clientPageDocumentButton"
 }
 
 export function ClientPage()
@@ -290,7 +290,7 @@ export function ClientPage()
                           </>
                         }
                         <TableCell>
-                          <DocumentManagementButton id={"documentButton"} disabled={true} company={displayItem} isAdmin={false}/>
+                          <DocumentManagementButton cypressData={ClientPageIds.documentButton} disabled={true} company={displayItem} isAdmin={false}/>
                         </TableCell>
                         <TableCell>
                           <IconButton data-cy={ClientPageIds.saveClientChangesButton} onClick={() => HandleSaveEdit()}>
@@ -308,7 +308,7 @@ export function ClientPage()
                         <TableCell data-cy={ClientPageIds.name}>{displayItem.initiatives.at(0) !== undefined ? (displayItem.initiatives.at(0)!.targetDate.month + "/" + displayItem.initiatives.at(0)!.targetDate.day + "/" + displayItem.initiatives.at(0)!.targetDate.year) : ""}</TableCell>
                         <TableCell data-cy={ClientPageIds.name}>{displayItem.initiatives.at(0)?.totalItems}</TableCell>
                         <TableCell>
-                          <DocumentManagementButton id={"documentButton"} company={displayItem} isAdmin={!IsReadOnly()}/>
+                          <DocumentManagementButton cypressData={ClientPageIds.documentButton} company={displayItem} isAdmin={!IsReadOnly()}/>
                         </TableCell>
                         {!IsReadOnly() &&
                         <TableCell>

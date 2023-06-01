@@ -29,10 +29,7 @@ describe('add non-Integrity user as Integrity spec', () => {
   })
 
   specify('add a new user as an Integrity user', () => {
-    cy.getByData(pageIds.selectCompany).parent()
-      .click()
-      .get(`ul > li[data-value="${company.id}"]`)
-      .click();
+    cy.getByData(pageIds.selectCompany).parent().muiSelect(company.id);
 
     cy.getByData(pageIds.saveChangesButton).parent().parent().within(() => {
       cy.getByData(pageIds.editEmail).type(user.email);
@@ -52,10 +49,7 @@ describe('add non-Integrity user as Integrity spec', () => {
 
     cy.getByData(pageIds.saveChangesButton).click();
     cy.get(snackbarId).should('contain',failMessage);
-    cy.getByData(pageIds.selectCompany).parent()
-      .click()
-      .get(`ul > li[data-value="${company.id}"]`)
-      .click();
+    cy.getByData(pageIds.selectCompany).parent().muiSelect(company.id);
 
     cy.getByData(pageIds.saveChangesButton).parent().parent().within(() => {
       cy.getByData(pageIds.editEmail).clear();
@@ -76,10 +70,7 @@ describe('add non-Integrity user as Integrity spec', () => {
   })
 
   specify('cancel does not leave behind the new user', () => {
-    cy.getByData(pageIds.selectCompany).parent()
-      .click()
-      .get(`ul > li[data-value="${company.id}"]`)
-      .click();
+    cy.getByData(pageIds.selectCompany).parent().muiSelect(company.id);
 
     cy.getByData(pageIds.saveChangesButton).parent().parent().within(() => {
       cy.getByData(pageIds.editEmail).type(user.email);

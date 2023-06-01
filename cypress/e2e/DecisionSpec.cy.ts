@@ -165,7 +165,7 @@ describe("delete decision spec", () => {
   specify("can't delete while in edit mode", () => {
     cy.get("@newDecision").within(() => {
       cy.getByData(modalIds.editButton).click();
-      cy.get(`[data-cy="${modalIds.deleteButton}"]`).should("not.exist");
+      cy.getByData(modalIds.deleteButton).should("not.exist");
     })
   })
 })

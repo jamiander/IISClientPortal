@@ -1,4 +1,4 @@
-import { Company } from "../../Store/CompanySlice";
+import { Company, Initiative } from "../../Store/CompanySlice";
 import  Modal  from 'react-modal';
 import { cancelButtonStyle, modalStyle, submitButtonStyle } from "../../Styles";
 import { useEffect, useRef, useState } from "react";
@@ -19,22 +19,19 @@ export const UploadThroughputIds = {
 }
 
 interface ThroughputModalProps{
-  companyList: Company[];
-  uploadIsOpen: boolean,
-  setUploadIsOpen: (value: boolean) => void,
+  company: Company
+  initiative: Initiative
+  uploadIsOpen: boolean
+  setUploadIsOpen: (value: boolean) => void
   Submit: (companyId: string, initiativeId: string, dataList: ThroughputData[], emptyDataCheck: boolean) => void
 }
 
 export default function UploadThroughputModal(props:ThroughputModalProps){
-  const [selectedCompanyId, setSelectedCompanyId] = useState("");
-  const [selectedInitiativeIndex, setSelectedInitiativeIndex] = useState(-1);
   const [fileData, setFileData] = useState<ThroughputData[]>([]);
   const [fileWarning, setFileWarning] = useState("");
   const fileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    setSelectedCompanyId("");
-    setSelectedInitiativeIndex(-1);
     setFileData([]);
     setFileWarning("");
   },[props.uploadIsOpen])
@@ -117,14 +114,13 @@ export default function UploadThroughputModal(props:ThroughputModalProps){
     appElement={document.getElementById('root') as HTMLElement}>
       <div className="space-y-5" data-cy={UploadThroughputIds.modal}>
         <p className="text-3xl w-full">Upload Throughput Data</p>
-        <SelectCompanyAndInitiative companyList={props.companyList} selectedCompanyId={selectedCompanyId} selectedInitiativeIndex={selectedInitiativeIndex} setSelectedCompanyId={setSelectedCompanyId} setSelectedInitiativeIndex={setSelectedInitiativeIndex} companyElementId={UploadThroughputIds.selectCompany} initiativeElementId={UploadThroughputIds.selectInitiative}/>
         {fileWarning}
         <div className="flex">
           <div className="outline outline-[#879794] rounded space-y-2 p-2 w-64">
             <p className="text-2xl w-full">Upload CSV File</p>
             <input data-cy={UploadThroughputIds.uploadButton} className="w-full" ref={fileRef} type={'file'} accept={'.csv'} onChange={(e) => ReceiveFile(e.target.value)}/>
             <div className="grid justify-end h-1/2">
-              <button data-cy={UploadThroughputIds.fileSubmit} className={submitButtonStyle} onClick={() => props.Submit(selectedCompanyId, props.companyList.find(c => c.id === selectedCompanyId)?.initiatives.at(selectedInitiativeIndex)?.id ?? myUuid, fileData, true)}>Submit</button>
+              <button data-cy={UploadThroughputIds.fileSubmit} className={submitButtonStyle} onClick={() => props.Submit(props.company.id, props.initiative.id, fileData, true)}>Submit</button>
             </div>
           </div>
         </div>

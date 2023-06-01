@@ -1,37 +1,119 @@
-import { AdminUser, TestConstants } from "./TestHelpers";
+import { AdminUser, IntegrityUser, MBPIAdminUser, MBPIUser, TestConstants } from "./TestHelpers";
 
-describe('document spec', () => {
+const clientAdmin = MBPIAdminUser;
+const integrityAdmin = AdminUser;
+const regularUser = MBPIUser;
+const integrityUser = IntegrityUser;
+const consts = TestConstants;
+const modalIds = consts.documentModalIds;
 
-  const consts = TestConstants;
-  const modalIds = consts.documentModalIds;
+describe('initiative-level documents', () => {
+
   const tableIds = consts.initiativeTableIds;
-  const admin = AdminUser;
-
-  beforeEach(() => {
-    cy.login(admin);
-
-    cy.getByData(tableIds.actionMenu.menuButton).click();
-    cy.getByData(tableIds.actionMenu.documentButton).click();
-  })
 
   specify('client admins can add initiative documents', () => {
+    cy.login(clientAdmin);
 
+    cy.getByData(tableIds.actionMenu.menuButton).first().click();
+    cy.getByData(tableIds.actionMenu.documentButton).click();
+    
+    cy.getByData(modalIds.documentUpload.uploadButton).should('exist').and('not.disabled');
   })
 
   specify('Integrity admins can add initiative documents', () => {
+    cy.login(integrityAdmin);
 
+    cy.getByData(tableIds.actionMenu.menuButton).first().click();
+    cy.getByData(tableIds.actionMenu.documentButton).click();
+    
+    cy.getByData(modalIds.documentUpload.uploadButton).should('exist').and('not.disabled');
   })
 
   specify('regular users cannot add initiative documents', () => {
+    cy.login(regularUser);
 
+    cy.getByData(tableIds.actionMenu.menuButton).first().click();
+    cy.getByData(tableIds.actionMenu.documentButton).click();
+    
+    cy.getByData(modalIds.documentUpload.uploadButton).should('not.exist');
+  })
+
+  specify('regular Integrity users cannot add initiative documents', () => {
+    cy.login(integrityUser);
+
+    cy.getByData(tableIds.actionMenu.menuButton).first().click();
+    cy.getByData(tableIds.actionMenu.documentButton).click();
+    
+    cy.getByData(modalIds.documentUpload.uploadButton).should('not.exist');
   })
 
   specify('close button closes the modal', () => {
+    cy.login(regularUser);
+
+    cy.getByData(tableIds.actionMenu.menuButton).first().click();
+    cy.getByData(tableIds.actionMenu.documentButton).click();
+
     cy.getByData(modalIds.modal).should('exist');
     cy.getByData(modalIds.closeButton).click();
     cy.getByData(modalIds.modal).should('not.exist');
   })
+})
 
+describe('client-level documents', () => {
+  const pageIds = consts.clientPageIds;
+  const navIds = consts.navPanelIds;
+  const table = consts.initiativeTableIds.table;
+
+  specify('client admins cannot add/see client documents', () => {
+    cy.login(clientAdmin);
+    cy.getByData(table).should('exist');
+    
+    cy.getByData(navIds.menuButton).click();
+    cy.getByData(navIds.client).should('not.exist');
+  })
+
+  specify('Integrity admins can add/see client documents', () => {
+    cy.login(integrityAdmin);
+    cy.getByData(table).should('exist');
+
+    cy.getByData(navIds.menuButton).click();
+    cy.getByData(navIds.client).click();
+    cy.getByData(pageIds.documentButton).first().click();
+    
+    cy.getByData(modalIds.documentUpload.uploadButton).should('exist').and('not.disabled');
+  })
+
+  specify('regular users cannot add/see client documents', () => {
+    cy.login(regularUser);
+    cy.getByData(table).should('exist');
+
+    cy.getByData(navIds.menuButton).should('not.exist');
+    cy.getByData(navIds.client).should('not.exist');
+  })
+
+  specify('regular Integrity users cannot add client documents', () => {
+    cy.login(integrityUser);
+    cy.getByData(table).should('exist');
+
+    cy.getByData(navIds.menuButton).click();
+    cy.getByData(navIds.client).click();
+    cy.getByData(pageIds.documentButton).click();
+
+    cy.getByData(modalIds.documentUpload.uploadButton).should('not.exist');
+  })
+
+  specify('close button closes the modal', () => {
+    cy.login(integrityAdmin);
+    cy.getByData(table).should('exist');
+
+    cy.getByData(navIds.menuButton).click();
+    cy.getByData(navIds.client).click();
+    cy.getByData(pageIds.documentButton).first().click();
+
+    cy.getByData(modalIds.modal).should('exist');
+    cy.getByData(modalIds.closeButton).click();
+    cy.getByData(modalIds.modal).should('not.exist');
+  })
 })
 
 export {}

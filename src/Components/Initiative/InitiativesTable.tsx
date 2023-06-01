@@ -50,7 +50,9 @@ export const InitiativeTableIds = {
   actionMenu: {
     menuButton: "initiativesTableMenuButton",
     decisionButton: "initiativesTableDecisionButton",
-    documentButton: "initiativesTableDocumentButton"
+    documentButton: "initiativesTableDocumentButton",
+    uploadThroughputButton: "initiativesTableUploadThroughputButton",
+    editThroughputButton: "initiativesTableEditThroughputButton"
   }
 }
 
@@ -449,7 +451,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                             <TableCell data-cy={InitiativeTableIds.remainingItems}>{displayItem.itemsRemaining}</TableCell>
                             <TableCell></TableCell>
                             <TableCell className="w-1/12">
-                              <InitiativeActionsMenu ids={InitiativeTableIds.actionMenu} disabled={true} company={displayItem.company} initiative={displayItem} isAdmin={false}/>
+                              <InitiativeActionsMenu cypressData={InitiativeTableIds.actionMenu} disabled={true} allCompanies={props.companyList} company={displayItem.company} initiative={displayItem} isAdmin={false}/>
                             </TableCell>
                             <TableCell className="w-1/12">
                               <IconButton data-cy={InitiativeTableIds.saveChangesButton} onClick={() => SaveEdit()}>
@@ -472,7 +474,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                               <i className="material-icons" style={{ fontSize: '15px', marginLeft: '15px', marginTop: '10px' }}>info_outline</i>
                             </TableCell>
                             <TableCell className="w-1/12">
-                              <InitiativeActionsMenu ids={InitiativeTableIds.actionMenu} company={displayItem.company} initiative={displayItem} isAdmin={isAdmin ?? false}/>
+                              <InitiativeActionsMenu cypressData={InitiativeTableIds.actionMenu} allCompanies={props.companyList} company={displayItem.company} initiative={displayItem} isAdmin={isAdmin ?? false}/>
                             </TableCell>
                             {isAdmin &&
                               <TableCell className="w-1/12">

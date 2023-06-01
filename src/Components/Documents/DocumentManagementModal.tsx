@@ -10,7 +10,11 @@ import { DocumentDownload } from './DocumentDownload';
 
 export const DocumentManagementModalIds = {
   modal: "documentManagementModal",
-  closeButton: "documentManagementModalCloseButton"
+  closeButton: "documentManagementModalCloseButton",
+  documentUpload: {
+    uploadButton: "documentManagementModalNewDocUploadButton",
+    submitButton: "documentManagementModalNewDocSubmitButton"
+  }
 }
 
 interface DocumentManagementModalProps {
@@ -75,7 +79,7 @@ export function DocumentManagementModal(props: DocumentManagementModalProps)
         </div>
 
         {props.isAdmin &&
-          <DocumentUpload company={props.company} initiative={props.initiative} GetData={GetData}/>
+          <DocumentUpload cypressData={DocumentManagementModalIds.documentUpload} company={props.company} initiative={props.initiative} GetData={GetData}/>
         }
         {isLoading && docInfos.length === 0 &&
           <div className="flex justify-center w-full h-full my-2">
