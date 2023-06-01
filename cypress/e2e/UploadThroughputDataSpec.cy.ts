@@ -31,15 +31,15 @@ describe('valid upload throughput tests', () => {
     cy.login(user);
 
     cy.getByData(radioIds.all).click();
-    cy.getByData(tableIds.initiativeTitleFilter).type(initiativeTitle);
+    cy.getByData(tableIds.initiativeTitleFilter).type(initiativeTitle, {force:true});
 
     cy.contains('tr', initiativeTitle).findByData(tableIds.remainingItems).then(($span) => {
       remainingItemsBefore = Number($span.text());
     });
 
-    cy.getByData(pageIds.uploadThroughputButton).click();
-    cy.getByData(modalIds.selectCompany).select(companyName);
-    cy.getByData(modalIds.selectInitiative).select(initiativeTitle);
+    cy.getByData(tableIds.actionMenu.menuButton).click();
+    cy.getByData(tableIds.actionMenu.uploadThroughputButton).click();
+    
   })
 
   specify('add throughput data by file', () => {
@@ -57,7 +57,7 @@ describe('valid upload throughput tests', () => {
     cy.getByData(modalIds.fileSubmit).click();
     cy.wait(waitTime);
     cy.getByData(radioIds.all).click();
-    cy.getByData(tableIds.initiativeTitleFilter).clear().type(initiativeTitle);
+    cy.getByData(tableIds.initiativeTitleFilter).clear({force:true}).type(initiativeTitle,{force:true});
     cy.contains('tr', initiativeTitle).findByData(tableIds.remainingItems).then(($span) => {
       let remainingItemsAfter = Number($span.text());
       expect(remainingItemsBefore-itemsCompletedInUpload).to.be.equal(remainingItemsAfter);
@@ -79,9 +79,10 @@ describe('invalid upload throughput tests', () => {
   beforeEach(() => {
     cy.login(user);
 
-    cy.getByData(pageIds.uploadThroughputButton).click({force: true});
-    cy.getByData(modalIds.selectCompany).select(companyName);
-    cy.getByData(modalIds.selectInitiative).select(initiativeTitle);
+    cy.getByData(tableIds.initiativeTitleFilter).type(initiativeTitle, {force:true});
+    
+    cy.getByData(tableIds.actionMenu.menuButton).click();
+    cy.getByData(tableIds.actionMenu.uploadThroughputButton).click();
   })
   
 

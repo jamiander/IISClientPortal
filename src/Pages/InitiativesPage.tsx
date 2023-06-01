@@ -20,9 +20,7 @@ export const InitiativeDisplayRadioIds = {
 }
 
 export const InitiativesPageIds = {
-  addInitiativeButton: "initiativesPageAddInitiativeButton",
-  uploadThroughputButton: "initiativesPageUploadThroughputButton",
-  editThroughputButton: "initiativesPageEditThroughputButton"
+  addInitiativeButton: "initiativesPageAddInitiativeButton"
 }
 
 export default function InitiativesPage(){
