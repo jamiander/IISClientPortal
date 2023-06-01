@@ -65,7 +65,7 @@ export default function LoginPage(){
         <p className="text-center text-xl text-white mt-2">To view the information on your project, please log in.</p>
         <p className="w-full text-center text-white text-xl">
           If you are looking for the Integrity Inspired Solutions website, please see&nbsp;
-          <a className="text-blue-600 visited:text-purple-600 underline" href="https://www.integrityinspired.com/">here.</a>
+          <a className="text-blue-600 visited:text-[#00C4FF] underline" href="https://www.integrityinspired.com/">here.</a>
         </p>
       </div>
       <Container component="main" maxWidth="xs" className="bg-gray-100 pt-1 pb-8#21355B px-5 rounded-md">
