@@ -55,6 +55,10 @@ Cypress.Commands.add("findByData", { prevSubject: true }, (subject: Cypress.Chai
   return subject.find(`[data-cy=${selector}]`)
 })
 
+Cypress.Commands.add("muiSelect", {prevSubject: true}, (subject: Cypress.Chainable<any>, selector: string) => {
+  return cy.wrap(subject).click().get(`ul > li[data-value="${selector}"]`).click();
+})
+
 Cypress.Commands.add('login', (user: UserLogin) => {
   cy.visit('Login');
   cy.getByData(loginIds.email).find('input').clear().type(user.email);

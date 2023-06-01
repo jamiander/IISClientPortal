@@ -162,10 +162,8 @@ describe('add non-Integrity user as Integrity', () => {
     cy.getByData(pageIds.addButton).click({force:true});
     cy.getByData(pageIds.editEmail).type(user.email);
     cy.getByData(pageIds.editPassword).type(user.password);   
-    cy.getByData(pageIds.selectCompany).parent()
-      .click()
-      .get(`ul > li[data-value="${company.id}"]`)
-      .click();
+    cy.getByData(pageIds.selectCompany).parent().muiSelect(company.id);
+      
     cy.getByData(pageIds.saveChangesButton).click();
     cy.wait(500);
 
@@ -179,10 +177,7 @@ describe('add non-Integrity user as Integrity', () => {
   })
 
   specify("update a user's company", () => {
-    cy.getByData(pageIds.selectCompany).parent()
-      .click()
-      .get(`ul > li[data-value="${editedCompany.id}"]`)
-      .click();
+    cy.getByData(pageIds.selectCompany).parent().muiSelect(editedCompany.id);
     cy.getByData(pageIds.saveChangesButton).click();
     cy.wait(500);
     cy.getByData(pageIds.keywordFilter).find('input').clear().type(editedUser.email);

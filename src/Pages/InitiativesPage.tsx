@@ -93,7 +93,7 @@ export default function InitiativesPage(){
             ]} />
           {/* </div> */}
           
-            <IconButton id={InitiativesPageIds.addInitiativeButton} onClick={() => setAddInitiative(true)}>
+            <IconButton data-cy={InitiativesPageIds.addInitiativeButton} onClick={() => setAddInitiative(true)}>
                 <AddIcon fontSize="large"/>
             </IconButton>
           </Box>

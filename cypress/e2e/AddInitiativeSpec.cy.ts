@@ -132,10 +132,7 @@ describe('add initiatives as Integrity user', () => {
 
     cy.getByData(pageIds.addInitiativeButton).click({force: true}); //TODO
 
-    cy.getByData(tableIds.companySelect).parent()
-      .click()
-      .get(`ul > li[data-value="${company.id}"]`)
-      .click();
+    cy.getByData(tableIds.companySelect).parent().muiSelect(company.id);
     cy.getByData(tableIds.editInitiativeTitle).clear().type(init.title);
     cy.getByData(tableIds.editStartDate).clear().type(init.startDate);
     cy.getByData(tableIds.editTargetDate).clear().type(init.targetDate);
