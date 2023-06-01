@@ -75,7 +75,7 @@ describe('add company spec (as non-Integrity admin)', () => {
   specify('cannot add company as non-Integrity user', () => {
     cy.login(user);
 
-    cy.getByData(navIds.menuButton).should('not.exist')//click();
+    cy.getByData(navIds.menuButton).should('not.exist');//.click();
     //cy.getByData(navIds.initiatives).should('exist');
     //cy.getByData(navIds.client).should('not.exist');
   })

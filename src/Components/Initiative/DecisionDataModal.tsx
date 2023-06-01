@@ -25,6 +25,10 @@ export const DecisionModalIds = {
   resolution: "decisionModalResolution",
   participants: "decisionModalParticipants",
   date: "decisionModalDate",
+  editDescription: "decisionModalEditDescription",
+  editResolution: "decisionModalEditResolution",
+  editParticipants: "decisionModalEditParticipants",
+  editDate: "decisionModalEditDate",
   grid: "decisionModalGrid"
 }
 
@@ -231,19 +235,19 @@ export default function DecisionDataModal(props: DecisionDataProps) {
                         <StyledCardContent>
                           {isEdit ?
                           <>
-                            <label className={labelStyle} htmlFor={DecisionModalIds.description}>Decision Description</label>
-                            <StyledTextarea data-cy={DecisionModalIds.description} value={currentDescription} onChange={e => setCurrentDescription(e.target.value)}/>
-                            <label className={labelStyle} htmlFor={DecisionModalIds.resolution}>Resolution</label>
-                            <StyledTextarea data-cy={DecisionModalIds.resolution} value={currentResolution} onChange={e => setCurrentResolution(e.target.value)}/>
-                            <StyledTextField data-cy={DecisionModalIds.participants} label="Participants-separate by comma" value={currentParticipants} onChange={e => setCurrentParticipants(e.target.value)}/>
-                            <StyledTextField data-cy={DecisionModalIds.date} label="Date Resolved" type="date" value={currentDateString} onChange={e => setCurrentDateString(e.target.value)}/>
+                            <label className={labelStyle} htmlFor="description">Decision Description</label>
+                            <StyledTextarea id="description" data-cy={DecisionModalIds.editDescription} value={currentDescription} onChange={e => setCurrentDescription(e.target.value)}/>
+                            <label className={labelStyle} htmlFor="resolution">Resolution</label>
+                            <StyledTextarea id="resolution" data-cy={DecisionModalIds.editResolution} value={currentResolution} onChange={e => setCurrentResolution(e.target.value)}/>
+                            <StyledTextField data-cy={DecisionModalIds.editParticipants} label="Participants-separate by comma" value={currentParticipants} onChange={e => setCurrentParticipants(e.target.value)}/>
+                            <StyledTextField data-cy={DecisionModalIds.editDate} label="Date Resolved" type="date" value={currentDateString} onChange={e => setCurrentDateString(e.target.value)}/>
                           </>
                           :
                           <>
-                            <label className={labelStyle} htmlFor={DecisionModalIds.description}>Decision Description</label>
-                            <StyledTextarea data-cy={DecisionModalIds.description} disabled value={displayItem.description}/>
-                            <label className={labelStyle} htmlFor={DecisionModalIds.resolution}>Resolution</label>
-                            <StyledTextarea data-cy={DecisionModalIds.resolution} disabled value={displayItem.resolution}/>
+                            <label className={labelStyle} htmlFor="description">Decision Description</label>
+                            <StyledTextarea id="description" data-cy={DecisionModalIds.description} disabled value={displayItem.description}/>
+                            <label className={labelStyle} htmlFor="resolution">Resolution</label>
+                            <StyledTextarea id="resolution" data-cy={DecisionModalIds.resolution} disabled value={displayItem.resolution}/>
                             <StyledTextField data-cy={DecisionModalIds.participants} label="Participants" disabled value={displayItem.participants.join(", ")}/>
                             <StyledTextField data-cy={DecisionModalIds.date} label="Date Resolved" disabled type="date" value={MakeDateString(displayItem.date)}/>
                           </>
