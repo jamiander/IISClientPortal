@@ -8,6 +8,10 @@ import { enqueueSnackbar } from "notistack";
 import { CircularProgress } from "@mui/material";
 
 interface DocumentUploadProps {
+  cypressData: {
+    uploadButton: string,
+    submitButton: string
+  }
   company: Company
   initiative?: Initiative
   GetData: () => Promise<void>
@@ -73,8 +77,9 @@ export function DocumentUpload(props: DocumentUploadProps)
           hover:file:bg-gray-200"
           onChange={(e) => HandleFiles(e.target.files)}
           ref={fileRef}
+          data-cy={props.cypressData.uploadButton}
         />
-        <UploadFileIcon className={(!CanUpload(file) ? "text-gray-400" : "hover:text-gray-400") + " block-inline align-baseline mt-4"} onClick={() => HandleUpload()} sx={{ fontSize:28 }}></UploadFileIcon>
+        <UploadFileIcon data-cy={props.cypressData.submitButton} className={(!CanUpload(file) ? "text-gray-400" : "hover:text-gray-400") + " block-inline align-baseline mt-4"} onClick={() => HandleUpload()} sx={{ fontSize:28 }}></UploadFileIcon>
         {isUploading &&
           <CircularProgress size={30} color={"warning"} className="mt-4 ml-2"/>
         }
