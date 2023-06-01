@@ -30,16 +30,16 @@ describe('valid upload throughput tests', () => {
   beforeEach(() => {
     cy.login(user);
 
-    cy.get(radioIds.all).click();
-    cy.get(tableIds.initiativeTitleFilter).type(initiativeTitle);
+    cy.getByData(radioIds.all).click();
+    cy.getByData(tableIds.initiativeTitleFilter).type(initiativeTitle);
 
-    cy.contains('tr', initiativeTitle).find(tableIds.remainingItems).then(($span) => {
+    cy.contains('tr', initiativeTitle).findByData(tableIds.remainingItems).then(($span) => {
       remainingItemsBefore = Number($span.text());
     });
 
-    cy.get(pageIds.uploadThroughputButton).click();
-    cy.get(modalIds.selectCompany).select(companyName);
-    cy.get(modalIds.selectInitiative).select(initiativeTitle);
+    cy.getByData(pageIds.uploadThroughputButton).click();
+    cy.getByData(modalIds.selectCompany).select(companyName);
+    cy.getByData(modalIds.selectInitiative).select(initiativeTitle);
   })
 
   specify('add throughput data by file', () => {
@@ -47,29 +47,29 @@ describe('valid upload throughput tests', () => {
     cy.readFile('cypress/data/validThroughputDataFile.csv', 'ascii').then((file) => {
       itemsCompletedInUpload = findItemsCompleted(file);
 
-      cy.get('input[type=file]').selectFile({
+      cy.getByData(modalIds.uploadButton).selectFile({
         contents: Cypress.Buffer.from(file),
         fileName: 'file.csv' 
       }, {action: 'drag-drop'});  
     })
 
     cy.wait(waitTime);
-    cy.get(modalIds.fileSubmit).click();
+    cy.getByData(modalIds.fileSubmit).click();
     cy.wait(waitTime);
-    cy.get(radioIds.all).click();
-    cy.get(tableIds.initiativeTitleFilter).clear().type(initiativeTitle);
-    cy.contains('tr', initiativeTitle).find(tableIds.remainingItems).then(($span) => {
+    cy.getByData(radioIds.all).click();
+    cy.getByData(tableIds.initiativeTitleFilter).clear().type(initiativeTitle);
+    cy.contains('tr', initiativeTitle).findByData(tableIds.remainingItems).then(($span) => {
       let remainingItemsAfter = Number($span.text());
       expect(remainingItemsBefore-itemsCompletedInUpload).to.be.equal(remainingItemsAfter);
     })
   })
 
   specify('close button closes modal', () => {
-    cy.get(modalIds.modal);
-    cy.get(modalIds.closeButton).click();
+    cy.getByData(modalIds.modal).should('exist');
+    cy.getByData(modalIds.closeButton).click();
     cy.wait(waitTime);
 
-    cy.get(modalIds.modal).should('not.exist');
+    cy.getByData(modalIds.modal).should('not.exist');
   })
 
 })
@@ -79,22 +79,22 @@ describe('invalid upload throughput tests', () => {
   beforeEach(() => {
     cy.login(user);
 
-    cy.get(pageIds.uploadThroughputButton).click();
-    cy.get(modalIds.selectCompany).select(companyName);
-    cy.get(modalIds.selectInitiative).select(initiativeTitle);
+    cy.getByData(pageIds.uploadThroughputButton).click({force: true});
+    cy.getByData(modalIds.selectCompany).select(companyName);
+    cy.getByData(modalIds.selectInitiative).select(initiativeTitle);
   })
   
 
   specify('cannot add throughput data by file when file is the wrong type', () => {
     cy.readFile('cypress/data/validThroughputDataFile.csv', null).then((file) => {
-      cy.get('input[type=file]').selectFile({
+      cy.getByData(modalIds.uploadButton).selectFile({
         contents: file,
         fileName: 'file.txt'
       }, {action: 'drag-drop'});
     })
 
     cy.wait(waitTime);
-    cy.get(modalIds.fileSubmit).click();
+    cy.getByData(modalIds.fileSubmit).click();
     cy.wait(waitTime);
     cy.get(snackbarId).should('contain',failMessage);
   })
@@ -107,7 +107,7 @@ describe('invalid upload throughput tests', () => {
       blankFieldFile[2] = ',' + fieldToClear;
       blankFieldFile = blankFieldFile.join('\n');
 
-      cy.get('input[type=file]').selectFile({
+      cy.getByData(modalIds.uploadButton).selectFile({
         contents: Cypress.Buffer.from(blankFieldFile),
         fileName: 'file.csv'
       }, {action: 'drag-drop'});
@@ -123,7 +123,7 @@ describe('invalid upload throughput tests', () => {
       invalidFormatFile[2] = invalidFormatFile[2].replace(',', ';');
       invalidFormatFile = invalidFormatFile.join('\n');
 
-      cy.get('input[type=file]').selectFile({
+      cy.getByData(modalIds.uploadButton).selectFile({
         contents: Cypress.Buffer.from(invalidFormatFile),
         fileName: 'file.csv'
       }, {action: 'drag-drop'});
@@ -139,14 +139,14 @@ describe('invalid upload throughput tests', () => {
       dateToInvalidate[0] = '23';
       invalidDateFile[3] = dateToInvalidate.join('/'); invalidDateFile = invalidDateFile.join('\n');
 
-      cy.get('input[type=file]').selectFile({
+      cy.getByData(modalIds.uploadButton).selectFile({
         contents: Cypress.Buffer.from(invalidDateFile),
         fileName: 'file.csv'
       }, {action: 'drag-drop'});
     })
 
     cy.wait(waitTime);
-    cy.get(modalIds.fileSubmit).click();
+    cy.getByData(modalIds.fileSubmit).click();
     cy.wait(waitTime);
     cy.get(snackbarId).should('contain',failMessage);
   })
@@ -158,14 +158,14 @@ describe('invalid upload throughput tests', () => {
       entryToInvalidate[1] = entryToInvalidate[1].replace(entryToInvalidate[1][1], '-3');
       invalidItemsCompletedFile[4] = entryToInvalidate.join(','); invalidItemsCompletedFile = invalidItemsCompletedFile.join('\n');
       
-      cy.get('input[type=file]').selectFile({
+      cy.getByData(modalIds.uploadButton).selectFile({
         contents: Cypress.Buffer.from(invalidItemsCompletedFile),
         fileName: 'file.csv'
       }, {action: 'drag-drop'});
     })
 
     cy.wait(waitTime);
-    cy.get(modalIds.fileSubmit).click();
+    cy.getByData(modalIds.fileSubmit).click();
     cy.wait(waitTime);
     cy.get(snackbarId).should('contain',failMessage);
   })

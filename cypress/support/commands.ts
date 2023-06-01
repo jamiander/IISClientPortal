@@ -51,6 +51,10 @@ Cypress.Commands.add('getByData', (selector: string, ...args) => {
   return cy.get(`[data-cy="${selector}"]`, ...args);
 })
 
+Cypress.Commands.add("findByData", { prevSubject: true }, (subject: Cypress.Chainable<any>, selector: string) => {
+  return subject.find(`[data-cy=${selector}]`)
+})
+
 Cypress.Commands.add('login', (user: UserLogin) => {
   cy.visit('Login');
   cy.getByData(loginIds.email).find('input').clear().type(user.email);

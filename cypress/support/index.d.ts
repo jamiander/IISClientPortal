@@ -9,5 +9,6 @@ declare namespace Cypress {
      */
     login(user: {email: string, password: string}): Chainable<void>
     getByData(data: string): Chainable<any>
+    findByData(selector: string): Chainable<any>
   }
 }

@@ -188,12 +188,12 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
   
   return(
     <Modal
-      data-cy={EditThroughputIds.modal}
+      
       isOpen={props.editIsOpen}
       onRequestClose={()=>props.setEditIsOpen(false)}
       style={{'content': {...modalStyle.content, 'width' : 'fit-content', 'height' : 'fit-content'}}}
       appElement={document.getElementById('root') as HTMLElement}>
-      <div className="space-y-5">
+      <div className="space-y-5" data-cy={EditThroughputIds.modal}>
         <p className="text-3xl w-full">Edit Throughput Data</p>
         <SelectCompanyAndInitiative companyList={props.companyList} selectedCompanyId={selectedCompanyId} selectedInitiativeIndex={selectedInitiativeIndex} setSelectedCompanyId={setSelectedCompanyId} setSelectedInitiativeIndex={setSelectedInitiativeIndex} companyElementId={EditThroughputIds.selectCompany} initiativeElementId={EditThroughputIds.selectInitiative}/>
         <DateInput cypressData={EditThroughputIds.addDate} disabled={InEditMode()} date={currentDate} setDate={setCurrentDate}/>

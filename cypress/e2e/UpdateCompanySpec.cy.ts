@@ -23,50 +23,49 @@ describe('update company spec', () => {
   beforeEach(() => {
     cy.login(admin);
 
-    cy.get(navIds.menuButton).click();
-    cy.get(navIds.client).click();
-    cy.get(pageIds.radioIds.all).click();
+    cy.getByData(navIds.menuButton).click();
+    cy.getByData(navIds.client).click();
+    cy.getByData(pageIds.radioIds.all).click();
     cy.contains(existingCompany.name).parent().within(() => {
-      cy.get(pageIds.editClientButton).click();
+      cy.getByData(pageIds.editClientButton).click();
     })
     
   });
 
   specify('update a company', () => {
-    cy.get(pageIds.saveClientChangesButton).parent().parent().within(() => {
-      cy.get(pageIds.name).clear().type(company.name);
-      cy.get(pageIds.saveClientChangesButton).click();
+    cy.getByData(pageIds.saveClientChangesButton).parent().parent().within(() => {
+      cy.getByData(pageIds.editName).find('input').clear().type(company.name);
+      cy.getByData(pageIds.saveClientChangesButton).click();
     });
 
-    cy.get(pageIds.table).should('contain',company.name);
+    cy.getByData(pageIds.table).should('contain',company.name);
   })
 
   specify('cannot update with invalid input', () => {
-    cy.get(pageIds.saveClientChangesButton).parent().parent().within(() => {
-      cy.get(pageIds.name).clear();
-      cy.get(pageIds.saveClientChangesButton).click();
+    cy.getByData(pageIds.saveClientChangesButton).parent().parent().within(() => {
+      cy.getByData(pageIds.editName).find('input').clear();
+      cy.getByData(pageIds.saveClientChangesButton).click();
     });
 
     cy.get(snackbarId).should('contain',failMessage);
-    //cy.get(pageIds.name).type(company.name);
   })
 
   specify('cannot rename a company the name of another company', () => {
-    cy.get(pageIds.saveClientChangesButton).parent().parent().within(() => {
-      cy.get(pageIds.name).clear().type(existingCompany2.name);
-      cy.get(pageIds.saveClientChangesButton).click();
+    cy.getByData(pageIds.saveClientChangesButton).parent().parent().within(() => {
+      cy.getByData(pageIds.editName).find('input').clear().type(existingCompany2.name);
+      cy.getByData(pageIds.saveClientChangesButton).click();
     });
 
     cy.get(snackbarId).should('contain',failMessage);
   })
 
   specify('cancel button cancels the changes', () => {
-    cy.get(pageIds.cancelClientChangesButton).click();
-    cy.get(pageIds.table).should('contain',existingCompany.name);
+    cy.getByData(pageIds.cancelClientChangesButton).click();
+    cy.getByData(pageIds.table).should('contain',existingCompany.name);
   })
 
   specify('cannot edit multiple users at once', () => {
-    cy.get(pageIds.editClientButton).should('be.disabled');
+    cy.getByData(pageIds.editClientButton).should('be.disabled');
   })
 })
 

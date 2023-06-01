@@ -1,4 +1,4 @@
-import { IntegrityUser, TestConstants } from "./TestHelpers";
+import { AdminUser, IntegrityUser, TestConstants } from "./TestHelpers";
 
 const consts = TestConstants;
 const failMessage = consts.validationFailedMessage;
@@ -9,7 +9,7 @@ const tableIds = consts.initiativeTableIds;
 const snackbarId = consts.snackbarId;
 const snackbarWaitTime = consts.snackbarWaitTime;
 const waitTime = 500;
-const user = IntegrityUser;
+const user = AdminUser;
 
 const init = {
   companyName: 'Integrity Inspired Solutions',
@@ -33,20 +33,20 @@ const editedDecision = {
 beforeEach(() => {
   cy.login(user);
 
-  cy.get(radioIds.all).click();
-  cy.get(tableIds.initiativeTitleFilter).type(init.title);
+  cy.getByData(radioIds.all).click();
+  cy.getByData(tableIds.initiativeTitleFilter).type(init.title);
   cy.get('table').contains(init.title).then(() => {
-    cy.get(tableIds.actionMenu.menuButton).click();
-    cy.get(tableIds.actionMenu.decisionButton).click();
+    cy.getByData(tableIds.actionMenu.menuButton).click();
+    cy.getByData(tableIds.actionMenu.decisionButton).click();
   });
   
 
-  cy.get(modalIds.addButton).click({force: true});
-  cy.get(modalIds.grid).children().first().within(() => {
-    cy.get(modalIds.description).type(decision.description,{force: true});
-    cy.get(modalIds.resolution).type(decision.resolution,{force: true});
-    cy.get(modalIds.participants).type(decision.names,{force: true});
-    cy.get(modalIds.date).type(decision.date,{force: true});
+  cy.getByData(modalIds.addButton).click({force: true});
+  cy.getByData(modalIds.grid).children().first().within(() => {
+    cy.getByData(modalIds.editDescription).type(decision.description,{force: true});
+    cy.getByData(modalIds.editResolution).type(decision.resolution,{force: true});
+    cy.getByData(modalIds.editParticipants).find('input').type(decision.names,{force: true});
+    cy.getByData(modalIds.editDate).find('input').type(decision.date,{force: true});
   })
   
 })
@@ -54,53 +54,54 @@ beforeEach(() => {
 describe("add decision spec", () => {
 
   specify("add decision to initiative", () => {
-    cy.get(modalIds.saveChangesButton).click();
+    cy.getByData(modalIds.saveChangesButton).click();
     cy.wait(waitTime);
-    cy.get(modalIds.description).contains(decision.description);
-    cy.get(modalIds.closeModalButton).click();
+    cy.getByData(modalIds.description).contains(decision.description);
+    cy.getByData(modalIds.closeModalButton).click();
     
-    cy.get(tableIds.actionMenu.menuButton).click();
-    cy.get(tableIds.actionMenu.decisionButton).click();
-    cy.get(modalIds.grid).children().last().within(() => {
-      cy.get(modalIds.description).should('contain',decision.description);
+    cy.getByData(tableIds.actionMenu.menuButton).click();
+    cy.getByData(tableIds.actionMenu.decisionButton).click();
+    cy.getByData(modalIds.grid).children().last().within(() => {
+      cy.getByData(modalIds.description).should('contain',decision.description);
     })
   })
 
   specify("can't add decision with empty fields", () => {
-    cy.get(modalIds.description).clear({force: true});
-    cy.get(modalIds.saveChangesButton).click();
+    cy.getByData(modalIds.editDescription).clear({force: true});
+    cy.getByData(modalIds.saveChangesButton).click();
     cy.wait(snackbarWaitTime);
     cy.get(snackbarId).should('contain',failMessage);
-    cy.get(modalIds.description).type(decision.description,{force: true});
+    cy.getByData(modalIds.editDescription).type(decision.description,{force: true});
 
-    cy.get(modalIds.resolution).clear({force: true});
-    cy.get(modalIds.saveChangesButton).click();
+    cy.getByData(modalIds.editResolution).clear({force: true});
+    cy.getByData(modalIds.saveChangesButton).click();
     cy.wait(snackbarWaitTime);
     cy.get(snackbarId).should('contain',failMessage);
-    cy.get(modalIds.resolution).type(decision.resolution,{force: true});
+    cy.getByData(modalIds.editResolution).type(decision.resolution,{force: true});
 
-    cy.get(modalIds.participants).clear({force: true});
-    cy.get(modalIds.saveChangesButton).click();
+    cy.getByData(modalIds.editParticipants).find('input').clear({force: true});
+    cy.getByData(modalIds.saveChangesButton).click();
     cy.wait(snackbarWaitTime);
     cy.get(snackbarId).should('contain',failMessage);
-    cy.get(modalIds.participants).type(decision.names,{force: true});
+    cy.getByData(modalIds.editParticipants).find('input').type(decision.names,{force: true});
   })
 
   specify("must be able to cancel adding", () => {
-    cy.get(modalIds.cancelChangesButton).click();
-    cy.get(modalIds.saveChangesButton).should('not.exist');
-    cy.get(modalIds.description)
+    cy.getByData(modalIds.cancelChangesButton).click();
+    cy.getByData(modalIds.saveChangesButton).should('not.exist');
+    cy.getByData(modalIds.description)
       .invoke('val')
       .should('not.eq', decision.description);
   })
 
   specify("close button closes the modal", () => {
-    cy.get(modalIds.closeModalButton).click();
-    cy.get(modalIds.modal).should('not.exist');
+    cy.getByData(modalIds.modal).should('exist');
+    cy.getByData(modalIds.closeModalButton).click();
+    cy.getByData(modalIds.modal).should('not.exist');
   })
 
   specify("cannot add multiple decisions at once", () => {
-    cy.get(modalIds.addButton).click();
+    cy.getByData(modalIds.addButton).click();
     cy.get(snackbarId);
   })
 
@@ -108,58 +109,64 @@ describe("add decision spec", () => {
 
 describe("edit decision spec", () => {
   beforeEach(() => {
-    cy.get(modalIds.saveChangesButton).click();
-    cy.get(modalIds.editButton).click();
+    cy.getByData(modalIds.saveChangesButton).click();
+    cy.getByData(modalIds.editButton).first().click();
 
-    cy.get(modalIds.description).clear({force: true}).type(editedDecision.description,{force: true});
-    cy.get(modalIds.resolution).clear({force: true}).type(editedDecision.resolution,{force: true});
-    cy.get(modalIds.participants).clear({force: true}).type(editedDecision.names,{force: true});
-    cy.get(modalIds.date).clear({force: true}).type(editedDecision.date,{force: true});
+    cy.getByData(modalIds.editDescription).clear({force: true}).type(editedDecision.description,{force: true});
+    cy.getByData(modalIds.editResolution).clear({force: true}).type(editedDecision.resolution,{force: true});
+    cy.getByData(modalIds.editParticipants).find('input').clear({force: true}).type(editedDecision.names,{force: true});
+    cy.getByData(modalIds.editDate).find('input').clear({force: true}).type(editedDecision.date,{force: true});
   })
 
   specify("save button saves changes", () => {
-    cy.get(modalIds.saveChangesButton).click();
-    cy.get(modalIds.description).contains(editedDecision.description);
+    cy.getByData(modalIds.saveChangesButton).click();
+    cy.getByData(modalIds.description).contains(editedDecision.description);
   })
 
   specify("edit button goes away while editing", () => {
-    cy.get(modalIds.editButton).should('not.exist');
+    cy.getByData(modalIds.editButton).should('not.exist');
   })
 
   specify("cancel button does not save any changes", () => {
-    cy.get(modalIds.cancelChangesButton).click();
-    cy.get(modalIds.description).contains(decision.description);
+    cy.getByData(modalIds.cancelChangesButton).click();
+    cy.getByData(modalIds.description).contains(decision.description);
   })
 })
 
 describe("delete decision spec", () => {
-  
   beforeEach(() => {
-    cy.get(modalIds.saveChangesButton).click();
+    cy.getByData(modalIds.saveChangesButton).click();
+    cy.getByData(modalIds.description).contains(decision.description).parent().parent().then(($decisionCard) => {
+      cy.wrap($decisionCard).as("newDecision");
+    })
   })
 
   specify("delete decision from initiative", () => {
-    cy.get(modalIds.deleteButton).click();
+    cy.get("@newDecision").within(() => {
+      cy.getByData(modalIds.deleteButton).click();
+    });
+    cy.getByData(alertIds.confirmButton).click();
 
-    cy.get(alertIds.confirmButton).click();
-
-    cy.get(modalIds.description)
+    cy.getByData(modalIds.description)
       .invoke('val')
       .should('not.eq', decision.description);
   })
 
   specify("hitting no in alert does not delete", () => {
-    cy.get(modalIds.deleteButton).click();
-
-    cy.get(alertIds.cancelButton).click();
-
-    cy.get(modalIds.description).contains(decision.description);
+    cy.get("@newDecision").within(() => {
+      cy.getByData(modalIds.deleteButton).click();
+    })
+    cy.getByData(alertIds.cancelButton).click();
+    cy.get("@newDecision").within(() => {
+      cy.getByData(modalIds.description).contains(decision.description);
+    })
   })
 
   specify("can't delete while in edit mode", () => {
-    cy.get(modalIds.editButton).click();
-
-    cy.get(modalIds.deleteButton).should("not.exist");
+    cy.get("@newDecision").within(() => {
+      cy.getByData(modalIds.editButton).click();
+      cy.get(`[data-cy="${modalIds.deleteButton}"]`).should("not.exist");
+    })
   })
 })
 

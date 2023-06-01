@@ -10,11 +10,12 @@ import { enqueueSnackbar } from "notistack";
 
 export const UploadThroughputIds = {
   modal: "uploadThroughputModal",
-  selectCompany: "selectCompanyInThroughputModal",
-  selectInitiative: "selectInitiativeInThroughputModal",
-  fileSubmit: "submitThroughputAsFile",
+  selectCompany: "selectCompanyInUploadThroughputModal",
+  selectInitiative: "selectInitiativeInUploadThroughputModal",
+  uploadButton: "uploadThroughputUploadButton",
+  fileSubmit: "uploadThroughputSubmitButton",
   date: "uploadThroughputDate",
-  closeButton: "uploadThroughputClose"
+  closeButton: "uploadThroughputCloseButton"
 }
 
 interface ThroughputModalProps{
@@ -110,19 +111,18 @@ export default function UploadThroughputModal(props:ThroughputModalProps){
   let myUuid = uuidV4();
   return(
     <Modal
-    data-cy={UploadThroughputIds.modal}
     isOpen={props.uploadIsOpen}
     onRequestClose={()=>props.setUploadIsOpen(false)}
     style={{'content': {...modalStyle.content, 'width' : 'fit-content', 'height' : 'fit-content'}}}
     appElement={document.getElementById('root') as HTMLElement}>
-      <div className="space-y-5">
+      <div className="space-y-5" data-cy={UploadThroughputIds.modal}>
         <p className="text-3xl w-full">Upload Throughput Data</p>
         <SelectCompanyAndInitiative companyList={props.companyList} selectedCompanyId={selectedCompanyId} selectedInitiativeIndex={selectedInitiativeIndex} setSelectedCompanyId={setSelectedCompanyId} setSelectedInitiativeIndex={setSelectedInitiativeIndex} companyElementId={UploadThroughputIds.selectCompany} initiativeElementId={UploadThroughputIds.selectInitiative}/>
         {fileWarning}
         <div className="flex">
           <div className="outline outline-[#879794] rounded space-y-2 p-2 w-64">
             <p className="text-2xl w-full">Upload CSV File</p>
-            <input className="w-full" ref={fileRef} type={'file'} accept={'.csv'} onChange={(e) => ReceiveFile(e.target.value)}/>
+            <input data-cy={UploadThroughputIds.uploadButton} className="w-full" ref={fileRef} type={'file'} accept={'.csv'} onChange={(e) => ReceiveFile(e.target.value)}/>
             <div className="grid justify-end h-1/2">
               <button data-cy={UploadThroughputIds.fileSubmit} className={submitButtonStyle} onClick={() => props.Submit(selectedCompanyId, props.companyList.find(c => c.id === selectedCompanyId)?.initiatives.at(selectedInitiativeIndex)?.id ?? myUuid, fileData, true)}>Submit</button>
             </div>

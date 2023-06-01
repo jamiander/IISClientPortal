@@ -24,44 +24,44 @@ describe("update user spec",() => {
   beforeEach(() => {
     cy.login(MBPIAdminUser);
 
-    cy.get(navIds.menuButton).click();
-    cy.get(navIds.users).click();
+    cy.getByData(navIds.menuButton).click();
+    cy.getByData(navIds.users).click();
     cy.wait(1000);
-    cy.get(pageIds.addButton).click({force:true});
-    cy.get(pageIds.email).type(user.email);
-    cy.get(pageIds.password).type(user.password);
-    cy.get(pageIds.saveChangesButton).click();
+    cy.getByData(pageIds.addButton).click({force:true});
+    cy.getByData(pageIds.editEmail).type(user.email);
+    cy.getByData(pageIds.editPassword).type(user.password);
+    cy.getByData(pageIds.saveChangesButton).click();
     cy.wait(500);
 
-    cy.get(pageIds.table).children().last().within(() => {
-      cy.get(pageIds.editButton).click();
-      cy.get(pageIds.email).clear().type(editedUser.email);
-      cy.get(pageIds.password).clear().type(editedUser.password);
+    cy.getByData(pageIds.table).children().last().within(() => {
+      cy.getByData(pageIds.editButton).click();
+      cy.getByData(pageIds.editEmail).clear().type(editedUser.email);
+      cy.getByData(pageIds.editPassword).clear().type(editedUser.password);
     })
   })
 
   specify('update a user', () => {
-    cy.get(pageIds.saveChangesButton).click();
+    cy.getByData(pageIds.saveChangesButton).click();
     cy.wait(500);
-    cy.get(pageIds.table).children().last().within(() => {
-      cy.get(pageIds.email).should('contain',editedUser.email);
+    cy.getByData(pageIds.table).children().last().within(() => {
+      cy.getByData(pageIds.email).should('contain',editedUser.email);
     })
   })
 
   specify('cannot update with invalid input', () => {
-    cy.get(pageIds.table).children().last().within(() => {
+    cy.getByData(pageIds.table).children().last().within(() => {
     
-      cy.get(pageIds.email).clear();
-      cy.get(pageIds.saveChangesButton).click();
+      cy.getByData(pageIds.editEmail).clear();
+      cy.getByData(pageIds.saveChangesButton).click();
     })
 
     cy.get(snackbarId).should('contain',failMessage);
     
-    cy.get(pageIds.table).children().last().within(() => {
-      cy.get(pageIds.email).type(editedUser.email);
+    cy.getByData(pageIds.table).children().last().within(() => {
+      cy.getByData(pageIds.editEmail).type(editedUser.email);
 
-      cy.get(pageIds.password).clear();
-      cy.get(pageIds.saveChangesButton).click();
+      cy.getByData(pageIds.editPassword).clear();
+      cy.getByData(pageIds.saveChangesButton).click();
       cy.wait(snackbarWaitTime);
     })
     
@@ -69,15 +69,15 @@ describe("update user spec",() => {
   })
 
   specify('cancel button cancels the edit', () => {
-    cy.get(pageIds.cancelChangesButton).click();
-    cy.get(pageIds.saveChangesButton).should('not.exist');
-    cy.get(pageIds.table).children().last().within(() => {
-      cy.get(pageIds.email).should('contain',user.email);
+    cy.getByData(pageIds.cancelChangesButton).click();
+    cy.getByData(pageIds.saveChangesButton).should('not.exist');
+    cy.getByData(pageIds.table).children().last().within(() => {
+      cy.getByData(pageIds.email).should('contain',user.email);
     })
   })
 
   specify('cannot edit multiple users at once', () => {
-    cy.get(pageIds.editButton).should('be.disabled');
+    cy.getByData(pageIds.editButton).should('be.disabled');
   })
 })
 
@@ -87,47 +87,47 @@ describe("update admin user spec", () => {
   beforeEach(() => {
     cy.login(admin);
 
-    cy.get(navIds.menuButton).click();
-    cy.get(navIds.integrity).click();
+    cy.getByData(navIds.menuButton).click();
+    cy.getByData(navIds.integrity).click();
     cy.wait(1000);
-    cy.get(pageIds.addButton).click({force:true});
-    cy.get(pageIds.email).type(user.email);
-    cy.get(pageIds.password).type(user.password);
-    cy.get(pageIds.isAdmin).check({force:true});
-    cy.get(pageIds.saveChangesButton).click();
+    cy.getByData(pageIds.addButton).click({force:true});
+    cy.getByData(pageIds.editEmail).type(user.email);
+    cy.getByData(pageIds.editPassword).type(user.password);
+    cy.getByData(pageIds.editIsAdmin).find('input').check({force:true});
+    cy.getByData(pageIds.saveChangesButton).click();
     cy.wait(500);
 
-    cy.get(pageIds.table).children().last().within(() => {
-      cy.get(pageIds.editButton).click();
-      cy.get(pageIds.email).clear().type(editedUser.email);
-      cy.get(pageIds.password).clear().type(editedUser.password);
-      cy.get(pageIds.isAdmin).check({force:true});
+    cy.getByData(pageIds.table).children().last().within(() => {
+      cy.getByData(pageIds.editButton).click();
+      cy.getByData(pageIds.editEmail).clear().type(editedUser.email);
+      cy.getByData(pageIds.editPassword).clear().type(editedUser.password);
+      cy.getByData(pageIds.editIsAdmin).find('input').check({force:true});
     })
     
   })
 
   specify('update an admin user',() => {
-    cy.get(pageIds.saveChangesButton).click();
+    cy.getByData(pageIds.saveChangesButton).click();
     cy.wait(500);
-    cy.get(pageIds.table).children().last().within(() => {
-      cy.get(pageIds.email).should('contain',editedUser.email);
+    cy.getByData(pageIds.table).children().last().within(() => {
+      cy.getByData(pageIds.email).should('contain',editedUser.email);
     })
   })
 
   specify('cannot update with invalid input', () => {
-    cy.get(pageIds.table).children().last().within(() => {
+    cy.getByData(pageIds.table).children().last().within(() => {
     
-      cy.get(pageIds.email).clear();
-      cy.get(pageIds.saveChangesButton).click();
+      cy.getByData(pageIds.editEmail).clear();
+      cy.getByData(pageIds.saveChangesButton).click();
     })
 
     cy.get(snackbarId).should('contain',failMessage);
     
-    cy.get(pageIds.table).children().last().within(() => {
-      cy.get(pageIds.email).type(editedUser.email);
+    cy.getByData(pageIds.table).children().last().within(() => {
+      cy.getByData(pageIds.editEmail).type(editedUser.email);
 
-      cy.get(pageIds.password).clear();
-      cy.get(pageIds.saveChangesButton).click();
+      cy.getByData(pageIds.editPassword).clear();
+      cy.getByData(pageIds.saveChangesButton).click();
       cy.wait(snackbarWaitTime);
     })
     
@@ -135,15 +135,15 @@ describe("update admin user spec", () => {
   })
 
   specify('cancel button cancels the edit', () => {
-    cy.get(pageIds.cancelChangesButton).click();
-    cy.get(pageIds.saveChangesButton).should('not.exist');
-    cy.get(pageIds.table).children().last().within(() => {
-      cy.get(pageIds.email).should('contain',user.email);
+    cy.getByData(pageIds.cancelChangesButton).click();
+    cy.getByData(pageIds.saveChangesButton).should('not.exist');
+    cy.getByData(pageIds.table).children().last().within(() => {
+      cy.getByData(pageIds.email).should('contain',user.email);
     })
   })
 
   specify('cannot edit multiple users at once', () => {
-    cy.get(pageIds.editButton).should('be.disabled');
+    cy.getByData(pageIds.editButton).should('be.disabled');
   })
 })
 
@@ -156,38 +156,38 @@ describe('add non-Integrity user as Integrity', () => {
   beforeEach(() => {
     cy.login(admin);
 
-    cy.get(navIds.menuButton).click();
-    cy.get(navIds.users).click();
+    cy.getByData(navIds.menuButton).click();
+    cy.getByData(navIds.users).click();
     cy.wait(1000);
-    cy.get(pageIds.addButton).click({force:true});
-    cy.get(pageIds.email).type(user.email);
-    cy.get(pageIds.password).type(user.password);   
-    cy.get(pageIds.selectCompany).parent()
+    cy.getByData(pageIds.addButton).click({force:true});
+    cy.getByData(pageIds.editEmail).type(user.email);
+    cy.getByData(pageIds.editPassword).type(user.password);   
+    cy.getByData(pageIds.selectCompany).parent()
       .click()
       .get(`ul > li[data-value="${company.id}"]`)
       .click();
-    cy.get(pageIds.saveChangesButton).click();
+    cy.getByData(pageIds.saveChangesButton).click();
     cy.wait(500);
 
-    cy.get(pageIds.keywordFilter).clear().type(user.email);
+    cy.getByData(pageIds.keywordFilter).find('input').clear().type(user.email);
 
-    cy.get(pageIds.table).children().last().within(() => {
-      cy.get(pageIds.editButton).click();
-      cy.get(pageIds.email).clear().type(editedUser.email);
-      cy.get(pageIds.password).clear().type(editedUser.password);
+    cy.getByData(pageIds.table).children().last().within(() => {
+      cy.getByData(pageIds.editButton).click();
+      cy.getByData(pageIds.editEmail).clear().type(editedUser.email);
+      cy.getByData(pageIds.editPassword).clear().type(editedUser.password);
     })
   })
 
   specify("update a user's company", () => {
-    cy.get(pageIds.selectCompany).parent()
+    cy.getByData(pageIds.selectCompany).parent()
       .click()
       .get(`ul > li[data-value="${editedCompany.id}"]`)
       .click();
-    cy.get(pageIds.saveChangesButton).click();
+    cy.getByData(pageIds.saveChangesButton).click();
     cy.wait(500);
-    cy.get(pageIds.keywordFilter).clear().type(editedUser.email);
-    cy.get(pageIds.table).children().last().within(() => {
-      cy.get(pageIds.email).contains(editedUser.email).parent().within(($row) => {
+    cy.getByData(pageIds.keywordFilter).find('input').clear().type(editedUser.email);
+    cy.getByData(pageIds.table).children().last().within(() => {
+      cy.getByData(pageIds.email).contains(editedUser.email).parent().within(($row) => {
         cy.wrap($row).should('contain',editedCompany.name);
       });
     })

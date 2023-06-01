@@ -1,4 +1,4 @@
-import { IntegrityUser, TestConstants } from "./TestHelpers";
+import { AdminUser, IntegrityUser, TestConstants } from "./TestHelpers";
 
 describe('update initiative spec', () => {
 
@@ -19,75 +19,75 @@ describe('update initiative spec', () => {
   const snackbarId = consts.snackbarId;
   const radioIds = consts.initiativeDisplayRadioIds;
   const tableIds = consts.initiativeTableIds;
-  const user = IntegrityUser;
+  const user = AdminUser;
   const snackbarWaitTime = consts.snackbarWaitTime;
 
   beforeEach(() => {
     cy.login(user);
 
-    cy.get(radioIds.all).click();
-    cy.get(tableIds.companyNameFilter).clear().type(init.companyName);
-    cy.get(tableIds.table).contains(init.companyName).parent().within(() => {
-      cy.get(tableIds.editButton).click();
+    cy.getByData(radioIds.all).click();
+    cy.getByData(tableIds.companyNameFilter).clear().type(init.companyName);
+    cy.getByData(tableIds.table).contains(init.companyName).parent().within(() => {
+      cy.getByData(tableIds.editButton).click();
     });
 
-    cy.get(tableIds.initiativeTitle).clear().type(init.title);
-    cy.get(tableIds.startDate).clear().type(init.startDate);
-    cy.get(tableIds.targetDate).clear().type(init.targetDate);
-    cy.get(tableIds.totalItems).clear().type(init.totalItems);
+    cy.getByData(tableIds.editInitiativeTitle).clear().type(init.title);
+    cy.getByData(tableIds.editStartDate).clear().type(init.startDate);
+    cy.getByData(tableIds.editTargetDate).clear().type(init.targetDate);
+    cy.getByData(tableIds.editTotalItems).clear().type(init.totalItems);
   });
 
   specify('update an initiative', () => {
-    cy.get(tableIds.saveChangesButton).click();
+    cy.getByData(tableIds.saveChangesButton).click();
     cy.wait(500);
-    cy.get(radioIds.all).click();
-    cy.get(tableIds.companyNameFilter).clear().type(init.companyName);
-    cy.get(tableIds.table).should('contain',init.title);
+    cy.getByData(radioIds.all).click();
+    cy.getByData(tableIds.companyNameFilter).clear().type(init.companyName);
+    cy.getByData(tableIds.table).should('contain',init.title);
   })
 
   specify('cannot update with blank fields', () => {
-    cy.get(tableIds.initiativeTitle).clear();
-    cy.get(tableIds.saveChangesButton).click();
+    cy.getByData(tableIds.editInitiativeTitle).clear();
+    cy.getByData(tableIds.saveChangesButton).click();
     cy.get(snackbarId).should('contain',failMessage);
-    cy.get(tableIds.initiativeTitle).type(init.title);
+    cy.getByData(tableIds.editInitiativeTitle).type(init.title);
 
-    cy.get(tableIds.startDate).clear();
-    cy.get(tableIds.saveChangesButton).click();
+    cy.getByData(tableIds.editStartDate).clear();
+    cy.getByData(tableIds.saveChangesButton).click();
     cy.wait(snackbarWaitTime);
     cy.get(snackbarId).should('contain',failMessage);
-    cy.get(tableIds.startDate).type(init.startDate);
+    cy.getByData(tableIds.editStartDate).type(init.startDate);
 
-    cy.get(tableIds.targetDate).clear();
-    cy.get(tableIds.saveChangesButton).click();
+    cy.getByData(tableIds.editTargetDate).clear();
+    cy.getByData(tableIds.saveChangesButton).click();
     cy.wait(snackbarWaitTime);
     cy.get(snackbarId).should('contain',failMessage);
-    cy.get(tableIds.targetDate).type(init.targetDate);
+    cy.getByData(tableIds.editTargetDate).type(init.targetDate);
 
-    cy.get(tableIds.totalItems).clear();
-    cy.get(tableIds.saveChangesButton).click();
+    cy.getByData(tableIds.editTotalItems).clear();
+    cy.getByData(tableIds.saveChangesButton).click();
     cy.wait(snackbarWaitTime);
     cy.get(snackbarId).should('contain',failMessage);
   })
 
   specify('cannot have a target date before a start date', () => {
-    cy.get(tableIds.startDate).clear().type("2023-04-20");
-    cy.get(tableIds.targetDate).clear().type("2023-04-19");
+    cy.getByData(tableIds.editStartDate).clear().type("2023-04-20");
+    cy.getByData(tableIds.editTargetDate).clear().type("2023-04-19");
 
-    cy.get(tableIds.saveChangesButton).click();
+    cy.getByData(tableIds.saveChangesButton).click();
     cy.get(snackbarId).should('contain',failMessage);
   })
 
   specify('cannot rename an initative the name of another initiative within that company', () => {
-    cy.get(tableIds.initiativeTitle).clear().type(existingInit.title); //TODO: figure out how to get an existing init for this company
+    cy.getByData(tableIds.editInitiativeTitle).clear().type(existingInit.title); //TODO: figure out how to get an existing init for this company
 
-    cy.get(tableIds.saveChangesButton).click();
+    cy.getByData(tableIds.saveChangesButton).click();
 
     cy.get(snackbarId).should('contain',failMessage);
   })
 
   specify('cancel button does not save changes', () => {
-    cy.get(tableIds.cancelChangesButton).click();
-    cy.get(tableIds.table).should('not.contain',init.title);
+    cy.getByData(tableIds.cancelChangesButton).click();
+    cy.getByData(tableIds.table).should('not.contain',init.title);
   })
 })
 
