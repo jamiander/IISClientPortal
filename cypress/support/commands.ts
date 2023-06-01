@@ -53,8 +53,8 @@ Cypress.Commands.add('getByData', (selector: string, ...args) => {
 
 Cypress.Commands.add('login', (user: UserLogin) => {
   cy.visit('Login');
-  cy.getByData(loginIds.email).clear().type(user.email);
-  cy.getByData(loginIds.password).clear().type(user.password);
+  cy.getByData(loginIds.email).find('input').clear().type(user.email);
+  cy.getByData(loginIds.password).find('input').clear().type(user.password);
   cy.getByData(loginIds.submitButton).click();
 })
 

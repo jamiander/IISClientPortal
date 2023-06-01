@@ -29,6 +29,12 @@ export const IntegrityPageIds = {
   phone: "adminEditUserPhone",
   isAdmin: "adminEditIsAdmin",
   isActive: "adminEditUserIsActive",
+  editEmail: "adminEditUserEditEmail",
+  editPassword: "adminEditUserEditPassword",
+  editName: "adminEditUserEditName",
+  editPhone: "adminEditUserEditPhone",
+  editIsAdmin: "adminEditUserEditIsAdmin",
+  editIsActive: "adminEditUserEditIsActive",
   addButton: "adminEditUserAddButton",
   editButton: "adminEditUserEditButton",
   saveChangesButton: "adminEditUserSaveChangesButton",
@@ -169,12 +175,12 @@ export function IntegrityPage(){
                     >
                       {isEdit ? 
                       <>
-                        <TableCell><Input data-cy={IntegrityPageIds.name}value={currentName} onChange={e => setCurrentName(e.target.value)}/></TableCell>
-                        <TableCell><Input data-cy={IntegrityPageIds.email} value={currentEmail} onChange={e => setCurrentEmail(e.target.value)}/></TableCell>
-                        <TableCell><Input data-cy={IntegrityPageIds.password} value={currentPassword} onChange={e => setCurrentPassword(e.target.value)}/></TableCell>
-                        <TableCell><Input data-cy={IntegrityPageIds.phone} value={currentPhone} onChange={e => setCurrentPhone(e.target.value)}/></TableCell>
-                        <TableCell><Checkbox data-cy={IntegrityPageIds.isAdmin} checked={currentIsAdmin} onChange={e => setCurrentIsAdmin(e.target.checked)}/>Admin</TableCell>
-                        <TableCell><Checkbox data-cy={IntegrityPageIds.isActive} checked={currentIsActive} onChange={e => setCurrentIsActive(e.target.checked)}/>Active</TableCell>
+                        <TableCell><Input data-cy={IntegrityPageIds.editName}value={currentName} onChange={e => setCurrentName(e.target.value)}/></TableCell>
+                        <TableCell><Input data-cy={IntegrityPageIds.editEmail} value={currentEmail} onChange={e => setCurrentEmail(e.target.value)}/></TableCell>
+                        <TableCell><Input data-cy={IntegrityPageIds.editPassword} value={currentPassword} onChange={e => setCurrentPassword(e.target.value)}/></TableCell>
+                        <TableCell><Input data-cy={IntegrityPageIds.editPhone} value={currentPhone} onChange={e => setCurrentPhone(e.target.value)}/></TableCell>
+                        <TableCell><Checkbox data-cy={IntegrityPageIds.editIsAdmin} checked={currentIsAdmin} onChange={e => setCurrentIsAdmin(e.target.checked)}/>Admin</TableCell>
+                        <TableCell><Checkbox data-cy={IntegrityPageIds.editIsActive} checked={currentIsActive} onChange={e => setCurrentIsActive(e.target.checked)}/>Active</TableCell>
                         <TableCell data-cy={IntegrityPageIds.initiativeIds}></TableCell>
                         <TableCell>
                           <IconButton data-cy={IntegrityPageIds.saveChangesButton} onClick={() => SaveEdit()}>

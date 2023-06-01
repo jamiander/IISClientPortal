@@ -23,13 +23,19 @@ import { UserFilter } from "../Services/Filters";
 
 export const UsersPageIds = {
   company: "usersPageCompany",
+  initiativeIds: "usersPageInitiativeIds",
   email: "usersPageEmail",
   password: "usersPagePassword",
-  initiativeIds: "usersPageInitiativeIds",
   name: "usersPageName",
   phone: "usersPagePhone",
   isAdmin: "usersPageIsAdmin",
   isActive: "usersPageIsActive",
+  editEmail: "usersPageEditEmail",
+  editPassword: "usersPageEditPassword",
+  editName: "usersPageEditName",
+  editPhone: "usersPageEditPhone",
+  editIsAdmin: "usersPageEditIsAdmin",
+  editIsActive: "usersPageEditIsActive",
   addButton: "usersPageAddButton",
   editButton: "usersPageEditButton",
   saveChangesButton: "usersPageSaveChangesButton",
@@ -224,12 +230,12 @@ export default function UsersPage(){
                                       :
                                       <TableCell data-cy={UsersPageIds.company}>{displayCompany.name}</TableCell>}
                                   </TableCell>
-                                  <TableCell data-cy={UsersPageIds.name}> <Input value={currentName} onChange={e => setCurrentName(e.target.value)} /></TableCell>
-                                  <TableCell><Input data-cy={UsersPageIds.email} value={currentEmail} onChange={e => setCurrentEmail(e.target.value)} /></TableCell>
-                                  <TableCell data-cy={UsersPageIds.password}><Input value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} /></TableCell>
-                                  <TableCell data-cy={UsersPageIds.phone}><Input value={currentPhone} onChange={e => setCurrentPhone(e.target.value)} /></TableCell>
-                                  <TableCell data-cy={UsersPageIds.isAdmin}><Checkbox checked={currentIsAdmin} onChange={e => setCurrentIsAdmin(e.target.checked)} />Admin</TableCell>
-                                  <TableCell data-cy={UsersPageIds.isActive}><Checkbox checked={currentIsActive} onChange={e => setCurrentIsActive(e.target.checked)} />Active</TableCell>
+                                  <TableCell data-cy={UsersPageIds.editName}> <Input value={currentName} onChange={e => setCurrentName(e.target.value)} /></TableCell>
+                                  <TableCell><Input data-cy={UsersPageIds.editEmail} value={currentEmail} onChange={e => setCurrentEmail(e.target.value)} /></TableCell>
+                                  <TableCell data-cy={UsersPageIds.editPassword}><Input value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} /></TableCell>
+                                  <TableCell data-cy={UsersPageIds.editPhone}><Input value={currentPhone} onChange={e => setCurrentPhone(e.target.value)} /></TableCell>
+                                  <TableCell><Checkbox data-cy={UsersPageIds.editIsAdmin} checked={currentIsAdmin} onChange={e => setCurrentIsAdmin(e.target.checked)} />Admin</TableCell>
+                                  <TableCell><Checkbox data-cy={UsersPageIds.editIsActive} checked={currentIsActive} onChange={e => setCurrentIsActive(e.target.checked)} />Active</TableCell>
                                   <TableCell data-cy={UsersPageIds.initiativeIds}></TableCell>
                                   <TableCell>
                                     <IconButton data-cy={UsersPageIds.saveChangesButton} onClick={() => SaveEdit()}>

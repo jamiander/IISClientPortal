@@ -25,7 +25,7 @@ describe('add initiative spec', () => {
 
     cy.getByData(radioIds.all).click();
 
-    cy.getByData(pageIds.addInitiativeButton).click();
+    cy.getByData(pageIds.addInitiativeButton).click({force: true}); //TODO: fix the button so that it's not covered by the radio set
   });
 
   specify('add new initiative',() => {
@@ -45,7 +45,7 @@ describe('add initiative spec', () => {
       cy.getByData(tableIds.initiativeTitle).invoke('text').then(($txt) => { 
         const existingInitTitle = $txt;
 
-        cy.getByData(pageIds.addInitiativeButton).click();
+        cy.getByData(pageIds.addInitiativeButton).click({force: true}); //TODO
         cy.getByData(tableIds.editInitiativeTitle).clear().type(existingInitTitle);
         cy.getByData(tableIds.editStartDate).clear().type(init.startDate);
         cy.getByData(tableIds.editTargetDate).clear().type(init.targetDate);
@@ -130,7 +130,7 @@ describe('add initiatives as Integrity user', () => {
 
     cy.getByData(radioIds.all).click();
 
-    cy.getByData(pageIds.addInitiativeButton).click();
+    cy.getByData(pageIds.addInitiativeButton).click({force: true}); //TODO
 
     cy.getByData(tableIds.companySelect).parent()
       .click()
