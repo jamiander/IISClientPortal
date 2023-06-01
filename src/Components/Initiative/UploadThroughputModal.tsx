@@ -4,7 +4,6 @@ import { cancelButtonStyle, modalStyle, submitButtonStyle } from "../../Styles";
 import { useEffect, useRef, useState } from "react";
 import { DateInfo, ThroughputData } from "../../Services/CompanyService";
 import { ValidationFailedPrefix } from "../../Services/Validation";
-import SelectCompanyAndInitiative from "./SelectCompanyAndInitiative";
 import { v4 as uuidV4} from "uuid";
 import { enqueueSnackbar } from "notistack";
 

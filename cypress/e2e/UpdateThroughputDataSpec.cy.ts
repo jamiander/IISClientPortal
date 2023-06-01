@@ -15,22 +15,21 @@ const user = AdminUser;
 
 const newDate = "2020-01-01";
 
-describe ('add throughput data by manual entry', () => {
+describe('add throughput data by manual entry', () => {
   let remainingItemsBefore: number;
 
   before(() => {
     cy.login(user);
 
     cy.getByData(radioIds.all).click();
-    cy.getByData(tableIds.initiativeTitleFilter).type(initiativeTitle);
+    cy.getByData(tableIds.initiativeTitleFilter).type(initiativeTitle,{force: true});
 
     cy.contains('tr', initiativeTitle).findByData(tableIds.remainingItems).then(($span) => {
       remainingItemsBefore = Number($span.text());
     });
 
-    cy.getByData(pageIds.editThroughputButton).click();
-    cy.getByData(modalIds.selectCompany).select(company);
-    cy.getByData(modalIds.selectInitiative).select(initiativeTitle);
+    cy.getByData(tableIds.actionMenu.menuButton).click();
+    cy.getByData(tableIds.actionMenu.editThroughputButton).click();
     cy.getByData(modalIds.addDate).clear().type(newDate);
     cy.getByData(modalIds.addNewEntryButton).click();
   })
@@ -44,7 +43,7 @@ describe ('add throughput data by manual entry', () => {
     cy.getByData(modalIds.closeButton).click();
     cy.wait(waitTime);
     cy.getByData(radioIds.all).click();
-    cy.getByData(tableIds.initiativeTitleFilter).clear().type(initiativeTitle);
+    cy.getByData(tableIds.initiativeTitleFilter).clear({force:true}).type(initiativeTitle,{force:true});
     cy.contains('tr', initiativeTitle).find(`[data-cy="${tableIds.remainingItems}"]`).then(($span) => {
       let remainingItemsAfter = Number($span.text());
       expect(remainingItemsBefore-2).to.be.equal(remainingItemsAfter);
@@ -52,17 +51,16 @@ describe ('add throughput data by manual entry', () => {
   })
 })
 
-describe ('invalid manual entry test', () => {
+describe('invalid manual entry test', () => {
   beforeEach(() => {
     cy.login(user);
 
-    cy.getByData(pageIds.editThroughputButton).click({force: true});
+    cy.getByData(tableIds.actionMenu.menuButton).first().click();
+    cy.getByData(tableIds.actionMenu.editThroughputButton).click();
   })
 
 
   specify('cannot add throughput entry when date is invalid', () => {
-    cy.getByData(modalIds.selectCompany).select(company);
-    cy.getByData(modalIds.selectInitiative).select(initiativeTitle);
     cy.getByData(modalIds.addNewEntryButton).click();
     cy.get(snackbarId).should('contain',failMessage);
 
@@ -75,8 +73,6 @@ describe ('invalid manual entry test', () => {
 
   specify('cannot add throughput entry when item completed is invalid', () => {
     cy.getByData(modalIds.addDate).clear().type(newDate);
-    cy.getByData(modalIds.selectCompany).select(company);
-    cy.getByData(modalIds.selectInitiative).select(initiativeTitle);
     cy.getByData(modalIds.addNewEntryButton).click();
 
     cy.getByData(modalIds.saveChangesButton).parent().parent().within(() => {
@@ -93,14 +89,13 @@ describe('update throughput data', () => {
   beforeEach(() => {
     cy.login(user);
 
-    cy.getByData(pageIds.editThroughputButton).click({force: true});
-    cy.getByData(modalIds.selectCompany).select(company);
-    cy.getByData(modalIds.selectInitiative).select(initiativeTitle);
-    cy.getByData(modalIds.editButton).click();
+    cy.getByData(tableIds.actionMenu.menuButton).first().click();
+    cy.getByData(tableIds.actionMenu.editThroughputButton).click();
+    cy.getByData(modalIds.editButton).first().click();
   })
 
   specify('update completed amount', () => {
-    cy.getByData(modalIds.tableItemsComplete).clear().type("33");
+    cy.getByData(modalIds.tableItemsComplete).first().clear().type("33");
 
     cy.getByData(modalIds.saveChangesButton).click();
 
@@ -115,27 +110,17 @@ describe('update throughput data', () => {
     cy.getByData(modalIds.modal).should('not.exist');
   })
 
-  specify('cannot update throughput data if unselected company', () => {
-    cy.getByData(modalIds.selectCompany).select(0);
-    cy.getByData(modalIds.editButton).should('not.exist');
-  })
-
-  specify('cannot update throughput data if unselected initiative', () => {
-    cy.getByData(modalIds.selectInitiative).select(0);
-    cy.getByData(modalIds.editButton).should('not.exist');
-  })
-
   specify('cannot update throughput data to an invalid completed amount', () => {
-    cy.getByData(modalIds.tableItemsComplete).clear();
+    cy.getByData(modalIds.tableItemsComplete).first().clear();
     cy.getByData(modalIds.saveChangesButton).click();
     cy.get(snackbarId).should('contain',failMessage);
 
-    cy.getByData(modalIds.tableItemsComplete).clear().type("a");
+    cy.getByData(modalIds.tableItemsComplete).first().clear().type("a");
     cy.getByData(modalIds.saveChangesButton).click();
     cy.wait(snackbarWaitTime);
     cy.get(snackbarId).should('contain',failMessage);
 
-    cy.getByData(modalIds.tableItemsComplete).clear().type("-2");
+    cy.getByData(modalIds.tableItemsComplete).first().clear().type("-2");
     cy.getByData(modalIds.saveChangesButton).click();
     cy.wait(snackbarWaitTime);
     cy.get(snackbarId).should('contain',failMessage);

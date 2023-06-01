@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { DateInfo, ThroughputData } from "../../Services/CompanyService";
 import { Company, Initiative } from "../../Store/CompanySlice";
 import { cancelButtonStyle, defaultRowStyle, modalStyle, submitButtonStyle, TableHeaderStyle, tooltipStyle } from "../../Styles";
-import SelectCompanyAndInitiative from "./SelectCompanyAndInitiative";
 import { CompareDateInfos, DateInput, EqualDateInfos } from "../DateInput";
 import Modal from "react-modal";
 import Table from '@mui/material/Table';
