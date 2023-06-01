@@ -30,16 +30,10 @@ function App() {
   }, [currentUserId])
 
   return (
-    <div className='gap-[.7vh] bg-[#ebeff2]'>
+    <div className='gap-1 bg-[#FAB947]'>
       <div className='bg-[#E4E1E5] h-fit mt-1 mx-1 py-1'><Header/></div>
       <div className='contents bg-white mx-1'>
-        {/* {
-          isLoggedIn() && 
-          <div className='ml-10 text-left'>
-            <NavPanel/>
-          </div>
-        } */}
-        <div className={'bg-[#E4E1E5] min-h-[83.25vh] mx-1'}>
+        <div className={'bg-[#E4E1E5] md:min-h-[85vh] lg:min-h[78vh] mx-1'}>
           <Content ShowToast={ShowToast}/>
           <Toast toastList={toastList} />
           <SnackbarProvider maxSnack={1} anchorOrigin={{

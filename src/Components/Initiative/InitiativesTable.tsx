@@ -340,7 +340,7 @@ export default function InitiativesTable(props: InitiativesProps) {
   return (
     <>
       <div className="grid grid-cols-1 w-full h-auto">
-        <div className="col-span-1 h-[4vh] pb-2 space-x-4 mb-2">
+        <div className="col-span-1 h-[4vh] pb-4 space-x-4 mb-4">
           <input data-cy={InitiativeTableIds.companyNameFilter} className={inputStyle} type={'text'} placeholder="Filter by Company" value={searchedComp} onChange={(e) => setSearchedComp(e.target.value)} />
           <input data-cy={InitiativeTableIds.initiativeTitleFilter} className={inputStyle} type={'text'} placeholder="Filter by Title" value={searchedInit} onChange={(e) => setSearchedInit(e.target.value)} />
         </div>

@@ -57,17 +57,17 @@ export default function NavPanel(){
     {(currentUser?.isAdmin || currentUser?.companyId === IntegrityId) && currentUser?.isActive === true &&
     <IconButton className="text-2xl"
           id="basic-button"
-      data-cy={NavPanelIds.menuButton}
+          data-cy={NavPanelIds.menuButton}
           aria-controls={open ? 'basic-menu' : undefined}
           aria-haspopup="true"
           aria-expanded={open ? 'true' : undefined}
           onClick={handleClick}
         >
-          <MenuIcon fontSize="large" />
-        </IconButton>
+        <MenuIcon fontSize="large" />
+    </IconButton>
     }
         <Menu id="basic-menu"
-          className="w-[15%]"
+          className="sm:w-[15%] md:w-[22%] rounded-lg"
           anchorEl={anchorEl}
           open={open}
           onClose={handleClose}
