@@ -176,10 +176,10 @@ export function ClientPage()
 
   return (
     <>
-      <div className="flex col-span-4 bg-[#69D5C3] py-6 px-5">
+      <div className="flex col-span-4 bg-[#21355B] py-6 px-5">
         <div className="w-full flex justify-between">
           <div className="space-y-2 w-1/2">
-            <p className="text-5xl text-[#21345b] font-bold w-full">Client Management</p>
+            <p className="text-5xl text-white font-bold w-full">Client Management</p>
           </div>
         </div>
       </div>

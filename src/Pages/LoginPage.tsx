@@ -60,27 +60,27 @@ export default function LoginPage(){
 
   return (
     <>
-    <div className="col-span-1 w-auto h-fit py-6 px-5 rounded-md bg-[#69D5C3] m-5">
-        <p className="text-center text-4xl text-[#21345b]">Welcome to the Integrity Inspired Solutions Client Portal!</p>
-        <p className="text-center text-xl text-[#21345b] mt-2">To view the information on your project, please log in.</p>
-        <p className="w-full text-center text-[#21345b] text-xl">
+    <div className="h-fit ml-30 mr-30 py-6 px-5 rounded-md bg-[#21355B] m-5">
+        <p className="text-center text-4xl text-white">Welcome to the Integrity Inspired Solutions Client Portal!</p>
+        <p className="text-center text-xl text-white mt-2">To view the information on your project, please log in.</p>
+        <p className="w-full text-center text-white text-xl">
           If you are looking for the Integrity Inspired Solutions website, please see&nbsp;
           <a className="text-blue-600 visited:text-purple-600 underline" href="https://www.integrityinspired.com/">here.</a>
         </p>
       </div>
-      <Container component="main" maxWidth="xs">
+      <Container component="main" maxWidth="xs" className="bg-gray-100 pt-1 pb-8#21355B px-5 rounded-md">
       <Box
         sx={{
           marginTop: 8,
           display: "flex",
           flexDirection: "column",
-          alignItems: "center",
+          alignItems: "center"
         }}
       >
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <Box component="form" onSubmit={HandleLogin} noValidate sx={{ mt: 1 }}>
+        <Box component="form" onSubmit={HandleLogin} noValidate sx={{ mt: 3 }}>
           <TextField
             margin="normal"
             required
@@ -103,7 +103,6 @@ export default function LoginPage(){
             type={passwordShown ? 'text' : 'password'}
             onChange={e => setPassword(e.target.value)}
             onKeyDown={e => HandleLogin(e.key)} />
-          <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Remember me" />
           <FormControlLabel control={<Checkbox value="show" color="primary" onChange={togglePasswordVisibility}/>} label="Show Password" />
           <Button type="submit" id={LoginPageIds.submitButton} disabled={isLoading} fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} 
             onClick={() => Login()} className={genericButtonStyle}>

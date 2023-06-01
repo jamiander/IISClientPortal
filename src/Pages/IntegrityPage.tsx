@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { User, getUserById, selectAllUsers, selectCurrentUser } from "../Store/UserSlice";
 import { Company, IntegrityId, selectAllCompanies } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
-import { Checkbox, IconButton, Input, InputAdornment} from "@mui/material";
+import { Box, Checkbox, IconButton, Input, InputAdornment} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
@@ -95,21 +95,26 @@ export function IntegrityPage(){
 
   return (
     <>
-      <div className="flex col-span-4 bg-[#69D5C3] py-6 px-5 rounded-md">
+      <div className="flex col-span-4 bg-[#21355B] py-6 px-5 rounded-md">
         <div className="w-full flex justify-between">
           <div className="space-y-2 w-1/2">
-            <p className="text-5xl text-[#21345b] font-bold w-full">Developer Management</p>
+            <p className="text-5xl text-white font-bold w-full">Developer Management</p>
           </div>
         </div>
       </div>
       <div className="mx-[2%] mb-[2%]">
         {allUsers.length !== 0 &&
-          <div className="flex flex-col justify-content:space-between">
-            <div className="space-x-10 flex flex-wrap mt-5">
-              <IconButton disabled={InEditMode()} id={IntegrityPageIds.addButton} onClick={() => AddEmptyUser(IntegrityId)}>
-                <AddIcon fontSize="large"/>
-              </IconButton>
-              <UserTextField id={IntegrityPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name or email" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)}
+           <div className="flex flex-col justify-content:space-between">
+            <Box sx={{ display: 'flex',
+              justifyContent: 'space-between',
+              flexDirection: 'row',
+              p: 1,
+              mr: 15,
+              mt: 2,
+              mb: 1,
+              borderRadius: 1, }}>
+              <UserTextField id={IntegrityPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name or email" value={searchedKeyword} 
+              onChange={(e) => setSearchedKeyword(e.target.value)}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -117,10 +122,14 @@ export function IntegrityPage(){
                   </InputAdornment>
                 ),
               }} />
-            </div>
-          </div>
+              <IconButton disabled={InEditMode()} id={IntegrityPageIds.addButton} onClick={() => AddEmptyUser(IntegrityId)}>
+                <AddIcon fontSize="large"/>
+              </IconButton>
+              
+              </Box>
+           </div> 
         }
-        <div className="col-span-1 py-[2%]">
+        <div className="col-span-1 py-2">
           <TableContainer elevation={12} component={Paper}>
             <Table className="table-auto w-full outline outline-3 bg-gray-100">
             <colgroup>

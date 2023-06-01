@@ -49,7 +49,7 @@ export default function NavPanel(){
 
   function GetNavStyle(path: string) : string
   {
-    return navButtonStyle + (IsActivePath(path) ? " border-b-4 border-[#fab947] rounded-t-md" : " rounded-md");
+    return navButtonStyle + (IsActivePath(path) ? " border-4 border-[#fab947] rounded-t-md" : " rounded-md");
   }
 
   return(
@@ -73,27 +73,27 @@ export default function NavPanel(){
           MenuListProps={{
             'aria-labelledby': NavPanelIds.menuButton,
           }}>
-            <button style={{ fontSize: '20px', marginTop: '30px', marginLeft: '10px', textAlign: "left" }} id={NavPanelIds.initiatives} className={GetNavStyle("/Initiatives")}
+            <button style={{ fontSize: '20px', marginTop: '30px', marginBottom: '10px', marginLeft: '10px', paddingBottom: '5px', textAlign: "left" }} id={NavPanelIds.initiatives} className={GetNavStyle("/Initiatives")}
               onClick={() => NavHandler('/Initiatives')}>
               <i className="material-icons" style={{ fontSize: '30px', marginRight: '25px' }}>info_outline</i>
               Initiative Management
             </button>
             {currentUser?.isAdmin && currentUser?.isActive &&
-              <button style={{ fontSize: '20px', marginTop: '30px', marginLeft: '10px', textAlign: "left" }} id={NavPanelIds.users} className={GetNavStyle("/Users")}
+              <button style={{ fontSize: '20px', marginTop: '30px', marginBottom: '10px', marginLeft: '10px', paddingBottom: '5px', textAlign: "left" }} id={NavPanelIds.users} className={GetNavStyle("/Users")}
                 onClick={() => NavHandler('/Users')}>
                 <i className="material-icons" style={{ fontSize: '30px', marginRight: '25px' }}>person_outline</i>
                 User Management
               </button>}
             {currentUser?.isAdmin && currentUser?.isActive && currentUser?.companyId === IntegrityId &&
-              <button style={{ fontSize: '20px', marginTop: '30px', marginLeft: '10px', textAlign: "left" }} id={NavPanelIds.integrity} className={GetNavStyle("/Integrity")}
+              <button style={{ fontSize: '20px', marginTop: '30px', marginBottom: '10px', marginLeft: '10px', paddingBottom: '5px', textAlign: "left" }} id={NavPanelIds.integrity} className={GetNavStyle("/Integrity")}
                 onClick={() => NavHandler('/Integrity')}>
                 <i className="material-icons" style={{ fontSize: '30px', marginRight: '25px' }}>keyboard</i>
                 Developer Management
               </button>}
             {currentUser?.isAdmin && currentUser?.isActive && currentUser?.companyId === IntegrityId &&
-              <button style={{ fontSize: '20px', marginTop: '30px', marginLeft: '10px', textAlign: "left" }} id={NavPanelIds.client} className={GetNavStyle("/ClientPage")}
+              <button style={{ fontSize: '20px', marginTop: '30px', marginBottom: '30px', marginLeft: '10px', paddingBottom: '5px', textAlign: "left" }} id={NavPanelIds.client} className={GetNavStyle("/ClientPage")}
                 onClick={() => NavHandler('/ClientPage')}>
-                <i className="material-icons" style={{ fontSize: '40px', marginRight: '25px' }}>manage_accounts</i>
+                <i className="material-icons" style={{ fontSize: '30px', marginRight: '25px' }}>manage_accounts</i>
                 Client Management
               </button>}
           </Menu>

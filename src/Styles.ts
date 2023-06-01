@@ -94,7 +94,7 @@ export const TableHeaderStyle =
     marginBottom: 5,
     marginLeft: 20,
     height: 10,
-    width: "10%"
+    width: "20%"
   }));
 
   export const StyledTextarea =
@@ -123,5 +123,5 @@ export const genericButtonStyle = "outline outline-[#445362] rounded bg-[#21345b
 export const yellowButtonStyle = "outline outline-[#445362] h-[40px] w-32 bg-[#FAB947] text-[#445362] rounded-md transition ease-in-out enabled:hover:bg-white enabled:hover:text-[#445362] disabled:opacity-75";
 
 export const defaultRowStyle = "odd:bg-gray-200";
-export const redProbabilityStyle = "bg-red-300";
-export const greenProbabilityStyle = "bg-green-200";
+export const redProbabilityStyle = "bg-[#FF6464]";
+export const greenProbabilityStyle = "bg-[#69D5C3]";
