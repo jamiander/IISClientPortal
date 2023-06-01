@@ -188,7 +188,7 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
   
   return(
     <Modal
-      id={EditThroughputIds.modal}
+      data-cy={EditThroughputIds.modal}
       isOpen={props.editIsOpen}
       onRequestClose={()=>props.setEditIsOpen(false)}
       style={{'content': {...modalStyle.content, 'width' : 'fit-content', 'height' : 'fit-content'}}}
@@ -196,9 +196,9 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
       <div className="space-y-5">
         <p className="text-3xl w-full">Edit Throughput Data</p>
         <SelectCompanyAndInitiative companyList={props.companyList} selectedCompanyId={selectedCompanyId} selectedInitiativeIndex={selectedInitiativeIndex} setSelectedCompanyId={setSelectedCompanyId} setSelectedInitiativeIndex={setSelectedInitiativeIndex} companyElementId={EditThroughputIds.selectCompany} initiativeElementId={EditThroughputIds.selectInitiative}/>
-        <DateInput id={EditThroughputIds.addDate} disabled={InEditMode()} date={currentDate} setDate={setCurrentDate}/>
+        <DateInput cypressData={EditThroughputIds.addDate} disabled={InEditMode()} date={currentDate} setDate={setCurrentDate}/>
           {dateWarning}
-        <button id={EditThroughputIds.addNewEntryButton} className={submitButtonStyle + " h-full"} disabled={InEditMode()}
+        <button data-cy={EditThroughputIds.addNewEntryButton} className={submitButtonStyle + " h-full"} disabled={InEditMode()}
           onClick={() => AddItem(GetInitiativeFromCompany(selectedCompanyId,selectedInitiativeIndex))}>Add New</button>
         <div className="outline outline-[#879794] rounded space-y-2 p-2">
           <div>
@@ -235,35 +235,35 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
                         {isEdit ?
                           <>
                             <TableCell ref={throughputRef}>
-                              <IconButton id={EditThroughputIds.saveChangesButton} onClick={() => SaveEdit()}>
+                              <IconButton data-cy={EditThroughputIds.saveChangesButton} onClick={() => SaveEdit()}>
                                 <DoneIcon />
                               </IconButton>
-                              <IconButton id={EditThroughputIds.cancelChangesButton} onClick={() => CancelEdit()}>
+                              <IconButton data-cy={EditThroughputIds.cancelChangesButton} onClick={() => CancelEdit()}>
                                 <CancelIcon />
                               </IconButton>
                             </TableCell>
                             <TableCell className="border border-spacing-x-0 border-y-gray-700">
                               {
-                                <p className="px-2 w-full bg-inherit focus:outline-none" id={EditThroughputIds.tableDate}>{throughput.date.month + "/" + throughput.date.day + "/" + throughput.date.year}</p> 
+                                <p className="px-2 w-full bg-inherit focus:outline-none" data-cy={EditThroughputIds.tableDate}>{throughput.date.month + "/" + throughput.date.day + "/" + throughput.date.year}</p> 
                               }
                               </TableCell>
                             <TableCell className={tooltipStyle}>
-                              <input className="px-2 w-full bg-inherit focus:outline-none" id={EditThroughputIds.tableItemsComplete} type="number" min="0" value={currentItems}
+                              <input className="px-2 w-full bg-inherit focus:outline-none" data-cy={EditThroughputIds.tableItemsComplete} type="number" min="0" value={currentItems}
                               onChange={(e) => setCurrentItems(parseInt(e.target.value))}/>
                             </TableCell>
                           </>
                           :
                           <>
                             <TableCell>
-                            <IconButton id={EditThroughputIds.editButton} disabled={InEditMode()} onClick={() => EnterEditMode(throughput.date, throughputList, false)}>
+                            <IconButton data-cy={EditThroughputIds.editButton} disabled={InEditMode()} onClick={() => EnterEditMode(throughput.date, throughputList, false)}>
                               <EditIcon />
                             </IconButton>
                             </TableCell>
                             <TableCell className="border border-spacing-x-0 border-y-gray-700">
-                              <p className="px-2 w-full bg-inherit focus:outline-none" id={EditThroughputIds.tableDate}>{throughput.date.month + "/" + throughput.date.day + "/" + throughput.date.year}</p> 
+                              <p className="px-2 w-full bg-inherit focus:outline-none" data-cy={EditThroughputIds.tableDate}>{throughput.date.month + "/" + throughput.date.day + "/" + throughput.date.year}</p> 
                             </TableCell>
                             <TableCell className={tooltipStyle}>
-                              <input disabled className="px-2 w-full bg-inherit focus:outline-none" id={EditThroughputIds.tableItemsComplete} type="number" min="0" value={throughput.itemsCompleted}/>
+                              <input disabled className="px-2 w-full bg-inherit focus:outline-none" data-cy={EditThroughputIds.tableItemsComplete} type="number" min="0" value={throughput.itemsCompleted}/>
                             </TableCell>
                           </>
                         }
@@ -276,7 +276,7 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
           </div>
         </div>
         <div className="h-10 w-full flex justify-between">
-          <button id={EditThroughputIds.closeButton} className={cancelButtonStyle} onClick={() => Close()}>Close</button> 
+          <button data-cy={EditThroughputIds.closeButton} className={cancelButtonStyle} onClick={() => Close()}>Close</button> 
         </div>
       </div>
     </Modal>

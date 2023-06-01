@@ -11,6 +11,7 @@ import { inputStyle, yellowButtonStyle } from "../Styles";
 import { Company, selectAllCompanies, upsertThroughputData } from "../Store/CompanySlice";
 import { Box, IconButton } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
+import { selectCurrentUser } from "../Store/UserSlice";
 
 export const InitiativeDisplayRadioIds = {
   all: "initDisplayShowAll",
@@ -27,6 +28,7 @@ export const InitiativesPageIds = {
 export default function InitiativesPage(){
   
   const companyList : Company[] = useAppSelector(selectAllCompanies);
+  const currentUser = useAppSelector(selectCurrentUser);
 
   const [addInitiative, setAddInitiative] = useState(false);
   const [UploadModalIsOpen, setUploadModalIsOpen] = useState(false);
@@ -81,13 +83,13 @@ export default function InitiativesPage(){
  */}          {/* <button id={InitiativesPageIds.uploadThroughputButton} onClick={() => setUploadModalIsOpen(true)} className={yellowButtonStyle}>
             Upload Data File
           </button>
-          <button id={InitiativesPageIds.editThroughputButton} onClick={() => setEditModalIsOpen(true)} className={yellowButtonStyle}>
+          <button data-cy={InitiativesPageIds.editThroughputButton} onClick={() => setEditModalIsOpen(true)} className={yellowButtonStyle}>
             Add/Edit Data
           </button> */}
             <RadioSet dark={true} setter={setRadioValue} name="initiativesDisplay" options={[
-              { id: InitiativeDisplayRadioIds.all, label: "Show All", value: "all" },
-              { id: InitiativeDisplayRadioIds.active, label: "Active", value: "active", default: true },
-              { id: InitiativeDisplayRadioIds.inactive, label: "Inactive", value: "inactive" }
+              { cypressData: InitiativeDisplayRadioIds.all, label: "Show All", value: "all" },
+              { cypressData: InitiativeDisplayRadioIds.active, label: "Active", value: "active", default: true },
+              { cypressData: InitiativeDisplayRadioIds.inactive, label: "Inactive", value: "inactive" }
             ]} />
           {/* </div> */}
           
@@ -97,7 +99,7 @@ export default function InitiativesPage(){
           </Box>
          </div>
          {companyList.length > 0 &&
-          <InitiativesTable addInitiative={addInitiative} companyList={companyList} radioStatus={radioValue} ValidateInitiative={ValidateNewInitiative} setAddInitiative={setAddInitiative}/>}
+          <InitiativesTable addInitiative={addInitiative} currentUser={currentUser} companyList={companyList} radioStatus={radioValue} ValidateInitiative={ValidateNewInitiative} setAddInitiative={setAddInitiative}/>}
         </div>
        </div>
      </>

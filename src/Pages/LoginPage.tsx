@@ -85,7 +85,7 @@ export default function LoginPage(){
             margin="normal"
             required
             fullWidth
-            id={LoginPageIds.email}
+            data-cy={LoginPageIds.email}
             label="Email Address"
             name="email"
             autoComplete="email"
@@ -97,14 +97,14 @@ export default function LoginPage(){
             fullWidth
             name="password"
             label="Password"
-            id={LoginPageIds.password}
+            data-cy={LoginPageIds.password}
             autoComplete="current-password"
             value={password}
             type={passwordShown ? 'text' : 'password'}
             onChange={e => setPassword(e.target.value)}
             onKeyDown={e => HandleLogin(e.key)} />
           <FormControlLabel control={<Checkbox value="show" color="primary" onChange={togglePasswordVisibility}/>} label="Show Password" />
-          <Button type="submit" id={LoginPageIds.submitButton} disabled={isLoading} fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} 
+          <Button data-cy={LoginPageIds.submitButton} disabled={isLoading} fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} 
             onClick={() => Login()} className={genericButtonStyle}>
             Sign In
           </Button>

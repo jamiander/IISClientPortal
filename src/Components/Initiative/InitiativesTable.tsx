@@ -23,7 +23,7 @@ import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { v4 } from "uuid";
 import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
-import { selectCurrentUser } from "../../Store/UserSlice";
+import { User, selectCurrentUser } from "../../Store/UserSlice";
 import { enqueueSnackbar } from "notistack";
 import ValidateNewInitiative, { ValidationFailedPrefix } from "../../Services/Validation";
 import { InitiativeActionsMenu } from "./InitiativeActionsMenu";
@@ -37,6 +37,10 @@ export const InitiativeTableIds = {
   companySelect: "initiativesTableCompanySelect",
   startDate: "initiativesTableStartDate",
   targetDate: "initiativesTableTargetDate",
+  editInitiativeTitle: "initiativesTableEditTitle",
+  editStartDate: "initiativesTableEditStartDate",
+  editTargetDate: "initiativesTableEditTargetDate",
+  editTotalItems: "initiativesTableEditTotalItems",
   initiativeTitleFilter: "initiativesTableFilterTitle",
   companyNameFilter: "initiativesTableFilterCompanyName",
   addButton: "initiativesTableAddButton",
@@ -52,6 +56,7 @@ export const InitiativeTableIds = {
 
 interface InitiativesProps {
   companyList: Company[],
+  currentUser: User | undefined,
   radioStatus: string,
   ValidateInitiative: (initiative: Initiative, companyId: string, allCompanies: Company[]) => {success: boolean, message: string}
   addInitiative: boolean,
@@ -72,7 +77,6 @@ interface SortConfig {
 
 export default function InitiativesTable(props: InitiativesProps) {
   const dispatch = useAppDispatch();
-  const currentUser = useAppSelector(selectCurrentUser);
   const [searchedComp, setSearchedComp] = useState('');
   const [searchedInit, setSearchedInit] = useState('');
   const [sortConfig, setSortConfig] = useState<SortConfig>({key: '', direction: 'desc'});
@@ -96,7 +100,7 @@ export default function InitiativesTable(props: InitiativesProps) {
       const displayClone: InitCompanyDisplay[] = JSON.parse(JSON.stringify(displayItems));
       const myUuid = v4();
       const todayInfo = DateToDateInfo(new Date());
-      let matchingCompany = props.companyList.find(c => c.id === currentUser?.companyId);
+      let matchingCompany = props.companyList.find(c => c.id === props.currentUser?.companyId);
       if(matchingCompany?.id === IntegrityId) matchingCompany = {id: "", name: "", initiatives: ([])};
       if(matchingCompany)
       {
@@ -106,7 +110,7 @@ export default function InitiativesTable(props: InitiativesProps) {
         setSearchedComp("");
         setSearchedInit("");
         ResetPageNumber();
-        if(currentUser !== undefined)
+        if(props.currentUser !== undefined)
           EnterEditMode(myUuid,matchingCompany.id,displayClone,true);
       }
     }
@@ -330,14 +334,15 @@ export default function InitiativesTable(props: InitiativesProps) {
     LeaveEditMode();
   }
 
-  const userCompanyId = currentUser?.companyId;
+  const userCompanyId = props.currentUser?.companyId;
+  const isAdmin = props.currentUser?.isAdmin;
 
   return (
     <>
       <div className="grid grid-cols-1 w-full h-auto">
         <div className="col-span-1 h-[4vh] pb-2 space-x-4 mb-2">
-          <input id={InitiativeTableIds.companyNameFilter} className={inputStyle} type={'text'} placeholder="Filter by Company" value={searchedComp} onChange={(e) => setSearchedComp(e.target.value)} />
-          <input id={InitiativeTableIds.initiativeTitleFilter} className={inputStyle} type={'text'} placeholder="Filter by Title" value={searchedInit} onChange={(e) => setSearchedInit(e.target.value)} />
+          <input data-cy={InitiativeTableIds.companyNameFilter} className={inputStyle} type={'text'} placeholder="Filter by Company" value={searchedComp} onChange={(e) => setSearchedComp(e.target.value)} />
+          <input data-cy={InitiativeTableIds.initiativeTitleFilter} className={inputStyle} type={'text'} placeholder="Filter by Title" value={searchedInit} onChange={(e) => setSearchedInit(e.target.value)} />
         </div>
         {totalInits !== 0 &&
         <div className="col-span-1 py=2">
@@ -352,7 +357,9 @@ export default function InitiativesTable(props: InitiativesProps) {
                 <col style={{ width: '9%' }} />
                 <col style={{ width: '12%' }} />
                 <col style={{ width: '3%' }} />
-                <col style={{ width: '3%' }} />
+                {isAdmin &&
+                  <col style={{ width: '3%' }} />
+                }
               </colgroup>
               <TableHead className="outline outline-1">
                 <TableRow sx={{
@@ -381,10 +388,12 @@ export default function InitiativesTable(props: InitiativesProps) {
                     <SortLabel heading="Probability" sortKey='probabilityValue'/>
                   </TableHeaderStyle>
                   <TableHeaderStyle>Actions</TableHeaderStyle>
-                  <TableHeaderStyle>Edit</TableHeaderStyle>
+                  {isAdmin &&
+                    <TableHeaderStyle>Edit</TableHeaderStyle>
+                  }
                 </TableRow>
               </TableHead>
-              <TableBody id={InitiativeTableIds.table}>
+              <TableBody data-cy={InitiativeTableIds.table}>
                 {currentItems.map((displayItem, index) => {
                   let probability = { value: displayItem.probabilityValue, status: displayItem.probabilityStatus };
                   let healthIndicator =  getHealthIndicator(probability.value);
@@ -406,7 +415,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                       }}>
                         { isEdit ?
                           <>
-                            <TableCell id={InitiativeTableIds.companyName}>
+                            <TableCell data-cy={InitiativeTableIds.companyName}>
                             {(userCompanyId !== IntegrityId || state !== stateEnum.add) &&
                               <>{displayItem.company.name}</>
                             }
@@ -414,7 +423,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                               <>
                                 <FormControl fullWidth>
                                   <InputLabel id="company-select-label">Select Company</InputLabel>
-                                  <Select id={InitiativeTableIds.companySelect} labelId="company-select-label" label="Select company" value={companyToEditId} onChange={(e) => setCompanyToEditId(e.target.value)}>
+                                  <Select data-cy={InitiativeTableIds.companySelect} labelId="company-select-label" label="Select company" value={companyToEditId} onChange={(e) => setCompanyToEditId(e.target.value)}>
                                     {
                                       props.companyList.map((company,index) => {
                                         return (
@@ -430,46 +439,48 @@ export default function InitiativesTable(props: InitiativesProps) {
                             }
                             </TableCell>
                             <TableCell>
-                              <Input id={InitiativeTableIds.initiativeTitle} value={currentTitle} onChange={(e) => setCurrentTitle(e.target.value)}/>
+                              <Input data-cy={InitiativeTableIds.editInitiativeTitle} value={currentTitle} onChange={(e) => setCurrentTitle(e.target.value)}/>
                             </TableCell>
-                            <TableCell><DateInput id={InitiativeTableIds.startDate} date={currentStartDate} setDate={setCurrentStartDate}/></TableCell>
-                            <TableCell><DateInput id={InitiativeTableIds.targetDate} date={currentTargetDate} setDate={setCurrentTargetDate}/></TableCell>
+                            <TableCell><DateInput cypressData={InitiativeTableIds.editStartDate} date={currentStartDate} setDate={setCurrentStartDate}/></TableCell>
+                            <TableCell><DateInput cypressData={InitiativeTableIds.editTargetDate} date={currentTargetDate} setDate={setCurrentTargetDate}/></TableCell>
                             <TableCell>
-                              <Input id={InitiativeTableIds.totalItems} type="number" value={currentTotalItems} onChange={(e) => setCurrentTotalItems(parseInt(e.target.value))}/>
+                              <Input data-cy={InitiativeTableIds.editTotalItems} type="number" value={currentTotalItems} onChange={(e) => setCurrentTotalItems(parseInt(e.target.value))}/>
                             </TableCell>
-                            <TableCell id={InitiativeTableIds.remainingItems}>{displayItem.itemsRemaining}</TableCell>
+                            <TableCell data-cy={InitiativeTableIds.remainingItems}>{displayItem.itemsRemaining}</TableCell>
                             <TableCell></TableCell>
                             <TableCell className="w-1/12">
                               <InitiativeActionsMenu ids={InitiativeTableIds.actionMenu} disabled={true} company={displayItem.company} initiative={displayItem} isAdmin={false}/>
                             </TableCell>
                             <TableCell className="w-1/12">
-                              <IconButton id={InitiativeTableIds.saveChangesButton} onClick={() => SaveEdit()}>
+                              <IconButton data-cy={InitiativeTableIds.saveChangesButton} onClick={() => SaveEdit()}>
                                 <DoneIcon />
                               </IconButton>
-                              <IconButton id={InitiativeTableIds.cancelChangesButton} onClick={() => CancelEdit()}>
+                              <IconButton data-cy={InitiativeTableIds.cancelChangesButton} onClick={() => CancelEdit()}>
                                 <CancelIcon />
                               </IconButton>
                             </TableCell>
                           </>
                           :
                           <>
-                            <TableCell id={InitiativeTableIds.companyName}>{displayItem.company.name}</TableCell>
-                            <TableCell id={InitiativeTableIds.initiativeTitle}>{displayItem.title}</TableCell>
-                            <TableCell id={InitiativeTableIds.startDate}>{displayItem.startDate.month + "/" + displayItem.startDate.day + "/" + displayItem.startDate.year}</TableCell>
+                            <TableCell data-cy={InitiativeTableIds.companyName}>{displayItem.company.name}</TableCell>
+                            <TableCell data-cy={InitiativeTableIds.initiativeTitle}>{displayItem.title}</TableCell>
+                            <TableCell data-cy={InitiativeTableIds.startDate}>{displayItem.startDate.month + "/" + displayItem.startDate.day + "/" + displayItem.startDate.year}</TableCell>
                             <TableCell>{displayItem.targetDate.month + "/" + displayItem.targetDate.day + "/" + displayItem.targetDate.year}</TableCell>
-                            <TableCell id={InitiativeTableIds.totalItems}>{displayItem.totalItems}</TableCell>
-                            <TableCell id={InitiativeTableIds.remainingItems}>{displayItem.itemsRemaining}</TableCell>
+                            <TableCell data-cy={InitiativeTableIds.totalItems}>{displayItem.totalItems}</TableCell>
+                            <TableCell data-cy={InitiativeTableIds.remainingItems}>{displayItem.itemsRemaining}</TableCell>
                             <TableCell className={tooltipStyle} title={tooltipMessage}>{probability.value === undefined ? "NA" : probability.value + "%"}
                               <i className="material-icons" style={{ fontSize: '15px', marginLeft: '15px', marginTop: '10px' }}>info_outline</i>
                             </TableCell>
                             <TableCell className="w-1/12">
-                              <InitiativeActionsMenu ids={InitiativeTableIds.actionMenu} company={displayItem.company} initiative={displayItem} isAdmin={currentUser?.isAdmin ?? false}/>
+                              <InitiativeActionsMenu ids={InitiativeTableIds.actionMenu} company={displayItem.company} initiative={displayItem} isAdmin={isAdmin ?? false}/>
                             </TableCell>
-                            <TableCell className="w-1/12">
-                              <IconButton id={InitiativeTableIds.editButton} disabled={InEditMode()} onClick={() => EnterEditMode(displayItem.id, displayItem.company.id, displayItems, false)}>
-                                <EditIcon />
-                              </IconButton>
-                            </TableCell>
+                            {isAdmin &&
+                              <TableCell className="w-1/12">
+                                <IconButton data-cy={InitiativeTableIds.editButton} disabled={InEditMode()} onClick={() => EnterEditMode(displayItem.id, displayItem.company.id, displayItems, false)}>
+                                  <EditIcon />
+                                </IconButton>
+                              </TableCell>
+                            }
                           </>
                         }
                       </TableRow>

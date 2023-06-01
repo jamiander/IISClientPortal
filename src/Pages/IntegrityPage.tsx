@@ -29,6 +29,12 @@ export const IntegrityPageIds = {
   phone: "adminEditUserPhone",
   isAdmin: "adminEditIsAdmin",
   isActive: "adminEditUserIsActive",
+  editEmail: "adminEditUserEditEmail",
+  editPassword: "adminEditUserEditPassword",
+  editName: "adminEditUserEditName",
+  editPhone: "adminEditUserEditPhone",
+  editIsAdmin: "adminEditUserEditIsAdmin",
+  editIsActive: "adminEditUserEditIsActive",
   addButton: "adminEditUserAddButton",
   editButton: "adminEditUserEditButton",
   saveChangesButton: "adminEditUserSaveChangesButton",
@@ -113,7 +119,7 @@ export function IntegrityPage(){
               mt: 2,
               mb: 1,
               borderRadius: 1, }}>
-              <UserTextField id={IntegrityPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name or email" value={searchedKeyword} 
+              <UserTextField data-cy={IntegrityPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name or email" value={searchedKeyword} 
               onChange={(e) => setSearchedKeyword(e.target.value)}
               InputProps={{
                 startAdornment: (
@@ -122,7 +128,7 @@ export function IntegrityPage(){
                   </InputAdornment>
                 ),
               }} />
-              <IconButton disabled={InEditMode()} id={IntegrityPageIds.addButton} onClick={() => AddEmptyUser(IntegrityId)}>
+              <IconButton disabled={InEditMode()} data-cy={IntegrityPageIds.addButton} onClick={() => AddEmptyUser(IntegrityId)}>
                 <AddIcon fontSize="large"/>
               </IconButton>
               
@@ -161,7 +167,7 @@ export function IntegrityPage(){
                   <TableHeaderStyle>Edit User</TableHeaderStyle>
                 </TableRow>
               </TableHead>
-              <TableBody id={IntegrityPageIds.table}>
+              <TableBody data-cy={IntegrityPageIds.table}>
                 {usersList.filter(u => u.email.toUpperCase().includes(searchedKeyword.toUpperCase()) || u.name?.toUpperCase().includes(searchedKeyword.toUpperCase()))
                   .map((displayItem: User, key: number) => {
                   let isEdit = InEditMode() && displayItem.id === userToEdit?.id;
@@ -178,33 +184,33 @@ export function IntegrityPage(){
                     >
                       {isEdit ? 
                       <>
-                        <TableCell><Input id={IntegrityPageIds.name}value={currentName} onChange={e => setCurrentName(e.target.value)}/></TableCell>
-                        <TableCell><Input id={IntegrityPageIds.email} value={currentEmail} onChange={e => setCurrentEmail(e.target.value)}/></TableCell>
-                        <TableCell><Input id={IntegrityPageIds.password} value={currentPassword} onChange={e => setCurrentPassword(e.target.value)}/></TableCell>
-                        <TableCell><Input id={IntegrityPageIds.phone} value={currentPhone} onChange={e => setCurrentPhone(e.target.value)}/></TableCell>
-                        <TableCell><Checkbox id={IntegrityPageIds.isAdmin} checked={currentIsAdmin} onChange={e => setCurrentIsAdmin(e.target.checked)}/>Admin</TableCell>
-                        <TableCell><Checkbox id={IntegrityPageIds.isActive} checked={currentIsActive} onChange={e => setCurrentIsActive(e.target.checked)}/>Active</TableCell>
-                        <TableCell id={IntegrityPageIds.initiativeIds}></TableCell>
+                        <TableCell><Input data-cy={IntegrityPageIds.editName}value={currentName} onChange={e => setCurrentName(e.target.value)}/></TableCell>
+                        <TableCell><Input data-cy={IntegrityPageIds.editEmail} value={currentEmail} onChange={e => setCurrentEmail(e.target.value)}/></TableCell>
+                        <TableCell><Input data-cy={IntegrityPageIds.editPassword} value={currentPassword} onChange={e => setCurrentPassword(e.target.value)}/></TableCell>
+                        <TableCell><Input data-cy={IntegrityPageIds.editPhone} value={currentPhone} onChange={e => setCurrentPhone(e.target.value)}/></TableCell>
+                        <TableCell><Checkbox data-cy={IntegrityPageIds.editIsAdmin} checked={currentIsAdmin} onChange={e => setCurrentIsAdmin(e.target.checked)}/>Admin</TableCell>
+                        <TableCell><Checkbox data-cy={IntegrityPageIds.editIsActive} checked={currentIsActive} onChange={e => setCurrentIsActive(e.target.checked)}/>Active</TableCell>
+                        <TableCell data-cy={IntegrityPageIds.initiativeIds}></TableCell>
                         <TableCell>
-                          <IconButton id={IntegrityPageIds.saveChangesButton} onClick={() => SaveEdit()}>
+                          <IconButton data-cy={IntegrityPageIds.saveChangesButton} onClick={() => SaveEdit()}>
                             <DoneIcon />
                           </IconButton>
-                          <IconButton id={IntegrityPageIds.cancelChangesButton} onClick={() => CancelEdit()}>
+                          <IconButton data-cy={IntegrityPageIds.cancelChangesButton} onClick={() => CancelEdit()}>
                             <CancelIcon />
                           </IconButton>
                         </TableCell>
                       </>
                       : 
                       <>
-                        <TableCell id={IntegrityPageIds.name}>{displayItem.name}</TableCell>
-                        <TableCell id={IntegrityPageIds.email}>{displayItem.email}</TableCell>
-                        <TableCell id={IntegrityPageIds.password}>{displayItem.password}</TableCell>
-                        <TableCell id={IntegrityPageIds.phone}>{displayItem.phoneNumber}</TableCell>
-                        <TableCell id={IntegrityPageIds.isAdmin}>{displayItem.isAdmin ? "Admin" : "User"}</TableCell>
-                        <TableCell id={IntegrityPageIds.isActive}>{displayItem.isActive ? "Active" : "Inactive"}</TableCell>
-                        <TableCell id={IntegrityPageIds.initiativeIds}><EditUserInitiativesButton user={displayItem} allCompanies={sortedCompanies} SubmitUserData={SubmitUserData} expanded={false}/></TableCell>
+                        <TableCell data-cy={IntegrityPageIds.name}>{displayItem.name}</TableCell>
+                        <TableCell data-cy={IntegrityPageIds.email}>{displayItem.email}</TableCell>
+                        <TableCell data-cy={IntegrityPageIds.password}>{displayItem.password}</TableCell>
+                        <TableCell data-cy={IntegrityPageIds.phone}>{displayItem.phoneNumber}</TableCell>
+                        <TableCell data-cy={IntegrityPageIds.isAdmin}>{displayItem.isAdmin ? "Admin" : "User"}</TableCell>
+                        <TableCell data-cy={IntegrityPageIds.isActive}>{displayItem.isActive ? "Active" : "Inactive"}</TableCell>
+                        <TableCell data-cy={IntegrityPageIds.initiativeIds}><EditUserInitiativesButton user={displayItem} allCompanies={sortedCompanies} SubmitUserData={SubmitUserData} expanded={false}/></TableCell>
                         <TableCell>
-                          <IconButton id={IntegrityPageIds.editButton} disabled={InEditMode()} onClick={() => EnterEditMode(displayItem.id, integrityUsers, false)}>
+                          <IconButton data-cy={IntegrityPageIds.editButton} disabled={InEditMode()} onClick={() => EnterEditMode(displayItem.id, integrityUsers, false)}>
                             <EditIcon />
                           </IconButton>
                         </TableCell>

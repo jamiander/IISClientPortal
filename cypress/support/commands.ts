@@ -47,18 +47,18 @@ interface UserLogin {
   password: string
 }
 
+Cypress.Commands.add('getByData', (selector: string, ...args) => {
+  return cy.get(`[data-cy="${selector}"]`, ...args);
+})
+
 Cypress.Commands.add('login', (user: UserLogin) => {
   cy.visit('Login');
-  cy.get(loginIds.email).clear().type(user.email);
-  cy.get(loginIds.password).clear().type(user.password);
-  cy.get(loginIds.submitButton).click();
+  cy.getByData(loginIds.email).find('input').clear().type(user.email);
+  cy.getByData(loginIds.password).find('input').clear().type(user.password);
+  cy.getByData(loginIds.submitButton).click();
 })
 
-/*Cypress.Commands.add('getByData', (data: string) => {
-  cy.get(`data="${data}"`);
-})
-
-declare global {
+/*declare global {
   namespace Cypress {
     interface Chainable {
       login(user: UserLogin): Chainable<void>
