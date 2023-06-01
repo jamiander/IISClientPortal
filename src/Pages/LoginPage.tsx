@@ -60,7 +60,7 @@ export default function LoginPage(){
 
   return (
     <>
-    <div className="h-fit ml-30 mr-30 py-6 px-5 rounded-md bg-[#21355B] m-5">
+      <div className="h-fit ml-30 mr-30 py-6 px-5 rounded-lg bg-[#21355B] m-5">
         <p className="text-center text-4xl text-white">Welcome to the Integrity Inspired Solutions Client Portal!</p>
         <p className="text-center text-xl text-white mt-2">To view the information on your project, please log in.</p>
         <p className="w-full text-center text-white text-xl">
@@ -68,19 +68,20 @@ export default function LoginPage(){
           <a className="text-blue-600 visited:text-[#00C4FF] underline" href="https://www.integrityinspired.com/">here.</a>
         </p>
       </div>
-      <Container component="main" maxWidth="xs" className="bg-gray-100 pt-1 pb-8#21355B px-5 rounded-md">
+      <Container component="main" maxWidth="xs" className="bg-gray-100 pt-4 pb-6 px-6 mt-20 rounded-md">
       <Box
         sx={{
-          marginTop: 8,
+          marginTop: 5,
           display: "flex",
           flexDirection: "column",
-          alignItems: "center"
+          alignItems: "center",
+          borderRadius: 3
         }}
       >
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <Box component="form" onSubmit={HandleLogin} noValidate sx={{ mt: 3 }}>
+        <Box component="form" onSubmit={HandleLogin} noValidate className="my-4" >
           <TextField
             margin="normal"
             required

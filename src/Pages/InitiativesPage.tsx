@@ -37,7 +37,7 @@ export default function InitiativesPage(){
 
   return (
     <>
-      <div className="flex col-span-4 bg-[#21355B] py-6 px-5 rounded-md">
+      <div className="flex col-span-4 bg-[#21355B] py-6 px-5 rounded-xl">
         <div className="w-full flex justify-between">
           <div className="space-y-2 w-1/2">
             <p className="text-5xl text-white font-bold w-full">Initiative Management</p>
@@ -58,8 +58,7 @@ export default function InitiativesPage(){
               mt: 2,
               mb: 1,
               borderRadius: 1, }}>
-{/*           <div className="space-x-2 flex flex-wrap mt-2 mb-2">
- */}          {/* <button id={InitiativesPageIds.uploadThroughputButton} onClick={() => setUploadModalIsOpen(true)} className={yellowButtonStyle}>
+          {/* <button id={InitiativesPageIds.uploadThroughputButton} onClick={() => setUploadModalIsOpen(true)} className={yellowButtonStyle}>
             Upload Data File
           </button>
           <button data-cy={InitiativesPageIds.editThroughputButton} onClick={() => setEditModalIsOpen(true)} className={yellowButtonStyle}>
@@ -69,9 +68,7 @@ export default function InitiativesPage(){
               { cypressData: InitiativeDisplayRadioIds.all, label: "Show All", value: "all" },
               { cypressData: InitiativeDisplayRadioIds.active, label: "Active", value: "active", default: true },
               { cypressData: InitiativeDisplayRadioIds.inactive, label: "Inactive", value: "inactive" }
-            ]} />
-          {/* </div> */}
-          
+            ]} />          
             <IconButton data-cy={InitiativesPageIds.addInitiativeButton} onClick={() => setAddInitiative(true)}>
                 <AddIcon fontSize="large"/>
             </IconButton>

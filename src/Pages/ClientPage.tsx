@@ -185,7 +185,7 @@ export function ClientPage()
 
   return (
     <>
-      <div className="flex col-span-4 bg-[#21355B] py-6 px-5">
+      <div className="flex col-span-4 bg-[#21355B] py-6 px-5 rounded-xl">
         <div className="w-full flex justify-between">
           <div className="space-y-2 w-1/2">
             <p className="text-5xl text-white font-bold w-full">Client Management</p>
@@ -198,7 +198,7 @@ export function ClientPage()
               justifyContent: 'space-between',
               flexDirection: 'row',
               p: 1,
-              mr: 15,
+              mr: 35,
               mt: 2,
               mb: 1,
               borderRadius: 1, }}>
