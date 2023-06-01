@@ -43,7 +43,8 @@ export function InitiativeActionsMenu(props: InitiativeActionsMenuProps)
 
   const [viewDecisionDataIsOpen, setViewDecisionDataIsOpen] = useState(false);
   const [documentModalIsOpen, setDocumentModalIsOpen] = useState(false);
-  const [throughputModalIsOpen, setThroughputModalIsOpen] = useState(false);
+  const [uploadThroughputModalIsOpen, setUploadThroughputModalIsOpen] = useState(false);
+  const [editThroughputModalIsOpen, setEditThroughputModalIsOpen] = useState(false);
 
   async function SubmitUpdateThroughput(companyId: string, initiativeId: string, dataList: ThroughputData[], emptyDataCheck: boolean = true) : Promise<boolean>
   {
@@ -55,7 +56,7 @@ export function InitiativeActionsMenu(props: InitiativeActionsMenuProps)
     if(validation.success)
     {
       await dispatch(upsertThroughputData({companyId: companyId, initiativeId: initiativeId, itemsCompletedOnDate: dataList, isTest: isTest}));
-      setThroughputModalIsOpen(false);
+      setUploadThroughputModalIsOpen(false);
       enqueueSnackbar("Throughput data changes have been saved.", {variant:'success'});
       return true;
     }
@@ -100,20 +101,20 @@ export function InitiativeActionsMenu(props: InitiativeActionsMenuProps)
           </Button>
         </MenuItem>
         <MenuItem onClick={handleClose}>
-          <Button data-cy={props.cypressData.uploadThroughputButton} onClick={() => setThroughputModalIsOpen(true)}>
+          <Button data-cy={props.cypressData.uploadThroughputButton} onClick={() => setUploadThroughputModalIsOpen(true)}>
             Upload Throughput
           </Button>
         </MenuItem>
         <MenuItem onClick={handleClose}>
-          <Button data-cy={props.cypressData.editThroughputButton} onClick={() => setThroughputModalIsOpen(true)}>
+          <Button data-cy={props.cypressData.editThroughputButton} onClick={() => setEditThroughputModalIsOpen(true)}>
             Edit Throughput
           </Button>
         </MenuItem>
       </Menu>
       <DecisionDataModal title='View Decision Data' isOpen={viewDecisionDataIsOpen} setDecisionModalIsOpen={setViewDecisionDataIsOpen} initiative={props.initiative} company={props.company} isAdmin={props.isAdmin}/>
       <DocumentManagementModal isOpen={documentModalIsOpen} setIsOpen={setDocumentModalIsOpen} company={props.company} initiative={props.initiative} isAdmin={props.isAdmin} />
-      <UploadThroughputModal company={props.company} initiative={props.initiative} uploadIsOpen={throughputModalIsOpen} setUploadIsOpen={setThroughputModalIsOpen} Submit={SubmitUpdateThroughput}/>
-      {/*<EditThroughputModal company={props.company} initiative={props.initiative}/>*/}
+      <UploadThroughputModal company={props.company} initiative={props.initiative} uploadIsOpen={uploadThroughputModalIsOpen} setUploadIsOpen={setUploadThroughputModalIsOpen} Submit={SubmitUpdateThroughput}/>
+      <EditThroughputModal allCompanies={props.allCompanies} company={props.company} initiative={props.initiative} editIsOpen={editThroughputModalIsOpen} setEditIsOpen={setEditThroughputModalIsOpen} Submit={SubmitUpdateThroughput}/>
     </>
   )
 }
