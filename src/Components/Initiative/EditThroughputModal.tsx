@@ -191,7 +191,7 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
           <IconButton data-cy={EditThroughputIds.addNewEntryButton} disabled={InEditMode()} onClick={() => AddItem()}>
             <AddIcon fontSize="large"/>
           </IconButton>
-          <DateInput cypressData={EditThroughputIds.addDate} disabled={InEditMode()} date={currentDate} setDate={setCurrentDate}/>
+          <DateInput cypressData={EditThroughputIds.addDate} label={"New Data Date"} disabled={InEditMode()} date={currentDate} setDate={setCurrentDate}/>
         </div>
         <div className="outline outline-[#879794] rounded space-y-2 p-2">
           <div>
