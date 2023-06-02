@@ -185,15 +185,15 @@ export function ClientPage()
 
   return (
     <>
-      <div className="flex col-span-4 bg-[#21355B] py-6 px-5 rounded-xl">
+      <div className="flex col-span-4 bg-[#21355B] py-6 px-5 rounded-md">
         <div className="w-full flex justify-between">
           <div className="space-y-2 w-1/2">
-            <p className="text-5xl text-white font-bold w-full">Client Management</p>
+            <p className="text-[2.2vw] text-white font-bold w-full">Client Management</p>
           </div>
         </div>
       </div>
       <div className="mx-[2%] mb-[2%]">
-        <div className="flex flex-col justify-between mt-5">
+        <div className="flex flex-col justify-content:space-between">
           <Box sx={{ display: 'flex',
               justifyContent: 'space-between',
               flexDirection: 'row',
@@ -210,32 +210,36 @@ export function ClientPage()
                   </InputAdornment>
                 ),
               }} />
-            {allCompanies.length !== 0 && !IsReadOnly() &&
-              <IconButton disabled={InEditMode()} data-cy={ClientPageIds.addClientButton} onClick={() => HandleAddEmptyClient()}>
-                <AddIcon fontSize="large"/>
-              </IconButton>
-            }
               <RadioSet dark={true} setter={setRadioValue} name="clientPage" options={[
               {cypressData: ClientPageIds.radioIds.all, label: "Show All", value: "all"},
               {cypressData: ClientPageIds.radioIds.active, label: "Active", value: "active", default: true},
               {cypressData: ClientPageIds.radioIds.inactive, label: "Inactive", value: "inactive"}
             ]} />
-            </Box> 
+            </Box>
+            {allCompanies.length !== 0 && !IsReadOnly() &&
+            <Box sx={{ display: 'flex',
+              justifyContent: 'flex-end',
+              }}> 
+              <IconButton disabled={InEditMode()} data-cy={ClientPageIds.addClientButton} onClick={() => HandleAddEmptyClient()}>
+                <AddIcon fontSize="large"/>
+              </IconButton>
+              </Box>
+            }
           </div>
         <div className="col-span-1 py-2">
           <TableContainer elevation={12} component={Paper}>
             <Table className="table-auto w-full outline outline-3 bg-gray-100">
             <colgroup>
-                <col style={{ width: '25%' }} />
-                <col style={{ width: '25%' }} />
-                <col style={{ width: '10%' }} />
-                <col style={{ width: '15%' }} />
+                <col style={{ width: '25vw' }} />
+                <col style={{ width: '25vw' }} />
+                <col style={{ width: '10vw' }} />
+                <col style={{ width: '15vw' }} />
             </colgroup>
               <TableHead className="outline outline-1">
                 <TableRow sx={{
                   borderBottom: "2px solid black",
                     "& th": {
-                    fontSize: "1.25rem",
+                    fontSize: "1.4vw",
                     fontWeight: "bold",
                     fontFamily: "Arial, Helvetica"
                   }
@@ -258,7 +262,7 @@ export function ClientPage()
                     <TableRow className={defaultRowStyle} sx={{
                       borderBottom: "1px solid black",
                       "& td": {
-                        fontSize: "1.1rem",
+                        fontSize: "1vw",
                         fontFamily: "Arial, Helvetica",
                         color: "#21345b"
                       }

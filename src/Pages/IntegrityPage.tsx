@@ -101,10 +101,10 @@ export function IntegrityPage(){
 
   return (
     <>
-      <div className="flex col-span-4 bg-[#21355B] py-6 px-5 rounded-xl">
+      <div className="flex col-span-4 bg-[#21355B] py-6 px-5 rounded-md">
         <div className="w-full flex justify-between">
           <div className="space-y-2 w-1/2">
-            <p className="text-5xl text-white font-bold w-full">Developer Management</p>
+            <p className="text-[2.2vw] text-white font-bold w-full">Developer Management</p>
           </div>
         </div>
       </div>
@@ -128,10 +128,13 @@ export function IntegrityPage(){
                   </InputAdornment>
                 ),
               }} />
+              </Box>
+              <Box sx={{ display: 'flex',
+                justifyContent: 'flex-end',
+                }}>  
               <IconButton disabled={InEditMode()} data-cy={IntegrityPageIds.addButton} onClick={() => AddEmptyUser(IntegrityId)}>
                 <AddIcon fontSize="large"/>
               </IconButton>
-              
               </Box>
            </div> 
         }
@@ -139,20 +142,20 @@ export function IntegrityPage(){
           <TableContainer elevation={12} component={Paper}>
             <Table className="table-auto w-full outline outline-3 bg-gray-100">
             <colgroup>
-                <col style={{ width: '17%' }} />
-                <col style={{ width: '17%' }} />
-                <col style={{ width: '17%' }} />
-                <col style={{ width: '10%' }} />
-                <col style={{ width: '8%' }} />
-                <col style={{ width: '10%' }} />
-                <col style={{ width: '6%' }} />
-                <col style={{ width: '7%' }} />
+                <col style={{ width: '17vw' }} />
+                <col style={{ width: '17vw' }} />
+                <col style={{ width: '17vw' }} />
+                <col style={{ width: '10vw' }} />
+                <col style={{ width: '8vw' }} />
+                <col style={{ width: '10vw' }} />
+                <col style={{ width: '6vw' }} />
+                <col style={{ width: '7vw' }} />
             </colgroup>
               <TableHead className="outline outline-1">
                 <TableRow sx={{
                   borderBottom: "2px solid black",
                     "& th": {
-                    fontSize: "1.25rem",
+                    fontSize: "1.4vw",
                     fontWeight: "bold",
                     fontFamily: "Arial, Helvetica"
                   }
@@ -175,7 +178,7 @@ export function IntegrityPage(){
                     <TableRow className={defaultRowStyle} sx={{
                       borderBottom: "1px solid black",
                       "& td": {
-                        fontSize: "1.1rem",
+                        fontSize: "1vw",
                         fontFamily: "Arial, Helvetica",
                         color: "#21345b"
                       }

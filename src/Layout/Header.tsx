@@ -35,7 +35,7 @@ export default function Header(){
 
   return(
   <div className="mr-[1%] ml-[1%] flex">
-    <div className="flex w-[25%] min-h-[100%] h-auto">
+    <div className="flex w-[25%] direction='row' alignItems='center'">
       <NavPanel />
       <Link to={imageLink}>
         <img className="h-[50%] mt-7 mx-10" src={logo} alt='Integrity Inspired Solutions Logo'/>

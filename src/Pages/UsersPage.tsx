@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { User, getUserById, selectAllUsers, selectCurrentUser } from "../Store/UserSlice";
 import { Company, IntegrityId, selectAllCompanies } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
-import { Box, Checkbox, FormControl, IconButton, Input, InputAdornment, InputLabel, MenuItem, Select} from "@mui/material";
+import { Box, Checkbox, Container, FormControl, Grid, IconButton, Input, InputAdornment, InputLabel, MenuItem, Select} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
@@ -123,23 +123,23 @@ export default function UsersPage(){
   }, [allUsers, radioValue])
 
   return (
-      <><div className="flex col-span-4 bg-[#21355B] py-6 px-5 rounded-xl">
+      <><div className="flex col-span-4 bg-[#21355B] py-6 px-5 rounded-md">
       <div className="w-full flex justify-between">
         <div className="space-y-2 w-1/2">
-          <p className="text-5xl text-white font-bold w-full">User Management</p>
+          <p className="text-[2.2vw] text-white font-bold w-full">User Management</p>
         </div>
       </div>
     </div>
-    <div className="mx-[2%] mb-[2%]">
-        <div className="flex flex-col justify-between mt-5">
-        <Box sx={{ display: 'flex',
+     <div className="mx-[2%] mb-[2%]">
+        <div className="flex flex-col justify-content:space-between">
+         <Box sx={{ display: 'flex',
               justifyContent: 'space-between',
               flexDirection: 'row',
               p: 1,
               mr: 25,
               mt: 2,
               mb: 1,
-              borderRadius: 1, }}>
+              borderRadius: 1, }}> 
             <UserTextField data-cy={UsersPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name or email" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)}
               InputProps={{
                 startAdornment: (
@@ -148,43 +148,47 @@ export default function UsersPage(){
                   </InputAdornment>
                 ),
               }} />
+              <RadioSet dark={true} setter={setRadioValue} name="userPage" options={[
+              { cypressData: UsersPageIds.radioIds.all, label: "Show All", value: "all" },
+              { cypressData: UsersPageIds.radioIds.active, label: "Active", value: "active", default: true },
+              { cypressData: UsersPageIds.radioIds.inactive, label: "Inactive", value: "inactive" }
+            ]} />
+            </Box>
+            <Box sx={{ display: 'flex',
+              justifyContent: 'flex-end',
+              }}> 
             {companyUsers.length !== 0 &&
               currentUserCompanyId !== IntegrityId &&
               <IconButton disabled={InEditMode()} data-cy={UsersPageIds.addButton} onClick={() => AddEmptyUser(currentUserCompanyId)}>
                 <AddIcon fontSize="large"/>
               </IconButton>
-              }
+            }
             {companyUsers.length !== 0 &&
               currentUserCompanyId === IntegrityId &&
               <IconButton disabled={InEditMode()} data-cy={UsersPageIds.addButton} onClick={() => AddEmptyUser("")}>
                 <AddIcon  fontSize="large"/>
               </IconButton>
               }
-            <RadioSet dark={true} setter={setRadioValue} name="userPage" options={[
-              { cypressData: UsersPageIds.radioIds.all, label: "Show All", value: "all" },
-              { cypressData: UsersPageIds.radioIds.active, label: "Active", value: "active", default: true },
-              { cypressData: UsersPageIds.radioIds.inactive, label: "Inactive", value: "inactive" }
-            ]} />
-            </Box>
-          </div>
-            <div className="col-span-1 py-2">
+            </Box>           
+           </div>
+             <div className="col-span-1 py-2">
               <TableContainer elevation={12} component={Paper}>
                 <Table className="table-auto w-full outline outline-3 bg-gray-100">
                   <colgroup>
-                    <col style={{ width: '17%' }} />
-                    <col style={{ width: '16%' }} />
-                    <col style={{ width: '17%' }} />
-                    <col style={{ width: '10%' }} />
-                    <col style={{ width: '10%' }} />
-                    <col style={{ width: '8%' }} />
-                    <col style={{ width: '6%' }} />
-                    <col style={{ width: '7%' }} />
+                    <col style={{ width: '17vw' }} />
+                    <col style={{ width: '16vw' }} />
+                    <col style={{ width: '17vw' }} />
+                    <col style={{ width: '10vw' }} />
+                    <col style={{ width: '10vw' }} />
+                    <col style={{ width: '8vw' }} />
+                    <col style={{ width: '6vw' }} />
+                    <col style={{ width: '7vw' }} />
                   </colgroup>
                   <TableHead className="outline outline-1">
                     <TableRow sx={{
                       borderBottom: "2px solid black",
                       "& th": {
-                        fontSize: "1.25rem",
+                        fontSize: "1.4vw",
                         fontWeight: "bold",
                         fontFamily: "Arial, Helvetica"
                       }
@@ -213,7 +217,7 @@ export default function UsersPage(){
                             <TableRow className={defaultRowStyle} key={key} sx={{
                               borderBottom: "1px solid black",
                               "& td": {
-                                fontSize: "1.1rem",
+                                fontSize: "1vw",
                                 fontFamily: "Arial, Helvetica",
                                 color: "#21345b"
                               }

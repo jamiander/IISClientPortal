@@ -342,7 +342,7 @@ export default function InitiativesTable(props: InitiativesProps) {
   return (
     <>
       <div className="grid grid-cols-1 w-full h-auto">
-        <div className="col-span-1 h-[4vh] pb-4 space-x-4 mb-4">
+        <div className="col-span-1 h-[4vh] pb-4 space-x-4 mb-10">
           <input data-cy={InitiativeTableIds.companyNameFilter} className={inputStyle} type={'text'} placeholder="Filter by Company" value={searchedComp} onChange={(e) => setSearchedComp(e.target.value)} />
           <input data-cy={InitiativeTableIds.initiativeTitleFilter} className={inputStyle} type={'text'} placeholder="Filter by Title" value={searchedInit} onChange={(e) => setSearchedInit(e.target.value)} />
         </div>
@@ -351,23 +351,23 @@ export default function InitiativesTable(props: InitiativesProps) {
           <TableContainer elevation={12} component={Paper}>
             <Table className="table-auto w-full outline outline-3 bg-gray-100">
               <colgroup>
-                <col style={{ width: '15%' }} />
-                <col style={{ width: '15%' }} />
-                <col style={{ width: '13%' }} />
-                <col style={{ width: '13%' }} />
-                <col style={{ width: '7%' }} />
-                <col style={{ width: '9%' }} />
-                <col style={{ width: '12%' }} />
-                <col style={{ width: '3%' }} />
+                <col style={{ width: '15vw' }} />
+                <col style={{ width: '15vw' }} />
+                <col style={{ width: '13vw' }} />
+                <col style={{ width: '13vw' }} />
+                <col style={{ width: '7vw' }} />
+                <col style={{ width: '9vw' }} />
+                <col style={{ width: '12vw' }} />
+                <col style={{ width: '3vw' }} />
                 {isAdmin &&
-                  <col style={{ width: '3%' }} />
+                  <col style={{ width: '3vw' }} />
                 }
               </colgroup>
               <TableHead className="outline outline-1">
                 <TableRow sx={{
                   borderBottom: "2px solid black",
                   "& th": {
-                    fontSize: "1.25rem",
+                    fontSize: "1.4vw",
                     fontWeight: "bold",
                     fontFamily: "Arial, Helvetica"
                   }
@@ -410,7 +410,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                       <TableRow key={index} className={healthIndicator} sx={{
                         borderBottom: "1px solid black",
                         "& td": {
-                          fontSize: "1.1rem",
+                          fontSize: "1vw",
                           fontFamily: "Arial, Helvetica",
                           color: "#21345b"
                         }

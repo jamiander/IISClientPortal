@@ -31,9 +31,9 @@ function App() {
 
   return (
     <div className='gap-1 bg-[#FAB947]'>
-      <div className='bg-[#E4E1E5] h-fit mt-1 mx-1 py-1'><Header/></div>
-      <div className='contents bg-white mx-1'>
-        <div className={'bg-[#E4E1E5] md:min-h-[85vh] lg:min-h[78vh] mx-1'}>
+      <div className='bg-[#E4E1E5] h-[2%] mt-1 mx-1 py-1 rounded-md'><Header/></div>
+      <div className='contents mx-1 bg-[#E4E1E5]'>
+        <div className={'bg-[#E4E1E5] min-h-[80vh] rounded-md mt-2'}>
           <Content ShowToast={ShowToast}/>
           <Toast toastList={toastList} />
           <SnackbarProvider maxSnack={1} anchorOrigin={{
@@ -42,7 +42,7 @@ function App() {
           }}/>
         </div>
       </div>
-      <div className='bg-[#21345b] text-white h-fit mb-1 mx-1'><Footer/></div>
+      <div className='bg-[#21345b] text-white h-fit mb-1 mx-1 rounded-md'><Footer/></div>
     </div>
   );
 }

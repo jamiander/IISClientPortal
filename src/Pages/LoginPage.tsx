@@ -60,18 +60,18 @@ export default function LoginPage(){
 
   return (
     <>
-      <div className="h-fit ml-30 mr-30 py-6 px-5 rounded-lg bg-[#21355B] m-5">
-        <p className="text-center text-4xl text-white">Welcome to the Integrity Inspired Solutions Client Portal!</p>
+      <div className="h-fit ml-30 mr-30 py-6 px-5 rounded-lg bg-[#21355B]">
+        <p className="text-center text-3xl text-white">Welcome to the Integrity Inspired Solutions Client Portal!</p>
         <p className="text-center text-xl text-white mt-2">To view the information on your project, please log in.</p>
         <p className="w-full text-center text-white text-xl">
           If you are looking for the Integrity Inspired Solutions website, please see&nbsp;
           <a className="text-blue-600 visited:text-[#00C4FF] underline" href="https://www.integrityinspired.com/">here.</a>
         </p>
       </div>
-      <Container component="main" maxWidth="xs" className="bg-gray-100 pt-4 pb-6 px-6 mt-20 rounded-md">
+      <Container component="main" maxWidth="xs" className="bg-gray-100 py-4 px-6 mt-[1%] mb=[1%] rounded-md">
       <Box
         sx={{
-          marginTop: 5,
+          marginTop: 4,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",

@@ -4,7 +4,7 @@ import { selectCurrentUser, selectIsLoggedIn } from "../Store/UserSlice"
 import { enqueueSnackbar } from "notistack"
 import { IntegrityId } from "../Store/CompanySlice"
 import { useState } from "react"
-import { IconButton, Menu } from "@mui/material"
+import { Container, IconButton, Menu } from "@mui/material"
 import MenuIcon from '@mui/icons-material/Menu';
 import { current } from "@reduxjs/toolkit"
 
@@ -55,7 +55,7 @@ export default function NavPanel(){
   return(
     <div className="ml-8 space-x-2 flex flex-wrap mt-4 mb-4">
     {(currentUser?.isAdmin || currentUser?.companyId === IntegrityId) && currentUser?.isActive === true &&
-    <IconButton className="text-2xl"
+    <IconButton className="text-xl"
           id="basic-button"
           data-cy={NavPanelIds.menuButton}
           aria-controls={open ? 'basic-menu' : undefined}
@@ -67,34 +67,34 @@ export default function NavPanel(){
     </IconButton>
     }
         <Menu id="basic-menu"
-          className="sm:w-[15%] md:w-[22%] rounded-lg"
+          className="w-[28vw] rounded-lg"
           anchorEl={anchorEl}
           open={open}
           onClose={handleClose}
           MenuListProps={{
             'aria-labelledby': "basic-button",
           }}>
-            <button style={{ fontSize: '20px', marginTop: '30px', marginBottom: '10px', marginLeft: '20px', paddingBottom: '5px', textAlign: "left" }} data-cy={NavPanelIds.initiatives} className={GetNavStyle("/Initiatives")}
+            <button style={{ fontSize: '1.2vw', marginTop: '30px', marginBottom: '10px', marginLeft: '20px', paddingBottom: '5px', textAlign: "left" }} data-cy={NavPanelIds.initiatives} className={GetNavStyle("/Initiatives")}
               onClick={() => NavHandler('/Initiatives')}>
-              <i className="material-icons" style={{ fontSize: '30px', marginRight: '25px' }}>info_outline</i>
+              <i className="material-icons" style={{ fontSize: '1.6vw', marginRight: '25px' }}>info_outline</i>
               Initiative Management
             </button>
             {currentUser?.isAdmin && currentUser?.isActive &&
-              <button style={{ fontSize: '20px', marginTop: '30px', marginBottom: '10px', marginLeft: '20px', paddingBottom: '5px', textAlign: "left" }} data-cy={NavPanelIds.users} className={GetNavStyle("/Users")}
+              <button style={{ fontSize: '1.2vw', marginTop: '30px', marginBottom: '10px', marginLeft: '20px', paddingBottom: '5px', textAlign: "left" }} data-cy={NavPanelIds.users} className={GetNavStyle("/Users")}
                 onClick={() => NavHandler('/Users')}>
-                <i className="material-icons" style={{ fontSize: '30px', marginRight: '25px' }}>person_outline</i>
+                <i className="material-icons" style={{ fontSize: '1.6vw', marginRight: '25px' }}>person_outline</i>
                 User Management
               </button>}
             {currentUser?.isAdmin && currentUser?.isActive && currentUser?.companyId === IntegrityId &&
-              <button style={{ fontSize: '20px', marginTop: '30px', marginBottom: '10px', marginLeft: '20px', paddingBottom: '5px', textAlign: "left" }} data-cy={NavPanelIds.integrity} className={GetNavStyle("/Integrity")}
+              <button style={{ fontSize: '1.2vw', marginTop: '30px', marginBottom: '10px', marginLeft: '20px', paddingBottom: '5px', textAlign: "left" }} data-cy={NavPanelIds.integrity} className={GetNavStyle("/Integrity")}
                 onClick={() => NavHandler('/Integrity')}>
-                <i className="material-icons" style={{ fontSize: '30px', marginRight: '25px' }}>keyboard</i>
+                <i className="material-icons" style={{ fontSize: '1.6vw', marginRight: '25px' }}>keyboard</i>
                 Developer Management
               </button>}
             {currentUser?.isActive && currentUser?.companyId === IntegrityId &&
-              <button style={{ fontSize: '20px', marginTop: '30px', marginBottom: '30px', marginLeft: '20px', paddingBottom: '5px', textAlign: "left" }} data-cy={NavPanelIds.client} className={GetNavStyle("/ClientPage")}
+              <button style={{ fontSize: '1.2vw', marginTop: '30px', marginBottom: '30px', marginLeft: '20px', paddingBottom: '5px', textAlign: "left" }} data-cy={NavPanelIds.client} className={GetNavStyle("/ClientPage")}
                 onClick={() => NavHandler('/ClientPage')}>
-                <i className="material-icons" style={{ fontSize: '30px', marginRight: '25px' }}>manage_accounts</i>
+                <i className="material-icons" style={{ fontSize: '1.6vw', marginRight: '25px' }}>manage_accounts</i>
                 Client Management
               </button>}
           </Menu>
