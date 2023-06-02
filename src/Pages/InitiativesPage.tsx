@@ -68,10 +68,12 @@ export default function InitiativesPage(){
               { cypressData: InitiativeDisplayRadioIds.all, label: "Show All", value: "all" },
               { cypressData: InitiativeDisplayRadioIds.active, label: "Active", value: "active", default: true },
               { cypressData: InitiativeDisplayRadioIds.inactive, label: "Inactive", value: "inactive" }
-            ]} />          
-            <IconButton data-cy={InitiativesPageIds.addInitiativeButton} onClick={() => setAddInitiative(true)}>
-              <AddIcon fontSize="large"/>
-            </IconButton>
+            ]} />
+            {currentUser?.isAdmin &&
+              <IconButton data-cy={InitiativesPageIds.addInitiativeButton} onClick={() => setAddInitiative(true)}>
+                <AddIcon fontSize="large"/>
+              </IconButton>
+            }
           </Box>
          </div>
          {companyList.length > 0 &&

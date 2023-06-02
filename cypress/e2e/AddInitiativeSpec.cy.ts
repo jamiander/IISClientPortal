@@ -1,4 +1,4 @@
-import { AdminUser, IntegrityUser, MBPICompany, MBPIUser, TestConstants } from "./TestHelpers";
+import { AdminUser, IntegrityUser, MBPIAdminUser, MBPICompany, MBPIUser, TestConstants } from "./TestHelpers";
 
 const consts = TestConstants;
 const failMessage = consts.validationFailedMessage;
@@ -18,7 +18,7 @@ const init = {
 
 describe('add initiative spec', () => {
   
-  const user = MBPIUser;
+  const user = MBPIAdminUser;
 
   beforeEach(() => {
     cy.login(user);
