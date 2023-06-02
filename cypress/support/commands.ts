@@ -59,6 +59,10 @@ Cypress.Commands.add("muiSelect", {prevSubject: true}, (subject: Cypress.Chainab
   return cy.wrap(subject).click().get(`ul > li[data-value="${selector}"]`).click();
 })
 
+Cypress.Commands.add('setDatePicker', (selector: string, dateString: string) => {
+  return cy.getByData(selector).find('input').type("{backspace}{leftArrow}{backspace}{leftArrow}{backspace}" + dateString);
+})
+
 Cypress.Commands.add('login', (user: UserLogin) => {
   cy.visit('Login');
   cy.getByData(loginIds.email).find('input').clear().type(user.email);
