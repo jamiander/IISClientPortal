@@ -10,7 +10,7 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { Dialog, IconButton, Paper } from "@mui/material";
+import { Dialog, IconButton, Paper, TablePagination } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
@@ -60,6 +60,21 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
   const [state, setState] = useState(stateEnum.start);
   const [throughputToEdit, setThroughputToEdit] = useState<ThroughputData>();
   const [throughputList, setThroughputList] = useState<ThroughputData[]>([]);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+
+  const handleChangePage = (
+    event: React.MouseEvent<HTMLButtonElement> | null,
+    newPage: number,
+  ) => {
+    setPage(newPage);
+  };
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
 
   useEffect(() => {
     setDateWarning("");
@@ -69,13 +84,19 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
   },[props.editIsOpen]);
 
   useEffect(() => {
-      const throughputClone = MakeClone(props.initiative.itemsCompletedOnDate);
-      throughputClone.sort((a:ThroughputData, b:ThroughputData) => CompareDateInfos(b.date,a.date));
-      setThroughputList(throughputClone);
+    const throughputClone = MakeClone(props.initiative.itemsCompletedOnDate);
+    throughputClone.sort((a:ThroughputData, b:ThroughputData) => CompareDateInfos(b.date,a.date));
+    setThroughputList(throughputClone);
   },[props.initiative]);
 
   function AddItem()
   {
+    function CorrectPageOnAdd(throughputIndex: number)
+    {
+      const newPage = Math.floor(throughputIndex/rowsPerPage);
+      setPage(newPage);
+    }
+
     const validation = ValidateCompanyAndInitiative(props.allCompanies, props.company.id, props.initiative.id);
     if(validation.success)
     {
@@ -85,19 +106,27 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
         const throughputClone = MakeClone(props.initiative.itemsCompletedOnDate);
         if(throughputClone)
         {
-          const matchingThroughput = throughputClone.find(t => EqualDateInfos(t.date,currentDate));
-          if(matchingThroughput === undefined)
+          let matchingThroughputIndex = throughputClone.findIndex(t => EqualDateInfos(t.date,currentDate));
+          if(matchingThroughputIndex <= -1)
           {
             let newItem: ThroughputData = {date: currentDate, itemsCompleted: 1};
             
             throughputClone.unshift(newItem);
             throughputClone.sort((a:ThroughputData, b:ThroughputData) => CompareDateInfos(b.date,a.date));
+            const newIndex = throughputClone.findIndex(t => t.date === newItem.date);
+            CorrectPageOnAdd(newIndex);
+
             setThroughputList(throughputClone);
             EnterEditMode(newItem.date, throughputClone, true);
           }
           else
           {
-            EnterEditMode(matchingThroughput.date, throughputClone, false);
+            throughputClone.sort((a:ThroughputData, b:ThroughputData) => CompareDateInfos(b.date,a.date));
+            const newIndex = throughputClone.findIndex(t => EqualDateInfos(t.date,currentDate));
+            CorrectPageOnAdd(newIndex);
+
+            setThroughputList(throughputClone);
+            EnterEditMode(currentDate, throughputClone, false);
           }
 
           setTimeout(() => {
@@ -120,7 +149,7 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
   {
     if(!InEditMode())
     {
-      let currentThroughput = throughputs.find(i => i.date === date);
+      let currentThroughput = throughputs.find(i => EqualDateInfos(i.date, date));
       if(currentThroughput)
       {
         setState(isNew ? stateEnum.add : stateEnum.edit);
@@ -166,10 +195,9 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
     }
   }
 
-  function Close()
-  {
-    props.setEditIsOpen(false);
-  }
+  const indexOfLastItem = (page+1) * rowsPerPage;
+  const indexOfFirstItem = indexOfLastItem - rowsPerPage;
+  const currentThroughputList = throughputList.slice(indexOfFirstItem, indexOfLastItem);
 
   const throughputRef = useRef<HTMLElement>(null);
   
@@ -194,9 +222,6 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
           <DateInput cypressData={EditThroughputIds.addDate} label={"New Data Date"} disabled={InEditMode()} date={currentDate} setDate={setCurrentDate}/>
         </div>
         <div className="outline outline-[#879794] rounded space-y-2 p-2">
-          <div>
-            <p className="text-2xl">Edit Data</p>
-          </div>
           <div className="rounded overflow-y-auto max-h-60">
             <TableContainer component={Paper} >
               <Table className="table-auto text-[#21345b] w-full outline outline-3 bg-gray-100">
@@ -206,16 +231,16 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
                               "& th": {
                                 fontSize: "1.1rem",
                                 fontWeight: "bold",
-                                fontFamily: "Arial, Helvetica" 
+                                fontFamily: "Arial, Helvetica"
                               }
                             }}>
-                    <TableHeaderStyle>Edit</TableHeaderStyle>
                     <TableHeaderStyle>Date</TableHeaderStyle>
                     <TableHeaderStyle>Items Completed</TableHeaderStyle>
+                    <TableHeaderStyle>Edit</TableHeaderStyle>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {throughputList.map((throughput, key) => {
+                  {currentThroughputList.map((throughput, key) => {
                     let isEdit = InEditMode() && EqualDateInfos(throughput.date,throughputToEdit?.date ?? invalidDate);
                     return (
                       <TableRow key={key} className={defaultRowStyle} sx={{
@@ -227,14 +252,6 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
                         }}>
                         {isEdit ?
                           <>
-                            <TableCell ref={throughputRef}>
-                              <IconButton data-cy={EditThroughputIds.saveChangesButton} onClick={() => SaveEdit()}>
-                                <DoneIcon />
-                              </IconButton>
-                              <IconButton data-cy={EditThroughputIds.cancelChangesButton} onClick={() => CancelEdit()}>
-                                <CancelIcon />
-                              </IconButton>
-                            </TableCell>
                             <TableCell className="border border-spacing-x-0 border-y-gray-700">
                               {
                                 <p className="px-2 w-full bg-inherit focus:outline-none" data-cy={EditThroughputIds.tableDate}>{throughput.date.month + "/" + throughput.date.day + "/" + throughput.date.year}</p> 
@@ -244,19 +261,27 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
                               <input className="px-2 w-full bg-inherit focus:outline-none" data-cy={EditThroughputIds.tableItemsComplete} type="number" min="0" value={currentItems}
                               onChange={(e) => setCurrentItems(parseInt(e.target.value))}/>
                             </TableCell>
+                            <TableCell ref={throughputRef}>
+                              <IconButton data-cy={EditThroughputIds.saveChangesButton} onClick={() => SaveEdit()}>
+                                <DoneIcon />
+                              </IconButton>
+                              <IconButton data-cy={EditThroughputIds.cancelChangesButton} onClick={() => CancelEdit()}>
+                                <CancelIcon />
+                              </IconButton>
+                            </TableCell>
                           </>
                           :
                           <>
-                            <TableCell>
-                            <IconButton data-cy={EditThroughputIds.editButton} disabled={InEditMode()} onClick={() => EnterEditMode(throughput.date, throughputList, false)}>
-                              <EditIcon />
-                            </IconButton>
-                            </TableCell>
                             <TableCell className="border border-spacing-x-0 border-y-gray-700">
                               <p className="px-2 w-full bg-inherit focus:outline-none" data-cy={EditThroughputIds.tableDate}>{throughput.date.month + "/" + throughput.date.day + "/" + throughput.date.year}</p> 
                             </TableCell>
                             <TableCell className={tooltipStyle}>
                               <input disabled className="px-2 w-full bg-inherit focus:outline-none" data-cy={EditThroughputIds.tableItemsComplete} type="number" min="0" value={throughput.itemsCompleted}/>
+                            </TableCell>
+                            <TableCell>
+                              <IconButton data-cy={EditThroughputIds.editButton} disabled={InEditMode()} onClick={() => EnterEditMode(throughput.date, throughputList, false)}>
+                                <EditIcon />
+                              </IconButton>
                             </TableCell>
                           </>
                         }
@@ -267,6 +292,15 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
               </Table>
             </TableContainer>
           </div>
+          <TablePagination
+            component="div"
+            count={throughputList.length}
+            page={page}
+            rowsPerPage={rowsPerPage}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+            rowsPerPageOptions={[5, 10, 25, 50]}
+          />
         </div>
       </div>
     </Dialog>
