@@ -155,7 +155,7 @@ export function IntegrityPage(){
                 <TableRow sx={{
                   borderBottom: "2px solid black",
                     "& th": {
-                    fontSize: "1.4vw",
+                    fontSize: "1.2vw",
                     fontWeight: "bold",
                     fontFamily: "Arial, Helvetica"
                   }
@@ -196,10 +196,10 @@ export function IntegrityPage(){
                         <TableCell data-cy={IntegrityPageIds.initiativeIds}></TableCell>
                         <TableCell>
                           <IconButton data-cy={IntegrityPageIds.saveChangesButton} onClick={() => SaveEdit()}>
-                            <DoneIcon />
+                            <DoneIcon sx={{ fontSize: "1.3vw" }}/>
                           </IconButton>
                           <IconButton data-cy={IntegrityPageIds.cancelChangesButton} onClick={() => CancelEdit()}>
-                            <CancelIcon />
+                            <CancelIcon sx={{ fontSize: "1.3vw" }}/>
                           </IconButton>
                         </TableCell>
                       </>
@@ -214,7 +214,7 @@ export function IntegrityPage(){
                         <TableCell data-cy={IntegrityPageIds.initiativeIds}><EditUserInitiativesButton user={displayItem} allCompanies={sortedCompanies} SubmitUserData={SubmitUserData} expanded={false}/></TableCell>
                         <TableCell>
                           <IconButton data-cy={IntegrityPageIds.editButton} disabled={InEditMode()} onClick={() => EnterEditMode(displayItem.id, integrityUsers, false)}>
-                            <EditIcon />
+                            <EditIcon sx={{ fontSize: "1.3vw" }}/>
                           </IconButton>
                         </TableCell>
                       </>

@@ -188,7 +188,7 @@ export default function UsersPage(){
                     <TableRow sx={{
                       borderBottom: "2px solid black",
                       "& th": {
-                        fontSize: "1.4vw",
+                        fontSize: "1.2vw",
                         fontWeight: "bold",
                         fontFamily: "Arial, Helvetica"
                       }
@@ -250,10 +250,10 @@ export default function UsersPage(){
                                   <TableCell data-cy={UsersPageIds.initiativeIds}></TableCell>
                                   <TableCell>
                                     <IconButton data-cy={UsersPageIds.saveChangesButton} onClick={() => SaveEdit()}>
-                                      <DoneIcon />
+                                      <DoneIcon sx={{ fontSize: "1.3vw" }}/>
                                     </IconButton>
                                     <IconButton data-cy={UsersPageIds.cancelChangesButton} onClick={() => CancelEdit()}>
-                                      <CancelIcon />
+                                      <CancelIcon sx={{ fontSize: "1.3vw" }}/>
                                     </IconButton>
                                   </TableCell>
                                 </>
@@ -269,7 +269,7 @@ export default function UsersPage(){
                                   <TableCell data-cy={UsersPageIds.initiativeIds}><EditUserInitiativesButton user={companyUser} allCompanies={[displayCompany]} SubmitUserData={SubmitUserData} expanded={true} /></TableCell>
                                   <TableCell>
                                     <IconButton data-cy={UsersPageIds.editButton} disabled={InEditMode()} onClick={() => EnterEditMode(companyUser?.id, companyUsers, false)}>
-                                      <EditIcon />
+                                      <EditIcon sx={{ fontSize: "1.3vw" }}/>
                                     </IconButton>
                                   </TableCell>
                                 </>}

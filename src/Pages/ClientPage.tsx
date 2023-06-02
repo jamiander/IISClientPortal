@@ -240,7 +240,7 @@ export function ClientPage()
                 <TableRow sx={{
                   borderBottom: "2px solid black",
                     "& th": {
-                    fontSize: "1.4vw",
+                    fontSize: "1.2vw",
                     fontWeight: "bold",
                     fontFamily: "Arial, Helvetica"
                   }
@@ -299,10 +299,10 @@ export function ClientPage()
                         </TableCell>
                         <TableCell>
                           <IconButton data-cy={ClientPageIds.saveClientChangesButton} onClick={() => HandleSaveEdit()}>
-                            <DoneIcon />
+                            <DoneIcon sx={{ fontSize: "1.3vw" }}/>
                           </IconButton>
                           <IconButton data-cy={ClientPageIds.cancelClientChangesButton} onClick={() => HandleCancelEdit()}>
-                            <CancelIcon />
+                            <CancelIcon sx={{ fontSize: "1.3vw" }}/>
                           </IconButton>
                         </TableCell>
                       </>
@@ -318,7 +318,7 @@ export function ClientPage()
                         {!IsReadOnly() &&
                         <TableCell>
                           <IconButton data-cy={ClientPageIds.editClientButton} disabled={InEditMode()} onClick={() => EnterEditMode(displayItem.id, displayCompanies, false)}>
-                            <EditIcon />
+                            <EditIcon sx={{ fontSize: "1.3vw" }}/>
                           </IconButton>
                         </TableCell>
                         }
