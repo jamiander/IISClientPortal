@@ -4,7 +4,7 @@ import { InitiativeFilter } from "../../Services/Filters";
 import { Company, Initiative, IntegrityId, upsertInitiativeInfo } from "../../Store/CompanySlice";
 import { defaultRowStyle, greenProbabilityStyle, inputStyle, redProbabilityStyle, TableHeaderStyle, tooltipStyle, yellowButtonStyle } from "../../Styles";
 import { GenerateProbability } from "../../Services/ProbabilitySimulationService";
-import { DateInput, DateToDateInfo } from "../DateInput";
+import { DateInput } from "../DateInput";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -27,6 +27,7 @@ import { User, selectCurrentUser } from "../../Store/UserSlice";
 import { enqueueSnackbar } from "notistack";
 import ValidateNewInitiative, { ValidationFailedPrefix } from "../../Services/Validation";
 import { InitiativeActionsMenu } from "./InitiativeActionsMenu";
+import { DateToDateInfo } from "../../Services/DateHelpers";
 
 export const InitiativeTableIds = {
   table: "initiativesTable",
@@ -467,7 +468,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                             <TableCell data-cy={InitiativeTableIds.companyName}>{displayItem.company.name}</TableCell>
                             <TableCell data-cy={InitiativeTableIds.initiativeTitle}>{displayItem.title}</TableCell>
                             <TableCell data-cy={InitiativeTableIds.startDate}>{displayItem.startDate.month + "/" + displayItem.startDate.day + "/" + displayItem.startDate.year}</TableCell>
-                            <TableCell>{displayItem.targetDate.month + "/" + displayItem.targetDate.day + "/" + displayItem.targetDate.year}</TableCell>
+                            <TableCell data-cy={InitiativeTableIds.targetDate}>{displayItem.targetDate.month + "/" + displayItem.targetDate.day + "/" + displayItem.targetDate.year}</TableCell>
                             <TableCell data-cy={InitiativeTableIds.totalItems}>{displayItem.totalItems}</TableCell>
                             <TableCell data-cy={InitiativeTableIds.remainingItems}>{displayItem.itemsRemaining}</TableCell>
                             <TableCell className={tooltipStyle} title={tooltipMessage}>{probability.value === undefined ? "NA" : probability.value + "%"}

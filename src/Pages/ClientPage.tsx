@@ -1,5 +1,5 @@
 import { Box, IconButton, Input, InputAdornment, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
-import { TableHeaderStyle, UserTextField, defaultRowStyle, yellowButtonStyle } from "../Styles";
+import { TableHeaderStyle, UserTextField, defaultRowStyle } from "../Styles";
 import { useEffect, useState } from "react";
 import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
@@ -11,13 +11,14 @@ import { Company, Initiative, IntegrityId, selectAllCompanies, upsertCompanyInfo
 import { enqueueSnackbar } from "notistack";
 import { v4 } from "uuid";
 import ValidateNewInitiative, { ValidateCompany, Validation, ValidationFailedPrefix } from "../Services/Validation";
-import { DateInput, DateToDateInfo } from "../Components/DateInput";
+import { DateInput } from "../Components/DateInput";
 import { RadioSet } from "../Components/RadioSet";
 import { CompanyFilter } from "../Services/Filters";
 import { useNavigate } from "react-router-dom";
 import { DateInfo } from "../Services/CompanyService";
 import { DocumentManagementButton } from "../Components/Documents/DocumentManagementButton";
 import { selectCurrentUser } from "../Store/UserSlice";
+import { DateToDateInfo } from "../Services/DateHelpers";
 
 export const ClientPageIds = {
   modal: "clientPageModal",

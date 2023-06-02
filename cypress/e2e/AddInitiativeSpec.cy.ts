@@ -1,4 +1,4 @@
-import { AdminUser, IntegrityUser, MBPICompany, MBPIUser, TestConstants } from "./TestHelpers";
+import { AdminUser, IntegrityUser, MBPIAdminUser, MBPICompany, MBPIUser, TestConstants } from "./TestHelpers";
 
 const consts = TestConstants;
 const failMessage = consts.validationFailedMessage;
@@ -11,14 +11,14 @@ const pageIds = consts.initiativesPageIds;
 const init = {
   companyId: 0,
   title: "Integration Test Initiative",
-  startDate: "2020-01-01",
-  targetDate: "2023-01-03",
+  startDate: "01012020",//"2020-01-01",
+  targetDate: "01032023",//"2023-01-03",
   totalItems: "3"
 }
 
 describe('add initiative spec', () => {
   
-  const user = MBPIUser;
+  const user = MBPIAdminUser;
 
   beforeEach(() => {
     cy.login(user);
@@ -30,11 +30,11 @@ describe('add initiative spec', () => {
 
   specify('add new initiative',() => {
     cy.getByData(tableIds.editInitiativeTitle).clear().type(init.title);
-    cy.getByData(tableIds.editStartDate).clear().type(init.startDate);
-    cy.getByData(tableIds.editTargetDate).clear().type(init.targetDate);
+    cy.setDatePicker(tableIds.editStartDate,init.startDate);
+    cy.setDatePicker(tableIds.editTargetDate,init.targetDate);
     cy.getByData(tableIds.editTotalItems).clear().type(init.totalItems);
     cy.getByData(tableIds.saveChangesButton).click();
-    cy.getByData(tableIds.initiativeTitleFilter).type(init.title);
+    cy.getByData(tableIds.initiativeTitleFilter).type(init.title, {force:true});
     cy.getByData(tableIds.table).should('contain',init.title);
   })
 
@@ -42,13 +42,13 @@ describe('add initiative spec', () => {
     cy.getByData(tableIds.cancelChangesButton).click();
     cy.getByData(tableIds.table).children().first().then(($row) => {
 
-      cy.getByData(tableIds.initiativeTitle).invoke('text').then(($txt) => { 
+      cy.getByData(tableIds.initiativeTitle).first().invoke('text').then(($txt) => { 
         const existingInitTitle = $txt;
 
         cy.getByData(pageIds.addInitiativeButton).click({force: true}); //TODO
         cy.getByData(tableIds.editInitiativeTitle).clear().type(existingInitTitle);
-        cy.getByData(tableIds.editStartDate).clear().type(init.startDate);
-        cy.getByData(tableIds.editTargetDate).clear().type(init.targetDate);
+        cy.setDatePicker(tableIds.editStartDate,init.startDate);
+        cy.setDatePicker(tableIds.editTargetDate,init.targetDate);
         cy.getByData(tableIds.editTotalItems).clear().type(init.totalItems);
 
         cy.getByData(tableIds.saveChangesButton).click();
@@ -59,8 +59,8 @@ describe('add initiative spec', () => {
 
   specify('cannot add when a field is left blank', () => {
     cy.getByData(tableIds.editInitiativeTitle).clear().type(init.title);
-    cy.getByData(tableIds.editStartDate).clear().type(init.startDate);
-    cy.getByData(tableIds.editTargetDate).clear().type(init.targetDate);
+    cy.setDatePicker(tableIds.editStartDate, init.startDate);
+    cy.setDatePicker(tableIds.editTargetDate, init.targetDate);
     cy.getByData(tableIds.editTotalItems).clear().type(init.totalItems);
 
     cy.getByData(tableIds.editInitiativeTitle).clear();
@@ -68,13 +68,13 @@ describe('add initiative spec', () => {
     cy.get(snackbarId).should('contain',failMessage);
     cy.getByData(tableIds.editInitiativeTitle).type(init.title);
 
-    cy.getByData(tableIds.editStartDate).clear();
+    cy.setDatePicker(tableIds.editStartDate, "");
     cy.getByData(tableIds.saveChangesButton).click();
     cy.wait(snackbarWaitTime);
     cy.get(snackbarId).should('contain',failMessage);
-    cy.getByData(tableIds.editStartDate).type(init.startDate);
+    cy.getByData(tableIds.editStartDate).find('input').type(init.startDate);
 
-    cy.getByData(tableIds.editTargetDate).clear();
+    cy.setDatePicker(tableIds.editTargetDate, "");
     cy.getByData(tableIds.saveChangesButton).click();
     cy.wait(snackbarWaitTime);
     cy.get(snackbarId).should('contain',failMessage);
@@ -90,8 +90,8 @@ describe('add initiative spec', () => {
   specify('cannot have a target date before a start date', () => {
     cy.getByData(tableIds.editInitiativeTitle).clear().type(init.title);
     cy.getByData(tableIds.editTotalItems).clear().type(init.totalItems);
-    cy.getByData(tableIds.editStartDate).clear().type("2023-04-20");
-    cy.getByData(tableIds.editTargetDate).clear().type("2023-04-19");
+    cy.setDatePicker(tableIds.editStartDate,"04202023");//"2023-04-20");
+    cy.setDatePicker(tableIds.editTargetDate,"04192023");//"2023-04-19");
 
     cy.getByData(tableIds.saveChangesButton).click();
     cy.get(snackbarId).should('contain',failMessage);
@@ -99,8 +99,8 @@ describe('add initiative spec', () => {
 
   specify('cannot add when total items are negative', () => {
     cy.getByData(tableIds.editInitiativeTitle).clear().type(init.title);
-    cy.getByData(tableIds.editStartDate).clear().type(init.startDate);
-    cy.getByData(tableIds.editTargetDate).clear().type(init.targetDate);
+    cy.setDatePicker(tableIds.editStartDate,init.startDate);
+    cy.setDatePicker(tableIds.editTargetDate,init.targetDate);
     cy.getByData(tableIds.editTotalItems).clear().type(init.totalItems);
     cy.getByData(tableIds.editTotalItems).clear().type("-3");
     cy.getByData(tableIds.saveChangesButton).click();
@@ -112,8 +112,8 @@ describe('add initiative spec', () => {
 
   specify('close button closes the modal', () => {
     cy.getByData(tableIds.editInitiativeTitle).clear().type(init.title);
-    cy.getByData(tableIds.editStartDate).clear().type(init.startDate);
-    cy.getByData(tableIds.editTargetDate).clear().type(init.targetDate);
+    cy.setDatePicker(tableIds.editStartDate,init.startDate);
+    cy.setDatePicker(tableIds.editTargetDate,init.targetDate);
     cy.getByData(tableIds.editTotalItems).clear().type(init.totalItems);
     cy.getByData(tableIds.cancelChangesButton).click();
     cy.getByData(tableIds.table).should('not.contain',init.title);
@@ -134,14 +134,14 @@ describe('add initiatives as Integrity user', () => {
 
     cy.getByData(tableIds.companySelect).parent().muiSelect(company.id);
     cy.getByData(tableIds.editInitiativeTitle).clear().type(init.title);
-    cy.getByData(tableIds.editStartDate).clear().type(init.startDate);
-    cy.getByData(tableIds.editTargetDate).clear().type(init.targetDate);
+    cy.setDatePicker(tableIds.editStartDate,init.startDate);
+    cy.setDatePicker(tableIds.editTargetDate,init.targetDate);
     cy.getByData(tableIds.editTotalItems).clear().type(init.totalItems);
   });
 
   specify('add new initiative for a different company', () => {
     cy.getByData(tableIds.saveChangesButton).click();
-    cy.getByData(tableIds.initiativeTitleFilter).type(init.title);
+    cy.getByData(tableIds.initiativeTitleFilter).type(init.title, {force:true});
     cy.getByData(tableIds.table).should('contain',init.title);
   })
 })

@@ -61,6 +61,7 @@ export default function InitiativesPage(){
               { cypressData: InitiativeDisplayRadioIds.inactive, label: "Inactive", value: "inactive" }
             ]} />  
             </Box>
+            {currentUser?.isAdmin &&
             <Box sx={{ display: 'flex',
               justifyContent: 'flex-end',
               }}>        
@@ -68,6 +69,7 @@ export default function InitiativesPage(){
                   <AddIcon fontSize="large"/>
               </IconButton>
             </Box>
+            }
          </div>
          {companyList.length > 0 &&
           <InitiativesTable addInitiative={addInitiative} currentUser={currentUser} companyList={companyList} radioStatus={radioValue} ValidateInitiative={ValidateNewInitiative} setAddInitiative={setAddInitiative}/>}

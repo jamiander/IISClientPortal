@@ -8,10 +8,10 @@ import NavPanel from './Layout/NavPanel';
 import { useAppDispatch, useAppSelector } from './Store/Hooks';
 import { selectCurrentUserId } from './Store/UserSlice';
 import { SnackbarProvider } from 'notistack';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 function App() {
-  const dispatch = useAppDispatch();
-
   const emptyToast : ToastDetails[] = [];
   const [toastList, setToastList] = useState(emptyToast);
   const currentUserId = useAppSelector(selectCurrentUserId);
@@ -34,12 +34,14 @@ function App() {
       <div className='bg-[#E4E1E5] h-[2%] mt-1 mx-1 py-1 rounded-md'><Header/></div>
       <div className='contents mx-1 bg-[#E4E1E5]'>
         <div className={'bg-[#E4E1E5] min-h-[80vh] rounded-md mt-2'}>
-          <Content ShowToast={ShowToast}/>
-          <Toast toastList={toastList} />
-          <SnackbarProvider maxSnack={1} anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'center',
-          }}/>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <Content ShowToast={ShowToast}/>
+            <Toast toastList={toastList} />
+            <SnackbarProvider maxSnack={1} anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'center',
+            }}/>
+          </LocalizationProvider>
         </div>
       </div>
       <div className='bg-[#21345b] text-white h-fit mb-1 mx-1 rounded-md'><Footer/></div>

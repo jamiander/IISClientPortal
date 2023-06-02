@@ -2,8 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { DateInfo, ThroughputData } from "../../Services/CompanyService";
 import { Company, Initiative } from "../../Store/CompanySlice";
 import { cancelButtonStyle, defaultRowStyle, modalStyle, submitButtonStyle, TableHeaderStyle, tooltipStyle } from "../../Styles";
-import SelectCompanyAndInitiative from "./SelectCompanyAndInitiative";
-import { CompareDateInfos, DateInput, EqualDateInfos } from "../DateInput";
+import { DateInput } from "../DateInput";
 import Modal from "react-modal";
 import Table from '@mui/material/Table';
 import TableContainer from '@mui/material/TableContainer';
@@ -11,13 +10,16 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { IconButton, Paper } from "@mui/material";
+import { Dialog, IconButton, Paper } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { ValidateCompanyAndInitiative, ValidateDate, ValidationFailedPrefix } from "../../Services/Validation";
 import { enqueueSnackbar } from "notistack";
 import { MakeClone } from "../../Services/Cloning";
+import { CompareDateInfos, EqualDateInfos } from "../../Services/DateHelpers";
+import AddIcon from "@mui/icons-material/Add";
+import CloseIcon from '@mui/icons-material/Close';
 
 enum stateEnum {
   start,
@@ -42,15 +44,15 @@ export const EditThroughputIds = {
 }
   
 interface ThroughputModalProps{
-  companyList: Company[],
-  editIsOpen: boolean,
-  setEditIsOpen: (value: boolean) => void,
+  allCompanies: Company[]
+  company: Company
+  initiative: Initiative
+  editIsOpen: boolean
+  setEditIsOpen: (value: boolean) => void
   Submit: (companyId: string, initiativeId: string, dataList: ThroughputData[], emptyDataCheck: boolean) => Promise<boolean>
 }
 
 export default function EditThroughputModal(this: any, props: ThroughputModalProps){
-  const [selectedCompanyId, setSelectedCompanyId] = useState("");
-  const [selectedInitiativeIndex, setSelectedInitiativeIndex] = useState(-1);
   const [dateWarning, setDateWarning] = useState("");
   const invalidDate: DateInfo = {day: NaN, month: NaN, year: NaN};
   const [currentItems, setCurrentItems] = useState<number>();
@@ -60,8 +62,6 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
   const [throughputList, setThroughputList] = useState<ThroughputData[]>([]);
 
   useEffect(() => {
-    setSelectedCompanyId("");
-    setSelectedInitiativeIndex(-1);
     setDateWarning("");
     setCurrentDate(undefined);
     setCurrentItems(0);
@@ -69,31 +69,20 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
   },[props.editIsOpen]);
 
   useEffect(() => {
-    let initiative = MakeClone(GetInitiativeFromCompany(selectedCompanyId,selectedInitiativeIndex));
-    if(initiative)
-    {
-      const throughputClone = MakeClone(initiative.itemsCompletedOnDate);
-      initiative.itemsCompletedOnDate = throughputClone.sort((a:ThroughputData, b:ThroughputData) => CompareDateInfos(b.date,a.date));
+      const throughputClone = MakeClone(props.initiative.itemsCompletedOnDate);
+      throughputClone.sort((a:ThroughputData, b:ThroughputData) => CompareDateInfos(b.date,a.date));
       setThroughputList(throughputClone);
-    }
-  },[selectedInitiativeIndex,selectedCompanyId]);
+  },[props.initiative]);
 
-  function GetInitiativeFromCompany(companyId: string, initiativeIndex: number) : Initiative | undefined
+  function AddItem()
   {
-    const company = props.companyList.find(c => c.id === companyId);
-    const initiatives = company?.initiatives[initiativeIndex];
-    return initiatives;
-  }
-
-  function AddItem(initiative: Initiative | undefined)
-  {
-    const validation = ValidateCompanyAndInitiative(props.companyList, selectedCompanyId, initiative?.id ?? "-1");
+    const validation = ValidateCompanyAndInitiative(props.allCompanies, props.company.id, props.initiative.id);
     if(validation.success)
     {
       const dateValidation = ValidateDate(currentDate);
       if(dateValidation.success && currentDate)
       {
-        const throughputClone = MakeClone(initiative?.itemsCompletedOnDate);
+        const throughputClone = MakeClone(props.initiative.itemsCompletedOnDate);
         if(throughputClone)
         {
           const matchingThroughput = throughputClone.find(t => EqualDateInfos(t.date,currentDate));
@@ -166,9 +155,7 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
       if(newItem)
       {
         newItem.itemsCompleted = currentItems ?? -1;
-
-        const initiative = GetInitiativeFromCompany(selectedCompanyId,selectedInitiativeIndex);
-        const successful = await props.Submit(selectedCompanyId, initiative?.id ?? "-1", selectedThroughputClone, false);
+        const successful = await props.Submit(props.company.id, props.initiative.id, selectedThroughputClone, false);
         if(successful)
         {
           selectedThroughputClone.sort((a:ThroughputData, b:ThroughputData) => CompareDateInfos(b.date,a.date));
@@ -187,19 +174,25 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
   const throughputRef = useRef<HTMLElement>(null);
   
   return(
-    <Modal
-      
-      isOpen={props.editIsOpen}
-      onRequestClose={()=>props.setEditIsOpen(false)}
-      style={{'content': {...modalStyle.content, 'width' : 'fit-content', 'height' : 'fit-content'}}}
-      appElement={document.getElementById('root') as HTMLElement}>
-      <div className="space-y-5" data-cy={EditThroughputIds.modal}>
-        <p className="text-3xl w-full">Edit Throughput Data</p>
-        <SelectCompanyAndInitiative companyList={props.companyList} selectedCompanyId={selectedCompanyId} selectedInitiativeIndex={selectedInitiativeIndex} setSelectedCompanyId={setSelectedCompanyId} setSelectedInitiativeIndex={setSelectedInitiativeIndex} companyElementId={EditThroughputIds.selectCompany} initiativeElementId={EditThroughputIds.selectInitiative}/>
-        <DateInput cypressData={EditThroughputIds.addDate} disabled={InEditMode()} date={currentDate} setDate={setCurrentDate}/>
-          {dateWarning}
-        <button data-cy={EditThroughputIds.addNewEntryButton} className={submitButtonStyle + " h-full"} disabled={InEditMode()}
-          onClick={() => AddItem(GetInitiativeFromCompany(selectedCompanyId,selectedInitiativeIndex))}>Add New</button>
+    <Dialog
+      data-cy={EditThroughputIds.modal}
+      open={props.editIsOpen}
+      onClose={() => props.setEditIsOpen(false)}
+      >
+      <div className="space-y-5">
+        <div className="flex justify-between">
+          <p className="text-3xl w-full">Edit Throughput Data</p>
+          <div className="flex justify-end">
+            <button data-cy={EditThroughputIds.closeButton} className="rounded-md transition ease-in-out hover:bg-[#29c2b0] w-fit" onClick={() => props.setEditIsOpen(false)}><CloseIcon sx={{fontSize: 40}}/></button>
+          </div>
+        </div>
+        <div className="flex mx-2">
+          {/*dateWarning*/}
+          <IconButton data-cy={EditThroughputIds.addNewEntryButton} disabled={InEditMode()} onClick={() => AddItem()}>
+            <AddIcon fontSize="large"/>
+          </IconButton>
+          <DateInput cypressData={EditThroughputIds.addDate} label={"New Data Date"} disabled={InEditMode()} date={currentDate} setDate={setCurrentDate}/>
+        </div>
         <div className="outline outline-[#879794] rounded space-y-2 p-2">
           <div>
             <p className="text-2xl">Edit Data</p>
@@ -222,7 +215,7 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {(selectedInitiativeIndex >= 0) && throughputList.map((throughput, key) => {
+                  {throughputList.map((throughput, key) => {
                     let isEdit = InEditMode() && EqualDateInfos(throughput.date,throughputToEdit?.date ?? invalidDate);
                     return (
                       <TableRow key={key} className={defaultRowStyle} sx={{
@@ -275,10 +268,7 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
             </TableContainer>
           </div>
         </div>
-        <div className="h-10 w-full flex justify-between">
-          <button data-cy={EditThroughputIds.closeButton} className={cancelButtonStyle} onClick={() => Close()}>Close</button> 
-        </div>
       </div>
-    </Modal>
+    </Dialog>
   )
 }

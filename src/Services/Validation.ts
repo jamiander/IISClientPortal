@@ -1,7 +1,7 @@
-import { MakeDate } from "../Components/DateInput";
 import { Company, Initiative } from "../Store/CompanySlice";
 import { User } from "../Store/UserSlice";
 import { DateInfo, DecisionData, ThroughputData } from "./CompanyService";
+import { MakeDate } from "./DateHelpers";
 
 export const ValidationFailedPrefix = 'Validation Failed: ';
 export type Validation = {message: string, success: boolean}
