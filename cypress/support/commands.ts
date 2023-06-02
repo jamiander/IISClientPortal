@@ -55,12 +55,12 @@ Cypress.Commands.add("findByData", { prevSubject: true }, (subject: Cypress.Chai
   return subject.find(`[data-cy=${selector}]`)
 })
 
-Cypress.Commands.add("muiSelect", {prevSubject: true}, (subject: Cypress.Chainable<any>, selector: string) => {
+Cypress.Commands.add("muiSelect", { prevSubject: true }, (subject: Cypress.Chainable<any>, selector: string) => {
   return cy.wrap(subject).click().get(`ul > li[data-value="${selector}"]`).click();
 })
 
-Cypress.Commands.add('setDatePicker', (selector: string, dateString: string) => {
-  return cy.getByData(selector).find('input').type("{backspace}{leftArrow}{backspace}{leftArrow}{backspace}" + dateString);
+Cypress.Commands.add('setDatePicker', { prevSubject: true }, (subject: Cypress.Chainable<any>, dateString: string) => {
+  return cy.wrap(subject).find('input').type("{backspace}{leftArrow}{backspace}{leftArrow}{backspace}" + dateString);
 })
 
 Cypress.Commands.add('login', (user: UserLogin) => {

@@ -41,7 +41,7 @@ export function DateInput(props: DateInputProps)
 
   return (
     <>
-      <div className='flex space-x-2' data-cy={props.cypressData}>
+      <div className='flex space-x-2 my-5' data-cy={props.cypressData}>
         <DatePicker label={props.label ?? ""} disabled={props.disabled} value={myDate} onChange={(newDayjs) => HandleDateChange(newDayjs)} />
           {/*<input type="date" data-cy={props.cypressData} disabled={props.disabled} value={MakeDateString(props.date)} className={inputStyle}
             onChange={(e) => { props.setDate(MakeDateInfo(e.target.value) ?? props.date) }}/>*/}
