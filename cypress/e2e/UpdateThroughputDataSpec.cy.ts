@@ -13,7 +13,7 @@ const company = 'Integrity Inspired Solutions';
 const waitTime = 500;
 const user = AdminUser;
 
-const newDate = "2020-01-01";
+const newDate = "01012020";//"2020-01-01";
 
 describe('add throughput data by manual entry', () => {
   let remainingItemsBefore: number;
@@ -30,7 +30,7 @@ describe('add throughput data by manual entry', () => {
 
     cy.getByData(tableIds.actionMenu.menuButton).click();
     cy.getByData(tableIds.actionMenu.editThroughputButton).click();
-    cy.getByData(modalIds.addDate).clear().type(newDate);
+    cy.getByData(modalIds.addDate).setDatePicker(newDate);
     cy.getByData(modalIds.addNewEntryButton).click();
   })
 
@@ -44,7 +44,7 @@ describe('add throughput data by manual entry', () => {
     cy.wait(waitTime);
     cy.getByData(radioIds.all).click();
     cy.getByData(tableIds.initiativeTitleFilter).clear({force:true}).type(initiativeTitle,{force:true});
-    cy.contains('tr', initiativeTitle).find(`[data-cy="${tableIds.remainingItems}"]`).then(($span) => {
+    cy.contains('tr', initiativeTitle).findByData(tableIds.remainingItems).then(($span) => {
       let remainingItemsAfter = Number($span.text());
       expect(remainingItemsBefore-2).to.be.equal(remainingItemsAfter);
     });
@@ -64,15 +64,15 @@ describe('invalid manual entry test', () => {
     cy.getByData(modalIds.addNewEntryButton).click();
     cy.get(snackbarId).should('contain',failMessage);
 
-    cy.getByData(modalIds.addDate).clear().type(newDate);
-    cy.getByData(modalIds.addDate).clear();
+    cy.getByData(modalIds.addDate).setDatePicker(newDate);
+    cy.getByData(modalIds.addDate).setDatePicker("");
     cy.getByData(modalIds.addNewEntryButton).click();
     cy.wait(snackbarWaitTime);
     cy.get(snackbarId).should('contain',failMessage);
   })
 
   specify('cannot add throughput entry when item completed is invalid', () => {
-    cy.getByData(modalIds.addDate).clear().type(newDate);
+    cy.getByData(modalIds.addDate).setDatePicker(newDate);
     cy.getByData(modalIds.addNewEntryButton).click();
 
     cy.getByData(modalIds.saveChangesButton).parent().parent().within(() => {

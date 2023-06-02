@@ -5,8 +5,8 @@ describe('update initiative spec', () => {
   const init = {
     companyName: 'Integrity Inspired Solutions',
     title: "Test Initiative 1234",
-    startDate: "2023-01-01",
-    targetDate: "2023-04-01",
+    startDate: "01012023",//"2023-01-01",
+    targetDate: "04012023",//"2023-04-01",
     totalItems: "3"
   }
 
@@ -26,14 +26,14 @@ describe('update initiative spec', () => {
     cy.login(user);
 
     cy.getByData(radioIds.all).click();
-    cy.getByData(tableIds.companyNameFilter).clear().type(init.companyName);
+    cy.getByData(tableIds.companyNameFilter).clear({force:true}).type(init.companyName,{force:true});
     cy.getByData(tableIds.table).contains(init.companyName).parent().within(() => {
       cy.getByData(tableIds.editButton).click();
     });
 
     cy.getByData(tableIds.editInitiativeTitle).clear().type(init.title);
-    cy.getByData(tableIds.editStartDate).clear().type(init.startDate);
-    cy.getByData(tableIds.editTargetDate).clear().type(init.targetDate);
+    cy.getByData(tableIds.editStartDate).setDatePicker(init.startDate);
+    cy.getByData(tableIds.editTargetDate).setDatePicker(init.targetDate);
     cy.getByData(tableIds.editTotalItems).clear().type(init.totalItems);
   });
 
@@ -41,7 +41,7 @@ describe('update initiative spec', () => {
     cy.getByData(tableIds.saveChangesButton).click();
     cy.wait(500);
     cy.getByData(radioIds.all).click();
-    cy.getByData(tableIds.companyNameFilter).clear().type(init.companyName);
+    cy.getByData(tableIds.companyNameFilter).clear({force:true}).type(init.companyName,{force:true});
     cy.getByData(tableIds.table).should('contain',init.title);
   })
 
@@ -51,17 +51,17 @@ describe('update initiative spec', () => {
     cy.get(snackbarId).should('contain',failMessage);
     cy.getByData(tableIds.editInitiativeTitle).type(init.title);
 
-    cy.getByData(tableIds.editStartDate).clear();
+    cy.getByData(tableIds.editStartDate).setDatePicker("");
     cy.getByData(tableIds.saveChangesButton).click();
     cy.wait(snackbarWaitTime);
     cy.get(snackbarId).should('contain',failMessage);
-    cy.getByData(tableIds.editStartDate).type(init.startDate);
+    cy.getByData(tableIds.editStartDate).setDatePicker(init.startDate);
 
-    cy.getByData(tableIds.editTargetDate).clear();
+    cy.getByData(tableIds.editTargetDate).setDatePicker("");
     cy.getByData(tableIds.saveChangesButton).click();
     cy.wait(snackbarWaitTime);
     cy.get(snackbarId).should('contain',failMessage);
-    cy.getByData(tableIds.editTargetDate).type(init.targetDate);
+    cy.getByData(tableIds.editTargetDate).setDatePicker(init.targetDate);
 
     cy.getByData(tableIds.editTotalItems).clear();
     cy.getByData(tableIds.saveChangesButton).click();
@@ -70,15 +70,25 @@ describe('update initiative spec', () => {
   })
 
   specify('cannot have a target date before a start date', () => {
-    cy.getByData(tableIds.editStartDate).clear().type("2023-04-20");
-    cy.getByData(tableIds.editTargetDate).clear().type("2023-04-19");
+    cy.getByData(tableIds.editStartDate).setDatePicker("04-20-2023");//"2023-04-20");
+    cy.getByData(tableIds.editTargetDate).setDatePicker("04-19-2023");//"2023-04-19");
 
     cy.getByData(tableIds.saveChangesButton).click();
     cy.get(snackbarId).should('contain',failMessage);
   })
 
   specify('cannot rename an initative the name of another initiative within that company', () => {
-    cy.getByData(tableIds.editInitiativeTitle).clear().type(existingInit.title); //TODO: figure out how to get an existing init for this company
+    cy.getByData(tableIds.cancelChangesButton).click();
+
+      cy.getByData(tableIds.initiativeTitle).first().invoke('text').then(($txt) => { 
+        const existingInitTitle = $txt;
+
+        cy.getByData(tableIds.editButton).last().click();
+        cy.getByData(tableIds.editInitiativeTitle).clear().type(existingInitTitle);
+        cy.getByData(tableIds.editStartDate).setDatePicker(init.startDate);
+        cy.getByData(tableIds.editTargetDate).setDatePicker(init.targetDate);
+        cy.getByData(tableIds.editTotalItems).clear().type(init.totalItems);
+    })
 
     cy.getByData(tableIds.saveChangesButton).click();
 

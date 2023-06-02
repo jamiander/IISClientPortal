@@ -11,6 +11,7 @@ import { enqueueSnackbar } from "notistack";
 import CloseIcon from '@mui/icons-material/Close';
 import {v4 as UuidV4} from "uuid";
 import { MakeDateInfo, MakeDateString } from "../../Services/DateHelpers";
+import { DateInput } from "../DateInput";
 
 export const DecisionModalIds = {
   modal: "decisionModal",
@@ -55,7 +56,8 @@ export default function DecisionDataModal(props: DecisionDataProps) {
   const [currentDescription, setCurrentDescription] = useState("");
   const [currentResolution, setCurrentResolution] = useState("");
   const [currentParticipants, setCurrentParticipants] = useState("");
-  const [currentDateString, setCurrentDateString] = useState("");
+  //const [currentDateString, setCurrentDateString] = useState("");
+  const [currentDate, setCurrentDate] = useState<DateInfo | undefined>();
 
   const [selectedInitiative, setSelectedInitiative] = useState<Initiative>(props.initiative);
   const [decisionToEdit, setDecisionToEdit] = useState<DecisionData>();
@@ -130,7 +132,8 @@ export default function DecisionDataModal(props: DecisionDataProps) {
       setCurrentDescription(currentDecision.description);
       setCurrentResolution(currentDecision.resolution);
       setCurrentParticipants(currentDecision.participants.join(", "));
-      setCurrentDateString(MakeDateString(currentDecision.date));
+      //setCurrentDateString(MakeDateString(currentDecision.date));
+      setCurrentDate(currentDecision.date);
     }
   }
 
@@ -240,7 +243,7 @@ export default function DecisionDataModal(props: DecisionDataProps) {
                             <label className={labelStyle} htmlFor="resolution">Resolution</label>
                             <StyledTextarea id="resolution" data-cy={DecisionModalIds.editResolution} value={currentResolution} onChange={e => setCurrentResolution(e.target.value)}/>
                             <StyledTextField data-cy={DecisionModalIds.editParticipants} label="Participants-separate by comma" value={currentParticipants} onChange={e => setCurrentParticipants(e.target.value)}/>
-                            <StyledTextField data-cy={DecisionModalIds.editDate} label="Date Resolved" type="date" value={currentDateString} onChange={e => setCurrentDateString(e.target.value)}/>
+                            <DateInput cypressData={DecisionModalIds.editDate} label="Date Resolved" date={currentDate} setDate={setCurrentDate}/>
                           </>
                           :
                           <>
@@ -249,7 +252,7 @@ export default function DecisionDataModal(props: DecisionDataProps) {
                             <label className={labelStyle} htmlFor="resolution">Resolution</label>
                             <StyledTextarea id="resolution" data-cy={DecisionModalIds.resolution} disabled value={displayItem.resolution}/>
                             <StyledTextField data-cy={DecisionModalIds.participants} label="Participants" disabled value={displayItem.participants.join(", ")}/>
-                            <StyledTextField data-cy={DecisionModalIds.date} label="Date Resolved" disabled type="date" value={MakeDateString(displayItem.date)}/>
+                            <DateInput cypressData={DecisionModalIds.date} label="Date Resolved" disabled={true} date={displayItem.date} setDate={setCurrentDate}/>
                           </>
                           }
                         </StyledCardContent>
@@ -257,7 +260,7 @@ export default function DecisionDataModal(props: DecisionDataProps) {
                           {isEdit &&
                             <div className="flex w-full justify-between">
                               <button data-cy={DecisionModalIds.saveChangesButton} className={submitButtonStyle} onClick={() => HandleEditDecision(displayItem.id, currentDescription, currentResolution, currentParticipants.split(",").map(s => s.trim()), 
-                              currentDateString ? MakeDateInfo(currentDateString) : displayItem.date)}>Save</button>
+                                currentDate ?? displayItem.date)}>Save</button>
                               <button data-cy={DecisionModalIds.cancelChangesButton} className={cancelButtonStyle} onClick={() => HandleCancelEdit()}>Cancel</button>
                             </div>
                           }

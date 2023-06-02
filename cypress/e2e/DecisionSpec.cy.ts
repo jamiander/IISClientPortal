@@ -20,21 +20,21 @@ const decision = {
   names: "Johnny Test" ,
   description: "Test Decision",
   resolution: "Decided",
-  date: "2023-04-01"
+  date: "04012023"//"2023-04-01"
 }
 
 const editedDecision = {
   names: "Jimmy Toast",
   description: "Real Decision",
   resolution: "Undecided",
-  date: "2023-04-29"
+  date: "04292023"//"2023-04-29"
 }
 
 beforeEach(() => {
   cy.login(user);
 
   cy.getByData(radioIds.all).click();
-  cy.getByData(tableIds.initiativeTitleFilter).type(init.title);
+  cy.getByData(tableIds.initiativeTitleFilter).type(init.title,{force:true});
   cy.get('table').contains(init.title).then(() => {
     cy.getByData(tableIds.actionMenu.menuButton).click();
     cy.getByData(tableIds.actionMenu.decisionButton).click();
@@ -46,7 +46,7 @@ beforeEach(() => {
     cy.getByData(modalIds.editDescription).type(decision.description,{force: true});
     cy.getByData(modalIds.editResolution).type(decision.resolution,{force: true});
     cy.getByData(modalIds.editParticipants).find('input').type(decision.names,{force: true});
-    cy.getByData(modalIds.editDate).find('input').type(decision.date,{force: true});
+    cy.getByData(modalIds.editDate).setDatePicker(decision.date);
   })
   
 })
@@ -115,7 +115,7 @@ describe("edit decision spec", () => {
     cy.getByData(modalIds.editDescription).clear({force: true}).type(editedDecision.description,{force: true});
     cy.getByData(modalIds.editResolution).clear({force: true}).type(editedDecision.resolution,{force: true});
     cy.getByData(modalIds.editParticipants).find('input').clear({force: true}).type(editedDecision.names,{force: true});
-    cy.getByData(modalIds.editDate).find('input').clear({force: true}).type(editedDecision.date,{force: true});
+    cy.getByData(modalIds.editDate).setDatePicker(editedDecision.date);
   })
 
   specify("save button saves changes", () => {
