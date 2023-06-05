@@ -7,10 +7,11 @@ import { useEffect, useState } from 'react';
 import { DocumentInfo, getDocumentUrls } from '../../Store/DocumentSlice';
 import { useAppDispatch } from '../../Store/Hooks';
 import { DocumentDownload } from './DocumentDownload';
+import { BaseInitiativeModal } from '../Initiative/BaseInitiativeModal';
 
 export const DocumentManagementModalIds = {
   modal: "documentManagementModal",
-  closeButton: "documentManagementModalCloseButton",
+  closeModalButton: "documentManagementModalCloseModalButton",
   documentUpload: {
     uploadButton: "documentManagementModalNewDocUploadButton",
     submitButton: "documentManagementModalNewDocSubmitButton"
@@ -59,25 +60,14 @@ export function DocumentManagementModal(props: DocumentManagementModalProps)
 
 
   return (
-    <Dialog
-      data-cy={DocumentManagementModalIds.modal}
+    <BaseInitiativeModal
+      cypressData={{modal: DocumentManagementModalIds.modal, closeModalButton: DocumentManagementModalIds.closeModalButton}}
       open={props.isOpen}
       onClose={() => props.setIsOpen(false)}
-      maxWidth={false}
+      company={props.company}
+      initiative={props.initiative}
     >
       <div className="flex flex-col col-span-4 ">
-        <div className="bg-[#69D5C3] rounded-md py-6 px-5 w-full flex justify-between">
-          <div className="space-y-2 w-1/2">
-            <p className="text-5xl font-bold w-full">{props.company.name}</p>
-            <p className="text-3xl w-full">{props.initiative?.title}</p>
-          </div>
-          <div className="flex flex-col justify-between">
-            <div className="flex justify-end">
-              <button data-cy={DocumentManagementModalIds.closeButton} className="rounded-md transition ease-in-out hover:bg-[#29c2b0] w-fit" onClick={() => props.setIsOpen(false)}><CloseIcon sx={{fontSize: 40}}/></button>
-            </div>
-          </div>
-        </div>
-
         {props.isAdmin &&
           <DocumentUpload cypressData={DocumentManagementModalIds.documentUpload} company={props.company} initiative={props.initiative} GetData={GetData}/>
         }
@@ -147,6 +137,6 @@ export function DocumentManagementModal(props: DocumentManagementModalProps)
           </TableContainer>
         }
       </div>
-    </Dialog>
+    </BaseInitiativeModal>
   )
 }

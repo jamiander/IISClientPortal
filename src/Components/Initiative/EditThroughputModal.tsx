@@ -3,7 +3,6 @@ import { DateInfo, ThroughputData } from "../../Services/CompanyService";
 import { Company, Initiative } from "../../Store/CompanySlice";
 import { cancelButtonStyle, defaultRowStyle, modalStyle, submitButtonStyle, TableHeaderStyle, tooltipStyle } from "../../Styles";
 import { DateInput } from "../DateInput";
-import Modal from "react-modal";
 import Table from '@mui/material/Table';
 import TableContainer from '@mui/material/TableContainer';
 import TableBody from '@mui/material/TableBody';
@@ -20,6 +19,7 @@ import { MakeClone } from "../../Services/Cloning";
 import { CompareDateInfos, EqualDateInfos } from "../../Services/DateHelpers";
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from '@mui/icons-material/Close';
+import { BaseInitiativeModal } from "./BaseInitiativeModal";
 
 enum stateEnum {
   start,
@@ -33,7 +33,7 @@ export const EditThroughputIds = {
   selectInitiative: "editThroughputInititia",
   addNewEntryButton: "editThroughputAdd",
   submitButton: "editThroughputSubmitButton",
-  closeButton: "editThroughputCloseButton",
+  closeModalButton: "editThroughputCloseModalButton",
   addDate: "editThroughputAddDate",
   //addItemsComplete: "editThroughputAddItemsComplete",
   tableDate: "editThroughputTableDate",
@@ -113,7 +113,7 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
             
             throughputClone.unshift(newItem);
             throughputClone.sort((a:ThroughputData, b:ThroughputData) => CompareDateInfos(b.date,a.date));
-            const newIndex = throughputClone.findIndex(t => t.date === newItem.date);
+            const newIndex = throughputClone.findIndex(t => EqualDateInfos(t.date,currentDate));
             CorrectPageOnAdd(newIndex);
 
             setThroughputList(throughputClone);
@@ -202,17 +202,17 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
   const throughputRef = useRef<HTMLElement>(null);
   
   return(
-    <Dialog
+    <BaseInitiativeModal
       data-cy={EditThroughputIds.modal}
       open={props.editIsOpen}
       onClose={() => props.setEditIsOpen(false)}
+      cypressData={{modal: EditThroughputIds.modal, closeModalButton: EditThroughputIds.closeModalButton}}
+      company={props.company}
+      initiative={props.initiative}
       >
       <div className="space-y-5">
         <div className="flex justify-between">
           <p className="text-3xl w-full">Edit Throughput Data</p>
-          <div className="flex justify-end">
-            <button data-cy={EditThroughputIds.closeButton} className="rounded-md transition ease-in-out hover:bg-[#29c2b0] w-fit" onClick={() => props.setEditIsOpen(false)}><CloseIcon sx={{fontSize: 40}}/></button>
-          </div>
         </div>
         <div className="flex mx-2">
           {/*dateWarning*/}
@@ -303,6 +303,6 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
           />
         </div>
       </div>
-    </Dialog>
+    </BaseInitiativeModal>
   )
 }

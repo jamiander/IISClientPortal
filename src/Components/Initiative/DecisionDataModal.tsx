@@ -8,10 +8,15 @@ import { ValidateDecisions, ValidationFailedPrefix } from "../../Services/Valida
 import { useAppDispatch } from "../../Store/Hooks";
 import { DeleteDecisionAlert } from "./DeleteDecisionAlert";
 import { enqueueSnackbar } from "notistack";
-import CloseIcon from '@mui/icons-material/Close';
 import {v4 as UuidV4} from "uuid";
-import { MakeDateInfo, MakeDateString } from "../../Services/DateHelpers";
 import { DateInput } from "../DateInput";
+import EditIcon from "@mui/icons-material/Edit";
+import DoneIcon from "@mui/icons-material/Done";
+import CancelIcon from "@mui/icons-material/Cancel";
+import DeleteIcon from '@mui/icons-material/Delete';
+import AddIcon from "@mui/icons-material/Add";
+import { IconButton } from "@mui/material";
+import { BaseInitiativeModal } from "./BaseInitiativeModal";
 
 export const DecisionModalIds = {
   modal: "decisionModal",
@@ -195,31 +200,21 @@ export default function DecisionDataModal(props: DecisionDataProps) {
     LeaveEditMode();
   }
 
+  const iconSize = "2.3vw";
+  const iconStyle = "m-2";
+
   return (
     <>
-      <Dialog
-        data-cy={DecisionModalIds.modal}
+      <BaseInitiativeModal
         open={props.isOpen}
         onClose={()=>props.setDecisionModalIsOpen(false)}
-        fullWidth
-        maxWidth={false}
+        cypressData={{modal: DecisionModalIds.modal, closeModalButton: DecisionModalIds.closeModalButton}}
+        company={props.company}
+        initiative={props.initiative}
         >
-          <div className="flex col-span-4 bg-[#69D5C3] rounded-md py-6 px-5">
-            <div className="w-full flex justify-between">
-              <div className="space-y-2 w-1/2">
-                <p className="text-5xl font-bold w-full">{props.company.name}</p>
-                <p className="text-3xl w-full">{props.initiative.title}</p>
-              </div>
-              <div className="flex flex-col justify-between">
-                <div className="flex justify-end">
-                  <button data-cy={DecisionModalIds.closeModalButton} className="rounded-md transition ease-in-out hover:bg-[#29c2b0] w-fit" onClick={() => props.setDecisionModalIsOpen(false)}><CloseIcon sx={{fontSize: 40}}/></button>
-                </div>
-                {props.isAdmin &&
-                  <button data-cy={DecisionModalIds.addButton} className={yellowButtonStyle} onClick={() => HandleAddEmptyDecision()}>Add Decision</button>
-                }
-              </div>
-            </div>
-          </div>
+          {props.isAdmin &&
+            <button data-cy={DecisionModalIds.addButton} className={yellowButtonStyle} onClick={() => HandleAddEmptyDecision()}>Add Decision</button>
+          }
           <div className="mx-[2%] mb-[2%]">
             {selectedInitiative.decisions.length !== 0 &&
             <div className="mt-2 mb-4">
@@ -259,16 +254,24 @@ export default function DecisionDataModal(props: DecisionDataProps) {
                         <StyledCardActions>
                           {isEdit &&
                             <div className="flex w-full justify-between">
-                              <button data-cy={DecisionModalIds.saveChangesButton} className={submitButtonStyle} onClick={() => HandleEditDecision(displayItem.id, currentDescription, currentResolution, currentParticipants.split(",").map(s => s.trim()), 
-                                currentDate ?? displayItem.date)}>Save</button>
-                              <button data-cy={DecisionModalIds.cancelChangesButton} className={cancelButtonStyle} onClick={() => HandleCancelEdit()}>Cancel</button>
+                              <IconButton data-cy={DecisionModalIds.saveChangesButton}
+                                onClick={() => HandleEditDecision(displayItem.id, currentDescription, currentResolution, currentParticipants.split(",").map(s => s.trim()), currentDate ?? displayItem.date)}>
+                                <DoneIcon sx={{fontSize: iconSize}}/>
+                              </IconButton>
+                              <IconButton data-cy={DecisionModalIds.cancelChangesButton} onClick={() => HandleCancelEdit()}>
+                                <CancelIcon sx={{fontSize: iconSize}}/>
+                              </IconButton>
                             </div>
                           }
                           {
                             !isEdit && !InEditMode() && props.isAdmin &&
                             <div className="flex w-full justify-between">
-                              <button data-cy={DecisionModalIds.editButton} className={submitButtonStyle} onClick={() => EnterEditMode(displayItem.id, selectedInitiative, false)}>Edit</button>
-                              <button data-cy={DecisionModalIds.deleteButton} className={cancelButtonStyle} onClick={() => HandleAttemptDelete(displayItem.id)}>Delete</button>
+                              <IconButton data-cy={DecisionModalIds.editButton} onClick={() => EnterEditMode(displayItem.id, selectedInitiative, false)}>
+                                <EditIcon sx={{fontSize: iconSize}}/>
+                              </IconButton>
+                              <IconButton data-cy={DecisionModalIds.deleteButton} onClick={() => HandleAttemptDelete(displayItem.id)}>
+                                <DeleteIcon sx={{fontSize: iconSize}}/>
+                              </IconButton>
                             </div>
                           }
                         </StyledCardActions>
@@ -282,7 +285,7 @@ export default function DecisionDataModal(props: DecisionDataProps) {
           {
             selectedInitiative.decisions.length === 0 && <div className="m-2 p-2">No decisions to display.</div>
           }
-        </Dialog>
+        </BaseInitiativeModal>
         <DeleteDecisionAlert isOpen={isDeleteOpen} setIsOpen={setIsDeleteOpen} DeleteDecision={DeleteDecision} CancelDelete={CancelDelete} decisionId={decisionToEdit?.id}/>
       </>
   );
