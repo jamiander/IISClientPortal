@@ -240,7 +240,7 @@ export function ClientPage()
                 <TableRow sx={{
                   borderBottom: "2px solid black",
                     "& th": {
-                    fontSize: "1.2vw",
+                    fontSize: "1.3vw",
                     fontWeight: "bold",
                     fontFamily: "Arial, Helvetica"
                   }
@@ -263,7 +263,7 @@ export function ClientPage()
                     <TableRow className={defaultRowStyle} sx={{
                       borderBottom: "1px solid black",
                       "& td": {
-                        fontSize: "1vw",
+                        fontSize: "1.3vw",
                         fontFamily: "Arial, Helvetica",
                         color: "#21345b"
                       }
@@ -272,17 +272,17 @@ export function ClientPage()
                     >
                       {isEdit ? 
                       <>
-                        <TableCell><Input sx={{fontSize: "1vw"}} data-cy={ClientPageIds.editName} value={currentName} onChange={e => setCurrentName(e.target.value)}/></TableCell>
+                        <TableCell><Input sx={{fontSize: "1.3vw"}} data-cy={ClientPageIds.editName} value={currentName} onChange={e => setCurrentName(e.target.value)}/></TableCell>
                         {state === State.add &&
                           <>
                             <TableCell>
-                              <Input sx={{fontSize: "1vw"}} data-cy={ClientPageIds.editInitiativeTitle} value={currentInitiativeTitle} onChange={e => setCurrentInitiativeTitle(e.target.value)} />
+                              <Input sx={{fontSize: "1.3vw"}} data-cy={ClientPageIds.editInitiativeTitle} value={currentInitiativeTitle} onChange={e => setCurrentInitiativeTitle(e.target.value)} />
                             </TableCell>
                             <TableCell>
                               <DateInput date={currentTargetDate} setDate={setCurrentTargetDate} cypressData={ClientPageIds.targetDate}></DateInput>
                             </TableCell>
                             <TableCell>
-                              <Input sx={{fontSize: "1vw"}} type='number' value={currentTotalItems} onChange={e => setCurrentTotalItems(parseInt(e.target.value))}/>
+                              <Input sx={{fontSize: "1.3vw"}} type='number' value={currentTotalItems} onChange={e => setCurrentTotalItems(parseInt(e.target.value))}/>
                             </TableCell>
                             
                           </>

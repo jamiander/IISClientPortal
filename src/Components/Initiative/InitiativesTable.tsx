@@ -368,7 +368,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                 <TableRow sx={{
                   borderBottom: "2px solid black",
                   "& th": {
-                    fontSize: "1.2vw",
+                    fontSize: "1.3vw",
                     fontWeight: "bold",
                     fontFamily: "Arial, Helvetica"
                   }
@@ -411,7 +411,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                       <TableRow key={index} className={healthIndicator} sx={{
                         borderBottom: "1px solid black",
                         "& td": {
-                          fontSize: "1vw",
+                          fontSize: "1.3vw",
                           fontFamily: "Arial, Helvetica",
                           color: "#21345b"
                         }
@@ -426,11 +426,11 @@ export default function InitiativesTable(props: InitiativesProps) {
                               <>
                                 <FormControl fullWidth>
                                   <InputLabel id="company-select-label">Select Company</InputLabel>
-                                  <Select data-cy={InitiativeTableIds.companySelect} labelId="company-select-label" label="Select company" value={companyToEditId} onChange={(e) => setCompanyToEditId(e.target.value)}>
+                                  <Select sx={{fontSize: "1.3vw"}} data-cy={InitiativeTableIds.companySelect} labelId="company-select-label" label="Select company" value={companyToEditId} onChange={(e) => setCompanyToEditId(e.target.value)}>
                                     {
                                       props.companyList.map((company,index) => {
                                         return (
-                                          <MenuItem sx={{fontSize: "1vw"}} key={index} value={company.id}>
+                                          <MenuItem sx={{fontSize: "1.3vw"}} key={index} value={company.id}>
                                             {company.name}
                                           </MenuItem>
                                         )
@@ -442,14 +442,14 @@ export default function InitiativesTable(props: InitiativesProps) {
                             }
                             </TableCell>
                             <TableCell>
-                              <Input sx={{fontSize: "1vw"}} data-cy={InitiativeTableIds.editInitiativeTitle} value={currentTitle} onChange={(e) => setCurrentTitle(e.target.value)}/>
+                              <Input sx={{fontSize: "1.3vw"}} data-cy={InitiativeTableIds.editInitiativeTitle} value={currentTitle} onChange={(e) => setCurrentTitle(e.target.value)}/>
                             </TableCell>
                             <TableCell><DateInput cypressData={InitiativeTableIds.editStartDate} date={currentStartDate} setDate={setCurrentStartDate}/></TableCell>
                             <TableCell><DateInput cypressData={InitiativeTableIds.editTargetDate} date={currentTargetDate} setDate={setCurrentTargetDate}/></TableCell>
                             <TableCell>
-                              <Input sx={{fontSize: "1vw"}} data-cy={InitiativeTableIds.editTotalItems} type="number" value={currentTotalItems} onChange={(e) => setCurrentTotalItems(parseInt(e.target.value))}/>
+                              <Input sx={{fontSize: "1.3vw"}} data-cy={InitiativeTableIds.editTotalItems} type="number" value={currentTotalItems} onChange={(e) => setCurrentTotalItems(parseInt(e.target.value))}/>
                             </TableCell>
-                            <TableCell sx={{fontSize: "1vw"}} data-cy={InitiativeTableIds.remainingItems}>{displayItem.itemsRemaining}</TableCell>
+                            <TableCell sx={{fontSize: "1.3vw"}} data-cy={InitiativeTableIds.remainingItems}>{displayItem.itemsRemaining}</TableCell>
                             <TableCell></TableCell>
                             <TableCell className="w-1/12">
                               <InitiativeActionsMenu cypressData={InitiativeTableIds.actionMenu} disabled={true} allCompanies={props.companyList} company={displayItem.company} initiative={displayItem} isAdmin={false}/>
