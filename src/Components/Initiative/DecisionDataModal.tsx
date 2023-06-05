@@ -15,7 +15,7 @@ import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from "@mui/icons-material/Add";
-import { IconButton } from "@mui/material";
+import { Button, IconButton, Typography } from "@mui/material";
 import { BaseInitiativeModal } from "./BaseInitiativeModal";
 
 export const DecisionModalIds = {
@@ -212,10 +212,13 @@ export default function DecisionDataModal(props: DecisionDataProps) {
         company={props.company}
         initiative={props.initiative}
         >
-          {props.isAdmin &&
-            <button data-cy={DecisionModalIds.addButton} className={yellowButtonStyle} onClick={() => HandleAddEmptyDecision()}>Add Decision</button>
-          }
           <div className="mx-[2%] mb-[2%]">
+            {props.isAdmin &&
+              <Button data-cy={DecisionModalIds.addButton} onClick={() => HandleAddEmptyDecision()}>
+                <AddIcon sx={{fontSize: iconSize}}/>
+                <Typography>New</Typography>
+              </Button>
+            }
             {selectedInitiative.decisions.length !== 0 &&
             <div className="mt-2 mb-4">
               <StyledTextField className="w-1/2" data-cy={DecisionModalIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in Description or Resolution" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)}/>

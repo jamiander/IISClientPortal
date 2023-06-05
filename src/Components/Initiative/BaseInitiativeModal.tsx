@@ -34,15 +34,17 @@ export function BaseInitiativeModal(props: BaseInitiativeModalProps)
           </div>
           <div className="flex flex-col justify-between">
             <div className="flex justify-end">
-              <IconButton data-cy={props.cypressData.closeModalButton}  onClick={() => props.onClose()}>
-                <CloseIcon sx={{fontSize: 40}}/>
+              <IconButton data-cy={props.cypressData.closeModalButton} onClick={() => props.onClose()}>
+                <CloseIcon/>
               </IconButton>
             </div>
             
           </div>
         </div>
       </div>
-      {props.children}
+      <div className="m-2">
+        {props.children}
+      </div>
     </Dialog>
   )
 }
