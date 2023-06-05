@@ -113,7 +113,7 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
             
             throughputClone.unshift(newItem);
             throughputClone.sort((a:ThroughputData, b:ThroughputData) => CompareDateInfos(b.date,a.date));
-            const newIndex = throughputClone.findIndex(t => t.date === newItem.date);
+            const newIndex = throughputClone.findIndex(t => EqualDateInfos(t.date,currentDate));
             CorrectPageOnAdd(newIndex);
 
             setThroughputList(throughputClone);

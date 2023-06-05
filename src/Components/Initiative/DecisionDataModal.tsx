@@ -10,8 +10,13 @@ import { DeleteDecisionAlert } from "./DeleteDecisionAlert";
 import { enqueueSnackbar } from "notistack";
 import CloseIcon from '@mui/icons-material/Close';
 import {v4 as UuidV4} from "uuid";
-import { MakeDateInfo, MakeDateString } from "../../Services/DateHelpers";
 import { DateInput } from "../DateInput";
+import EditIcon from "@mui/icons-material/Edit";
+import DoneIcon from "@mui/icons-material/Done";
+import CancelIcon from "@mui/icons-material/Cancel";
+import DeleteIcon from '@mui/icons-material/Delete';
+import AddIcon from "@mui/icons-material/Add";
+import { IconButton } from "@mui/material";
 
 export const DecisionModalIds = {
   modal: "decisionModal",
@@ -195,6 +200,9 @@ export default function DecisionDataModal(props: DecisionDataProps) {
     LeaveEditMode();
   }
 
+  const iconSize = "2.3vw";
+  const iconStyle = "m-2";
+
   return (
     <>
       <Dialog
@@ -259,16 +267,24 @@ export default function DecisionDataModal(props: DecisionDataProps) {
                         <StyledCardActions>
                           {isEdit &&
                             <div className="flex w-full justify-between">
-                              <button data-cy={DecisionModalIds.saveChangesButton} className={submitButtonStyle} onClick={() => HandleEditDecision(displayItem.id, currentDescription, currentResolution, currentParticipants.split(",").map(s => s.trim()), 
-                                currentDate ?? displayItem.date)}>Save</button>
-                              <button data-cy={DecisionModalIds.cancelChangesButton} className={cancelButtonStyle} onClick={() => HandleCancelEdit()}>Cancel</button>
+                              <IconButton data-cy={DecisionModalIds.saveChangesButton}
+                                onClick={() => HandleEditDecision(displayItem.id, currentDescription, currentResolution, currentParticipants.split(",").map(s => s.trim()), currentDate ?? displayItem.date)}>
+                                <DoneIcon sx={{fontSize: iconSize}}/>
+                              </IconButton>
+                              <IconButton data-cy={DecisionModalIds.cancelChangesButton} onClick={() => HandleCancelEdit()}>
+                                <CancelIcon sx={{fontSize: iconSize}}/>
+                              </IconButton>
                             </div>
                           }
                           {
                             !isEdit && !InEditMode() && props.isAdmin &&
                             <div className="flex w-full justify-between">
-                              <button data-cy={DecisionModalIds.editButton} className={submitButtonStyle} onClick={() => EnterEditMode(displayItem.id, selectedInitiative, false)}>Edit</button>
-                              <button data-cy={DecisionModalIds.deleteButton} className={cancelButtonStyle} onClick={() => HandleAttemptDelete(displayItem.id)}>Delete</button>
+                              <IconButton data-cy={DecisionModalIds.editButton} onClick={() => EnterEditMode(displayItem.id, selectedInitiative, false)}>
+                                <EditIcon sx={{fontSize: iconSize}}/>
+                              </IconButton>
+                              <IconButton data-cy={DecisionModalIds.deleteButton} onClick={() => HandleAttemptDelete(displayItem.id)}>
+                                <DeleteIcon sx={{fontSize: iconSize}}/>
+                              </IconButton>
                             </div>
                           }
                         </StyledCardActions>
