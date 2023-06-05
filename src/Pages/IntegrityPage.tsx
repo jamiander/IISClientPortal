@@ -115,7 +115,6 @@ export function IntegrityPage(){
               justifyContent: 'space-between',
               flexDirection: 'row',
               p: 1,
-              mr: 20,
               mt: 2,
               mb: 1,
               borderRadius: 1, }}>
@@ -128,7 +127,6 @@ export function IntegrityPage(){
                   </InputAdornment>
                 ),
               }} />
-              </Box>
               <Box sx={{ display: 'flex',
                 justifyContent: 'flex-end',
                 }}>  
@@ -136,7 +134,8 @@ export function IntegrityPage(){
                 <AddIcon fontSize="large"/>
               </IconButton>
               </Box>
-           </div> 
+            </Box>
+          </div> 
         }
         <div className="col-span-1 py-2">
           <TableContainer elevation={12} component={Paper}>

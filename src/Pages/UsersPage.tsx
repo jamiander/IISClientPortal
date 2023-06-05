@@ -136,7 +136,6 @@ export default function UsersPage(){
               justifyContent: 'space-between',
               flexDirection: 'row',
               p: 1,
-              mr: 25,
               mt: 2,
               mb: 1,
               borderRadius: 1, }}> 
@@ -153,7 +152,6 @@ export default function UsersPage(){
               { cypressData: UsersPageIds.radioIds.active, label: "Active", value: "active", default: true },
               { cypressData: UsersPageIds.radioIds.inactive, label: "Inactive", value: "inactive" }
             ]} />
-            </Box>
             <Box sx={{ display: 'flex',
               justifyContent: 'flex-end',
               }}> 
@@ -169,8 +167,9 @@ export default function UsersPage(){
                 <AddIcon  fontSize="large"/>
               </IconButton>
               }
-            </Box>           
-           </div>
+            </Box>  
+          </Box>         
+        </div>
              <div className="col-span-1 py-2">
               <TableContainer elevation={12} component={Paper}>
                 <Table className="table-auto w-full outline outline-3 bg-gray-100">

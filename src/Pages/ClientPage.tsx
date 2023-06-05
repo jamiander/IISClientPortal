@@ -199,7 +199,6 @@ export function ClientPage()
               justifyContent: 'space-between',
               flexDirection: 'row',
               p: 1,
-              mr: 35,
               mt: 2,
               mb: 1,
               borderRadius: 1, }}>
@@ -216,7 +215,6 @@ export function ClientPage()
               {cypressData: ClientPageIds.radioIds.active, label: "Active", value: "active", default: true},
               {cypressData: ClientPageIds.radioIds.inactive, label: "Inactive", value: "inactive"}
             ]} />
-            </Box>
             {allCompanies.length !== 0 && !IsReadOnly() &&
             <Box sx={{ display: 'flex',
               justifyContent: 'flex-end',
@@ -226,6 +224,7 @@ export function ClientPage()
               </IconButton>
               </Box>
             }
+            </Box>
           </div>
         <div className="col-span-1 py-2">
           <TableContainer elevation={12} component={Paper}>
