@@ -244,7 +244,7 @@ export function ClientPage()
                 <TableRow sx={{
                   borderBottom: "2px solid black",
                     "& th": {
-                    fontSize: "1.3vw",
+                    fontSize: "calc(16px + 0.390625vw)",
                     fontWeight: "bold",
                     fontFamily: "Arial, Helvetica"
                   }
@@ -267,7 +267,7 @@ export function ClientPage()
                     <TableRow className={defaultRowStyle} sx={{
                       borderBottom: "1px solid black",
                       "& td": {
-                        fontSize: "1.3vw",
+                        fontSize: "calc(12px + 0.390625vw)",
                         fontFamily: "Arial, Helvetica",
                         color: "#21345b"
                       }
@@ -276,17 +276,17 @@ export function ClientPage()
                     >
                       {isEdit ? 
                       <>
-                        <TableCell><Input sx={{fontSize: "1.3vw"}} data-cy={ClientPageIds.editName} value={currentName} onChange={e => setCurrentName(e.target.value)}/></TableCell>
+                        <TableCell><Input sx={{fontSize: "calc(12px + 0.390625vw)"}} data-cy={ClientPageIds.editName} value={currentName} onChange={e => setCurrentName(e.target.value)}/></TableCell>
                         {state === State.add &&
                           <>
                             <TableCell>
-                              <Input sx={{fontSize: "1.3vw"}} data-cy={ClientPageIds.editInitiativeTitle} value={currentInitiativeTitle} onChange={e => setCurrentInitiativeTitle(e.target.value)} />
+                              <Input sx={{fontSize: "calc(12px + 0.390625vw)"}} data-cy={ClientPageIds.editInitiativeTitle} value={currentInitiativeTitle} onChange={e => setCurrentInitiativeTitle(e.target.value)} />
                             </TableCell>
                             <TableCell>
                               <DateInput date={currentTargetDate} setDate={setCurrentTargetDate} cypressData={ClientPageIds.targetDate}></DateInput>
                             </TableCell>
                             <TableCell>
-                              <Input sx={{fontSize: "1.3vw"}} type='number' value={currentTotalItems} onChange={e => setCurrentTotalItems(parseInt(e.target.value))}/>
+                              <Input sx={{fontSize: "calc(12px + 0.390625vw)"}} type='number' value={currentTotalItems} onChange={e => setCurrentTotalItems(parseInt(e.target.value))}/>
                             </TableCell>
                             
                           </>
@@ -303,10 +303,10 @@ export function ClientPage()
                         </TableCell>
                         <TableCell>
                           <IconButton data-cy={ClientPageIds.saveClientChangesButton} onClick={() => HandleSaveEdit()}>
-                            <DoneIcon sx={{ fontSize: "1.3vw" }}/>
+                            <DoneIcon sx={{fontSize: "calc(12px + 0.390625vw)"}}/>
                           </IconButton>
                           <IconButton data-cy={ClientPageIds.cancelClientChangesButton} onClick={() => HandleCancelEdit()}>
-                            <CancelIcon sx={{ fontSize: "1.3vw" }}/>
+                            <CancelIcon sx={{fontSize: "calc(12px + 0.390625vw)"}}/>
                           </IconButton>
                         </TableCell>
                       </>
@@ -322,7 +322,7 @@ export function ClientPage()
                         {!IsReadOnly() &&
                         <TableCell>
                           <IconButton data-cy={ClientPageIds.editClientButton} disabled={InEditMode()} onClick={() => EnterEditMode(displayItem.id, displayCompanies, false)}>
-                            <EditIcon sx={{ fontSize: "1.3vw" }}/>
+                            <EditIcon sx={{fontSize: "calc(12px + 0.390625vw)"}}/>
                           </IconButton>
                         </TableCell>
                         }

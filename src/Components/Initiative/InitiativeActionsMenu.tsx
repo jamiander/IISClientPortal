@@ -77,7 +77,7 @@ export function InitiativeActionsMenu(props: InitiativeActionsMenuProps)
         onClick={handleClick}
         disabled={props.disabled}
       >
-        <MenuIcon sx={{ fontSize: "1.3vw" }}/>
+        <MenuIcon sx={{ fontSize: "calc(12px + 0.390625vw)" }}/>
       </IconButton>
       <Menu
         id="basic-menu"

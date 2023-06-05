@@ -154,7 +154,7 @@ export function IntegrityPage(){
                 <TableRow sx={{
                   borderBottom: "2px solid black",
                     "& th": {
-                    fontSize: "1.3vw",
+                      fontSize: "calc(16px + 0.390625vw)",
                     fontWeight: "bold",
                     fontFamily: "Arial, Helvetica"
                   }
@@ -177,7 +177,7 @@ export function IntegrityPage(){
                     <TableRow className={defaultRowStyle} sx={{
                       borderBottom: "1px solid black",
                       "& td": {
-                        fontSize: "1.3vw",
+                        fontSize: "calc(12px + 0.390625vw)",
                         fontFamily: "Arial, Helvetica",
                         color: "#21345b"
                       }
@@ -186,19 +186,19 @@ export function IntegrityPage(){
                     >
                       {isEdit ? 
                       <>
-                        <TableCell><Input sx={{fontSize: "1.3vw"}} data-cy={IntegrityPageIds.editName}value={currentName} onChange={e => setCurrentName(e.target.value)}/></TableCell>
-                        <TableCell><Input sx={{fontSize: "1.3vw"}} data-cy={IntegrityPageIds.editEmail} value={currentEmail} onChange={e => setCurrentEmail(e.target.value)}/></TableCell>
-                        <TableCell><Input sx={{fontSize: "1.3vw"}} data-cy={IntegrityPageIds.editPassword} value={currentPassword} onChange={e => setCurrentPassword(e.target.value)}/></TableCell>
-                        <TableCell><Input sx={{fontSize: "1.3vw"}} data-cy={IntegrityPageIds.editPhone} value={currentPhone} onChange={e => setCurrentPhone(e.target.value)}/></TableCell>
+                        <TableCell><Input sx={{fontSize: "calc(12px + 0.390625vw)"}} data-cy={IntegrityPageIds.editName}value={currentName} onChange={e => setCurrentName(e.target.value)}/></TableCell>
+                        <TableCell><Input sx={{fontSize: "calc(12px + 0.390625vw)"}} data-cy={IntegrityPageIds.editEmail} value={currentEmail} onChange={e => setCurrentEmail(e.target.value)}/></TableCell>
+                        <TableCell><Input sx={{fontSize: "calc(12px + 0.390625vw)"}} data-cy={IntegrityPageIds.editPassword} value={currentPassword} onChange={e => setCurrentPassword(e.target.value)}/></TableCell>
+                        <TableCell><Input sx={{fontSize: "calc(12px + 0.390625vw)"}} data-cy={IntegrityPageIds.editPhone} value={currentPhone} onChange={e => setCurrentPhone(e.target.value)}/></TableCell>
                         <TableCell><Checkbox data-cy={IntegrityPageIds.editIsAdmin} checked={currentIsAdmin} onChange={e => setCurrentIsAdmin(e.target.checked)}/>Admin</TableCell>
                         <TableCell><Checkbox data-cy={IntegrityPageIds.editIsActive} checked={currentIsActive} onChange={e => setCurrentIsActive(e.target.checked)}/>Active</TableCell>
                         <TableCell data-cy={IntegrityPageIds.initiativeIds}></TableCell>
                         <TableCell>
                           <IconButton data-cy={IntegrityPageIds.saveChangesButton} onClick={() => SaveEdit()}>
-                            <DoneIcon sx={{ fontSize: "1.3vw" }}/>
+                            <DoneIcon sx={{fontSize: "calc(12px + 0.390625vw)"}}/>
                           </IconButton>
                           <IconButton data-cy={IntegrityPageIds.cancelChangesButton} onClick={() => CancelEdit()}>
-                            <CancelIcon sx={{ fontSize: "1.3vw" }}/>
+                            <CancelIcon sx={{fontSize: "calc(12px + 0.390625vw)"}}/>
                           </IconButton>
                         </TableCell>
                       </>
@@ -213,7 +213,7 @@ export function IntegrityPage(){
                         <TableCell data-cy={IntegrityPageIds.initiativeIds}><EditUserInitiativesButton user={displayItem} allCompanies={sortedCompanies} SubmitUserData={SubmitUserData} expanded={false}/></TableCell>
                         <TableCell>
                           <IconButton data-cy={IntegrityPageIds.editButton} disabled={InEditMode()} onClick={() => EnterEditMode(displayItem.id, integrityUsers, false)}>
-                            <EditIcon sx={{ fontSize: "1.3vw" }}/>
+                            <EditIcon sx={{fontSize: "calc(12px + 0.390625vw)"}}/>
                           </IconButton>
                         </TableCell>
                       </>

@@ -192,7 +192,7 @@ export default function UsersPage(){
                     <TableRow sx={{
                       borderBottom: "2px solid black",
                       "& th": {
-                        fontSize: "1.2vw",
+                        fontSize: "calc(16px + 0.390625vw)",
                         fontWeight: "bold",
                         fontFamily: "Arial, Helvetica"
                       }
@@ -221,7 +221,7 @@ export default function UsersPage(){
                             <TableRow className={defaultRowStyle} key={key} sx={{
                               borderBottom: "1px solid black",
                               "& td": {
-                                fontSize: "1.3vw",
+                                fontSize: "calc(12px + 0.390625vw)",
                                 fontFamily: "Arial, Helvetica",
                                 color: "#21345b"
                               }
@@ -232,10 +232,10 @@ export default function UsersPage(){
                                     {currentUserCompanyId === IntegrityId ?
                                       <FormControl fullWidth>
                                         <InputLabel id="company-select-label">Select Company</InputLabel>
-                                        <Select sx={{fontSize: "1.3vw"}} data-cy={UsersPageIds.selectCompany} labelId="company-select-label" label="Select company" value={currentCompanyId} onChange={(e) => setCurrentCompanyId(e.target.value)}>
+                                        <Select sx={{fontSize: "calc(12px + 0.390625vw)"}} data-cy={UsersPageIds.selectCompany} labelId="company-select-label" label="Select company" value={currentCompanyId} onChange={(e) => setCurrentCompanyId(e.target.value)}>
                                           {displayCompanies.map((company, index) => {
                                             return (
-                                              <MenuItem sx={{fontSize: "1.3vw"}} key={index} value={company.id}>
+                                              <MenuItem sx={{fontSize: "calc(12px + 0.390625vw)"}} key={index} value={company.id}>
                                                 {company.name}
                                               </MenuItem>
                                             );
@@ -245,19 +245,19 @@ export default function UsersPage(){
                                       :
                                       <TableCell data-cy={UsersPageIds.company}>{displayCompany.name}</TableCell>}
                                   </TableCell>
-                                  <TableCell data-cy={UsersPageIds.editName}> <Input sx={{fontSize: "1.3vw"}} value={currentName} onChange={e => setCurrentName(e.target.value)} /></TableCell>
-                                  <TableCell><Input sx={{fontSize: "1.1vw"}} data-cy={UsersPageIds.editEmail} value={currentEmail} onChange={e => setCurrentEmail(e.target.value)} /></TableCell>
-                                  <TableCell data-cy={UsersPageIds.editPassword}><Input sx={{fontSize: "1.3vw"}} value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} /></TableCell>
-                                  <TableCell data-cy={UsersPageIds.editPhone}><Input sx={{fontSize: "1.3vw"}} value={currentPhone} onChange={e => setCurrentPhone(e.target.value)} /></TableCell>
+                                  <TableCell data-cy={UsersPageIds.editName}> <Input sx={{fontSize: "calc(12px + 0.390625vw)"}} value={currentName} onChange={e => setCurrentName(e.target.value)} /></TableCell>
+                                  <TableCell><Input sx={{fontSize: "calc(12px + 0.390625vw)"}} data-cy={UsersPageIds.editEmail} value={currentEmail} onChange={e => setCurrentEmail(e.target.value)} /></TableCell>
+                                  <TableCell data-cy={UsersPageIds.editPassword}><Input sx={{fontSize: "calc(12px + 0.390625vw)"}} value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} /></TableCell>
+                                  <TableCell data-cy={UsersPageIds.editPhone}><Input sx={{fontSize: "calc(12px + 0.390625vw)"}} value={currentPhone} onChange={e => setCurrentPhone(e.target.value)} /></TableCell>
                                   <TableCell><Checkbox data-cy={UsersPageIds.editIsAdmin} checked={currentIsAdmin} onChange={e => setCurrentIsAdmin(e.target.checked)} />Admin</TableCell>
                                   <TableCell><Checkbox data-cy={UsersPageIds.editIsActive} checked={currentIsActive} onChange={e => setCurrentIsActive(e.target.checked)} />Active</TableCell>
                                   <TableCell data-cy={UsersPageIds.initiativeIds}></TableCell>
                                   <TableCell>
                                     <IconButton data-cy={UsersPageIds.saveChangesButton} onClick={() => SaveEdit()}>
-                                      <DoneIcon sx={{ fontSize: "1.3vw" }}/>
+                                      <DoneIcon sx={{fontSize: "calc(12px + 0.390625vw)"}}/>
                                     </IconButton>
                                     <IconButton data-cy={UsersPageIds.cancelChangesButton} onClick={() => CancelEdit()}>
-                                      <CancelIcon sx={{ fontSize: "1.3vw" }}/>
+                                      <CancelIcon sx={{fontSize: "calc(12px + 0.390625vw)"}}/>
                                     </IconButton>
                                   </TableCell>
                                 </>
@@ -273,7 +273,7 @@ export default function UsersPage(){
                                   <TableCell data-cy={UsersPageIds.initiativeIds}><EditUserInitiativesButton user={companyUser} allCompanies={[displayCompany]} SubmitUserData={SubmitUserData} expanded={true} /></TableCell>
                                   <TableCell>
                                     <IconButton data-cy={UsersPageIds.editButton} disabled={InEditMode()} onClick={() => EnterEditMode(companyUser?.id, companyUsers, false)}>
-                                      <EditIcon sx={{ fontSize: "1.3vw" }}/>
+                                      <EditIcon sx={{fontSize: "calc(12px + 0.390625vw)"}}/>
                                     </IconButton>
                                   </TableCell>
                                 </>}
