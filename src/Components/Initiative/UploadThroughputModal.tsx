@@ -8,6 +8,7 @@ import { v4 as uuidV4} from "uuid";
 import { enqueueSnackbar } from "notistack";
 import { Dialog } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
+import { BaseInitiativeModal } from "./BaseInitiativeModal";
 
 export const UploadThroughputIds = {
   modal: "uploadThroughputModal",
@@ -16,7 +17,7 @@ export const UploadThroughputIds = {
   uploadButton: "uploadThroughputUploadButton",
   fileSubmit: "uploadThroughputSubmitButton",
   date: "uploadThroughputDate",
-  closeButton: "uploadThroughputCloseButton"
+  closeModalButton: "uploadThroughputCloseModalButton"
 }
 
 interface ThroughputModalProps{
@@ -108,17 +109,16 @@ export default function UploadThroughputModal(props:ThroughputModalProps){
 
   let myUuid = uuidV4();
   return(
-    <Dialog
-    data-cy={UploadThroughputIds.modal}
-    open={props.uploadIsOpen}
-    onClose={()=>props.setUploadIsOpen(false)}
+    <BaseInitiativeModal
+      cypressData={{modal: UploadThroughputIds.modal, closeModalButton: UploadThroughputIds.closeModalButton}}
+      open={props.uploadIsOpen}
+      onClose={()=>props.setUploadIsOpen(false)}
+      company={props.company}
+      initiative={props.initiative}
     >
       <div className="space-y-5">
         <div className="flex justify-between">
           <p className="text-3xl w-full">Upload Throughput Data</p>
-          <div className="flex justify-end">
-            <button data-cy={UploadThroughputIds.closeButton} className="rounded-md transition ease-in-out hover:bg-[#29c2b0] w-fit" onClick={() => props.setUploadIsOpen(false)}><CloseIcon sx={{fontSize: 40}}/></button>
-          </div>
         </div>
         {fileWarning}
         <div className="flex">
@@ -131,6 +131,6 @@ export default function UploadThroughputModal(props:ThroughputModalProps){
           </div>
         </div>
       </div>
-    </Dialog>
+    </BaseInitiativeModal>
   )
 }
