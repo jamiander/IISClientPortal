@@ -28,6 +28,7 @@ import { enqueueSnackbar } from "notistack";
 import ValidateNewInitiative, { ValidationFailedPrefix } from "../../Services/Validation";
 import { InitiativeActionsMenu } from "./InitiativeActionsMenu";
 import { DateToDateInfo } from "../../Services/DateHelpers";
+import { MakeClone } from "../../Services/Cloning";
 
 export const InitiativeTableIds = {
   table: "initiativesTable",
@@ -100,7 +101,7 @@ export default function InitiativesTable(props: InitiativesProps) {
   useEffect(() => {
     if(!InEditMode() && props.addInitiative === true)
     {
-      const displayClone: InitCompanyDisplay[] = JSON.parse(JSON.stringify(displayItems));
+      const displayClone = MakeClone(displayItems);
       const myUuid = v4();
       const todayInfo = DateToDateInfo(new Date());
       let matchingCompany = props.companyList.find(c => c.id === props.currentUser?.companyId);
@@ -120,7 +121,7 @@ export default function InitiativesTable(props: InitiativesProps) {
   },[props.addInitiative]);
 
   useMemo(() => {
-    let sortedItems = JSON.parse(JSON.stringify(displayItems));
+    let sortedItems = MakeClone(displayItems);
     sortedItems.sort((a: any, b: any) => {
       let aValue = a[sortConfig.key];
       let bValue = b[sortConfig.key];
@@ -201,7 +202,7 @@ export default function InitiativesTable(props: InitiativesProps) {
     }
   },[sortedDisplayItems,resultsLimit]);
 
-  const handleChange = (event: any, value: any) => {
+  const handlePaginationChange = (event: any, value: any) => {
     setPageNumber(value);
   };
 
@@ -513,7 +514,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                   page={pageNumber}
                   variant="outlined"
                   shape="rounded"
-                  onChange={handleChange} />
+                  onChange={handlePaginationChange} />
               </div>
             </div>
         </div>}
