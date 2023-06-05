@@ -1,4 +1,4 @@
-import { Box, IconButton, Input, InputAdornment, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { Box, Grid, IconButton, Input, InputAdornment, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { TableHeaderStyle, UserTextField, defaultRowStyle } from "../Styles";
 import { useEffect, useState } from "react";
 import EditIcon from "@mui/icons-material/Edit";
@@ -195,37 +195,42 @@ export function ClientPage()
       </div>
       <div className="mx-[2%] mb-[2%]">
         <div className="flex flex-col justify-content:space-between">
-          <Box sx={{ display: 'flex',
+          <Grid container sx={{ display: 'flex',
               justifyContent: 'space-between',
+              placeItems: 'center',
               flexDirection: 'row',
               p: 1,
               mt: 2,
               mb: 1,
               borderRadius: 1, }}>
-              <UserTextField data-cy={ClientPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)} 
-                InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-              }} />
+              <Grid item sx={{ display: 'flex',
+              justifyContent: 'flex-start',
+              }}> 
+                <UserTextField data-cy={ClientPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)} 
+                  InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon />
+                    </InputAdornment>
+                  ),
+                }} />
+              </Grid>
               <RadioSet dark={true} setter={setRadioValue} name="clientPage" options={[
               {cypressData: ClientPageIds.radioIds.all, label: "Show All", value: "all"},
               {cypressData: ClientPageIds.radioIds.active, label: "Active", value: "active", default: true},
               {cypressData: ClientPageIds.radioIds.inactive, label: "Inactive", value: "inactive"}
             ]} />
             {allCompanies.length !== 0 && !IsReadOnly() &&
-            <Box sx={{ display: 'flex',
+            <Grid item sx={{ display: 'flex',
               justifyContent: 'flex-end',
               }}> 
               <IconButton disabled={InEditMode()} data-cy={ClientPageIds.addClientButton} onClick={() => HandleAddEmptyClient()}>
                 <AddIcon fontSize="large"/>
               </IconButton>
-              </Box>
+            </Grid>
             }
-            </Box>
-          </div>
+          </Grid>
+        </div>
         <div className="col-span-1 py-2">
           <TableContainer elevation={12} component={Paper}>
             <Table className="table-auto w-full outline outline-3 bg-gray-100">

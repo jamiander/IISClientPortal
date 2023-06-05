@@ -9,7 +9,7 @@ import ValidateNewInitiative, { ValidateFileThroughputData, ValidateEditThroughp
 import { useAppSelector, useAppDispatch } from "../Store/Hooks";
 import { UserTextField, inputStyle, yellowButtonStyle } from "../Styles";
 import { Company, selectAllCompanies, upsertThroughputData } from "../Store/CompanySlice";
-import { Box, IconButton } from "@mui/material";
+import { Box, Grid, IconButton } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { selectCurrentUser } from "../Store/UserSlice";
 
@@ -47,11 +47,11 @@ export default function InitiativesPage(){
         </div>
       </div>
         <div className="mx-[2%] mb-[2%]">
-         <div className="flex flex-col justify-content:space-between mx-1 h-[45px]">
-           <Box sx={{ display: 'flex',
-              justifyContent: 'flex-center',
+         <Grid container sx={{ display: 'flex',
+              justifyContent: 'space-between',
+              flexDirection: 'row',
+              placeItems: 'center',
               p: 1,
-              mr: 15,
               mt: 2,
               mb: 1,
               borderRadius: 1, }}>
@@ -60,17 +60,16 @@ export default function InitiativesPage(){
               { cypressData: InitiativeDisplayRadioIds.active, label: "Active", value: "active", default: true },
               { cypressData: InitiativeDisplayRadioIds.inactive, label: "Inactive", value: "inactive" }
             ]} />  
-            </Box>
             {currentUser?.isAdmin &&
-            <Box sx={{ display: 'flex',
+            <Grid item sx={{ display: 'flex',
               justifyContent: 'flex-end',
               }}>        
               <IconButton data-cy={InitiativesPageIds.addInitiativeButton} onClick={() => setAddInitiative(true)}>
                   <AddIcon fontSize="large"/>
               </IconButton>
-            </Box>
+            </Grid>
             }
-         </div>
+         </Grid>
          {companyList.length > 0 &&
           <InitiativesTable addInitiative={addInitiative} currentUser={currentUser} companyList={companyList} radioStatus={radioValue} ValidateInitiative={ValidateNewInitiative} setAddInitiative={setAddInitiative}/>}
         </div>

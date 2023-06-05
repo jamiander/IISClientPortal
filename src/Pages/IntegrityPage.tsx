@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { User, getUserById, selectAllUsers, selectCurrentUser } from "../Store/UserSlice";
 import { Company, IntegrityId, selectAllCompanies } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
-import { Box, Checkbox, IconButton, Input, InputAdornment} from "@mui/material";
+import { Box, Checkbox, Grid, IconButton, Input, InputAdornment} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
@@ -111,7 +111,7 @@ export function IntegrityPage(){
       <div className="mx-[2%] mb-[2%]">
         {allUsers.length !== 0 &&
            <div className="flex flex-col justify-content:space-between">
-            <Box sx={{ display: 'flex',
+            <Grid container sx={{ display: 'flex',
               justifyContent: 'space-between',
               flexDirection: 'row',
               p: 1,
@@ -127,14 +127,14 @@ export function IntegrityPage(){
                   </InputAdornment>
                 ),
               }} />
-              <Box sx={{ display: 'flex',
+              <Grid item sx={{ display: 'flex',
                 justifyContent: 'flex-end',
                 }}>  
-              <IconButton disabled={InEditMode()} data-cy={IntegrityPageIds.addButton} onClick={() => AddEmptyUser(IntegrityId)}>
-                <AddIcon fontSize="large"/>
-              </IconButton>
-              </Box>
-            </Box>
+                <IconButton disabled={InEditMode()} data-cy={IntegrityPageIds.addButton} onClick={() => AddEmptyUser(IntegrityId)}>
+                  <AddIcon fontSize="large"/>
+                </IconButton>
+              </Grid>
+            </Grid>
           </div> 
         }
         <div className="col-span-1 py-2">

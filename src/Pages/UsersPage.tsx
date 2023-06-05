@@ -132,27 +132,32 @@ export default function UsersPage(){
     </div>
      <div className="mx-[2%] mb-[2%]">
         <div className="flex flex-col justify-content:space-between">
-         <Box sx={{ display: 'flex',
+         <Grid container sx={{ display: 'flex',
               justifyContent: 'space-between',
+              placeItems: 'center',
               flexDirection: 'row',
               p: 1,
               mt: 2,
               mb: 1,
               borderRadius: 1, }}> 
-            <UserTextField data-cy={UsersPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name or email" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-              }} />
+              <Grid item sx={{ display: 'flex',
+              justifyContent: 'flex-start',
+              }}>
+              <UserTextField data-cy={UsersPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name or email" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon />
+                    </InputAdornment>
+                  ),
+                }} />
+              </Grid>
               <RadioSet dark={true} setter={setRadioValue} name="userPage" options={[
               { cypressData: UsersPageIds.radioIds.all, label: "Show All", value: "all" },
               { cypressData: UsersPageIds.radioIds.active, label: "Active", value: "active", default: true },
               { cypressData: UsersPageIds.radioIds.inactive, label: "Inactive", value: "inactive" }
             ]} />
-            <Box sx={{ display: 'flex',
+            <Grid item sx={{ display: 'flex',
               justifyContent: 'flex-end',
               }}> 
             {companyUsers.length !== 0 &&
@@ -167,8 +172,8 @@ export default function UsersPage(){
                 <AddIcon  fontSize="large"/>
               </IconButton>
               }
-            </Box>  
-          </Box>         
+            </Grid>  
+          </Grid>         
         </div>
              <div className="col-span-1 py-2">
               <TableContainer elevation={12} component={Paper}>

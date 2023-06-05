@@ -90,10 +90,7 @@ export const TableHeaderStyle =
       WebkitTextFillColor: "#65665E",
       color: "#65665E"
     },
-    marginTop: 5,
-    marginBottom: 5,
-    marginLeft: 20,
-    height: 5
+    
   }));
 
   export const StyledTextarea =

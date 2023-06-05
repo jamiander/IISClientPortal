@@ -1,3 +1,4 @@
+import Grid from "@mui/material/Grid"
 
 export interface RadioInstance {
   cypressData: string,
@@ -26,17 +27,19 @@ export function RadioSet(props: RadioSetProps)
   }
 
   return (
-    <div className={"w-[75vw] absolute center-0 flex justify-center mx-[12.5vw] mt-5 h-[45px] py-1 text-[1.2vw]"}>
+    <Grid item sx={{ display: 'flex',
+    justifyContent: 'flex-end',
+    gridArea: 'b'}}>
       {
         props.options.map((radio,index) => {
           return (
-            <label key={index} className="mr-5 hover:text-[#879794]" onClick={()=>HandleClick(radio.value)}>
-              <input type='radio' data-cy={radio.cypressData} value={radio.value} name={props.name} defaultChecked={radio.default} className="mr-5 ml-12"/>
+            <label key={index} className="mr-6 ml-2 hover:text-[#879794]" onClick={()=>HandleClick(radio.value)}>
+              <input type='radio' data-cy={radio.cypressData} value={radio.value} name={props.name} defaultChecked={radio.default}/>
               {radio.label}
             </label>
           )
         })
       }
-    </div>
+    </Grid>
   );
 }
