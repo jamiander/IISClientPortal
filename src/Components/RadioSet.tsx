@@ -28,8 +28,7 @@ export function RadioSet(props: RadioSetProps)
 
   return (
     <Grid item sx={{ display: 'flex',
-    justifyContent: 'flex-end',
-    gridArea: 'b'}}>
+    justifyContent: 'center'}}>
       {
         props.options.map((radio,index) => {
           return (

@@ -31,9 +31,6 @@ export default function InitiativesPage(){
   const currentUser = useAppSelector(selectCurrentUser);
 
   const [addInitiative, setAddInitiative] = useState(false);
-  const [UploadModalIsOpen, setUploadModalIsOpen] = useState(false);
-  const [EditModalIsOpen, setEditModalIsOpen] = useState(false);
-  
   const dispatch = useAppDispatch();
   const [radioValue, setRadioValue] = useState('active');
 
@@ -55,10 +52,11 @@ export default function InitiativesPage(){
               mt: 2,
               mb: 1,
               borderRadius: 1, }}>
-             <RadioSet dark={true} setter={setRadioValue} name="initiativesDisplay" options={[
-              { cypressData: InitiativeDisplayRadioIds.all, label: "Show All", value: "all" },
-              { cypressData: InitiativeDisplayRadioIds.active, label: "Active", value: "active", default: true },
-              { cypressData: InitiativeDisplayRadioIds.inactive, label: "Inactive", value: "inactive" }
+            <Grid item></Grid>
+            <RadioSet dark={true} setter={setRadioValue} name="initiativesDisplay" options={[
+            { cypressData: InitiativeDisplayRadioIds.all, label: "Show All", value: "all" },
+            { cypressData: InitiativeDisplayRadioIds.active, label: "Active", value: "active", default: true },
+            { cypressData: InitiativeDisplayRadioIds.inactive, label: "Inactive", value: "inactive" }
             ]} />  
             {currentUser?.isAdmin &&
             <Grid item sx={{ display: 'flex',
