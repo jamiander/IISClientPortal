@@ -43,7 +43,7 @@ export default function InitiativesPage(){
           </div>
         </div>
       </div>
-        <div className="mx-[2%] mb-[2%]">
+      <div className="mx-[2%] mb-[1%]">
         <div className="flex flex-col justify-content:space-between">
          <Grid container sx={{ display: 'flex',
               flexDirection: 'row',
@@ -64,7 +64,7 @@ export default function InitiativesPage(){
               paddingRight: '5%'
               }}>        
               <IconButton data-cy={InitiativesPageIds.addInitiativeButton} onClick={() => setAddInitiative(true)}>
-                  <AddIcon sx={{fontSize: "calc(30px + 0.390625vw)"}}/>Add
+                  <AddIcon sx={{fontSize: "calc(30px + 0.390625vw)", color: "#21345b"}}/>Add
               </IconButton>
             </Grid>
             :
@@ -74,7 +74,7 @@ export default function InitiativesPage(){
          {companyList.length > 0 &&
           <InitiativesTable addInitiative={addInitiative} currentUser={currentUser} companyList={companyList} radioStatus={radioValue} ValidateInitiative={ValidateNewInitiative} setAddInitiative={setAddInitiative}/>}
         </div>
-        </div>
+      </div>
      </>
   )
 }

@@ -193,7 +193,7 @@ export function ClientPage()
           </div>
         </div>
       </div>
-      <div className="mx-[2%] mb-[2%]">
+      <div className="mx-[2%] mb-[1%]">
         <div className="flex flex-row justify-content:space-between">
           <Grid container sx={{ display: 'flex',
             placeItems: 'center',
@@ -210,7 +210,7 @@ export function ClientPage()
                 InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <SearchIcon />
+                    <SearchIcon sx={{fontSize: "calc(20px + 0.390625vw)", color: "#21345b"}}/>
                   </InputAdornment>
                 ),
               }} />
@@ -227,7 +227,7 @@ export function ClientPage()
               paddingRight: "5%",
               }}> 
               <IconButton disabled={InEditMode()} data-cy={ClientPageIds.addClientButton} onClick={() => HandleAddEmptyClient()}>
-                <AddIcon sx={{fontSize: "calc(30px + 0.390625vw)"}}/>Add
+                <AddIcon sx={{fontSize: "calc(30px + 0.390625vw)", color: "#21345b"}}/>Add
               </IconButton>
             </Grid>
             }

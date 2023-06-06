@@ -130,7 +130,7 @@ export default function UsersPage(){
         </div>
       </div>
     </div>
-     <div className="mx-[2%] mb-[2%]">
+     <div className="mx-[2%] mb-[1%]">
         <div className="flex flex-col justify-content:space-between">
          <Grid container sx={{ display: 'flex',
               placeItems: 'center',
@@ -146,7 +146,7 @@ export default function UsersPage(){
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <SearchIcon />
+                      <SearchIcon sx={{fontSize: "calc(20px + 0.390625vw)", color: "#21345b"}}/>
                     </InputAdornment>
                   ),
                 }} />
@@ -162,14 +162,14 @@ export default function UsersPage(){
               }}> 
             {companyUsers.length !== 0 &&
               currentUserCompanyId !== IntegrityId &&
-              <IconButton disabled={InEditMode()} data-cy={UsersPageIds.addButton} onClick={() => AddEmptyUser(currentUserCompanyId)}>
-                <AddIcon sx={{fontSize: "calc(30px + 0.390625vw)"}}/>
+              <IconButton className="color-[#21345b]" disabled={InEditMode()} data-cy={UsersPageIds.addButton} onClick={() => AddEmptyUser(currentUserCompanyId)}>
+                <AddIcon sx={{fontSize: "calc(30px + 0.390625vw)", color: "#21345b"}}/>
               </IconButton>
             }
             {companyUsers.length !== 0 &&
               currentUserCompanyId === IntegrityId &&
               <IconButton disabled={InEditMode()} data-cy={UsersPageIds.addButton} onClick={() => AddEmptyUser("")}>
-                <AddIcon sx={{fontSize: "calc(30px + 0.390625vw)"}}/>Add
+                <AddIcon sx={{fontSize: "calc(30px + 0.390625vw)", color: "#21345b"}}/>Add
               </IconButton>
               }
             </Grid>  

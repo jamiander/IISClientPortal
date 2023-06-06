@@ -108,7 +108,7 @@ export function IntegrityPage(){
           </div>
         </div>
       </div>
-      <div className="mx-[2%] mb-[2%]">
+      <div className="mx-[2%] mb-[1%]">
         {allUsers.length !== 0 &&
            <div className="flex flex-col justify-content:space-between">
             <Grid container sx={{ display: 'flex',
@@ -127,7 +127,7 @@ export function IntegrityPage(){
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <SearchIcon />
+                      <SearchIcon sx={{fontSize: "calc(20px + 0.390625vw)", color: "#21345b"}}/>
                     </InputAdornment>
                   ),
                 }} />
@@ -137,7 +137,7 @@ export function IntegrityPage(){
                 paddingRight: "5%"
                 }}>  
                 <IconButton disabled={InEditMode()} data-cy={IntegrityPageIds.addButton} onClick={() => AddEmptyUser(IntegrityId)}>
-                  <AddIcon sx={{fontSize: "calc(30px + 0.390625vw)"}}/>Add
+                  <AddIcon sx={{fontSize: "calc(30px + 0.390625vw)", color: "#21345b"}}/>Add
                 </IconButton>
               </Grid>
             </Grid>

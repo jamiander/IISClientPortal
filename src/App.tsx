@@ -31,20 +31,20 @@ function App() {
 
   return (
     <div className='gap-1 bg-[#FAB947]'>
-      <div className='bg-[#E4E1E5] h-[2%] mx-1 py-1 rounded-md'><Header/></div>
-      <div className='contents mx-1 bg-[#E4E1E5]'>
-        <div className={'bg-[#E4E1E5] min-h-[82vh] rounded-md mt-2'}>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <Content ShowToast={ShowToast}/>
-            <Toast toastList={toastList} />
-            <SnackbarProvider maxSnack={1} anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'center',
-            }}/>
-          </LocalizationProvider>
+      <div className='bg-[#E4E1E5] h-[2%] mx-3 shadow-xl py-1 rounded-md'><Header/></div>
+        <div className='contents mx-1 bg-[#E4E1E5]'>
+          <div className={'bg-[#E4E1E5] min-h-[82vh] mx-3 shadow-xl rounded-md mt-4'}>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <Content ShowToast={ShowToast}/>
+              <Toast toastList={toastList} />
+              <SnackbarProvider maxSnack={1} anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center',
+              }}/>
+            </LocalizationProvider>
+          </div>
         </div>
-      </div>
-      <div className='bg-[#21345b] text-white h-fit mb-1 mx-1 pb-1 rounded-md'><Footer/></div>
+      <div className='bg-[#21345b] text-white h-fit mb-1 mx-3 shadow-xl pb-1 rounded-md'><Footer/></div>
     </div>
   );
 }
