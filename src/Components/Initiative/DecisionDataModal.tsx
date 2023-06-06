@@ -259,7 +259,7 @@ export default function DecisionDataModal(props: DecisionDataProps) {
                             <StyledTextarea id="description" data-cy={DecisionModalIds.editDescription} value={currentDescription} onChange={e => setCurrentDescription(e.target.value)}/>
                             <label className={labelStyle} htmlFor="resolution">Resolution</label>
                             <StyledTextarea id="resolution" data-cy={DecisionModalIds.editResolution} value={currentResolution} onChange={e => setCurrentResolution(e.target.value)}/>
-                            <StyledTextField data-cy={DecisionModalIds.editParticipants} label="Participants-separate by comma" value={currentParticipants} onChange={e => setCurrentParticipants(e.target.value)}/>
+                            <StyledTextField sx={{marginLeft:0, marginBottom:2.5}}  data-cy={DecisionModalIds.editParticipants} label="Participants" value={currentParticipants} onChange={e => setCurrentParticipants(e.target.value)}/>
                             <DateInput cypressData={DecisionModalIds.editDate} label="Date Resolved" date={currentDate} setDate={setCurrentDate}/>
                           </>
                           :
@@ -268,7 +268,7 @@ export default function DecisionDataModal(props: DecisionDataProps) {
                             <StyledTextarea id="description" data-cy={DecisionModalIds.description} disabled value={displayItem.description}/>
                             <label className={labelStyle} htmlFor="resolution">Resolution</label>
                             <StyledTextarea id="resolution" data-cy={DecisionModalIds.resolution} disabled value={displayItem.resolution}/>
-                            <StyledTextField data-cy={DecisionModalIds.participants} label="Participants" disabled value={displayItem.participants}/>
+                            <StyledTextField sx={{marginLeft:0, marginBottom:2.5}} data-cy={DecisionModalIds.participants} label="Participants" disabled value={displayItem.participants}/>
                             <DateInput cypressData={DecisionModalIds.date} label="Date Resolved" disabled={true} date={displayItem.date} setDate={setCurrentDate}/>
                           </>
                           }

@@ -1,4 +1,4 @@
-import { Breakpoint, Container, Dialog, DialogTitle, IconButton, Typography } from "@mui/material";
+import { Breakpoint, Container, Dialog, DialogTitle, Grid, IconButton, Typography } from "@mui/material";
 import { ReactNode } from "react";
 import { Company, Initiative } from "../../Store/CompanySlice";
 import CloseIcon from '@mui/icons-material/Close';
@@ -32,11 +32,18 @@ export function BaseInitiativeModal(props: BaseInitiativeModalProps)
       >
         <div className="flex col-span-4 bg-[#69D5C3]">
           <DialogTitle sx={{width: "100%"}}>
-            <div className="space-y-2 w-3/4">
-              <Typography variant="h4">{props.title}</Typography>
-              <Typography variant="h6" className="text-5xl font-bold w-full">{props.company?.name}</Typography>
-              <Typography variant="body1" className="text-3xl w-full">{props.initiative?.title}</Typography>
-            </div>
+            <Grid container display="flex" columns={12} alignItems="center" justifyContent="space-between" wrap="nowrap">
+              <Grid item xs={3} zeroMinWidth>
+                <Typography noWrap variant="h6" className="text-5xl font-bold w-full">{props.company?.name}</Typography>
+                <Typography noWrap variant="body1" className="text-3xl w-full">{props.initiative?.title}</Typography>
+              </Grid>
+              <Grid item xs="auto">
+                <Typography variant="h5">{props.title}</Typography>
+              </Grid>
+              <Grid item xs={3}>
+                {/* nothing; used to center the title */}
+              </Grid>
+            </Grid>
             <IconButton data-cy={props.cypressData.closeModalButton} onClick={() => props.onClose()}
               sx={{
                 position: "absolute",

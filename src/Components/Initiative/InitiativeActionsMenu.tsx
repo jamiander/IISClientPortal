@@ -41,7 +41,7 @@ export function InitiativeActionsMenu(props: InitiativeActionsMenuProps)
 
   const dispatch = useAppDispatch();
 
-  const [viewDecisionDataIsOpen, setViewDecisionDataIsOpen] = useState(false);
+  const [decisionModalIsOpen, setDecisionModalIsOpen] = useState(false);
   const [documentModalIsOpen, setDocumentModalIsOpen] = useState(false);
   const [uploadThroughputModalIsOpen, setUploadThroughputModalIsOpen] = useState(false);
   const [editThroughputModalIsOpen, setEditThroughputModalIsOpen] = useState(false);
@@ -66,6 +66,30 @@ export function InitiativeActionsMenu(props: InitiativeActionsMenuProps)
     return false;
   }
 
+  function HandleDecisionModal()
+  {
+    setDecisionModalIsOpen(true);
+    handleClose();
+  }
+
+  function HandleDocumentModal()
+  {
+    setDocumentModalIsOpen(true);
+    handleClose();
+  }
+
+  function HandleUploadThrouhgputModal()
+  {
+    setUploadThroughputModalIsOpen(true);
+    handleClose();
+  }
+
+  function HandleEditThroughputModal()
+  {
+    setEditThroughputModalIsOpen(true);
+    handleClose();
+  }
+
   return (
     <>
       <IconButton
@@ -88,30 +112,30 @@ export function InitiativeActionsMenu(props: InitiativeActionsMenuProps)
           'aria-labelledby': 'basic-button',
         }}
       >
-        <MenuItem onClick={handleClose}>
+        <MenuItem data-cy={props.cypressData.decisionButton} onClick={() => HandleDecisionModal()}>
           {/*<ViewDecisionDataButton id={props.ids.decisionButton} company={props.company} initiative={props.initiative}/>*/}
-          <Button data-cy={props.cypressData.decisionButton} onClick={() => setViewDecisionDataIsOpen(true)}>
+          <Button>
             Decisions
           </Button>
         </MenuItem>
-        <MenuItem onClick={handleClose}>
+        <MenuItem data-cy={props.cypressData.documentButton} onClick={() => HandleDocumentModal()}>
           {/*<DocumentManagementButton id={props.ids.documentButton} company={props.company} initiative={props.initiative} isAdmin={props.isAdmin}/>*/}
-          <Button data-cy={props.cypressData.documentButton} onClick={() => setDocumentModalIsOpen(true)}>
+          <Button>
             Documents
           </Button>
         </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <Button data-cy={props.cypressData.uploadThroughputButton} onClick={() => setUploadThroughputModalIsOpen(true)}>
+        <MenuItem data-cy={props.cypressData.uploadThroughputButton} onClick={() => HandleUploadThrouhgputModal()}>
+          <Button>
             Upload Throughput
           </Button>
         </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <Button data-cy={props.cypressData.editThroughputButton} onClick={() => setEditThroughputModalIsOpen(true)}>
+        <MenuItem data-cy={props.cypressData.editThroughputButton} onClick={() => HandleEditThroughputModal()}>
+          <Button>
             Edit Throughput
           </Button>
         </MenuItem>
       </Menu>
-      <DecisionDataModal title='View Decision Data' isOpen={viewDecisionDataIsOpen} setDecisionModalIsOpen={setViewDecisionDataIsOpen} initiative={props.initiative} company={props.company} isAdmin={props.isAdmin}/>
+      <DecisionDataModal title='View Decision Data' isOpen={decisionModalIsOpen} setDecisionModalIsOpen={setDecisionModalIsOpen} initiative={props.initiative} company={props.company} isAdmin={props.isAdmin}/>
       <DocumentManagementModal isOpen={documentModalIsOpen} setIsOpen={setDocumentModalIsOpen} company={props.company} initiative={props.initiative} isAdmin={props.isAdmin} />
       <UploadThroughputModal company={props.company} initiative={props.initiative} uploadIsOpen={uploadThroughputModalIsOpen} setUploadIsOpen={setUploadThroughputModalIsOpen} Submit={SubmitUpdateThroughput}/>
       <EditThroughputModal allCompanies={props.allCompanies} company={props.company} initiative={props.initiative} editIsOpen={editThroughputModalIsOpen} setEditIsOpen={setEditThroughputModalIsOpen} Submit={SubmitUpdateThroughput}/>
