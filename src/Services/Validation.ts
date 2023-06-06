@@ -178,10 +178,12 @@ export function ValidateDecisions(decisions: DecisionData[]) : Validation
       return {success: false, message: "Decisions must have a valid date."};
     if (MakeDate(decision.date) > today)
       return {success: false, message: "Decisions cannot have dates set in the future."};
-    if (!decision.description || !decision.resolution) 
-      return {success: false, message: "Decisions cannot have any empty fields."};
-    if (decision.participants.length === 0 || decision.participants.every(p => p === ""))
-      return {success: false, message: "Decisions must have at least one participant."}
+    if (!decision.description)
+      return {success: false, message: "Decisions must have a description."};
+    if (!decision.resolution) 
+      return {success: false, message: "Decisions must have a resolution."};
+    if (!decision.participants)
+      return {success: false, message: "Decisions must have at least one participant."};
   }
-  return { success: true, message: "Successfully validated decisions; all good!" }
+  return { success: true, message: "Successfully validated decisions; all good!" };
 }
