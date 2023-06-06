@@ -78,10 +78,11 @@ export default function LoginPage(){
             height: "fit",
             borderRadius: 3
           }} >
-          <Typography component="h1" variant="h5" sx={{fontSize:"calc(20px + 0.390625vw)"}}>
+          <Typography component="h1" variant="h5" sx={{fontSize:"calc(20px + 0.390625vw)", mb:4}}>
             Sign in
           </Typography>
           <TextField
+            InputProps={{ style: {fontSize:"calc(10px + 0.390625vw)"}}}
             margin="normal"
             required
             fullWidth
@@ -92,7 +93,9 @@ export default function LoginPage(){
             autoFocus value={userEmail}
             onChange={e => setUserEmail(e.target.value)}
             onKeyDown={e => HandleLogin(e.key)} />
-          <TextField margin="normal"
+          <TextField 
+            InputProps={{ style: {fontSize:"calc(10px + 0.390625vw)"}}}
+            margin="normal"
             required
             fullWidth
             name="password"
@@ -105,7 +108,7 @@ export default function LoginPage(){
             onKeyDown={e => HandleLogin(e.key)} />
           <FormControlLabel control={<Checkbox value="show" color="primary" onChange={togglePasswordVisibility}/>} label="Show Password" />
           <Button data-cy={LoginPageIds.submitButton} disabled={isLoading} fullWidth variant="contained" sx={{ mt: 6, mb: 2}} 
-            onClick={() => Login()} className={genericButtonStyle}>
+            onClick={() => Login()} >
             Sign In
           </Button>
           {isLoading &&

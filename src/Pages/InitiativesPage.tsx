@@ -48,9 +48,9 @@ export default function InitiativesPage(){
          <Grid container sx={{ display: 'flex',
               flexDirection: 'row',
               placeItems: 'center',
-              p: 1,
+              px: 1,
+              pt: 1,
               mt: 2,
-              mb: 1,
               borderRadius: 1, }}>
             <Grid item xs={3}></Grid>
             <RadioSet dark={true} setter={setRadioValue} name="initiativesDisplay" options={[

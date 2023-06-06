@@ -344,12 +344,12 @@ export default function InitiativesTable(props: InitiativesProps) {
   return (
     <>
       <div className="grid grid-cols-1 w-full h-auto">
-        <div className="col-span-1 h-[4vh] pb-4 space-x-4 mb-10">
+        <div className="col-span-1 h-[4vh] space-x-4 mb-2">
           <input data-cy={InitiativeTableIds.companyNameFilter} className={inputStyle} type={'text'} placeholder="Filter by Company" value={searchedComp} onChange={(e) => setSearchedComp(e.target.value)} />
           <input data-cy={InitiativeTableIds.initiativeTitleFilter} className={inputStyle} type={'text'} placeholder="Filter by Title" value={searchedInit} onChange={(e) => setSearchedInit(e.target.value)} />
         </div>
         {totalInits !== 0 &&
-        <div className="col-span-1 py=2">
+        <div className="col-span-1">
           <TableContainer elevation={12} component={Paper}>
             <Table className="table-auto w-full outline outline-3 bg-gray-100">
               <colgroup>
