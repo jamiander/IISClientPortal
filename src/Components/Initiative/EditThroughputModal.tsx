@@ -20,7 +20,6 @@ import { CompareDateInfos, EqualDateInfos } from "../../Services/DateHelpers";
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from '@mui/icons-material/Close';
 import { BaseInitiativeModal } from "./BaseInitiativeModal";
-import { CalculateFontSize } from "../../Services/FontSizeHelpers";
 import { AddButton } from "../AddButton";
 
 enum stateEnum {
