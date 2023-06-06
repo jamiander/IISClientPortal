@@ -67,6 +67,7 @@ export default function DecisionDataModal(props: DecisionDataProps) {
   const [selectedInitiative, setSelectedInitiative] = useState<Initiative>(props.initiative);
   const [decisionToEdit, setDecisionToEdit] = useState<DecisionData>();
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [filteredDecisions, setFilteredDecisions] = useState<DecisionData[]>([]);
 
   const InEditMode = () => modalState === State.edit || modalState === State.add;
   const today = new Date();
@@ -76,7 +77,11 @@ export default function DecisionDataModal(props: DecisionDataProps) {
   useEffect(() => {
     setSelectedInitiative(props.initiative);
     LeaveEditMode();
-  },[props.isOpen])
+  },[props.isOpen]);
+
+  useEffect(() => {
+    setFilteredDecisions(selectedInitiative.decisions.filter(d => d.description.toUpperCase().includes(searchedKeyword.toUpperCase()) || d.resolution.toUpperCase().includes(searchedKeyword.toUpperCase())));
+  },[selectedInitiative,searchedKeyword]);
 
   function HandleAddEmptyDecision()
   {
@@ -212,14 +217,9 @@ export default function DecisionDataModal(props: DecisionDataProps) {
         maxWidth={false}
         >
           <div className="mx-[2%] mb-[2%] w-full">
-            <Grid container className="my-2" alignItems="center" spacing={2} columns={12}>
-              {props.isAdmin &&
-                <Grid item>
-                  <AddButton cypressData={DecisionModalIds.addButton} HandleClick={() => HandleAddEmptyDecision()} disabled={InEditMode()}/>
-                </Grid>
-              }
+            <Grid container className="my-2" alignItems="center" justifyContent="left" spacing={2} display="flex" columns={12}>
               {selectedInitiative.decisions.length !== 0 &&
-                <Grid item xs={8}>
+                <Grid item xs={6} sm={6}>
                   <StyledTextField data-cy={DecisionModalIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in Description or Resolution" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)}
                     InputProps={{
                       startAdornment: (
@@ -231,10 +231,15 @@ export default function DecisionDataModal(props: DecisionDataProps) {
                   />
                 </Grid>
               }
+              {props.isAdmin &&
+                <Grid item xs={2}>
+                  <AddButton cypressData={DecisionModalIds.addButton} HandleClick={() => HandleAddEmptyDecision()} disabled={InEditMode()}/>
+                </Grid>
+              }
             </Grid>
             <Grid data-cy={DecisionModalIds.grid} container spacing={6}>
               {
-              selectedInitiative.decisions.filter(d => d.description.toUpperCase().includes(searchedKeyword.toUpperCase()) || d.resolution.toUpperCase().includes(searchedKeyword.toUpperCase())).map((displayItem, key) => {
+              filteredDecisions.map((displayItem, key) => {
                 let isEdit = InEditMode() && displayItem.id === (decisionToEdit?.id ?? -1);
                 
                 return(
@@ -291,11 +296,12 @@ export default function DecisionDataModal(props: DecisionDataProps) {
                   </Grid>
                 )
               })}
+              {
+              filteredDecisions.length === 0 && <Grid item>No decisions to display.</Grid>
+              }
             </Grid>
+            
           </div>
-          {
-            selectedInitiative.decisions.length === 0 && <div className="m-2 p-2">No decisions to display.</div>
-          }
         </BaseInitiativeModal>
         <DeleteDecisionAlert isOpen={isDeleteOpen} setIsOpen={setIsDeleteOpen} DeleteDecision={DeleteDecision} CancelDelete={CancelDelete} decisionId={decisionToEdit?.id}/>
       </>
