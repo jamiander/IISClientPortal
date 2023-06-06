@@ -62,9 +62,10 @@ export default function InitiativesPage(){
             {currentUser?.isAdmin ?
             <Grid item sx={{ display: 'flex',
               justifyContent: 'flex-end',
+              marginRight: '5%'
               }}>        
               <IconButton data-cy={InitiativesPageIds.addInitiativeButton} onClick={() => setAddInitiative(true)}>
-                  <AddIcon sx={{fontSize: "calc(30px + 0.390625vw)"}}/>
+                  <AddIcon sx={{fontSize: "calc(30px + 0.390625vw)"}}/>Add
               </IconButton>
             </Grid>
             :

@@ -33,7 +33,7 @@ function App() {
     <div className='gap-1 bg-[#FAB947]'>
       <div className='bg-[#E4E1E5] h-[2%] mx-1 py-1 rounded-md'><Header/></div>
       <div className='contents mx-1 bg-[#E4E1E5]'>
-        <div className={'bg-[#E4E1E5] min-h-[80vh] rounded-md mt-2'}>
+        <div className={'bg-[#E4E1E5] min-h-[82vh] rounded-md mt-2'}>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <Content ShowToast={ShowToast}/>
             <Toast toastList={toastList} />

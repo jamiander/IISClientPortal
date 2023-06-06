@@ -53,8 +53,7 @@ export default function Header(){
       </Grid>
       <Grid item sx={{ display: 'flex',
           justifyContent: 'flex-center',
-          fontSize: "calc(25px + 0.390625vw)",
-          wordWrap:"break-word"
+          fontSize: "calc(25px + 0.390625vw)"
           }}> 
         {isLoggedIn && 
         <div><p className="text-center">{greet}</p>

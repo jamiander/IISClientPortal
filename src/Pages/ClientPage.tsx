@@ -223,9 +223,10 @@ export function ClientPage()
             {allCompanies.length !== 0 && !IsReadOnly() &&
             <Grid item sx={{ display: 'flex',
               justifyContent: 'flex-end',
+              marginRight: "5%"
               }}> 
               <IconButton disabled={InEditMode()} data-cy={ClientPageIds.addClientButton} onClick={() => HandleAddEmptyClient()}>
-                <AddIcon sx={{fontSize: "calc(30px + 0.390625vw)"}}/>
+                <AddIcon sx={{fontSize: "calc(30px + 0.390625vw)"}}/>Add
               </IconButton>
             </Grid>
             }

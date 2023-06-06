@@ -159,6 +159,7 @@ export default function UsersPage(){
             ]} />
             <Grid item sx={{ display: 'flex',
               justifyContent: 'flex-end',
+              marginRight: "5%"
               }}> 
             {companyUsers.length !== 0 &&
               currentUserCompanyId !== IntegrityId &&
@@ -169,7 +170,7 @@ export default function UsersPage(){
             {companyUsers.length !== 0 &&
               currentUserCompanyId === IntegrityId &&
               <IconButton disabled={InEditMode()} data-cy={UsersPageIds.addButton} onClick={() => AddEmptyUser("")}>
-                <AddIcon sx={{fontSize: "calc(30px + 0.390625vw)"}}/>
+                <AddIcon sx={{fontSize: "calc(30px + 0.390625vw)"}}/>Add
               </IconButton>
               }
             </Grid>  
@@ -179,11 +180,11 @@ export default function UsersPage(){
               <TableContainer elevation={12} component={Paper}>
                 <Table className="table-auto w-full outline outline-3 bg-gray-100">
                   <colgroup>
-                    <col style={{ width: '17vw' }} />
+                    <col style={{ width: '15vw' }} />
                     <col style={{ width: '16vw' }} />
                     <col style={{ width: '17vw' }} />
                     <col style={{ width: '10vw' }} />
-                    <col style={{ width: '10vw' }} />
+                    <col style={{ width: '8vw' }} />
                     <col style={{ width: '8vw' }} />
                     <col style={{ width: '6vw' }} />
                     <col style={{ width: '7vw' }} />
