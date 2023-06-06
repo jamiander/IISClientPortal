@@ -53,7 +53,7 @@ export default function NavPanel(){
   }
 
   return(
-    <div className="ml-8 space-x-2 flex flex-wrap mt-4 mb-4">
+    <div className="ml-4 space-x-2 flex flex-wrap mt-4 mb-4">
     {(currentUser?.isAdmin || currentUser?.companyId === IntegrityId) && currentUser?.isActive === true &&
     <IconButton className="text-xl"
           id="basic-button"
@@ -63,7 +63,7 @@ export default function NavPanel(){
           aria-expanded={open ? 'true' : undefined}
           onClick={handleClick}
         >
-        <MenuIcon fontSize="large" />
+        <MenuIcon sx={{fontSize: "calc(30px + 0.390625vw)"}} />
     </IconButton>
     }
         <Menu id="basic-menu"

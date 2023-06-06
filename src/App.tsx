@@ -31,7 +31,7 @@ function App() {
 
   return (
     <div className='gap-1 bg-[#FAB947]'>
-      <div className='bg-[#E4E1E5] h-[2%] mt-1 mx-1 py-1 rounded-md'><Header/></div>
+      <div className='bg-[#E4E1E5] h-[2%] mx-1 py-1 rounded-md'><Header/></div>
       <div className='contents mx-1 bg-[#E4E1E5]'>
         <div className={'bg-[#E4E1E5] min-h-[80vh] rounded-md mt-2'}>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -44,7 +44,7 @@ function App() {
           </LocalizationProvider>
         </div>
       </div>
-      <div className='bg-[#21345b] text-white h-fit mb-1 mx-1 rounded-md'><Footer/></div>
+      <div className='bg-[#21345b] text-white h-fit mb-1 mx-1 pb-1 rounded-md'><Footer/></div>
     </div>
   );
 }

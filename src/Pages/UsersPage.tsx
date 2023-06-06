@@ -163,13 +163,13 @@ export default function UsersPage(){
             {companyUsers.length !== 0 &&
               currentUserCompanyId !== IntegrityId &&
               <IconButton disabled={InEditMode()} data-cy={UsersPageIds.addButton} onClick={() => AddEmptyUser(currentUserCompanyId)}>
-                <AddIcon fontSize="large"/>
+                <AddIcon sx={{fontSize: "calc(30px + 0.390625vw)"}}/>
               </IconButton>
             }
             {companyUsers.length !== 0 &&
               currentUserCompanyId === IntegrityId &&
               <IconButton disabled={InEditMode()} data-cy={UsersPageIds.addButton} onClick={() => AddEmptyUser("")}>
-                <AddIcon  fontSize="large"/>
+                <AddIcon sx={{fontSize: "calc(30px + 0.390625vw)"}}/>
               </IconButton>
               }
             </Grid>  

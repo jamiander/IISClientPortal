@@ -225,7 +225,7 @@ export function ClientPage()
               justifyContent: 'flex-end',
               }}> 
               <IconButton disabled={InEditMode()} data-cy={ClientPageIds.addClientButton} onClick={() => HandleAddEmptyClient()}>
-                <AddIcon fontSize="large"/>
+                <AddIcon sx={{fontSize: "calc(30px + 0.390625vw)"}}/>
               </IconButton>
             </Grid>
             }

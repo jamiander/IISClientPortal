@@ -68,20 +68,19 @@ export default function LoginPage(){
           <a className="text-blue-600 visited:text-[#00C4FF] underline" href="https://www.integrityinspired.com/">here.</a>
         </p>
       </div>
-      <Container component="main" maxWidth="xs" className="bg-gray-100 py-4 px-6 mt-[1%] mb=[1%] rounded-md">
-      <Box
-        sx={{
-          marginTop: 4,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          borderRadius: 3
-        }}
-      >
-        <Typography component="h1" variant="h5">
-          Sign in
-        </Typography>
-        <Box component="form" onSubmit={HandleLogin} noValidate className="my-4" >
+      <Container component="main" maxWidth="xs" className="bg-gray-100 py-4 px-6 mt-[1%] mb=[1%] h-[60vh] rounded-md">
+        <Box component="form" onSubmit={HandleLogin} noValidate sx={{
+            marginTop: 6,
+            marginBottom: 4,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            height: "fit",
+            borderRadius: 3
+          }} >
+          <Typography component="h1" variant="h5">
+            Sign in
+          </Typography>
           <TextField
             margin="normal"
             required
@@ -118,8 +117,7 @@ export default function LoginPage(){
               <p className="text-red-600">Incorrect Email or Password</p>
             </div>}
         </Box>
-      </Box>
-    </Container>
+      </Container>
     </>
   );
 }

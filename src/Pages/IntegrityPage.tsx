@@ -131,7 +131,7 @@ export function IntegrityPage(){
                 justifyContent: 'flex-end',
                 }}>  
                 <IconButton disabled={InEditMode()} data-cy={IntegrityPageIds.addButton} onClick={() => AddEmptyUser(IntegrityId)}>
-                  <AddIcon fontSize="large"/>
+                  <AddIcon sx={{fontSize: "calc(30px + 0.390625vw)"}}/>
                 </IconButton>
               </Grid>
             </Grid>

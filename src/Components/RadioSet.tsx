@@ -27,13 +27,15 @@ export function RadioSet(props: RadioSetProps)
   }
 
   return (
-    <Grid item sx={{ display: 'flex',
-    justifyContent: 'center'}}>
+    <Grid item sx={{ display: "flex",
+    justifyContent: "center",
+    fontSize: "calc(14px + 0.390625vw)"
+    }}>
       {
         props.options.map((radio,index) => {
           return (
-            <label key={index} className="mr-6 ml-2 hover:text-[#879794]" onClick={()=>HandleClick(radio.value)}>
-              <input type='radio' data-cy={radio.cypressData} value={radio.value} name={props.name} defaultChecked={radio.default}/>
+            <label key={index} className="mr-8 ml-2 hover:text-[#879794]" onClick={()=>HandleClick(radio.value)}>
+              <input className="mr-2" type='radio' data-cy={radio.cypressData} value={radio.value} name={props.name} defaultChecked={radio.default}/>
               {radio.label}
             </label>
           )
