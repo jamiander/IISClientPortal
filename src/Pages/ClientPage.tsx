@@ -194,36 +194,37 @@ export function ClientPage()
         </div>
       </div>
       <div className="mx-[2%] mb-[2%]">
-        <div className="flex flex-col justify-content:space-between">
+        <div className="flex flex-row justify-content:space-between">
           <Grid container sx={{ display: 'flex',
-              justifyContent: 'space-between',
-              placeItems: 'center',
-              flexDirection: 'row',
-              p: 1,
-              mt: 2,
-              mb: 1,
-              borderRadius: 1, }}>
-              <Grid item sx={{ display: 'flex',
-              justifyContent: 'flex-start',
+            placeItems: 'center',
+            flexDirection: 'row',
+            p: 1,
+            mt: 2,
+            mb: 1,
+            borderRadius: 1, }}>
+            <Grid item xs={3}
+              sx={{ display: 'flex',
+              justifyContent: 'flex-start'
               }}> 
-                <UserTextField data-cy={ClientPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)} 
-                  InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <SearchIcon />
-                    </InputAdornment>
-                  ),
-                }} />
-              </Grid>
-              <RadioSet dark={true} setter={setRadioValue} name="clientPage" options={[
-              {cypressData: ClientPageIds.radioIds.all, label: "Show All", value: "all"},
-              {cypressData: ClientPageIds.radioIds.active, label: "Active", value: "active", default: true},
-              {cypressData: ClientPageIds.radioIds.inactive, label: "Inactive", value: "inactive"}
+              <UserTextField data-cy={ClientPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)} 
+                InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon />
+                  </InputAdornment>
+                ),
+              }} />
+            </Grid>
+            <RadioSet dark={true} setter={setRadioValue} name="clientPage" options={[
+            {cypressData: ClientPageIds.radioIds.all, label: "Show All", value: "all"},
+            {cypressData: ClientPageIds.radioIds.active, label: "Active", value: "active", default: true},
+            {cypressData: ClientPageIds.radioIds.inactive, label: "Inactive", value: "inactive"}
             ]} />
             {allCompanies.length !== 0 && !IsReadOnly() &&
-            <Grid item sx={{ display: 'flex',
+            <Grid item xs={3}
+              sx={{ display: 'flex',
               justifyContent: 'flex-end',
-              marginRight: "5%"
+              paddingRight: "5%",
               }}> 
               <IconButton disabled={InEditMode()} data-cy={ClientPageIds.addClientButton} onClick={() => HandleAddEmptyClient()}>
                 <AddIcon sx={{fontSize: "calc(30px + 0.390625vw)"}}/>Add

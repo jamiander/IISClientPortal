@@ -38,11 +38,10 @@ export default function Header(){
   return(
   <div className="mr-[1%] ml-[1%] flex">
     <Grid container sx={{ display: 'flex',
-              justifyContent: 'space-between',
               flexDirection: 'row',
               placeItems: "center"
                }}>
-      <Grid item sx={{ display: 'flex',
+      <Grid item xs={3} sx={{ display: 'flex',
           justifyContent: 'flex-start',
           placeItems: 'center'
           }}>
@@ -51,8 +50,8 @@ export default function Header(){
         <img className="w-[15vw]" src={logo} alt='Integrity Inspired Solutions Logo'/>
       </Link>
       </Grid>
-      <Grid item sx={{ display: 'flex',
-          justifyContent: 'flex-center',
+      <Grid item xs={6} sx={{ display: 'flex',
+          justifyContent: 'center',
           fontSize: "calc(25px + 0.390625vw)"
           }}> 
         {isLoggedIn && 
@@ -60,7 +59,7 @@ export default function Header(){
         <p className="text-center">{company?.name}!</p></div>
         }
       </Grid>
-      <Grid item sx={{ display: 'flex',
+      <Grid item xs={3} sx={{ display: 'flex',
           justifyContent: 'flex-end',
           }}> 
         {

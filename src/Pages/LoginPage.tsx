@@ -61,14 +61,14 @@ export default function LoginPage(){
   return (
     <>
       <div className="h-fit ml-30 mr-30 py-6 px-5 rounded-lg bg-[#21355B]">
-        <p className="text-center text-3xl text-white">Welcome to the Integrity Inspired Solutions Client Portal!</p>
-        <p className="text-center text-xl text-white mt-2">To view the information on your project, please log in.</p>
-        <p className="w-full text-center text-white text-xl">
-          If you are looking for the Integrity Inspired Solutions website, please see&nbsp;
+        <p className="text-center text-[1.8vw] text-white">Welcome to the Integrity Inspired Solutions Client Portal!</p>
+        <p className="text-center text-[1.1vw] text-white mt-2">To view the information on your project, please log in.</p>
+        <p className="w-full text-center text-white text-[1.1vw]">
+          If you are looking for the Integrity Inspired Solutions website, please go&nbsp;
           <a className="text-blue-600 visited:text-[#00C4FF] underline" href="https://www.integrityinspired.com/">here.</a>
         </p>
       </div>
-      <Container component="main" maxWidth="xs" className="bg-gray-100 py-4 px-6 mt-[1%] mb=[1%] h-[60vh] rounded-md">
+      <Container component="main" maxWidth="xs" className="bg-gray-100 py-4 px-6 mt-[1%] mb=[1%] h-[58vh] rounded-md">
         <Box component="form" onSubmit={HandleLogin} noValidate sx={{
             marginTop: 6,
             marginBottom: 4,
@@ -78,7 +78,7 @@ export default function LoginPage(){
             height: "fit",
             borderRadius: 3
           }} >
-          <Typography component="h1" variant="h5">
+          <Typography component="h1" variant="h5" sx={{fontSize:"calc(20px + 0.390625vw)"}}>
             Sign in
           </Typography>
           <TextField
@@ -104,7 +104,7 @@ export default function LoginPage(){
             onChange={e => setPassword(e.target.value)}
             onKeyDown={e => HandleLogin(e.key)} />
           <FormControlLabel control={<Checkbox value="show" color="primary" onChange={togglePasswordVisibility}/>} label="Show Password" />
-          <Button data-cy={LoginPageIds.submitButton} disabled={isLoading} fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} 
+          <Button data-cy={LoginPageIds.submitButton} disabled={isLoading} fullWidth variant="contained" sx={{ mt: 6, mb: 2}} 
             onClick={() => Login()} className={genericButtonStyle}>
             Sign In
           </Button>

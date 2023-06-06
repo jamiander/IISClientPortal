@@ -112,24 +112,29 @@ export function IntegrityPage(){
         {allUsers.length !== 0 &&
            <div className="flex flex-col justify-content:space-between">
             <Grid container sx={{ display: 'flex',
-              justifyContent: 'space-between',
+              placeItems: 'center',
               flexDirection: 'row',
               p: 1,
               mt: 2,
               mb: 1,
               borderRadius: 1, }}>
-              <UserTextField data-cy={IntegrityPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name or email" value={searchedKeyword} 
-              onChange={(e) => setSearchedKeyword(e.target.value)}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-              }} />
-              <Grid item sx={{ display: 'flex',
+              <Grid item xs={6}
+                sx={{ display: 'flex',
+                justifyContent: 'flex-start'
+                }}> 
+                <UserTextField data-cy={IntegrityPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name or email" value={searchedKeyword} 
+                onChange={(e) => setSearchedKeyword(e.target.value)}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon />
+                    </InputAdornment>
+                  ),
+                }} />
+              </Grid>
+              <Grid item xs={6} sx={{ display: 'flex',
                 justifyContent: 'flex-end',
-                marginRight: "5%"
+                paddingRight: "5%"
                 }}>  
                 <IconButton disabled={InEditMode()} data-cy={IntegrityPageIds.addButton} onClick={() => AddEmptyUser(IntegrityId)}>
                   <AddIcon sx={{fontSize: "calc(30px + 0.390625vw)"}}/>Add

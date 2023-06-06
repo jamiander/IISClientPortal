@@ -46,30 +46,29 @@ export default function InitiativesPage(){
         <div className="mx-[2%] mb-[2%]">
         <div className="flex flex-col justify-content:space-between">
          <Grid container sx={{ display: 'flex',
-              justifyContent: 'space-between',
               flexDirection: 'row',
               placeItems: 'center',
               p: 1,
               mt: 2,
               mb: 1,
               borderRadius: 1, }}>
-            <Grid item></Grid>
+            <Grid item xs={3}></Grid>
             <RadioSet dark={true} setter={setRadioValue} name="initiativesDisplay" options={[
             { cypressData: InitiativeDisplayRadioIds.all, label: "Show All", value: "all" },
             { cypressData: InitiativeDisplayRadioIds.active, label: "Active", value: "active", default: true },
             { cypressData: InitiativeDisplayRadioIds.inactive, label: "Inactive", value: "inactive" }
             ]} />  
             {currentUser?.isAdmin ?
-            <Grid item sx={{ display: 'flex',
+            <Grid item xs={3} sx={{ display: 'flex',
               justifyContent: 'flex-end',
-              marginRight: '5%'
+              paddingRight: '5%'
               }}>        
               <IconButton data-cy={InitiativesPageIds.addInitiativeButton} onClick={() => setAddInitiative(true)}>
                   <AddIcon sx={{fontSize: "calc(30px + 0.390625vw)"}}/>Add
               </IconButton>
             </Grid>
             :
-            <Grid item></Grid>
+            <Grid item xs={3}></Grid>
             }
          </Grid>
          {companyList.length > 0 &&

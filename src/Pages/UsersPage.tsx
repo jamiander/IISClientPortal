@@ -133,14 +133,13 @@ export default function UsersPage(){
      <div className="mx-[2%] mb-[2%]">
         <div className="flex flex-col justify-content:space-between">
          <Grid container sx={{ display: 'flex',
-              justifyContent: 'space-between',
               placeItems: 'center',
               flexDirection: 'row',
               p: 1,
               mt: 2,
               mb: 1,
               borderRadius: 1, }}> 
-              <Grid item sx={{ display: 'flex',
+              <Grid item xs={3} sx={{ display: 'flex',
               justifyContent: 'flex-start',
               }}>
               <UserTextField data-cy={UsersPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name or email" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)}
@@ -157,9 +156,9 @@ export default function UsersPage(){
               { cypressData: UsersPageIds.radioIds.active, label: "Active", value: "active", default: true },
               { cypressData: UsersPageIds.radioIds.inactive, label: "Inactive", value: "inactive" }
             ]} />
-            <Grid item sx={{ display: 'flex',
+            <Grid item xs={3} sx={{ display: 'flex',
               justifyContent: 'flex-end',
-              marginRight: "5%"
+              paddingRight: "5%"
               }}> 
             {companyUsers.length !== 0 &&
               currentUserCompanyId !== IntegrityId &&
