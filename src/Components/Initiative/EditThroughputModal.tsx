@@ -9,7 +9,7 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { Dialog, IconButton, Paper, TablePagination } from "@mui/material";
+import { Button, Dialog, Grid, IconButton, Paper, TablePagination, Typography } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
@@ -20,6 +20,8 @@ import { CompareDateInfos, EqualDateInfos } from "../../Services/DateHelpers";
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from '@mui/icons-material/Close';
 import { BaseInitiativeModal } from "./BaseInitiativeModal";
+import { CalculateFontSize } from "../../Services/FontSizeHelpers";
+import { AddButton } from "../AddButton";
 
 enum stateEnum {
   start,
@@ -209,17 +211,19 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
       cypressData={{modal: EditThroughputIds.modal, closeModalButton: EditThroughputIds.closeModalButton}}
       company={props.company}
       initiative={props.initiative}
+      title="Edit Throughput Data"
+      maxWidth="md"
       >
       <div className="space-y-5">
-        <div className="flex justify-between">
-          <p className="text-3xl w-full">Edit Throughput Data</p>
-        </div>
         <div className="flex mx-2">
-          {/*dateWarning*/}
-          <IconButton data-cy={EditThroughputIds.addNewEntryButton} disabled={InEditMode()} onClick={() => AddItem()}>
-            <AddIcon fontSize="large"/>
-          </IconButton>
-          <DateInput cypressData={EditThroughputIds.addDate} label={"New Data Date"} disabled={InEditMode()} date={currentDate} setDate={setCurrentDate}/>
+          <Grid container alignItems="center" spacing={2}>
+            <Grid item>
+              <DateInput cypressData={EditThroughputIds.addDate} label={"New Data Date"} disabled={InEditMode()} date={currentDate} setDate={setCurrentDate}/>
+            </Grid>
+            <Grid item>
+              <AddButton cypressData={EditThroughputIds.addNewEntryButton} disabled={InEditMode() || !currentDate} HandleClick={AddItem}/>
+            </Grid>
+          </Grid>
         </div>
         <div className="outline outline-[#879794] rounded space-y-2 p-2">
           <div className="rounded overflow-y-auto max-h-60">
@@ -275,7 +279,7 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
                             <TableCell className="border border-spacing-x-0 border-y-gray-700">
                               <p className="px-2 w-full bg-inherit focus:outline-none" data-cy={EditThroughputIds.tableDate}>{throughput.date.month + "/" + throughput.date.day + "/" + throughput.date.year}</p> 
                             </TableCell>
-                            <TableCell className={tooltipStyle}>
+                            <TableCell>
                               <input disabled className="px-2 w-full bg-inherit focus:outline-none" data-cy={EditThroughputIds.tableItemsComplete} type="number" min="0" value={throughput.itemsCompleted}/>
                             </TableCell>
                             <TableCell>

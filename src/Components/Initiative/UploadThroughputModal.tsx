@@ -1,6 +1,5 @@
 import { Company, Initiative } from "../../Store/CompanySlice";
-import { submitButtonStyle } from "../../Styles";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { DateInfo, ThroughputData } from "../../Services/CompanyService";
 import { ValidationFailedPrefix } from "../../Services/Validation";
 import { enqueueSnackbar } from "notistack";
@@ -22,7 +21,7 @@ interface ThroughputModalProps{
   initiative: Initiative
   uploadIsOpen: boolean
   setUploadIsOpen: (value: boolean) => void
-  Submit: (companyId: string, initiativeId: string, dataList: ThroughputData[], emptyDataCheck: boolean) => void
+  Submit: (companyId: string, initiativeId: string, dataList: ThroughputData[], emptyDataCheck: boolean) => Promise<boolean>
 }
 
 export default function UploadThroughputModal(props:ThroughputModalProps){
@@ -122,17 +121,12 @@ export default function UploadThroughputModal(props:ThroughputModalProps){
       onClose={()=>props.setUploadIsOpen(false)}
       company={props.company}
       initiative={props.initiative}
+      title="Upload Throughput Data"
     >
       <div className="space-y-5">
-        <div className="flex justify-between">
-          <p className="text-3xl w-full">Upload Throughput Data</p>
-        </div>
         {fileWarning}
         <div className="flex">
-          <div className="outline outline-[#879794] rounded space-y-2 p-2">
-            <p className="text-2xl w-full">Upload CSV File</p>
-            <FileUpload cypressData={{uploadButton: UploadThroughputIds.uploadButton, submitButton: UploadThroughputIds.fileSubmit}} accept={'.csv'} file={file} setFile={ReceiveFile} isUploading={isUploading} UploadFile={UploadFile}/>
-          </div>
+          <FileUpload cypressData={{uploadButton: UploadThroughputIds.uploadButton, submitButton: UploadThroughputIds.fileSubmit}} accept={'.csv'} file={file} setFile={ReceiveFile} isUploading={isUploading} UploadFile={UploadFile}/>
         </div>
       </div>
     </BaseInitiativeModal>
