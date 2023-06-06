@@ -66,6 +66,7 @@ export function DocumentManagementModal(props: DocumentManagementModalProps)
       onClose={() => props.setIsOpen(false)}
       company={props.company}
       initiative={props.initiative}
+      title="Documents"
     >
       <div className="flex flex-col col-span-4 ">
         {props.isAdmin &&
@@ -80,7 +81,7 @@ export function DocumentManagementModal(props: DocumentManagementModalProps)
           <p className="m-2">There are no files to display</p>
         }
         {docInfos.length !== 0 &&
-          <TableContainer component={Paper}>
+          <TableContainer component={Paper} className="my-2">
             <Table className="table-auto w-full outline outline-3 bg-gray-100">
               <TableHead className="outline outline-1">
                 <TableRow sx={{

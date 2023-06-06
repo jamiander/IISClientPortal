@@ -1,8 +1,7 @@
-import Dialog from "@mui/material/Dialog";
 import { Company, Initiative, deleteDecisionData, upsertDecisionData } from "../../Store/CompanySlice";
 import Grid from "@mui/material/Grid";
 import { useEffect, useState } from "react";
-import { Item, StyledCard, StyledCardActions, StyledCardContent, StyledTextField, StyledTextarea, cancelButtonStyle, submitButtonStyle, yellowButtonStyle, labelStyle} from "../../Styles";
+import { Item, StyledCard, StyledCardActions, StyledCardContent, StyledTextField, StyledTextarea, labelStyle} from "../../Styles";
 import { DateInfo, DecisionData } from "../../Services/CompanyService";
 import { ValidateDecisions, ValidationFailedPrefix } from "../../Services/Validation";
 import { useAppDispatch } from "../../Store/Hooks";
@@ -14,9 +13,10 @@ import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
 import DeleteIcon from '@mui/icons-material/Delete';
-import AddIcon from "@mui/icons-material/Add";
-import { Button, IconButton, Typography } from "@mui/material";
+import SearchIcon from '@mui/icons-material/Search';
+import { IconButton, InputAdornment } from "@mui/material";
 import { BaseInitiativeModal } from "./BaseInitiativeModal";
+import { AddButton } from "../AddButton";
 
 export const DecisionModalIds = {
   modal: "decisionModal",
@@ -200,9 +200,6 @@ export default function DecisionDataModal(props: DecisionDataProps) {
     LeaveEditMode();
   }
 
-  const iconSize = "2.3vw";
-  const iconStyle = "m-2";
-
   return (
     <>
       <BaseInitiativeModal
@@ -211,19 +208,30 @@ export default function DecisionDataModal(props: DecisionDataProps) {
         cypressData={{modal: DecisionModalIds.modal, closeModalButton: DecisionModalIds.closeModalButton}}
         company={props.company}
         initiative={props.initiative}
+        title="Decisions"
+        maxWidth={false}
         >
-          <div className="mx-[2%] mb-[2%]">
-            {props.isAdmin &&
-              <Button data-cy={DecisionModalIds.addButton} onClick={() => HandleAddEmptyDecision()}>
-                <AddIcon sx={{fontSize: iconSize}}/>
-                <Typography>New</Typography>
-              </Button>
-            }
-            {selectedInitiative.decisions.length !== 0 &&
-            <div className="mt-2 mb-4">
-              <StyledTextField className="w-1/2" data-cy={DecisionModalIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in Description or Resolution" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)}/>
-            </div>
-            }
+          <div className="mx-[2%] mb-[2%] w-full">
+            <Grid container className="my-2" alignItems="center" spacing={2} columns={12}>
+              {props.isAdmin &&
+                <Grid item>
+                  <AddButton cypressData={DecisionModalIds.addButton} HandleClick={() => HandleAddEmptyDecision()} disabled={InEditMode()}/>
+                </Grid>
+              }
+              {selectedInitiative.decisions.length !== 0 &&
+                <Grid item xs={8}>
+                  <StyledTextField data-cy={DecisionModalIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in Description or Resolution" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <SearchIcon />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </Grid>
+              }
+            </Grid>
             <Grid data-cy={DecisionModalIds.grid} container spacing={6}>
               {
               selectedInitiative.decisions.filter(d => d.description.toUpperCase().includes(searchedKeyword.toUpperCase()) || d.resolution.toUpperCase().includes(searchedKeyword.toUpperCase())).map((displayItem, key) => {
@@ -259,10 +267,10 @@ export default function DecisionDataModal(props: DecisionDataProps) {
                             <div className="flex w-full justify-between">
                               <IconButton data-cy={DecisionModalIds.saveChangesButton}
                                 onClick={() => HandleEditDecision(displayItem.id, currentDescription, currentResolution, currentParticipants.split(",").map(s => s.trim()), currentDate ?? displayItem.date)}>
-                                <DoneIcon sx={{fontSize: iconSize}}/>
+                                <DoneIcon sx={{fontSize: "inherit"}}/>
                               </IconButton>
                               <IconButton data-cy={DecisionModalIds.cancelChangesButton} onClick={() => HandleCancelEdit()}>
-                                <CancelIcon sx={{fontSize: iconSize}}/>
+                                <CancelIcon sx={{fontSize: "inherit"}}/>
                               </IconButton>
                             </div>
                           }
@@ -270,10 +278,10 @@ export default function DecisionDataModal(props: DecisionDataProps) {
                             !isEdit && !InEditMode() && props.isAdmin &&
                             <div className="flex w-full justify-between">
                               <IconButton data-cy={DecisionModalIds.editButton} onClick={() => EnterEditMode(displayItem.id, selectedInitiative, false)}>
-                                <EditIcon sx={{fontSize: iconSize}}/>
+                                <EditIcon sx={{fontSize: "inherit"}}/>
                               </IconButton>
                               <IconButton data-cy={DecisionModalIds.deleteButton} onClick={() => HandleAttemptDelete(displayItem.id)}>
-                                <DeleteIcon sx={{fontSize: iconSize}}/>
+                                <DeleteIcon sx={{fontSize: "inherit"}}/>
                               </IconButton>
                             </div>
                           }

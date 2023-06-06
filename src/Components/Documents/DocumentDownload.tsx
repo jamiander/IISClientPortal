@@ -2,6 +2,7 @@ import DownloadIcon from '@mui/icons-material/Download';
 import { yellowButtonStyle } from '../../Styles';
 import { DocumentInfo, downloadDocument } from '../../Store/DocumentSlice';
 import { useAppDispatch } from '../../Store/Hooks';
+import { IconButton } from '@mui/material';
 
 interface DocumentDownloadProps {
   docInfo: DocumentInfo
@@ -21,7 +22,9 @@ export function DocumentDownload(props: DocumentDownloadProps)
 
   return (
     <>
-      <DownloadIcon className="hover:text-gray-400" onClick={() => HandleDownload()} sx={{ fontSize: 28 }}/>
+      <IconButton onClick={() => HandleDownload()}>
+        <DownloadIcon sx={{ fontSize: 28 }}/>
+      </IconButton>
     </>
   )
 }
