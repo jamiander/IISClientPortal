@@ -41,7 +41,7 @@ export function BaseInitiativeModal(props: BaseInitiativeModalProps)
                 <Typography variant="h5">{props.title}</Typography>
               </Grid>
               <Grid item xs={3}>
-                {/* nothing */}
+                {/* nothing; used to center the title */}
               </Grid>
             </Grid>
             <IconButton data-cy={props.cypressData.closeModalButton} onClick={() => props.onClose()}

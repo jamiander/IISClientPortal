@@ -9,7 +9,7 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { Button, Dialog, Grid, IconButton, Paper, TablePagination, Typography } from "@mui/material";
+import { Button, Dialog, Grid, IconButton, Input, Paper, TablePagination, Typography } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
@@ -213,98 +213,96 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
       title="Edit Throughput Data"
       maxWidth="md"
       >
-      <div className="space-y-5">
-        <div className="flex mx-2">
-          <Grid container alignItems="center" spacing={2}>
-            <Grid item>
-              <DateInput cypressData={EditThroughputIds.addDate} label={"New Data Date"} disabled={InEditMode()} date={currentDate} setDate={setCurrentDate}/>
-            </Grid>
-            <Grid item>
-              <AddButton cypressData={EditThroughputIds.addNewEntryButton} disabled={InEditMode() || !currentDate} HandleClick={AddItem}/>
-            </Grid>
+      <div className="mb-4">
+        <Grid container alignItems="center" spacing={2}>
+          <Grid item>
+            <DateInput cypressData={EditThroughputIds.addDate} label={"New Data Date"} disabled={InEditMode()} date={currentDate} setDate={setCurrentDate}/>
           </Grid>
-        </div>
-        <div className="outline outline-[#879794] rounded space-y-2 p-2">
-          <div className="rounded overflow-y-auto max-h-60">
-            <TableContainer component={Paper} >
-              <Table className="table-auto text-[#21345b] w-full outline outline-3 bg-gray-100">
-                <TableHead className="outline outline-1">
-                  <TableRow sx={{
-                            borderBottom: "2px solid black",
-                              "& th": {
-                                fontSize: "1.1rem",
-                                fontWeight: "bold",
-                                fontFamily: "Arial, Helvetica"
-                              }
-                            }}>
-                    <TableHeaderStyle>Date</TableHeaderStyle>
-                    <TableHeaderStyle>Items Completed</TableHeaderStyle>
-                    <TableHeaderStyle>Edit</TableHeaderStyle>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {currentThroughputList.map((throughput, key) => {
-                    let isEdit = InEditMode() && EqualDateInfos(throughput.date,throughputToEdit?.date ?? invalidDate);
-                    return (
-                      <TableRow key={key} className={defaultRowStyle} sx={{
-                        borderBottom: "1px solid black",
-                          "& td": {
-                            fontSize: "1rem",
-                            fontFamily: "Arial, Helvetica" 
-                          }
-                        }}>
-                        {isEdit ?
-                          <>
-                            <TableCell className="border border-spacing-x-0 border-y-gray-700">
-                              {
-                                <p className="px-2 w-full bg-inherit focus:outline-none" data-cy={EditThroughputIds.tableDate}>{throughput.date.month + "/" + throughput.date.day + "/" + throughput.date.year}</p> 
-                              }
-                              </TableCell>
-                            <TableCell className={tooltipStyle}>
-                              <input className="px-2 w-full bg-inherit focus:outline-none" data-cy={EditThroughputIds.tableItemsComplete} type="number" min="0" value={currentItems}
-                              onChange={(e) => setCurrentItems(parseInt(e.target.value))}/>
-                            </TableCell>
-                            <TableCell ref={throughputRef}>
-                              <IconButton data-cy={EditThroughputIds.saveChangesButton} onClick={() => SaveEdit()}>
-                                <DoneIcon />
-                              </IconButton>
-                              <IconButton data-cy={EditThroughputIds.cancelChangesButton} onClick={() => CancelEdit()}>
-                                <CancelIcon />
-                              </IconButton>
-                            </TableCell>
-                          </>
-                          :
-                          <>
-                            <TableCell className="border border-spacing-x-0 border-y-gray-700">
-                              <p className="px-2 w-full bg-inherit focus:outline-none" data-cy={EditThroughputIds.tableDate}>{throughput.date.month + "/" + throughput.date.day + "/" + throughput.date.year}</p> 
-                            </TableCell>
-                            <TableCell>
-                              <input disabled className="px-2 w-full bg-inherit focus:outline-none" data-cy={EditThroughputIds.tableItemsComplete} type="number" min="0" value={throughput.itemsCompleted}/>
-                            </TableCell>
-                            <TableCell>
-                              <IconButton data-cy={EditThroughputIds.editButton} disabled={InEditMode()} onClick={() => EnterEditMode(throughput.date, throughputList, false)}>
-                                <EditIcon />
-                              </IconButton>
-                            </TableCell>
-                          </>
+          <Grid item>
+            <AddButton cypressData={EditThroughputIds.addNewEntryButton} disabled={InEditMode() || !currentDate} HandleClick={AddItem}/>
+          </Grid>
+        </Grid>
+      </div>
+      <div className="outline outline-[#879794] rounded space-y-2 p-2">
+        <div className="rounded overflow-y-auto max-h-60">
+          <TableContainer component={Paper} >
+            <Table className="table-auto text-[#21345b] w-full outline outline-3 bg-gray-100">
+              <TableHead>
+                <TableRow sx={{
+                          borderBottom: "2px solid black",
+                            "& th": {
+                              fontSize: "1.1rem",
+                              fontWeight: "bold",
+                              fontFamily: "Arial, Helvetica"
+                            }
+                          }}>
+                  <TableHeaderStyle>Date</TableHeaderStyle>
+                  <TableHeaderStyle>Items Completed</TableHeaderStyle>
+                  <TableHeaderStyle>Edit</TableHeaderStyle>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {currentThroughputList.map((throughput, key) => {
+                  let isEdit = InEditMode() && EqualDateInfos(throughput.date,throughputToEdit?.date ?? invalidDate);
+                  return (
+                    <TableRow key={key} className={defaultRowStyle} sx={{
+                      borderBottom: "1px solid black",
+                        "& td": {
+                          fontSize: "1rem",
+                          fontFamily: "Arial, Helvetica" 
                         }
-                      </TableRow>
-                    )
-                  })}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </div>
-          <TablePagination
-            component="div"
-            count={throughputList.length}
-            page={page}
-            rowsPerPage={rowsPerPage}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-            rowsPerPageOptions={[5, 10, 25, 50]}
-          />
+                      }}>
+                      {isEdit ?
+                        <>
+                          <TableCell className="border border-spacing-x-0 border-y-gray-700">
+                            {
+                              <p className="px-2 w-full bg-inherit focus:outline-none" data-cy={EditThroughputIds.tableDate}>{throughput.date.month + "/" + throughput.date.day + "/" + throughput.date.year}</p> 
+                            }
+                            </TableCell>
+                          <TableCell className={tooltipStyle}>
+                            <Input className="px-2 w-full bg-inherit focus:outline-none" data-cy={EditThroughputIds.tableItemsComplete} type="number" value={currentItems}
+                            onChange={(e) => setCurrentItems(parseInt(e.target.value))}/>
+                          </TableCell>
+                          <TableCell ref={throughputRef}>
+                            <IconButton data-cy={EditThroughputIds.saveChangesButton} onClick={() => SaveEdit()}>
+                              <DoneIcon />
+                            </IconButton>
+                            <IconButton data-cy={EditThroughputIds.cancelChangesButton} onClick={() => CancelEdit()}>
+                              <CancelIcon />
+                            </IconButton>
+                          </TableCell>
+                        </>
+                        :
+                        <>
+                          <TableCell className="border border-spacing-x-0 border-y-gray-700">
+                            <p className="px-2 w-full bg-inherit focus:outline-none" data-cy={EditThroughputIds.tableDate}>{throughput.date.month + "/" + throughput.date.day + "/" + throughput.date.year}</p> 
+                          </TableCell>
+                          <TableCell>
+                            <input disabled className="px-2 w-full bg-inherit focus:outline-none" data-cy={EditThroughputIds.tableItemsComplete} type="number" min="0" value={throughput.itemsCompleted}/>
+                          </TableCell>
+                          <TableCell>
+                            <IconButton data-cy={EditThroughputIds.editButton} disabled={InEditMode()} onClick={() => EnterEditMode(throughput.date, throughputList, false)}>
+                              <EditIcon />
+                            </IconButton>
+                          </TableCell>
+                        </>
+                      }
+                    </TableRow>
+                  )
+                })}
+              </TableBody>
+            </Table>
+          </TableContainer>
         </div>
+        <TablePagination
+          component="div"
+          count={throughputList.length}
+          page={page}
+          rowsPerPage={rowsPerPage}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          rowsPerPageOptions={[5, 10, 25, 50]}
+        />
       </div>
     </BaseInitiativeModal>
   )
