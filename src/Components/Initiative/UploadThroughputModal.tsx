@@ -1,14 +1,11 @@
 import { Company, Initiative } from "../../Store/CompanySlice";
-import  Modal  from 'react-modal';
-import { cancelButtonStyle, modalStyle, submitButtonStyle } from "../../Styles";
+import { submitButtonStyle } from "../../Styles";
 import { useEffect, useRef, useState } from "react";
 import { DateInfo, ThroughputData } from "../../Services/CompanyService";
 import { ValidationFailedPrefix } from "../../Services/Validation";
-import { v4 as uuidV4} from "uuid";
 import { enqueueSnackbar } from "notistack";
-import { Dialog } from "@mui/material";
-import CloseIcon from '@mui/icons-material/Close';
 import { BaseInitiativeModal } from "./BaseInitiativeModal";
+import { FileUpload } from "../FileUpload";
 
 export const UploadThroughputIds = {
   modal: "uploadThroughputModal",
@@ -31,30 +28,34 @@ interface ThroughputModalProps{
 export default function UploadThroughputModal(props:ThroughputModalProps){
   const [fileData, setFileData] = useState<ThroughputData[]>([]);
   const [fileWarning, setFileWarning] = useState("");
-  const fileRef = useRef<HTMLInputElement>(null);
+
+  const [file, setFile] = useState<File | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
 
   useEffect(() => {
     setFileData([]);
     setFileWarning("");
+    setFile(null);
   },[props.uploadIsOpen])
 
-  function ReceiveFile(fileName: string)
+  function ReceiveFile(file: File | null)
   {
-    if(fileName)
-    {
-      let splitName = fileName.split('.');
-      let extension = splitName[splitName.length-1];
-      if(extension !== 'csv')
-      {
-        setFileData([]);
-        setFileWarning("");
-        enqueueSnackbar(ValidationFailedPrefix + "File can only be of type .csv", {variant:"error"});
-        return;
-      }
-    }
+    if(!file)
+      return;
 
-    let files = fileRef.current?.files ?? [];
-    let file = files[0];
+    let splitName = file.name.split('.');
+    let extension = splitName[splitName.length-1];
+    if(extension !== 'csv')
+    {
+      setFile(null);
+      setFileData([]);
+      setFileWarning("");
+      enqueueSnackbar(ValidationFailedPrefix + "File can only be of type .csv", {variant:"error"});
+      return;
+    }
+    
+    setFile(file);
+
     let fileContent;
     const reader = new FileReader();
     reader.onload = function(e) {
@@ -107,7 +108,13 @@ export default function UploadThroughputModal(props:ThroughputModalProps){
     reader.readAsText(file);
   }
 
-  let myUuid = uuidV4();
+  async function UploadFile()
+  {
+    setIsUploading(true);
+    await props.Submit(props.company.id, props.initiative.id, fileData, true);
+    setIsUploading(false);
+  }
+
   return(
     <BaseInitiativeModal
       cypressData={{modal: UploadThroughputIds.modal, closeModalButton: UploadThroughputIds.closeModalButton}}
@@ -122,12 +129,9 @@ export default function UploadThroughputModal(props:ThroughputModalProps){
         </div>
         {fileWarning}
         <div className="flex">
-          <div className="outline outline-[#879794] rounded space-y-2 p-2 w-64">
+          <div className="outline outline-[#879794] rounded space-y-2 p-2">
             <p className="text-2xl w-full">Upload CSV File</p>
-            <input data-cy={UploadThroughputIds.uploadButton} className="w-full" ref={fileRef} type={'file'} accept={'.csv'} onChange={(e) => ReceiveFile(e.target.value)}/>
-            <div className="grid justify-end h-1/2">
-              <button data-cy={UploadThroughputIds.fileSubmit} className={submitButtonStyle} onClick={() => props.Submit(props.company.id, props.initiative.id, fileData, true)}>Submit</button>
-            </div>
+            <FileUpload cypressData={{uploadButton: UploadThroughputIds.uploadButton, submitButton: UploadThroughputIds.fileSubmit}} accept={'.csv'} file={file} setFile={ReceiveFile} isUploading={isUploading} UploadFile={UploadFile}/>
           </div>
         </div>
       </div>
