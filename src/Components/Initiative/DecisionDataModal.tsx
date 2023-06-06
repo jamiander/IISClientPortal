@@ -17,6 +17,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import { IconButton, InputAdornment } from "@mui/material";
 import { BaseInitiativeModal } from "./BaseInitiativeModal";
 import { AddButton } from "../AddButton";
+import { MakeClone } from "../../Services/Cloning";
 
 export const DecisionModalIds = {
   modal: "decisionModal",
@@ -80,16 +81,21 @@ export default function DecisionDataModal(props: DecisionDataProps) {
   },[props.isOpen]);
 
   useEffect(() => {
-    setFilteredDecisions(selectedInitiative.decisions.filter(d => d.description.toUpperCase().includes(searchedKeyword.toUpperCase()) || d.resolution.toUpperCase().includes(searchedKeyword.toUpperCase())));
+    setFilteredDecisions(selectedInitiative.decisions.filter(
+      d => 
+        d.description.toUpperCase().includes(searchedKeyword.toUpperCase()) 
+        || d.resolution.toUpperCase().includes(searchedKeyword.toUpperCase())
+        || d.participants.toUpperCase().includes(searchedKeyword.toUpperCase())
+    ));
   },[selectedInitiative,searchedKeyword]);
 
   function HandleAddEmptyDecision()
   {
     if(modalState === State.start)
     {
-      let initiativeClone: Initiative = JSON.parse(JSON.stringify(selectedInitiative));
+      let initiativeClone: Initiative = MakeClone(selectedInitiative);
       let newId = UuidV4();
-      let newDecision: DecisionData = {id: newId, description: "", resolution: "", participants: [], date: todayInfo};
+      let newDecision: DecisionData = {id: newId, description: "", resolution: "", participants: "", date: todayInfo};
       initiativeClone.decisions.unshift(newDecision);
 
       setSearchedKeyword("");
@@ -104,7 +110,7 @@ export default function DecisionDataModal(props: DecisionDataProps) {
   {
     if(modalState === State.add && decisionToEdit)
     {
-      let initiativeClone: Initiative = JSON.parse(JSON.stringify(selectedInitiative));
+      let initiativeClone: Initiative = MakeClone(selectedInitiative);
       initiativeClone.decisions = initiativeClone.decisions.filter(d => d.id !== decisionToEdit.id);
 
       setSelectedInitiative(initiativeClone);
@@ -112,9 +118,9 @@ export default function DecisionDataModal(props: DecisionDataProps) {
     LeaveEditMode();
   }
 
-  function HandleEditDecision(decisionId: string, newDescription: string, newResolution: string, newParticipants: string[], newDate?: DateInfo)
+  function HandleEditDecision(decisionId: string, newDescription: string, newResolution: string, newParticipants: string, newDate?: DateInfo)
   {
-    let selectedInitiativeClone: Initiative = JSON.parse(JSON.stringify(selectedInitiative));
+    let selectedInitiativeClone: Initiative = MakeClone(selectedInitiative);
     let newDecision = selectedInitiativeClone.decisions.find(d => d.id === decisionId);
     
     if(newDecision)
@@ -141,7 +147,7 @@ export default function DecisionDataModal(props: DecisionDataProps) {
       
       setCurrentDescription(currentDecision.description);
       setCurrentResolution(currentDecision.resolution);
-      setCurrentParticipants(currentDecision.participants.join(", "));
+      setCurrentParticipants(currentDecision.participants);
       //setCurrentDateString(MakeDateString(currentDecision.date));
       setCurrentDate(currentDecision.date);
     }
@@ -190,7 +196,7 @@ export default function DecisionDataModal(props: DecisionDataProps) {
     if((window as any).Cypress)
       isTest = true;
 
-    let selectedInitiativeClone: Initiative = JSON.parse(JSON.stringify(selectedInitiative));
+    let selectedInitiativeClone: Initiative = MakeClone(selectedInitiative);
     selectedInitiativeClone.decisions = selectedInitiativeClone.decisions.filter(d => d.id !== decisionId);
 
     dispatch(deleteDecisionData({isTest: isTest, companyId: props.company.id, initiativeId: props.initiative.id, decisionIds: [decisionId]}));
@@ -219,8 +225,8 @@ export default function DecisionDataModal(props: DecisionDataProps) {
           <div className="mx-[2%] mb-[2%] w-full">
             <Grid container className="my-2" alignItems="center" justifyContent="left" spacing={2} display="flex" columns={12}>
               {selectedInitiative.decisions.length !== 0 &&
-                <Grid item xs={6} sm={6}>
-                  <StyledTextField data-cy={DecisionModalIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in Description or Resolution" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)}
+                <Grid item xs="auto">
+                  <StyledTextField data-cy={DecisionModalIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)}
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">
@@ -232,7 +238,7 @@ export default function DecisionDataModal(props: DecisionDataProps) {
                 </Grid>
               }
               {props.isAdmin &&
-                <Grid item xs={2}>
+                <Grid item xs="auto">
                   <AddButton cypressData={DecisionModalIds.addButton} HandleClick={() => HandleAddEmptyDecision()} disabled={InEditMode()}/>
                 </Grid>
               }
@@ -262,7 +268,7 @@ export default function DecisionDataModal(props: DecisionDataProps) {
                             <StyledTextarea id="description" data-cy={DecisionModalIds.description} disabled value={displayItem.description}/>
                             <label className={labelStyle} htmlFor="resolution">Resolution</label>
                             <StyledTextarea id="resolution" data-cy={DecisionModalIds.resolution} disabled value={displayItem.resolution}/>
-                            <StyledTextField data-cy={DecisionModalIds.participants} label="Participants" disabled value={displayItem.participants.join(", ")}/>
+                            <StyledTextField data-cy={DecisionModalIds.participants} label="Participants" disabled value={displayItem.participants}/>
                             <DateInput cypressData={DecisionModalIds.date} label="Date Resolved" disabled={true} date={displayItem.date} setDate={setCurrentDate}/>
                           </>
                           }
@@ -271,7 +277,7 @@ export default function DecisionDataModal(props: DecisionDataProps) {
                           {isEdit &&
                             <div className="flex w-full justify-between">
                               <IconButton data-cy={DecisionModalIds.saveChangesButton}
-                                onClick={() => HandleEditDecision(displayItem.id, currentDescription, currentResolution, currentParticipants.split(",").map(s => s.trim()), currentDate ?? displayItem.date)}>
+                                onClick={() => HandleEditDecision(displayItem.id, currentDescription, currentResolution, currentParticipants, currentDate ?? displayItem.date)}>
                                 <DoneIcon sx={{fontSize: "inherit"}}/>
                               </IconButton>
                               <IconButton data-cy={DecisionModalIds.cancelChangesButton} onClick={() => HandleCancelEdit()}>

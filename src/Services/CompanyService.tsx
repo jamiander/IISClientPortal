@@ -24,7 +24,7 @@ export interface DecisionData {
   id: string,
   description: string,
   resolution: string,
-  participants: string[],
+  participants: string,
   date: DateInfo
 }
 
