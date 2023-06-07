@@ -2,9 +2,10 @@ import { Company, IntegrityId } from "../../Store/CompanySlice"
 import { User } from "../../Store/UserSlice"
 import { Fragment, useEffect, useState } from "react"
 import { AdminEditInitiativesList } from "./AdminEditInitiativesList"
-import { Dialog } from "@mui/material"
+import { Button, Dialog } from "@mui/material"
 import { cancelButtonStyle, submitButtonStyle } from "../../Styles"
 import { MakeClone } from "../../Services/Cloning"
+import { BaseInitiativeModal } from "../Initiative/BaseInitiativeModal"
 
 export const EditUserInitiativesIds = {
   modal: "editUserInitiativesModal",
@@ -51,11 +52,6 @@ export function EditUserInitiativesModal(props: EditUserInitiativesModalProps)
     setInitiativeIds(initiativesClone);
   }
 
-  function CancelEdit()
-  {
-    props.setIsOpen(false);
-  }
-
   function SaveEdit()
   {
     let userClone = MakeClone(props.user);
@@ -71,32 +67,31 @@ export function EditUserInitiativesModal(props: EditUserInitiativesModalProps)
 
   return (
     <>
-      <Dialog
-        id={EditUserInitiativesIds.modal}
+      <BaseInitiativeModal
+        cypressData={{modal: EditUserInitiativesIds.modal, closeModalButton: EditUserInitiativesIds.cancelChangesButton }}
         open={props.isOpen}
         onClose={() => props.setIsOpen(false)}
-        fullWidth
         maxWidth={"sm"}
+        title={`Selected Initiatives for ${props.user?.name ? props.user?.name : props.user?.email}`}
+        subtitle={`Select Company to View Initiatives`}
       >
         <div className="m-2 space-y-2 rounded-md bg-[#E4E1E5]">
-          <p className="text-center text-3xl w-full text-[#445362]">Selected Initiatives for {props.user?.name ? props.user?.name : props.user?.email}</p>
-          <p className="text-center text-lg w-full text-[#445362] mt-2">Select Company to View Initiatives</p>
-
-        {
-          props.allCompanies.map((company,index) => {
-            return (
-              <Fragment key={index}>
-                <AdminEditInitiativesList company={company} initiativeIds={initiativeIds} updateInitiativeIds={UpdateInitiativeIds} editable={true} expanded={props.expanded} user={props.user}/>
-              </Fragment>
-            )
-          })
-        }
-          <div className="flex w-full justify-between py-1">
-            <button id={EditUserInitiativesIds.saveChangesButton} className={submitButtonStyle} onClick={() => SaveEdit()}>Save</button>
-            <button id={EditUserInitiativesIds.cancelChangesButton} className={cancelButtonStyle} onClick={() => CancelEdit()}>Cancel</button>
-          </div>
+          <p className="text-center text-3xl w-full text-[#445362]"></p>
+          <p className="text-center text-lg w-full text-[#445362] mt-2"></p>
+          {
+            props.allCompanies.map((company,index) => {
+              return (
+                <Fragment key={index}>
+                  <AdminEditInitiativesList company={company} initiativeIds={initiativeIds} updateInitiativeIds={UpdateInitiativeIds} editable={true} expanded={props.expanded} user={props.user}/>
+                </Fragment>
+              )
+            })
+          }
         </div>
-      </Dialog>
+        <div className="flex w-full justify-end py-1">
+          <Button variant="contained" data-cy={EditUserInitiativesIds.saveChangesButton} onClick={() => SaveEdit()}>Save</Button>
+        </div>
+      </BaseInitiativeModal>
     </>
   )
 }
