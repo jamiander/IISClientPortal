@@ -36,8 +36,8 @@ export function DeleteDecisionAlert(props: DeleteDecisionAlertProps)
       </DialogContent>
       <DialogActions>
         <div className="flex justify-between">
-          <button data-cy={DeleteDecisionAlertIds.confirmButton} className={submitButtonStyle} onClick={() => props.decisionId ? props.DeleteDecision(props.decisionId) : props.CancelDelete()}>Yes</button>
           <button data-cy={DeleteDecisionAlertIds.cancelButton} className={cancelButtonStyle} onClick={() => props.CancelDelete()}>No</button>
+          <button data-cy={DeleteDecisionAlertIds.confirmButton} className={submitButtonStyle} onClick={() => props.decisionId ? props.DeleteDecision(props.decisionId) : props.CancelDelete()}>Yes</button>
         </div>
       </DialogActions>
     </Dialog>

@@ -216,14 +216,14 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
       maxWidth="md"
       >
       <div className="mb-4">
-        <Grid container alignItems="center" justifyContent="space-between" columns={12}>
-          <Grid item xs={5}>
+        <Grid container alignItems="center" justifyContent="right" columns={12} spacing={2}>
+          <Grid item xs="auto">
             <DateInput cypressData={EditThroughputIds.addDate} label={"New Data Date"} disabled={InEditMode()} date={currentDate} setDate={setCurrentDate}/>
           </Grid>
           <Grid item xs={2}>
             <AddButton cypressData={EditThroughputIds.addNewEntryButton} disabled={InEditMode() || !currentDate} HandleClick={AddItem}/>
           </Grid>
-          <Grid item xs={1}>
+          <Grid item xs="auto">
             {isLoading &&
               <CircularProgress color={"warning"}/>
             }

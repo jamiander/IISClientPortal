@@ -194,7 +194,7 @@ export default function DecisionDataModal(props: DecisionDataProps) {
       enqueueSnackbar("Cannot delete with unsaved changes.", {variant: "error"});
   }
 
-  function DeleteDecision(decisionId: string)
+  async function DeleteDecision(decisionId: string)
   {
     let isTest = false;
     if((window as any).Cypress)
@@ -203,9 +203,11 @@ export default function DecisionDataModal(props: DecisionDataProps) {
     let selectedInitiativeClone: Initiative = MakeClone(selectedInitiative);
     selectedInitiativeClone.decisions = selectedInitiativeClone.decisions.filter(d => d.id !== decisionId);
 
-    dispatch(deleteDecisionData({isTest: isTest, companyId: props.company.id, initiativeId: props.initiative.id, decisionIds: [decisionId]}));
-    setSelectedInitiative(selectedInitiativeClone);
+    setIsLoading(true);
     setIsDeleteOpen(false);
+    await dispatch(deleteDecisionData({isTest: isTest, companyId: props.company.id, initiativeId: props.initiative.id, decisionIds: [decisionId]}));
+    setIsLoading(false);
+    setSelectedInitiative(selectedInitiativeClone);
     LeaveEditMode();
   }
 
@@ -226,14 +228,11 @@ export default function DecisionDataModal(props: DecisionDataProps) {
         title="Decisions"
         maxWidth={false}
         >
-          <div className="mx-[2%] mb-[2%] w-full">
-            <Grid container className="my-2" alignItems="center" justifyContent="left" spacing={1} display="flex" columns={12}>
+          <div className="mb-[2%] w-full">
+            <Grid container className="my-2" alignItems="center" justifyContent="left" spacing={2} display="flex" columns={12}>
               {selectedInitiative.decisions.length !== 0 &&
-                <Grid item xs={6}>
-                  <StyledTextField data-cy={DecisionModalIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)}
-                    sx={{
-                      width: "75%"
-                    }}
+                <Grid item xs="auto">
+                  <StyledTextField data-cy={DecisionModalIds.keywordFilter} disabled={InEditMode() || isLoading} placeholder="Keyword" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)}
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">
@@ -245,20 +244,16 @@ export default function DecisionDataModal(props: DecisionDataProps) {
                 </Grid>
               }
               {props.isAdmin &&
-                <Grid item xs="auto">
-                  <AddButton cypressData={DecisionModalIds.addButton} HandleClick={() => HandleAddEmptyDecision()} disabled={InEditMode()}/>
+                <Grid item xs={2}>
+                  <AddButton cypressData={DecisionModalIds.addButton} HandleClick={() => HandleAddEmptyDecision()} disabled={InEditMode() || isLoading}/>
                 </Grid>
               }
-              <Grid item >
-                {isLoading &&
-                  <CircularProgress color={"warning"}/>
-                }
-              </Grid>
             </Grid>
-            <Grid data-cy={DecisionModalIds.grid} container spacing={6}>
+            <Grid data-cy={DecisionModalIds.grid} container spacing={2} columns={12}>
               {
               filteredDecisions.map((displayItem, key) => {
-                let isEdit = InEditMode() && displayItem.id === (decisionToEdit?.id ?? -1);
+                let matched = displayItem.id === (decisionToEdit?.id ?? -1);
+                let isEdit = matched && InEditMode();
                 
                 return(
                   <Grid item md={4} key={key}>
@@ -288,11 +283,14 @@ export default function DecisionDataModal(props: DecisionDataProps) {
                         <StyledCardActions>
                           {isEdit &&
                             <div className="flex w-full justify-between">
-                              <IconButton data-cy={DecisionModalIds.saveChangesButton}
+                              <IconButton disabled={isLoading} data-cy={DecisionModalIds.saveChangesButton}
                                 onClick={() => HandleEditDecision(displayItem.id, currentDescription, currentResolution, currentParticipants, currentDate ?? displayItem.date)}>
                                 <DoneIcon sx={{fontSize: "inherit"}}/>
                               </IconButton>
-                              <IconButton data-cy={DecisionModalIds.cancelChangesButton} onClick={() => HandleCancelEdit()}>
+                              {isLoading &&
+                                <CircularProgress color={"warning"}/>
+                              }
+                              <IconButton disabled={isLoading} data-cy={DecisionModalIds.cancelChangesButton} onClick={() => HandleCancelEdit()}>
                                 <CancelIcon sx={{fontSize: "inherit"}}/>
                               </IconButton>
                             </div>
@@ -300,10 +298,13 @@ export default function DecisionDataModal(props: DecisionDataProps) {
                           {
                             !isEdit && !InEditMode() && props.isAdmin &&
                             <div className="flex w-full justify-between">
-                              <IconButton data-cy={DecisionModalIds.editButton} onClick={() => EnterEditMode(displayItem.id, selectedInitiative, false)}>
+                              <IconButton disabled={isLoading} data-cy={DecisionModalIds.editButton} onClick={() => EnterEditMode(displayItem.id, selectedInitiative, false)}>
                                 <EditIcon sx={{fontSize: "inherit"}}/>
                               </IconButton>
-                              <IconButton data-cy={DecisionModalIds.deleteButton} onClick={() => HandleAttemptDelete(displayItem.id)}>
+                              {isLoading && matched &&
+                                <CircularProgress color={"warning"}/>
+                              }
+                              <IconButton disabled={isLoading} data-cy={DecisionModalIds.deleteButton} onClick={() => HandleAttemptDelete(displayItem.id)}>
                                 <DeleteIcon sx={{fontSize: "inherit"}}/>
                               </IconButton>
                             </div>
