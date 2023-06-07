@@ -353,17 +353,17 @@ export default function InitiativesTable(props: InitiativesProps) {
           <TableContainer elevation={12} component={Paper}>
             <Table className="table-auto w-full outline outline-3 bg-gray-100">
               <colgroup>
-                <col style={{ width: '15vw' }} />
-                <col style={{ width: '15vw' }} />
-                <col style={{ width: '13vw' }} />
-                <col style={{ width: '13vw' }} />
-                <col style={{ width: '7vw' }} />
-                <col style={{ width: '9vw' }} />
+                <col style={{ width: '24vw' }} />
+                <col style={{ width: '24vw' }} />
+                <col style={{ width: '16vw' }} />
+                <col style={{ width: '16vw' }} />
+                <col style={{ width: '12vw' }} />
+                <col style={{ width: '12vw' }} />
                 <col style={{ width: '12vw' }} />
                 <col style={{ width: '3vw' }} />
                 {isAdmin &&
                   <col style={{ width: '3vw' }} />
-                }
+                } 
               </colgroup>
               <TableHead className="outline outline-1">
                 <TableRow sx={{

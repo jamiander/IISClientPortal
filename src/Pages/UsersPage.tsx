@@ -179,14 +179,14 @@ export default function UsersPage(){
               <TableContainer elevation={12} component={Paper}>
                 <Table className="table-auto w-full outline outline-3 bg-gray-100">
                   <colgroup>
-                    <col style={{ width: '15vw' }} />
-                    <col style={{ width: '16vw' }} />
+                    <col style={{ width: '18vw' }} />
+                    <col style={{ width: '20vw' }} />
                     <col style={{ width: '17vw' }} />
                     <col style={{ width: '10vw' }} />
-                    <col style={{ width: '8vw' }} />
-                    <col style={{ width: '8vw' }} />
+                    <col style={{ width: '10vw' }} />
+                    <col style={{ width: '10vw' }} />
                     <col style={{ width: '6vw' }} />
-                    <col style={{ width: '7vw' }} />
+                    <col style={{ width: '12vw' }} />
                   </colgroup>
                   <TableHead className="outline outline-1">
                     <TableRow sx={{

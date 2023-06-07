@@ -20,7 +20,7 @@ export default function NavPanel(){
   const navigate = useNavigate();
   const isLoggedIn = useAppSelector(selectIsLoggedIn);
   const currentUser = useAppSelector(selectCurrentUser);
-  const navButtonStyle = "text-[#21345b] h-12 w-[90%] hover:bg-[#21345b] hover:text-white";
+  const navButtonStyle = "text-[#21345b] h-[6vh] w-[90%] hover:bg-[#21345b] hover:text-white";
   const location = useLocation();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
