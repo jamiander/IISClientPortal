@@ -4,6 +4,7 @@ import { User, upsertUserInfo } from "../Store/UserSlice";
 import { ValidateUser, ValidationFailedPrefix } from "./Validation";
 import { enqueueSnackbar } from "notistack";
 import {v4 as UuidV4} from "uuid";
+import { MakeClone } from "./Cloning";
 
 enum stateEnum {
   start,
@@ -98,7 +99,7 @@ export function useEditUser() : EditUser
   {
     if(state === stateEnum.add && userToEdit)
     {
-      let usersClone: User[] = JSON.parse(JSON.stringify(usersList));
+      let usersClone = MakeClone(usersList);
       usersClone = usersClone.filter(user => user.id !== userToEdit.id);
 
       setUsersList(usersClone);
@@ -108,7 +109,7 @@ export function useEditUser() : EditUser
 
   function SaveEdit()
   {
-    let usersClone: User[] = JSON.parse(JSON.stringify(usersList));
+    let usersClone = MakeClone(usersList);
     let newUser = usersClone.find(u => u.id === userToEdit?.id);
     if(newUser)
     {
@@ -151,7 +152,7 @@ export function useEditUser() : EditUser
   {
     if(!InEditMode())
     {
-      let usersClone: User[] = JSON.parse(JSON.stringify(usersList));
+      let usersClone = MakeClone(usersList);
       let myUuid = UuidV4();
       let newUser: User = {id: myUuid, email: "", password: "", companyId: companyId, initiativeIds: [], name: "", phoneNumber: "", isAdmin: false, isActive: true}
       usersClone.unshift(newUser);
@@ -164,7 +165,7 @@ export function useEditUser() : EditUser
 
   function setCurrentInitiativeIds(initId: string, checked: boolean)
   {
-    let initiativesClone: string[] = JSON.parse(JSON.stringify(currentInitiativeIds));
+    let initiativesClone = MakeClone(currentInitiativeIds);
     let matchingIdIndex = initiativesClone.findIndex(id => id === initId);
     if(matchingIdIndex > -1)
     {

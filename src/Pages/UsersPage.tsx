@@ -20,6 +20,7 @@ import { useEditUser } from "../Services/useEditUser";
 import { EditUserInitiativesButton } from "../Components/User/EditUserInitiativesButton";
 import { RadioSet } from "../Components/RadioSet";
 import { UserFilter } from "../Services/Filters";
+import { MakeClone } from "../Services/Cloning";
 
 export const UsersPageIds = {
   company: "usersPageCompany",
@@ -95,9 +96,9 @@ export default function UsersPage(){
 
   useEffect(() =>
   {
-    let sortedCompanies: Company[] = JSON.parse(JSON.stringify(allCompanies));
+    let sortedCompanies = MakeClone(allCompanies);
     sortedCompanies.sort((a: Company, b: Company) => a.name.toUpperCase() > b.name.toUpperCase() ? 1 : -1);
-    setDisplayCompanies(sortedCompanies.filter((company: { id: string; }) => company.id !== IntegrityId));
+    setDisplayCompanies(sortedCompanies.filter(company => company.id !== IntegrityId));
   },[allCompanies]); 
   
   let currentUserCompanyId = currentUser?.companyId ?? "";
