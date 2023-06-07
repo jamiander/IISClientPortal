@@ -213,12 +213,12 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
       cypressData={{modal: EditThroughputIds.modal, closeModalButton: EditThroughputIds.closeModalButton}}
       company={props.company}
       initiative={props.initiative}
-      title="Edit Throughput Data"
+      title="View Throughput Data"
       maxWidth="md"
       >
       {props.isAdmin &&
         <div className="mb-4">
-          <Grid container alignItems="center" justifyContent="right" columns={12} spacing={2}>
+          <Grid container alignItems="center" justifyContent="left" columns={12} spacing={2}>
             <Grid item xs="auto">
               <DateInput cypressData={EditThroughputIds.addDate} label={"New Data Date"} disabled={InEditMode()} date={currentDate} setDate={setCurrentDate}/>
             </Grid>
