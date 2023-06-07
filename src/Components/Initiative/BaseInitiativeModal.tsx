@@ -1,4 +1,4 @@
-import { Breakpoint, Container, Dialog, DialogTitle, Grid, IconButton, Paper, Typography } from "@mui/material";
+import { Breakpoint, Button, Container, Dialog, DialogTitle, Grid, IconButton, Paper, Typography } from "@mui/material";
 import { ReactNode } from "react";
 import { Company, Initiative } from "../../Store/CompanySlice";
 import CloseIcon from '@mui/icons-material/Close';
@@ -13,9 +13,11 @@ interface BaseInitiativeModalProps {
   }
   title?: string
   subtitle?: string
-  company?: Company
-  initiative?: Initiative
   maxWidth?: false | Breakpoint | undefined
+  saveButton?: {
+    cypressData: string
+    saveFunction: () => void
+  }
 }
 
 
@@ -37,21 +39,24 @@ export function BaseInitiativeModal(props: BaseInitiativeModalProps)
               <Grid item xs={3}>
                 {/* nothing; used to center the title */}
               </Grid>
-              <Grid item xs="auto">
-                <Grid container direction="column" justifyContent="center" alignItems="center">
+              <Grid item xs={9}>
+                <Grid container direction="column" alignItems="center">
                   <Grid item>
-                    <Typography variant="h5">{props.title}</Typography>
+                    <Typography textAlign="center" variant="h5">{props.title}</Typography>
                   </Grid>
                   <Grid item>
-                    <Typography variant="body1">{props.subtitle}</Typography>
+                    <Typography textAlign="center" variant="body1">{props.subtitle}</Typography>
                   </Grid>
                 </Grid>
               </Grid>
               <Grid item xs={3} zeroMinWidth>
-                <div className="ml-2">
-                  <Typography noWrap variant="h6" className="text-5xl font-bold w-full">{props.company?.name}</Typography>
-                  <Typography noWrap variant="body1" className="text-3xl w-full">{props.initiative?.title}</Typography>
-                </div>
+                {props.saveButton &&
+                  <Button sx={{
+                    position: "absolute",
+                    right: 8,
+                    top: 8
+                  }} variant="contained" data-cy={props.saveButton?.cypressData} onClick={() => props.saveButton?.saveFunction()}>Save</Button>
+                }
               </Grid>
             </Grid>
             <IconButton data-cy={props.cypressData.closeModalButton} onClick={() => props.onClose()}

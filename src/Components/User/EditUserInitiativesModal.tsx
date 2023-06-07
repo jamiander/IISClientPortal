@@ -71,13 +71,15 @@ export function EditUserInitiativesModal(props: EditUserInitiativesModalProps)
         cypressData={{modal: EditUserInitiativesIds.modal, closeModalButton: EditUserInitiativesIds.cancelChangesButton }}
         open={props.isOpen}
         onClose={() => props.setIsOpen(false)}
-        maxWidth={"sm"}
+        maxWidth={"md"}
         title={`Selected Initiatives for ${props.user?.name ? props.user?.name : props.user?.email}`}
         subtitle={`Select Company to View Initiatives`}
+        saveButton={{
+          saveFunction: SaveEdit,
+          cypressData: EditUserInitiativesIds.saveChangesButton
+        }}
       >
         <div className="m-2 space-y-2 rounded-md bg-[#E4E1E5]">
-          <p className="text-center text-3xl w-full text-[#445362]"></p>
-          <p className="text-center text-lg w-full text-[#445362] mt-2"></p>
           {
             props.allCompanies.map((company,index) => {
               return (
@@ -87,9 +89,6 @@ export function EditUserInitiativesModal(props: EditUserInitiativesModalProps)
               )
             })
           }
-        </div>
-        <div className="flex w-full justify-end py-1">
-          <Button variant="contained" data-cy={EditUserInitiativesIds.saveChangesButton} onClick={() => SaveEdit()}>Save</Button>
         </div>
       </BaseInitiativeModal>
     </>

@@ -122,9 +122,8 @@ export default function UploadThroughputModal(props:ThroughputModalProps){
       cypressData={{modal: UploadThroughputIds.modal, closeModalButton: UploadThroughputIds.closeModalButton}}
       open={props.uploadIsOpen}
       onClose={()=>props.setUploadIsOpen(false)}
-      company={props.company}
-      initiative={props.initiative}
       title="Upload Throughput"
+      subtitle={`${props.company.name}${props.initiative ? ` - ${props.initiative.title}` : ``}`}
     >
       <div className="space-y-5">
         {fileWarning}
