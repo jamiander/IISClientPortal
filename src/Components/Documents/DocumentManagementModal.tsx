@@ -66,9 +66,8 @@ export function DocumentManagementModal(props: DocumentManagementModalProps)
       cypressData={{modal: DocumentManagementModalIds.modal, closeModalButton: DocumentManagementModalIds.closeModalButton}}
       open={props.isOpen}
       onClose={() => props.setIsOpen(false)}
-      company={props.company}
-      initiative={props.initiative}
       title="Documents"
+      subtitle={`${props.company.name}${props.initiative ? ` - ${props.initiative.title}` : ``}`}
     >
       <div className="flex flex-col col-span-4 ">
         {props.isAdmin &&

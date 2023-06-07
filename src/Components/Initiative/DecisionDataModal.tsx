@@ -222,9 +222,8 @@ export default function DecisionDataModal(props: DecisionDataProps) {
         open={props.isOpen}
         onClose={()=>props.setDecisionModalIsOpen(false)}
         cypressData={{modal: DecisionModalIds.modal, closeModalButton: DecisionModalIds.closeModalButton}}
-        company={props.company}
-        initiative={props.initiative}
         title="Decisions"
+        subtitle={`${props.company.name}${props.initiative ? ` - ${props.initiative.title}` : ``}`}
         maxWidth={false}
         >
         <div className="mx-1 mb-2">
