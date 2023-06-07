@@ -14,7 +14,7 @@ import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
 import DeleteIcon from '@mui/icons-material/Delete';
 import SearchIcon from '@mui/icons-material/Search';
-import { IconButton, InputAdornment } from "@mui/material";
+import { CircularProgress, IconButton, InputAdornment } from "@mui/material";
 import { BaseInitiativeModal } from "./BaseInitiativeModal";
 import { AddButton } from "../AddButton";
 import { MakeClone } from "../../Services/Cloning";
@@ -74,9 +74,11 @@ export default function DecisionDataModal(props: DecisionDataProps) {
   const today = new Date();
   const todayInfo: DateInfo = {month: today.getMonth()+1, day: today.getDate(), year: today.getFullYear()}
   const [searchedKeyword, setSearchedKeyword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     setSelectedInitiative(props.initiative);
+    setIsLoading(false);
     LeaveEditMode();
   },[props.isOpen]);
 
@@ -118,7 +120,7 @@ export default function DecisionDataModal(props: DecisionDataProps) {
     LeaveEditMode();
   }
 
-  function HandleEditDecision(decisionId: string, newDescription: string, newResolution: string, newParticipants: string, newDate?: DateInfo)
+  async function HandleEditDecision(decisionId: string, newDescription: string, newResolution: string, newParticipants: string, newDate?: DateInfo)
   {
     let selectedInitiativeClone: Initiative = MakeClone(selectedInitiative);
     let newDecision = selectedInitiativeClone.decisions.find(d => d.id === decisionId);
@@ -131,9 +133,11 @@ export default function DecisionDataModal(props: DecisionDataProps) {
       if(newDate)
         newDecision.date = newDate;
 
-      let successfulSubmit = SubmitDecisionData(selectedInitiativeClone.decisions);
+      setIsLoading(true);
+      let successfulSubmit = await SubmitDecisionData(selectedInitiativeClone.decisions);
       if(successfulSubmit)
         setSelectedInitiative(selectedInitiativeClone);
+      setIsLoading(false);
     }
   }
 
@@ -159,7 +163,7 @@ export default function DecisionDataModal(props: DecisionDataProps) {
     setModalState(State.start);
   }
 
-  function SubmitDecisionData(decisions: DecisionData[]): boolean
+  async function SubmitDecisionData(decisions: DecisionData[]): Promise<boolean>
   {
     let isTest = false;
     if((window as any).Cypress)
@@ -168,7 +172,7 @@ export default function DecisionDataModal(props: DecisionDataProps) {
     let validation = ValidateDecisions(decisions);
     if(validation.success)
     {
-      dispatch(upsertDecisionData({isTest: isTest, companyId: props.company.id, initiativeId: props.initiative.id, decisions: decisions}));
+      await dispatch(upsertDecisionData({isTest: isTest, companyId: props.company.id, initiativeId: props.initiative.id, decisions: decisions}));
       LeaveEditMode();
       return true;
     }
@@ -223,10 +227,13 @@ export default function DecisionDataModal(props: DecisionDataProps) {
         maxWidth={false}
         >
           <div className="mx-[2%] mb-[2%] w-full">
-            <Grid container className="my-2" alignItems="center" justifyContent="left" spacing={2} display="flex" columns={12}>
+            <Grid container className="my-2" alignItems="center" justifyContent="left" spacing={1} display="flex" columns={12}>
               {selectedInitiative.decisions.length !== 0 &&
-                <Grid item xs="auto">
+                <Grid item xs={6}>
                   <StyledTextField data-cy={DecisionModalIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)}
+                    sx={{
+                      width: "75%"
+                    }}
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">
@@ -242,6 +249,11 @@ export default function DecisionDataModal(props: DecisionDataProps) {
                   <AddButton cypressData={DecisionModalIds.addButton} HandleClick={() => HandleAddEmptyDecision()} disabled={InEditMode()}/>
                 </Grid>
               }
+              <Grid item >
+                {isLoading &&
+                  <CircularProgress color={"warning"}/>
+                }
+              </Grid>
             </Grid>
             <Grid data-cy={DecisionModalIds.grid} container spacing={6}>
               {

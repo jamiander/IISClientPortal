@@ -9,7 +9,7 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { Button, Dialog, Grid, IconButton, Input, Paper, TablePagination, Typography } from "@mui/material";
+import { Button, CircularProgress, Dialog, Grid, IconButton, Input, Paper, TablePagination, Typography } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
@@ -54,7 +54,6 @@ interface ThroughputModalProps{
 }
 
 export default function EditThroughputModal(this: any, props: ThroughputModalProps){
-  const [dateWarning, setDateWarning] = useState("");
   const invalidDate: DateInfo = {day: NaN, month: NaN, year: NaN};
   const [currentItems, setCurrentItems] = useState<number>();
   const [currentDate, setCurrentDate] = useState<DateInfo>();
@@ -63,6 +62,7 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
   const [throughputList, setThroughputList] = useState<ThroughputData[]>([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChangePage = (
     event: React.MouseEvent<HTMLButtonElement> | null,
@@ -78,7 +78,7 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
   };
 
   useEffect(() => {
-    setDateWarning("");
+    setIsLoading(false);
     setCurrentDate(undefined);
     setCurrentItems(0);
     setState(stateEnum.start);
@@ -185,6 +185,7 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
       if(newItem)
       {
         newItem.itemsCompleted = currentItems ?? -1;
+        setIsLoading(true);
         const successful = await props.Submit(props.company.id, props.initiative.id, selectedThroughputClone, false);
         if(successful)
         {
@@ -192,6 +193,7 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
           setThroughputList(selectedThroughputClone);
           LeaveEditMode();
         }
+        setIsLoading(false);
       }
     }
   }
@@ -214,12 +216,17 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
       maxWidth="md"
       >
       <div className="mb-4">
-        <Grid container alignItems="center" spacing={2}>
-          <Grid item>
+        <Grid container alignItems="center" justifyContent="space-between" columns={12}>
+          <Grid item xs={5}>
             <DateInput cypressData={EditThroughputIds.addDate} label={"New Data Date"} disabled={InEditMode()} date={currentDate} setDate={setCurrentDate}/>
           </Grid>
-          <Grid item>
+          <Grid item xs={2}>
             <AddButton cypressData={EditThroughputIds.addNewEntryButton} disabled={InEditMode() || !currentDate} HandleClick={AddItem}/>
+          </Grid>
+          <Grid item xs={1}>
+            {isLoading &&
+              <CircularProgress color={"warning"}/>
+            }
           </Grid>
         </Grid>
       </div>
