@@ -48,6 +48,7 @@ interface ThroughputModalProps{
   allCompanies: Company[]
   company: Company
   initiative: Initiative
+  isAdmin: boolean
   editIsOpen: boolean
   setEditIsOpen: (value: boolean) => void
   Submit: (companyId: string, initiativeId: string, dataList: ThroughputData[], emptyDataCheck: boolean) => Promise<boolean>
@@ -215,21 +216,23 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
       title="Edit Throughput Data"
       maxWidth="md"
       >
-      <div className="mb-4">
-        <Grid container alignItems="center" justifyContent="right" columns={12} spacing={2}>
-          <Grid item xs="auto">
-            <DateInput cypressData={EditThroughputIds.addDate} label={"New Data Date"} disabled={InEditMode()} date={currentDate} setDate={setCurrentDate}/>
+      {props.isAdmin &&
+        <div className="mb-4">
+          <Grid container alignItems="center" justifyContent="right" columns={12} spacing={2}>
+            <Grid item xs="auto">
+              <DateInput cypressData={EditThroughputIds.addDate} label={"New Data Date"} disabled={InEditMode()} date={currentDate} setDate={setCurrentDate}/>
+            </Grid>
+            <Grid item xs="auto">
+              <AddButton cypressData={EditThroughputIds.addNewEntryButton} disabled={InEditMode() || !currentDate} HandleClick={AddItem}/>
+            </Grid>
+            <Grid item xs="auto">
+              {isLoading &&
+                <CircularProgress color={"warning"}/>
+              }
+            </Grid>
           </Grid>
-          <Grid item xs="auto">
-            <AddButton cypressData={EditThroughputIds.addNewEntryButton} disabled={InEditMode() || !currentDate} HandleClick={AddItem}/>
-          </Grid>
-          <Grid item xs="auto">
-            {isLoading &&
-              <CircularProgress color={"warning"}/>
-            }
-          </Grid>
-        </Grid>
-      </div>
+        </div>
+      }
       <div className="outline outline-[#879794] rounded space-y-2 p-2">
         <div className="rounded overflow-y-auto max-h-60">
           <TableContainer component={Paper} >
@@ -245,7 +248,9 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
                           }}>
                   <TableHeaderStyle>Date</TableHeaderStyle>
                   <TableHeaderStyle>Items Completed</TableHeaderStyle>
-                  <TableHeaderStyle>Edit</TableHeaderStyle>
+                  {props.isAdmin &&
+                    <TableHeaderStyle>Edit</TableHeaderStyle>
+                  }
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -265,7 +270,7 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
                             {
                               <p className="px-2 w-full bg-inherit focus:outline-none" data-cy={EditThroughputIds.tableDate}>{throughput.date.month + "/" + throughput.date.day + "/" + throughput.date.year}</p> 
                             }
-                            </TableCell>
+                          </TableCell>
                           <TableCell className={tooltipStyle}>
                             <Input className="px-2 w-full bg-inherit focus:outline-none" data-cy={EditThroughputIds.tableItemsComplete} type="number" value={currentItems}
                             onChange={(e) => setCurrentItems(parseInt(e.target.value))}/>
@@ -287,11 +292,13 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
                           <TableCell>
                             <input disabled className="px-2 w-full bg-inherit focus:outline-none" data-cy={EditThroughputIds.tableItemsComplete} type="number" min="0" value={throughput.itemsCompleted}/>
                           </TableCell>
-                          <TableCell>
-                            <IconButton data-cy={EditThroughputIds.editButton} disabled={InEditMode() || isLoading} onClick={() => EnterEditMode(throughput.date, throughputList, false)}>
-                              <EditIcon />
-                            </IconButton>
-                          </TableCell>
+                          {props.isAdmin &&
+                            <TableCell>
+                              <IconButton data-cy={EditThroughputIds.editButton} disabled={InEditMode() || isLoading} onClick={() => EnterEditMode(throughput.date, throughputList, false)}>
+                                <EditIcon />
+                              </IconButton>
+                            </TableCell>
+                          }
                         </>
                       }
                     </TableRow>

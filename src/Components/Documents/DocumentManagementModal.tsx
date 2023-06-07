@@ -44,6 +44,7 @@ export function DocumentManagementModal(props: DocumentManagementModalProps)
   async function GetData()
   {
     try{
+      setIsLoading(true);
       const response = await dispatch(getDocumentUrls({companyId: props.company.id, initiativeId: props.initiative?.id}));
       if(response.payload)
       {

@@ -113,32 +113,32 @@ export function InitiativeActionsMenu(props: InitiativeActionsMenuProps)
         }}
       >
         <MenuItem data-cy={props.cypressData.decisionButton} onClick={() => HandleDecisionModal()}>
-          {/*<ViewDecisionDataButton id={props.ids.decisionButton} company={props.company} initiative={props.initiative}/>*/}
           <Button>
             Decisions
           </Button>
         </MenuItem>
         <MenuItem data-cy={props.cypressData.documentButton} onClick={() => HandleDocumentModal()}>
-          {/*<DocumentManagementButton id={props.ids.documentButton} company={props.company} initiative={props.initiative} isAdmin={props.isAdmin}/>*/}
           <Button>
             Documents
           </Button>
         </MenuItem>
-        <MenuItem data-cy={props.cypressData.uploadThroughputButton} onClick={() => HandleUploadThrouhgputModal()}>
-          <Button>
-            Upload Throughput
-          </Button>
-        </MenuItem>
+        {props.isAdmin &&
+          <MenuItem data-cy={props.cypressData.uploadThroughputButton} onClick={() => HandleUploadThrouhgputModal()}>
+            <Button>
+              Upload Throughput
+            </Button>
+          </MenuItem>
+        }
         <MenuItem data-cy={props.cypressData.editThroughputButton} onClick={() => HandleEditThroughputModal()}>
           <Button>
-            Edit Throughput
+            View Throughput
           </Button>
         </MenuItem>
       </Menu>
       <DecisionDataModal title='View Decision Data' isOpen={decisionModalIsOpen} setDecisionModalIsOpen={setDecisionModalIsOpen} initiative={props.initiative} company={props.company} isAdmin={props.isAdmin}/>
       <DocumentManagementModal isOpen={documentModalIsOpen} setIsOpen={setDocumentModalIsOpen} company={props.company} initiative={props.initiative} isAdmin={props.isAdmin} />
       <UploadThroughputModal company={props.company} initiative={props.initiative} uploadIsOpen={uploadThroughputModalIsOpen} setUploadIsOpen={setUploadThroughputModalIsOpen} Submit={SubmitUpdateThroughput}/>
-      <EditThroughputModal allCompanies={props.allCompanies} company={props.company} initiative={props.initiative} editIsOpen={editThroughputModalIsOpen} setEditIsOpen={setEditThroughputModalIsOpen} Submit={SubmitUpdateThroughput}/>
+      <EditThroughputModal allCompanies={props.allCompanies} company={props.company} initiative={props.initiative} editIsOpen={editThroughputModalIsOpen} setEditIsOpen={setEditThroughputModalIsOpen} Submit={SubmitUpdateThroughput} isAdmin={props.isAdmin}/>
     </>
   )
 }
