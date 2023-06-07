@@ -240,7 +240,7 @@ export default function DecisionDataModal(props: DecisionDataProps) {
               }}>
               {selectedInitiative.decisions.length !== 0 &&
               <Grid item xs={4} sx={{ display: 'flex',
-              justifyContent: 'flex-start',
+                justifyContent: 'flex-start',
               }}>
                 <UserTextField data-cy={DecisionModalIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)}
                   
@@ -273,6 +273,7 @@ export default function DecisionDataModal(props: DecisionDataProps) {
               justifyContent: "space-between",
               placeItems: 'center',
               flexDirection: 'row'}}
+              spacing={4}
               data-cy={DecisionModalIds.grid}>
               {
               filteredDecisions.map((displayItem, key) => {
@@ -280,7 +281,7 @@ export default function DecisionDataModal(props: DecisionDataProps) {
                 let isEdit = matched && InEditMode();
                 
                 return(
-                  <Grid item xs="auto" key={key} sx={{mr: 1, mb: 1}}>
+                  <Grid item md={6} lg={4} key={key}>
                     <Item>
                       <StyledCard>
                         <StyledCardContent>
