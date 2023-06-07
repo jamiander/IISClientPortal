@@ -7,7 +7,6 @@ import { Box, Checkbox, Grid, IconButton, Input, InputAdornment} from "@mui/mate
 import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
-import AddIcon from "@mui/icons-material/Add";
 import SearchIcon from "@mui/icons-material/Search";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -18,6 +17,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { useEditUser } from "../Services/useEditUser";
 import { EditUserInitiativesButton } from "../Components/User/EditUserInitiativesButton";
+import { AddButton } from "../Components/AddButton";
 
 export const IntegrityPageIds = {
   modal: "adminEditUserModal",
@@ -110,13 +110,15 @@ export function IntegrityPage(){
       </div>
       <div className="mx-[2%] mb-2">
         {allUsers.length !== 0 &&
-           <div className="flex flex-col justify-content:space-between">
+           <div className="flex flex-row justify-content:space-between">
             <Grid container sx={{ display: 'flex',
               placeItems: 'center',
               flexDirection: 'row',
               p: 1,
               mt: 2,
               mb: 1,
+              ml: 2,
+              mr: 2,
               borderRadius: 1, }}>
               <Grid item xs={6}
                 sx={{ display: 'flex',
@@ -134,11 +136,8 @@ export function IntegrityPage(){
               </Grid>
               <Grid item xs={6} sx={{ display: 'flex',
                 justifyContent: 'flex-end',
-                paddingRight: "5%"
-                }}>  
-                <IconButton disabled={InEditMode()} data-cy={IntegrityPageIds.addButton} onClick={() => AddEmptyUser(IntegrityId)}>
-                  <AddIcon sx={{fontSize: "calc(30px + 0.390625vw)", color: "#21345b"}}/>Add
-                </IconButton>
+                }}> 
+                <AddButton cypressData={IntegrityPageIds.addButton} HandleClick={() => AddEmptyUser(IntegrityId)} disabled={InEditMode()}/> 
               </Grid>
             </Grid>
           </div> 
@@ -152,8 +151,8 @@ export function IntegrityPage(){
                 <col style={{ width: '17vw' }} />
                 <col style={{ width: '10vw' }} />
                 <col style={{ width: '8vw' }} />
-                <col style={{ width: '10vw' }} />
-                <col style={{ width: '6vw' }} />
+                <col style={{ width: '8vw' }} />
+                <col style={{ width: '7vw' }} />
                 <col style={{ width: '7vw' }} />
             </colgroup>
               <TableHead className="outline outline-1">

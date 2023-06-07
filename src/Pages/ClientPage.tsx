@@ -5,7 +5,6 @@ import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
 import SearchIcon from '@mui/icons-material/Search';
-import AddIcon from "@mui/icons-material/Add";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
 import { Company, Initiative, IntegrityId, selectAllCompanies, upsertCompanyInfo, upsertInitiativeInfo } from "../Store/CompanySlice";
 import { enqueueSnackbar } from "notistack";
@@ -19,6 +18,7 @@ import { DateInfo } from "../Services/CompanyService";
 import { DocumentManagementButton } from "../Components/Documents/DocumentManagementButton";
 import { selectCurrentUser } from "../Store/UserSlice";
 import { DateToDateInfo } from "../Services/DateHelpers";
+import { AddButton } from "../Components/AddButton";
 
 export const ClientPageIds = {
   modal: "clientPageModal",
@@ -201,6 +201,8 @@ export function ClientPage()
             p: 1,
             mt: 2,
             mb: 1,
+            ml: 2,
+            mr: 2,
             borderRadius: 1, }}>
             <Grid item xs={3}
               sx={{ display: 'flex',
@@ -223,12 +225,9 @@ export function ClientPage()
             {allCompanies.length !== 0 && !IsReadOnly() &&
             <Grid item xs={3}
               sx={{ display: 'flex',
-              justifyContent: 'flex-end',
-              paddingRight: "5%",
-              }}> 
-              <IconButton disabled={InEditMode()} data-cy={ClientPageIds.addClientButton} onClick={() => HandleAddEmptyClient()}>
-                <AddIcon sx={{fontSize: "calc(30px + 0.390625vw)", color: "#21345b"}}/>Add
-              </IconButton>
+              justifyContent: 'flex-end'
+              }}>
+              <AddButton cypressData={ClientPageIds.addClientButton} HandleClick={() => HandleAddEmptyClient()} disabled={InEditMode()}/> 
             </Grid>
             }
           </Grid>

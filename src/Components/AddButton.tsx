@@ -13,7 +13,7 @@ export function AddButton(props: AddButtonProps)
   return (
     <Button data-cy={props.cypressData} variant="contained" disabled={props.disabled} onClick={() => props.HandleClick()} size="large">
       <AddIcon sx={{fontSize:"large", marginRight: 0.25}}/>
-      <Typography variant="button" sx={{marginLeft: 0.25}}>New</Typography>
+      <Typography variant="button" sx={{marginLeft: 0.25}}>Add</Typography>
     </Button>
   )
 }

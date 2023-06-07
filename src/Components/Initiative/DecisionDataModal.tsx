@@ -62,7 +62,6 @@ export default function DecisionDataModal(props: DecisionDataProps) {
   const [currentDescription, setCurrentDescription] = useState("");
   const [currentResolution, setCurrentResolution] = useState("");
   const [currentParticipants, setCurrentParticipants] = useState("");
-  //const [currentDateString, setCurrentDateString] = useState("");
   const [currentDate, setCurrentDate] = useState<DateInfo | undefined>();
 
   const [selectedInitiative, setSelectedInitiative] = useState<Initiative>(props.initiative);
@@ -152,7 +151,6 @@ export default function DecisionDataModal(props: DecisionDataProps) {
       setCurrentDescription(currentDecision.description);
       setCurrentResolution(currentDecision.resolution);
       setCurrentParticipants(currentDecision.participants);
-      //setCurrentDateString(MakeDateString(currentDecision.date));
       setCurrentDate(currentDecision.date);
     }
   }
@@ -227,9 +225,13 @@ export default function DecisionDataModal(props: DecisionDataProps) {
         maxWidth={false}
         >
           <div className="mx-[2%] mb-[2%] w-full">
-            <Grid container className="my-2" alignItems="center" justifyContent="left" spacing={1} display="flex" columns={12}>
+            <Grid container sx={{ display: 'flex',
+              placeItems: 'center',
+              flexDirection: 'row'}}>
               {selectedInitiative.decisions.length !== 0 &&
-                <Grid item xs={6}>
+                <Grid item xs={4} sx={{ display: 'flex',
+                justifyContent: 'flex-start',
+                }}>
                   <StyledTextField data-cy={DecisionModalIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)}
                     sx={{
                       width: "75%"
@@ -244,16 +246,19 @@ export default function DecisionDataModal(props: DecisionDataProps) {
                   />
                 </Grid>
               }
-              {props.isAdmin &&
-                <Grid item xs="auto">
-                  <AddButton cypressData={DecisionModalIds.addButton} HandleClick={() => HandleAddEmptyDecision()} disabled={InEditMode()}/>
-                </Grid>
-              }
-              <Grid item >
+              <Grid item xs={4} sx={{ display: "flex",
+                justifyContent: "center"}}>
                 {isLoading &&
                   <CircularProgress color={"warning"}/>
                 }
               </Grid>
+              {props.isAdmin &&
+                <Grid item xs={4} sx={{ display: 'flex',
+                justifyContent: 'flex-end'
+                }}> 
+                  <AddButton cypressData={DecisionModalIds.addButton} HandleClick={() => HandleAddEmptyDecision()} disabled={InEditMode()}/>
+                </Grid>
+              }
             </Grid>
             <Grid data-cy={DecisionModalIds.grid} container spacing={6}>
               {

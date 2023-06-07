@@ -1,14 +1,13 @@
-import { TableHeaderStyle, UserTextField, defaultRowStyle, yellowButtonStyle } from "../Styles";
+import { TableHeaderStyle, UserTextField, defaultRowStyle } from "../Styles";
 import { useEffect, useState } from "react";
 import { User, getUserById, selectAllUsers, selectCurrentUser } from "../Store/UserSlice";
 import { Company, IntegrityId, selectAllCompanies } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
-import { Box, Checkbox, Container, FormControl, Grid, IconButton, Input, InputAdornment, InputLabel, MenuItem, Select} from "@mui/material";
+import { Checkbox, FormControl, Grid, IconButton, Input, InputAdornment, InputLabel, MenuItem, Select} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
 import SearchIcon from '@mui/icons-material/Search';
-import AddIcon from "@mui/icons-material/Add";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -20,6 +19,7 @@ import { useEditUser } from "../Services/useEditUser";
 import { EditUserInitiativesButton } from "../Components/User/EditUserInitiativesButton";
 import { RadioSet } from "../Components/RadioSet";
 import { UserFilter } from "../Services/Filters";
+import { AddButton } from "../Components/AddButton";
 
 export const UsersPageIds = {
   company: "usersPageCompany",
@@ -131,13 +131,15 @@ export default function UsersPage(){
       </div>
     </div>
      <div className="mx-[2%] mb-2">
-        <div className="flex flex-col justify-content:space-between">
+        <div className="flex flex-row justify-content:space-between">
          <Grid container sx={{ display: 'flex',
               placeItems: 'center',
               flexDirection: 'row',
               p: 1,
               mt: 2,
               mb: 1,
+              ml: 2,
+              mr: 2,
               borderRadius: 1, }}> 
               <Grid item xs={3} sx={{ display: 'flex',
               justifyContent: 'flex-start',
@@ -157,20 +159,15 @@ export default function UsersPage(){
               { cypressData: UsersPageIds.radioIds.inactive, label: "Inactive", value: "inactive" }
             ]} />
             <Grid item xs={3} sx={{ display: 'flex',
-              justifyContent: 'flex-end',
-              paddingRight: "5%"
+              justifyContent: 'flex-end'
               }}> 
             {companyUsers.length !== 0 &&
               currentUserCompanyId !== IntegrityId &&
-              <IconButton className="color-[#21345b]" disabled={InEditMode()} data-cy={UsersPageIds.addButton} onClick={() => AddEmptyUser(currentUserCompanyId)}>
-                <AddIcon sx={{fontSize: "calc(30px + 0.390625vw)", color: "#21345b"}}/>
-              </IconButton>
+              <AddButton cypressData={UsersPageIds.addButton} HandleClick={() => AddEmptyUser(currentUserCompanyId)} disabled={InEditMode()}/>
             }
             {companyUsers.length !== 0 &&
               currentUserCompanyId === IntegrityId &&
-              <IconButton disabled={InEditMode()} data-cy={UsersPageIds.addButton} onClick={() => AddEmptyUser("")}>
-                <AddIcon sx={{fontSize: "calc(30px + 0.390625vw)", color: "#21345b"}}/>Add
-              </IconButton>
+              <AddButton cypressData={UsersPageIds.addButton} HandleClick={() => AddEmptyUser("")} disabled={InEditMode()}/>
               }
             </Grid>  
           </Grid>         
@@ -179,11 +176,11 @@ export default function UsersPage(){
               <TableContainer elevation={12} component={Paper}>
                 <Table className="table-auto w-full outline outline-3 bg-gray-100">
                   <colgroup>
-                    <col style={{ width: '18vw' }} />
-                    <col style={{ width: '20vw' }} />
-                    <col style={{ width: '17vw' }} />
+                    <col style={{ width: '13vw' }} />
+                    <col style={{ width: '15vw' }} />
+                    <col style={{ width: '15vw' }} />
                     <col style={{ width: '10vw' }} />
-                    <col style={{ width: '10vw' }} />
+                    <col style={{ width: '8vw' }} />
                     <col style={{ width: '10vw' }} />
                     <col style={{ width: '6vw' }} />
                     <col style={{ width: '10vw' }} />
@@ -204,7 +201,7 @@ export default function UsersPage(){
                       <TableHeaderStyle>Phone</TableHeaderStyle>
                       <TableHeaderStyle>Admin Status</TableHeaderStyle>
                       <TableHeaderStyle>Active Status</TableHeaderStyle>
-                      <TableHeaderStyle>Assigned Initiatives</TableHeaderStyle>
+                      <TableHeaderStyle>Initiatives</TableHeaderStyle>
                       <TableHeaderStyle>Edit User</TableHeaderStyle>
                     </TableRow>
                   </TableHead>

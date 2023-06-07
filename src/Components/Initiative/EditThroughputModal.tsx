@@ -216,19 +216,33 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
       maxWidth="md"
       >
       <div className="mb-4">
-        <Grid container alignItems="center" justifyContent="space-between" columns={12}>
-          <Grid item xs={5}>
-            <DateInput cypressData={EditThroughputIds.addDate} label={"New Data Date"} disabled={InEditMode()} date={currentDate} setDate={setCurrentDate}/>
+      <div className="flex flex-row justify-content:space-between">
+        <Grid container sx={{ display: 'flex',
+              placeItems: 'center',
+              flexDirection: 'row',
+              p: 1,
+              mt: 2,
+              mb: 1,
+              ml: 2,
+              mr: 2,
+              borderRadius: 1, }}> 
+          <Grid item xs={4} sx={{ display: 'flex',
+              justifyContent: 'flex-start'}}>
+            <DateInput cypressData={EditThroughputIds.addDate} label={"New Date"} disabled={InEditMode()} date={currentDate} setDate={setCurrentDate}/>
           </Grid>
-          <Grid item xs={2}>
-            <AddButton cypressData={EditThroughputIds.addNewEntryButton} disabled={InEditMode() || !currentDate} HandleClick={AddItem}/>
-          </Grid>
-          <Grid item xs={1}>
+          <Grid item xs={4} sx={{ display: "flex",
+            justifyContent: "center"}}>
             {isLoading &&
               <CircularProgress color={"warning"}/>
             }
           </Grid>
-        </Grid>
+          <Grid item xs={4} sx={{ display: 'flex',
+              justifyContent: 'flex-end'
+              }}>
+            <AddButton cypressData={EditThroughputIds.addNewEntryButton} disabled={InEditMode() || !currentDate} HandleClick={AddItem}/>
+          </Grid>
+          </Grid>
+        </div>
       </div>
       <div className="outline outline-[#879794] rounded space-y-2 p-2">
         <div className="rounded overflow-y-auto max-h-60">

@@ -30,7 +30,7 @@ export function BaseInitiativeModal(props: BaseInitiativeModalProps)
         data-cy={props.cypressData.modal}
         sx={{}}
       >
-        <div className="flex col-span-4 bg-[#69D5C3]">
+        <div className="flex col-span-4 bg-[#E4E1E5]">
           <DialogTitle sx={{width: "100%"}}>
             <Grid container display="flex" columns={12} alignItems="center" justifyContent="space-between" wrap="nowrap">
               <Grid item xs={3} zeroMinWidth>
