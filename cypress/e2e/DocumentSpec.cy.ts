@@ -17,7 +17,7 @@ describe('initiative-level documents', () => {
     cy.getByData(tableIds.actionMenu.menuButton).first().click();
     cy.getByData(tableIds.actionMenu.documentButton).click();
     
-    cy.getByData(modalIds.documentUpload.uploadButton).should('exist').and('not.disabled');
+    cy.getByData(modalIds.documentUpload.chooseFileButton).should('exist').and('not.disabled');
   })
 
   specify('Integrity admins can add initiative documents', () => {
@@ -26,7 +26,7 @@ describe('initiative-level documents', () => {
     cy.getByData(tableIds.actionMenu.menuButton).first().click();
     cy.getByData(tableIds.actionMenu.documentButton).click();
     
-    cy.getByData(modalIds.documentUpload.uploadButton).should('exist').and('not.disabled');
+    cy.getByData(modalIds.documentUpload.chooseFileButton).should('exist').and('not.disabled');
   })
 
   specify('regular users cannot add initiative documents', () => {
@@ -35,7 +35,7 @@ describe('initiative-level documents', () => {
     cy.getByData(tableIds.actionMenu.menuButton).first().click();
     cy.getByData(tableIds.actionMenu.documentButton).click();
     
-    cy.getByData(modalIds.documentUpload.uploadButton).should('not.exist');
+    cy.getByData(modalIds.documentUpload.chooseFileButton).should('not.exist');
   })
 
   specify('regular Integrity users cannot add initiative documents', () => {
@@ -44,7 +44,7 @@ describe('initiative-level documents', () => {
     cy.getByData(tableIds.actionMenu.menuButton).first().click();
     cy.getByData(tableIds.actionMenu.documentButton).click();
     
-    cy.getByData(modalIds.documentUpload.uploadButton).should('not.exist');
+    cy.getByData(modalIds.documentUpload.chooseFileButton).should('not.exist');
   })
 
   specify('close button closes the modal', () => {
@@ -54,7 +54,7 @@ describe('initiative-level documents', () => {
     cy.getByData(tableIds.actionMenu.documentButton).click();
 
     cy.getByData(modalIds.modal).should('exist');
-    cy.getByData(modalIds.closeButton).click();
+    cy.getByData(modalIds.closeModalButton).click();
     cy.getByData(modalIds.modal).should('not.exist');
   })
 })
@@ -80,7 +80,7 @@ describe('client-level documents', () => {
     cy.getByData(navIds.client).click();
     cy.getByData(pageIds.documentButton).first().click();
     
-    cy.getByData(modalIds.documentUpload.uploadButton).should('exist').and('not.disabled');
+    cy.getByData(modalIds.documentUpload.chooseFileButton).should('exist').and('not.disabled');
   })
 
   specify('regular users cannot add/see client documents', () => {
@@ -99,7 +99,7 @@ describe('client-level documents', () => {
     cy.getByData(navIds.client).click();
     cy.getByData(pageIds.documentButton).click();
 
-    cy.getByData(modalIds.documentUpload.uploadButton).should('not.exist');
+    cy.getByData(modalIds.documentUpload.chooseFileButton).should('not.exist');
   })
 
   specify('close button closes the modal', () => {
@@ -111,7 +111,7 @@ describe('client-level documents', () => {
     cy.getByData(pageIds.documentButton).first().click();
 
     cy.getByData(modalIds.modal).should('exist');
-    cy.getByData(modalIds.closeButton).click();
+    cy.getByData(modalIds.closeModalButton).click();
     cy.getByData(modalIds.modal).should('not.exist');
   })
 })

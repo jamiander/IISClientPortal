@@ -22,7 +22,7 @@ describe('add throughput data by manual entry', () => {
     cy.login(user);
 
     cy.getByData(radioIds.all).click();
-    cy.getByData(tableIds.initiativeTitleFilter).type(initiativeTitle,{force: true});
+    cy.getByData(tableIds.initiativeTitleFilter).type(initiativeTitle);
 
     cy.contains('tr', initiativeTitle).findByData(tableIds.remainingItems).then(($span) => {
       remainingItemsBefore = Number($span.text());
@@ -40,10 +40,10 @@ describe('add throughput data by manual entry', () => {
       cy.getByData(modalIds.saveChangesButton).click();
     });
     
-    cy.getByData(modalIds.closeButton).click();
+    cy.getByData(modalIds.closeModalButton).click();
     cy.wait(waitTime);
     cy.getByData(radioIds.all).click();
-    cy.getByData(tableIds.initiativeTitleFilter).clear({force:true}).type(initiativeTitle,{force:true});
+    cy.getByData(tableIds.initiativeTitleFilter).clear().type(initiativeTitle);
     cy.contains('tr', initiativeTitle).findByData(tableIds.remainingItems).then(($span) => {
       let remainingItemsAfter = Number($span.text());
       expect(remainingItemsBefore-2).to.be.equal(remainingItemsAfter);
@@ -59,14 +59,15 @@ describe('invalid manual entry test', () => {
     cy.getByData(tableIds.actionMenu.editThroughputButton).click();
   })
 
-
   specify('cannot add throughput entry when date is invalid', () => {
-    cy.getByData(modalIds.addNewEntryButton).click();
-    cy.get(snackbarId).should('contain',failMessage);
+    cy.getByData(modalIds.addNewEntryButton).should('be.disabled');
 
     cy.getByData(modalIds.addDate).setDatePicker(newDate);
     cy.getByData(modalIds.addDate).setDatePicker("");
-    cy.getByData(modalIds.addNewEntryButton).click();
+    cy.getByData(modalIds.addNewEntryButton).should('be.disabled');
+
+    cy.getByData(modalIds.addDate).setDatePicker("01");
+    cy.getByData(modalIds.addNewEntryButton).click()
     cy.wait(snackbarWaitTime);
     cy.get(snackbarId).should('contain',failMessage);
   })
@@ -104,7 +105,7 @@ describe('update throughput data', () => {
 
   specify('close button closes modal', () => {
     cy.getByData(modalIds.modal).should('exist');
-    cy.getByData(modalIds.closeButton).click();
+    cy.getByData(modalIds.closeModalButton).click();
     cy.wait(waitTime);
 
     cy.getByData(modalIds.modal).should('not.exist');

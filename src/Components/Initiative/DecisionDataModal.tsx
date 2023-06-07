@@ -171,6 +171,7 @@ export default function DecisionDataModal(props: DecisionDataProps) {
     if(validation.success)
     {
       await dispatch(upsertDecisionData({isTest: isTest, companyId: props.company.id, initiativeId: props.initiative.id, decisions: decisions}));
+      enqueueSnackbar("Decision changes have been saved.", {variant: "success"});
       LeaveEditMode();
       return true;
     }
@@ -192,7 +193,7 @@ export default function DecisionDataModal(props: DecisionDataProps) {
       enqueueSnackbar("Cannot delete with unsaved changes.", {variant: "error"});
   }
 
-  function DeleteDecision(decisionId: string)
+  async function DeleteDecision(decisionId: string)
   {
     let isTest = false;
     if((window as any).Cypress)
@@ -201,9 +202,11 @@ export default function DecisionDataModal(props: DecisionDataProps) {
     let selectedInitiativeClone: Initiative = MakeClone(selectedInitiative);
     selectedInitiativeClone.decisions = selectedInitiativeClone.decisions.filter(d => d.id !== decisionId);
 
-    dispatch(deleteDecisionData({isTest: isTest, companyId: props.company.id, initiativeId: props.initiative.id, decisionIds: [decisionId]}));
-    setSelectedInitiative(selectedInitiativeClone);
+    setIsLoading(true);
     setIsDeleteOpen(false);
+    await dispatch(deleteDecisionData({isTest: isTest, companyId: props.company.id, initiativeId: props.initiative.id, decisionIds: [decisionId]}));
+    setIsLoading(false);
+    setSelectedInitiative(selectedInitiativeClone);
     LeaveEditMode();
   }
 
@@ -260,10 +263,11 @@ export default function DecisionDataModal(props: DecisionDataProps) {
                 </Grid>
               }
             </Grid>
-            <Grid data-cy={DecisionModalIds.grid} container spacing={6}>
+            <Grid data-cy={DecisionModalIds.grid} container spacing={2} columns={12}>
               {
               filteredDecisions.map((displayItem, key) => {
-                let isEdit = InEditMode() && displayItem.id === (decisionToEdit?.id ?? -1);
+                let matched = displayItem.id === (decisionToEdit?.id ?? -1);
+                let isEdit = matched && InEditMode();
                 
                 return(
                   <Grid item md={4} key={key}>
@@ -293,11 +297,14 @@ export default function DecisionDataModal(props: DecisionDataProps) {
                         <StyledCardActions>
                           {isEdit &&
                             <div className="flex w-full justify-between">
-                              <IconButton data-cy={DecisionModalIds.saveChangesButton}
+                              <IconButton disabled={isLoading} data-cy={DecisionModalIds.saveChangesButton}
                                 onClick={() => HandleEditDecision(displayItem.id, currentDescription, currentResolution, currentParticipants, currentDate ?? displayItem.date)}>
                                 <DoneIcon sx={{fontSize: "inherit"}}/>
                               </IconButton>
-                              <IconButton data-cy={DecisionModalIds.cancelChangesButton} onClick={() => HandleCancelEdit()}>
+                              {isLoading &&
+                                <CircularProgress color={"warning"}/>
+                              }
+                              <IconButton disabled={isLoading} data-cy={DecisionModalIds.cancelChangesButton} onClick={() => HandleCancelEdit()}>
                                 <CancelIcon sx={{fontSize: "inherit"}}/>
                               </IconButton>
                             </div>
@@ -305,10 +312,13 @@ export default function DecisionDataModal(props: DecisionDataProps) {
                           {
                             !isEdit && !InEditMode() && props.isAdmin &&
                             <div className="flex w-full justify-between">
-                              <IconButton data-cy={DecisionModalIds.editButton} onClick={() => EnterEditMode(displayItem.id, selectedInitiative, false)}>
+                              <IconButton disabled={isLoading} data-cy={DecisionModalIds.editButton} onClick={() => EnterEditMode(displayItem.id, selectedInitiative, false)}>
                                 <EditIcon sx={{fontSize: "inherit"}}/>
                               </IconButton>
-                              <IconButton data-cy={DecisionModalIds.deleteButton} onClick={() => HandleAttemptDelete(displayItem.id)}>
+                              {isLoading && matched &&
+                                <CircularProgress color={"warning"}/>
+                              }
+                              <IconButton disabled={isLoading} data-cy={DecisionModalIds.deleteButton} onClick={() => HandleAttemptDelete(displayItem.id)}>
                                 <DeleteIcon sx={{fontSize: "inherit"}}/>
                               </IconButton>
                             </div>

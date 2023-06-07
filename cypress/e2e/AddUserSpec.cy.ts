@@ -52,7 +52,7 @@ describe('add non-Integrity user as Integrity spec', () => {
     cy.getByData(pageIds.selectCompany).parent().muiSelect(company.id);
 
     cy.getByData(pageIds.saveChangesButton).parent().parent().within(() => {
-      cy.getByData(pageIds.editEmail).clear();
+      cy.getByData(pageIds.editEmail).find('input').clear();
       cy.getByData(pageIds.editPassword).clear().type(user.password);
     })
     cy.getByData(pageIds.saveChangesButton).click();

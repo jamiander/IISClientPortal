@@ -10,8 +10,11 @@ export const UploadThroughputIds = {
   modal: "uploadThroughputModal",
   selectCompany: "selectCompanyInUploadThroughputModal",
   selectInitiative: "selectInitiativeInUploadThroughputModal",
-  uploadButton: "uploadThroughputUploadButton",
-  fileSubmit: "uploadThroughputSubmitButton",
+  fileUpload: {
+    fileInput: "uploadThroughputFileInput",
+    chooseFileButton: "uploadThroughputChooseFileButton",
+    submitButton: "uploadThroughputSubmitButton"
+  },
   date: "uploadThroughputDate",
   closeModalButton: "uploadThroughputCloseModalButton"
 }
@@ -126,7 +129,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){
       <div className="space-y-5">
         {fileWarning}
         <div className="flex">
-          <FileUpload cypressData={{uploadButton: UploadThroughputIds.uploadButton, submitButton: UploadThroughputIds.fileSubmit}} accept={'.csv'} file={file} setFile={ReceiveFile} isUploading={isUploading} UploadFile={UploadFile}/>
+          <FileUpload cypressData={UploadThroughputIds.fileUpload} accept={'.csv'} file={file} setFile={ReceiveFile} isUploading={isUploading} UploadFile={UploadFile}/>
         </div>
       </div>
     </BaseInitiativeModal>

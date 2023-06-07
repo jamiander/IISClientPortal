@@ -48,6 +48,7 @@ interface ThroughputModalProps{
   allCompanies: Company[]
   company: Company
   initiative: Initiative
+  isAdmin: boolean
   editIsOpen: boolean
   setEditIsOpen: (value: boolean) => void
   Submit: (companyId: string, initiativeId: string, dataList: ThroughputData[], emptyDataCheck: boolean) => Promise<boolean>
@@ -212,7 +213,7 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
       cypressData={{modal: EditThroughputIds.modal, closeModalButton: EditThroughputIds.closeModalButton}}
       company={props.company}
       initiative={props.initiative}
-      title="Edit Throughput Data"
+      title="View Throughput Data"
       maxWidth="md"
       >
       <div className="mb-4">
@@ -259,7 +260,9 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
                           }}>
                   <TableHeaderStyle>Date</TableHeaderStyle>
                   <TableHeaderStyle>Items Completed</TableHeaderStyle>
-                  <TableHeaderStyle>Edit</TableHeaderStyle>
+                  {props.isAdmin &&
+                    <TableHeaderStyle>Edit</TableHeaderStyle>
+                  }
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -279,16 +282,16 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
                             {
                               <p className="px-2 w-full bg-inherit focus:outline-none" data-cy={EditThroughputIds.tableDate}>{throughput.date.month + "/" + throughput.date.day + "/" + throughput.date.year}</p> 
                             }
-                            </TableCell>
+                          </TableCell>
                           <TableCell className={tooltipStyle}>
                             <Input className="px-2 w-full bg-inherit focus:outline-none" data-cy={EditThroughputIds.tableItemsComplete} type="number" value={currentItems}
                             onChange={(e) => setCurrentItems(parseInt(e.target.value))}/>
                           </TableCell>
                           <TableCell ref={throughputRef}>
-                            <IconButton data-cy={EditThroughputIds.saveChangesButton} onClick={() => SaveEdit()}>
+                            <IconButton disabled={isLoading} data-cy={EditThroughputIds.saveChangesButton} onClick={() => SaveEdit()}>
                               <DoneIcon />
                             </IconButton>
-                            <IconButton data-cy={EditThroughputIds.cancelChangesButton} onClick={() => CancelEdit()}>
+                            <IconButton disabled={isLoading} data-cy={EditThroughputIds.cancelChangesButton} onClick={() => CancelEdit()}>
                               <CancelIcon />
                             </IconButton>
                           </TableCell>
@@ -301,11 +304,13 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
                           <TableCell>
                             <input disabled className="px-2 w-full bg-inherit focus:outline-none" data-cy={EditThroughputIds.tableItemsComplete} type="number" min="0" value={throughput.itemsCompleted}/>
                           </TableCell>
-                          <TableCell>
-                            <IconButton data-cy={EditThroughputIds.editButton} disabled={InEditMode()} onClick={() => EnterEditMode(throughput.date, throughputList, false)}>
-                              <EditIcon />
-                            </IconButton>
-                          </TableCell>
+                          {props.isAdmin &&
+                            <TableCell>
+                              <IconButton data-cy={EditThroughputIds.editButton} disabled={InEditMode() || isLoading} onClick={() => EnterEditMode(throughput.date, throughputList, false)}>
+                                <EditIcon />
+                              </IconButton>
+                            </TableCell>
+                          }
                         </>
                       }
                     </TableRow>

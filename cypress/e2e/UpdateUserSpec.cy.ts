@@ -27,7 +27,7 @@ describe("update user spec",() => {
     cy.getByData(navIds.menuButton).click();
     cy.getByData(navIds.users).click();
     cy.wait(1000);
-    cy.getByData(pageIds.addButton).click({force:true});
+    cy.getByData(pageIds.addButton).click();
     cy.getByData(pageIds.editEmail).type(user.email);
     cy.getByData(pageIds.editPassword).type(user.password);
     cy.getByData(pageIds.saveChangesButton).click();
@@ -90,7 +90,7 @@ describe("update admin user spec", () => {
     cy.getByData(navIds.menuButton).click();
     cy.getByData(navIds.integrity).click();
     cy.wait(1000);
-    cy.getByData(pageIds.addButton).click({force:true});
+    cy.getByData(pageIds.addButton).click();
     cy.getByData(pageIds.editEmail).type(user.email);
     cy.getByData(pageIds.editPassword).type(user.password);
     cy.getByData(pageIds.editIsAdmin).find('input').check({force:true});
@@ -159,7 +159,7 @@ describe('add non-Integrity user as Integrity', () => {
     cy.getByData(navIds.menuButton).click();
     cy.getByData(navIds.users).click();
     cy.wait(1000);
-    cy.getByData(pageIds.addButton).click({force:true});
+    cy.getByData(pageIds.addButton).click();
     cy.getByData(pageIds.editEmail).type(user.email);
     cy.getByData(pageIds.editPassword).type(user.password);   
     cy.getByData(pageIds.selectCompany).parent().muiSelect(company.id);

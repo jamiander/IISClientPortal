@@ -13,8 +13,9 @@ export const DocumentManagementModalIds = {
   modal: "documentManagementModal",
   closeModalButton: "documentManagementModalCloseModalButton",
   documentUpload: {
-    uploadButton: "documentManagementModalNewDocUploadButton",
-    submitButton: "documentManagementModalNewDocSubmitButton"
+    chooseFileButton: "documentManagementModalChooseNewDocButton",
+    submitButton: "documentManagementModalNewDocSubmitButton",
+    fileInput: "documentManagementModalFileInput"
   }
 }
 
@@ -44,6 +45,7 @@ export function DocumentManagementModal(props: DocumentManagementModalProps)
   async function GetData()
   {
     try{
+      setIsLoading(true);
       const response = await dispatch(getDocumentUrls({companyId: props.company.id, initiativeId: props.initiative?.id}));
       if(response.payload)
       {

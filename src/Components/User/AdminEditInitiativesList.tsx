@@ -10,7 +10,7 @@ interface AdminEditInitiativesListProps {
   initiativeIds: string[]
   editable: boolean
   updateInitiativeIds: (initId: string, checked: boolean) => void
-  updateCompanyId: (companyId: string, checked: boolean) => void
+  //updateCompanyId: (companyId: string, checked: boolean) => void
   expanded: boolean
   user: User
 }
@@ -40,7 +40,7 @@ export function AdminEditInitiativesList(props: AdminEditInitiativesListProps)
             if(props.editable)
             {
               return (
-                <FormControlLabel key={index} control={<Checkbox checked={props.initiativeIds.find(id => init.id === id) !== undefined} onChange={(e) => {props.updateInitiativeIds(init.id, e.target.checked); props.updateCompanyId(props.company.id, e.target.checked)}} />} label={init.title} />
+                <FormControlLabel key={index} control={<Checkbox checked={props.initiativeIds.find(id => init.id === id) !== undefined} onChange={(e) => {props.updateInitiativeIds(init.id, e.target.checked)}} />} label={init.title} />
               );
             }
             else

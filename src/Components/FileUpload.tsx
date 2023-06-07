@@ -7,8 +7,9 @@ interface FileUploadProps {
   isUploading: boolean
   UploadFile: () => Promise<void>
   cypressData: {
-    uploadButton: string
+    chooseFileButton: string
     submitButton: string
+    fileInput: string
   }
   accept?: string
 }
@@ -48,10 +49,10 @@ export function FileUpload(props: FileUploadProps)
       <input type="file" className="hidden"
         onChange={(e) => HandleChooseFiles(e.target.files)}
         ref={fileRef}
-        data-cy={props.cypressData.uploadButton}
+        data-cy={props.cypressData.fileInput}
       />
       <span className="h-full align-middle">
-        <Button variant="outlined" onClick={() => fileRef.current?.click()}>
+        <Button data-cy={props.cypressData.chooseFileButton} variant="outlined" onClick={() => fileRef.current?.click()}>
           Choose File
         </Button>
         <span className="mx-2">{props.file?.name ?? "No file selected"}</span>

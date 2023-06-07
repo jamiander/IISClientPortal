@@ -4,6 +4,7 @@ import { Fragment, useEffect, useState } from "react"
 import { AdminEditInitiativesList } from "./AdminEditInitiativesList"
 import { Dialog } from "@mui/material"
 import { cancelButtonStyle, submitButtonStyle } from "../../Styles"
+import { MakeClone } from "../../Services/Cloning"
 
 export const EditUserInitiativesIds = {
   modal: "editUserInitiativesModal",
@@ -27,12 +28,15 @@ export function EditUserInitiativesModal(props: EditUserInitiativesModalProps)
 
   useEffect(() => {
     if(props.isOpen)
+    {
       setInitiativeIds(props.user.initiativeIds);
+      setCompanyId(props.user.companyId)
+    }
   },[props.isOpen])
 
   function UpdateInitiativeIds(initId: string, checked: boolean)
   {
-    let initiativesClone: string[] = JSON.parse(JSON.stringify(initiativeIds));
+    let initiativesClone = MakeClone(initiativeIds);
     let matchingIdIndex = initiativesClone.findIndex(id => id === initId);
     if(matchingIdIndex > -1)
     {
@@ -47,17 +51,6 @@ export function EditUserInitiativesModal(props: EditUserInitiativesModalProps)
     setInitiativeIds(initiativesClone);
   }
 
-  function UpdateCompanyId(companyId: string)
-  {
-    if(props.user.companyId !== IntegrityId) {
-      setCompanyId(companyId);
-    } 
-    else
-    {
-      setCompanyId(IntegrityId);
-    }
-  }
-
   function CancelEdit()
   {
     props.setIsOpen(false);
@@ -65,7 +58,7 @@ export function EditUserInitiativesModal(props: EditUserInitiativesModalProps)
 
   function SaveEdit()
   {
-    let userClone: User = JSON.parse(JSON.stringify(props.user));
+    let userClone = MakeClone(props.user);
     if(userClone)
     {
       userClone.initiativeIds = initiativeIds;
@@ -93,7 +86,7 @@ export function EditUserInitiativesModal(props: EditUserInitiativesModalProps)
           props.allCompanies.map((company,index) => {
             return (
               <Fragment key={index}>
-                <AdminEditInitiativesList company={company} initiativeIds={initiativeIds} updateInitiativeIds={UpdateInitiativeIds} updateCompanyId={UpdateCompanyId} editable={true} expanded={props.expanded} user={props.user}/>
+                <AdminEditInitiativesList company={company} initiativeIds={initiativeIds} updateInitiativeIds={UpdateInitiativeIds} editable={true} expanded={props.expanded} user={props.user}/>
               </Fragment>
             )
           })
