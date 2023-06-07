@@ -173,6 +173,7 @@ export default function DecisionDataModal(props: DecisionDataProps) {
     if(validation.success)
     {
       await dispatch(upsertDecisionData({isTest: isTest, companyId: props.company.id, initiativeId: props.initiative.id, decisions: decisions}));
+      enqueueSnackbar("Decision changes have been saved.", {variant: "success"});
       LeaveEditMode();
       return true;
     }
