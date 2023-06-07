@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { clearCompanies, selectAllCompanies } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
 import { selectCurrentUser, selectIsLoggedIn, signOut } from "../Store/UserSlice";
@@ -15,16 +15,16 @@ export default function Header(){
   const user = useAppSelector(selectCurrentUser);
   const companyList = useAppSelector(selectAllCompanies);
   const company = companyList.find(e=>e.id === user?.companyId);
-  var hrs = new Date().getHours();
-  var greet;
   let imageLink = './Initiatives';
+  let title = "";
 
-  if(hrs < 12)
-    greet = 'Good Morning ';
-  else if(hrs >= 12 && hrs <= 17)
-    greet = 'Good Afternoon ';
-  else
-    greet = 'Good Evening ';
+  const location = useLocation();
+  console.log(location.pathname);
+
+  if(location.pathname === '/Initiatives') title = "Initiatives Management";
+  if(location.pathname === '/Users') title = "User Management";
+  if(location.pathname === '/Integrity') title = "Developer Management";
+  if(location.pathname === '/ClientPage') title = "Client Management";
 
   if(!isLoggedIn)
     imageLink = './Login';
@@ -47,7 +47,7 @@ export default function Header(){
           }}>
       <NavPanel />
       <Link to={imageLink}>
-        <img className="w-[15vw]" src={logo} alt='Integrity Inspired Solutions Logo'/>
+        <img className="w-[50%]" src={logo} alt='Integrity Inspired Solutions Logo'/>
       </Link>
       </Grid>
       <Grid item xs={6} sx={{ display: 'flex',
@@ -55,8 +55,7 @@ export default function Header(){
           fontSize: "calc(25px + 0.390625vw)"
           }}> 
         {isLoggedIn && 
-        <div><p className="text-center">{greet}</p>
-        <p className="text-center">{company?.name}!</p></div>
+          <p className="text-[1.5vw] text-[#21355B] font-bold">{title}</p>
         }
       </Grid>
       <Grid item xs={3} sx={{ display: 'flex',

@@ -124,13 +124,7 @@ export default function UsersPage(){
   }, [allUsers, radioValue])
 
   return (
-      <><div className="flex col-span-4 bg-[#21355B] py-6 px-5 rounded-md">
-      <div className="w-full flex justify-between">
-        <div className="space-y-2 w-1/2">
-          <p className="text-[2.2vw] text-white font-bold w-full">User Management</p>
-        </div>
-      </div>
-    </div>
+      <>
      <div className="mx-[2%] mb-2">
         <div className="flex flex-row justify-content:space-between">
          <Grid container sx={{ display: 'flex',

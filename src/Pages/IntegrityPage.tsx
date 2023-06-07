@@ -101,13 +101,6 @@ export function IntegrityPage(){
 
   return (
     <>
-      <div className="flex col-span-4 bg-[#21355B] py-6 px-5 rounded-md">
-        <div className="w-full flex justify-between">
-          <div className="space-y-2 w-1/2">
-            <p className="text-[2.2vw] text-white font-bold w-full">Developer Management</p>
-          </div>
-        </div>
-      </div>
       <div className="mx-[2%] mb-2">
         {allUsers.length !== 0 &&
            <div className="flex flex-row justify-content:space-between">
