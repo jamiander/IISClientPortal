@@ -220,7 +220,7 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
           <Grid item xs="auto">
             <DateInput cypressData={EditThroughputIds.addDate} label={"New Data Date"} disabled={InEditMode()} date={currentDate} setDate={setCurrentDate}/>
           </Grid>
-          <Grid item xs={2}>
+          <Grid item xs="auto">
             <AddButton cypressData={EditThroughputIds.addNewEntryButton} disabled={InEditMode() || !currentDate} HandleClick={AddItem}/>
           </Grid>
           <Grid item xs="auto">
@@ -271,10 +271,10 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
                             onChange={(e) => setCurrentItems(parseInt(e.target.value))}/>
                           </TableCell>
                           <TableCell ref={throughputRef}>
-                            <IconButton data-cy={EditThroughputIds.saveChangesButton} onClick={() => SaveEdit()}>
+                            <IconButton disabled={isLoading} data-cy={EditThroughputIds.saveChangesButton} onClick={() => SaveEdit()}>
                               <DoneIcon />
                             </IconButton>
-                            <IconButton data-cy={EditThroughputIds.cancelChangesButton} onClick={() => CancelEdit()}>
+                            <IconButton disabled={isLoading} data-cy={EditThroughputIds.cancelChangesButton} onClick={() => CancelEdit()}>
                               <CancelIcon />
                             </IconButton>
                           </TableCell>
@@ -288,7 +288,7 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
                             <input disabled className="px-2 w-full bg-inherit focus:outline-none" data-cy={EditThroughputIds.tableItemsComplete} type="number" min="0" value={throughput.itemsCompleted}/>
                           </TableCell>
                           <TableCell>
-                            <IconButton data-cy={EditThroughputIds.editButton} disabled={InEditMode()} onClick={() => EnterEditMode(throughput.date, throughputList, false)}>
+                            <IconButton data-cy={EditThroughputIds.editButton} disabled={InEditMode() || isLoading} onClick={() => EnterEditMode(throughput.date, throughputList, false)}>
                               <EditIcon />
                             </IconButton>
                           </TableCell>
