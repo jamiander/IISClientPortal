@@ -61,14 +61,14 @@ export default function LoginPage(){
   return (
     <>
       <div className="h-fit ml-30 mr-30 py-6 px-5 rounded-lg bg-[#21355B]">
-        <p className="text-center text-[1.8vw] text-white">Welcome to the Integrity Inspired Solutions Client Portal!</p>
-        <p className="text-center text-[1.1vw] text-white mt-2">To view the information on your project, please log in.</p>
-        <p className="w-full text-center text-white text-[1.1vw]">
+        <p className="text-center text-[1.4vw] text-white">Welcome to the Integrity Inspired Solutions Client Portal!</p>
+        <p className="text-center text-[.75vw] text-white mt-2">To view the information on your project, please log in.</p>
+        <p className="w-full text-center text-white text-[.75vw]">
           If you are looking for the Integrity Inspired Solutions website, please go&nbsp;
           <a className="text-blue-600 visited:text-[#00C4FF] underline" href="https://www.integrityinspired.com/">here.</a>
         </p>
       </div>
-      <Container component="main" maxWidth="xs" className="bg-gray-100 py-4 px-6 mt-[1%] mb-2 h-[58vh] rounded-md">
+      <Container component="main" maxWidth="xs" className="bg-gray-100 py-4 px-6 h-[100%] mt-[1%] mb-[1%] rounded-md">
         <Box component="form" onSubmit={HandleLogin} noValidate sx={{
             marginTop: 6,
             marginBottom: 4,

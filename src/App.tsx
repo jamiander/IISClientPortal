@@ -21,9 +21,9 @@ function App() {
 
   return (
     <div className='gap-1 bg-[#FAB947]'>
-      <div className='bg-[#E4E1E5] h-[2%] mx-2 shadow-xl py-1 rounded-md'><Header/></div>
+      <div className='bg-[#E4E1E5] h-[2%] mx-3 shadow-lg shadow-[#21355B] py-1 rounded-md'><Header/></div>
         <div className='contents mx-1 bg-[#E4E1E5]'>
-          <div className={'bg-[#E4E1E5] min-h-[82vh] mx-2 shadow-xl rounded-md mt-2'}>
+          <div className={'bg-[#E4E1E5] min-h-[82vh] mx-3 shadow-lg shadow-[#21355B] rounded-md mt-4 mb-4'}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
             <Content/>
               <SnackbarProvider maxSnack={1} anchorOrigin={{
@@ -33,7 +33,7 @@ function App() {
             </LocalizationProvider>
           </div>
         </div>
-      <div className='bg-[#21345b] text-white h-fit mb-1 mx-2 shadow-xl pb-1 rounded-md'><Footer/></div>
+      <div className='bg-[#21345b] text-white h-[2%] mb-1 mx-3 shadow-xl pb-1 rounded-md'><Footer/></div>
     </div>
   );
 }

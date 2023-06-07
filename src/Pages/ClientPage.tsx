@@ -245,8 +245,8 @@ export function ClientPage()
                 }}>
                   <TableHeaderStyle>Name</TableHeaderStyle>
                   <TableHeaderStyle>First Initiative Name</TableHeaderStyle>
-                  <TableHeaderStyle>First Initiative Target Completion Date</TableHeaderStyle>
-                  <TableHeaderStyle>First Initiative Total Items</TableHeaderStyle>
+                  <TableHeaderStyle>Target Completion Date</TableHeaderStyle>
+                  <TableHeaderStyle>Total Items</TableHeaderStyle>
                   <TableHeaderStyle>Documents</TableHeaderStyle>
                   {!IsReadOnly() &&
                     <TableHeaderStyle>Edit Client</TableHeaderStyle>
