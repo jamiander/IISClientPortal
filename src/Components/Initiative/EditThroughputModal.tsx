@@ -213,7 +213,7 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
       cypressData={{modal: EditThroughputIds.modal, closeModalButton: EditThroughputIds.closeModalButton}}
       company={props.company}
       initiative={props.initiative}
-      title="View Throughput Data"
+      title="View Throughput"
       maxWidth="md"
       >
       <div className="mb-4">

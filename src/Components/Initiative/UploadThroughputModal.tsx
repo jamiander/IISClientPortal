@@ -124,7 +124,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){
       onClose={()=>props.setUploadIsOpen(false)}
       company={props.company}
       initiative={props.initiative}
-      title="Upload Throughput Data"
+      title="Upload Throughput"
     >
       <div className="space-y-5">
         {fileWarning}
