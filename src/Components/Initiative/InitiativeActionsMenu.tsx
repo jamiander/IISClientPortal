@@ -78,7 +78,7 @@ export function InitiativeActionsMenu(props: InitiativeActionsMenuProps)
     handleClose();
   }
 
-  function HandleUploadThrouhgputModal()
+  function HandleUploadThroughputModal()
   {
     setUploadThroughputModalIsOpen(true);
     handleClose();
@@ -124,7 +124,7 @@ export function InitiativeActionsMenu(props: InitiativeActionsMenuProps)
             Documents
           </Button>
         </MenuItem>
-        <MenuItem data-cy={props.cypressData.uploadThroughputButton} onClick={() => HandleUploadThrouhgputModal()}>
+        <MenuItem data-cy={props.cypressData.uploadThroughputButton} onClick={() => HandleUploadThroughputModal()}>
           <Button>
             Upload Throughput
           </Button>

@@ -349,7 +349,7 @@ export default function InitiativesTable(props: InitiativesProps) {
           <input data-cy={InitiativeTableIds.initiativeTitleFilter} className={inputStyle} type={'text'} placeholder="Filter by Title" value={searchedInit} onChange={(e) => setSearchedInit(e.target.value)} />
         </div>
         {totalInits !== 0 &&
-        <div className="col-span-1">
+        <div className="col-span-1 mt-2">
           <TableContainer elevation={12} component={Paper}>
             <Table className="table-auto w-full outline outline-3 bg-gray-100">
               <colgroup>

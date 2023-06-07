@@ -130,7 +130,7 @@ export default function UsersPage(){
         </div>
       </div>
     </div>
-     <div className="mx-[2%] mb-[1%]">
+     <div className="mx-[2%] mb-2">
         <div className="flex flex-col justify-content:space-between">
          <Grid container sx={{ display: 'flex',
               placeItems: 'center',
@@ -186,7 +186,7 @@ export default function UsersPage(){
                     <col style={{ width: '10vw' }} />
                     <col style={{ width: '10vw' }} />
                     <col style={{ width: '6vw' }} />
-                    <col style={{ width: '12vw' }} />
+                    <col style={{ width: '10vw' }} />
                   </colgroup>
                   <TableHead className="outline outline-1">
                     <TableRow sx={{

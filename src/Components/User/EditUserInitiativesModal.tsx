@@ -85,9 +85,9 @@ export function EditUserInitiativesModal(props: EditUserInitiativesModalProps)
         fullWidth
         maxWidth={"sm"}
       >
-        <div className="m-2 space-y-2">
-          <p className="text-2xl w-full">Edit Selected Initiatives for {props.user?.name ? props.user?.name : props.user?.email}</p>
-          <p className="text-4sm w-full">Select Company to View Initiatives</p>
+        <div className="m-2 space-y-2 rounded-md bg-[#E4E1E5]">
+          <p className="text-center text-3xl w-full text-[#445362]">Edit Selected Initiatives for {props.user?.name ? props.user?.name : props.user?.email}</p>
+          <p className="text-center text-lg w-full text-[#445362] mt-2">Select Company to View Initiatives</p>
 
         {
           props.allCompanies.map((company,index) => {
@@ -98,7 +98,7 @@ export function EditUserInitiativesModal(props: EditUserInitiativesModalProps)
             )
           })
         }
-          <div className="flex w-full justify-between">
+          <div className="flex w-full justify-between py-1">
             <button id={EditUserInitiativesIds.saveChangesButton} className={submitButtonStyle} onClick={() => SaveEdit()}>Save</button>
             <button id={EditUserInitiativesIds.cancelChangesButton} className={cancelButtonStyle} onClick={() => CancelEdit()}>Cancel</button>
           </div>

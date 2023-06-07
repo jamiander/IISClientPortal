@@ -25,14 +25,6 @@ export const integrityColors = {
   integrityVeryLightGray: '#E4E1E5'
 }
 
-const globalTheme = createTheme({
-  palette: {
-    primary: {
-      main: grey[300]
-    }
-  }
-})
-
 export const TableHeaderStyle =
   styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -56,9 +48,9 @@ export const TableHeaderStyle =
     marginTop: 1,
     textAlign: 'center',
     color: 'black',
-    elevation: 12,
-    width: "100%",
-    marginLeft: 4
+    width: "99%",
+    marginLeft: ".5%",
+    marginRight: ".5%"
   }));
 
   export const StyledCard = styled(Card)(() => ({

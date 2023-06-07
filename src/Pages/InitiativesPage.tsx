@@ -43,7 +43,7 @@ export default function InitiativesPage(){
           </div>
         </div>
       </div>
-      <div className="mx-[2%] mb-[1%]">
+      <div className="mx-[2%] mb-2">
         <div className="flex flex-col justify-content:space-between">
          <Grid container sx={{ display: 'flex',
               flexDirection: 'row',

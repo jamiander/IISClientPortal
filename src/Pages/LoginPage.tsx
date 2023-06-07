@@ -68,7 +68,7 @@ export default function LoginPage(){
           <a className="text-blue-600 visited:text-[#00C4FF] underline" href="https://www.integrityinspired.com/">here.</a>
         </p>
       </div>
-      <Container component="main" maxWidth="xs" className="bg-gray-100 py-4 px-6 mt-[1%] mb=[1%] h-[58vh] rounded-md">
+      <Container component="main" maxWidth="xs" className="bg-gray-100 py-4 px-6 mt-[1%] mb-2 h-[58vh] rounded-md">
         <Box component="form" onSubmit={HandleLogin} noValidate sx={{
             marginTop: 6,
             marginBottom: 4,
