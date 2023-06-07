@@ -1,7 +1,7 @@
 import { Company, Initiative, deleteDecisionData, upsertDecisionData } from "../../Store/CompanySlice";
 import Grid from "@mui/material/Grid";
 import { useEffect, useState } from "react";
-import { Item, StyledCard, StyledCardActions, StyledCardContent, StyledTextField, StyledTextarea, labelStyle} from "../../Styles";
+import { Item, StyledCard, StyledCardActions, StyledCardContent, StyledTextField, StyledTextarea, UserTextField, labelStyle} from "../../Styles";
 import { DateInfo, DecisionData } from "../../Services/CompanyService";
 import { ValidateDecisions, ValidationFailedPrefix } from "../../Services/Validation";
 import { useAppDispatch } from "../../Store/Hooks";
@@ -227,27 +227,33 @@ export default function DecisionDataModal(props: DecisionDataProps) {
         title="Decisions"
         maxWidth={false}
         >
-          <div className="mx-[2%] mb-[2%] w-full">
+        <div className="mx-1 mb-2">
+          <div className="flex flex-row justify-content:space-between">
             <Grid container sx={{ display: 'flex',
               placeItems: 'center',
-              flexDirection: 'row'}}>
+              flexDirection: 'row',
+              p: 1,
+              mt: 2,
+              mb: 1,
+              ml: 2,
+              mr: 2,
+              borderRadius: 1, 
+              }}>
               {selectedInitiative.decisions.length !== 0 &&
-                <Grid item xs={4} sx={{ display: 'flex',
-                justifyContent: 'flex-start',
-                }}>
-                  <StyledTextField data-cy={DecisionModalIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)}
-                    sx={{
-                      width: "75%"
-                    }}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <SearchIcon />
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                </Grid>
+              <Grid item xs={4} sx={{ display: 'flex',
+              justifyContent: 'flex-start',
+              }}>
+                <UserTextField data-cy={DecisionModalIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)}
+                  
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <SearchIcon />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </Grid>
               }
               <Grid item xs={4} sx={{ display: "flex",
                 justifyContent: "center"}}>
@@ -256,21 +262,26 @@ export default function DecisionDataModal(props: DecisionDataProps) {
                 }
               </Grid>
               {props.isAdmin &&
-                <Grid item xs={4} sx={{ display: 'flex',
-                justifyContent: 'flex-end'
-                }}> 
-                  <AddButton cypressData={DecisionModalIds.addButton} HandleClick={() => HandleAddEmptyDecision()} disabled={InEditMode()}/>
-                </Grid>
+              <Grid item xs={4} sx={{ display: 'flex',
+              justifyContent: 'flex-end'
+              }}> 
+                <AddButton cypressData={DecisionModalIds.addButton} HandleClick={() => HandleAddEmptyDecision()} disabled={InEditMode()}/>
+              </Grid>
               }
             </Grid>
-            <Grid data-cy={DecisionModalIds.grid} container spacing={2} columns={12}>
+            </div>
+            <Grid container sx={{ display: 'flex',
+              justifyContent: "space-between",
+              placeItems: 'center',
+              flexDirection: 'row'}}
+              data-cy={DecisionModalIds.grid}>
               {
               filteredDecisions.map((displayItem, key) => {
                 let matched = displayItem.id === (decisionToEdit?.id ?? -1);
                 let isEdit = matched && InEditMode();
                 
                 return(
-                  <Grid item md={4} key={key}>
+                  <Grid item xs="auto" key={key} sx={{mr: 1, mb: 1}}>
                     <Item>
                       <StyledCard>
                         <StyledCardContent>
@@ -333,7 +344,6 @@ export default function DecisionDataModal(props: DecisionDataProps) {
               filteredDecisions.length === 0 && <Grid item>No decisions to display.</Grid>
               }
             </Grid>
-            
           </div>
         </BaseInitiativeModal>
         <DeleteDecisionAlert isOpen={isDeleteOpen} setIsOpen={setIsDeleteOpen} DeleteDecision={DeleteDecision} CancelDelete={CancelDelete} decisionId={decisionToEdit?.id}/>
