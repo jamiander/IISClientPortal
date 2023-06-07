@@ -8,8 +8,9 @@ import { FileUpload } from "../FileUpload";
 
 interface DocumentUploadProps {
   cypressData: {
-    uploadButton: string,
-    submitButton: string
+    chooseFileButton: string,
+    submitButton: string,
+    fileInput: string
   }
   company: Company
   initiative?: Initiative

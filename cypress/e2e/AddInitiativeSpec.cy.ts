@@ -25,7 +25,7 @@ describe('add initiative spec', () => {
 
     cy.getByData(radioIds.all).click();
 
-    cy.getByData(pageIds.addInitiativeButton).click({force: true}); //TODO: fix the button so that it's not covered by the radio set
+    cy.getByData(pageIds.addInitiativeButton).click();
   });
 
   specify('add new initiative',() => {
@@ -34,7 +34,7 @@ describe('add initiative spec', () => {
     cy.getByData(tableIds.editTargetDate).setDatePicker(init.targetDate);
     cy.getByData(tableIds.editTotalItems).clear().type(init.totalItems);
     cy.getByData(tableIds.saveChangesButton).click();
-    cy.getByData(tableIds.initiativeTitleFilter).type(init.title, {force:true});
+    cy.getByData(tableIds.initiativeTitleFilter).type(init.title);
     cy.getByData(tableIds.table).should('contain',init.title);
   })
 
@@ -45,7 +45,7 @@ describe('add initiative spec', () => {
       cy.getByData(tableIds.initiativeTitle).first().invoke('text').then(($txt) => { 
         const existingInitTitle = $txt;
 
-        cy.getByData(pageIds.addInitiativeButton).click({force: true}); //TODO
+        cy.getByData(pageIds.addInitiativeButton).click();
         cy.getByData(tableIds.editInitiativeTitle).clear().type(existingInitTitle);
         cy.getByData(tableIds.editStartDate).setDatePicker(init.startDate);
         cy.getByData(tableIds.editTargetDate).setDatePicker(init.targetDate);
@@ -130,7 +130,7 @@ describe('add initiatives as Integrity user', () => {
 
     cy.getByData(radioIds.all).click();
 
-    cy.getByData(pageIds.addInitiativeButton).click({force: true}); //TODO
+    cy.getByData(pageIds.addInitiativeButton).click();
 
     cy.getByData(tableIds.companySelect).parent().muiSelect(company.id);
     cy.getByData(tableIds.editInitiativeTitle).find('input').clear().type(init.title);
@@ -141,7 +141,7 @@ describe('add initiatives as Integrity user', () => {
 
   specify('add new initiative for a different company', () => {
     cy.getByData(tableIds.saveChangesButton).click();
-    cy.getByData(tableIds.initiativeTitleFilter).type(init.title, {force:true});
+    cy.getByData(tableIds.initiativeTitleFilter).type(init.title);
     cy.getByData(tableIds.table).should('contain',init.title);
   })
 })

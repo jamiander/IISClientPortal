@@ -13,8 +13,9 @@ export const DocumentManagementModalIds = {
   modal: "documentManagementModal",
   closeModalButton: "documentManagementModalCloseModalButton",
   documentUpload: {
-    uploadButton: "documentManagementModalNewDocUploadButton",
-    submitButton: "documentManagementModalNewDocSubmitButton"
+    chooseFileButton: "documentManagementModalChooseNewDocButton",
+    submitButton: "documentManagementModalNewDocSubmitButton",
+    fileInput: "documentManagementModalFileInput"
   }
 }
 

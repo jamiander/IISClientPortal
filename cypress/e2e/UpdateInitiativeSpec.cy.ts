@@ -26,7 +26,7 @@ describe('update initiative spec', () => {
     cy.login(user);
 
     cy.getByData(radioIds.all).click();
-    cy.getByData(tableIds.companyNameFilter).clear({force:true}).type(init.companyName,{force:true});
+    cy.getByData(tableIds.companyNameFilter).clear().type(init.companyName);
     cy.getByData(tableIds.table).contains(init.companyName).parent().within(() => {
       cy.getByData(tableIds.editButton).click();
     });
@@ -41,7 +41,7 @@ describe('update initiative spec', () => {
     cy.getByData(tableIds.saveChangesButton).click();
     cy.wait(500);
     cy.getByData(radioIds.all).click();
-    cy.getByData(tableIds.companyNameFilter).clear({force:true}).type(init.companyName,{force:true});
+    cy.getByData(tableIds.companyNameFilter).clear().type(init.companyName);
     cy.getByData(tableIds.table).should('contain',init.title);
   })
 

@@ -34,7 +34,7 @@ beforeEach(() => {
   cy.login(user);
 
   cy.getByData(radioIds.all).click();
-  cy.getByData(tableIds.initiativeTitleFilter).type(init.title,{force:true});
+  cy.getByData(tableIds.initiativeTitleFilter).type(init.title);
   cy.get('table').contains(init.title).then(() => {
     cy.getByData(tableIds.actionMenu.menuButton).click();
     cy.getByData(tableIds.actionMenu.decisionButton).click();
@@ -101,8 +101,7 @@ describe("add decision spec", () => {
   })
 
   specify("cannot add multiple decisions at once", () => {
-    cy.getByData(modalIds.addButton).click();
-    cy.get(snackbarId);
+    cy.getByData(modalIds.addButton).should('be.disabled');
   })
 
 })
