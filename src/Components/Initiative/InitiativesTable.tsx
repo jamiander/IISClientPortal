@@ -28,6 +28,7 @@ import ValidateNewInitiative, { ValidationFailedPrefix } from "../../Services/Va
 import { InitiativeActionsMenu } from "./InitiativeActionsMenu";
 import { DateToDateInfo } from "../../Services/DateHelpers";
 import { MakeClone } from "../../Services/Cloning";
+import { SearchBar } from "../SearchBar";
 
 export const InitiativeTableIds = {
   table: "initiativesTable",
@@ -344,8 +345,8 @@ export default function InitiativesTable(props: InitiativesProps) {
     <>
       <div className="grid grid-cols-1 w-full h-auto">
         <div className="col-span-1 h-[4vh] space-x-4 mb-2">
-          <input data-cy={InitiativeTableIds.companyNameFilter} className={inputStyle} type={'text'} placeholder="Filter by Company" value={searchedComp} onChange={(e) => setSearchedComp(e.target.value)} />
-          <input data-cy={InitiativeTableIds.initiativeTitleFilter} className={inputStyle} type={'text'} placeholder="Filter by Title" value={searchedInit} onChange={(e) => setSearchedInit(e.target.value)} />
+          <SearchBar cypressData={InitiativeTableIds.companyNameFilter} placeholder="Filter by Company" value={searchedComp} setValue={setSearchedComp} />
+          <SearchBar cypressData={InitiativeTableIds.initiativeTitleFilter} placeholder="Filter by Title" value={searchedInit} setValue={setSearchedInit} />
         </div>
         {totalInits !== 0 &&
         <div className="col-span-1 mt-2">
