@@ -35,7 +35,7 @@ function App() {
           </LocalizationProvider>
         </div>
       </div>
-      <div className='bg-[#21345b] text-white h-[2%] mb-1 mx-3 shadow-xl pb-1 rounded-md'>
+      <div className='bg-[#21345b] text-white h-[2%] mx-3 shadow-xl pb-1 rounded-md'>
         <Footer/>
       </div>
     </div>
