@@ -21,6 +21,7 @@ export default function Header(){
   const location = useLocation();
   console.log(location.pathname);
 
+  if(location.pathname === '/Login') title = "Welcome to the Integrity Inspired Solutions Client Portal!";
   if(location.pathname === '/Initiatives') title = "Initiatives Management";
   if(location.pathname === '/Users') title = "User Management";
   if(location.pathname === '/Integrity') title = "Developer Management";
@@ -39,7 +40,7 @@ export default function Header(){
   <div className="mr-[1%] ml-[1%] flex">
     <Grid container sx={{ display: 'flex',
               flexDirection: 'row',
-              placeItems: "center"
+              placeItems: 'center'
                }}>
       <Grid item xs={3} sx={{ display: 'flex',
           justifyContent: 'flex-start',
@@ -47,16 +48,14 @@ export default function Header(){
           }}>
       <NavPanel />
       <Link to={imageLink}>
-        <img className="w-[50%] py-4 px-6 my-6 mx-6 shadow-md shadow-[#21355B]" src={logo} alt='Integrity Inspired Solutions Logo'/>
+        <img className="w-[60%] py-2 px-2 my-4 mx-6 border-y-8 border-[#21355B]" src={logo} alt='Integrity Inspired Solutions Logo'/>
       </Link>
       </Grid>
       <Grid item xs={6} sx={{ display: 'flex',
           justifyContent: 'center',
           fontSize: "calc(25px + 0.390625vw)"
           }}> 
-        {isLoggedIn && 
           <p className="text-[1.5vw] text-[#21355B] font-bold">{title}</p>
-        }
       </Grid>
       <Grid item xs={3} sx={{ display: 'flex',
           justifyContent: 'flex-end',

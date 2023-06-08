@@ -60,23 +60,22 @@ export default function LoginPage(){
 
   return (
     <>
-      <div className="h-fit ml-30 mr-30 py-6 px-5 rounded-lg bg-[#21355B]">
-        <p className="text-center text-[1.4vw] text-white">Welcome to the Integrity Inspired Solutions Client Portal!</p>
+      <div className="h-fit ml-30 mr-30 py-4 px-5 rounded-lg bg-[#21355B]">
         <p className="text-center text-[.75vw] text-white mt-2">To view the information on your project, please log in.</p>
         <p className="w-full text-center text-white text-[.75vw]">
           If you are looking for the Integrity Inspired Solutions website, please go&nbsp;
           <a className="text-blue-600 visited:text-[#00C4FF] underline" href="https://www.integrityinspired.com/">here.</a>
         </p>
       </div>
-      <Container component="main" maxWidth="xs" className="bg-gray-100 py-4 px-6 h-[100%] mt-[1%] mb-[1%] rounded-md">
+      <Container component="main" maxWidth="xs" className="bg-gray-100 py-4 px-6 h-[50vh] mt-[2%] mb-[2%] rounded-md">
         <Box component="form" onSubmit={HandleLogin} noValidate sx={{
-            marginTop: 6,
-            marginBottom: 4,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            height: "fit",
-            borderRadius: 3
+          marginTop: 6,
+          marginBottom: 4,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          height: "auto",
+          borderRadius: 3
           }} >
           <Typography component="h1" variant="h5" sx={{fontSize:"calc(20px + 0.390625vw)", mb:4}}>
             Sign in
