@@ -21,19 +21,23 @@ function App() {
 
   return (
     <div className='gap-1 bg-[#FAB947]'>
-      <div className='bg-[#E4E1E5] h-[2%] mx-3 shadow-lg shadow-[#21355B] py-1 rounded-md'><Header/></div>
-        <div className='contents mx-1 bg-[#E4E1E5]'>
-          <div className={'bg-[#E4E1E5] min-h-[82vh] mx-3 shadow-lg shadow-[#21355B] rounded-md mt-4 mb-4'}>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <div className='bg-[#E4E1E5] h-[2%] mx-3 shadow-lg shadow-[#21355B] py-1 rounded-md'>
+        <Header/>
+      </div>
+      <div className='contents mx-1 bg-[#E4E1E5]'>
+        <div className={'bg-[#E4E1E5] min-h-[82vh] mx-3 shadow-lg shadow-[#21355B] rounded-md mt-4 mb-4'}>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
             <Content/>
-              <SnackbarProvider maxSnack={1} anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'center',
-              }}/>
-            </LocalizationProvider>
-          </div>
+            <SnackbarProvider maxSnack={1} anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'center',
+            }}/>
+          </LocalizationProvider>
         </div>
-      <div className='bg-[#21345b] text-white h-[2%] mb-1 mx-3 shadow-xl pb-1 rounded-md'><Footer/></div>
+      </div>
+      <div className='bg-[#21345b] text-white h-[2%] mb-1 mx-3 shadow-xl pb-1 rounded-md'>
+        <Footer/>
+      </div>
     </div>
   );
 }
