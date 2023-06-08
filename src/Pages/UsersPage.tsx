@@ -123,6 +123,9 @@ export default function UsersPage(){
     
   }, [allUsers, radioValue])
 
+  let integrityUser = companyUsers.length !== 0 &&
+  currentUserCompanyId === IntegrityId;
+
   return (
       <>
      <div className="mx-[2%] mb-2">
@@ -156,12 +159,10 @@ export default function UsersPage(){
             <Grid item xs={3} sx={{ display: 'flex',
               justifyContent: 'flex-end'
               }}> 
-            {companyUsers.length !== 0 &&
-              currentUserCompanyId !== IntegrityId &&
+            {!integrityUser &&
               <AddButton cypressData={UsersPageIds.addButton} HandleClick={() => AddEmptyUser(currentUserCompanyId)} disabled={InEditMode()}/>
             }
-            {companyUsers.length !== 0 &&
-              currentUserCompanyId === IntegrityId &&
+            {integrityUser &&
               <AddButton cypressData={UsersPageIds.addButton} HandleClick={() => AddEmptyUser("")} disabled={InEditMode()}/>
               }
             </Grid>  
@@ -221,7 +222,7 @@ export default function UsersPage(){
                               {isEdit ?
                                 <>
                                   <TableCell data-cy={UsersPageIds.company}>
-                                    {currentUserCompanyId === IntegrityId ?
+                                    {integrityUser ?
                                       <FormControl fullWidth>
                                         <InputLabel id="company-select-label">Select Company</InputLabel>
                                         <Select sx={{fontSize: tableCellFontSize}} data-cy={UsersPageIds.selectCompany} labelId="company-select-label" label="Select company" value={currentCompanyId} onChange={(e) => setCurrentCompanyId(e.target.value)}>

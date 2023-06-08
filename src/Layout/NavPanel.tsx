@@ -74,25 +74,25 @@ export default function NavPanel(){
           MenuListProps={{
             'aria-labelledby': "basic-button"
           }}>
-            <button style={{fontSize: "calc(12px + 0.390625vw)", marginTop: '5px', marginBottom: '10px', marginLeft: '10px', paddingBottom: '5px', textAlign: "left" }} data-cy={NavPanelIds.initiatives} className={GetNavStyle("/Initiatives")}
+            <button style={{fontSize: "calc(10px + 0.390625vw)", marginTop: '5px', marginBottom: '10px', marginLeft: '10px', paddingBottom: '5px', textAlign: "left" }} data-cy={NavPanelIds.initiatives} className={GetNavStyle("/Initiatives")}
               onClick={() => NavHandler('/Initiatives')}>
               <i className="material-icons" style={{fontSize: "calc(16px + 0.390625vw)", marginRight: '10px' }}>info_outline</i>
               Initiative Management
             </button>
             {currentUser?.isAdmin && currentUser?.isActive &&
-              <button style={{fontSize: "calc(12px + 0.390625vw)", marginTop: '5px', marginBottom: '10px', marginLeft: '10px', paddingBottom: '5px', textAlign: "left" }} data-cy={NavPanelIds.users} className={GetNavStyle("/Users")}
+              <button style={{fontSize: "calc(10px + 0.390625vw)", marginTop: '5px', marginBottom: '10px', marginLeft: '10px', paddingBottom: '5px', textAlign: "left" }} data-cy={NavPanelIds.users} className={GetNavStyle("/Users")}
                 onClick={() => NavHandler('/Users')}>
                 <i className="material-icons" style={{fontSize: "calc(16px + 0.390625vw)", marginRight: '10px' }}>person_outline</i>
                 User Management
               </button>}
             {currentUser?.isAdmin && currentUser?.isActive && currentUser?.companyId === IntegrityId &&
-              <button style={{fontSize: "calc(12px + 0.390625vw)", marginTop: '5px', marginBottom: '10px', marginLeft: '10px', paddingBottom: '5px', textAlign: "left" }} data-cy={NavPanelIds.integrity} className={GetNavStyle("/Integrity")}
+              <button style={{fontSize: "calc(10px + 0.390625vw)", marginTop: '5px', marginBottom: '10px', marginLeft: '10px', paddingBottom: '5px', textAlign: "left" }} data-cy={NavPanelIds.integrity} className={GetNavStyle("/Integrity")}
                 onClick={() => NavHandler('/Integrity')}>
                 <i className="material-icons" style={{fontSize: "calc(16px + 0.390625vw)", marginRight: '10px' }}>keyboard</i>
                 Developer Management
               </button>}
             {currentUser?.isActive && currentUser?.companyId === IntegrityId &&
-              <button style={{fontSize: "calc(12px + 0.390625vw)", marginTop: '5px', marginBottom: '5px', marginLeft: '10px', paddingBottom: '5px', textAlign: "left" }} data-cy={NavPanelIds.client} className={GetNavStyle("/ClientPage")}
+              <button style={{fontSize: "calc(10px + 0.390625vw)", marginTop: '5px', marginBottom: '5px', marginLeft: '10px', paddingBottom: '5px', textAlign: "left" }} data-cy={NavPanelIds.client} className={GetNavStyle("/ClientPage")}
                 onClick={() => NavHandler('/ClientPage')}>
                 <i className="material-icons" style={{fontSize: "calc(16px + 0.390625vw)", marginRight: '10px' }}>manage_accounts</i>
                 Client Management
