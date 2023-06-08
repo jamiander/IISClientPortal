@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { User } from "../../Store/UserSlice";
-import { genericButtonStyle, yellowButtonStyle } from "../../Styles";
+import { IntegrityTheme, genericButtonStyle, integrityColors, yellowButtonStyle } from "../../Styles";
 import { EditUserInitiativesModal } from "./EditUserInitiativesModal";
 import { Company } from "../../Store/CompanySlice";
-import { Button } from "@mui/material";
+import { Button, ThemeProvider } from "@mui/material";
 
 interface EditUserInitiativesButtonProps {
   user: User
@@ -17,9 +17,9 @@ export function EditUserInitiativesButton(props: EditUserInitiativesButtonProps)
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <>
-      <Button variant="outlined" onClick={() => setIsOpen(true)}>Initiatives</Button>
+    <ThemeProvider theme={IntegrityTheme}>
+      <Button variant="outlined" color={"darkBlue"} onClick={() => setIsOpen(true)}>Initiatives</Button>
       <EditUserInitiativesModal SubmitUserData={props.SubmitUserData} user={props.user} allCompanies={props.allCompanies} isOpen={isOpen} setIsOpen={setIsOpen} expanded={props.expanded}/>
-    </>
+    </ThemeProvider>
   )
 }
