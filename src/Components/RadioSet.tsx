@@ -30,7 +30,7 @@ export function RadioSet(props: RadioSetProps)
     <Grid item xs={6}
     sx={{ display: "flex",
     justifyContent: "center",
-    fontSize: "calc(14px + 0.390625vw)",
+    fontSize: "calc(10px + 0.390625vw)",
     }}>
       {
         props.options.map((radio,index) => {

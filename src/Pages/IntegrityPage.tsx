@@ -101,7 +101,7 @@ export function IntegrityPage(){
   }, [allCompanies]);
 
   let admins = integrityUsers.filter(u => u.isAdmin === true);
-    console.log(admins);
+
   return (
     <>
       <div className="mx-[2%] mb-2">
