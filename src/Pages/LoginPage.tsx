@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks"
 import { authenticateUser, selectAllUsers, selectCurrentUserId, selectLogInAttempts } from "../Store/UserSlice";
-import { genericButtonStyle } from "../Styles";
+import { genericButtonStyle, tableCellFontSize, tableHeaderFontSize } from "../Styles";
 import { Box, Button, Checkbox, CircularProgress, Container, FormControlLabel, Grid, TextField, Typography } from "@mui/material";
 
 export const LoginPageIds = {
@@ -61,13 +61,13 @@ export default function LoginPage(){
   return (
     <>
       <div className="h-fit ml-30 mr-30 py-4 px-5 rounded-lg bg-[#21355B]">
-        <p className="text-center text-[.75vw] text-white mt-2">To view the information on your project, please log in.</p>
-        <p className="w-full text-center text-white text-[.75vw]">
+        <p className={`text-center text-white mt-2 text-${tableCellFontSize}`}>To view the information on your project, please log in.</p>
+        <p className={`w-full text-center text-white text-${tableCellFontSize}`}>
           If you are looking for the Integrity Inspired Solutions website, please go&nbsp;
           <a className="text-blue-600 visited:text-[#00C4FF] underline" href="https://www.integrityinspired.com/">here.</a>
         </p>
       </div>
-      <Container component="main" maxWidth="xs" className="bg-gray-100 py-4 px-6 h-[50vh] mt-[2%] mb-[2%] rounded-md">
+      <Container component="main" maxWidth="xs" className="bg-gray-100 py-4 px-6 mt-[2%] mb-[2%] rounded-md">
         <Box component="form" onSubmit={HandleLogin} noValidate sx={{
           marginTop: 6,
           marginBottom: 4,
@@ -77,11 +77,11 @@ export default function LoginPage(){
           height: "auto",
           borderRadius: 3
           }} >
-          <Typography component="h1" variant="h5" sx={{fontSize:"calc(20px + 0.390625vw)", mb:4}}>
+          <Typography component="h1" variant="h5" sx={{fontSize: tableHeaderFontSize, mb:4}}>
             Sign in
           </Typography>
           <TextField
-            InputProps={{ style: {fontSize:"calc(10px + 0.390625vw)"}}}
+            InputProps={{ style: {fontSize: tableCellFontSize}}}
             margin="normal"
             required
             fullWidth
@@ -93,7 +93,7 @@ export default function LoginPage(){
             onChange={e => setUserEmail(e.target.value)}
             onKeyDown={e => HandleLogin(e.key)} />
           <TextField 
-            InputProps={{ style: {fontSize:"calc(10px + 0.390625vw)"}}}
+            InputProps={{ style: {fontSize: tableCellFontSize}}}
             margin="normal"
             required
             fullWidth
