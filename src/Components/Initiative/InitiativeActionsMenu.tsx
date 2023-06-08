@@ -23,6 +23,7 @@ interface InitiativeActionsMenuProps {
   company: Company
   initiative: Initiative
   disabled?: boolean
+  size?: string
   isAdmin: boolean
 }
 
@@ -99,7 +100,7 @@ export function InitiativeActionsMenu(props: InitiativeActionsMenuProps)
         onClick={handleClick}
         disabled={props.disabled}
       >
-        <MenuIcon sx={{ fontSize: "calc(12px + 0.390625vw)" }}/>
+        <MenuIcon sx={{ fontSize: props.size ?? "large" }}/>
       </IconButton>
       <Menu
         id="basic-menu"
