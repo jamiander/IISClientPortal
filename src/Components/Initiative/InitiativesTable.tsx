@@ -340,7 +340,7 @@ export default function InitiativesTable(props: InitiativesProps) {
   const userCompanyId = props.currentUser?.companyId;
   const isAdmin = props.currentUser?.isAdmin;
 
-  const fontSize16 = "min(calc(18px + 0.390625vw),20px)";
+  const fontSize16 = "min(calc(17px + 0.390625vw),20px)";
   const fontSize12 = "min(calc(14px + 0.390625vw),16px)";
 
   return (

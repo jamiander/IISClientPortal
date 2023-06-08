@@ -25,7 +25,7 @@ function App() {
         <Header/>
       </div>
       <div className='contents mx-1 bg-[#E4E1E5]'>
-        <div className={'bg-[#E4E1E5] min-h-[82vh] mx-3 shadow-lg shadow-[#21355B] rounded-md mt-4 mb-4'}>
+        <div className={'bg-[#E4E1E5] min-h-[80vh] mx-3 shadow-lg shadow-[#21355B] rounded-md mt-4 mb-4'}>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <Content/>
             <SnackbarProvider maxSnack={1} anchorOrigin={{
