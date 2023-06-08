@@ -19,6 +19,7 @@ import { useEditUser } from "../Services/useEditUser";
 import { EditUserInitiativesButton } from "../Components/User/EditUserInitiativesButton";
 import { AddButton } from "../Components/AddButton";
 import { MakeClone } from "../Services/Cloning";
+import { SearchBar } from "../Components/SearchBar";
 
 export const IntegrityPageIds = {
   modal: "adminEditUserModal",
@@ -120,15 +121,7 @@ export function IntegrityPage(){
                 sx={{ display: 'flex',
                 justifyContent: 'flex-start'
                 }}> 
-                <UserTextField data-cy={IntegrityPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name or email" value={searchedKeyword} 
-                onChange={(e) => setSearchedKeyword(e.target.value)}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <SearchIcon sx={{fontSize: "calc(20px + 0.390625vw)", color: "#21345b"}}/>
-                    </InputAdornment>
-                  ),
-                }} />
+                <SearchBar cypressData={IntegrityPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name or email" value={searchedKeyword} setValue={setSearchedKeyword}/>
               </Grid>
               <Grid item xs={6} sx={{ display: 'flex',
                 justifyContent: 'flex-end',

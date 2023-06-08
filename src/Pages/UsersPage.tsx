@@ -7,7 +7,6 @@ import { Checkbox, FormControl, Grid, IconButton, Input, InputAdornment, InputLa
 import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
-import SearchIcon from '@mui/icons-material/Search';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -21,6 +20,7 @@ import { RadioSet } from "../Components/RadioSet";
 import { UserFilter } from "../Services/Filters";
 import { AddButton } from "../Components/AddButton";
 import { MakeClone } from "../Services/Cloning";
+import { SearchBar } from "../Components/SearchBar";
 
 export const UsersPageIds = {
   company: "usersPageCompany",
@@ -139,14 +139,7 @@ export default function UsersPage(){
               <Grid item xs={3} sx={{ display: 'flex',
               justifyContent: 'flex-start',
               }}>
-              <UserTextField data-cy={UsersPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name or email" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <SearchIcon sx={{fontSize: "calc(20px + 0.390625vw)", color: "#21345b"}}/>
-                    </InputAdornment>
-                  ),
-                }} />
+              <SearchBar cypressData={UsersPageIds.keywordFilter} disabled={InEditMode()} value={searchedKeyword} setValue={setSearchedKeyword} placeholder={"Keyword in name or email"}/>
               </Grid>
               <RadioSet dark={true} setter={setRadioValue} name="userPage" options={[
               { cypressData: UsersPageIds.radioIds.all, label: "Show All", value: "all" },

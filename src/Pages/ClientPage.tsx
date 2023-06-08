@@ -19,6 +19,7 @@ import { DocumentManagementButton } from "../Components/Documents/DocumentManage
 import { selectCurrentUser } from "../Store/UserSlice";
 import { DateToDateInfo } from "../Services/DateHelpers";
 import { AddButton } from "../Components/AddButton";
+import { SearchBar } from "../Components/SearchBar";
 
 export const ClientPageIds = {
   modal: "clientPageModal",
@@ -201,14 +202,7 @@ export function ClientPage()
               sx={{ display: 'flex',
               justifyContent: 'flex-start'
               }}> 
-              <UserTextField data-cy={ClientPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)} 
-                InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon sx={{fontSize: "calc(20px + 0.390625vw)", color: "#21345b"}}/>
-                  </InputAdornment>
-                ),
-              }} />
+              <SearchBar cypressData={ClientPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name" value={searchedKeyword} setValue={setSearchedKeyword} />
             </Grid>
             <RadioSet dark={true} setter={setRadioValue} name="clientPage" options={[
             {cypressData: ClientPageIds.radioIds.all, label: "Show All", value: "all"},
