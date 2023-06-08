@@ -48,7 +48,7 @@ export default function Header(){
           }}>
       <NavPanel />
       <Link to={imageLink}>
-        <img className="w-[60%] py-2 px-2 my-4 mx-6 border-y-8 border-[#21355B]" src={logo} alt='Integrity Inspired Solutions Logo'/>
+        <img className="w-[50%] py-2 px-2 my-4 mx-6 border-y-4 border-[#21355B]" src={logo} alt='Integrity Inspired Solutions Logo'/>
       </Link>
       </Grid>
       <Grid item xs={6} sx={{ display: 'flex',

@@ -67,7 +67,7 @@ export default function NavPanel(){
     </IconButton>
     }
         <Menu id="basic-menu"
-          className="w-[14vw] rounded-lg"
+          className="w-[16vw] rounded-lg"
           anchorEl={anchorEl}
           open={open}
           onClose={handleClose}
