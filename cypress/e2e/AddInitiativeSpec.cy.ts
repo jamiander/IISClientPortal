@@ -34,7 +34,7 @@ describe('add initiative spec', () => {
     cy.getByData(tableIds.editTargetDate).setDatePicker(init.targetDate);
     cy.getByData(tableIds.editTotalItems).clear().type(init.totalItems);
     cy.getByData(tableIds.saveChangesButton).click();
-    cy.getByData(tableIds.initiativeTitleFilter).type(init.title);
+    cy.getByData(pageIds.initiativeTitleFilter).type(init.title);
     cy.getByData(tableIds.table).should('contain',init.title);
   })
 
@@ -141,7 +141,7 @@ describe('add initiatives as Integrity user', () => {
 
   specify('add new initiative for a different company', () => {
     cy.getByData(tableIds.saveChangesButton).click();
-    cy.getByData(tableIds.initiativeTitleFilter).type(init.title);
+    cy.getByData(pageIds.initiativeTitleFilter).type(init.title);
     cy.getByData(tableIds.table).should('contain',init.title);
   })
 })

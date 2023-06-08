@@ -28,7 +28,6 @@ import ValidateNewInitiative, { ValidationFailedPrefix } from "../../Services/Va
 import { InitiativeActionsMenu } from "./InitiativeActionsMenu";
 import { DateToDateInfo } from "../../Services/DateHelpers";
 import { MakeClone } from "../../Services/Cloning";
-import { SearchBar } from "../SearchBar";
 
 export const InitiativeTableIds = {
   table: "initiativesTable",
@@ -43,8 +42,6 @@ export const InitiativeTableIds = {
   editStartDate: "initiativesTableEditStartDate",
   editTargetDate: "initiativesTableEditTargetDate",
   editTotalItems: "initiativesTableEditTotalItems",
-  initiativeTitleFilter: "initiativesTableFilterTitle",
-  companyNameFilter: "initiativesTableFilterCompanyName",
   addButton: "initiativesTableAddButton",
   editButton: "initiativesTableEditButton",
   saveChangesButton: "initiativesTableSaveChangesButton",

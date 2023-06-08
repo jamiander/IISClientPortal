@@ -19,6 +19,7 @@ describe('update initiative spec', () => {
   const snackbarId = consts.snackbarId;
   const radioIds = consts.initiativeDisplayRadioIds;
   const tableIds = consts.initiativeTableIds;
+  const pageIds = consts.initiativesPageIds;
   const user = AdminUser;
   const snackbarWaitTime = consts.snackbarWaitTime;
 
@@ -26,7 +27,7 @@ describe('update initiative spec', () => {
     cy.login(user);
 
     cy.getByData(radioIds.all).click();
-    cy.getByData(tableIds.companyNameFilter).clear().type(init.companyName);
+    cy.getByData(pageIds.companyNameFilter).clear().type(init.companyName);
     cy.getByData(tableIds.table).contains(init.companyName).parent().within(() => {
       cy.getByData(tableIds.editButton).click();
     });
@@ -41,7 +42,7 @@ describe('update initiative spec', () => {
     cy.getByData(tableIds.saveChangesButton).click();
     cy.wait(500);
     cy.getByData(radioIds.all).click();
-    cy.getByData(tableIds.companyNameFilter).clear().type(init.companyName);
+    cy.getByData(pageIds.companyNameFilter).clear().type(init.companyName);
     cy.getByData(tableIds.table).should('contain',init.title);
   })
 
