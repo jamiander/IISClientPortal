@@ -2,7 +2,7 @@ import { Fragment, useEffect, useMemo, useState } from "react";
 import { DateInfo, FindItemsRemaining } from "../../Services/CompanyService";
 import { InitiativeFilter } from "../../Services/Filters";
 import { Company, Initiative, IntegrityId, upsertInitiativeInfo } from "../../Store/CompanySlice";
-import { defaultRowStyle, greenProbabilityStyle, inputStyle, redProbabilityStyle, TableHeaderStyle, tooltipStyle } from "../../Styles";
+import { defaultRowStyle, greenProbabilityStyle, inputStyle, redProbabilityStyle, tableButtonFontSize, tableCellFontSize, tableHeaderFontSize, TableHeaderStyle, tooltipStyle } from "../../Styles";
 import { GenerateProbability } from "../../Services/ProbabilitySimulationService";
 import { DateInput } from "../DateInput";
 import Table from '@mui/material/Table';
@@ -340,9 +340,6 @@ export default function InitiativesTable(props: InitiativesProps) {
   const userCompanyId = props.currentUser?.companyId;
   const isAdmin = props.currentUser?.isAdmin;
 
-  const fontSize16 = "min(calc(17px + 0.390625vw),20px)";
-  const fontSize12 = "min(calc(14px + 0.390625vw),16px)";
-
   return (
     <>
       <div className="grid grid-cols-1 w-full h-auto">
@@ -371,7 +368,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                 <TableRow sx={{
                   borderBottom: "2px solid black",
                   "& th": {
-                    fontSize: fontSize16,
+                    fontSize: tableHeaderFontSize,
                     fontWeight: "bold",
                     fontFamily: "Arial, Helvetica"
                   }
@@ -414,7 +411,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                       <TableRow key={index} className={healthIndicator} sx={{
                         borderBottom: "1px solid black",
                         "& td": {
-                          fontSize: fontSize12,
+                          fontSize: tableCellFontSize,
                           fontFamily: "Arial, Helvetica",
                           color: "#21345b"
                         }
@@ -429,11 +426,11 @@ export default function InitiativesTable(props: InitiativesProps) {
                               <>
                                 <FormControl fullWidth>
                                   <InputLabel id="company-select-label">Select Company</InputLabel>
-                                  <Select sx={{fontSize: fontSize12}} data-cy={InitiativeTableIds.companySelect} labelId="company-select-label" label="Select company" value={companyToEditId} onChange={(e) => setCompanyToEditId(e.target.value)}>
+                                  <Select sx={{fontSize: tableCellFontSize}} data-cy={InitiativeTableIds.companySelect} labelId="company-select-label" label="Select company" value={companyToEditId} onChange={(e) => setCompanyToEditId(e.target.value)}>
                                     {
                                       props.companyList.map((company,index) => {
                                         return (
-                                          <MenuItem sx={{fontSize: fontSize12}} key={index} value={company.id}>
+                                          <MenuItem sx={{fontSize: tableCellFontSize}} key={index} value={company.id}>
                                             {company.name}
                                           </MenuItem>
                                         )
@@ -445,30 +442,30 @@ export default function InitiativesTable(props: InitiativesProps) {
                             }
                             </TableCell>
                             <TableCell>
-                              <Input sx={{fontSize: fontSize12}} data-cy={InitiativeTableIds.editInitiativeTitle} value={currentTitle} onChange={(e) => setCurrentTitle(e.target.value)}/>
+                              <Input sx={{fontSize: tableCellFontSize}} data-cy={InitiativeTableIds.editInitiativeTitle} value={currentTitle} onChange={(e) => setCurrentTitle(e.target.value)}/>
                             </TableCell>
                             <TableCell><DateInput cypressData={InitiativeTableIds.editStartDate} date={currentStartDate} setDate={setCurrentStartDate}/></TableCell>
                             <TableCell><DateInput cypressData={InitiativeTableIds.editTargetDate} date={currentTargetDate} setDate={setCurrentTargetDate}/></TableCell>
                             <TableCell>
-                              <Input sx={{fontSize: fontSize12}} data-cy={InitiativeTableIds.editTotalItems} type="number" value={currentTotalItems} onChange={(e) => setCurrentTotalItems(parseInt(e.target.value))}/>
+                              <Input sx={{fontSize: tableCellFontSize}} data-cy={InitiativeTableIds.editTotalItems} type="number" value={currentTotalItems} onChange={(e) => setCurrentTotalItems(parseInt(e.target.value))}/>
                             </TableCell>
-                            <TableCell sx={{fontSize: fontSize12}} data-cy={InitiativeTableIds.remainingItems}>{displayItem.itemsRemaining}</TableCell>
+                            <TableCell sx={{fontSize: tableCellFontSize}} data-cy={InitiativeTableIds.remainingItems}>{displayItem.itemsRemaining}</TableCell>
                             <TableCell></TableCell>
                             <TableCell className="w-1/12">
                               <InitiativeActionsMenu cypressData={InitiativeTableIds.actionMenu} disabled={true} allCompanies={props.companyList} company={displayItem.company} initiative={displayItem} isAdmin={false}/>
                             </TableCell>
                             <TableCell className="w-1/12">
                               <IconButton data-cy={InitiativeTableIds.saveChangesButton} onClick={() => SaveEdit()}>
-                                <DoneIcon sx={{fontSize: 6}}/>
+                                <DoneIcon sx={{fontSize: tableButtonFontSize}}/>
                               </IconButton>
                               <IconButton data-cy={InitiativeTableIds.cancelChangesButton} onClick={() => CancelEdit()}>
-                                <CancelIcon sx={{fontSize: fontSize16}}/>
+                                <CancelIcon sx={{fontSize: tableButtonFontSize}}/>
                               </IconButton>
                             </TableCell>
                           </>
                           :
                           <>
-                            <TableCell data-cy={InitiativeTableIds.companyName}>{displayItem.company.name}</TableCell>
+                            <TableCell data-cy={InitiativeTableIds.companyName} sx={{fontSize: tableCellFontSize}}>{displayItem.company.name}</TableCell>
                             <TableCell data-cy={InitiativeTableIds.initiativeTitle}>{displayItem.title}</TableCell>
                             <TableCell data-cy={InitiativeTableIds.startDate}>{displayItem.startDate.month + "/" + displayItem.startDate.day + "/" + displayItem.startDate.year}</TableCell>
                             <TableCell data-cy={InitiativeTableIds.targetDate}>{displayItem.targetDate.month + "/" + displayItem.targetDate.day + "/" + displayItem.targetDate.year}</TableCell>
@@ -478,12 +475,12 @@ export default function InitiativesTable(props: InitiativesProps) {
                               <i className="material-icons" style={{ fontSize: '15px', marginLeft: '15px', marginTop: '10px' }}>info_outline</i>
                             </TableCell>
                             <TableCell className="w-1/12">
-                              <InitiativeActionsMenu cypressData={InitiativeTableIds.actionMenu} allCompanies={props.companyList} company={displayItem.company} initiative={displayItem} isAdmin={isAdmin ?? false} size={fontSize16}/>
+                              <InitiativeActionsMenu cypressData={InitiativeTableIds.actionMenu} allCompanies={props.companyList} company={displayItem.company} initiative={displayItem} isAdmin={isAdmin ?? false} size={tableButtonFontSize}/>
                             </TableCell>
                             {isAdmin &&
                               <TableCell className="w-1/12">
                                 <IconButton data-cy={InitiativeTableIds.editButton} disabled={InEditMode()} onClick={() => EnterEditMode(displayItem.id, displayItem.company.id, displayItems, false)}>
-                                  <EditIcon sx={{fontSize: fontSize16}} />
+                                  <EditIcon sx={{fontSize: tableButtonFontSize}} />
                                 </IconButton>
                               </TableCell>
                             }

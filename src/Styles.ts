@@ -112,3 +112,7 @@ export const yellowButtonStyle = "outline outline-[#445362] h-[40px] w-32 bg-[#F
 export const defaultRowStyle = "odd:bg-gray-200";
 export const redProbabilityStyle = "bg-[#FF6464]";
 export const greenProbabilityStyle = "bg-[#69D5C3]";
+
+export const tableCellFontSize = "min(calc(14px + 0.390625vw),16px)";
+export const tableHeaderFontSize = "min(calc(17px + 0.390625vw),20px)";
+export const tableButtonFontSize = tableHeaderFontSize;

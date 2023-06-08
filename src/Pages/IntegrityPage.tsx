@@ -1,4 +1,4 @@
-import { TableHeaderStyle, UserTextField, defaultRowStyle } from "../Styles";
+import { TableHeaderStyle, UserTextField, defaultRowStyle, tableButtonFontSize, tableCellFontSize, tableHeaderFontSize } from "../Styles";
 import { useEffect, useState } from "react";
 import { User, getUserById, selectAllUsers, selectCurrentUser } from "../Store/UserSlice";
 import { Company, IntegrityId, selectAllCompanies } from "../Store/CompanySlice";
@@ -18,6 +18,7 @@ import Paper from '@mui/material/Paper';
 import { useEditUser } from "../Services/useEditUser";
 import { EditUserInitiativesButton } from "../Components/User/EditUserInitiativesButton";
 import { AddButton } from "../Components/AddButton";
+import { MakeClone } from "../Services/Cloning";
 
 export const IntegrityPageIds = {
   modal: "adminEditUserModal",
@@ -94,7 +95,7 @@ export function IntegrityPage(){
   }, [allUsers]);
 
   useEffect(() => {
-    let newSortedCompanies: Company[] = JSON.parse(JSON.stringify(allCompanies));
+    let newSortedCompanies = MakeClone(allCompanies);
     newSortedCompanies.sort((a: Company, b: Company) => a.name.toUpperCase() > b.name.toUpperCase() ? 1 : -1);
     setSortedCompanies(newSortedCompanies);
   }, [allCompanies]);
@@ -154,7 +155,7 @@ export function IntegrityPage(){
                 <TableRow sx={{
                   borderBottom: "2px solid black",
                     "& th": {
-                      fontSize: "calc(16px + 0.390625vw)",
+                      fontSize: tableHeaderFontSize,
                     fontWeight: "bold",
                     fontFamily: "Arial, Helvetica"
                   }
@@ -177,7 +178,7 @@ export function IntegrityPage(){
                     <TableRow className={defaultRowStyle} sx={{
                       borderBottom: "1px solid black",
                       "& td": {
-                        fontSize: "calc(12px + 0.390625vw)",
+                        fontSize: tableCellFontSize,
                         fontFamily: "Arial, Helvetica",
                         color: "#21345b"
                       }
@@ -201,10 +202,10 @@ export function IntegrityPage(){
                         <TableCell data-cy={IntegrityPageIds.initiativeIds}></TableCell>
                         <TableCell>
                           <IconButton data-cy={IntegrityPageIds.saveChangesButton} onClick={() => SaveEdit()}>
-                            <DoneIcon sx={{fontSize: "calc(12px + 0.390625vw)"}}/>
+                            <DoneIcon sx={{fontSize: tableButtonFontSize}}/>
                           </IconButton>
                           <IconButton data-cy={IntegrityPageIds.cancelChangesButton} onClick={() => CancelEdit()}>
-                            <CancelIcon sx={{fontSize: "calc(12px + 0.390625vw)"}}/>
+                            <CancelIcon sx={{fontSize: tableButtonFontSize}}/>
                           </IconButton>
                         </TableCell>
                       </>
@@ -219,7 +220,7 @@ export function IntegrityPage(){
                         <TableCell data-cy={IntegrityPageIds.initiativeIds}><EditUserInitiativesButton user={displayItem} allCompanies={sortedCompanies} SubmitUserData={SubmitUserData} expanded={false}/></TableCell>
                         <TableCell>
                           <IconButton data-cy={IntegrityPageIds.editButton} disabled={InEditMode()} onClick={() => EnterEditMode(displayItem.id, integrityUsers, false)}>
-                            <EditIcon sx={{fontSize: "calc(12px + 0.390625vw)"}}/>
+                            <EditIcon sx={{fontSize: tableButtonFontSize}}/>
                           </IconButton>
                         </TableCell>
                       </>
