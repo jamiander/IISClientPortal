@@ -18,7 +18,7 @@ export function DocumentManagementButton(props: DocumentManagementButtonProps)
 
   return (
     <div>
-      <Button data-cy={props.cypressData} disabled={props.disabled} className={genericButtonStyle} onClick={() => setIsOpen(true)}>
+      <Button variant="outlined" data-cy={props.cypressData} disabled={props.disabled} onClick={() => setIsOpen(true)}>
         Documents
       </Button>
       <DocumentManagementModal company={props.company} initiative={props.initiative} isAdmin={props.isAdmin} isOpen={isOpen} setIsOpen={setIsOpen}/>

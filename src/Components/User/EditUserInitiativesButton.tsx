@@ -3,6 +3,7 @@ import { User } from "../../Store/UserSlice";
 import { genericButtonStyle, yellowButtonStyle } from "../../Styles";
 import { EditUserInitiativesModal } from "./EditUserInitiativesModal";
 import { Company } from "../../Store/CompanySlice";
+import { Button } from "@mui/material";
 
 interface EditUserInitiativesButtonProps {
   user: User
@@ -17,7 +18,7 @@ export function EditUserInitiativesButton(props: EditUserInitiativesButtonProps)
 
   return (
     <>
-      <button onClick={() => setIsOpen(true)} className={genericButtonStyle + " text-sm"}>View/Edit</button>
+      <Button variant="outlined" onClick={() => setIsOpen(true)}>Initiatives</Button>
       <EditUserInitiativesModal SubmitUserData={props.SubmitUserData} user={props.user} allCompanies={props.allCompanies} isOpen={isOpen} setIsOpen={setIsOpen} expanded={props.expanded}/>
     </>
   )
