@@ -133,7 +133,7 @@ export function IntegrityPage(){
               <Grid item xs={6} sx={{ display: 'flex',
                 justifyContent: 'flex-end',
                 }}> 
-                <AddButton cypressData={IntegrityPageIds.addButton} HandleClick={() => AddEmptyUser(IntegrityId)} disabled={InEditMode()}/> 
+                <AddButton cypressData={IntegrityPageIds.addButton} HandleClick={() => AddEmptyUser(IntegrityId, true)} disabled={InEditMode()}/> 
               </Grid>
             </Grid>
           </div> 

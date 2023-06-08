@@ -5,6 +5,7 @@ import { ValidateUser, ValidationFailedPrefix } from "./Validation";
 import { enqueueSnackbar } from "notistack";
 import {v4 as UuidV4} from "uuid";
 import { MakeClone } from "./Cloning";
+import { IntegrityId } from "../Store/CompanySlice";
 
 enum stateEnum {
   start,
@@ -17,7 +18,7 @@ type EditUser = {
   EnterEditMode: (id: string, users: User[], isNew: boolean) => void
   InEditMode: () => boolean
   LeaveEditMode: () => void
-  AddEmptyUser: (companyId: string) => void
+  AddEmptyUser: (companyId: string, isIntegrityUser: boolean) => void
   SaveEdit: () => void
   CancelEdit: () => void
   usersList: User[]
@@ -148,8 +149,9 @@ export function useEditUser() : EditUser
     return false;
   }
 
-  function AddEmptyUser(companyId: string)
+  function AddEmptyUser(companyId: string, isIntegrityUser: boolean)
   {
+    if(companyId === IntegrityId && isIntegrityUser === false) companyId = "";
     if(!InEditMode())
     {
       let usersClone = MakeClone(usersList);
