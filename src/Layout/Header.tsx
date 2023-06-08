@@ -66,9 +66,7 @@ export default function Header(){
       <Grid item xs={6} sx={{ display: 'flex',
           justifyContent: 'center'
           }}>
-        {isLoggedIn && 
-          <Typography sx={{fontSize:"min(calc(21px + 0.390625vw),25px)"}} className="text-[#21355B]"><b>{title}</b></Typography>
-        }
+          <Typography sx={{fontSize:"min(calc(21px + 0.390625vw),30px)"}} className="text-[#21355B]"><b>{title}</b></Typography>
       </Grid>
       <Grid item xs={3} sx={{ display: 'flex',
           justifyContent: 'flex-end',
