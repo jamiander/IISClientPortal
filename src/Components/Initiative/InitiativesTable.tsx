@@ -59,12 +59,16 @@ export const InitiativeTableIds = {
 }
 
 interface InitiativesProps {
-  companyList: Company[],
-  currentUser: User | undefined,
-  radioStatus: string,
+  companyList: Company[]
+  currentUser: User | undefined
+  radioStatus: string
   ValidateInitiative: (initiative: Initiative, companyId: string, allCompanies: Company[]) => {success: boolean, message: string}
-  addInitiative: boolean,
+  addInitiative: boolean
   setAddInitiative: (value: boolean) => void
+  searchedComp: string
+  setSearchedComp: (value: string) => void
+  searchedInit: string
+  setSearchedInit: (value: string) => void
 }
 
 interface InitCompanyDisplay extends Initiative {
@@ -81,8 +85,6 @@ interface SortConfig {
 
 export default function InitiativesTable(props: InitiativesProps) {
   const dispatch = useAppDispatch();
-  const [searchedComp, setSearchedComp] = useState('');
-  const [searchedInit, setSearchedInit] = useState('');
   const [sortConfig, setSortConfig] = useState<SortConfig>({key: '', direction: 'desc'});
 
   const [sortedDisplayItems, setSortedDisplayItems] = useState<InitCompanyDisplay[]>([]);
@@ -96,7 +98,7 @@ export default function InitiativesTable(props: InitiativesProps) {
 
   useEffect(() => {
     UpdateDisplayItems();
-  },[props.companyList,searchedInit,searchedComp,props.radioStatus]);
+  },[props.companyList,props.searchedInit,props.searchedComp,props.radioStatus]);
 
   useEffect(() => {
     if(!InEditMode() && props.addInitiative === true)
@@ -111,8 +113,8 @@ export default function InitiativesTable(props: InitiativesProps) {
         const newInitiative: InitCompanyDisplay = {id: myUuid, title: "", targetDate: todayInfo, startDate: todayInfo, totalItems: 1, itemsCompletedOnDate: [], decisions: [], company: matchingCompany, itemsRemaining: 0, probabilityStatus: "", probabilityValue: -1};
         displayClone.unshift(newInitiative);
         setDisplayItems(displayClone);
-        setSearchedComp("");
-        setSearchedInit("");
+        props.setSearchedComp("");
+        props.setSearchedInit("");
         ResetPageNumber();
         if(props.currentUser !== undefined)
           EnterEditMode(myUuid,matchingCompany.id,displayClone,true);
@@ -159,11 +161,11 @@ export default function InitiativesTable(props: InitiativesProps) {
   function UpdateDisplayItems()
   {
     const displayList: InitCompanyDisplay[] = [];
-    const filteredCompanies = props.companyList.filter(e => e.name.toLowerCase().includes(searchedComp.toLowerCase()))
+    const filteredCompanies = props.companyList.filter(e => e.name.toLowerCase().includes(props.searchedComp.toLowerCase()))
       .sort((a, b) => a.name.localeCompare(b.name));
     for(let company of filteredCompanies)
     {
-      let initiatives = InitiativeFilter(company.initiatives.filter(e => e.title.toLowerCase().includes(searchedInit.toLowerCase()))
+      let initiatives = InitiativeFilter(company.initiatives.filter(e => e.title.toLowerCase().includes(props.searchedInit.toLowerCase()))
         .sort((a, b) => a.title.localeCompare(b.title)),props.radioStatus);
       initiatives.map((init) => {
         let itemsRemaining = FindItemsRemaining(init);
@@ -345,8 +347,7 @@ export default function InitiativesTable(props: InitiativesProps) {
     <>
       <div className="grid grid-cols-1 w-full h-auto">
         <div className="col-span-1 h-[4vh] space-x-4 mb-2">
-          <SearchBar cypressData={InitiativeTableIds.companyNameFilter} placeholder="Filter by Company" value={searchedComp} setValue={setSearchedComp} />
-          <SearchBar cypressData={InitiativeTableIds.initiativeTitleFilter} placeholder="Filter by Title" value={searchedInit} setValue={setSearchedInit} />
+
         </div>
         {totalInits !== 0 &&
         <div className="col-span-1 mt-2">

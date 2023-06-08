@@ -121,7 +121,7 @@ export function IntegrityPage(){
                 sx={{ display: 'flex',
                 justifyContent: 'flex-start'
                 }}> 
-                <SearchBar cypressData={IntegrityPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name or email" value={searchedKeyword} setValue={setSearchedKeyword}/>
+                <SearchBar cypressData={IntegrityPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in Name or Email" value={searchedKeyword} setValue={setSearchedKeyword}/>
               </Grid>
               <Grid item xs={6} sx={{ display: 'flex',
                 justifyContent: 'flex-end',

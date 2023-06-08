@@ -202,7 +202,7 @@ export function ClientPage()
               sx={{ display: 'flex',
               justifyContent: 'flex-start'
               }}> 
-              <SearchBar cypressData={ClientPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name" value={searchedKeyword} setValue={setSearchedKeyword} />
+              <SearchBar cypressData={ClientPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in Name" value={searchedKeyword} setValue={setSearchedKeyword} />
             </Grid>
             <RadioSet dark={true} setter={setRadioValue} name="clientPage" options={[
             {cypressData: ClientPageIds.radioIds.all, label: "Show All", value: "all"},
