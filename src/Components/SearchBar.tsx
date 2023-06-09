@@ -1,6 +1,6 @@
-import { InputAdornment } from "@mui/material";
+import { InputAdornment, ThemeProvider } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
-import { UserTextField } from "../Styles";
+import { IntegrityTheme, UserTextField } from "../Styles";
 
 interface SearchBarProps {
   cypressData: string
@@ -13,8 +13,8 @@ interface SearchBarProps {
 export function SearchBar(props: SearchBarProps)
 {
   return (
-    <>
-      <UserTextField data-cy={props.cypressData} disabled={props.disabled} placeholder={props.placeholder} value={props.value} onChange={(e) => props.setValue(e.target.value)}
+    <ThemeProvider theme={IntegrityTheme}>
+      <UserTextField data-cy={props.cypressData} color="darkBlue" disabled={props.disabled} placeholder={props.placeholder} value={props.value} onChange={(e) => props.setValue(e.target.value)}
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
@@ -22,6 +22,6 @@ export function SearchBar(props: SearchBarProps)
             </InputAdornment>
           ),
         }} />
-    </>
+    </ThemeProvider>
   )
 }

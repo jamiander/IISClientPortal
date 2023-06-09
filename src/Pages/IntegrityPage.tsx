@@ -1,9 +1,9 @@
-import { TableHeaderStyle, UserTextField, defaultRowStyle, tableButtonFontSize, tableCellFontSize, tableHeaderFontSize } from "../Styles";
+import { IntegrityTheme, TableHeaderStyle, UserTextField, defaultRowStyle, tableButtonFontSize, tableCellFontSize, tableHeaderFontSize } from "../Styles";
 import { useEffect, useState } from "react";
 import { User, getUserById, selectAllUsers, selectCurrentUser } from "../Store/UserSlice";
 import { Company, IntegrityId, selectAllCompanies } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
-import { Box, Checkbox, Grid, IconButton, Input, InputAdornment} from "@mui/material";
+import { Box, Checkbox, Grid, IconButton, Input, InputAdornment, ThemeProvider} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
@@ -104,7 +104,7 @@ export function IntegrityPage(){
   let admins = integrityUsers.filter(u => u.isAdmin === true);
 
   return (
-    <>
+    <ThemeProvider theme={IntegrityTheme}>
       <div className="mx-[2%] mb-2">
         {allUsers.length !== 0 &&
            <div className="flex flex-row justify-content:space-between">
@@ -191,7 +191,7 @@ export function IntegrityPage(){
                         :
                         <TableCell data-cy={IntegrityPageIds.isAdmin}>{displayItem.isAdmin ? "Admin" : "User"}</TableCell>
                         }
-                        <TableCell><Checkbox data-cy={IntegrityPageIds.editIsActive} checked={currentIsActive} onChange={e => setCurrentIsActive(e.target.checked)}/>Active</TableCell>
+                        <TableCell><Checkbox color="darkBlue" data-cy={IntegrityPageIds.editIsActive} checked={currentIsActive} onChange={e => setCurrentIsActive(e.target.checked)}/>Active</TableCell>
                         <TableCell data-cy={IntegrityPageIds.initiativeIds}></TableCell>
                         <TableCell>
                           <IconButton data-cy={IntegrityPageIds.saveChangesButton} onClick={() => SaveEdit()}>
@@ -226,6 +226,6 @@ export function IntegrityPage(){
           </TableContainer>
         </div>
       </div>
-    </>
+    </ThemeProvider>
   )
 }

@@ -8,11 +8,19 @@ declare module '@mui/material/styles/createPalette' {
     darkBlue: Palette['primary'];
     lightBlue: Palette['primary'];
     yellow: Palette['primary'];
+    grayBlue: Palette['primary'];
+    darkGray: Palette['primary'];
+    lightGray: Palette['primary'];
+    veryLightGray: Palette['primary'];
   }
   interface PaletteOptions {
     darkBlue?: Palette['primary'];
     lightBlue?: Palette['primary'];
     yellow?: Palette['primary'];
+    grayBlue?: Palette['primary'];
+    darkGray?: Palette['primary'];
+    lightGray?: Palette['primary'];
+    veryLightGray?: Palette['primary'];
   }
 }
 
@@ -21,6 +29,28 @@ declare module "@mui/material" {
     lightBlue: true;
     darkBlue: true;
     yellow: true;
+    grayBlue: true;
+    darkGray: true;
+    lightGray: true;
+    veryLightGray: true;
+  }
+  interface CheckboxPropsColorOverrides {
+    lightBlue: true;
+    darkBlue: true;
+    yellow: true;
+    grayBlue: true;
+    darkGray: true;
+    lightGray: true;
+    veryLightGray: true;
+  }
+  interface TextFieldPropsColorOverrides {
+    lightBlue: true;
+    darkBlue: true;
+    yellow: true;
+    grayBlue: true;
+    darkGray: true;
+    lightGray: true;
+    veryLightGray: true;
   }
 }
 
@@ -42,6 +72,30 @@ export const IntegrityTheme = createTheme({
       light: '#FBCC79',
       main: '#FAB947',
       dark: '#F9A616',
+      contrastText: '#21355B'
+    },
+    grayBlue: {
+      light: '#5A6E81',
+      main: '#445362',
+      dark: '#303B45',
+      contrastText: '#FFFFFF'
+    },
+    darkGray: {
+      light: '#7E7F75',
+      main: '#65665E',
+      dark: '#4A4A44',
+      contrastText: '#FFFFFF'
+    },
+    lightGray: {
+      light: '#A2AEAC',
+      main: '#879794',
+      dark: '#6D7E7B',
+      contrastText: '#FFFFFF'
+    },
+    veryLightGray: {
+      light: '#F3F1F3',
+      main: '#E4E1E5',
+      dark: '#CBC6CD',
       contrastText: '#21355B'
     }
   }

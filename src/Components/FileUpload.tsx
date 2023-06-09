@@ -1,5 +1,7 @@
+import { ThemeProvider } from "@emotion/react";
 import { Button, CircularProgress } from "@mui/material";
 import { useRef, useState } from "react";
+import { IntegrityTheme } from "../Styles";
 
 interface FileUploadProps {
   file: File | null
@@ -45,18 +47,18 @@ export function FileUpload(props: FileUploadProps)
   }
 
   return (
-    <>
+    <ThemeProvider theme={IntegrityTheme}>
       <input type="file" className="hidden"
         onChange={(e) => HandleChooseFiles(e.target.files)}
         ref={fileRef}
         data-cy={props.cypressData.fileInput}
       />
       <span className="h-full align-middle">
-        <Button data-cy={props.cypressData.chooseFileButton} variant="outlined" onClick={() => fileRef.current?.click()}>
+        <Button data-cy={props.cypressData.chooseFileButton} color="darkBlue" variant="outlined" onClick={() => fileRef.current?.click()}>
           Choose File
         </Button>
         <span className="mx-2">{props.file?.name ?? "No file selected"}</span>
-        <Button data-cy={props.cypressData.submitButton} variant="contained" disabled={!CanUpload(props.file)} onClick={() => HandleUpload()}>
+        <Button data-cy={props.cypressData.submitButton} color="darkBlue" variant="contained" disabled={!CanUpload(props.file)} onClick={() => HandleUpload()}>
           {/*<UploadFileIcon  sx={{ fontSize:28 }}/>*/}
           Upload
         </Button>
@@ -65,6 +67,6 @@ export function FileUpload(props: FileUploadProps)
           <CircularProgress size={30} color={"warning"} className="mt-4 ml-2"/>
         }
       </span>
-    </>
+    </ThemeProvider>
   )
 }

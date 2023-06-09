@@ -1,7 +1,7 @@
-import { Accordion, AccordionDetails, AccordionSummary, Checkbox, FormControlLabel, FormGroup } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Checkbox, FormControlLabel, FormGroup, ThemeProvider } from "@mui/material";
 import { Company } from "../../Store/CompanySlice";
 import { Fragment, useState } from "react";
-import { UserItem } from "../../Styles";
+import { IntegrityTheme, UserItem, integrityColors } from "../../Styles";
 import ExpandMore from '@mui/icons-material/ExpandMore'
 import { User } from "../../Store/UserSlice";
 
@@ -22,39 +22,40 @@ export function AdminEditInitiativesList(props: AdminEditInitiativesListProps)
   if(isCompanyChecked || props.editable)
   {
     return (
-      <UserItem> 
-      <Accordion expanded={expanded}>
-        <AccordionSummary className="hover:bg-[#29c2b0]" expandIcon={<ExpandMore />} onClick={(event) => {
-              setExpanded(!expanded);}}>
-          <p className={`text-xl ${isCompanyChecked ? "font-bold" : ""}`}>
-            {props.company.name}
-          </p>
-        </AccordionSummary>
-        <AccordionDetails>
-        <FormGroup>
-        {
-          props.company?.initiatives.map((init, index) => {
-            let checkedInitId = props.initiativeIds.find(id => id === init.id);
-            let checkedInit = props.company.initiatives.find(x => x.id === checkedInitId);
+      <ThemeProvider theme={IntegrityTheme}>
+        <UserItem> 
+          <Accordion expanded={expanded}>
+            <AccordionSummary className={"hover:bg-[#E4E1E5]"} expandIcon={<ExpandMore />} onClick={() => setExpanded(!expanded)}>
+              <p className={`text-xl ${isCompanyChecked ? "font-bold" : ""}`}>
+                {props.company.name}
+              </p>
+            </AccordionSummary>
+            <AccordionDetails>
+              <FormGroup>
+              {
+                props.company?.initiatives.map((init, index) => {
+                  let checkedInitId = props.initiativeIds.find(id => id === init.id);
+                  let checkedInit = props.company.initiatives.find(x => x.id === checkedInitId);
 
-            if(props.editable)
-            {
-              return (
-                <FormControlLabel key={index} control={<Checkbox checked={props.initiativeIds.find(id => init.id === id) !== undefined} onChange={(e) => {props.updateInitiativeIds(init.id, e.target.checked)}} />} label={init.title} />
-              );
-            }
-            else
-            {
-              return (
-                <FormControlLabel disabled key={index} control={<Checkbox checked={checkedInit !== undefined} />} label={init?.title} />
-              );
-            }
-          })
-        }
-        </FormGroup>
-        </AccordionDetails>
-      </Accordion>
-      </UserItem>
+                  if(props.editable)
+                  {
+                    return (
+                      <FormControlLabel key={index} control={<Checkbox color="darkBlue" checked={props.initiativeIds.find(id => init.id === id) !== undefined} onChange={(e) => {props.updateInitiativeIds(init.id, e.target.checked)}} />} label={init.title} />
+                    );
+                  }
+                  else
+                  {
+                    return (
+                      <FormControlLabel disabled key={index} control={<Checkbox color="darkBlue" checked={checkedInit !== undefined} />} label={init?.title} />
+                    );
+                  }
+                })
+              }
+              </FormGroup>
+            </AccordionDetails>
+          </Accordion>
+        </UserItem>
+      </ThemeProvider>
     )
   }
   else
