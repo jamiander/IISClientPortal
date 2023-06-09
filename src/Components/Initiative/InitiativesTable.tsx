@@ -493,28 +493,28 @@ export default function InitiativesTable(props: InitiativesProps) {
               </TableBody>
             </Table>
           </TableContainer>
-            <div className="flex p-2 items-center">
-              <p>Results Per Page</p>
-              <select value={resultsLimit} onChange={(e) => { setResultsLimit(parseInt(e.target.value)); ResetPageNumber(); } }
-                className='mx-2 rounded-md border border-gray-200 hover:bg-gray-100'>
-                {resultsLimitOptions.map((limit, index) => {
-                  return (
-                    <option key={index} value={limit}>
-                      {limit}
-                    </option>
-                  );
-                })}
-              </select>
-              <div className="flex pl-2">
-                <Pagination
-                  className="my-3"
-                  count={pageCount}
-                  page={pageNumber}
-                  variant="outlined"
-                  shape="rounded"
-                  onChange={handlePaginationChange} />
-              </div>
+          <div className="flex p-2 items-center">
+            <p>Rows per page</p>
+            <select value={resultsLimit} onChange={(e) => { setResultsLimit(parseInt(e.target.value)); ResetPageNumber(); } }
+              className='mx-2 rounded-md border border-gray-200 hover:bg-gray-100'>
+              {resultsLimitOptions.map((limit, index) => {
+                return (
+                  <option key={index} value={limit}>
+                    {limit}
+                  </option>
+                );
+              })}
+            </select>
+            <div className="flex pl-2">
+              <Pagination
+                className="my-3"
+                count={pageCount}
+                page={pageNumber}
+                variant="outlined"
+                shape="rounded"
+                onChange={handlePaginationChange} />
             </div>
+          </div>
         </div>}
       </div>
       {totalInits === 0 && initiativesLoaded === true && <div className="m-2 p-2 text-3xl font-bold">No Initiatives to Display</div>}

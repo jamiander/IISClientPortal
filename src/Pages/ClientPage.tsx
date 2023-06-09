@@ -20,6 +20,7 @@ import { selectCurrentUser } from "../Store/UserSlice";
 import { DateToDateInfo } from "../Services/DateHelpers";
 import { AddButton } from "../Components/AddButton";
 import { SearchBar } from "../Components/SearchBar";
+import { Paginator } from "../Components/Paginator";
 
 export const ClientPageIds = {
   modal: "clientPageModal",
@@ -321,6 +322,7 @@ export function ClientPage()
               </TableBody>
             </Table>
           </TableContainer>
+          <Paginator count={displayCompanies.length}/>
         </div>
       </div>
     </>

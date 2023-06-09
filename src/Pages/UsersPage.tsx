@@ -21,6 +21,7 @@ import { UserFilter } from "../Services/Filters";
 import { AddButton } from "../Components/AddButton";
 import { MakeClone } from "../Services/Cloning";
 import { SearchBar } from "../Components/SearchBar";
+import { Paginator } from "../Components/Paginator";
 
 export const UsersPageIds = {
   company: "usersPageCompany",
@@ -263,6 +264,7 @@ export default function UsersPage(){
               </TableBody>
             </Table>
           </TableContainer>
+          <Paginator count={displayCompanies.length}/>
         </div>
       </div>
     </ThemeProvider>

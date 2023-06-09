@@ -20,6 +20,7 @@ import { EditUserInitiativesButton } from "../Components/User/EditUserInitiative
 import { AddButton } from "../Components/AddButton";
 import { MakeClone } from "../Services/Cloning";
 import { SearchBar } from "../Components/SearchBar";
+import { Paginator } from "../Components/Paginator";
 
 export const IntegrityPageIds = {
   modal: "adminEditUserModal",
@@ -224,6 +225,7 @@ export function IntegrityPage(){
               </TableBody>
             </Table>
           </TableContainer>
+          <Paginator count={usersList.length}/>
         </div>
       </div>
     </ThemeProvider>
