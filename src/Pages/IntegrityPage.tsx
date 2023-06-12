@@ -1,9 +1,9 @@
-import { TableHeaderStyle, UserTextField, defaultRowStyle, tableButtonFontSize, tableCellFontSize, tableHeaderFontSize } from "../Styles";
+import { IntegrityTheme, TableHeaderStyle, UserTextField, defaultRowStyle, tableButtonFontSize, tableCellFontSize, tableHeaderFontSize } from "../Styles";
 import { useEffect, useState } from "react";
 import { User, getUserById, selectAllUsers, selectCurrentUser } from "../Store/UserSlice";
 import { Company, IntegrityId, selectAllCompanies } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
-import { Box, Checkbox, Grid, IconButton, Input, InputAdornment} from "@mui/material";
+import { Box, Checkbox, Grid, IconButton, Input, InputAdornment, ThemeProvider} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
@@ -19,6 +19,9 @@ import { useEditUser } from "../Services/useEditUser";
 import { EditUserInitiativesButton } from "../Components/User/EditUserInitiativesButton";
 import { AddButton } from "../Components/AddButton";
 import { MakeClone } from "../Services/Cloning";
+import { SearchBar } from "../Components/SearchBar";
+import { Paginator } from "../Components/Paginator";
+import { usePaginator } from "../Components/usePaginator";
 
 export const IntegrityPageIds = {
   modal: "adminEditUserModal",
@@ -79,6 +82,8 @@ export function IntegrityPage(){
     setSearchedKeyword
   } = useEditUser();
 
+  const paginator = usePaginator();
+
 
   useEffect(() =>
   {
@@ -88,11 +93,13 @@ export function IntegrityPage(){
 
   useEffect(() => 
   {
-    let newIntegrityUsers = allUsers.filter(user => user.companyId === IntegrityId);
-    newIntegrityUsers.sort((a: User, b: User) => a.email.toUpperCase() > b.email.toUpperCase() ? 1 : -1);
-    setIntegrityUsers(newIntegrityUsers);
-    SetupEditUser(newIntegrityUsers);
-  }, [allUsers]);
+    const filteredUsers = allUsers.filter(user => user.companyId === IntegrityId);
+    filteredUsers.sort((a: User, b: User) => a.email.toUpperCase() > b.email.toUpperCase() ? 1 : -1);
+    const paginatedUsers = paginator.PaginateItems(filteredUsers);
+    setIntegrityUsers(paginatedUsers);
+    SetupEditUser(paginatedUsers);
+    
+  }, [allUsers,paginator.page,paginator.rowsPerPage]);
 
   useEffect(() => {
     let newSortedCompanies = MakeClone(allCompanies);
@@ -103,7 +110,7 @@ export function IntegrityPage(){
   let admins = integrityUsers.filter(u => u.isAdmin === true);
 
   return (
-    <>
+    <ThemeProvider theme={IntegrityTheme}>
       <div className="mx-[2%] mb-2">
         {allUsers.length !== 0 &&
            <div className="flex flex-row justify-content:space-between">
@@ -120,15 +127,7 @@ export function IntegrityPage(){
                 sx={{ display: 'flex',
                 justifyContent: 'flex-start'
                 }}> 
-                <UserTextField data-cy={IntegrityPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name or email" value={searchedKeyword} 
-                onChange={(e) => setSearchedKeyword(e.target.value)}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <SearchIcon sx={{fontSize: "calc(20px + 0.390625vw)", color: "#21345b"}}/>
-                    </InputAdornment>
-                  ),
-                }} />
+                <SearchBar cypressData={IntegrityPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in Name or Email" value={searchedKeyword} setValue={setSearchedKeyword}/>
               </Grid>
               <Grid item xs={6} sx={{ display: 'flex',
                 justifyContent: 'flex-end',
@@ -198,7 +197,7 @@ export function IntegrityPage(){
                         :
                         <TableCell data-cy={IntegrityPageIds.isAdmin}>{displayItem.isAdmin ? "Admin" : "User"}</TableCell>
                         }
-                        <TableCell><Checkbox data-cy={IntegrityPageIds.editIsActive} checked={currentIsActive} onChange={e => setCurrentIsActive(e.target.checked)}/>Active</TableCell>
+                        <TableCell><Checkbox color="darkBlue" data-cy={IntegrityPageIds.editIsActive} checked={currentIsActive} onChange={e => setCurrentIsActive(e.target.checked)}/>Active</TableCell>
                         <TableCell data-cy={IntegrityPageIds.initiativeIds}></TableCell>
                         <TableCell>
                           <IconButton data-cy={IntegrityPageIds.saveChangesButton} onClick={() => SaveEdit()}>
@@ -231,8 +230,9 @@ export function IntegrityPage(){
               </TableBody>
             </Table>
           </TableContainer>
+          <Paginator paginator={paginator}/>
         </div>
       </div>
-    </>
+    </ThemeProvider>
   )
 }

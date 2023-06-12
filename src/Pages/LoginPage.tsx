@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks"
 import { authenticateUser, selectAllUsers, selectCurrentUserId, selectLogInAttempts } from "../Store/UserSlice";
-import { genericButtonStyle, tableCellFontSize, tableHeaderFontSize } from "../Styles";
+import { IntegrityTheme, genericButtonStyle, tableCellFontSize, tableHeaderFontSize } from "../Styles";
 import { Box, Button, Checkbox, CircularProgress, Container, FormControlLabel, Grid, TextField, Typography } from "@mui/material";
+import { ThemeProvider } from "@emotion/react";
 
 export const LoginPageIds = {
   email: "email",
@@ -59,7 +60,7 @@ export default function LoginPage(){
   },[currentUserId]);
 
   return (
-    <>
+    <ThemeProvider theme={IntegrityTheme}>
       <div className="h-fit ml-30 mr-30 py-4 px-5 rounded-lg bg-[#21355B]">
         <p className={`text-center text-white mt-2 text-${tableCellFontSize}`}>To view the information on your project, please log in.</p>
         <p className={`w-full text-center text-white text-${tableCellFontSize}`}>
@@ -82,6 +83,7 @@ export default function LoginPage(){
           </Typography>
           <TextField
             InputProps={{ style: {fontSize: tableCellFontSize}}}
+            color="darkBlue"
             margin="normal"
             required
             fullWidth
@@ -94,6 +96,7 @@ export default function LoginPage(){
             onKeyDown={e => HandleLogin(e.key)} />
           <TextField 
             InputProps={{ style: {fontSize: tableCellFontSize}}}
+            color="darkBlue"
             margin="normal"
             required
             fullWidth
@@ -105,8 +108,8 @@ export default function LoginPage(){
             type={passwordShown ? 'text' : 'password'}
             onChange={e => setPassword(e.target.value)}
             onKeyDown={e => HandleLogin(e.key)} />
-          <FormControlLabel control={<Checkbox value="show" color="primary" onChange={togglePasswordVisibility}/>} label="Show Password" />
-          <Button data-cy={LoginPageIds.submitButton} disabled={isLoading} fullWidth variant="contained" sx={{ mt: 6, mb: 2}} 
+          <FormControlLabel control={<Checkbox value="show" color="darkBlue" onChange={togglePasswordVisibility}/>} label="Show Password" />
+          <Button color="lightGray" data-cy={LoginPageIds.submitButton} disabled={isLoading || !password || !userEmail} fullWidth variant="contained" sx={{ mt: 6, mb: 2}} 
             onClick={() => Login()} >
             Sign In
           </Button>
@@ -120,6 +123,6 @@ export default function LoginPage(){
             </div>}
         </Box>
       </Container>
-    </>
+    </ThemeProvider>
   );
 }

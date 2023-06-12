@@ -2,6 +2,115 @@ import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import { createTheme, styled } from '@mui/material/styles';
 import { Card, CardActions, CardContent, FormControlLabel, Paper, TextField, TextareaAutosize } from '@mui/material';
 
+import "@mui/material/styles/createPalette";
+declare module '@mui/material/styles/createPalette' {
+  interface Palette {
+    darkBlue: Palette['primary'];
+    lightBlue: Palette['primary'];
+    yellow: Palette['primary'];
+    grayBlue: Palette['primary'];
+    darkGray: Palette['primary'];
+    lightGray: Palette['primary'];
+    veryLightGray: Palette['primary'];
+  }
+  interface PaletteOptions {
+    darkBlue?: Palette['primary'];
+    lightBlue?: Palette['primary'];
+    yellow?: Palette['primary'];
+    grayBlue?: Palette['primary'];
+    darkGray?: Palette['primary'];
+    lightGray?: Palette['primary'];
+    veryLightGray?: Palette['primary'];
+  }
+}
+
+declare module "@mui/material" {
+  interface ButtonPropsColorOverrides {
+    lightBlue: true;
+    darkBlue: true;
+    yellow: true;
+    grayBlue: true;
+    darkGray: true;
+    lightGray: true;
+    veryLightGray: true;
+  }
+  interface CheckboxPropsColorOverrides {
+    lightBlue: true;
+    darkBlue: true;
+    yellow: true;
+    grayBlue: true;
+    darkGray: true;
+    lightGray: true;
+    veryLightGray: true;
+  }
+  interface TextFieldPropsColorOverrides {
+    lightBlue: true;
+    darkBlue: true;
+    yellow: true;
+    grayBlue: true;
+    darkGray: true;
+    lightGray: true;
+    veryLightGray: true;
+  }
+}
+
+export const IntegrityTheme = createTheme({
+  palette: {
+    darkBlue: {
+      light: '#2E4A7F',
+      main: '#21355B',
+      dark: '#131F34',
+      contrastText: '#FFFFFF'
+    },
+    lightBlue: {
+      light: '#A7E6DC',
+      main: '#69D5C3',
+      dark: '#40C9B2',
+      contrastText: '#21355B'
+    },
+    yellow: {
+      light: '#FBCC79',
+      main: '#FAB947',
+      dark: '#F9A616',
+      contrastText: '#21355B'
+    },
+    grayBlue: {
+      light: '#5A6E81',
+      main: '#445362',
+      dark: '#303B45',
+      contrastText: '#FFFFFF'
+    },
+    darkGray: {
+      light: '#7E7F75',
+      main: '#65665E',
+      dark: '#4A4A44',
+      contrastText: '#FFFFFF'
+    },
+    lightGray: {
+      light: '#A2AEAC',
+      main: '#879794',
+      dark: '#6D7E7B',
+      contrastText: '#FFFFFF'
+    },
+    veryLightGray: {
+      light: '#F3F1F3',
+      main: '#E4E1E5',
+      dark: '#CBC6CD',
+      contrastText: '#21355B'
+    }
+  }
+});
+
+export const integrityColors = {
+  integrityDarkBlue: '#21355B',
+  integrityLightBlue: '#69D5C3',
+  integrityYellow: '#FAB947',
+  integrityGrayBlue: '#445362',
+  integrityDarkGray: '#65665E',
+  integrityLightGray: '#879794',
+  integrityVeryLightGray: '#E4E1E5'
+}
+
 export const modalStyle = {
   content: {
     top: '50%',
@@ -12,16 +121,6 @@ export const modalStyle = {
     transform: 'translate(-50%, -50%)',
     outline : '3px solid #879794',
   }
-}
-
-export const integrityColors = {
-  integrityDarkBlue: '#21355B',
-  integrityLightBlue: '#69D5C3',
-  integrityYellow: '#FAB947',
-  integrityGrayBlue: '#445362',
-  integrityDarkGray: '#65665E',
-  integrityLightGray: '#879794',
-  integrityVeryLightGray: '#E4E1E5'
 }
 
 export const TableHeaderStyle =

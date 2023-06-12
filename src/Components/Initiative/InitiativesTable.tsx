@@ -43,8 +43,6 @@ export const InitiativeTableIds = {
   editStartDate: "initiativesTableEditStartDate",
   editTargetDate: "initiativesTableEditTargetDate",
   editTotalItems: "initiativesTableEditTotalItems",
-  initiativeTitleFilter: "initiativesTableFilterTitle",
-  companyNameFilter: "initiativesTableFilterCompanyName",
   addButton: "initiativesTableAddButton",
   editButton: "initiativesTableEditButton",
   saveChangesButton: "initiativesTableSaveChangesButton",
@@ -59,12 +57,16 @@ export const InitiativeTableIds = {
 }
 
 interface InitiativesProps {
-  companyList: Company[],
-  currentUser: User | undefined,
-  radioStatus: string,
+  companyList: Company[]
+  currentUser: User | undefined
+  radioStatus: string
   ValidateInitiative: (initiative: Initiative, companyId: string, allCompanies: Company[]) => {success: boolean, message: string}
-  addInitiative: boolean,
+  addInitiative: boolean
   setAddInitiative: (value: boolean) => void
+  searchedComp: string
+  setSearchedComp: (value: string) => void
+  searchedInit: string
+  setSearchedInit: (value: string) => void
 }
 
 export interface InitCompanyDisplay extends Initiative {
@@ -84,8 +86,6 @@ export interface SortConfig {
 
 export default function InitiativesTable(props: InitiativesProps) {
   const dispatch = useAppDispatch();
-  const [searchedComp, setSearchedComp] = useState('');
-  const [searchedInit, setSearchedInit] = useState('');
   const [sortConfig, setSortConfig] = useState<SortConfig>({key: '', direction: 'desc'});
   const [sortedDisplayItems, setSortedDisplayItems] = useState<InitCompanyDisplay[]>([]); 
   const resultsLimitOptions: number[] = [5, 10, 25];
@@ -107,7 +107,7 @@ export default function InitiativesTable(props: InitiativesProps) {
 
   useEffect(() => {
     UpdateDisplayItems();
-  },[props.companyList,searchedInit,searchedComp,props.radioStatus]);
+  },[props.companyList,props.searchedInit,props.searchedComp,props.radioStatus]);
 
   useEffect(() => {
     if(!InEditMode() && props.addInitiative === true)
@@ -137,8 +137,8 @@ export default function InitiativesTable(props: InitiativesProps) {
         };
         displayClone.unshift(newInitiative);
         SetupSortItems(displayClone);
-        setSearchedComp("");
-        setSearchedInit("");
+        props.setSearchedComp("");
+        props.setSearchedInit("");
         ResetPageNumber();
         if(props.currentUser !== undefined)
           EnterEditMode(myUuid,matchingCompany.id,displayClone,true);
@@ -159,11 +159,11 @@ export default function InitiativesTable(props: InitiativesProps) {
   function UpdateDisplayItems()
   {
     const displayList: InitCompanyDisplay[] = [];
-    const filteredCompanies = props.companyList.filter(e => e.name.toLowerCase().includes(searchedComp.toLowerCase()))
+    const filteredCompanies = props.companyList.filter(e => e.name.toLowerCase().includes(props.searchedComp.toLowerCase()))
       .sort((a, b) => a.name.localeCompare(b.name));
     for(let company of filteredCompanies)
     {
-      let initiatives = InitiativeFilter(company.initiatives.filter(e => e.title.toLowerCase().includes(searchedInit.toLowerCase()))
+      let initiatives = InitiativeFilter(company.initiatives.filter(e => e.title.toLowerCase().includes(props.searchedInit.toLowerCase()))
         .sort((a, b) => a.title.localeCompare(b.title)),props.radioStatus);
       initiatives.map((init) => {
         let itemsRemaining = FindItemsRemaining(init);
@@ -350,8 +350,7 @@ export default function InitiativesTable(props: InitiativesProps) {
     <>
       <div className="grid grid-cols-1 w-full h-auto">
         <div className="col-span-1 h-[4vh] space-x-4 mb-2">
-          <input data-cy={InitiativeTableIds.companyNameFilter} className={inputStyle} type={'text'} placeholder="Filter by Company" value={searchedComp} onChange={(e) => setSearchedComp(e.target.value)} />
-          <input data-cy={InitiativeTableIds.initiativeTitleFilter} className={inputStyle} type={'text'} placeholder="Filter by Title" value={searchedInit} onChange={(e) => setSearchedInit(e.target.value)} />
+
         </div>
         {totalInits !== 0 &&
         <div className="col-span-1 mt-2">
@@ -500,28 +499,28 @@ export default function InitiativesTable(props: InitiativesProps) {
               </TableBody>
             </Table>
           </TableContainer>
-            <div className="flex p-2 items-center">
-              <p>Results Per Page</p>
-              <select value={resultsLimit} onChange={(e) => { setResultsLimit(parseInt(e.target.value)); ResetPageNumber(); } }
-                className='mx-2 rounded-md border border-gray-200 hover:bg-gray-100'>
-                {resultsLimitOptions.map((limit, index) => {
-                  return (
-                    <option key={index} value={limit}>
-                      {limit}
-                    </option>
-                  );
-                })}
-              </select>
-              <div className="flex pl-2">
-                <Pagination
-                  className="my-3"
-                  count={pageCount}
-                  page={pageNumber}
-                  variant="outlined"
-                  shape="rounded"
-                  onChange={handlePaginationChange} />
-              </div>
+          <div className="flex p-2 items-center">
+            <p>Rows per page</p>
+            <select value={resultsLimit} onChange={(e) => { setResultsLimit(parseInt(e.target.value)); ResetPageNumber(); } }
+              className='mx-2 rounded-md border border-gray-200 hover:bg-gray-100'>
+              {resultsLimitOptions.map((limit, index) => {
+                return (
+                  <option key={index} value={limit}>
+                    {limit}
+                  </option>
+                );
+              })}
+            </select>
+            <div className="flex pl-2">
+              <Pagination
+                className="my-3"
+                count={pageCount}
+                page={pageNumber}
+                variant="outlined"
+                shape="rounded"
+                onChange={handlePaginationChange} />
             </div>
+          </div>
         </div>}
       </div>
       {totalInits === 0 && initiativesLoaded === true && <div className="m-2 p-2 text-3xl font-bold">No Initiatives to Display</div>}

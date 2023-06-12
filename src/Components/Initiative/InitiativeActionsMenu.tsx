@@ -1,4 +1,4 @@
-import { Button, IconButton, Menu, MenuItem } from "@mui/material";
+import { Button, IconButton, Menu, MenuItem, ThemeProvider } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import { useState } from "react";
 import { Company, Initiative, upsertThroughputData } from "../../Store/CompanySlice";
@@ -10,6 +10,7 @@ import { ValidateEditThroughputData, ValidateFileThroughputData, ValidationFaile
 import { ThroughputData } from "../../Services/CompanyService";
 import { useAppDispatch } from "../../Store/Hooks";
 import { enqueueSnackbar } from "notistack";
+import { IntegrityTheme } from "../../Styles";
 
 interface InitiativeActionsMenuProps {
   cypressData: {
@@ -89,8 +90,10 @@ export function InitiativeActionsMenu(props: InitiativeActionsMenuProps)
     handleClose();
   }
 
+  const buttonColor = "darkBlue";
+
   return (
-    <>
+    <ThemeProvider theme={IntegrityTheme}>
       <IconButton
         data-cy={props.cypressData.menuButton}
         id="basic-button"
@@ -112,24 +115,24 @@ export function InitiativeActionsMenu(props: InitiativeActionsMenuProps)
         }}
       >
         <MenuItem data-cy={props.cypressData.decisionButton} onClick={() => HandleDecisionModal()}>
-          <Button>
+          <Button color={buttonColor}>
             Decisions
           </Button>
         </MenuItem>
         <MenuItem data-cy={props.cypressData.documentButton} onClick={() => HandleDocumentModal()}>
-          <Button>
+          <Button color={buttonColor}>
             Documents
           </Button>
         </MenuItem>
         {props.isAdmin &&
           <MenuItem data-cy={props.cypressData.uploadThroughputButton} onClick={() => HandleUploadThroughputModal()}>
-            <Button>
+            <Button color={buttonColor}>
               Upload Throughput
             </Button>
           </MenuItem>
         }
         <MenuItem data-cy={props.cypressData.editThroughputButton} onClick={() => HandleEditThroughputModal()}>
-          <Button>
+          <Button color={buttonColor}>
             View Throughput
           </Button>
         </MenuItem>
@@ -138,6 +141,6 @@ export function InitiativeActionsMenu(props: InitiativeActionsMenuProps)
       <DocumentManagementModal isOpen={documentModalIsOpen} setIsOpen={setDocumentModalIsOpen} company={props.company} initiative={props.initiative} isAdmin={props.isAdmin} />
       <UploadThroughputModal company={props.company} initiative={props.initiative} uploadIsOpen={uploadThroughputModalIsOpen} setUploadIsOpen={setUploadThroughputModalIsOpen} Submit={SubmitUpdateThroughput}/>
       <EditThroughputModal allCompanies={props.allCompanies} company={props.company} initiative={props.initiative} editIsOpen={editThroughputModalIsOpen} setEditIsOpen={setEditThroughputModalIsOpen} Submit={SubmitUpdateThroughput} isAdmin={props.isAdmin}/>
-    </>
+    </ThemeProvider>
   )
 }

@@ -1,5 +1,4 @@
 import { InitiativeModalIds } from "../../src/Components/Initiative/UpdateInitiativeListModal";
-import { ToastIds } from "../../src/Components/Toast";
 import { ValidationFailedPrefix } from "../../src/Services/Validation";
 import { UploadThroughputIds } from "../../src/Components/Initiative/UploadThroughputModal";
 import { InitiativeTableIds } from "../../src/Components/Initiative/InitiativesTable";
@@ -31,7 +30,6 @@ export function AddHash(obj: Record<string,any> | string)
 
 export const TestConstants = {
   validationFailedMessage: ValidationFailedPrefix,
-  toastIds: ToastIds,
   snackbarId: "#notistack-snackbar",
   initiativeModalIds:InitiativeModalIds,
   initiativeDisplayRadioIds: InitiativeDisplayRadioIds,

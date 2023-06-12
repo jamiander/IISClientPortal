@@ -19,6 +19,10 @@ import { DocumentManagementButton } from "../Components/Documents/DocumentManage
 import { selectCurrentUser } from "../Store/UserSlice";
 import { DateToDateInfo } from "../Services/DateHelpers";
 import { AddButton } from "../Components/AddButton";
+import { SearchBar } from "../Components/SearchBar";
+import { Paginator } from "../Components/Paginator";
+import { MakeClone } from "../Services/Cloning";
+import { usePaginator } from "../Components/usePaginator";
 
 export const ClientPageIds = {
   modal: "clientPageModal",
@@ -70,12 +74,15 @@ export function ClientPage()
   const [currentTotalItems, setCurrentTotalItems] = useState<number>();
   const [radioValue,setRadioValue] = useState("active");
 
+  const paginator = usePaginator();
+
   useEffect(() => {
-    const companiesClone: Company[] = CompanyFilter(allCompanies,radioValue);
-    companiesClone.sort((a: Company, b: Company) => a.name.toUpperCase() > b.name.toUpperCase() ? 1 : -1);
-    setDisplayCompanies(companiesClone);
+    const filteredCompanies = CompanyFilter(allCompanies,radioValue);
+    filteredCompanies.sort((a: Company, b: Company) => a.name.toUpperCase() > b.name.toUpperCase() ? 1 : -1);
+    const paginatedCompanies = paginator.PaginateItems(filteredCompanies);
+    setDisplayCompanies(paginatedCompanies);
     LeaveEditMode();
-  },[allCompanies, radioValue]);
+  },[allCompanies, radioValue, paginator.page, paginator.rowsPerPage]);
 
   function InEditMode()
   {
@@ -117,7 +124,7 @@ export function ClientPage()
       name: "",
       initiatives: []
     }
-    let companiesClone: Company[] = JSON.parse(JSON.stringify(displayCompanies));
+    let companiesClone = MakeClone(displayCompanies);
     companiesClone.unshift(newCompany);
     setDisplayCompanies(companiesClone);
     EnterEditMode(newCompany.id,companiesClone,true);
@@ -130,51 +137,54 @@ export function ClientPage()
     if((window as any).Cypress)
       isTest = true;
 
-    let companyClone: Company = JSON.parse(JSON.stringify(companyToEdit));
-    companyClone.name = currentName;
-
-    let newInitiative: Initiative = {
-      id: v4(),
-      title: currentInitiativeTitle,
-      targetDate: currentTargetDate ?? todayInfo,
-      startDate: todayInfo,
-      totalItems: currentTotalItems ?? 1,
-      itemsCompletedOnDate: [],
-      decisions: []
-    }
-
-    const validation = ValidateCompany(companyClone,displayCompanies);
-    if(validation.success)
+    let companyClone = MakeClone(companyToEdit);
+    if(companyClone)
     {
-      const initiativeValidation: Validation = 
-        state === State.add ? ValidateNewInitiative(newInitiative,companyClone.id,[companyClone]) : {message: "There was no initiative to validate.", success: true};
+      companyClone.name = currentName;
 
-      if(initiativeValidation.success)
+      let newInitiative: Initiative = {
+        id: v4(),
+        title: currentInitiativeTitle,
+        targetDate: currentTargetDate ?? todayInfo,
+        startDate: todayInfo,
+        totalItems: currentTotalItems ?? 1,
+        itemsCompletedOnDate: [],
+        decisions: []
+      }
+
+      const validation = ValidateCompany(companyClone,displayCompanies);
+      if(validation.success)
       {
-        let saveMessage = "Changes have been saved.";
-        await dispatch(upsertCompanyInfo({isTest: isTest, company: companyClone}));
-        if(state === State.add)
-        {
-          saveMessage = "New client added!";
-          dispatch(upsertInitiativeInfo({isTest: isTest, initiative: newInitiative, companyId: companyClone.id}));
-        }
+        const initiativeValidation: Validation = 
+          state === State.add ? ValidateNewInitiative(newInitiative,companyClone.id,[companyClone]) : {message: "There was no initiative to validate.", success: true};
 
-        LeaveEditMode();
-        enqueueSnackbar(saveMessage, {variant: "success"});
+        if(initiativeValidation.success)
+        {
+          let saveMessage = "Changes have been saved.";
+          await dispatch(upsertCompanyInfo({isTest: isTest, company: companyClone}));
+          if(state === State.add)
+          {
+            saveMessage = "New client added!";
+            dispatch(upsertInitiativeInfo({isTest: isTest, initiative: newInitiative, companyId: companyClone.id}));
+          }
+
+          LeaveEditMode();
+          enqueueSnackbar(saveMessage, {variant: "success"});
+        }
+        else
+          enqueueSnackbar(ValidationFailedPrefix + initiativeValidation.message, {variant: "error"});
       }
       else
-        enqueueSnackbar(ValidationFailedPrefix + initiativeValidation.message, {variant: "error"});
+        enqueueSnackbar(ValidationFailedPrefix + validation.message, {variant: "error"});
     }
-    else
-      enqueueSnackbar(ValidationFailedPrefix + validation.message, {variant: "error"});
   }
 
   function HandleCancelEdit()
   {
     if(state === State.add && companyToEdit)
     {
-      const companiesClone: Company[] = displayCompanies.filter(c => c.id !== companyToEdit.id);
-      setDisplayCompanies(companiesClone);
+      const companiesWithoutEdit: Company[] = displayCompanies.filter(c => c.id !== companyToEdit.id);
+      setDisplayCompanies(companiesWithoutEdit);
     }
     LeaveEditMode();
   }
@@ -201,14 +211,7 @@ export function ClientPage()
               sx={{ display: 'flex',
               justifyContent: 'flex-start'
               }}> 
-              <UserTextField data-cy={ClientPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in name" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)} 
-                InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon sx={{fontSize: "calc(20px + 0.390625vw)", color: "#21345b"}}/>
-                  </InputAdornment>
-                ),
-              }} />
+              <SearchBar cypressData={ClientPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in Name" value={searchedKeyword} setValue={setSearchedKeyword} />
             </Grid>
             <RadioSet dark={true} setter={setRadioValue} name="clientPage" options={[
             {cypressData: ClientPageIds.radioIds.all, label: "Show All", value: "all"},
@@ -327,6 +330,7 @@ export function ClientPage()
               </TableBody>
             </Table>
           </TableContainer>
+          <Paginator paginator={paginator}/>
         </div>
       </div>
     </>

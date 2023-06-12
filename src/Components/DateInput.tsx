@@ -1,7 +1,6 @@
 import { DatePicker } from "@mui/x-date-pickers";
 import { DateInfo } from "../Services/CompanyService";
-import { MakeDate, MakeDateInfo, MakeDateString } from "../Services/DateHelpers";
-import { inputStyle } from "../Styles";
+import { MakeDate, MakeDateInfo } from "../Services/DateHelpers";
 import dayjs from 'dayjs';
 import { Dayjs } from 'dayjs';
 import { useEffect, useState } from "react";
@@ -40,12 +39,8 @@ export function DateInput(props: DateInputProps)
   }
 
   return (
-    <>
-      <div className='flex space-x-2' data-cy={props.cypressData}>
-        <DatePicker label={props.label ?? ""} disabled={props.disabled} value={myDate} onChange={(newDayjs) => HandleDateChange(newDayjs)} />
-          {/*<input type="date" data-cy={props.cypressData} disabled={props.disabled} value={MakeDateString(props.date)} className={inputStyle}
-            onChange={(e) => { props.setDate(MakeDateInfo(e.target.value) ?? props.date) }}/>*/}
-      </div>
-    </>
+    <div className='flex space-x-2' data-cy={props.cypressData}>
+      <DatePicker label={props.label ?? ""} disabled={props.disabled} value={myDate} onChange={(newDayjs) => HandleDateChange(newDayjs)} />
+    </div>
   )
 }
