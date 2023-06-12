@@ -26,8 +26,9 @@ import { User } from "../../Store/UserSlice";
 import { enqueueSnackbar } from "notistack";
 import ValidateNewInitiative, { ValidationFailedPrefix } from "../../Services/Validation";
 import { InitiativeActionsMenu } from "./InitiativeActionsMenu";
-import { DateToDateInfo } from "../../Services/DateHelpers";
+import { DateToDateInfo, MakeDate } from "../../Services/DateHelpers";
 import { MakeClone } from "../../Services/Cloning";
+import { useSorter } from "../../Services/Sorter";
 
 export const InitiativeTableIds = {
   table: "initiativesTable",
@@ -66,14 +67,17 @@ interface InitiativesProps {
   setAddInitiative: (value: boolean) => void
 }
 
-interface InitCompanyDisplay extends Initiative {
+export interface InitCompanyDisplay extends Initiative {
   company: Company,
+  companyName: string,
+  startDateTime: Date,
+  targetDateTime: Date,
   probabilityValue: number | undefined,
   probabilityStatus: string,
   itemsRemaining: number
 }
 
-interface SortConfig {
+export interface SortConfig {
   key: string
   direction: 'asc' | 'desc'
 }
@@ -83,15 +87,23 @@ export default function InitiativesTable(props: InitiativesProps) {
   const [searchedComp, setSearchedComp] = useState('');
   const [searchedInit, setSearchedInit] = useState('');
   const [sortConfig, setSortConfig] = useState<SortConfig>({key: '', direction: 'desc'});
-
-  const [sortedDisplayItems, setSortedDisplayItems] = useState<InitCompanyDisplay[]>([]);
-  const [displayItems, setDisplayItems] = useState<InitCompanyDisplay[]>([]);
-
+  const [sortedDisplayItems, setSortedDisplayItems] = useState<InitCompanyDisplay[]>([]); 
   const resultsLimitOptions: number[] = [5, 10, 25];
   const [pageNumber, setPageNumber] = useState(1);
   const [pageCount, setPageCount] = useState(1);
   const [resultsLimit, setResultsLimit] = useState(10);
   const [initiativesLoaded, setInitiativesLoaded] = useState(false);
+
+  const {
+    SetupSortItems,
+    SortItems,
+    displayItems
+  } = useSorter();
+
+  useEffect(() => 
+  {
+    SetupSortItems(displayItems);
+  },[displayItems]) 
 
   useEffect(() => {
     UpdateDisplayItems();
@@ -103,13 +115,28 @@ export default function InitiativesTable(props: InitiativesProps) {
       const displayClone = MakeClone(displayItems);
       const myUuid = v4();
       const todayInfo = DateToDateInfo(new Date());
+      const date = new Date();
       let matchingCompany = props.companyList.find(c => c.id === props.currentUser?.companyId);
       if(matchingCompany?.id === IntegrityId) matchingCompany = {id: "", name: "", initiatives: ([])};
       if(matchingCompany)
       {
-        const newInitiative: InitCompanyDisplay = {id: myUuid, title: "", targetDate: todayInfo, startDate: todayInfo, totalItems: 1, itemsCompletedOnDate: [], decisions: [], company: matchingCompany, itemsRemaining: 0, probabilityStatus: "", probabilityValue: -1};
+        const newInitiative: InitCompanyDisplay = {
+          id: myUuid, title: "", 
+          targetDate: todayInfo, 
+          startDate: todayInfo, 
+          totalItems: 1, 
+          itemsCompletedOnDate: [], 
+          decisions: [], 
+          company: matchingCompany, 
+          itemsRemaining: 0, 
+          probabilityStatus: "", 
+          probabilityValue: -1,
+          companyName: matchingCompany.name,
+          startDateTime: date,
+          targetDateTime: date
+        };
         displayClone.unshift(newInitiative);
-        setDisplayItems(displayClone);
+        SetupSortItems(displayClone);
         setSearchedComp("");
         setSearchedInit("");
         ResetPageNumber();
@@ -118,41 +145,15 @@ export default function InitiativesTable(props: InitiativesProps) {
       }
     }
   },[props.addInitiative]);
-
-  useMemo(() => {
-    let sortedItems = MakeClone(displayItems);
-    sortedItems.sort((a: any, b: any) => {
-      let aValue = a[sortConfig.key];
-      let bValue = b[sortConfig.key];
-
-      if(aValue === undefined)
-        aValue = -0.001;
-      if(bValue === undefined)
-        bValue = -0.001;
-
-      if(typeof(aValue) === "string")
-        aValue = aValue.toUpperCase();
-
-      if(typeof(bValue) === "string")
-        bValue = bValue.toUpperCase();
-
-      if (aValue > bValue) {
-        return sortConfig.direction === 'asc' ? -1 : 1;
-      }
-      if (aValue < bValue) {
-        return sortConfig.direction === 'asc' ? 1 : -1;
-      }
-      return 0;
-    });
-    setSortedDisplayItems(sortedItems);
-  }, [sortConfig, displayItems]);
   
   const requestSort = (key: string) => {
     let direction: 'desc' | 'asc' = 'desc';
     if (sortConfig.key === key && sortConfig.direction === 'desc') {
       direction = 'asc';
     }
-    setSortConfig({ key, direction });
+    setSortConfig({ key:key, direction:direction });
+    SortItems(sortConfig);
+    ResetPageNumber();
   }
 
   function UpdateDisplayItems()
@@ -167,10 +168,15 @@ export default function InitiativesTable(props: InitiativesProps) {
       initiatives.map((init) => {
         let itemsRemaining = FindItemsRemaining(init);
         let probability = GenerateProbability(init, itemsRemaining);
-        displayList.push({...init, company:company, itemsRemaining:itemsRemaining, probabilityValue:probability.value, probabilityStatus:probability.status});
+        displayList.push({
+          ...init, company: company, itemsRemaining: itemsRemaining, probabilityValue: probability.value, probabilityStatus: probability.status,
+          companyName: company.name,
+          startDateTime: MakeDate(init.startDate),
+          targetDateTime: MakeDate(init.targetDate)
+        });
       });
     }
-    setDisplayItems(displayList);
+    SetupSortItems(displayList);
     setInitiativesLoaded(true);
     LeaveEditMode();
     ResetPageNumber();
@@ -190,16 +196,16 @@ export default function InitiativesTable(props: InitiativesProps) {
 
   const indexOfLastItem = pageNumber * resultsLimit;
   const indexOfFirstItem = indexOfLastItem - resultsLimit;
-  const currentItems = sortedDisplayItems.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = displayItems.slice(indexOfFirstItem, indexOfLastItem);
 
   useEffect(() => {
-    const count = Math.ceil(sortedDisplayItems.length/resultsLimit);
+    const count = Math.ceil(displayItems.length/resultsLimit);
     setPageCount(count);
     if(count < pageNumber && count > 0)
     {
       setPageNumber(count);
     }
-  },[sortedDisplayItems,resultsLimit]);
+  },[displayItems,resultsLimit]);
 
   const handlePaginationChange = (event: any, value: any) => {
     setPageNumber(value);
@@ -208,7 +214,7 @@ export default function InitiativesTable(props: InitiativesProps) {
   interface SortProps {
     sortKey: string
     heading: string
-  }
+  } 
 
   function SortLabel(props: SortProps)
   {
@@ -232,7 +238,7 @@ export default function InitiativesTable(props: InitiativesProps) {
         {props.heading}
       </TableSortLabel>
     )
-  }
+  } 
 
   let companyInits: Initiative[] = displayItems;
   let totalInits: number = companyInits.length;
@@ -331,7 +337,7 @@ export default function InitiativesTable(props: InitiativesProps) {
     if(state === stateEnum.add && initToEditId !== "")
     {
       const displayClone: InitCompanyDisplay[] = displayItems.filter(i => i.id !== initToEditId);
-      setDisplayItems(displayClone);
+      SetupSortItems(displayClone);
     }
     props.setAddInitiative(false);
     LeaveEditMode();

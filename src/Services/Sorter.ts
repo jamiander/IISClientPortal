@@ -1,28 +1,67 @@
-import { selectAllCompanies } from "../Store/CompanySlice";
-import { useAppSelector } from "../Store/Hooks";
-import { User } from "../Store/UserSlice";
-
-interface SorterProps{
-    users: User[]
+import { useState } from "react";
+import { MakeClone } from "./Cloning";
+import { InitCompanyDisplay, SortConfig } from "../Components/Initiative/InitiativesTable";
+  
+type SortItems = {
+    SetupSortItems: (sortItems: InitCompanyDisplay[]) => void
+    SortItems: (sortConfig: SortConfig) => void
+    displayItems: InitCompanyDisplay[]
+    sortConfig: SortConfig
 }
 
-export default function Sorter(props: SorterProps){
-    const usersClone:User[] = [];
-    const companies = useAppSelector(selectAllCompanies);
-    
-    props.users.map(val => usersClone.push(Object.assign({}, val)));
+export function useSorter() : SortItems
+  {
+    const [displayItems, setDisplayItems] = useState<InitCompanyDisplay[]>([]);
+    const [sortConfig, setSortConfig] = useState<SortConfig>({key: '', direction: 'desc'});
 
-    var sortedUsers = usersClone.sort((n1,n2)=>{
-        const companyN1 = companies.find(company => company.id === n1.companyId)?.name ?? "n/a";
-        const companyN2 = companies.find(company => company.id === n2.companyId)?.name ?? "n/a";
+    function SetupSortItems(sortItems: InitCompanyDisplay[])
+    {
+        setDisplayItems(sortItems);
+        setSortConfig(sortConfig);
+    }
 
-        if(companyN1 > companyN2){
-            return 1;
+    function SortItems(sortConfig: SortConfig)
+    {
+        let sortedItemsClone = MakeClone(displayItems);
+        console.log(sortConfig.key);
+        console.log(sortConfig.direction);
+
+        sortedItemsClone.sort((a: any, b: any) => {
+        let aValue = a[sortConfig.key];
+        let bValue = b[sortConfig.key];
+
+        if(aValue === undefined)
+        aValue = -0.001;
+        if(bValue === undefined)
+        bValue = -0.001; 
+
+        if(typeof(aValue) === "string")
+        aValue = aValue.toUpperCase();
+
+        if(typeof(bValue) === "string")
+        bValue = bValue.toUpperCase();
+
+        if(typeof(aValue) === Date())
+        {
+            aValue.localeCompare(bValue);
         }
-        if(companyN1 < companyN2){
-            return -1;
+
+        if (aValue > bValue) {
+        return sortConfig.direction === 'asc' ? -1 : 1;
         }
-        return 0
-    })
-    return sortedUsers
+        if (aValue < bValue) {
+        return sortConfig.direction === 'asc' ? 1 : -1;
+        }
+        return 0; 
+        })
+        setDisplayItems(sortedItemsClone);
+    }
+
+    return {
+        SetupSortItems,
+        SortItems,
+        displayItems,
+        sortConfig
+    }
 }
+
