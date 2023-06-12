@@ -122,10 +122,20 @@ export default function UsersPage(){
   {
     const filteredUsers = UserFilter(allUsers, radioValue);
     setCurrentCompanyId(currentUserCompanyId);
-    setCompanyUsers(filteredUsers);
-    SetupEditUser(filteredUsers);
+    filteredUsers.sort((a: User, b: User) => {
+      let companyA = allCompanies.find(c => c.id === a.companyId);
+      let companyB = allCompanies.find(c => c.id === b.companyId);
+
+      if(companyA && companyB)
+        return companyA.name.toUpperCase() > companyB.name.toUpperCase() ? 1 : -1;
+      return 0;
+    });
+    //usersList.filter(cu => cu.companyId === displayCompany.id)!.filter(u => u.email.toUpperCase().includes(searchedKeyword.toUpperCase()) || u.name?.toUpperCase().includes(searchedKeyword.toUpperCase()));
+    const paginatedUsers = paginator.PaginateItems(filteredUsers);
+    setCompanyUsers(paginatedUsers);
+    SetupEditUser(paginatedUsers);
     
-  }, [allUsers, radioValue])
+  }, [allUsers, radioValue, paginator.page, paginator.rowsPerPage]);
 
   return (
     <ThemeProvider theme={IntegrityTheme}>
@@ -191,14 +201,10 @@ export default function UsersPage(){
                 </TableRow>
               </TableHead>
               <TableBody data-cy={UsersPageIds.table}>
-                {displayCompanies.map((displayCompany, key) => {
-                  let newUser = usersList.find(u => u.companyId === "");
-                  let companyUserList = usersList.filter(cu => cu.companyId === displayCompany.id)!.filter(u => u.email.toUpperCase().includes(searchedKeyword.toUpperCase()) || u.name?.toUpperCase().includes(searchedKeyword.toUpperCase()));
-                  if (key === 0 && newUser !== undefined)
-                    companyUserList.unshift(newUser);
-                  return (
-                    companyUserList.map((companyUser, key) => {
+                {
+                  usersList.map((companyUser, key) => {
                       let isEdit = InEditMode() && companyUser?.id === userToEdit?.id;
+                      let displayCompany = allCompanies.find(c => c.id === companyUser.companyId)!;
                       return (
                         <TableRow className={defaultRowStyle} key={key} sx={{
                           borderBottom: "1px solid black",
@@ -262,8 +268,8 @@ export default function UsersPage(){
                         </TableRow>
                       );
                     })
-                  );
-                })}
+                  
+                }
               </TableBody>
             </Table>
           </TableContainer>
