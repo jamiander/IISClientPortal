@@ -87,7 +87,6 @@ export interface SortConfig {
 export default function InitiativesTable(props: InitiativesProps) {
   const dispatch = useAppDispatch();
   const [sortConfig, setSortConfig] = useState<SortConfig>({key: '', direction: 'desc'});
-  const [sortedDisplayItems, setSortedDisplayItems] = useState<InitCompanyDisplay[]>([]); 
   const resultsLimitOptions: number[] = [5, 10, 25];
   const [pageNumber, setPageNumber] = useState(1);
   const [pageCount, setPageCount] = useState(1);
@@ -151,7 +150,8 @@ export default function InitiativesTable(props: InitiativesProps) {
     if (sortConfig.key === key && sortConfig.direction === 'desc') {
       direction = 'asc';
     }
-    setSortConfig({ key:key, direction:direction });
+    if (sortConfig.key != key) sortConfig.key = key;
+    sortConfig.direction = direction;
     SortItems(sortConfig);
     ResetPageNumber();
   }

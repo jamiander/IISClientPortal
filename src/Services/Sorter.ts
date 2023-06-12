@@ -23,36 +23,26 @@ export function useSorter() : SortItems
     function SortItems(sortConfig: SortConfig)
     {
         let sortedItemsClone = MakeClone(displayItems);
-        console.log(sortConfig.key);
-        console.log(sortConfig.direction);
-
+    
         sortedItemsClone.sort((a: any, b: any) => {
         let aValue = a[sortConfig.key];
         let bValue = b[sortConfig.key];
 
         if(aValue === undefined)
-        aValue = -0.001;
+            aValue = -0.001;
         if(bValue === undefined)
-        bValue = -0.001; 
+            bValue = -0.001; 
 
-        if(typeof(aValue) === "string")
-        aValue = aValue.toUpperCase();
-
-        if(typeof(bValue) === "string")
-        bValue = bValue.toUpperCase();
-
-        if(typeof(aValue) === Date())
-        {
+        if(typeof(aValue) === 'string') aValue.toUpperCase();
+        if(typeof(bValue) === 'string') bValue.toUpperCase();
+        if(typeof(sortConfig.key) === Date())
             aValue.localeCompare(bValue);
-        }
 
-        if (aValue > bValue) {
-        return sortConfig.direction === 'asc' ? -1 : 1;
-        }
-        if (aValue < bValue) {
-        return sortConfig.direction === 'asc' ? 1 : -1;
-        }
-        return 0; 
+        if (aValue > bValue) 
+            return sortConfig.direction === 'asc' ? -1 : 1;
+        if (aValue < bValue) 
+            return sortConfig.direction === 'asc' ? 1 : -1;
+            return 0; 
         })
         setDisplayItems(sortedItemsClone);
     }
