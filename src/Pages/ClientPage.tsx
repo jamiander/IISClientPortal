@@ -152,7 +152,7 @@ export function ClientPage()
         decisions: []
       }
 
-      const validation = ValidateCompany(companyClone,displayCompanies);
+      const validation = ValidateCompany(companyClone,allCompanies);
       if(validation.success)
       {
         const initiativeValidation: Validation = 

@@ -121,7 +121,11 @@ export default function UsersPage(){
   useEffect(() => 
   {
     const filteredUsers = UserFilter(allUsers, radioValue).filter(u => u.companyId !== IntegrityId).filter(u => u.email.toUpperCase().includes(searchedKeyword.toUpperCase()) || u.name?.toUpperCase().includes(searchedKeyword.toUpperCase()));
-    
+    filteredUsers.sort((a: User, b: User) => {
+      let nameA = a.name ?? "";
+      let nameB = b.name ?? "";
+      return nameA.toUpperCase() > nameB.toUpperCase() ? 1 : -1;
+    })
     filteredUsers.sort((a: User, b: User) => {
       let companyA = allCompanies.find(c => c.id === a.companyId);
       let companyB = allCompanies.find(c => c.id === b.companyId);

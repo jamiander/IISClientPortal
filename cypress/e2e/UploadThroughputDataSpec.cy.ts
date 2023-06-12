@@ -15,6 +15,7 @@ const consts = TestConstants;
 const modalIds = consts.uploadThroughputIds;
 const uploadIds = modalIds.fileUpload;
 const tableIds = consts.initiativeTableIds;
+const pageIds = consts.initiativesPageIds;
 const snackbarId = consts.snackbarId;
 const radioIds = consts.initiativeDisplayRadioIds;
 const failMessage = consts.validationFailedMessage;
@@ -41,7 +42,7 @@ describe('valid upload throughput tests', () => {
     cy.login(user);
 
     cy.getByData(radioIds.all).click();
-    cy.getByData(tableIds.initiativeTitleFilter).type(initiativeTitle);
+    cy.getByData(pageIds.initiativeTitleFilter).type(initiativeTitle);
 
     cy.contains('tr', initiativeTitle).findByData(tableIds.remainingItems).then(($span) => {
       remainingItemsBefore = Number($span.text());
@@ -64,7 +65,7 @@ describe('valid upload throughput tests', () => {
     cy.getByData(uploadIds.submitButton).click();
     cy.wait(waitTime);
     cy.getByData(radioIds.all).click();
-    cy.getByData(tableIds.initiativeTitleFilter).clear().type(initiativeTitle);
+    cy.getByData(pageIds.initiativeTitleFilter).clear().type(initiativeTitle);
     cy.contains('tr', initiativeTitle).findByData(tableIds.remainingItems).then(($span) => {
       let remainingItemsAfter = Number($span.text());
       expect(remainingItemsBefore-itemsCompletedInUpload).to.be.equal(remainingItemsAfter);
@@ -86,7 +87,7 @@ describe('invalid upload throughput tests', () => {
   beforeEach(() => {
     cy.login(user);
 
-    cy.getByData(tableIds.initiativeTitleFilter).type(initiativeTitle);
+    cy.getByData(pageIds.initiativeTitleFilter).type(initiativeTitle);
     
     cy.getByData(tableIds.actionMenu.menuButton).click();
     cy.getByData(tableIds.actionMenu.uploadThroughputButton).click();
