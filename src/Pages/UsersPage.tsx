@@ -22,7 +22,7 @@ import { AddButton } from "../Components/AddButton";
 import { MakeClone } from "../Services/Cloning";
 import { SearchBar } from "../Components/SearchBar";
 import { Paginator } from "../Components/Paginator";
-import { usePaginator } from "../Components/usePaginator";
+import { usePaginator } from "../Services/usePaginator";
 
 export const UsersPageIds = {
   company: "usersPageCompany",
@@ -103,7 +103,7 @@ export default function UsersPage(){
     let sortedCompanies = MakeClone(allCompanies);
     sortedCompanies.sort((a: Company, b: Company) => a.name.toUpperCase() > b.name.toUpperCase() ? 1 : -1);
     setDisplayCompanies(sortedCompanies.filter(company => company.id !== IntegrityId));
-  },[allCompanies]); 
+  },[allCompanies]);
   
   let currentUserCompanyId = currentUser?.companyId ?? "";
 
@@ -120,8 +120,8 @@ export default function UsersPage(){
 
   useEffect(() => 
   {
-    const filteredUsers = UserFilter(allUsers, radioValue);
-    setCurrentCompanyId(currentUserCompanyId);
+    const filteredUsers = UserFilter(allUsers, radioValue).filter(u => u.companyId !== IntegrityId).filter(u => u.email.toUpperCase().includes(searchedKeyword.toUpperCase()) || u.name?.toUpperCase().includes(searchedKeyword.toUpperCase()));
+    
     filteredUsers.sort((a: User, b: User) => {
       let companyA = allCompanies.find(c => c.id === a.companyId);
       let companyB = allCompanies.find(c => c.id === b.companyId);
@@ -130,12 +130,13 @@ export default function UsersPage(){
         return companyA.name.toUpperCase() > companyB.name.toUpperCase() ? 1 : -1;
       return 0;
     });
-    //usersList.filter(cu => cu.companyId === displayCompany.id)!.filter(u => u.email.toUpperCase().includes(searchedKeyword.toUpperCase()) || u.name?.toUpperCase().includes(searchedKeyword.toUpperCase()));
+
     const paginatedUsers = paginator.PaginateItems(filteredUsers);
     setCompanyUsers(paginatedUsers);
+    setCurrentCompanyId(currentUserCompanyId);
     SetupEditUser(paginatedUsers);
     
-  }, [allUsers, radioValue, paginator.page, paginator.rowsPerPage]);
+  }, [allUsers, radioValue, paginator.page, paginator.rowsPerPage, searchedKeyword]);
 
   return (
     <ThemeProvider theme={IntegrityTheme}>

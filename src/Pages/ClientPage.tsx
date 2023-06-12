@@ -22,7 +22,7 @@ import { AddButton } from "../Components/AddButton";
 import { SearchBar } from "../Components/SearchBar";
 import { Paginator } from "../Components/Paginator";
 import { MakeClone } from "../Services/Cloning";
-import { usePaginator } from "../Components/usePaginator";
+import { usePaginator } from "../Services/usePaginator";
 
 export const ClientPageIds = {
   modal: "clientPageModal",
@@ -77,12 +77,12 @@ export function ClientPage()
   const paginator = usePaginator();
 
   useEffect(() => {
-    const filteredCompanies = CompanyFilter(allCompanies,radioValue);
+    const filteredCompanies = CompanyFilter(allCompanies,radioValue).filter(c =>  c.name?.toUpperCase().includes(searchedKeyword.toUpperCase()));
     filteredCompanies.sort((a: Company, b: Company) => a.name.toUpperCase() > b.name.toUpperCase() ? 1 : -1);
     const paginatedCompanies = paginator.PaginateItems(filteredCompanies);
     setDisplayCompanies(paginatedCompanies);
     LeaveEditMode();
-  },[allCompanies, radioValue, paginator.page, paginator.rowsPerPage]);
+  },[allCompanies, radioValue, paginator.page, paginator.rowsPerPage, searchedKeyword]);
 
   function InEditMode()
   {
@@ -257,8 +257,7 @@ export function ClientPage()
                 </TableRow>
               </TableHead>
               <TableBody data-cy={ClientPageIds.table}>
-                {displayCompanies.filter(c =>  c.name?.toUpperCase().includes(searchedKeyword.toUpperCase()))
-                  .map((displayItem: Company, key: number) => {
+                {displayCompanies.map((displayItem: Company, key: number) => {
                   let isEdit = InEditMode() && displayItem.id === companyToEdit?.id;
                   return (
                     <TableRow className={defaultRowStyle} sx={{
