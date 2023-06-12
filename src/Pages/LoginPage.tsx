@@ -109,7 +109,7 @@ export default function LoginPage(){
             onChange={e => setPassword(e.target.value)}
             onKeyDown={e => HandleLogin(e.key)} />
           <FormControlLabel control={<Checkbox value="show" color="darkBlue" onChange={togglePasswordVisibility}/>} label="Show Password" />
-          <Button color="veryLightGray" data-cy={LoginPageIds.submitButton} disabled={isLoading || !password || !userEmail} fullWidth variant="contained" sx={{ mt: 6, mb: 2}} 
+          <Button color="lightGray" data-cy={LoginPageIds.submitButton} disabled={isLoading || !password || !userEmail} fullWidth variant="contained" sx={{ mt: 6, mb: 2}} 
             onClick={() => Login()} >
             Sign In
           </Button>
