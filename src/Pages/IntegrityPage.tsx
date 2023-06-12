@@ -21,6 +21,7 @@ import { AddButton } from "../Components/AddButton";
 import { MakeClone } from "../Services/Cloning";
 import { SearchBar } from "../Components/SearchBar";
 import { Paginator } from "../Components/Paginator";
+import { usePaginator } from "../Components/usePaginator";
 
 export const IntegrityPageIds = {
   modal: "adminEditUserModal",
@@ -81,6 +82,8 @@ export function IntegrityPage(){
     setSearchedKeyword
   } = useEditUser();
 
+  const paginator = usePaginator();
+
 
   useEffect(() =>
   {
@@ -90,11 +93,13 @@ export function IntegrityPage(){
 
   useEffect(() => 
   {
-    let newIntegrityUsers = allUsers.filter(user => user.companyId === IntegrityId);
-    newIntegrityUsers.sort((a: User, b: User) => a.email.toUpperCase() > b.email.toUpperCase() ? 1 : -1);
-    setIntegrityUsers(newIntegrityUsers);
-    SetupEditUser(newIntegrityUsers);
-  }, [allUsers]);
+    const filteredUsers = allUsers.filter(user => user.companyId === IntegrityId);
+    filteredUsers.sort((a: User, b: User) => a.email.toUpperCase() > b.email.toUpperCase() ? 1 : -1);
+    const paginatedUsers = paginator.PaginateItems(filteredUsers);
+    setIntegrityUsers(paginatedUsers);
+    SetupEditUser(paginatedUsers);
+    
+  }, [allUsers,paginator.page,paginator.rowsPerPage]);
 
   useEffect(() => {
     let newSortedCompanies = MakeClone(allCompanies);
@@ -225,7 +230,7 @@ export function IntegrityPage(){
               </TableBody>
             </Table>
           </TableContainer>
-          <Paginator count={usersList.length}/>
+          <Paginator paginator={paginator}/>
         </div>
       </div>
     </ThemeProvider>

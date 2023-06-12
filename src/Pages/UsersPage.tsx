@@ -22,6 +22,7 @@ import { AddButton } from "../Components/AddButton";
 import { MakeClone } from "../Services/Cloning";
 import { SearchBar } from "../Components/SearchBar";
 import { Paginator } from "../Components/Paginator";
+import { usePaginator } from "../Components/usePaginator";
 
 export const UsersPageIds = {
   company: "usersPageCompany",
@@ -89,6 +90,8 @@ export default function UsersPage(){
     searchedKeyword,
     setSearchedKeyword
   } = useEditUser();
+
+  const paginator = usePaginator();
 
   useEffect(() => 
   {
@@ -264,7 +267,7 @@ export default function UsersPage(){
               </TableBody>
             </Table>
           </TableContainer>
-          <Paginator count={displayCompanies.length}/>
+          <Paginator paginator={paginator}/>
         </div>
       </div>
     </ThemeProvider>
