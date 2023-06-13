@@ -1,6 +1,6 @@
 import { Pagination } from "@mui/material";
 import { useState } from "react";
-import { PaginatorType } from "./usePaginator";
+import { PaginatorType } from "../Services/usePaginator";
 
 interface PaginatorProps {
   paginator: PaginatorType

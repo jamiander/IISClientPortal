@@ -22,7 +22,7 @@ import { AddButton } from "../Components/AddButton";
 import { MakeClone } from "../Services/Cloning";
 import { SearchBar } from "../Components/SearchBar";
 import { Paginator } from "../Components/Paginator";
-import { usePaginator } from "../Components/usePaginator";
+import { usePaginator } from "../Services/usePaginator";
 
 export const UsersPageIds = {
   company: "usersPageCompany",
@@ -103,7 +103,7 @@ export default function UsersPage(){
     let sortedCompanies = MakeClone(allCompanies);
     sortedCompanies.sort((a: Company, b: Company) => a.name.toUpperCase() > b.name.toUpperCase() ? 1 : -1);
     setDisplayCompanies(sortedCompanies.filter(company => company.id !== IntegrityId));
-  },[allCompanies]); 
+  },[allCompanies]);
   
   let currentUserCompanyId = currentUser?.companyId ?? "";
 
@@ -120,12 +120,27 @@ export default function UsersPage(){
 
   useEffect(() => 
   {
-    const filteredUsers = UserFilter(allUsers, radioValue);
+    const filteredUsers = UserFilter(allUsers, radioValue).filter(u => u.companyId !== IntegrityId).filter(u => u.email.toUpperCase().includes(searchedKeyword.toUpperCase()) || u.name?.toUpperCase().includes(searchedKeyword.toUpperCase()));
+    filteredUsers.sort((a: User, b: User) => {
+      let nameA = a.name ?? "";
+      let nameB = b.name ?? "";
+      return nameA.toUpperCase() > nameB.toUpperCase() ? 1 : -1;
+    })
+    filteredUsers.sort((a: User, b: User) => {
+      let companyA = allCompanies.find(c => c.id === a.companyId);
+      let companyB = allCompanies.find(c => c.id === b.companyId);
+
+      if(companyA && companyB)
+        return companyA.name.toUpperCase() > companyB.name.toUpperCase() ? 1 : -1;
+      return 0;
+    });
+
+    const paginatedUsers = paginator.PaginateItems(filteredUsers);
+    setCompanyUsers(paginatedUsers);
     setCurrentCompanyId(currentUserCompanyId);
-    setCompanyUsers(filteredUsers);
-    SetupEditUser(filteredUsers);
+    SetupEditUser(paginatedUsers);
     
-  }, [allUsers, radioValue])
+  }, [allUsers, radioValue, paginator.page, paginator.rowsPerPage, searchedKeyword]);
 
   return (
     <ThemeProvider theme={IntegrityTheme}>
@@ -191,14 +206,10 @@ export default function UsersPage(){
                 </TableRow>
               </TableHead>
               <TableBody data-cy={UsersPageIds.table}>
-                {displayCompanies.map((displayCompany, key) => {
-                  let newUser = usersList.find(u => u.companyId === "");
-                  let companyUserList = usersList.filter(cu => cu.companyId === displayCompany.id)!.filter(u => u.email.toUpperCase().includes(searchedKeyword.toUpperCase()) || u.name?.toUpperCase().includes(searchedKeyword.toUpperCase()));
-                  if (key === 0 && newUser !== undefined)
-                    companyUserList.unshift(newUser);
-                  return (
-                    companyUserList.map((companyUser, key) => {
+                {
+                  usersList.map((companyUser, key) => {
                       let isEdit = InEditMode() && companyUser?.id === userToEdit?.id;
+                      let displayCompany = allCompanies.find(c => c.id === companyUser.companyId)!;
                       return (
                         <TableRow className={defaultRowStyle} key={key} sx={{
                           borderBottom: "1px solid black",
@@ -262,8 +273,8 @@ export default function UsersPage(){
                         </TableRow>
                       );
                     })
-                  );
-                })}
+                  
+                }
               </TableBody>
             </Table>
           </TableContainer>

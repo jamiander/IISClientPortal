@@ -6,6 +6,7 @@ const modalIds = consts.decisionModalIds;
 const alertIds = consts.deleteDecisionAlertIds;
 const radioIds = consts.initiativeDisplayRadioIds;
 const tableIds = consts.initiativeTableIds;
+const pageIds = consts.initiativesPageIds;
 const snackbarId = consts.snackbarId;
 const snackbarWaitTime = consts.snackbarWaitTime;
 const waitTime = 500;
@@ -34,7 +35,7 @@ beforeEach(() => {
   cy.login(user);
 
   cy.getByData(radioIds.all).click();
-  cy.getByData(tableIds.initiativeTitleFilter).type(init.title);
+  cy.getByData(pageIds.initiativeTitleFilter).type(init.title);
   cy.get('table').contains(init.title).then(() => {
     cy.getByData(tableIds.actionMenu.menuButton).click();
     cy.getByData(tableIds.actionMenu.decisionButton).click();

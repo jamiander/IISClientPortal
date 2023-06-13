@@ -22,7 +22,7 @@ describe('add throughput data by manual entry', () => {
     cy.login(user);
 
     cy.getByData(radioIds.all).click();
-    cy.getByData(tableIds.initiativeTitleFilter).type(initiativeTitle);
+    cy.getByData(pageIds.initiativeTitleFilter).type(initiativeTitle);
 
     cy.contains('tr', initiativeTitle).findByData(tableIds.remainingItems).then(($span) => {
       remainingItemsBefore = Number($span.text());
@@ -43,7 +43,7 @@ describe('add throughput data by manual entry', () => {
     cy.getByData(modalIds.closeModalButton).click();
     cy.wait(waitTime);
     cy.getByData(radioIds.all).click();
-    cy.getByData(tableIds.initiativeTitleFilter).clear().type(initiativeTitle);
+    cy.getByData(pageIds.initiativeTitleFilter).clear().type(initiativeTitle);
     cy.contains('tr', initiativeTitle).findByData(tableIds.remainingItems).then(($span) => {
       let remainingItemsAfter = Number($span.text());
       expect(remainingItemsBefore-2).to.be.equal(remainingItemsAfter);

@@ -20,7 +20,7 @@ import { AddButton } from "../Components/AddButton";
 import { MakeClone } from "../Services/Cloning";
 import { SearchBar } from "../Components/SearchBar";
 import { Paginator } from "../Components/Paginator";
-import { usePaginator } from "../Components/usePaginator";
+import { usePaginator } from "../Services/usePaginator";
 
 export const IntegrityPageIds = {
   modal: "adminEditUserModal",
@@ -83,7 +83,6 @@ export function IntegrityPage(){
 
   const paginator = usePaginator();
 
-
   useEffect(() =>
   {
     if(currentUser?.isAdmin && currentUser.companyId === IntegrityId)
@@ -92,13 +91,13 @@ export function IntegrityPage(){
 
   useEffect(() => 
   {
-    const filteredUsers = allUsers.filter(user => user.companyId === IntegrityId);
+    const filteredUsers = allUsers.filter(user => user.companyId === IntegrityId).filter(u => u.email.toUpperCase().includes(searchedKeyword.toUpperCase()) || u.name?.toUpperCase().includes(searchedKeyword.toUpperCase()));
     filteredUsers.sort((a: User, b: User) => a.email.toUpperCase() > b.email.toUpperCase() ? 1 : -1);
     const paginatedUsers = paginator.PaginateItems(filteredUsers);
     setIntegrityUsers(paginatedUsers);
     SetupEditUser(paginatedUsers);
     
-  }, [allUsers,paginator.page,paginator.rowsPerPage]);
+  }, [allUsers,paginator.page, paginator.rowsPerPage, searchedKeyword]);
 
   useEffect(() => {
     let newSortedCompanies = MakeClone(allCompanies);
@@ -169,8 +168,7 @@ export function IntegrityPage(){
                 </TableRow>
               </TableHead>
               <TableBody data-cy={IntegrityPageIds.table}>
-                {usersList.filter(u => u.email.toUpperCase().includes(searchedKeyword.toUpperCase()) || u.name?.toUpperCase().includes(searchedKeyword.toUpperCase()))
-                  .map((displayItem: User, key: number) => {
+                {usersList.map((displayItem: User, key: number) => {
                   let isEdit = InEditMode() && displayItem.id === userToEdit?.id;
                   return (
                     <TableRow className={defaultRowStyle} sx={{
