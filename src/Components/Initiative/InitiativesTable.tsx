@@ -29,6 +29,7 @@ import { InitiativeActionsMenu } from "./InitiativeActionsMenu";
 import { DateToDateInfo, MakeDate } from "../../Services/DateHelpers";
 import { MakeClone } from "../../Services/Cloning";
 import { useSorter } from "../../Services/Sorter";
+import { useEditInitiative } from "../../Services/useEditInitiative";
 
 export const InitiativeTableIds = {
   table: "initiativesTable",
@@ -99,10 +100,36 @@ export default function InitiativesTable(props: InitiativesProps) {
     displayItems
   } = useSorter();
 
+  const {
+    SetupEditInitiative,
+    EnterEditMode,
+    LeaveEditMode,
+    InEditMode,
+    InAddMode,
+    SaveEdit,
+    CancelEdit,
+    initToEditId,
+    currentTitle,
+    setCurrentTitle,
+    currentStartDate,
+    setCurrentStartDate,
+    currentTargetDate,
+    setCurrentTargetDate,
+    currentTotalItems,
+    setCurrentTotalItems,
+    companyToEditId,
+    setCompanyToEditId
+  } = useEditInitiative();
+
   useEffect(() => 
   {
     SetupSortItems(displayItems);
   },[displayItems]) 
+
+  useEffect(() => 
+  {
+    SetupEditInitiative(displayItems);
+  }, [displayItems])
 
   useEffect(() => {
     UpdateDisplayItems();
@@ -243,106 +270,6 @@ export default function InitiativesTable(props: InitiativesProps) {
   let companyInits: Initiative[] = displayItems;
   let totalInits: number = companyInits.length;
 
-  enum stateEnum {
-    start,
-    edit,
-    add
-  }
-
-  const [state, setState] = useState(stateEnum.start);
-  const [initToEditId, setInitToEditId] = useState("");
-  const [currentTitle, setCurrentTitle] = useState("");
-  const [currentStartDate, setCurrentStartDate] = useState<DateInfo>();
-  const [currentTargetDate, setCurrentTargetDate] = useState<DateInfo>();
-  const [currentTotalItems, setCurrentTotalItems] = useState(1);
-  const [companyToEditId, setCompanyToEditId] = useState("");
-  
-  function InEditMode()
-  {
-    return state === stateEnum.edit || state === stateEnum.add;
-  }
-
-  function EnterEditMode(initId: string, companyId: string, displayList: InitCompanyDisplay[], newInit: boolean)
-  {
-    if(!InEditMode())
-    {
-      const currentItem = displayList.find(i => i.id === initId);
-      if(currentItem)
-      {
-        setState(newInit ? stateEnum.add : stateEnum.edit);
-        setInitToEditId(initId);
-        setCompanyToEditId(companyId);  //might not need this
-        setCurrentTitle(currentItem.title);
-        setCurrentStartDate(currentItem.startDate);
-        setCurrentTargetDate(currentItem.targetDate);
-        setCurrentTotalItems(currentItem.totalItems);
-      }
-    }
-  }
-
-  function LeaveEditMode()
-  {
-    setState(stateEnum.start);
-    setInitToEditId("");
-    setCompanyToEditId("");
-  }
-
-  function SaveEdit()
-  {
-    let isTest = false;
-    if((window as any).Cypress)
-      isTest = true;
-
-    const matchingCompany = props.companyList.find(c => c.id === companyToEditId);
-    if(matchingCompany)
-    {
-      let matchingInit = matchingCompany.initiatives.find(i => i.id === initToEditId) ?? displayItems.find(i => i.id === initToEditId);
-      if(matchingInit)
-      {
-        const invalidDate: DateInfo = {
-          day: -1,
-          month: -1,
-          year: -1
-        }
-        let newInitiative: Initiative = {
-          id: matchingInit.id,
-          title: currentTitle,
-          targetDate: currentTargetDate ?? invalidDate,
-          startDate: currentStartDate ?? invalidDate,
-          totalItems: currentTotalItems,
-          itemsCompletedOnDate: matchingInit.itemsCompletedOnDate,
-          decisions: matchingInit.decisions
-        }
-
-        const validation = ValidateNewInitiative(newInitiative, companyToEditId, props.companyList);
-        if(validation.success)
-        {
-          let saveMessage = "Changes have been saved.";
-          if(state === stateEnum.add)
-            saveMessage = "New initiative added!";
-          
-          dispatch(upsertInitiativeInfo({isTest: isTest, initiative: newInitiative, companyId: companyToEditId}));
-          props.setAddInitiative(false);
-          LeaveEditMode();
-          enqueueSnackbar(saveMessage, {variant: "success"});
-        }
-        else
-          enqueueSnackbar(ValidationFailedPrefix + validation.message, {variant: "error"});
-      }
-    }
-  }
-
-  function CancelEdit()
-  {
-    if(state === stateEnum.add && initToEditId !== "")
-    {
-      const displayClone: InitCompanyDisplay[] = displayItems.filter(i => i.id !== initToEditId);
-      SetupSortItems(displayClone);
-    }
-    props.setAddInitiative(false);
-    LeaveEditMode();
-  }
-
   const userCompanyId = props.currentUser?.companyId;
   const isAdmin = props.currentUser?.isAdmin;
 
@@ -409,8 +336,8 @@ export default function InitiativesTable(props: InitiativesProps) {
                     probability.value === 0 ? "Data may be insufficient or may indicate a very low probability of success" :
                       probability.value + "%";
                   
-                  let isEdit = InEditMode() && initToEditId === displayItem.id;
-
+                  let isEdit = props.addInitiative || (InEditMode() && initToEditId === displayItem.id);
+                  console.log(props.addInitiative);
                   return (
                     <Fragment key={index}>
                       <TableRow key={index} className={healthIndicator} sx={{
@@ -424,10 +351,10 @@ export default function InitiativesTable(props: InitiativesProps) {
                         { isEdit ?
                           <>
                             <TableCell data-cy={InitiativeTableIds.companyName}>
-                            {(userCompanyId !== IntegrityId || state !== stateEnum.add) &&
+                            {(userCompanyId !== IntegrityId || !props.addInitiative) &&
                               <>{displayItem.company.name}</>
                             }
-                            {(userCompanyId === IntegrityId && state === stateEnum.add) &&
+                            {(userCompanyId === IntegrityId && props.addInitiative) &&
                               <>
                                 <FormControl fullWidth>
                                   <InputLabel id="company-select-label">Select Company</InputLabel>
@@ -460,7 +387,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                               <InitiativeActionsMenu cypressData={InitiativeTableIds.actionMenu} disabled={true} allCompanies={props.companyList} company={displayItem.company} initiative={displayItem} isAdmin={false}/>
                             </TableCell>
                             <TableCell className="w-1/12">
-                              <IconButton data-cy={InitiativeTableIds.saveChangesButton} onClick={() => SaveEdit()}>
+                              <IconButton data-cy={InitiativeTableIds.saveChangesButton} onClick={() => SaveEdit(props.companyList)}>
                                 <DoneIcon sx={{fontSize: tableButtonFontSize}}/>
                               </IconButton>
                               <IconButton data-cy={InitiativeTableIds.cancelChangesButton} onClick={() => CancelEdit()}>
