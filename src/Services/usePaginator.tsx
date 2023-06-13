@@ -10,12 +10,12 @@ export type PaginatorType = {
   HandlePaginationChange: (event: any, page: number) => void
 }
 
-export function usePaginator(): PaginatorType
+export function usePaginator(rowsPerPageOptionsOverride: number[] = [5,10,25]): PaginatorType
 {
   const firstPage = 1;
   const [page, setPage] = useState(firstPage);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const rowsPerPageOptions = [5,10,25,50];
+  const rowsPerPageOptions = rowsPerPageOptionsOverride;
   const [count, setCount] = useState(0);
 
   function HandleRowsPerPageChange(value: string)
