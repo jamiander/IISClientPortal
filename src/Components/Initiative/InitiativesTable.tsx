@@ -30,6 +30,8 @@ import { DateToDateInfo, MakeDate } from "../../Services/DateHelpers";
 import { MakeClone } from "../../Services/Cloning";
 import { useSorter } from "../../Services/Sorter";
 import { useEditInitiative } from "../../Services/useEditInitiative";
+import { usePaginator } from "../../Services/usePaginator";
+import { Paginator } from "../Paginator";
 
 export const InitiativeTableIds = {
   table: "initiativesTable",
@@ -88,11 +90,9 @@ export interface SortConfig {
 export default function InitiativesTable(props: InitiativesProps) {
   const dispatch = useAppDispatch();
   const [sortConfig, setSortConfig] = useState<SortConfig>({key: '', direction: 'desc'});
-  const resultsLimitOptions: number[] = [5, 10, 25];
-  const [pageNumber, setPageNumber] = useState(1);
-  const [pageCount, setPageCount] = useState(1);
-  const [resultsLimit, setResultsLimit] = useState(10);
+  const paginator = usePaginator();
   const [initiativesLoaded, setInitiativesLoaded] = useState(false);
+  const [currentItems, setCurrentItems] = useState<InitCompanyDisplay[]>([]);
 
   const {
     SetupSortItems,
@@ -124,12 +124,13 @@ export default function InitiativesTable(props: InitiativesProps) {
   useEffect(() => 
   {
     SetupSortItems(displayItems);
-  },[displayItems]) 
-
-  useEffect(() => 
-  {
     SetupEditInitiative(displayItems);
-  }, [displayItems])
+  },[displayItems])
+
+  useEffect(() => {
+    const paginatedItems = paginator.PaginateItems(displayItems);
+    setCurrentItems(paginatedItems);
+  }, [displayItems,paginator.page,paginator.rowsPerPage])
 
   useEffect(() => {
     UpdateDisplayItems();
@@ -206,7 +207,6 @@ export default function InitiativesTable(props: InitiativesProps) {
     SetupSortItems(displayList);
     setInitiativesLoaded(true);
     LeaveEditMode();
-    ResetPageNumber();
   }
 
   function getHealthIndicator(probability: number | undefined)
@@ -218,25 +218,9 @@ export default function InitiativesTable(props: InitiativesProps) {
 
   function ResetPageNumber()
   {
-    setPageNumber(1);
+    paginator.HandlePaginationChange(null,1);
   }
 
-  const indexOfLastItem = pageNumber * resultsLimit;
-  const indexOfFirstItem = indexOfLastItem - resultsLimit;
-  const currentItems = displayItems.slice(indexOfFirstItem, indexOfLastItem);
-
-  useEffect(() => {
-    const count = Math.ceil(displayItems.length/resultsLimit);
-    setPageCount(count);
-    if(count < pageNumber && count > 0)
-    {
-      setPageNumber(count);
-    }
-  },[displayItems,resultsLimit]);
-
-  const handlePaginationChange = (event: any, value: any) => {
-    setPageNumber(value);
-  };
 
   interface SortProps {
     sortKey: string
@@ -426,28 +410,7 @@ export default function InitiativesTable(props: InitiativesProps) {
               </TableBody>
             </Table>
           </TableContainer>
-          <div className="flex p-2 items-center">
-            <p>Rows per page</p>
-            <select value={resultsLimit} onChange={(e) => { setResultsLimit(parseInt(e.target.value)); ResetPageNumber(); } }
-              className='mx-2 rounded-md border border-gray-200 hover:bg-gray-100'>
-              {resultsLimitOptions.map((limit, index) => {
-                return (
-                  <option key={index} value={limit}>
-                    {limit}
-                  </option>
-                );
-              })}
-            </select>
-            <div className="flex pl-2">
-              <Pagination
-                className="my-3"
-                count={pageCount}
-                page={pageNumber}
-                variant="outlined"
-                shape="rounded"
-                onChange={handlePaginationChange} />
-            </div>
-          </div>
+          <Paginator paginator={paginator}/>
         </div>}
       </div>
       {totalInits === 0 && initiativesLoaded === true && <div className="m-2 p-2 text-3xl font-bold">No Initiatives to Display</div>}
