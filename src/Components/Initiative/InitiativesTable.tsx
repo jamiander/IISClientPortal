@@ -13,7 +13,6 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import TableSortLabel from '@mui/material/TableSortLabel';
-import Pagination from "@mui/material/Pagination";
 import ImportExportIcon from '@mui/icons-material/ImportExport';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { FormControl, IconButton, Input, InputLabel, MenuItem, Select } from "@mui/material";
@@ -21,10 +20,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { v4 } from "uuid";
-import { useAppDispatch } from "../../Store/Hooks";
 import { User } from "../../Store/UserSlice";
-import { enqueueSnackbar } from "notistack";
-import ValidateNewInitiative, { ValidationFailedPrefix } from "../../Services/Validation";
 import { InitiativeActionsMenu } from "./InitiativeActionsMenu";
 import { DateToDateInfo, MakeDate } from "../../Services/DateHelpers";
 import { MakeClone } from "../../Services/Cloning";
@@ -88,10 +84,8 @@ export interface SortConfig {
 }
 
 export default function InitiativesTable(props: InitiativesProps) {
-  const dispatch = useAppDispatch();
   const paginator = usePaginator();
   const [initiativesLoaded, setInitiativesLoaded] = useState(false);
-  const [currentItems, setCurrentItems] = useState<InitCompanyDisplay[]>([]);
 
   const {
     SetupSortItems,
@@ -123,8 +117,9 @@ export default function InitiativesTable(props: InitiativesProps) {
 
   useEffect(() => 
   {
-    SetupEditInitiative(sortedDisplayItems);
-  }, [sortedDisplayItems])
+    const paginatedItems = paginator.PaginateItems(sortedDisplayItems);
+    SetupEditInitiative(paginatedItems);
+  }, [sortedDisplayItems,paginator.page,paginator.rowsPerPage])
 
   useEffect(() => {
     UpdateDisplayItems();
@@ -307,7 +302,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                 </TableRow>
               </TableHead>
               <TableBody data-cy={InitiativeTableIds.table}>
-                {currentItems.map((displayItem, index) => {
+                {displayItems.map((displayItem, index) => {
                   let probability = { value: displayItem.probabilityValue, status: displayItem.probabilityStatus };
                   let healthIndicator =  getHealthIndicator(probability.value);
                   let tooltipMessage = probability.value === undefined ? probability.status :
