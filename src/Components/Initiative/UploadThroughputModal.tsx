@@ -5,6 +5,7 @@ import { ValidationFailedPrefix } from "../../Services/Validation";
 import { enqueueSnackbar } from "notistack";
 import { BaseInitiativeModal } from "./BaseInitiativeModal";
 import { FileUpload } from "../FileUpload";
+import { Typography } from "@mui/material";
 
 export const UploadThroughputIds = {
   modal: "uploadThroughputModal",
@@ -99,7 +100,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){
         }
         
         if(isWarning)
-          warningMessage = 'Warning: This file contains data that is not properly formatted. Entries that are not provided as "MM/DD/YYYY, #itemsCompleted" will be ignored.';
+          warningMessage = 'Warning: This file contains data that is not properly formatted. Entries that are not provided in proper format will be ignored.';
 
         setFileWarning(warningMessage);
         setFileData(parseData);
@@ -126,7 +127,9 @@ export default function UploadThroughputModal(props:ThroughputModalProps){
       subtitle={`${props.company.name}${props.initiative ? ` - ${props.initiative.title}` : ``}`}
     >
       <div className="space-y-5">
-        {fileWarning}
+        <Typography>Submit a .csv file formatted as follows:</Typography>
+        <Typography>Date, ItemsCompleted<br/>MM/DD/YYYY, #itemsCompleted<br/>MM/DD/YYYY, #itemsCompleted<br/>...</Typography>
+        <Typography>{fileWarning}</Typography>
         <div className="flex">
           <FileUpload cypressData={UploadThroughputIds.fileUpload} accept={'.csv'} file={file} setFile={ReceiveFile} isUploading={isUploading} UploadFile={UploadFile}/>
         </div>
