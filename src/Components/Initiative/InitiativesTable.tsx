@@ -87,7 +87,6 @@ export interface SortConfig {
 
 export default function InitiativesTable(props: InitiativesProps) {
   const dispatch = useAppDispatch();
-  const [sortConfig, setSortConfig] = useState<SortConfig>({key: '', direction: 'desc'});
   const resultsLimitOptions: number[] = [5, 10, 25];
   const [pageNumber, setPageNumber] = useState(1);
   const [pageCount, setPageCount] = useState(1);
@@ -97,7 +96,8 @@ export default function InitiativesTable(props: InitiativesProps) {
   const {
     SetupSortItems,
     SortItems,
-    displayItems
+    sortedDisplayItems,
+    sortConfig
   } = useSorter();
 
   const {
@@ -105,7 +105,6 @@ export default function InitiativesTable(props: InitiativesProps) {
     EnterEditMode,
     LeaveEditMode,
     InEditMode,
-    InAddMode,
     SaveEdit,
     CancelEdit,
     initToEditId,
@@ -118,18 +117,14 @@ export default function InitiativesTable(props: InitiativesProps) {
     currentTotalItems,
     setCurrentTotalItems,
     companyToEditId,
-    setCompanyToEditId
+    setCompanyToEditId,
+    displayItems
   } = useEditInitiative();
 
   useEffect(() => 
   {
-    SetupSortItems(displayItems);
-  },[displayItems]) 
-
-  useEffect(() => 
-  {
-    SetupEditInitiative(displayItems);
-  }, [displayItems])
+    SetupEditInitiative(sortedDisplayItems);
+  }, [sortedDisplayItems])
 
   useEffect(() => {
     UpdateDisplayItems();
@@ -138,7 +133,7 @@ export default function InitiativesTable(props: InitiativesProps) {
   useEffect(() => {
     if(!InEditMode() && props.addInitiative === true)
     {
-      const displayClone = MakeClone(displayItems);
+      const displayClone = MakeClone(sortedDisplayItems);
       const myUuid = v4();
       const todayInfo = DateToDateInfo(new Date());
       const date = new Date();
@@ -179,7 +174,7 @@ export default function InitiativesTable(props: InitiativesProps) {
     }
     if (sortConfig.key != key) sortConfig.key = key;
     sortConfig.direction = direction;
-    SortItems(sortConfig);
+    SortItems(sortConfig, sortedDisplayItems);
     ResetPageNumber();
   }
 
@@ -336,8 +331,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                     probability.value === 0 ? "Data may be insufficient or may indicate a very low probability of success" :
                       probability.value + "%";
                   
-                  let isEdit = props.addInitiative || (InEditMode() && initToEditId === displayItem.id);
-                  console.log(props.addInitiative);
+                  let isEdit = InEditMode() && initToEditId === displayItem.id;
                   return (
                     <Fragment key={index}>
                       <TableRow key={index} className={healthIndicator} sx={{

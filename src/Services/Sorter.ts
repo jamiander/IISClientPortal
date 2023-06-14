@@ -4,25 +4,25 @@ import { InitCompanyDisplay, SortConfig } from "../Components/Initiative/Initiat
   
 type SortItems = {
     SetupSortItems: (sortItems: InitCompanyDisplay[]) => void
-    SortItems: (sortConfig: SortConfig) => void
-    displayItems: InitCompanyDisplay[]
+    SortItems: (sortConfig: SortConfig, sortedDisplayItems: InitCompanyDisplay[]) => void
+    sortedDisplayItems: InitCompanyDisplay[]
     sortConfig: SortConfig
 }
 
 export function useSorter() : SortItems
   {
-    const [displayItems, setDisplayItems] = useState<InitCompanyDisplay[]>([]);
+    const [sortedDisplayItems, setSortedDisplayItems] = useState<InitCompanyDisplay[]>([]);
     const [sortConfig, setSortConfig] = useState<SortConfig>({key: '', direction: 'desc'});
 
     function SetupSortItems(sortItems: InitCompanyDisplay[])
     {
-        setDisplayItems(sortItems);
         setSortConfig(sortConfig);
+        SortItems(sortConfig, sortItems)
     }
 
-    function SortItems(sortConfig: SortConfig)
+    function SortItems(sortConfig: SortConfig, sortedDisplayItems: InitCompanyDisplay[])
     {
-        let sortedItemsClone = MakeClone(displayItems);
+        let sortedItemsClone = MakeClone(sortedDisplayItems);
     
         sortedItemsClone.sort((a: any, b: any) => {
         let aValue = a[sortConfig.key];
@@ -44,13 +44,13 @@ export function useSorter() : SortItems
             return sortConfig.direction === 'asc' ? 1 : -1;
             return 0; 
         })
-        setDisplayItems(sortedItemsClone);
+        setSortedDisplayItems(sortedItemsClone);
     }
 
     return {
         SetupSortItems,
         SortItems,
-        displayItems,
+        sortedDisplayItems,
         sortConfig
     }
 }

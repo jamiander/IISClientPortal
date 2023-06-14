@@ -49,14 +49,15 @@ export function useEditInitiative() : EditInitiative
     const [currentTotalItems, setCurrentTotalItems] = useState(1);
     const [companyToEditId, setCompanyToEditId] = useState("");
     const [addInitiative, setAddInitiative] = useState(true);
-    const [initiativesList, setInitiativesList] = useState<InitCompanyDisplay[]>([])
-    const [companyList, setCompanyList] = useState<Company[]>([])
+/*     const [initiativesList, setInitiativesList] = useState<InitCompanyDisplay[]>([])
+ */    const [companyList, setCompanyList] = useState<Company[]>([])
     const [displayItems, setDisplayItems] = useState<InitCompanyDisplay[]>([])
+    
     function SetupEditInitiative(initiatives: InitCompanyDisplay[])
     {
-        setInitiativesList(initiatives);
-        LeaveEditMode();
-    }
+        setDisplayItems(initiatives);
+/*         LeaveEditMode();
+ */    }
   
     function InEditMode()
     {
@@ -139,10 +140,13 @@ export function useEditInitiative() : EditInitiative
 
     function CancelEdit()
     {
+        console.log(state);
         if(state === stateEnum.add && initToEditId !== "")
         {
-        const displayClone: InitCompanyDisplay[] = displayItems.filter(i => i.id !== initToEditId);
-        setDisplayItems(displayClone);
+            console.log(initToEditId);
+            const displayClone: InitCompanyDisplay[] = displayItems.filter(i => i.id !== initToEditId);
+            console.log(displayClone);
+            setDisplayItems(displayClone);
         }
         setAddInitiative(false);
         LeaveEditMode();
