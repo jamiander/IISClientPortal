@@ -245,6 +245,7 @@ export default function InitiativesTable(props: InitiativesProps) {
 
   const userCompanyId = props.currentUser?.companyId;
   const isAdmin = props.currentUser?.isAdmin;
+  const isIntegrityUser = userCompanyId === IntegrityId;
 
   return (
     <>
@@ -257,7 +258,9 @@ export default function InitiativesTable(props: InitiativesProps) {
           <TableContainer elevation={12} component={Paper}>
             <Table className="table-auto w-full outline outline-3 bg-gray-100">
               <colgroup>
-                <col style={{ width: '24vw' }} />
+                {isIntegrityUser &&
+                  <col style={{ width: '24vw' }} />
+                }
                 <col style={{ width: '24vw' }} />
                 <col style={{ width: '16vw' }} />
                 <col style={{ width: '16vw' }} />
@@ -278,9 +281,11 @@ export default function InitiativesTable(props: InitiativesProps) {
                     fontFamily: "Arial, Helvetica"
                   }
                 }}>
-                  <TableHeaderStyle>
-                    <SortLabel heading="Company" sortKey='companyName'/>
-                  </TableHeaderStyle>
+                  {isIntegrityUser &&
+                    <TableHeaderStyle>
+                      <SortLabel heading="Company" sortKey='companyName'/>
+                    </TableHeaderStyle>
+                  }
                   <TableHeaderStyle>
                     <SortLabel heading="Title" sortKey='title'/>
                   </TableHeaderStyle>
@@ -322,29 +327,33 @@ export default function InitiativesTable(props: InitiativesProps) {
                       }}>
                         { isEdit ?
                           <>
-                            <TableCell data-cy={InitiativeTableIds.companyName}>
-                            {(userCompanyId !== IntegrityId || !props.addInitiative) &&
-                              <>{displayItem.company.name}</>
+                            {isIntegrityUser &&
+                              <TableCell data-cy={InitiativeTableIds.companyName}>
+                              {!props.addInitiative &&
+                                <>
+                                  {displayItem.companyName}
+                                </>
+                              }
+                              {props.addInitiative &&
+                                <>
+                                  <FormControl fullWidth>
+                                    <InputLabel id="company-select-label">Select Company</InputLabel>
+                                    <Select sx={{fontSize: tableCellFontSize}} data-cy={InitiativeTableIds.companySelect} labelId="company-select-label" label="Select company" value={companyToEditId} onChange={(e) => setCompanyToEditId(e.target.value)}>
+                                      {
+                                        props.companyList.map((company,index) => {
+                                          return (
+                                            <MenuItem sx={{fontSize: tableCellFontSize}} key={index} value={company.id}>
+                                              {company.name}
+                                            </MenuItem>
+                                          )
+                                        })
+                                      }
+                                    </Select>
+                                  </FormControl>
+                                </>
+                              }
+                              </TableCell>
                             }
-                            {(userCompanyId === IntegrityId && props.addInitiative) &&
-                              <>
-                                <FormControl fullWidth>
-                                  <InputLabel id="company-select-label">Select Company</InputLabel>
-                                  <Select sx={{fontSize: tableCellFontSize}} data-cy={InitiativeTableIds.companySelect} labelId="company-select-label" label="Select company" value={companyToEditId} onChange={(e) => setCompanyToEditId(e.target.value)}>
-                                    {
-                                      props.companyList.map((company,index) => {
-                                        return (
-                                          <MenuItem sx={{fontSize: tableCellFontSize}} key={index} value={company.id}>
-                                            {company.name}
-                                          </MenuItem>
-                                        )
-                                      })
-                                    }
-                                  </Select>
-                                </FormControl>
-                              </>
-                            }
-                            </TableCell>
                             <TableCell>
                               <Input sx={{fontSize: tableCellFontSize}} data-cy={InitiativeTableIds.editInitiativeTitle} value={currentTitle} onChange={(e) => setCurrentTitle(e.target.value)}/>
                             </TableCell>
@@ -369,7 +378,9 @@ export default function InitiativesTable(props: InitiativesProps) {
                           </>
                           :
                           <>
-                            <TableCell data-cy={InitiativeTableIds.companyName} sx={{fontSize: tableCellFontSize}}>{displayItem.company.name}</TableCell>
+                            {isIntegrityUser &&
+                              <TableCell data-cy={InitiativeTableIds.companyName} sx={{fontSize: tableCellFontSize}}>{displayItem.company.name}</TableCell>
+                            }
                             <TableCell data-cy={InitiativeTableIds.initiativeTitle}>{displayItem.title}</TableCell>
                             <TableCell data-cy={InitiativeTableIds.startDate}>{displayItem.startDate.month + "/" + displayItem.startDate.day + "/" + displayItem.startDate.year}</TableCell>
                             <TableCell data-cy={InitiativeTableIds.targetDate}>{displayItem.targetDate.month + "/" + displayItem.targetDate.day + "/" + displayItem.targetDate.year}</TableCell>
