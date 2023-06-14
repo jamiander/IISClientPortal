@@ -113,7 +113,7 @@ export default function InitiativesTable(props: InitiativesProps) {
     companyToEditId,
     setCompanyToEditId,
     displayItems
-  } = useEditInitiative();
+  } = useEditInitiative(props.setAddInitiative);
 
   useEffect(() => 
   {

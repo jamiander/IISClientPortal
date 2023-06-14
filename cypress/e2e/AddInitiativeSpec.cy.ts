@@ -46,7 +46,7 @@ describe('add initiative spec', () => {
         const existingInitTitle = $txt;
 
         cy.getByData(pageIds.addInitiativeButton).click();
-        cy.getByData(tableIds.editInitiativeTitle).clear().type(existingInitTitle);
+        cy.getByData(tableIds.editInitiativeTitle).find('input').clear().type(existingInitTitle);
         cy.getByData(tableIds.editStartDate).setDatePicker(init.startDate);
         cy.getByData(tableIds.editTargetDate).setDatePicker(init.targetDate);
         cy.getByData(tableIds.editTotalItems).clear().type(init.totalItems);
