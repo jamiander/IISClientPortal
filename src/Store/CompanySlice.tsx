@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { DateInfo, ThroughputData, DecisionData, UpsertCompanyInfo, UpsertCompanyInfoRequest, UpsertInitiativeInfo, UpsertInitiativeInfoRequest, UpsertThroughputData, UpsertThroughputDataRequest, UpsertDecisionDataRequest, UpsertDecisionData, DeleteDecisionDataRequest, DeleteDecisionData, GetCompanyByIdRequest, GetCompanyById, GetCompanyByInitiativeIds, GetCompanyByInitiativeIdsRequest } from "../Services/CompanyService"
 import { RootState } from "./Store"
+import { MakeClone } from "../Services/Cloning"
 
 export interface Company {
   id: string,
@@ -91,7 +92,7 @@ export const upsertCompanyInfo = createAsyncThunk(
       
     if (response.status.toUpperCase().includes('FAILED'))
       throw Error;
-    let newCompany: Company = JSON.parse(JSON.stringify(args.company));
+    let newCompany: Company = MakeClone(args.company);
     //newCompany.id = response.id;
   
     return newCompany;
