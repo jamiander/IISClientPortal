@@ -15,7 +15,8 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import DeleteIcon from '@mui/icons-material/Delete';
 import SearchIcon from '@mui/icons-material/Search';
 import { MakeClone } from "../../Services/Cloning";
-import { current } from "@reduxjs/toolkit";
+import {v4 as UuidV4} from "uuid";
+import { enqueueSnackbar } from "notistack";
 
 enum stateEnum {
     start,
@@ -54,6 +55,8 @@ interface ArticleDataProps {
     updatedDate: DateInfo
     updatedBy: string
     isIntegrityOnly: boolean
+    company: Company
+    initiative: Initiative
     isOpen: boolean
     isAdmin: boolean
     setArticleModalIsOpen: (value: boolean) => void
@@ -80,8 +83,10 @@ export default function ArticleDataModal(props: ArticleDataProps) {
     const [currentText, setCurrentText] = useState("");
     const [currentUpdatedDate, setCurrentUpdatedDate] = useState<DateInfo>();
     const [currentUpdatedBy, setCurrentUpdatedBy] = useState("");
-    const [selectedInitiative, setSelectedInitiative] = useState<Initiative>();
-    const [selectedCompany, setSelectedCompany] = useState<Company>();
+    const [currentInitiativeId, setCurrentInitiativeId] = useState("");
+    const [currentCompanyId, setCurrentCompanyId] = useState("");
+    const [selectedInitiative, setSelectedInitiative] = useState<Initiative>(props.initiative);
+    const [selectedCompany, setSelectedCompany] = useState<Company>(props.company);
     const [articleToEdit, setArticleToEdit] = useState<Article>();
 
     const InEditMode = () => modalState === stateEnum.edit || modalState === stateEnum.add;
@@ -91,47 +96,90 @@ export default function ArticleDataModal(props: ArticleDataProps) {
     const [isLoading, setIsLoading] = useState(false);
     const [filteredArticles, setFilteredArticles] = useState<Article[]>([]);
 
-    const allArticles: Article[] = [{id:"id", title:"title", text:"text", updatedDate: todayInfo, updatedBy:"updatedBy", companyId:"companyId", initiativeId:"initiativeId", isIntegrityOnly:false}];
+    const allArticles: Article[] = [{id:"id", title:"title", text:"text", updatedDate: todayInfo, updatedBy:"updatedBy", companyId:"companyId", initiativeId:"8b9dfc4e-2e79-4477-ade0-74c3234fbf86", isIntegrityOnly:false},
+    {id:"id", title:"Testing Article", text:"Article for testing purposes", updatedDate: todayInfo, updatedBy:"Jamie", companyId:"secondCompany", initiativeId:"653da209-3345-4213-882c-42e663b28186", isIntegrityOnly:false}];
+
+    useEffect(() => {
+        setSelectedInitiative(props.initiative);
+        setSelectedCompany(props.company);
+        setIsLoading(false);
+        LeaveEditMode();
+    },[props.isOpen])
 
     useEffect(() => {
         setFilteredArticles(allArticles.filter(
-            a => a.companyId === selectedInitiative?.id &&
-            a.title.toUpperCase().includes(searchedKeyword.toUpperCase())
+            a => a.initiativeId === selectedInitiative?.id &&
+            (a.title.toUpperCase().includes(searchedKeyword.toUpperCase())
             || a.text.toUpperCase().includes(searchedKeyword.toUpperCase())
-        ));
-    },[selectedInitiative])
+            )) 
+        );
+    },[selectedInitiative,searchedKeyword])
 
-    function HandleEmptyArticle(): void {
-        throw new Error("Function not implemented.");
+    function HandleEmptyArticle(){
+        if(modalState === stateEnum.start)
+        {
+            let articlesClone = MakeClone(filteredArticles);
+            let newId = UuidV4();
+            let newArticle: Article = {
+                id: newId, 
+                title: "", 
+                text: "", 
+                updatedBy: "", 
+                updatedDate: todayInfo,
+                companyId: selectedCompany.id,
+                initiativeId: selectedInitiative?.id,
+                isIntegrityOnly: false
+            };
+            articlesClone.unshift(newArticle);
+            setSearchedKeyword("");
+            setFilteredArticles(articlesClone);
+            EnterEditMode(newId,articlesClone,true);
+        }
+        else
+            enqueueSnackbar("Save current changes before adding a new article.", {variant: "error"});
     }
     function HandleEditArticle(id: string, currentTitle: string, currentText: string, currentUpdatedBy: string, currentUpdatedDate: DateInfo): void {
         throw new Error("Function not implemented.");
     }
 
-    function HandleCancelEdit(): void {
-        throw new Error("Function not implemented.");
+    function HandleCancelEdit() {
+        if(modalState === stateEnum.add && articleToEdit)
+        {
+            let articleClone: Article = MakeClone(articleToEdit);
+            articleClone = allArticles.find(a => a.id !== articleToEdit.id)!;
+            setArticleToEdit(articleClone);
+        }
+        LeaveEditMode();
     }
+
+    function LeaveEditMode() {
+        setArticleToEdit(undefined);
+        setModalState(stateEnum.start);
+    }
+    
 
     function HandleAttemptDelete(id: string): void {
         throw new Error("Function not implemented.");
     }
 
     function EnterEditMode(id: string, articles: Article[], isNew: boolean)
-  {
-    if(!InEditMode())
     {
-      let currentArticle = allArticles.find(u => u.id === id);
-      if(currentArticle)
-      {
-        setModalState(isNew ? stateEnum.add : stateEnum.edit);
-        setArticleToEdit(currentArticle);
-        setCurrentTitle(currentArticle.title);
-        setCurrentText(currentArticle.text);
-        setCurrentUpdatedBy(currentArticle.updatedBy);
-        setCurrentUpdatedDate(currentArticle.updatedDate);
-      }
+        if(!InEditMode())
+        {
+            let currentArticle = articles.find(u => u.id === id);
+            if(currentArticle)
+        {
+            setModalState(isNew ? stateEnum.add : stateEnum.edit);
+            setArticleToEdit(currentArticle);
+            setCurrentTitle(currentArticle.title);
+            setCurrentText(currentArticle.text);
+            setCurrentInitiativeId(currentArticle.initiativeId ?? "");
+            setCurrentCompanyId(currentArticle.companyId);
+            setCurrentUpdatedBy(currentArticle.updatedBy);
+            setCurrentUpdatedDate(currentArticle.updatedDate);
+        }
+        }
     }
-  }
 
     return (
         <>
@@ -140,7 +188,7 @@ export default function ArticleDataModal(props: ArticleDataProps) {
         onClose={()=>props.setArticleModalIsOpen(false)}
         cypressData={{modal: ArticleModalIds.modal, closeModalButton: ArticleModalIds.closeModalButton}}
         title="Articles"
-        subtitle={"Related Articles"}
+        subtitle={selectedCompany?.name}
         maxWidth={false}
         >
         <div className="mx-1 mb-2">
@@ -193,12 +241,9 @@ export default function ArticleDataModal(props: ArticleDataProps) {
               spacing={4}
               data-cy={ArticleModalIds.grid}>
               {
-              filteredArticles.map((displayItem, key) => {
+                filteredArticles.map((displayItem, key) => {
                 let matched = displayItem.id === (articleToEdit?.id ?? -1);
                 let isEdit = matched && InEditMode();
-                
-                  
-
                 return(
                   <Grid item md={6} lg={4} key={key}>
                     <Item>
@@ -206,7 +251,7 @@ export default function ArticleDataModal(props: ArticleDataProps) {
                         <StyledCardContent>
                           {isEdit ?
                           <>
-                            <label className={labelStyle} htmlFor="title">Article Title</label>
+                            <label className={labelStyle} htmlFor="title">Title</label>
                             <StyledTextarea id="title" data-cy={ArticleModalIds.editTitle} value={currentTitle} onChange={e => setCurrentTitle(e.target.value)}/>
                             <label className={labelStyle} htmlFor="text">Content</label>
                             <StyledTextarea id="text" data-cy={ArticleModalIds.editText} value={currentText} onChange={e => setCurrentText(e.target.value)}/>
@@ -216,11 +261,11 @@ export default function ArticleDataModal(props: ArticleDataProps) {
                           </>
                           :
                           <>
-                            <label className={labelStyle} htmlFor="description">Article Title</label>
+                            <label className={labelStyle} htmlFor="description">Title</label>
                             <StyledTextarea id="title" data-cy={ArticleModalIds.title} disabled value={displayItem.title}/>
                             <label className={labelStyle} htmlFor="text">Content</label>
                             <StyledTextarea id="text" data-cy={ArticleModalIds.text} disabled value={displayItem.text}/>
-                            <label className={labelStyle} htmlFor="text">Content</label>
+                            <label className={labelStyle} htmlFor="text">Updated By</label>
                             <StyledTextarea id="updatedby" data-cy={ArticleModalIds.updatedBy} disabled value={displayItem.updatedBy}/>
                             <DateInput cypressData={ArticleModalIds.updatedDate} label="Date Updated" disabled={true} date={displayItem.updatedDate} setDate={setCurrentUpdatedDate}/>
                           </>
@@ -270,3 +315,4 @@ export default function ArticleDataModal(props: ArticleDataProps) {
       </>
   );
 }
+

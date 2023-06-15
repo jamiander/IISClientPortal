@@ -33,7 +33,6 @@ export function BaseInitiativeModal(props: BaseInitiativeModalProps)
           fullWidth
           maxWidth={props.maxWidth}
           data-cy={props.cypressData.modal}
-          sx={{ outlineColor: 'blue'}}
         >
           <Paper sx={{backgroundColor: "#E4E1E5"}} elevation={5}>
             <DialogTitle sx={{width: "100%"}}>

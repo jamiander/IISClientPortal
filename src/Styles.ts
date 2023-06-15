@@ -186,8 +186,9 @@ export const TableHeaderStyle =
   export const StyledTextarea =
   styled(TextareaAutosize)(() => ({
     width: "100%",
-    borderColor: '#4A90E2',
+    borderColor: '#65665E',
     borderWidth: 1, 
+    borderRadius: 1,
     marginBottom: 10,
     padding: "0.5rem"
   }));
