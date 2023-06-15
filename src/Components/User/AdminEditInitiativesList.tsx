@@ -25,7 +25,7 @@ export function AdminEditInitiativesList(props: AdminEditInitiativesListProps)
       <ThemeProvider theme={IntegrityTheme}>
         <UserItem> 
           <Accordion expanded={expanded}>
-            <AccordionSummary className={"hover:bg-[#E4E1E5]"} expandIcon={<ExpandMore />} onClick={() => setExpanded(!expanded)}>
+            <AccordionSummary className={"hover:bg-[#69D5C3]"} expandIcon={<ExpandMore />} onClick={() => setExpanded(!expanded)}>
               <p className={`text-xl ${isCompanyChecked ? "font-bold" : ""}`}>
                 {props.company.name}
               </p>

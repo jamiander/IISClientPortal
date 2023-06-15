@@ -45,7 +45,7 @@ export default function InitiativesPage(){
               mt: 2,
               ml: 2,
               mr: 2,
-              borderRadius: 1, }}>
+              borderRadius: 1 }}>
             <Grid item xs={3}>
               <div className="mb-1">
                 <SearchBar cypressData={InitiativesPageIds.companyNameFilter} placeholder="Filter by Company" value={searchedComp} setValue={setSearchedComp} />

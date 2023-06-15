@@ -33,9 +33,9 @@ export function BaseInitiativeModal(props: BaseInitiativeModalProps)
           fullWidth
           maxWidth={props.maxWidth}
           data-cy={props.cypressData.modal}
-          sx={{}}
+          sx={{ outlineColor: 'blue'}}
         >
-          <Paper sx={{backgroundColor: "#E4E1E5"}} elevation={3}>
+          <Paper sx={{backgroundColor: "#E4E1E5"}} elevation={5}>
             <DialogTitle sx={{width: "100%"}}>
               <Grid container display="flex" columns={12} alignItems="center" justifyContent="space-between" wrap="nowrap">
                 <Grid item xs={3}>
@@ -53,7 +53,7 @@ export function BaseInitiativeModal(props: BaseInitiativeModalProps)
                 </Grid>
                 <Grid item xs={3} zeroMinWidth>
                   {props.saveButton &&
-                    <Button color="darkBlue" sx={{
+                    <Button sx={{
                       position: "absolute",
                       right: 8,
                       top: 8

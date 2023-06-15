@@ -19,7 +19,7 @@ export function DocumentManagementButton(props: DocumentManagementButtonProps)
   return (
     <div>
       <ThemeProvider theme={IntegrityTheme}>
-        <Button variant="outlined" color="darkBlue" data-cy={props.cypressData} disabled={props.disabled} onClick={() => setIsOpen(true)}>
+        <Button variant="outlined" style={{outlineColor: 'blue'}} data-cy={props.cypressData} disabled={props.disabled} onClick={() => setIsOpen(true)}>
           Documents
         </Button>
       </ThemeProvider>

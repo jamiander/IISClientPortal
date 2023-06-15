@@ -18,7 +18,7 @@ export function EditUserInitiativesButton(props: EditUserInitiativesButtonProps)
 
   return (
     <ThemeProvider theme={IntegrityTheme}>
-      <Button variant="outlined" color={"darkBlue"} onClick={() => setIsOpen(true)}>Initiatives</Button>
+      <Button variant="outlined" style={{outlineColor: 'blue'}} onClick={() => setIsOpen(true)}>Initiatives</Button>
       <EditUserInitiativesModal SubmitUserData={props.SubmitUserData} user={props.user} allCompanies={props.allCompanies} isOpen={isOpen} setIsOpen={setIsOpen} expanded={props.expanded}/>
     </ThemeProvider>
   )

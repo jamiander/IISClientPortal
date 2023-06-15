@@ -54,12 +54,11 @@ export function FileUpload(props: FileUploadProps)
         data-cy={props.cypressData.fileInput}
       />
       <span className="h-full align-middle">
-        <Button data-cy={props.cypressData.chooseFileButton} color="darkBlue" variant="outlined" onClick={() => fileRef.current?.click()}>
+        <Button data-cy={props.cypressData.chooseFileButton} style={{outlineColor: 'blue'}} variant="outlined" onClick={() => fileRef.current?.click()}>
           Choose File
         </Button>
         <span className="mx-2">{props.file?.name ?? "No file selected"}</span>
-        <Button data-cy={props.cypressData.submitButton} color="darkBlue" variant="contained" disabled={!CanUpload(props.file)} onClick={() => HandleUpload()}>
-          {/*<UploadFileIcon  sx={{ fontSize:28 }}/>*/}
+        <Button data-cy={props.cypressData.submitButton} style={{outlineColor: 'blue'}} variant="contained" disabled={!CanUpload(props.file)} onClick={() => HandleUpload()}>
           Upload
         </Button>
         

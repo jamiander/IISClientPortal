@@ -115,24 +115,24 @@ export function InitiativeActionsMenu(props: InitiativeActionsMenuProps)
         }}
       >
         <MenuItem data-cy={props.cypressData.decisionButton} onClick={() => HandleDecisionModal()}>
-          <Button color={buttonColor}>
+          <Button style={{outlineColor: 'blue'}}>
             Decisions
           </Button>
         </MenuItem>
         <MenuItem data-cy={props.cypressData.documentButton} onClick={() => HandleDocumentModal()}>
-          <Button color={buttonColor}>
+          <Button style={{outlineColor: 'blue'}}>
             Documents
           </Button>
         </MenuItem>
         {props.isAdmin &&
           <MenuItem data-cy={props.cypressData.uploadThroughputButton} onClick={() => HandleUploadThroughputModal()}>
-            <Button color={buttonColor}>
+            <Button style={{outlineColor: 'blue'}}>
               Upload Throughput
             </Button>
           </MenuItem>
         }
         <MenuItem data-cy={props.cypressData.editThroughputButton} onClick={() => HandleEditThroughputModal()}>
-          <Button color={buttonColor}>
+          <Button style={{outlineColor: 'blue'}}>
             View Throughput
           </Button>
         </MenuItem>

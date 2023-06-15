@@ -1,4 +1,4 @@
-import { InputAdornment, ThemeProvider } from "@mui/material";
+import { InputAdornment, TextField, ThemeProvider } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import { IntegrityTheme, UserTextField } from "../Styles";
 
@@ -14,7 +14,7 @@ export function SearchBar(props: SearchBarProps)
 {
   return (
     <ThemeProvider theme={IntegrityTheme}>
-      <UserTextField data-cy={props.cypressData} color="darkBlue" disabled={props.disabled} placeholder={props.placeholder} value={props.value} onChange={(e) => props.setValue(e.target.value)}
+      <UserTextField data-cy={props.cypressData} sx={{border: '1px solid blue', borderRadius: 1}} disabled={props.disabled} placeholder={props.placeholder} value={props.value} onChange={(e) => props.setValue(e.target.value)}
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
