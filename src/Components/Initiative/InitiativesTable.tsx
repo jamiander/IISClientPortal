@@ -49,6 +49,7 @@ export const InitiativeTableIds = {
   actionMenu: {
     menuButton: "initiativesTableMenuButton",
     decisionButton: "initiativesTableDecisionButton",
+    articleButton: "initiativesTableArticleButton",
     documentButton: "initiativesTableDocumentButton",
     uploadThroughputButton: "initiativesTableUploadThroughputButton",
     editThroughputButton: "initiativesTableEditThroughputButton"

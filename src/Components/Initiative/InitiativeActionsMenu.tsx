@@ -11,11 +11,13 @@ import { ThroughputData } from "../../Services/CompanyService";
 import { useAppDispatch } from "../../Store/Hooks";
 import { enqueueSnackbar } from "notistack";
 import { IntegrityTheme } from "../../Styles";
+import ArticleDataModal from "../Articles/ArticleDataModal";
 
 interface InitiativeActionsMenuProps {
   cypressData: {
     menuButton: string
     decisionButton: string
+    articleButton: string
     documentButton: string
     uploadThroughputButton: string
     editThroughputButton: string
@@ -40,8 +42,9 @@ export function InitiativeActionsMenu(props: InitiativeActionsMenuProps)
   };
 
   const dispatch = useAppDispatch();
-
+  const today = new Date();
   const [decisionModalIsOpen, setDecisionModalIsOpen] = useState(false);
+  const [articleModalIsOpen, setArticleModalIsOpen] = useState(false);
   const [documentModalIsOpen, setDocumentModalIsOpen] = useState(false);
   const [uploadThroughputModalIsOpen, setUploadThroughputModalIsOpen] = useState(false);
   const [editThroughputModalIsOpen, setEditThroughputModalIsOpen] = useState(false);
@@ -69,6 +72,12 @@ export function InitiativeActionsMenu(props: InitiativeActionsMenuProps)
   function HandleDecisionModal()
   {
     setDecisionModalIsOpen(true);
+    handleClose();
+  }
+
+  function HandleArticleModal()
+  {
+    setArticleModalIsOpen(true);
     handleClose();
   }
 
@@ -119,6 +128,11 @@ export function InitiativeActionsMenu(props: InitiativeActionsMenuProps)
             Decisions
           </Button>
         </MenuItem>
+        <MenuItem data-cy={props.cypressData.articleButton} onClick={() => HandleArticleModal()}>
+          <Button style={{outlineColor: 'blue'}}>
+            Articles
+          </Button>
+        </MenuItem>
         <MenuItem data-cy={props.cypressData.documentButton} onClick={() => HandleDocumentModal()}>
           <Button style={{outlineColor: 'blue'}}>
             Documents
@@ -138,6 +152,7 @@ export function InitiativeActionsMenu(props: InitiativeActionsMenuProps)
         </MenuItem>
       </Menu>
       <DecisionDataModal title='View Decision Data' isOpen={decisionModalIsOpen} setDecisionModalIsOpen={setDecisionModalIsOpen} initiative={props.initiative} company={props.company} isAdmin={props.isAdmin}/>
+      <ArticleDataModal title={""} text={""} updatedDate={{month: today.getMonth()+1, day: today.getDate(), year: today.getFullYear()}} updatedBy={""} isIntegrityOnly={false} isOpen={articleModalIsOpen} isAdmin={false} setArticleModalIsOpen={setArticleModalIsOpen }></ArticleDataModal>
       <DocumentManagementModal isOpen={documentModalIsOpen} setIsOpen={setDocumentModalIsOpen} company={props.company} initiative={props.initiative} isAdmin={props.isAdmin} />
       <UploadThroughputModal company={props.company} initiative={props.initiative} uploadIsOpen={uploadThroughputModalIsOpen} setUploadIsOpen={setUploadThroughputModalIsOpen} Submit={SubmitUpdateThroughput}/>
       <EditThroughputModal allCompanies={props.allCompanies} company={props.company} initiative={props.initiative} editIsOpen={editThroughputModalIsOpen} setEditIsOpen={setEditThroughputModalIsOpen} Submit={SubmitUpdateThroughput} isAdmin={props.isAdmin}/>
