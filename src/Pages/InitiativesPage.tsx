@@ -3,7 +3,7 @@ import InitiativesTable from "../Components/Initiative/InitiativesTable";
 import { RadioSet } from "../Components/RadioSet";
 import ValidateNewInitiative, {  } from "../Services/Validation";
 import { useAppSelector, useAppDispatch } from "../Store/Hooks";
-import { Company, selectAllCompanies } from "../Store/CompanySlice";
+import { Company, IntegrityId, selectAllCompanies } from "../Store/CompanySlice";
 import { Grid } from "@mui/material";
 import { selectCurrentUser } from "../Store/UserSlice";
 import { AddButton } from "../Components/AddButton";
@@ -47,9 +47,11 @@ export default function InitiativesPage(){
               mr: 2,
               borderRadius: 1 }}>
             <Grid item xs={3}>
-              <div className="mb-1">
-                <SearchBar cypressData={InitiativesPageIds.companyNameFilter} placeholder="Filter by Company" value={searchedComp} setValue={setSearchedComp} />
-              </div>
+              {currentUser?.companyId === IntegrityId && 
+                <div className="mb-1">
+                  <SearchBar cypressData={InitiativesPageIds.companyNameFilter} placeholder="Filter by Company" value={searchedComp} setValue={setSearchedComp} />
+                </div>
+              }
               <div className="mt-1">
                 <SearchBar cypressData={InitiativesPageIds.initiativeTitleFilter} placeholder="Filter by Title" value={searchedInit} setValue={setSearchedInit} />
               </div>
