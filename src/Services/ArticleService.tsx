@@ -1,6 +1,6 @@
 import axios from "axios";
 import { BASE_URL } from "./Http";
-import { Article } from "../Components/Articles/ArticleDataModal";
+import { Article } from "../Store/ArticleSlice";
 
 export interface GetArticleRequest {
   companyId: string

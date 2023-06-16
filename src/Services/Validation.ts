@@ -1,4 +1,4 @@
-import { Article } from "../Components/Articles/ArticleDataModal";
+import { Article } from "../Store/ArticleSlice";
 import { Company, Initiative } from "../Store/CompanySlice";
 import { User } from "../Store/UserSlice";
 import { DateInfo, DecisionData, ThroughputData } from "./CompanyService";
@@ -199,7 +199,7 @@ export function ValidateArticle(newArticle: Article, allArticles: Article[])
         return {success: false, message: "Text cannot be left blank."};
       if(!newArticle.updatedBy)
         return {success: false, message: "Updated by cannot be left blank."};
-        
+
     return { success: true, message: "Successfully validated article, all good! "}
   }
   return { success: true, message: "There was no article to validate"};
