@@ -240,7 +240,9 @@ export function ClientPage()
                 <col style={{ width: '25vw' }} />
                 <col style={{ width: '25vw' }} />
                 <col style={{ width: '10vw' }} />
-                <col style={{ width: '15vw' }} />
+                {!IsReadOnly() &&
+                  <col style={{ width: '15vw' }} />
+                }
             </colgroup>
               <TableHead className="outline outline-1">
                 <TableRow sx={{
@@ -265,7 +267,7 @@ export function ClientPage()
                   const clientActionsMenuProps = {
                     company: displayItem,
                     cypressData: ClientPageIds.actionMenu,
-                    isAdmin: currentUser?.isAdmin ?? false
+                    currentUser: currentUser
                   }
                   return (
                     <TableRow className={defaultRowStyle} sx={{
