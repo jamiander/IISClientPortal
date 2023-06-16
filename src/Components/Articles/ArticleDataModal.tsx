@@ -217,7 +217,7 @@ export default function ArticleDataModal(props: ArticleDataProps) {
         onClose={()=>props.setArticleModalIsOpen(false)}
         cypressData={{modal: ArticleModalIds.modal, closeModalButton: ArticleModalIds.closeModalButton}}
         title="Articles"
-        subtitle={selectedCompany?.name}
+        subtitle={selectedCompany?.name + " - " + selectedInitiative.title}
         maxWidth={false}
         >
         <div className="mx-1 mb-2">
