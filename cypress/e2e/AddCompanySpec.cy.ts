@@ -31,7 +31,7 @@ describe('add company spec (as Integrity admin)', () => {
     cy.getByData(pageIds.addClientButton).click();
 
     cy.getByData(pageIds.editName).type(company.name);
-    cy.getByData(pageIds.editInitiativeTitle).type(init.title);
+    //cy.getByData(pageIds.editInitiativeTitle).type(init.title);
   });
 
   specify('add new company', () => {
@@ -53,10 +53,10 @@ describe('add company spec (as Integrity admin)', () => {
     cy.get(snackbarId).should('contain',failMessage);
     cy.getByData(pageIds.editName).type(company.name);
 
-    cy.getByData(pageIds.editInitiativeTitle).clear();
+    /*cy.getByData(pageIds.editInitiativeTitle).clear();
     cy.getByData(pageIds.saveClientChangesButton).click();
     cy.wait(consts.snackbarWaitTime);
-    cy.get(snackbarId).should('contain',failMessage);
+    cy.get(snackbarId).should('contain',failMessage);*/
   })
 
   specify('cancel button does not leave a blank company', () => {

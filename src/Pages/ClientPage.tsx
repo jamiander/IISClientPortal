@@ -34,11 +34,7 @@ export const ClientPageIds = {
   keywordFilter: "clientPageKeywordFilter",
   table: "clientPageTable",
   name: "clientPageName",
-  initiativeTitle: "clientPageInitiativeTitle",
-  targetDate: "clientPageTargetDate",
-  totalItems: "clientPageTotalItems",
   editName: "clientPageEditName",
-  editInitiativeTitle: "clientPageEditInitTitle",
   radioIds: {
     active: "clientPageRadioActive",
     inactive: "clientPageRadioInactive",
@@ -60,7 +56,6 @@ export function ClientPage()
   }
 
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
   const allCompanies = useAppSelector(selectAllCompanies);
   const currentUser = useAppSelector(selectCurrentUser);
   const today = new Date();
@@ -145,7 +140,7 @@ export function ClientPage()
     {
       companyClone.name = currentName;
 
-      let newInitiative: Initiative = {
+      /*let newInitiative: Initiative = {
         id: v4(),
         title: currentInitiativeTitle,
         targetDate: currentTargetDate ?? todayInfo,
@@ -153,29 +148,29 @@ export function ClientPage()
         totalItems: currentTotalItems ?? 1,
         itemsCompletedOnDate: [],
         decisions: []
-      }
+      }*/
 
       const validation = ValidateCompany(companyClone,allCompanies);
       if(validation.success)
       {
-        const initiativeValidation: Validation = 
-          state === State.add ? ValidateNewInitiative(newInitiative,companyClone.id,[companyClone]) : {message: "There was no initiative to validate.", success: true};
+        //const initiativeValidation: Validation = 
+          //state === State.add ? ValidateNewInitiative(newInitiative,companyClone.id,[companyClone]) : {message: "There was no initiative to validate.", success: true};
 
-        if(initiativeValidation.success)
-        {
+        //if(initiativeValidation.success)
+        //{
           let saveMessage = "Changes have been saved.";
           await dispatch(upsertCompanyInfo({isTest: isTest, company: companyClone}));
           if(state === State.add)
           {
             saveMessage = "New client added!";
-            dispatch(upsertInitiativeInfo({isTest: isTest, initiative: newInitiative, companyId: companyClone.id}));
+            //dispatch(upsertInitiativeInfo({isTest: isTest, initiative: newInitiative, companyId: companyClone.id}));
           }
 
           LeaveEditMode();
           enqueueSnackbar(saveMessage, {variant: "success"});
-        }
-        else
-          enqueueSnackbar(ValidationFailedPrefix + initiativeValidation.message, {variant: "error"});
+        //}
+        //else
+          //enqueueSnackbar(ValidationFailedPrefix + initiativeValidation.message, {variant: "error"});
       }
       else
         enqueueSnackbar(ValidationFailedPrefix + validation.message, {variant: "error"});

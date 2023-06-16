@@ -67,7 +67,7 @@ describe('update company spec', () => {
     cy.getByData(pageIds.table).should('contain',existingCompany.name);
   })
 
-  specify.only('cannot edit multiple users at once', () => {
+  specify('cannot edit multiple users at once', () => {
     cy.getByData(pageIds.cancelClientChangesButton).click();
     cy.getByData(pageIds.keywordFilter).find('input').clear();
     cy.getByData(pageIds.editClientButton).first().click();

@@ -28,26 +28,26 @@ enum stateEnum {
 } 
 
 export const ArticleModalIds = {
-    modal: "articleModal",
-    addButton: "articleModalAddButton",
-    closeModalButton: "articleModalCloseModalButton",
-    keywordFilter: "articleModalKeywordFilter",
-    editButton: "articleModalEditButton",
-    deleteButton: "articleModalDeleteButton",
-    aveChangesButton: "articleModalSaveChangesButton",
-    cancelChangesButton: "articleModalCancelChangesButton",
-    title: "articleModalTitle",
-    text: "articleModalText",
-    updatedDate: "articleModalUpdatedDate",
-    updatedBy: "articleModalUpdatedBy",
-    editTitle: "editTitle",
-    editText: "editText",
-    editUpdatedBy: "editUpdatedBy",
-    editUpdatedDate: "editUpdatedDate",
-    isIntegrityOnly: "articleModalIntegrityOnly",
-    companyId: "articleModalCompanyId",
-    initiativeId: "articleInitiativeId",
-    grid: "decisionModalGrid"
+  modal: "articleModal",
+  addButton: "articleModalAddButton",
+  closeModalButton: "articleModalCloseModalButton",
+  keywordFilter: "articleModalKeywordFilter",
+  editButton: "articleModalEditButton",
+  deleteButton: "articleModalDeleteButton",
+  saveChangesButton: "articleModalSaveChangesButton",
+  cancelChangesButton: "articleModalCancelChangesButton",
+  title: "articleModalTitle",
+  text: "articleModalText",
+  updatedDate: "articleModalUpdatedDate",
+  updatedBy: "articleModalUpdatedBy",
+  editTitle: "articleEditTitle",
+  editText: "articleEditText",
+  editUpdatedBy: "editUpdatedBy",
+  editUpdatedDate: "editUpdatedDate",
+  isIntegrityOnly: "articleModalIntegrityOnly",
+  companyId: "articleModalCompanyId",
+  initiativeId: "articleInitiativeId",
+  grid: "articleModalGrid"
 }
 
 interface ArticleDataProps {

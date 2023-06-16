@@ -4,9 +4,8 @@ import { selectCurrentUser, selectIsLoggedIn } from "../Store/UserSlice"
 import { enqueueSnackbar } from "notistack"
 import { IntegrityId } from "../Store/CompanySlice"
 import { useState } from "react"
-import { Container, IconButton, Menu } from "@mui/material"
+import { IconButton, Menu } from "@mui/material"
 import MenuIcon from '@mui/icons-material/Menu';
-import { current } from "@reduxjs/toolkit"
 
 export const NavPanelIds = {
   initiatives: "navPanelInitiatives",
@@ -55,7 +54,8 @@ export default function NavPanel(){
   return(
     <div className="ml-4 mr-4 space-x-2 flex mt-4 mb-4">
     {currentUser?.isActive &&
-    <IconButton className="text-xl"
+    <>
+      <IconButton className="text-xl"
           id="basic-button"
           data-cy={NavPanelIds.menuButton}
           aria-controls={open ? 'basic-menu' : undefined}
@@ -64,39 +64,40 @@ export default function NavPanel(){
           onClick={handleClick}
         >
         <MenuIcon sx={{fontSize: "calc(30px + 0.390625vw)"}} />
-    </IconButton>
+      </IconButton>
+      <Menu id="basic-menu"
+        className="w-[16vw] rounded-lg"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        MenuListProps={{
+          'aria-labelledby': "basic-button"
+        }}>
+          <button style={{fontSize: "calc(10px + 0.390625vw)", marginTop: '5px', marginBottom: '10px', marginLeft: '10px', paddingBottom: '5px', textAlign: "left" }} data-cy={NavPanelIds.initiatives} className={GetNavStyle("/Initiatives")}
+            onClick={() => NavHandler('/Initiatives')}>
+            <i className="material-icons" style={{fontSize: "calc(16px + 0.390625vw)", marginRight: '10px' }}>info_outline</i>
+            Initiative Management
+          </button>
+          {currentUser?.isAdmin &&
+            <button style={{fontSize: "calc(10px + 0.390625vw)", marginTop: '5px', marginBottom: '10px', marginLeft: '10px', paddingBottom: '5px', textAlign: "left" }} data-cy={NavPanelIds.users} className={GetNavStyle("/Users")}
+              onClick={() => NavHandler('/Users')}>
+              <i className="material-icons" style={{fontSize: "calc(16px + 0.390625vw)", marginRight: '10px' }}>person_outline</i>
+              User Management
+            </button>}
+          {currentUser?.isAdmin && currentUser?.companyId === IntegrityId &&
+            <button style={{fontSize: "calc(10px + 0.390625vw)", marginTop: '5px', marginBottom: '10px', marginLeft: '10px', paddingBottom: '5px', textAlign: "left" }} data-cy={NavPanelIds.integrity} className={GetNavStyle("/Integrity")}
+              onClick={() => NavHandler('/Integrity')}>
+              <i className="material-icons" style={{fontSize: "calc(16px + 0.390625vw)", marginRight: '10px' }}>keyboard</i>
+              Developer Management
+            </button>}
+          <button style={{fontSize: "calc(10px + 0.390625vw)", marginTop: '5px', marginBottom: '5px', marginLeft: '10px', paddingBottom: '5px', textAlign: "left" }} data-cy={NavPanelIds.client} className={GetNavStyle("/ClientPage")}
+            onClick={() => NavHandler('/ClientPage')}>
+            <i className="material-icons" style={{fontSize: "calc(16px + 0.390625vw)", marginRight: '10px' }}>manage_accounts</i>
+            Company Information
+          </button>
+        </Menu>
+      </>
     }
-        <Menu id="basic-menu"
-          className="w-[16vw] rounded-lg"
-          anchorEl={anchorEl}
-          open={open}
-          onClose={handleClose}
-          MenuListProps={{
-            'aria-labelledby': "basic-button"
-          }}>
-            <button style={{fontSize: "calc(10px + 0.390625vw)", marginTop: '5px', marginBottom: '10px', marginLeft: '10px', paddingBottom: '5px', textAlign: "left" }} data-cy={NavPanelIds.initiatives} className={GetNavStyle("/Initiatives")}
-              onClick={() => NavHandler('/Initiatives')}>
-              <i className="material-icons" style={{fontSize: "calc(16px + 0.390625vw)", marginRight: '10px' }}>info_outline</i>
-              Initiative Management
-            </button>
-            {currentUser?.isAdmin &&
-              <button style={{fontSize: "calc(10px + 0.390625vw)", marginTop: '5px', marginBottom: '10px', marginLeft: '10px', paddingBottom: '5px', textAlign: "left" }} data-cy={NavPanelIds.users} className={GetNavStyle("/Users")}
-                onClick={() => NavHandler('/Users')}>
-                <i className="material-icons" style={{fontSize: "calc(16px + 0.390625vw)", marginRight: '10px' }}>person_outline</i>
-                User Management
-              </button>}
-            {currentUser?.isAdmin && currentUser?.companyId === IntegrityId &&
-              <button style={{fontSize: "calc(10px + 0.390625vw)", marginTop: '5px', marginBottom: '10px', marginLeft: '10px', paddingBottom: '5px', textAlign: "left" }} data-cy={NavPanelIds.integrity} className={GetNavStyle("/Integrity")}
-                onClick={() => NavHandler('/Integrity')}>
-                <i className="material-icons" style={{fontSize: "calc(16px + 0.390625vw)", marginRight: '10px' }}>keyboard</i>
-                Developer Management
-              </button>}
-            <button style={{fontSize: "calc(10px + 0.390625vw)", marginTop: '5px', marginBottom: '5px', marginLeft: '10px', paddingBottom: '5px', textAlign: "left" }} data-cy={NavPanelIds.client} className={GetNavStyle("/ClientPage")}
-              onClick={() => NavHandler('/ClientPage')}>
-              <i className="material-icons" style={{fontSize: "calc(16px + 0.390625vw)", marginRight: '10px' }}>manage_accounts</i>
-              Company Information
-            </button>
-          </Menu>
-      </div> 
+    </div>
   )
 }
