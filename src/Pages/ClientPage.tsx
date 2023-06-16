@@ -23,6 +23,7 @@ import { SearchBar } from "../Components/SearchBar";
 import { Paginator } from "../Components/Paginator";
 import { MakeClone } from "../Services/Cloning";
 import { usePaginator } from "../Services/usePaginator";
+import { ClientActionsMenu } from "../Components/ClientActionsMenu";
 
 export const ClientPageIds = {
   modal: "clientPageModal",
@@ -45,7 +46,11 @@ export const ClientPageIds = {
     inactive: "clientPageRadioInactive",
     all: "clientPageRadioAll",
   },
-  documentButton: "clientPageDocumentButton"
+  actionMenu: {
+    menuButton: "clientPageMenuButton",
+    articleButton: "clientPageArticlebutton",
+    documentButton: "clientPageDocumentButton"
+  }
 }
 
 export function ClientPage()
@@ -235,7 +240,9 @@ export function ClientPage()
                 <col style={{ width: '25vw' }} />
                 <col style={{ width: '25vw' }} />
                 <col style={{ width: '10vw' }} />
-                <col style={{ width: '15vw' }} />
+                {!IsReadOnly() &&
+                  <col style={{ width: '15vw' }} />
+                }
             </colgroup>
               <TableHead className="outline outline-1">
                 <TableRow sx={{
@@ -247,10 +254,8 @@ export function ClientPage()
                   }
                 }}>
                   <TableHeaderStyle>Name</TableHeaderStyle>
-                  <TableHeaderStyle>First Initiative Name</TableHeaderStyle>
-                  <TableHeaderStyle>Target Completion Date</TableHeaderStyle>
-                  <TableHeaderStyle>Total Items</TableHeaderStyle>
-                  <TableHeaderStyle>Documents</TableHeaderStyle>
+                  <TableHeaderStyle>Initiatives Count</TableHeaderStyle>
+                  <TableHeaderStyle>Actions</TableHeaderStyle>
                   {!IsReadOnly() &&
                     <TableHeaderStyle>Edit Client</TableHeaderStyle>
                   }
@@ -258,7 +263,12 @@ export function ClientPage()
               </TableHead>
               <TableBody data-cy={ClientPageIds.table}>
                 {displayCompanies.map((displayItem: Company, key: number) => {
-                  let isEdit = InEditMode() && displayItem.id === companyToEdit?.id;
+                  const isEdit = InEditMode() && displayItem.id === companyToEdit?.id;
+                  const clientActionsMenuProps = {
+                    company: displayItem,
+                    cypressData: ClientPageIds.actionMenu,
+                    currentUser: currentUser
+                  }
                   return (
                     <TableRow className={defaultRowStyle} sx={{
                       borderBottom: "1px solid black",
@@ -273,28 +283,9 @@ export function ClientPage()
                       {isEdit ? 
                       <>
                         <TableCell><Input sx={{fontSize: tableCellFontSize}} data-cy={ClientPageIds.editName} value={currentName} onChange={e => setCurrentName(e.target.value)}/></TableCell>
-                        {state === State.add &&
-                          <>
-                            <TableCell>
-                              <Input sx={{fontSize: tableCellFontSize}} data-cy={ClientPageIds.editInitiativeTitle} value={currentInitiativeTitle} onChange={e => setCurrentInitiativeTitle(e.target.value)} />
-                            </TableCell>
-                            <TableCell>
-                              <DateInput date={currentTargetDate} setDate={setCurrentTargetDate} cypressData={ClientPageIds.targetDate}></DateInput>
-                            </TableCell>
-                            <TableCell>
-                              <Input sx={{fontSize: tableCellFontSize}} type='number' value={currentTotalItems} onChange={e => setCurrentTotalItems(parseInt(e.target.value))}/>
-                            </TableCell>
-                          </>
-                        }
-                        {state !== State.add &&
-                          <>
-                            <TableCell></TableCell>
-                            <TableCell></TableCell>
-                            <TableCell></TableCell>
-                          </>
-                        }
+                        <TableCell>{displayItem.initiatives.length}</TableCell>
                         <TableCell>
-                          <DocumentManagementButton cypressData={ClientPageIds.documentButton} disabled={true} company={displayItem} isAdmin={false}/>
+                          <ClientActionsMenu disabled={true} {...clientActionsMenuProps}/>
                         </TableCell>
                         <TableCell>
                           <IconButton data-cy={ClientPageIds.saveClientChangesButton} onClick={() => HandleSaveEdit()}>
@@ -308,11 +299,9 @@ export function ClientPage()
                       : 
                       <>
                         <TableCell data-cy={ClientPageIds.name}>{displayItem.name}</TableCell>
-                        <TableCell data-cy={ClientPageIds.initiativeTitle}>{displayItem.initiatives.at(0)?.title}</TableCell>
-                        <TableCell data-cy={ClientPageIds.name}>{displayItem.initiatives.at(0) !== undefined ? (displayItem.initiatives.at(0)!.targetDate.month + "/" + displayItem.initiatives.at(0)!.targetDate.day + "/" + displayItem.initiatives.at(0)!.targetDate.year) : ""}</TableCell>
-                        <TableCell data-cy={ClientPageIds.name}>{displayItem.initiatives.at(0)?.totalItems}</TableCell>
+                        <TableCell>{displayItem.initiatives.length}</TableCell>
                         <TableCell>
-                          <DocumentManagementButton cypressData={ClientPageIds.documentButton} company={displayItem} isAdmin={!IsReadOnly()}/>
+                          <ClientActionsMenu {...clientActionsMenuProps}/>
                         </TableCell>
                         {!IsReadOnly() &&
                         <TableCell>
