@@ -10,12 +10,10 @@ import { Company, Initiative, IntegrityId, selectAllCompanies, upsertCompanyInfo
 import { enqueueSnackbar } from "notistack";
 import { v4 } from "uuid";
 import ValidateNewInitiative, { ValidateCompany, Validation, ValidationFailedPrefix } from "../Services/Validation";
-import { DateInput } from "../Components/DateInput";
 import { RadioSet } from "../Components/RadioSet";
 import { CompanyFilter } from "../Services/Filters";
 import { useNavigate } from "react-router-dom";
 import { DateInfo } from "../Services/CompanyService";
-import { DocumentManagementButton } from "../Components/Documents/DocumentManagementButton";
 import { selectCurrentUser } from "../Store/UserSlice";
 import { DateToDateInfo } from "../Services/DateHelpers";
 import { AddButton } from "../Components/AddButton";

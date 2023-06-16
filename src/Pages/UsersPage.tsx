@@ -209,7 +209,7 @@ export default function UsersPage(){
                 {
                   usersList.map((companyUser, key) => {
                       let isEdit = InEditMode() && companyUser?.id === userToEdit?.id;
-                      let displayCompany = allCompanies.find(c => c.id === companyUser.companyId)!;
+                      let displayCompany = allCompanies.find(c => c.id === companyUser.companyId);
                       return (
                         <TableRow className={defaultRowStyle} key={key} sx={{
                           borderBottom: "1px solid black",
@@ -236,7 +236,7 @@ export default function UsersPage(){
                                     </Select>
                                   </FormControl>
                                   :
-                                  <TableCell data-cy={UsersPageIds.company}>{displayCompany.name}</TableCell>}
+                                  <TableCell data-cy={UsersPageIds.company}>{displayCompany?.name}</TableCell>}
                               </TableCell>
                               <TableCell data-cy={UsersPageIds.editName}> <Input value={currentName} onChange={e => setCurrentName(e.target.value)} /></TableCell>
                               <TableCell><Input data-cy={UsersPageIds.editEmail} value={currentEmail} onChange={e => setCurrentEmail(e.target.value)} /></TableCell>
@@ -256,14 +256,14 @@ export default function UsersPage(){
                             </>
                             :
                             <>
-                              <TableCell data-cy={UsersPageIds.company}>{displayCompany.name}</TableCell>
+                              <TableCell data-cy={UsersPageIds.company}>{displayCompany?.name}</TableCell>
                               <TableCell data-cy={UsersPageIds.name}>{companyUser?.name}</TableCell>
                               <TableCell data-cy={UsersPageIds.email}>{companyUser?.email}</TableCell>
                               <TableCell data-cy={UsersPageIds.password}>{companyUser?.password}</TableCell>
                               <TableCell data-cy={UsersPageIds.phone}>{companyUser?.phoneNumber}</TableCell>
                               <TableCell data-cy={UsersPageIds.isAdmin}>{companyUser?.isAdmin ? "Admin" : "User"}</TableCell>
                               <TableCell data-cy={UsersPageIds.isActive}>{companyUser?.isActive ? "Active" : "Inactive"}</TableCell>
-                              <TableCell data-cy={UsersPageIds.initiativeIds}><EditUserInitiativesButton user={companyUser} allCompanies={[displayCompany]} SubmitUserData={SubmitUserData} expanded={true} /></TableCell>
+                              <TableCell data-cy={UsersPageIds.initiativeIds}><EditUserInitiativesButton user={companyUser} allCompanies={displayCompany ? [displayCompany] : []} SubmitUserData={SubmitUserData} expanded={true} /></TableCell>
                               <TableCell>
                                 <IconButton data-cy={UsersPageIds.editButton} disabled={InEditMode()} onClick={() => EnterEditMode(companyUser?.id, companyUsers, false)}>
                                   <EditIcon sx={{fontSize: tableButtonFontSize}}/>
