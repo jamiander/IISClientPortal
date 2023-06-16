@@ -95,7 +95,7 @@ export default function NavPanel(){
               <button style={{fontSize: "calc(10px + 0.390625vw)", marginTop: '5px', marginBottom: '5px', marginLeft: '10px', paddingBottom: '5px', textAlign: "left" }} data-cy={NavPanelIds.client} className={GetNavStyle("/ClientPage")}
                 onClick={() => NavHandler('/ClientPage')}>
                 <i className="material-icons" style={{fontSize: "calc(16px + 0.390625vw)", marginRight: '10px' }}>manage_accounts</i>
-                Client Management
+                Company Information
               </button>}
           </Menu>
       </div> 

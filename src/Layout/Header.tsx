@@ -35,7 +35,7 @@ export default function Header(){
       title = "Developer Management";
     break;
     case '/ClientPage':
-      title = "Client Management";
+      title = "Company Information";
     break;
   }
 
