@@ -17,6 +17,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import { MakeClone } from "../../Services/Cloning";
 import {v4 as UuidV4} from "uuid";
 import { enqueueSnackbar } from "notistack";
+import { selectAllArticles, upsertArticle } from "../../Store/ArticleSlice";
+import { ValidateArticle, ValidationFailedPrefix } from "../../Services/Validation";
 
 enum stateEnum {
     start,
@@ -75,8 +77,7 @@ export interface Article {
 
 export default function ArticleDataModal(props: ArticleDataProps) {
     const dispatch = useAppDispatch();
-/*     const allArticles = useAppSelector(selectAllArticles);
- */    
+    const allArticles = useAppSelector(selectAllArticles);    
     
     const [modalState, setModalState] = useState(stateEnum.start);
     const [currentTitle, setCurrentTitle] = useState("");
@@ -95,9 +96,6 @@ export default function ArticleDataModal(props: ArticleDataProps) {
     const [searchedKeyword, setSearchedKeyword] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [filteredArticles, setFilteredArticles] = useState<Article[]>([]);
-
-    const allArticles: Article[] = [{id:"id", title:"title", text:"text", updatedDate: todayInfo, updatedBy:"updatedBy", companyId:"companyId", initiativeId:"8b9dfc4e-2e79-4477-ade0-74c3234fbf86", isIntegrityOnly:false},
-    {id:"id", title:"Testing Article", text:"Article for testing purposes", updatedDate: todayInfo, updatedBy:"Jamie", companyId:"secondCompany", initiativeId:"653da209-3345-4213-882c-42e663b28186", isIntegrityOnly:false}];
 
     useEffect(() => {
         setSelectedInitiative(props.initiative);
@@ -138,8 +136,63 @@ export default function ArticleDataModal(props: ArticleDataProps) {
         else
             enqueueSnackbar("Save current changes before adding a new article.", {variant: "error"});
     }
-    function HandleEditArticle(id: string, currentTitle: string, currentText: string, currentUpdatedBy: string, currentUpdatedDate: DateInfo): void {
-        throw new Error("Function not implemented.");
+
+    function EnterEditMode(id: string, articles: Article[], isNew: boolean)
+    {
+        if(!InEditMode())
+        {
+            let currentArticle = articles.find(u => u.id === id);
+            if(currentArticle)
+            {
+                setModalState(isNew ? stateEnum.add : stateEnum.edit);
+                setArticleToEdit(currentArticle);
+                setCurrentTitle(currentArticle.title);
+                setCurrentText(currentArticle.text);
+                setCurrentInitiativeId(currentArticle.initiativeId ?? "");
+                setCurrentCompanyId(currentArticle.companyId);
+                setCurrentUpdatedBy(currentArticle.updatedBy);
+                setCurrentUpdatedDate(currentArticle.updatedDate);
+            }
+        }
+    }
+
+    async function HandleEditArticle(id: string, newTitle: string, newText: string, newUpdatedBy: string, newUpdatedDate: DateInfo) {
+        let selectedArticlesClone: Article[] = MakeClone(filteredArticles);
+        let newArticle = selectedArticlesClone.find(a => a.id === id);
+        if(newArticle)
+        {
+        newArticle.title = newTitle;
+        newArticle.text = newText;
+        newArticle.updatedBy = newUpdatedBy;
+        if(newUpdatedDate)
+            newArticle.updatedDate = newUpdatedDate;
+
+        setIsLoading(true);
+        let successfulSubmit = await SubmitArticle(newArticle);
+        if(successfulSubmit)
+            setFilteredArticles(selectedArticlesClone);
+        setIsLoading(false);
+        }
+    }
+
+    async function SubmitArticle(article: Article): Promise<boolean> {
+        let isTest = false;
+        if((window as any).Cypress)
+        isTest = true;
+        
+        let validation = ValidateArticle(article, filteredArticles);
+
+        if(validation.success)
+        {
+            await dispatch(upsertArticle({isTest: isTest, articles: [article]}));
+            enqueueSnackbar("Article changes have been saved.", {variant: "success"});
+            LeaveEditMode();
+            return true;
+        }
+        else
+            enqueueSnackbar(ValidationFailedPrefix + validation.message, {variant: "error"});
+
+        return false;
     }
 
     function HandleCancelEdit() {
@@ -157,30 +210,6 @@ export default function ArticleDataModal(props: ArticleDataProps) {
         setModalState(stateEnum.start);
     }
     
-
-    function HandleAttemptDelete(id: string): void {
-        throw new Error("Function not implemented.");
-    }
-
-    function EnterEditMode(id: string, articles: Article[], isNew: boolean)
-    {
-        if(!InEditMode())
-        {
-            let currentArticle = articles.find(u => u.id === id);
-            if(currentArticle)
-        {
-            setModalState(isNew ? stateEnum.add : stateEnum.edit);
-            setArticleToEdit(currentArticle);
-            setCurrentTitle(currentArticle.title);
-            setCurrentText(currentArticle.text);
-            setCurrentInitiativeId(currentArticle.initiativeId ?? "");
-            setCurrentCompanyId(currentArticle.companyId);
-            setCurrentUpdatedBy(currentArticle.updatedBy);
-            setCurrentUpdatedDate(currentArticle.updatedDate);
-        }
-        }
-    }
-
     return (
         <>
         <BaseInitiativeModal
@@ -295,9 +324,6 @@ export default function ArticleDataModal(props: ArticleDataProps) {
                               {isLoading && matched &&
                                 <CircularProgress color={"warning"}/>
                               }
-                              <IconButton disabled={isLoading} data-cy={ArticleModalIds.deleteButton} onClick={() => HandleAttemptDelete(displayItem.id)}>
-                                <DeleteIcon sx={{fontSize: "inherit"}}/>
-                              </IconButton>
                             </div>
                           }
                         </StyledCardActions>

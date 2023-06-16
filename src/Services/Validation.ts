@@ -1,3 +1,4 @@
+import { Article } from "../Components/Articles/ArticleDataModal";
 import { Company, Initiative } from "../Store/CompanySlice";
 import { User } from "../Store/UserSlice";
 import { DateInfo, DecisionData, ThroughputData } from "./CompanyService";
@@ -186,4 +187,20 @@ export function ValidateDecisions(decisions: DecisionData[]) : Validation
       return {success: false, message: "Decisions must have at least one participant."};
   }
   return { success: true, message: "Successfully validated decisions; all good!" };
+}
+
+export function ValidateArticle(newArticle: Article, allArticles: Article[])
+{
+  if(newArticle)
+  {
+    if(!newArticle.title)
+        return {success: false, message: "Title cannot be left blank."};
+      if(!newArticle.text)
+        return {success: false, message: "Text cannot be left blank."};
+      if(!newArticle.updatedBy)
+        return {success: false, message: "Updated by cannot be left blank."};
+        
+    return { success: true, message: "Successfully validated article, all good! "}
+  }
+  return { success: true, message: "There was no article to validate"};
 }
