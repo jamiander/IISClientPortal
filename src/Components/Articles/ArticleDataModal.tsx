@@ -17,7 +17,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import { MakeClone } from "../../Services/Cloning";
 import {v4 as UuidV4} from "uuid";
 import { enqueueSnackbar } from "notistack";
-import { selectAllArticles, upsertArticle } from "../../Store/ArticleSlice";
+import { Article, getArticle, selectAllArticles, upsertArticle } from "../../Store/ArticleSlice";
 import { ValidateArticle, ValidationFailedPrefix } from "../../Services/Validation";
 
 enum stateEnum {
@@ -48,7 +48,6 @@ export const ArticleModalIds = {
     companyId: "articleModalCompanyId",
     initiativeId: "articleInitiativeId",
     grid: "decisionModalGrid"
-
 }
 
 interface ArticleDataProps {
@@ -58,21 +57,10 @@ interface ArticleDataProps {
     updatedBy: string
     isIntegrityOnly: boolean
     company: Company
-    initiative: Initiative
+    initiative?: Initiative | undefined
     isOpen: boolean
     isAdmin: boolean
     setArticleModalIsOpen: (value: boolean) => void
-}
-
-export interface Article {
-    id: string
-    title: string
-    text: string
-    updatedDate: DateInfo
-    updatedBy: string
-    companyId: string
-    initiativeId?: string 
-    isIntegrityOnly: boolean
 }
 
 export default function ArticleDataModal(props: ArticleDataProps) {
@@ -86,7 +74,7 @@ export default function ArticleDataModal(props: ArticleDataProps) {
     const [currentUpdatedBy, setCurrentUpdatedBy] = useState("");
     const [currentInitiativeId, setCurrentInitiativeId] = useState("");
     const [currentCompanyId, setCurrentCompanyId] = useState("");
-    const [selectedInitiative, setSelectedInitiative] = useState<Initiative>(props.initiative);
+    const [selectedInitiative, setSelectedInitiative] = useState<Initiative>();
     const [selectedCompany, setSelectedCompany] = useState<Company>(props.company);
     const [articleToEdit, setArticleToEdit] = useState<Article>();
 
@@ -98,20 +86,38 @@ export default function ArticleDataModal(props: ArticleDataProps) {
     const [filteredArticles, setFilteredArticles] = useState<Article[]>([]);
 
     useEffect(() => {
-        setSelectedInitiative(props.initiative);
-        setSelectedCompany(props.company);
-        setIsLoading(false);
-        LeaveEditMode();
-    },[props.isOpen])
+      dispatch(getArticle({companyId: props.company.id, initiativeId: props.initiative?.id}))
+    }, []);
 
     useEffect(() => {
+      if(props.initiative)
+      {
         setFilteredArticles(allArticles.filter(
-            a => a.initiativeId === selectedInitiative?.id &&
-            (a.title.toUpperCase().includes(searchedKeyword.toUpperCase())
-            || a.text.toUpperCase().includes(searchedKeyword.toUpperCase())
-            )) 
+        a => a.initiativeId === selectedInitiative?.id &&
+        (a.title.toUpperCase().includes(searchedKeyword.toUpperCase())
+        || a.text.toUpperCase().includes(searchedKeyword.toUpperCase())
+        )) 
         );
-    },[selectedInitiative,searchedKeyword])
+      }
+      else
+      {
+        setFilteredArticles(allArticles.filter(
+        a => a.companyId === selectedCompany.id &&
+        (a.title.toUpperCase().includes(searchedKeyword.toUpperCase())
+        || a.text.toUpperCase().includes(searchedKeyword.toUpperCase())
+        ))
+        );
+      }
+    },[selectedInitiative,selectedCompany,searchedKeyword])
+    
+    useEffect(() => {
+      if(props.initiative)
+          setSelectedInitiative(props.initiative);
+        
+      setSelectedCompany(props.company);
+      setIsLoading(false);
+      LeaveEditMode();
+    },[props.isOpen])
 
     function HandleEmptyArticle(){
         if(modalState === stateEnum.start)
@@ -170,7 +176,7 @@ export default function ArticleDataModal(props: ArticleDataProps) {
         setIsLoading(true);
         let successfulSubmit = await SubmitArticle(newArticle);
         if(successfulSubmit)
-            setFilteredArticles(selectedArticlesClone);
+        setFilteredArticles(selectedArticlesClone);
         setIsLoading(false);
         }
     }
@@ -217,7 +223,7 @@ export default function ArticleDataModal(props: ArticleDataProps) {
         onClose={()=>props.setArticleModalIsOpen(false)}
         cypressData={{modal: ArticleModalIds.modal, closeModalButton: ArticleModalIds.closeModalButton}}
         title="Articles"
-        subtitle={selectedCompany?.name}
+        subtitle={selectedCompany?.name + " - " + selectedInitiative?.title}
         maxWidth={false}
         >
         <div className="mx-1 mb-2">
@@ -333,7 +339,7 @@ export default function ArticleDataModal(props: ArticleDataProps) {
                 )
               })}
               {
-              filteredArticles.length === 0 && <Grid item>No decisions to display.</Grid>
+              filteredArticles.length === 0 && <Grid item>No articles to display.</Grid>
               }
             </Grid>
           </div>

@@ -1,8 +1,19 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { Article } from "../Components/Articles/ArticleDataModal"
 import { GetArticle, GetArticleRequest, UpsertArticle, UpsertArticleRequest } from "../Services/ArticleService";
 import { MakeClone } from "../Services/Cloning";
 import { RootState } from "./Store";
+import { DateInfo } from "../Services/CompanyService";
+
+export interface Article {
+  id: string
+  title: string
+  text: string
+  updatedDate: DateInfo
+  updatedBy: string
+  companyId: string
+  initiativeId?: string 
+  isIntegrityOnly: boolean
+}  
 
 export interface ArticleState {
   articles: Article[]
