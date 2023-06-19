@@ -141,7 +141,7 @@ export default function ArticleDataModal(props: ArticleDataProps) {
                 title: "", 
                 text: "", 
                 updatedBy: "", 
-                updatedDate: todayInfo,
+                updatedDate: { month: -1, day: -1, year: -1},
                 companyId: selectedCompany.id,
                 initiativeId: selectedInitiative?.id,
                 isIntegrityOnly: false
@@ -192,15 +192,15 @@ export default function ArticleDataModal(props: ArticleDataProps) {
         if(successfulSubmit)
         setFilteredArticles(selectedArticlesClone);
         setIsLoading(false);
-        }
+      }
     }
 
     async function SubmitArticle(article: Article): Promise<boolean> {
         let isTest = false;
         if((window as any).Cypress)
-        isTest = true;
+          isTest = true;
         
-        let validation = ValidateArticle(article, filteredArticles);
+        const validation = ValidateArticle(article);
 
         if(validation.success)
         {
@@ -273,7 +273,7 @@ export default function ArticleDataModal(props: ArticleDataProps) {
                   <CircularProgress color={"warning"}/>
                 }
               </Grid>
-              {props.currentUser.isAdmin && props.currentUser.companyId === IntegrityId && 
+              {props.currentUser.companyId === IntegrityId && 
               <Grid item xs={4} sx={{ display: 'flex',
               justifyContent: 'flex-end'
               }}> 
@@ -336,7 +336,7 @@ export default function ArticleDataModal(props: ArticleDataProps) {
                             </div>
                           }
                           {
-                            !isEdit && !InEditMode() && props.currentUser.isAdmin && props.currentUser.companyId === IntegrityId &&
+                            !isEdit && !InEditMode() && props.currentUser.companyId === IntegrityId &&
                             <div className="flex w-full justify-between">
                               <IconButton disabled={isLoading} data-cy={ArticleModalIds.editButton} onClick={() => EnterEditMode(displayItem.id, filteredArticles, false)}>
                                 <EditIcon sx={{fontSize: "inherit"}}/>

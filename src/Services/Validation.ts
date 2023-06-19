@@ -189,18 +189,22 @@ export function ValidateDecisions(decisions: DecisionData[]) : Validation
   return { success: true, message: "Successfully validated decisions; all good!" };
 }
 
-export function ValidateArticle(newArticle: Article, allArticles: Article[])
+export function ValidateArticle(newArticle: Article)
 {
   if(newArticle)
   {
     if(!newArticle.title)
-        return {success: false, message: "Title cannot be left blank."};
-      if(!newArticle.text)
-        return {success: false, message: "Text cannot be left blank."};
-      if(!newArticle.updatedBy)
-        return {success: false, message: "Updated by cannot be left blank."};
+      return {success: false, message: "Title cannot be left blank."};
+    if(!newArticle.text)
+      return {success: false, message: "Text cannot be left blank."};
+    if(!newArticle.updatedBy)
+      return {success: false, message: "Updated by cannot be left blank."};
+    
+    const dateValidation = ValidateDate(newArticle.updatedDate);
+    if(!dateValidation.success)
+      return {success: false, message: dateValidation.message};
 
-    return { success: true, message: "Successfully validated article, all good! "}
+    return {success: true, message: "Successfully validated article, all good!"};
   }
-  return { success: true, message: "There was no article to validate"};
+  return {success: false, message: "There was no article to validate."};
 }

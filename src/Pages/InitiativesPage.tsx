@@ -26,7 +26,7 @@ export const InitiativesPageIds = {
 export default function InitiativesPage(){
   
   const companyList : Company[] = useAppSelector(selectAllCompanies);
-  const currentUser = useAppSelector(selectCurrentUser)!;
+  const currentUser = useAppSelector(selectCurrentUser);
 
   const [searchedComp, setSearchedComp] = useState("");
   const [searchedInit, setSearchedInit] = useState("");
@@ -72,7 +72,7 @@ export default function InitiativesPage(){
             }
           </Grid>
         </div>
-        {companyList.length > 0 &&
+        {companyList.length > 0 && currentUser &&
         <InitiativesTable addInitiative={addInitiative} currentUser={currentUser} companyList={companyList} radioStatus={radioValue}
           ValidateInitiative={ValidateNewInitiative} setAddInitiative={setAddInitiative}
           searchedComp={searchedComp} setSearchedComp={setSearchedComp}
