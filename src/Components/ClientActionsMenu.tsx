@@ -35,16 +35,7 @@ export function ClientActionsMenu(props: ClientActionsMenuProps)
   const todayInfo: DateInfo = DateToDateInfo(new Date());
   const [articleModalIsOpen, setArticleModalIsOpen] = useState(false);
   const [documentModalIsOpen, setDocumentModalIsOpen] = useState(false);
-  const dummyInitiative: Initiative = {
-    id: "-1",
-    title: "",
-    targetDate: todayInfo,
-    startDate: todayInfo,
-    totalItems: 0,
-    itemsCompletedOnDate: [],
-    decisions: []
-  };
-
+ 
   function HandleArticleModal()
   {
     setArticleModalIsOpen(true);
@@ -94,7 +85,7 @@ export function ClientActionsMenu(props: ClientActionsMenuProps)
             </MenuItem>
           }
         </Menu>
-        <ArticleDataModal title={""} text={""} updatedDate={todayInfo} updatedBy={""} isIntegrityOnly={false} initiative={dummyInitiative} company={props.company} isOpen={articleModalIsOpen} isAdmin={props.currentUser.isAdmin} setArticleModalIsOpen={setArticleModalIsOpen }></ArticleDataModal>
+        <ArticleDataModal title={""} text={""} updatedDate={todayInfo} updatedBy={""} isIntegrityOnly={false} company={props.company} isOpen={articleModalIsOpen} isAdmin={props.currentUser.isAdmin} setArticleModalIsOpen={setArticleModalIsOpen }></ArticleDataModal>
         <DocumentManagementModal isOpen={documentModalIsOpen} setIsOpen={setDocumentModalIsOpen} company={props.company} isAdmin={props.currentUser.isAdmin} />
       </ThemeProvider>
     }

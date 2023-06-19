@@ -19,6 +19,7 @@ import {v4 as UuidV4} from "uuid";
 import { enqueueSnackbar } from "notistack";
 import { Article, getArticle, selectAllArticles, upsertArticle } from "../../Store/ArticleSlice";
 import { ValidateArticle, ValidationFailedPrefix } from "../../Services/Validation";
+import { filter } from "cypress/types/bluebird";
 
 enum stateEnum {
     start,
@@ -90,7 +91,7 @@ export default function ArticleDataModal(props: ArticleDataProps) {
     }, []);
 
     useEffect(() => {
-      if(props.initiative)
+      if(props.initiative !== undefined)
       {
         setFilteredArticles(allArticles.filter(
         a => a.initiativeId === selectedInitiative?.id &&
@@ -102,7 +103,7 @@ export default function ArticleDataModal(props: ArticleDataProps) {
       else
       {
         setFilteredArticles(allArticles.filter(
-        a => a.companyId === selectedCompany.id &&
+        a => a.companyId === selectedCompany.id && !a.initiativeId && 
         (a.title.toUpperCase().includes(searchedKeyword.toUpperCase())
         || a.text.toUpperCase().includes(searchedKeyword.toUpperCase())
         ))
