@@ -18,7 +18,6 @@ import {v4 as UuidV4} from "uuid";
 import { enqueueSnackbar } from "notistack";
 import { Article, getArticle, selectAllArticles, upsertArticle } from "../../Store/ArticleSlice";
 import { ValidateArticle, ValidationFailedPrefix } from "../../Services/Validation";
-import { filter } from "cypress/types/bluebird";
 import { User } from "../../Store/UserSlice";
 
 enum stateEnum {
@@ -261,7 +260,7 @@ export default function ArticleDataModal(props: ArticleDataProps) {
                   <CircularProgress color={"warning"}/>
                 }
               </Grid>
-              {props.currentUser.isAdmin && props.currentUser.companyId === IntegrityId && 
+              {props.currentUser.companyId === IntegrityId && 
               <Grid item xs={4} sx={{ display: 'flex',
               justifyContent: 'flex-end'
               }}> 
@@ -323,7 +322,7 @@ export default function ArticleDataModal(props: ArticleDataProps) {
                             </div>
                           }
                           {
-                            !isEdit && !InEditMode() && props.currentUser.isAdmin && props.currentUser.companyId === IntegrityId &&
+                            !isEdit && !InEditMode() && props.currentUser.companyId === IntegrityId &&
                             <div className="flex w-full justify-between">
                               <IconButton disabled={isLoading} data-cy={ArticleModalIds.editButton} onClick={() => EnterEditMode(displayItem.id, filteredArticles, false)}>
                                 <EditIcon sx={{fontSize: "inherit"}}/>
