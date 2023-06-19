@@ -5,7 +5,6 @@ import { selectCurrentUser, selectIsLoggedIn, signOut } from "../Store/UserSlice
 import { genericButtonStyle } from "../Styles";
 import NavPanel from "./NavPanel";
 import Grid from "@mui/material/Grid";
-import { wrap } from "module";
 import { Typography } from "@mui/material";
 
 export default function Header(){
