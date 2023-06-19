@@ -85,7 +85,7 @@ export function ClientActionsMenu(props: ClientActionsMenuProps)
             </MenuItem>
           }
         </Menu>
-        <ArticleDataModal title={""} text={""} updatedDate={todayInfo} updatedBy={""} isIntegrityOnly={false} company={props.company} isOpen={articleModalIsOpen} isAdmin={props.currentUser.isAdmin} setArticleModalIsOpen={setArticleModalIsOpen }></ArticleDataModal>
+        <ArticleDataModal title={""} text={""} updatedDate={todayInfo} updatedBy={""} isIntegrityOnly={false} company={props.company} isOpen={articleModalIsOpen} currentUser={props.currentUser} setArticleModalIsOpen={setArticleModalIsOpen }></ArticleDataModal>
         <DocumentManagementModal isOpen={documentModalIsOpen} setIsOpen={setDocumentModalIsOpen} company={props.company} isAdmin={props.currentUser.isAdmin} />
       </ThemeProvider>
     }

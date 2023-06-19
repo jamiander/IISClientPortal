@@ -26,7 +26,7 @@ export const InitiativesPageIds = {
 export default function InitiativesPage(){
   
   const companyList : Company[] = useAppSelector(selectAllCompanies);
-  const currentUser = useAppSelector(selectCurrentUser);
+  const currentUser = useAppSelector(selectCurrentUser)!;
 
   const [searchedComp, setSearchedComp] = useState("");
   const [searchedInit, setSearchedInit] = useState("");

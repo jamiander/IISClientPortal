@@ -12,6 +12,7 @@ import { useAppDispatch } from "../../Store/Hooks";
 import { enqueueSnackbar } from "notistack";
 import { IntegrityTheme } from "../../Styles";
 import ArticleDataModal from "../Articles/ArticleDataModal";
+import { User } from "../../Store/UserSlice";
 
 interface InitiativeActionsMenuProps {
   cypressData: {
@@ -27,7 +28,7 @@ interface InitiativeActionsMenuProps {
   initiative: Initiative
   disabled?: boolean
   size?: string
-  isAdmin: boolean
+  currentUser: User
 }
 
 export function InitiativeActionsMenu(props: InitiativeActionsMenuProps)
@@ -138,7 +139,7 @@ export function InitiativeActionsMenu(props: InitiativeActionsMenuProps)
             Documents
           </Button>
         </MenuItem>
-        {props.isAdmin &&
+        {props.currentUser.isAdmin &&
           <MenuItem data-cy={props.cypressData.uploadThroughputButton} onClick={() => HandleUploadThroughputModal()}>
             <Button style={{outlineColor: 'blue'}}>
               Upload Throughput
@@ -151,11 +152,11 @@ export function InitiativeActionsMenu(props: InitiativeActionsMenuProps)
           </Button>
         </MenuItem>
       </Menu>
-      <DecisionDataModal title='View Decision Data' isOpen={decisionModalIsOpen} setDecisionModalIsOpen={setDecisionModalIsOpen} initiative={props.initiative} company={props.company} isAdmin={props.isAdmin}/>
-      <ArticleDataModal title={""} text={""} updatedDate={{month: today.getMonth()+1, day: today.getDate(), year: today.getFullYear()}} updatedBy={""} isIntegrityOnly={false} initiative={props.initiative} company={props.company} isOpen={articleModalIsOpen} isAdmin={props.isAdmin} setArticleModalIsOpen={setArticleModalIsOpen }></ArticleDataModal>
-      <DocumentManagementModal isOpen={documentModalIsOpen} setIsOpen={setDocumentModalIsOpen} company={props.company} initiative={props.initiative} isAdmin={props.isAdmin} />
+      <DecisionDataModal title='View Decision Data' isOpen={decisionModalIsOpen} setDecisionModalIsOpen={setDecisionModalIsOpen} initiative={props.initiative} company={props.company} isAdmin={props.currentUser.isAdmin}/>
+      <ArticleDataModal title={""} text={""} updatedDate={{month: today.getMonth()+1, day: today.getDate(), year: today.getFullYear()}} updatedBy={""} isIntegrityOnly={false} initiative={props.initiative} company={props.company} isOpen={articleModalIsOpen} currentUser={props.currentUser} setArticleModalIsOpen={setArticleModalIsOpen }></ArticleDataModal>
+      <DocumentManagementModal isOpen={documentModalIsOpen} setIsOpen={setDocumentModalIsOpen} company={props.company} initiative={props.initiative} isAdmin={props.currentUser.isAdmin} />
       <UploadThroughputModal company={props.company} initiative={props.initiative} uploadIsOpen={uploadThroughputModalIsOpen} setUploadIsOpen={setUploadThroughputModalIsOpen} Submit={SubmitUpdateThroughput}/>
-      <EditThroughputModal allCompanies={props.allCompanies} company={props.company} initiative={props.initiative} editIsOpen={editThroughputModalIsOpen} setEditIsOpen={setEditThroughputModalIsOpen} Submit={SubmitUpdateThroughput} isAdmin={props.isAdmin}/>
+      <EditThroughputModal allCompanies={props.allCompanies} company={props.company} initiative={props.initiative} editIsOpen={editThroughputModalIsOpen} setEditIsOpen={setEditThroughputModalIsOpen} Submit={SubmitUpdateThroughput} isAdmin={props.currentUser.isAdmin}/>
     </ThemeProvider>
   )
 }

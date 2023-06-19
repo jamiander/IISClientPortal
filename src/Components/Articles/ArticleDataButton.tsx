@@ -4,6 +4,7 @@ import { DateInfo } from "../../Services/CompanyService"
 import { Company, Initiative } from "../../Store/CompanySlice"
 import { IntegrityTheme } from "../../Styles"
 import ArticleDataModal from "./ArticleDataModal"
+import { User } from "../../Store/UserSlice"
 
 interface ArticleDataButtonProps {
     cypressData: any
@@ -15,7 +16,7 @@ interface ArticleDataButtonProps {
     company: Company
     initiative?: Initiative
     isOpen: boolean
-    isAdmin: boolean
+    currentUser: User
 }
   
   export function ArticleDataButton(props: ArticleDataButtonProps)
@@ -30,7 +31,7 @@ interface ArticleDataButtonProps {
             Articles
           </Button>
         </ThemeProvider>
-        <ArticleDataModal title={""} text={""} updatedDate={{month: today.getMonth()+1, day: today.getDate(), year: today.getFullYear()}} updatedBy={""} isIntegrityOnly={false} initiative={props.initiative} company={props.company} isOpen={isOpen} isAdmin={props.isAdmin} setArticleModalIsOpen={setIsOpen }></ArticleDataModal>
+        <ArticleDataModal title={""} text={""} updatedDate={{month: today.getMonth()+1, day: today.getDate(), year: today.getFullYear()}} updatedBy={""} isIntegrityOnly={false} initiative={props.initiative} company={props.company} isOpen={isOpen} currentUser={props.currentUser} setArticleModalIsOpen={setIsOpen }></ArticleDataModal>
       </div>
     )
   }

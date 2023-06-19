@@ -8,7 +8,7 @@ import { BaseInitiativeModal } from "../Initiative/BaseInitiativeModal";
 import { DecisionModalIds } from "../Initiative/DecisionDataModal";
 import { DeleteDecisionAlert } from "../Initiative/DeleteDecisionAlert";
 import { useEffect, useState } from "react";
-import { Company, Initiative } from "../../Store/CompanySlice";
+import { Company, Initiative, IntegrityId } from "../../Store/CompanySlice";
 import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
@@ -20,6 +20,7 @@ import { enqueueSnackbar } from "notistack";
 import { Article, getArticle, selectAllArticles, upsertArticle } from "../../Store/ArticleSlice";
 import { ValidateArticle, ValidationFailedPrefix } from "../../Services/Validation";
 import { filter } from "cypress/types/bluebird";
+import { User } from "../../Store/UserSlice";
 
 enum stateEnum {
     start,
@@ -60,7 +61,7 @@ interface ArticleDataProps {
     company: Company
     initiative?: Initiative | undefined
     isOpen: boolean
-    isAdmin: boolean
+    currentUser: User
     setArticleModalIsOpen: (value: boolean) => void
 }
 
@@ -239,7 +240,7 @@ export default function ArticleDataModal(props: ArticleDataProps) {
               mr: 2,
               borderRadius: 1, 
               }}>
-              {selectedInitiative !== undefined &&
+              {selectedInitiative !== undefined && filteredArticles.length > 0 && 
               <Grid item xs={4} sx={{ display: 'flex',
                 justifyContent: 'flex-start',
               }}>
@@ -261,7 +262,7 @@ export default function ArticleDataModal(props: ArticleDataProps) {
                   <CircularProgress color={"warning"}/>
                 }
               </Grid>
-              {props.isAdmin &&
+              {props.currentUser.isAdmin && props.currentUser.companyId === IntegrityId && 
               <Grid item xs={4} sx={{ display: 'flex',
               justifyContent: 'flex-end'
               }}> 
@@ -323,7 +324,7 @@ export default function ArticleDataModal(props: ArticleDataProps) {
                             </div>
                           }
                           {
-                            !isEdit && !InEditMode() && props.isAdmin &&
+                            !isEdit && !InEditMode() && props.currentUser.isAdmin && props.currentUser.companyId === IntegrityId &&
                             <div className="flex w-full justify-between">
                               <IconButton disabled={isLoading} data-cy={ArticleModalIds.editButton} onClick={() => EnterEditMode(displayItem.id, filteredArticles, false)}>
                                 <EditIcon sx={{fontSize: "inherit"}}/>
@@ -340,7 +341,7 @@ export default function ArticleDataModal(props: ArticleDataProps) {
                 )
               })}
               {
-              filteredArticles.length === 0 && <Grid item>No articles to display.</Grid>
+              filteredArticles.length === 0 && <Grid item className="m-2 p-2 text-3xl font-bold">No articles to display.</Grid>
               }
             </Grid>
           </div>

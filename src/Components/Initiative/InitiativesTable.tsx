@@ -58,7 +58,7 @@ export const InitiativeTableIds = {
 
 interface InitiativesProps {
   companyList: Company[]
-  currentUser: User | undefined
+  currentUser: User
   radioStatus: string
   ValidateInitiative: (initiative: Initiative, companyId: string, allCompanies: Company[]) => {success: boolean, message: string}
   addInitiative: boolean
@@ -133,7 +133,7 @@ export default function InitiativesTable(props: InitiativesProps) {
       const myUuid = v4();
       const todayInfo = DateToDateInfo(new Date());
       const date = new Date();
-      let matchingCompany = props.companyList.find(c => c.id === props.currentUser?.companyId);
+      let matchingCompany = props.companyList.find(c => c.id === props.currentUser.companyId);
       if(matchingCompany?.id === IntegrityId) matchingCompany = {id: "", name: "", initiatives: ([])};
       if(matchingCompany)
       {
@@ -366,7 +366,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                             <TableCell sx={{fontSize: tableCellFontSize}} data-cy={InitiativeTableIds.remainingItems}>{displayItem.itemsRemaining}</TableCell>
                             <TableCell></TableCell>
                             <TableCell className="w-1/12">
-                              <InitiativeActionsMenu cypressData={InitiativeTableIds.actionMenu} disabled={true} allCompanies={props.companyList} company={displayItem.company} initiative={displayItem} isAdmin={false}/>
+                              <InitiativeActionsMenu cypressData={InitiativeTableIds.actionMenu} disabled={true} allCompanies={props.companyList} company={displayItem.company} initiative={displayItem} currentUser={props.currentUser}/>
                             </TableCell>
                             <TableCell className="w-1/12">
                               <IconButton data-cy={InitiativeTableIds.saveChangesButton} onClick={() => SaveEdit(props.companyList)}>
@@ -391,7 +391,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                               <i className="material-icons" style={{ fontSize: '15px', marginLeft: '15px', marginTop: '10px' }}>info_outline</i>
                             </TableCell>
                             <TableCell className="w-1/12">
-                              <InitiativeActionsMenu cypressData={InitiativeTableIds.actionMenu} allCompanies={props.companyList} company={displayItem.company} initiative={displayItem} isAdmin={isAdmin ?? false} size={tableButtonFontSize}/>
+                              <InitiativeActionsMenu cypressData={InitiativeTableIds.actionMenu} allCompanies={props.companyList} company={displayItem.company} initiative={displayItem} currentUser={props.currentUser} size={tableButtonFontSize}/>
                             </TableCell>
                             {isAdmin &&
                               <TableCell className="w-1/12">
