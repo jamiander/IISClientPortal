@@ -179,20 +179,26 @@ function Specs(GoToArticles: () => void)
     EditArticle();
   })
 
-  specify.only('Cannot add/edit article with invalid input', () => {
+  specify.only('Canceling an add/edit does not save changes', () => {
+    cy.login(integrityAdmin);
+    GoToArticles();
+    AddArticle(false);
+    cy.getByData(modalIds.grid).its('length').then(($length) => {
+      let length = $length;
+      cy.getByData(modalIds.cancelChangesButton).click();
+      if(length === 1)
+        cy.getByData(modalIds.grid).children().should('not.exist');
+      else
+        cy.getByData(modalIds.grid).children().its('length').should('equal',length-1);
+    });
+  })
+
+  specify('Cannot add/edit article with invalid input', () => {
     cy.login(integrityAdmin);
     GoToArticles();
     CannotAddInvalidArticle();
     AddArticle();
     CannotEditInvalidArticle();
-  })
-
-  specify('Canceling an add/edit does not save changes', () => {
-    cy.login(integrityAdmin);
-    GoToArticles();
-    AddArticle(false);
-    cy.getByData(modalIds.cancelChangesButton);
-    //cy.contains();
   })
 
   specify('Client cannot see Integrity-only articles', () => {
