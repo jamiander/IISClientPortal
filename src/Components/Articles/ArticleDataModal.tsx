@@ -1,24 +1,21 @@
-import { Grid, InputAdornment, CircularProgress, IconButton } from "@mui/material";
+import { Grid, InputAdornment, CircularProgress, IconButton, Checkbox, TableCell } from "@mui/material";
 import { DateInfo } from "../../Services/CompanyService";
 import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
 import { UserTextField, Item, StyledCard, StyledCardContent, labelStyle, StyledTextarea, StyledTextField, StyledCardActions } from "../../Styles";
 import { AddButton } from "../AddButton";
 import { DateInput } from "../DateInput";
 import { BaseInitiativeModal } from "../Initiative/BaseInitiativeModal";
-import { DeleteDecisionAlert } from "../Initiative/DeleteDecisionAlert";
 import { useEffect, useState } from "react";
 import { Company, Initiative, IntegrityId } from "../../Store/CompanySlice";
 import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
-import DeleteIcon from '@mui/icons-material/Delete';
 import SearchIcon from '@mui/icons-material/Search';
 import { MakeClone } from "../../Services/Cloning";
 import {v4 as UuidV4} from "uuid";
 import { enqueueSnackbar } from "notistack";
 import { Article, getArticle, selectAllArticles, upsertArticle } from "../../Store/ArticleSlice";
 import { ValidateArticle, ValidationFailedPrefix } from "../../Services/Validation";
-import { filter } from "cypress/types/bluebird";
 import { User } from "../../Store/UserSlice";
 
 enum stateEnum {
@@ -75,6 +72,7 @@ export default function ArticleDataModal(props: ArticleDataProps) {
     const [currentUpdatedBy, setCurrentUpdatedBy] = useState("");
     const [currentInitiativeId, setCurrentInitiativeId] = useState("");
     const [currentCompanyId, setCurrentCompanyId] = useState("");
+    const [isIntegrityOnly, setIsIntegrityOnly] = useState(false);
     const [selectedInitiative, setSelectedInitiative] = useState<Initiative>();
     const [selectedCompany, setSelectedCompany] = useState<Company>(props.company);
     const [articleToEdit, setArticleToEdit] = useState<Article>();
@@ -91,24 +89,37 @@ export default function ArticleDataModal(props: ArticleDataProps) {
     }, []);
 
     useEffect(() => {
-      if(props.initiative !== undefined)
-      {
-        setFilteredArticles(allArticles.filter(
-        a => a.initiativeId === selectedInitiative?.id &&
-        (a.title.toUpperCase().includes(searchedKeyword.toUpperCase())
-        || a.text.toUpperCase().includes(searchedKeyword.toUpperCase())
-        )) 
-        );
+      let articles: Article[] = [];
+      if(props.currentUser.companyId === IntegrityId)
+      { 
+        if(props.initiative !== undefined)
+        {
+          articles = allArticles.filter(
+          a => a.initiativeId === selectedInitiative?.id);
+        }
+        else
+        {
+          articles = allArticles.filter(
+          a => a.companyId === selectedCompany.id && !a.initiativeId);
+        }
       }
       else
       {
-        setFilteredArticles(allArticles.filter(
-        a => a.companyId === selectedCompany.id && !a.initiativeId && 
-        (a.title.toUpperCase().includes(searchedKeyword.toUpperCase())
-        || a.text.toUpperCase().includes(searchedKeyword.toUpperCase())
-        ))
-        );
+        if(props.initiative !== undefined)
+        {
+          articles = allArticles.filter(
+          a => a.initiativeId === selectedInitiative?.id && a.isIntegrityOnly === false);
+        }
+        else
+        {
+          articles = allArticles.filter(
+          a => a.companyId === selectedCompany.id && !a.initiativeId && a.isIntegrityOnly === false);
+        }
       }
+        
+      setFilteredArticles(articles.filter(a => a.title.toUpperCase().includes(searchedKeyword.toUpperCase())
+      || a.title.toUpperCase().includes(searchedKeyword.toUpperCase())));
+
     },[selectedInitiative,selectedCompany,searchedKeyword])
     
     useEffect(() => {
@@ -159,11 +170,12 @@ export default function ArticleDataModal(props: ArticleDataProps) {
                 setCurrentCompanyId(currentArticle.companyId);
                 setCurrentUpdatedBy(currentArticle.updatedBy);
                 setCurrentUpdatedDate(currentArticle.updatedDate);
+                setIsIntegrityOnly(currentArticle.isIntegrityOnly);
             }
         }
     }
 
-    async function HandleEditArticle(id: string, newTitle: string, newText: string, newUpdatedBy: string, newUpdatedDate: DateInfo) {
+    async function HandleEditArticle(id: string, newTitle: string, newText: string, newUpdatedBy: string, newUpdatedDate: DateInfo, newIsIntegrityOnly: boolean) {
         let selectedArticlesClone: Article[] = MakeClone(filteredArticles);
         let newArticle = selectedArticlesClone.find(a => a.id === id);
         if(newArticle)
@@ -173,6 +185,7 @@ export default function ArticleDataModal(props: ArticleDataProps) {
         newArticle.updatedBy = newUpdatedBy;
         if(newUpdatedDate)
             newArticle.updatedDate = newUpdatedDate;
+        newArticle.isIntegrityOnly = newIsIntegrityOnly;
 
         setIsLoading(true);
         let successfulSubmit = await SubmitArticle(newArticle);
@@ -239,12 +252,11 @@ export default function ArticleDataModal(props: ArticleDataProps) {
               mr: 2,
               borderRadius: 1, 
               }}>
-              {selectedInitiative !== undefined && filteredArticles.length > 0 && 
+              {filteredArticles.length > 0 && 
               <Grid item xs={4} sx={{ display: 'flex',
                 justifyContent: 'flex-start',
               }}>
                 <UserTextField data-cy={ArticleModalIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)}
-                  
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
@@ -294,6 +306,7 @@ export default function ArticleDataModal(props: ArticleDataProps) {
                             <label className={labelStyle} htmlFor="updatedby">Updated By</label>
                             <StyledTextarea id="updatedby" data-cy={ArticleModalIds.editUpdatedBy} value={currentUpdatedBy} onChange={e => setCurrentUpdatedBy(e.target.value)}/>
                             <DateInput cypressData={ArticleModalIds.editUpdatedDate} label="Date Updated" date={currentUpdatedDate} setDate={setCurrentUpdatedDate}/>
+                            <div><Checkbox color="darkBlue" checked={isIntegrityOnly} onChange={e => setIsIntegrityOnly(e.target.checked)}/>Integrity Only</div>
                           </>
                           :
                           <>
@@ -311,7 +324,7 @@ export default function ArticleDataModal(props: ArticleDataProps) {
                           {isEdit &&
                             <div className="flex w-full justify-between">
                               <IconButton disabled={isLoading} data-cy={ArticleModalIds.saveChangesButton}
-                                onClick={() => HandleEditArticle(displayItem.id, currentTitle, currentText, currentUpdatedBy, currentUpdatedDate ?? displayItem.updatedDate)}>
+                                onClick={() => HandleEditArticle(displayItem.id, currentTitle, currentText, currentUpdatedBy, currentUpdatedDate ?? displayItem.updatedDate, isIntegrityOnly)}>
                                 <DoneIcon sx={{fontSize: "inherit"}}/>
                               </IconButton>
                               {isLoading &&
