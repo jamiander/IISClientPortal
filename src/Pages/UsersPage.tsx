@@ -208,7 +208,7 @@ export default function UsersPage(){
               <TableBody data-cy={UsersPageIds.table}>
                 {
                   usersList.map((companyUser, key) => {
-                      let isEdit = InEditMode() && companyUser?.id === userToEdit?.id;
+                      let isEdit = InEditMode() && companyUser.id === userToEdit?.id;
                       let displayCompany = allCompanies.find(c => c.id === companyUser.companyId);
                       return (
                         <TableRow className={defaultRowStyle} key={key} sx={{
@@ -257,15 +257,15 @@ export default function UsersPage(){
                             :
                             <>
                               <TableCell data-cy={UsersPageIds.company}>{displayCompany?.name}</TableCell>
-                              <TableCell data-cy={UsersPageIds.name}>{companyUser?.name}</TableCell>
-                              <TableCell data-cy={UsersPageIds.email}>{companyUser?.email}</TableCell>
-                              <TableCell data-cy={UsersPageIds.password}>{companyUser?.password}</TableCell>
-                              <TableCell data-cy={UsersPageIds.phone}>{companyUser?.phoneNumber}</TableCell>
-                              <TableCell data-cy={UsersPageIds.isAdmin}>{companyUser?.isAdmin ? "Admin" : "User"}</TableCell>
-                              <TableCell data-cy={UsersPageIds.isActive}>{companyUser?.isActive ? "Active" : "Inactive"}</TableCell>
+                              <TableCell data-cy={UsersPageIds.name}>{companyUser.name}</TableCell>
+                              <TableCell data-cy={UsersPageIds.email}>{companyUser.email}</TableCell>
+                              <TableCell data-cy={UsersPageIds.password}>{companyUser.password}</TableCell>
+                              <TableCell data-cy={UsersPageIds.phone}>{companyUser.phoneNumber}</TableCell>
+                              <TableCell data-cy={UsersPageIds.isAdmin}>{companyUser.isAdmin ? "Admin" : "User"}</TableCell>
+                              <TableCell data-cy={UsersPageIds.isActive}>{companyUser.isActive ? "Active" : "Inactive"}</TableCell>
                               <TableCell data-cy={UsersPageIds.initiativeIds}><EditUserInitiativesButton user={companyUser} allCompanies={displayCompany ? [displayCompany] : []} SubmitUserData={SubmitUserData} expanded={true} /></TableCell>
                               <TableCell>
-                                <IconButton data-cy={UsersPageIds.editButton} disabled={InEditMode()} onClick={() => EnterEditMode(companyUser?.id, companyUsers, false)}>
+                                <IconButton data-cy={UsersPageIds.editButton} disabled={InEditMode()} onClick={() => EnterEditMode(companyUser.id, companyUsers, false)}>
                                   <EditIcon sx={{fontSize: tableButtonFontSize}}/>
                                 </IconButton>
                               </TableCell>
