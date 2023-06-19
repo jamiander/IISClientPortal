@@ -129,7 +129,7 @@ export default function ArticleDataModal(props: ArticleDataProps) {
                 title: "", 
                 text: "", 
                 updatedBy: "", 
-                updatedDate: todayInfo,
+                updatedDate: { month: -1, day: -1, year: -1},
                 companyId: selectedCompany.id,
                 initiativeId: selectedInitiative?.id,
                 isIntegrityOnly: false
@@ -163,30 +163,29 @@ export default function ArticleDataModal(props: ArticleDataProps) {
     }
 
     async function HandleEditArticle(id: string, newTitle: string, newText: string, newUpdatedBy: string, newUpdatedDate: DateInfo) {
-        let selectedArticlesClone: Article[] = MakeClone(filteredArticles);
-        let newArticle = selectedArticlesClone.find(a => a.id === id);
-        if(newArticle)
-        {
+      let selectedArticlesClone: Article[] = MakeClone(filteredArticles);
+      let newArticle = selectedArticlesClone.find(a => a.id === id);
+      if(newArticle)
+      {
         newArticle.title = newTitle;
         newArticle.text = newText;
         newArticle.updatedBy = newUpdatedBy;
-        if(newUpdatedDate)
-            newArticle.updatedDate = newUpdatedDate;
+        newArticle.updatedDate = newUpdatedDate;
 
         setIsLoading(true);
         let successfulSubmit = await SubmitArticle(newArticle);
         if(successfulSubmit)
         setFilteredArticles(selectedArticlesClone);
         setIsLoading(false);
-        }
+      }
     }
 
     async function SubmitArticle(article: Article): Promise<boolean> {
         let isTest = false;
         if((window as any).Cypress)
-        isTest = true;
+          isTest = true;
         
-        let validation = ValidateArticle(article, filteredArticles);
+        const validation = ValidateArticle(article);
 
         if(validation.success)
         {

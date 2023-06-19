@@ -11,6 +11,9 @@ const initTableIds = consts.initiativeTableIds;
 const clientPageIds = consts.clientPageIds;
 const modalIds = consts.articleModalIds;
 const navIds = consts.navPanelIds;
+const snackbarId = consts.snackbarId;
+const snackbarWaitTime = consts.snackbarWaitTime;
+const failMessage = consts.validationFailedMessage;
 
 const articleToAdd = {
   title: "New Article",
@@ -40,12 +43,12 @@ function GoToInitiativeArticles()
   cy.getByData(initTableIds.actionMenu.articleButton).click();
 }
 
-function AddArticle()
+function AddArticle(submit?: boolean)
 {
-  EditArticle(true);
+  EditArticle(submit, true);
 }
 
-function EditArticle(add?: boolean)
+function EditArticle(submit?: boolean, add?: boolean)
 {
   let article = editedArticle;
   if(add)
@@ -60,14 +63,18 @@ function EditArticle(add?: boolean)
   cy.getByData(modalIds.editText).clear().type(article.text);
   cy.getByData(modalIds.editUpdatedBy).clear().type(article.updatedBy);
   cy.getByData(modalIds.editUpdatedDate).setDatePicker(article.updatedDate);
-  cy.getByData(modalIds.saveChangesButton).click();
+  
+  if(submit)
+  {
+    cy.getByData(modalIds.saveChangesButton).click();
 
-  cy.getByData(modalIds.saveChangesButton).should('not.exist');
-  cy.contains(article.title).parent().within(() => {
-    cy.getByData(modalIds.text).should('contain',article.text);
-    cy.getByData(modalIds.updatedBy).should('contain',article.updatedBy);
-    //cy.getByData(modalIds.updatedDate).should('contain',article.updatedDate);
-  });
+    cy.getByData(modalIds.saveChangesButton).should('not.exist');
+    cy.contains(article.title).parent().within(() => {
+      cy.getByData(modalIds.text).should('contain',article.text);
+      cy.getByData(modalIds.updatedBy).should('contain',article.updatedBy);
+      //cy.getByData(modalIds.updatedDate).should('contain',article.updatedDate);
+    });
+  }
 }
 
 function CannotAdd()
@@ -82,12 +89,55 @@ function CannotEdit()
 
 function CannotAddInvalidArticle()
 {
-
+  CannotEditInvalidArticle(true);
 }
 
-function CannotEditInvalidArticle()
+function CannotEditInvalidArticle(add?: boolean)
 {
+  let article = editedArticle;
+  if(add)
+  {
+    article = articleToAdd;
+    AddArticle(false);
+  }
+  else
+    EditArticle(false);
+  
+  TestEmptyField(modalIds.editTitle);
+  TestEmptyField(modalIds.editText);
+  TestEmptyField(modalIds.editUpdatedBy);
+  TestEmptyDate(modalIds.editUpdatedDate);
 
+  cy.getByData(modalIds.cancelChangesButton).click();
+}
+
+function TestEmptyField(data: string)
+{
+  cy.getByData(data).then(($txt) => {
+    let originalText = $txt.text();
+
+    cy.getByData(data).clear();
+
+    cy.getByData(modalIds.saveChangesButton).click();
+    cy.wait(snackbarWaitTime);
+    cy.get(snackbarId).should('contain',failMessage);
+
+    cy.getByData(data).type(originalText);
+  })
+}
+
+function TestEmptyDate(data: string)
+{
+  cy.getByData(data).find('input').invoke('val').then(($val) => {
+    let originalDate = $val as string;
+    cy.getByData(data).setDatePicker("");
+
+    cy.getByData(modalIds.saveChangesButton).click();
+    cy.wait(snackbarWaitTime);
+    cy.get(snackbarId).should('contain',failMessage);
+
+    cy.getByData(data).setDatePicker(originalDate);
+  });
 }
 
 function CloseModal()
@@ -129,7 +179,7 @@ function Specs(GoToArticles: () => void)
     EditArticle();
   })
 
-  specify('Cannot add/edit article with invalid input', () => {
+  specify.only('Cannot add/edit article with invalid input', () => {
     cy.login(integrityAdmin);
     GoToArticles();
     CannotAddInvalidArticle();
@@ -138,7 +188,11 @@ function Specs(GoToArticles: () => void)
   })
 
   specify('Canceling an add/edit does not save changes', () => {
-
+    cy.login(integrityAdmin);
+    GoToArticles();
+    AddArticle(false);
+    cy.getByData(modalIds.cancelChangesButton);
+    //cy.contains();
   })
 
   specify('Client cannot see Integrity-only articles', () => {
@@ -160,10 +214,18 @@ function Specs(GoToArticles: () => void)
 
 describe('add client-level article', () => {
   Specs(GoToClientArticles);
+
+  specify('Cannot see initiative-level articles from client view', () => {
+
+  })
 });
 
 describe('add initiative-level article', () => {
   Specs(GoToInitiativeArticles);
+
+  specify('Cannot see client-level articles from initiative view', () => {
+
+  })
 });
 
 export {}
