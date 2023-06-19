@@ -5,7 +5,6 @@ import { UserTextField, Item, StyledCard, StyledCardContent, labelStyle, StyledT
 import { AddButton } from "../AddButton";
 import { DateInput } from "../DateInput";
 import { BaseInitiativeModal } from "../Initiative/BaseInitiativeModal";
-import { DecisionModalIds } from "../Initiative/DecisionDataModal";
 import { DeleteDecisionAlert } from "../Initiative/DeleteDecisionAlert";
 import { useEffect, useState } from "react";
 import { Company, Initiative, IntegrityId } from "../../Store/CompanySlice";
@@ -311,14 +310,14 @@ export default function ArticleDataModal(props: ArticleDataProps) {
                         <StyledCardActions>
                           {isEdit &&
                             <div className="flex w-full justify-between">
-                              <IconButton disabled={isLoading} data-cy={DecisionModalIds.saveChangesButton}
+                              <IconButton disabled={isLoading} data-cy={ArticleModalIds.saveChangesButton}
                                 onClick={() => HandleEditArticle(displayItem.id, currentTitle, currentText, currentUpdatedBy, currentUpdatedDate ?? displayItem.updatedDate)}>
                                 <DoneIcon sx={{fontSize: "inherit"}}/>
                               </IconButton>
                               {isLoading &&
                                 <CircularProgress color={"warning"}/>
                               }
-                              <IconButton disabled={isLoading} data-cy={DecisionModalIds.cancelChangesButton} onClick={() => HandleCancelEdit()}>
+                              <IconButton disabled={isLoading} data-cy={ArticleModalIds.cancelChangesButton} onClick={() => HandleCancelEdit()}>
                                 <CancelIcon sx={{fontSize: "inherit"}}/>
                               </IconButton>
                             </div>
