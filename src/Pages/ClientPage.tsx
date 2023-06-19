@@ -1,18 +1,16 @@
-import { Box, Grid, IconButton, Input, InputAdornment, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
-import { TableHeaderStyle, UserTextField, defaultRowStyle, tableButtonFontSize, tableCellFontSize, tableHeaderFontSize } from "../Styles";
+import { Grid, IconButton, Input, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { TableHeaderStyle, defaultRowStyle, tableButtonFontSize, tableCellFontSize, tableHeaderFontSize } from "../Styles";
 import { useEffect, useState } from "react";
 import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
-import SearchIcon from '@mui/icons-material/Search';
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
-import { Company, Initiative, IntegrityId, selectAllCompanies, upsertCompanyInfo, upsertInitiativeInfo } from "../Store/CompanySlice";
+import { Company, IntegrityId, selectAllCompanies, upsertCompanyInfo } from "../Store/CompanySlice";
 import { enqueueSnackbar } from "notistack";
 import { v4 } from "uuid";
-import ValidateNewInitiative, { ValidateCompany, Validation, ValidationFailedPrefix } from "../Services/Validation";
+import { ValidateCompany, ValidationFailedPrefix } from "../Services/Validation";
 import { RadioSet } from "../Components/RadioSet";
 import { CompanyFilter } from "../Services/Filters";
-import { useNavigate } from "react-router-dom";
 import { DateInfo } from "../Services/CompanyService";
 import { selectCurrentUser } from "../Store/UserSlice";
 import { DateToDateInfo } from "../Services/DateHelpers";
@@ -57,7 +55,7 @@ export function ClientPage()
 
   const dispatch = useAppDispatch();
   const allCompanies = useAppSelector(selectAllCompanies);
-  const currentUser = useAppSelector(selectCurrentUser);
+  const currentUser = useAppSelector(selectCurrentUser)!;
   const today = new Date();
   const todayInfo = DateToDateInfo(today);
 
@@ -140,37 +138,18 @@ export function ClientPage()
     {
       companyClone.name = currentName;
 
-      /*let newInitiative: Initiative = {
-        id: v4(),
-        title: currentInitiativeTitle,
-        targetDate: currentTargetDate ?? todayInfo,
-        startDate: todayInfo,
-        totalItems: currentTotalItems ?? 1,
-        itemsCompletedOnDate: [],
-        decisions: []
-      }*/
-
       const validation = ValidateCompany(companyClone,allCompanies);
       if(validation.success)
       {
-        //const initiativeValidation: Validation = 
-          //state === State.add ? ValidateNewInitiative(newInitiative,companyClone.id,[companyClone]) : {message: "There was no initiative to validate.", success: true};
-
-        //if(initiativeValidation.success)
-        //{
           let saveMessage = "Changes have been saved.";
           await dispatch(upsertCompanyInfo({isTest: isTest, company: companyClone}));
           if(state === State.add)
           {
             saveMessage = "New client added!";
-            //dispatch(upsertInitiativeInfo({isTest: isTest, initiative: newInitiative, companyId: companyClone.id}));
           }
 
           LeaveEditMode();
           enqueueSnackbar(saveMessage, {variant: "success"});
-        //}
-        //else
-          //enqueueSnackbar(ValidationFailedPrefix + initiativeValidation.message, {variant: "error"});
       }
       else
         enqueueSnackbar(ValidationFailedPrefix + validation.message, {variant: "error"});
@@ -209,7 +188,8 @@ export function ClientPage()
               sx={{ display: 'flex',
               justifyContent: 'flex-start'
               }}> 
-              <SearchBar cypressData={ClientPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in Name" value={searchedKeyword} setValue={setSearchedKeyword} />
+              {currentUser?.companyId === IntegrityId &&
+              <SearchBar cypressData={ClientPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in Name" value={searchedKeyword} setValue={setSearchedKeyword} />}
             </Grid>
             <RadioSet dark={true} setter={setRadioValue} name="clientPage" options={[
             {cypressData: ClientPageIds.radioIds.all, label: "Show All", value: "all"},
@@ -311,7 +291,8 @@ export function ClientPage()
               </TableBody>
             </Table>
           </TableContainer>
-          <Paginator paginator={paginator}/>
+          {currentUser?.companyId === IntegrityId &&
+          <Paginator paginator={paginator}/>}
         </div>
       </div>
     </>
