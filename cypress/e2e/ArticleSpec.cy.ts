@@ -1,4 +1,3 @@
-import { Article } from "../../src/Store/ArticleSlice";
 import { AdminUser, IntegrityUser, MBPIAdminUser, MBPIUser, TestConstants } from "./TestHelpers";
 
 const integrityUser = IntegrityUser;
@@ -43,12 +42,12 @@ function GoToInitiativeArticles()
   cy.getByData(initTableIds.actionMenu.articleButton).click();
 }
 
-function AddArticle(submit?: boolean)
+function AddArticle(submit: boolean = true)
 {
   EditArticle(submit, true);
 }
 
-function EditArticle(submit?: boolean, add?: boolean)
+function EditArticle(submit: boolean = true, add?: boolean)
 {
   let article = editedArticle;
   if(add)
@@ -94,12 +93,8 @@ function CannotAddInvalidArticle()
 
 function CannotEditInvalidArticle(add?: boolean)
 {
-  let article = editedArticle;
   if(add)
-  {
-    article = articleToAdd;
     AddArticle(false);
-  }
   else
     EditArticle(false);
   
@@ -179,7 +174,7 @@ function Specs(GoToArticles: () => void)
     EditArticle();
   })
 
-  specify.only('Canceling an add/edit does not save changes', () => {
+  specify('Canceling an add/edit does not save changes', () => {
     cy.login(integrityAdmin);
     GoToArticles();
     AddArticle(false);
@@ -204,10 +199,12 @@ function Specs(GoToArticles: () => void)
   specify('Client cannot see Integrity-only articles', () => {
     cy.login(integrityAdmin);
     GoToArticles();
-    //add integrity-only article
+    //AddIntegrityArticle();
+    //TODO: add integrity-only article
     //log out
     cy.login(clientAdmin);
     GoToArticles();
+    
     //should not exist
   })
 
@@ -216,13 +213,40 @@ function Specs(GoToArticles: () => void)
     GoToArticles();
     CloseModal();
   })
+
+  specify.only('Cannot add/edit while already adding/editing', () => {
+    cy.login(integrityAdmin);
+    GoToArticles();
+    AddArticle(); //need another article so the edit button isn't replaced by save button
+
+    AddArticle(false);
+    cy.getByData(modalIds.addButton).should('be.disabled');
+    CannotEdit();
+    cy.getByData(modalIds.saveChangesButton).click();
+    cy.getByData(modalIds.addButton).should('not.be.disabled');
+    cy.getByData(modalIds.editButton).should('not.be.disabled');
+
+    EditArticle(false);
+    cy.getByData(modalIds.addButton).should('be.disabled');
+    CannotEdit();
+    cy.getByData(modalIds.saveChangesButton).click();
+    cy.getByData(modalIds.addButton).should('not.be.disabled');
+    cy.getByData(modalIds.editButton).should('not.be.disabled');
+  })
 }
 
 describe('add client-level article', () => {
   Specs(GoToClientArticles);
 
   specify('Cannot see initiative-level articles from client view', () => {
+    cy.login(integrityAdmin);
+    GoToInitiativeArticles();
+    AddArticle();
+    GoToClientArticles();
 
+    //TODO: implement this
+    //add an initative article
+    //go to client articles and verify that it's not there
   })
 });
 
@@ -230,7 +254,11 @@ describe('add initiative-level article', () => {
   Specs(GoToInitiativeArticles);
 
   specify('Cannot see client-level articles from initiative view', () => {
-
+    cy.login(integrityAdmin);
+    GoToClientArticles();
+    AddArticle();
+    GoToInitiativeArticles();
+    //TOOD: implement this
   })
 });
 
