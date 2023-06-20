@@ -30,7 +30,7 @@ interface UpsertArticleResponse {
 
 export async function UpsertArticle(request: UpsertArticleRequest) : Promise<UpsertArticleResponse>
 {
-  let baseUrl = BASE_URL + "AddArticle?code=SWxY8jxmjhK5t0I3R47s5RnrwEnaK2uPwIyVo7i3dDzCAzFuXkGxrQ==";
+  let baseUrl = BASE_URL + "UpsertArticle?code=dbvizt0B4iMUOzdpJ6HkLURMc8fg_Qzv8e1sn3hnJQ0KAzFuwwOZbw==";
   let response = await axios.post(baseUrl,request);
   return response.data;
 }
