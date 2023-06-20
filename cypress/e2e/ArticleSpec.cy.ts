@@ -42,12 +42,12 @@ function GoToInitiativeArticles()
   cy.getByData(initTableIds.actionMenu.articleButton).click();
 }
 
-function AddArticle(submit: boolean = true)
+function AddArticle(submit: boolean = true, integrityOnly?: boolean)
 {
-  EditArticle(submit, true);
+  EditArticle(submit, integrityOnly, true);
 }
 
-function EditArticle(submit: boolean = true, add?: boolean)
+function EditArticle(submit: boolean = true, integrityOnly?: boolean, add?: boolean)
 {
   let article = editedArticle;
   if(add)
@@ -62,6 +62,11 @@ function EditArticle(submit: boolean = true, add?: boolean)
   cy.getByData(modalIds.editText).clear().type(article.text);
   cy.getByData(modalIds.editUpdatedBy).clear().type(article.updatedBy);
   cy.getByData(modalIds.editUpdatedDate).setDatePicker(article.updatedDate);
+  if(integrityOnly)
+  {
+    //TODO: see what the value of this is before checking it?
+    cy.getByData(modalIds.isIntegrityOnly).check();
+  }
   
   if(submit)
   {
@@ -196,15 +201,16 @@ function Specs(GoToArticles: () => void)
     CannotEditInvalidArticle();
   })
 
-  specify('Client cannot see Integrity-only articles', () => {
+  specify.only('Client cannot see Integrity-only articles', () => {
     cy.login(integrityAdmin);
     GoToArticles();
-    //AddIntegrityArticle();
+    AddArticle(true,true);
     //TODO: add integrity-only article
     //log out
+    cy.get('button').contains("Log Out").click();
     cy.login(clientAdmin);
     GoToArticles();
-    
+    cy.getByData(articleToAdd.title).should('not.exist');
     //should not exist
   })
 
@@ -214,7 +220,7 @@ function Specs(GoToArticles: () => void)
     CloseModal();
   })
 
-  specify.only('Cannot add/edit while already adding/editing', () => {
+  specify('Cannot add/edit while already adding/editing', () => {
     cy.login(integrityAdmin);
     GoToArticles();
     AddArticle(); //need another article so the edit button isn't replaced by save button

@@ -85,8 +85,9 @@ export default function ArticleDataModal(props: ArticleDataProps) {
     const [filteredArticles, setFilteredArticles] = useState<Article[]>([]);
 
     useEffect(() => {
-      dispatch(getArticle({companyId: props.company.id, initiativeId: props.initiative?.id}))
-    }, []);
+      if(props.isOpen)
+        dispatch(getArticle({companyId: props.company.id, initiativeId: props.initiative?.id}))
+    }, [props.isOpen]);
 
     useEffect(() => {
       let articles: Article[] = [];
@@ -306,7 +307,7 @@ export default function ArticleDataModal(props: ArticleDataProps) {
                             <label className={labelStyle} htmlFor="updatedby">Updated By</label>
                             <StyledTextarea id="updatedby" data-cy={ArticleModalIds.editUpdatedBy} value={currentUpdatedBy} onChange={e => setCurrentUpdatedBy(e.target.value)}/>
                             <DateInput cypressData={ArticleModalIds.editUpdatedDate} label="Date Updated" date={currentUpdatedDate} setDate={setCurrentUpdatedDate}/>
-                            <div><Checkbox color="darkBlue" checked={isIntegrityOnly} onChange={e => setIsIntegrityOnly(e.target.checked)}/>Integrity Only</div>
+                            <div><Checkbox data-cy={ArticleModalIds.isIntegrityOnly} color="darkBlue" checked={isIntegrityOnly} onChange={e => setIsIntegrityOnly(e.target.checked)}/>Integrity Only</div>
                           </>
                           :
                           <>
