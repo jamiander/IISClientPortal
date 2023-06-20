@@ -1,8 +1,8 @@
-import { Fragment, useEffect, useMemo, useState } from "react";
-import { DateInfo, FindItemsRemaining } from "../../Services/CompanyService";
+import { Fragment, useEffect, useState } from "react";
+import { FindItemsRemaining } from "../../Services/CompanyService";
 import { InitiativeFilter } from "../../Services/Filters";
-import { Company, Initiative, IntegrityId, upsertInitiativeInfo } from "../../Store/CompanySlice";
-import { defaultRowStyle, greenProbabilityStyle, inputStyle, redProbabilityStyle, tableButtonFontSize, tableCellFontSize, tableHeaderFontSize, TableHeaderStyle, tooltipStyle } from "../../Styles";
+import { Company, Initiative, IntegrityId } from "../../Store/CompanySlice";
+import { defaultRowStyle, greenProbabilityStyle, redProbabilityStyle, tableButtonFontSize, tableCellFontSize, tableHeaderFontSize, TableHeaderStyle, tooltipStyle } from "../../Styles";
 import { GenerateProbability } from "../../Services/ProbabilitySimulationService";
 import { DateInput } from "../DateInput";
 import Table from '@mui/material/Table';

@@ -14,7 +14,7 @@ interface GetUserByIdResponse {
 
 export async function GetUserById(request: GetUserByIdRequest) : Promise<GetUserByIdResponse>
 {
-  let baseUrl = BASE_URL + "GetUserData?code=pxYC2Kl--ufhva3gjlh5s-B5hhn6e--oUiAkLHloNcKbAzFumtzS-w==";
+  let baseUrl = BASE_URL + "GetUserData?code=hl9AyWCStkzMXWiAnBlIqVe3UQnbdbU5IHSNsuuHTLwlAzFuraK-gw==";
 
   const response = await axios.post(baseUrl,request);
   return response.data;
@@ -69,8 +69,7 @@ interface AuthenticateUserResponse {
 
 export async function AuthenticateUser(request: AuthenticateUserRequest) : Promise<AuthenticateUserResponse>
 {
-  let baseUrl = BASE_URL + "AuthenticateUser?code=Yii5WyJ84vXw42ujOwPcttVh18kVIi0tD1d4uMN18h52AzFuELZqaQ==";
-
+  let baseUrl = BASE_URL + "AuthenticateUser?code=3lIbrkD6t-chmTe78dZbu--PjJh6f6uL6hzFmWMYprXwAzFusnnOTg==";
   const response = await axios.post(baseUrl,request);
   return response.data;
 }

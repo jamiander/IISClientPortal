@@ -1,6 +1,6 @@
 import { Button, IconButton, Menu, MenuItem, ThemeProvider } from "@mui/material"
 import MenuIcon from '@mui/icons-material/Menu';
-import { Company, Initiative, IntegrityId } from "../Store/CompanySlice"
+import { Company, IntegrityId } from "../Store/CompanySlice"
 import { DocumentManagementModal } from "./Documents/DocumentManagementModal"
 import ArticleDataModal from "./Articles/ArticleDataModal"
 import { IntegrityTheme } from "../Styles"

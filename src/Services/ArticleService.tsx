@@ -5,6 +5,7 @@ import { Article } from "../Store/ArticleSlice";
 export interface GetArticleRequest {
   companyId: string
   initiativeId?: string
+  userCompanyId: string
 }
 
 interface GetArticleResponse {
@@ -13,7 +14,7 @@ interface GetArticleResponse {
 
 export async function GetArticle(request: GetArticleRequest) : Promise<GetArticleResponse>
 {
-  let baseUrl = BASE_URL + "GetArticle?code=MQs83MvtyP3GY0gOfNW8ajuOMWDZPu4YMVTWd6XMm-Z8AzFuKomNIw==";
+  let baseUrl = BASE_URL + "GetArticle?code=JHoMZaryOQsvt6NyHcyxEQaWTRYOlyh1NX4UFTgM9BscAzFu5Xv1EA==";
   let response = await axios.post(baseUrl,request);
   return response.data;
 }

@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks"
-import { authenticateUser, selectAllUsers, selectCurrentUserId, selectLogInAttempts } from "../Store/UserSlice";
-import { IntegrityTheme, genericButtonStyle, tableCellFontSize, tableHeaderFontSize } from "../Styles";
-import { Box, Button, Checkbox, CircularProgress, Container, FormControlLabel, Grid, TextField, Typography } from "@mui/material";
+import { authenticateUser, selectCurrentUserId, selectLogInAttempts } from "../Store/UserSlice";
+import { IntegrityTheme, tableCellFontSize, tableHeaderFontSize } from "../Styles";
+import { Box, Button, Checkbox, CircularProgress, Container, FormControlLabel, TextField, Typography } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
 
 export const LoginPageIds = {

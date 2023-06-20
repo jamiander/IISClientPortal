@@ -1,5 +1,4 @@
-import CloseIcon from '@mui/icons-material/Close';
-import { CircularProgress, Dialog, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { CircularProgress, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { Company, Initiative } from '../../Store/CompanySlice';
 import { DocumentUpload } from './DocumentUpload';
 import { TableHeaderStyle, defaultRowStyle } from '../../Styles';

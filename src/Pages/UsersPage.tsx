@@ -1,9 +1,9 @@
-import { IntegrityTheme, TableHeaderStyle, UserTextField, defaultRowStyle, tableButtonFontSize, tableCellFontSize, tableHeaderFontSize } from "../Styles";
+import { IntegrityTheme, TableHeaderStyle, defaultRowStyle, tableButtonFontSize, tableCellFontSize, tableHeaderFontSize } from "../Styles";
 import { useEffect, useState } from "react";
 import { User, getUserById, selectAllUsers, selectCurrentUser } from "../Store/UserSlice";
 import { Company, IntegrityId, selectAllCompanies } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
-import { Checkbox, FormControl, Grid, IconButton, Input, InputAdornment, InputLabel, MenuItem, Select, ThemeProvider} from "@mui/material";
+import { Checkbox, FormControl, Grid, IconButton, Input, InputLabel, MenuItem, Select, ThemeProvider} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";

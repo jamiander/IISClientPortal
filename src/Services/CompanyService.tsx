@@ -1,7 +1,6 @@
 import axios from "axios";
 import { Company, Initiative } from "../Store/CompanySlice";
 import { BASE_URL } from "./Http";
-import { AnonymousCredential, BlobClient, BlobServiceClient, ContainerClient, StorageSharedKeyCredential } from "@azure/storage-blob";
 
 export interface DateInfo {
   month: number,
@@ -61,7 +60,7 @@ interface GetCompanyByInitiativeIdsResponse {
 
 export async function GetCompanyByInitiativeIds(request: GetCompanyByInitiativeIdsRequest) : Promise<GetCompanyByInitiativeIdsResponse>
 {
-  let baseUrl = BASE_URL + "GetCompanyDataByInitiativeIds?code=wcatNw26L7SrWt4WmlVv7e78esr3_zfmD-TFDDiXSzgOAzFuKl1EOQ==";
+  let baseUrl = BASE_URL + "GetCompanyDataByInitiativeIds?code=FgzQkpxHOQTcVWKDnNOLWXgvd8SwMpr76dBbzcbtDs7wAzFuBHmpGw==";
 
   let response = await axios.post(baseUrl,request);
   return response.data;
@@ -86,7 +85,7 @@ export async function UpsertCompanyInfo(request: UpsertCompanyInfoRequest) : Pro
     companyName: company.name
   }
 
-  let baseUrl = BASE_URL + "AddCompanyDataDB?code=Hu3y-USXm491pUrvMF-jQVFDMQvazAvfxEq9pAp58LhWAzFu7kjFvQ==";
+  let baseUrl = BASE_URL + "UpsertCompanyData?code=ML-tuaH2pUvLhwVTF9J6urMBf9Xtd8Y5L6uYTt_C12AYAzFuzoyK7Q==";
 
   let response = await axios.post(baseUrl, {company: info, isTest: isTest});
   return response.data;

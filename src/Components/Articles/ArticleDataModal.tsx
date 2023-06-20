@@ -85,7 +85,7 @@ export default function ArticleDataModal(props: ArticleDataProps) {
     const [filteredArticles, setFilteredArticles] = useState<Article[]>([]);
 
     useEffect(() => {
-      dispatch(getArticle({companyId: props.company.id, initiativeId: props.initiative?.id}))
+      dispatch(getArticle({companyId: props.company.id, initiativeId: props.initiative?.id, userCompanyId: props.currentUser.companyId}))
     }, []);
 
     useEffect(() => {

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { DateInfo, ThroughputData } from "../../Services/CompanyService";
 import { Company, Initiative } from "../../Store/CompanySlice";
-import { cancelButtonStyle, defaultRowStyle, modalStyle, submitButtonStyle, TableHeaderStyle, tooltipStyle } from "../../Styles";
+import { defaultRowStyle, TableHeaderStyle, tooltipStyle } from "../../Styles";
 import { DateInput } from "../DateInput";
 import Table from '@mui/material/Table';
 import TableContainer from '@mui/material/TableContainer';
@@ -9,7 +9,7 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { Button, CircularProgress, Dialog, Grid, IconButton, Input, Paper, TablePagination, Typography } from "@mui/material";
+import { CircularProgress, Grid, IconButton, Input, Paper, TablePagination } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
@@ -17,8 +17,6 @@ import { ValidateCompanyAndInitiative, ValidateDate, ValidationFailedPrefix } fr
 import { enqueueSnackbar } from "notistack";
 import { MakeClone } from "../../Services/Cloning";
 import { CompareDateInfos, EqualDateInfos } from "../../Services/DateHelpers";
-import AddIcon from "@mui/icons-material/Add";
-import CloseIcon from '@mui/icons-material/Close';
 import { BaseInitiativeModal } from "./BaseInitiativeModal";
 import { AddButton } from "../AddButton";
 
@@ -36,7 +34,6 @@ export const EditThroughputIds = {
   submitButton: "editThroughputSubmitButton",
   closeModalButton: "editThroughputCloseModalButton",
   addDate: "editThroughputAddDate",
-  //addItemsComplete: "editThroughputAddItemsComplete",
   tableDate: "editThroughputTableDate",
   tableItemsComplete: "editThroughputTableItemsComplete",
   saveChangesButton: "editThroughputSaveChangesButton",

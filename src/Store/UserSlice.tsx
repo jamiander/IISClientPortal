@@ -72,7 +72,6 @@ export const authenticateUser = createAsyncThunk(
   'users/authenticateUser',
   async (args: AuthenticateUserRequest, {dispatch, getState}) => {
     const response = await AuthenticateUser(args);
-    
     if(response.status.toUpperCase().includes("FAILED"))
       throw Error;
     
@@ -101,10 +100,7 @@ export const userSlice = createSlice({
     reducers: {
         setCurrentUserId: (state, action: PayloadAction<string>) => {
             let id = action.payload;
-            //if(state.users.find((user: User) => user.id === id))
                 state.currentUserId = action.payload;
-            //else
-              //  state.currentUserId = -1;
         },
         signOut: (state) => {
             state.currentUserId = "-1";

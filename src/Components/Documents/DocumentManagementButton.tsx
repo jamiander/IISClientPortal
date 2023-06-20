@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { DocumentManagementModal } from './DocumentManagementModal';
-import { IntegrityTheme, genericButtonStyle } from '../../Styles';
+import { IntegrityTheme } from '../../Styles';
 import { Company, Initiative } from '../../Store/CompanySlice';
 import { Button, ThemeProvider } from '@mui/material';
 
