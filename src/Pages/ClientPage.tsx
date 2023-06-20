@@ -55,7 +55,7 @@ export function ClientPage()
 
   const dispatch = useAppDispatch();
   const allCompanies = useAppSelector(selectAllCompanies);
-  const currentUser = useAppSelector(selectCurrentUser)!;
+  const currentUser = useAppSelector(selectCurrentUser);
   const today = new Date();
   const todayInfo = DateToDateInfo(today);
 

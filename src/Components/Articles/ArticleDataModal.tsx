@@ -85,8 +85,9 @@ export default function ArticleDataModal(props: ArticleDataProps) {
     const [filteredArticles, setFilteredArticles] = useState<Article[]>([]);
 
     useEffect(() => {
-      dispatch(getArticle({companyId: props.company.id, initiativeId: props.initiative?.id, userCompanyId: props.currentUser.companyId}))
-    }, []);
+      if(props.isOpen)
+        dispatch(getArticle({companyId: props.company.id, initiativeId: props.initiative?.id, userCompanyId: props.currentUser.companyId}))
+    }, [props.isOpen]);
 
     useEffect(() => {
       let articles: Article[] = [];
@@ -190,7 +191,7 @@ export default function ArticleDataModal(props: ArticleDataProps) {
         setIsLoading(true);
         let successfulSubmit = await SubmitArticle(newArticle);
         if(successfulSubmit)
-        setFilteredArticles(selectedArticlesClone);
+          setFilteredArticles(selectedArticlesClone);
         setIsLoading(false);
       }
     }
@@ -215,14 +216,14 @@ export default function ArticleDataModal(props: ArticleDataProps) {
         return false;
     }
 
-    function HandleCancelEdit() {
-        if(modalState === stateEnum.add && articleToEdit)
-        {
-            let articleClone: Article = MakeClone(articleToEdit);
-            articleClone = allArticles.find(a => a.id !== articleToEdit.id)!;
-            setArticleToEdit(articleClone);
-        }
-        LeaveEditMode();
+    function HandleCancelEdit()
+    {
+      if(modalState === stateEnum.add && articleToEdit)
+      {
+        const articlesClone = filteredArticles.filter(a => a.id !== articleToEdit.id);
+        setFilteredArticles(articlesClone);
+      }
+      LeaveEditMode();
     }
 
     function LeaveEditMode() {
@@ -230,9 +231,9 @@ export default function ArticleDataModal(props: ArticleDataProps) {
         setModalState(stateEnum.start);
     }
     
-    return (
-        <>
-        <BaseInitiativeModal
+  return (
+    <>
+      <BaseInitiativeModal
         open={props.isOpen}
         onClose={()=>props.setArticleModalIsOpen(false)}
         cypressData={{modal: ArticleModalIds.modal, closeModalButton: ArticleModalIds.closeModalButton}}
@@ -281,22 +282,22 @@ export default function ArticleDataModal(props: ArticleDataProps) {
               </Grid>
               }
             </Grid>
-            </div>
-            <Grid container sx={{ display: 'flex',
-              justifyContent: "space-between",
-              placeItems: 'center',
-              flexDirection: 'row'}}
-              spacing={4}
-              data-cy={ArticleModalIds.grid}>
-              {
-                filteredArticles.map((displayItem, key) => {
-                let matched = displayItem.id === (articleToEdit?.id ?? -1);
-                let isEdit = matched && InEditMode();
-                return(
-                  <Grid item md={6} lg={4} key={key}>
-                    <Item>
-                      <StyledCard>
-                        <StyledCardContent>
+          </div>
+          <Grid container sx={{ display: 'flex',
+            justifyContent: "space-between",
+            placeItems: 'center',
+            flexDirection: 'row'}}
+            spacing={4}
+            data-cy={ArticleModalIds.grid}>
+            {
+              filteredArticles.map((displayItem, key) => {
+              let matched = displayItem.id === (articleToEdit?.id ?? -1);
+              let isEdit = matched && InEditMode();
+              return(
+                <Grid item md={6} lg={4} key={key}>
+                  <Item>
+                    <StyledCard>
+                      <StyledCardContent>
                           {isEdit ?
                           <>
                             <label className={labelStyle} htmlFor="title">Title</label>
@@ -306,7 +307,7 @@ export default function ArticleDataModal(props: ArticleDataProps) {
                             <label className={labelStyle} htmlFor="updatedby">Updated By</label>
                             <StyledTextarea id="updatedby" data-cy={ArticleModalIds.editUpdatedBy} value={currentUpdatedBy} onChange={e => setCurrentUpdatedBy(e.target.value)}/>
                             <DateInput cypressData={ArticleModalIds.editUpdatedDate} label="Date Updated" date={currentUpdatedDate} setDate={setCurrentUpdatedDate}/>
-                            <div><Checkbox color="darkBlue" checked={isIntegrityOnly} onChange={e => setIsIntegrityOnly(e.target.checked)}/>Integrity Only</div>
+                            <div><Checkbox data-cy={ArticleModalIds.isIntegrityOnly} color="darkBlue" checked={isIntegrityOnly} onChange={e => setIsIntegrityOnly(e.target.checked)}/>Integrity Only</div>
                           </>
                           :
                           <>
@@ -319,8 +320,8 @@ export default function ArticleDataModal(props: ArticleDataProps) {
                             <DateInput cypressData={ArticleModalIds.updatedDate} label="Date Updated" disabled={true} date={displayItem.updatedDate} setDate={setCurrentUpdatedDate}/>
                           </>
                           }
-                        </StyledCardContent>
-                        <StyledCardActions>
+                      </StyledCardContent>
+                      <StyledCardActions>
                           {isEdit &&
                             <div className="flex w-full justify-between">
                               <IconButton disabled={isLoading} data-cy={ArticleModalIds.saveChangesButton}
@@ -346,19 +347,20 @@ export default function ArticleDataModal(props: ArticleDataProps) {
                               }
                             </div>
                           }
-                        </StyledCardActions>
-                      </StyledCard>
-                    </Item>
-                  </Grid>
+                      </StyledCardActions>
+                    </StyledCard>
+                  </Item>
+                </Grid>
                 )
-              })}
-              {
-              filteredArticles.length === 0 && <Grid item className="m-2 p-2 text-3xl font-bold">No articles to display.</Grid>
-              }
-            </Grid>
-          </div>
-        </BaseInitiativeModal>
-      </>
+              })
+            }
+          </Grid>
+          {
+            filteredArticles.length === 0 && <Grid item className="m-2 p-2 text-3xl font-bold">No articles to display.</Grid>
+          }
+        </div>
+      </BaseInitiativeModal>
+    </>
   );
 }
 
