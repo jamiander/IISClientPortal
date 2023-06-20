@@ -155,7 +155,7 @@ interface UpsertDecisionDataResponse {
 
 export async function UpsertDecisionData(request: UpsertDecisionDataRequest) : Promise<UpsertDecisionDataResponse>
 {
-  let baseUrl = BASE_URL + "AddDecisionDataDB?code=vg1Gfo79pB09asPWVpH-lNaXbl3KTux5RuuMy741kmqIAzFuHnJFvg==";
+  let baseUrl = BASE_URL + "UpsertDecision?code=riMxKLGMhqFJkkU7__gRG7zAh6LNofdmSkYFyoeCQIl7AzFuURByhg=="//"AddDecisionDataDB?code=vg1Gfo79pB09asPWVpH-lNaXbl3KTux5RuuMy741kmqIAzFuHnJFvg==";
 
   const response = await axios.post(baseUrl,request);
   return response.data;
@@ -174,7 +174,7 @@ interface DeleteDecisionDataResponse {
 
 export async function DeleteDecisionData(request: DeleteDecisionDataRequest) : Promise<DeleteDecisionDataResponse>
 {
-  let baseUrl = BASE_URL + "DeleteDecisionDataDB?code=W_thQCwjUyvN_AsTbRgkXmFkNx6oJ26cV8mQQBTJW5QJAzFu0f9log==";
+  let baseUrl = BASE_URL + "DeleteDecision?code=WJEB3bQS72oj6vvMyO1iXBQbnQHGG4_HXUF5GxtBfE-HAzFu2ONMkQ=="//"DeleteDecisionDataDB?code=W_thQCwjUyvN_AsTbRgkXmFkNx6oJ26cV8mQQBTJW5QJAzFu0f9log==";
   const response = await axios.delete(baseUrl, { data: request});
   return response.data;
 }
