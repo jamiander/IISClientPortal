@@ -78,8 +78,6 @@ export default function ArticleDataModal(props: ArticleDataProps) {
     const [articleToEdit, setArticleToEdit] = useState<Article>();
 
     const InEditMode = () => modalState === stateEnum.edit || modalState === stateEnum.add;
-    const today = new Date();
-    const todayInfo: DateInfo = {month: today.getMonth()+1, day: today.getDate(), year: today.getFullYear()}
     const [searchedKeyword, setSearchedKeyword] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [loadingModal, setLoadingModal] = useState(true);
@@ -87,20 +85,19 @@ export default function ArticleDataModal(props: ArticleDataProps) {
 
     useEffect(() => {
       if(props.isOpen)
-      {
         callDispatch();
-      }
-      }, [props.isOpen]);
+      
+    }, [props.isOpen]);
 
-      async function callDispatch() {
-        setLoadingModal(true);
-        await dispatch(getArticle({companyId: props.company.id, initiativeId: props.initiative?.id, userCompanyId: props.currentUser.companyId}))
-        setLoadingModal(false);
-      }
+    async function callDispatch() {
+      setLoadingModal(true);
+      await dispatch(getArticle({companyId: props.company.id, initiativeId: props.initiative?.id, userCompanyId: props.currentUser.companyId}))
+      setLoadingModal(false);
+    }
 
     useEffect(() => {
       if(props.initiative)
-          setSelectedInitiative(props.initiative);
+        setSelectedInitiative(props.initiative);
         
       setSelectedCompany(props.company);
       setIsLoading(false);
@@ -113,28 +110,29 @@ export default function ArticleDataModal(props: ArticleDataProps) {
       setFilteredArticles(articles);
     },[searchedKeyword,allArticles])
 
-    function HandleEmptyArticle(){
-        if(modalState === stateEnum.start)
-        {
-            let articlesClone = MakeClone(filteredArticles);
-            let newId = UuidV4();
-            let newArticle: Article = {
-                id: newId, 
-                title: "", 
-                text: "", 
-                updatedBy: "", 
-                updatedDate: todayInfo,
-                companyId: selectedCompany.id,
-                initiativeId: selectedInitiative?.id,
-                isIntegrityOnly: false
-            };
-            articlesClone.unshift(newArticle);
-            setSearchedKeyword("");
-            setFilteredArticles(articlesClone);
-            EnterEditMode(newId,articlesClone,true);
-        }
-        else
-            enqueueSnackbar("Save current changes before adding a new article.", {variant: "error"});
+    function HandleEmptyArticle()
+    {
+      if(modalState === stateEnum.start)
+      {
+        let articlesClone = MakeClone(filteredArticles);
+        let newId = UuidV4();
+        let newArticle: Article = {
+          id: newId, 
+          title: "", 
+          text: "", 
+          updatedBy: "", 
+          updatedDate: {month: -1, day: -1, year: -1},
+          companyId: selectedCompany.id,
+          initiativeId: selectedInitiative?.id,
+          isIntegrityOnly: false
+        };
+        articlesClone.unshift(newArticle);
+        setSearchedKeyword("");
+        setFilteredArticles(articlesClone);
+        EnterEditMode(newId,articlesClone,true);
+      }
+      else
+        enqueueSnackbar("Save current changes before adding a new article.", {variant: "error"});
     }
 
     function EnterEditMode(id: string, articles: Article[], isNew: boolean)
@@ -158,15 +156,14 @@ export default function ArticleDataModal(props: ArticleDataProps) {
     }
 
     async function HandleEditArticle(id: string, newTitle: string, newText: string, newUpdatedBy: string, newUpdatedDate: DateInfo, newIsIntegrityOnly: boolean) {
-        let selectedArticlesClone: Article[] = MakeClone(filteredArticles);
-        let newArticle = selectedArticlesClone.find(a => a.id === id);
-        if(newArticle)
-        {
+      let selectedArticlesClone: Article[] = MakeClone(filteredArticles);
+      let newArticle = selectedArticlesClone.find(a => a.id === id);
+      if(newArticle)
+      {
         newArticle.title = newTitle;
         newArticle.text = newText;
         newArticle.updatedBy = newUpdatedBy;
-        if(newUpdatedDate)
-            newArticle.updatedDate = newUpdatedDate;
+        newArticle.updatedDate = newUpdatedDate;
         newArticle.isIntegrityOnly = newIsIntegrityOnly;
 
         setIsLoading(true);
@@ -307,7 +304,7 @@ export default function ArticleDataModal(props: ArticleDataProps) {
                           {isEdit &&
                             <div className="flex w-full justify-between">
                               <IconButton disabled={isLoading} data-cy={ArticleModalIds.saveChangesButton}
-                                onClick={() => HandleEditArticle(displayItem.id, currentTitle, currentText, currentUpdatedBy, currentUpdatedDate ?? displayItem.updatedDate, isIntegrityOnly)}>
+                                onClick={() => HandleEditArticle(displayItem.id, currentTitle, currentText, currentUpdatedBy, currentUpdatedDate ?? {month: -1, day: -1, year: -1}, isIntegrityOnly)}>
                                 <DoneIcon sx={{fontSize: "inherit"}}/>
                               </IconButton>
                               {isLoading &&

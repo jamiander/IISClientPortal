@@ -72,10 +72,7 @@ function EditArticle(submit: boolean = true, integrityOnly?: boolean, add?: bool
   cy.getByData(modalIds.editUpdatedBy).clear().type(article.updatedBy);
   cy.getByData(modalIds.editUpdatedDate).setDatePicker(article.updatedDate);
   if(integrityOnly)
-  {
-    //TODO: see what the value of this is before checking it?
     cy.getByData(modalIds.isIntegrityOnly).find('input').check();
-  }
   
   if(submit)
   {
@@ -161,18 +158,18 @@ function LogOut()
   cy.get('button').contains("Log Out").click();
 }
 
-function Specs(GoToArticles: () => void)
+function Specs(GoToArticles: (companyName?: string) => void)
 {
   specify('Client users cannot add/edit articles', () => {
-    //TODO: for editing, we need to ensure an article is there in the first place
     cy.login(clientUser);
     GoToArticles();
     CannotAdd();
     CannotEdit();
+    //We can't actually test for existing articles to edit because adding an article as an Integrity user doesn't persist
+    //when we log in as a client user.
   })
 
   specify('Client admins cannot add/edit articles', () => {
-    //TODO: same here
     cy.login(clientAdmin);
     GoToArticles();
     CannotAdd();
@@ -197,14 +194,9 @@ function Specs(GoToArticles: () => void)
     cy.login(integrityAdmin);
     GoToArticles();
     AddArticle(false);
-    cy.getByData(modalIds.grid).its('length').then(($length) => {
-      let length = $length;
-      cy.getByData(modalIds.cancelChangesButton).click();
-      if(length === 1)
-        cy.getByData(modalIds.grid).children().should('not.exist');
-      else
-        cy.getByData(modalIds.grid).children().its('length').should('equal',length-1);
-    });
+    cy.contains(articleToAdd.title).should('exist');
+    cy.getByData(modalIds.cancelChangesButton).click();
+    cy.contains(articleToAdd.title).should('not.exist');
   })
 
   specify('Cannot add/edit article with invalid input', () => {
@@ -262,18 +254,19 @@ describe('add client-level article', () => {
     cy.getByData(clientPageIds.name).then(($txt) => {
       let companyName = $txt.text();
 
-      LogOut();
+      LogOut(); //This clears the store, so this test will always pass; not sure how to work around this without having
+                //an existing Integrity-only article created outside of the tests.
 
       cy.login(integrityAdmin);
       GoToClientArticles(companyName);
       AddArticle(true,true);
-      cy.getByData(modalIds.closeModalButton).click();
+      CloseModal();
 
       LogOut();
 
       cy.login(clientAdmin);
       GoToClientArticles();
-      cy.getByData(articleToAdd.title).should('not.exist'); //TODO: make sure that this does what we think it does
+      cy.contains(articleToAdd.title).should('not.exist');
     });
   })
 });
@@ -301,15 +294,15 @@ describe('add initiative-level article', () => {
       LogOut();
 
       cy.login(integrityAdmin);
-      GoToInitiativeArticles(initiativeName,"MBPI");  //TODO: figure out how to extract company name from view of client admin
+      GoToInitiativeArticles("MBPI",initiativeName);
       AddArticle(true,true);
-      cy.getByData(modalIds.closeModalButton).click();
+      CloseModal();
 
       LogOut();
 
       cy.login(clientAdmin);
       GoToInitiativeArticles();
-      cy.getByData(articleToAdd.title).should('not.exist');
+      cy.contains(articleToAdd.title).should('not.exist');
     });
   })
 });
