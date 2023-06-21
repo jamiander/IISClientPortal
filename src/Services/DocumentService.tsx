@@ -14,7 +14,7 @@ interface GenerateSASTokenResponse {
 
 export async function GenerateSASToken(request: GenerateSASTokenRequest) : Promise<GenerateSASTokenResponse>
 {
-  let baseUrl = BASE_URL + "GenerateSASToken?code=7lJ3CLhesmELNgg94iDcPGAwI5F-IunzSMT8RFa7hw7SAzFu4QNahQ=="//"GenerateSASToken?code=MHZgZfZl14fymSwq3Mx_Y8SZCeuuNCZ6UUUGYi_4wDgaAzFu5cKyvQ==";
+  let baseUrl = "https://generatesasfunctionapp.azurewebsites.net/api/GenerateSASToken?code=xyAJVDU4cfr8z7LyuJPIzZPvY_7lkFl9puS5WEJFlMRpAzFu8z_ZMQ=="//BASE_URL + "GenerateSASToken?code=7lJ3CLhesmELNgg94iDcPGAwI5F-IunzSMT8RFa7hw7SAzFu4QNahQ=="//"GenerateSASToken?code=MHZgZfZl14fymSwq3Mx_Y8SZCeuuNCZ6UUUGYi_4wDgaAzFu5cKyvQ==";
   const response = await axios.post(baseUrl, request);
   return response.data;
 }
