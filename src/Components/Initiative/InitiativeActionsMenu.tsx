@@ -153,7 +153,7 @@ export function InitiativeActionsMenu(props: InitiativeActionsMenuProps)
         </MenuItem>
       </Menu>
       <DecisionDataModal title='View Decision Data' isOpen={decisionModalIsOpen} setDecisionModalIsOpen={setDecisionModalIsOpen} initiative={props.initiative} company={props.company} isAdmin={props.currentUser.isAdmin}/>
-      <ArticleDataModal title={""} text={""} updatedDate={{month: today.getMonth()+1, day: today.getDate(), year: today.getFullYear()}} updatedBy={""} isIntegrityOnly={false} initiative={props.initiative} company={props.company} isOpen={articleModalIsOpen} currentUser={props.currentUser} setArticleModalIsOpen={setArticleModalIsOpen }></ArticleDataModal>
+      <ArticleDataModal initiative={props.initiative} company={props.company} isOpen={articleModalIsOpen} currentUser={props.currentUser} setArticleModalIsOpen={setArticleModalIsOpen }></ArticleDataModal>
       <DocumentManagementModal isOpen={documentModalIsOpen} setIsOpen={setDocumentModalIsOpen} company={props.company} initiative={props.initiative} isAdmin={props.currentUser.isAdmin} />
       <UploadThroughputModal company={props.company} initiative={props.initiative} uploadIsOpen={uploadThroughputModalIsOpen} setUploadIsOpen={setUploadThroughputModalIsOpen} Submit={SubmitUpdateThroughput}/>
       <EditThroughputModal allCompanies={props.allCompanies} company={props.company} initiative={props.initiative} editIsOpen={editThroughputModalIsOpen} setEditIsOpen={setEditThroughputModalIsOpen} Submit={SubmitUpdateThroughput} isAdmin={props.currentUser.isAdmin}/>
