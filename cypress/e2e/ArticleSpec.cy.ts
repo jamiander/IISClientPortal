@@ -65,7 +65,7 @@ function EditArticle(submit: boolean = true, integrityOnly?: boolean, add?: bool
   if(integrityOnly)
   {
     //TODO: see what the value of this is before checking it?
-    cy.getByData(modalIds.isIntegrityOnly).check();
+    cy.getByData(modalIds.isIntegrityOnly).find('input').check();
   }
   
   if(submit)
@@ -203,15 +203,15 @@ function Specs(GoToArticles: () => void)
 
   specify.only('Client cannot see Integrity-only articles', () => {
     cy.login(integrityAdmin);
-    GoToArticles();
+    GoToArticles();   //TODO: make sure we're looking in the same place for the article
     AddArticle(true,true);
-    //TODO: add integrity-only article
-    //log out
+    cy.getByData(modalIds.closeModalButton).click();
+
     cy.get('button').contains("Log Out").click();
+
     cy.login(clientAdmin);
     GoToArticles();
     cy.getByData(articleToAdd.title).should('not.exist');
-    //should not exist
   })
 
   specify('Close button closes the modal', () => {

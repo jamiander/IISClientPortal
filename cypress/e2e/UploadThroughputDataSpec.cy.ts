@@ -20,7 +20,7 @@ const snackbarId = consts.snackbarId;
 const radioIds = consts.initiativeDisplayRadioIds;
 const failMessage = consts.validationFailedMessage;
 
-const initiativeTitle = 'IIS Initiative';
+const initiativeTitle = 'Client Portal';
 const companyName = 'Integrity Inspired Solutions';
 const waitTime = 500;
 const user = AdminUser;

@@ -69,7 +69,9 @@ describe('client-level documents', () => {
     cy.getByData(table).should('exist');
     
     cy.getByData(navIds.menuButton).click();
-    cy.getByData(navIds.client).should('not.exist');
+    cy.getByData(navIds.client).click();
+    cy.getByData(pageIds.actionMenu.menuButton).first().click();
+    cy.getByData(pageIds.actionMenu.documentButton).should('not.exist');
   })
 
   specify('Integrity admins can add/see client documents', () => {
@@ -78,7 +80,8 @@ describe('client-level documents', () => {
 
     cy.getByData(navIds.menuButton).click();
     cy.getByData(navIds.client).click();
-    cy.getByData(pageIds.documentButton).first().click();
+    cy.getByData(pageIds.actionMenu.menuButton).first().click();
+    cy.getByData(pageIds.actionMenu.documentButton).click();
     
     cy.getByData(modalIds.documentUpload.chooseFileButton).should('exist').and('not.disabled');
   })
@@ -87,8 +90,10 @@ describe('client-level documents', () => {
     cy.login(regularUser);
     cy.getByData(table).should('exist');
 
-    cy.getByData(navIds.menuButton).should('not.exist');
-    cy.getByData(navIds.client).should('not.exist');
+    cy.getByData(navIds.menuButton).click();
+    cy.getByData(navIds.client).click();
+    cy.getByData(pageIds.actionMenu.menuButton).click();
+    cy.getByData(pageIds.actionMenu.documentButton).should('not.exist');
   })
 
   specify('regular Integrity users cannot add client documents', () => {
@@ -97,7 +102,8 @@ describe('client-level documents', () => {
 
     cy.getByData(navIds.menuButton).click();
     cy.getByData(navIds.client).click();
-    cy.getByData(pageIds.documentButton).click();
+    cy.getByData(pageIds.actionMenu.menuButton).first().click();
+    cy.getByData(pageIds.actionMenu.documentButton).click();
 
     cy.getByData(modalIds.documentUpload.chooseFileButton).should('not.exist');
   })
@@ -108,7 +114,8 @@ describe('client-level documents', () => {
 
     cy.getByData(navIds.menuButton).click();
     cy.getByData(navIds.client).click();
-    cy.getByData(pageIds.documentButton).first().click();
+    cy.getByData(pageIds.actionMenu.menuButton).first().click();
+    cy.getByData(pageIds.actionMenu.documentButton).click();
 
     cy.getByData(modalIds.modal).should('exist');
     cy.getByData(modalIds.closeModalButton).click();
