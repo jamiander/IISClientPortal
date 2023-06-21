@@ -14,6 +14,11 @@ import { IntegrityTheme } from "../../Styles";
 import ArticleDataModal from "../Articles/ArticleDataModal";
 import { User } from "../../Store/UserSlice";
 import { ActionsMenuItem } from "../ActionsMenuItem";
+import { DocumentMenuItem } from "../Documents/DocumentMenuItem";
+import { ArticleMenuItem } from "../Articles/ArticleMenuItem";
+import { DecisionMenuItem } from "./DecisionMenuItem";
+import { EditThroughputMenuItem } from "./EditThroughputMenuItem";
+import { UploadThroughputMenuItem } from "./UploadThroughputMenuItem";
 
 interface InitiativeActionsMenuProps {
   cypressData: {
@@ -44,11 +49,7 @@ export function InitiativeActionsMenu(props: InitiativeActionsMenuProps)
   };
 
   const dispatch = useAppDispatch();
-  const [decisionModalIsOpen, setDecisionModalIsOpen] = useState(false);
-  const [articleModalIsOpen, setArticleModalIsOpen] = useState(false);
-  const [documentModalIsOpen, setDocumentModalIsOpen] = useState(false);
   const [uploadThroughputModalIsOpen, setUploadThroughputModalIsOpen] = useState(false);
-  const [editThroughputModalIsOpen, setEditThroughputModalIsOpen] = useState(false);
 
   async function SubmitUpdateThroughput(companyId: string, initiativeId: string, dataList: ThroughputData[], emptyDataCheck: boolean = true) : Promise<boolean>
   {
@@ -70,37 +71,11 @@ export function InitiativeActionsMenu(props: InitiativeActionsMenuProps)
     return false;
   }
 
-  function HandleDecisionModal()
-  {
-    setDecisionModalIsOpen(true);
-    handleClose();
-  }
-
-  function HandleArticleModal()
-  {
-    setArticleModalIsOpen(true);
-    handleClose();
-  }
-
-  function HandleDocumentModal()
-  {
-    setDocumentModalIsOpen(true);
-    handleClose();
-  }
-
   function HandleUploadThroughputModal()
   {
     setUploadThroughputModalIsOpen(true);
     handleClose();
   }
-
-  function HandleEditThroughputModal()
-  {
-    setEditThroughputModalIsOpen(true);
-    handleClose();
-  }
-
-  const buttonColor = "darkBlue";
 
   return (
     <ThemeProvider theme={IntegrityTheme}>
@@ -124,19 +99,14 @@ export function InitiativeActionsMenu(props: InitiativeActionsMenuProps)
           'aria-labelledby': 'basic-button',
         }}
       >
-        <ActionsMenuItem cypressData={props.cypressData.decisionButton} text="Decisions" handleClick={HandleDecisionModal}/>
-        <ActionsMenuItem cypressData={props.cypressData.articleButton} text="Articles" handleClick={HandleArticleModal}/>
-        <ActionsMenuItem cypressData={props.cypressData.decisionButton} text="Documents" handleClick={HandleDocumentModal}/>
+        <DecisionMenuItem cypressData={props.cypressData.decisionButton} company={props.company} initiative={props.initiative}/>
+        <ArticleMenuItem cypressData={props.cypressData.articleButton} company={props.company} initiative={props.initiative} currentUser={props.currentUser}/>
+        <DocumentMenuItem cypressData={props.cypressData.decisionButton} company={props.company} initiative={props.initiative} isAdmin={props.currentUser.isAdmin} />
         {props.currentUser.isAdmin &&
-          <ActionsMenuItem cypressData={props.cypressData.uploadThroughputButton} text="Upload Throughput" handleClick={HandleUploadThroughputModal}/>
+          <UploadThroughputMenuItem cypressData={props.cypressData.uploadThroughputButton} company={props.company} initiative={props.initiative} SubmitUpdateThroughput={SubmitUpdateThroughput}/>
         }
-        <ActionsMenuItem cypressData={props.cypressData.editThroughputButton} text="View Throughput" handleClick={HandleEditThroughputModal}/>
+        <EditThroughputMenuItem cypressData={props.cypressData.editThroughputButton} allCompanies={props.allCompanies} company={props.company} initiative={props.initiative} currentUser={props.currentUser} SubmitUpdateThroughput={SubmitUpdateThroughput}/>
       </Menu>
-      <DecisionDataModal title='View Decision Data' isOpen={decisionModalIsOpen} setDecisionModalIsOpen={setDecisionModalIsOpen} initiative={props.initiative} company={props.company} isAdmin={props.currentUser.isAdmin}/>
-      <ArticleDataModal initiative={props.initiative} company={props.company} isOpen={articleModalIsOpen} currentUser={props.currentUser} setArticleModalIsOpen={setArticleModalIsOpen }></ArticleDataModal>
-      <DocumentManagementModal isOpen={documentModalIsOpen} setIsOpen={setDocumentModalIsOpen} company={props.company} initiative={props.initiative} isAdmin={props.currentUser.isAdmin} />
-      <UploadThroughputModal company={props.company} initiative={props.initiative} uploadIsOpen={uploadThroughputModalIsOpen} setUploadIsOpen={setUploadThroughputModalIsOpen} Submit={SubmitUpdateThroughput}/>
-      <EditThroughputModal allCompanies={props.allCompanies} company={props.company} initiative={props.initiative} editIsOpen={editThroughputModalIsOpen} setEditIsOpen={setEditThroughputModalIsOpen} Submit={SubmitUpdateThroughput} isAdmin={props.currentUser.isAdmin}/>
     </ThemeProvider>
   )
 }
