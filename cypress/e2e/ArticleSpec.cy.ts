@@ -6,6 +6,7 @@ const clientUser = MBPIUser;
 const clientAdmin = MBPIAdminUser;
 
 const consts = TestConstants;
+const initPageIds = consts.initiativesPageIds;
 const initTableIds = consts.initiativeTableIds;
 const clientPageIds = consts.clientPageIds;
 const modalIds = consts.articleModalIds;
@@ -28,16 +29,22 @@ const editedArticle = {
   updatedBy: "Jimmy Toast"
 }
 
-function GoToClientArticles()
+function GoToClientArticles(companyName?: string)
 {
   cy.getByData(navIds.menuButton).click();
   cy.getByData(navIds.client).click();
+  if(companyName)
+    cy.getByData(clientPageIds.keywordFilter).type(companyName);
   cy.getByData(clientPageIds.actionMenu.menuButton).first().click();
   cy.getByData(clientPageIds.actionMenu.articleButton).click();
 }
 
-function GoToInitiativeArticles()
+function GoToInitiativeArticles(initiativeName?: string, companyName?: string)
 {
+  if(companyName)
+    cy.getByData(initPageIds.companyNameFilter).type(companyName);
+  if(initiativeName)
+    cy.getByData(initPageIds.initiativeTitleFilter).type(initiativeName);
   cy.getByData(initTableIds.actionMenu.menuButton).first().click();
   cy.getByData(initTableIds.actionMenu.articleButton).click();
 }
@@ -147,6 +154,11 @@ function CloseModal()
   cy.getByData(modalIds.modal).should('not.exist');
 }
 
+function LogOut()
+{
+  cy.get('button').contains("Log Out").click();
+}
+
 function Specs(GoToArticles: () => void)
 {
   specify('Client users cannot add/edit articles', () => {
@@ -201,19 +213,6 @@ function Specs(GoToArticles: () => void)
     CannotEditInvalidArticle();
   })
 
-  specify.only('Client cannot see Integrity-only articles', () => {
-    cy.login(integrityAdmin);
-    GoToArticles();   //TODO: make sure we're looking in the same place for the article
-    AddArticle(true,true);
-    cy.getByData(modalIds.closeModalButton).click();
-
-    cy.get('button').contains("Log Out").click();
-
-    cy.login(clientAdmin);
-    GoToArticles();
-    cy.getByData(articleToAdd.title).should('not.exist');
-  })
-
   specify('Close button closes the modal', () => {
     cy.login(integrityAdmin);
     GoToArticles();
@@ -254,6 +253,27 @@ describe('add client-level article', () => {
     //add an initative article
     //go to client articles and verify that it's not there
   })
+
+  specify('Client cannot see Integrity-only articles', () => {
+    cy.login(clientAdmin);
+    GoToClientArticles();
+    cy.getByData(modalIds.closeModalButton).click();
+    cy.getByData(clientPageIds.name).then(($txt) => {
+      let companyName = $txt.text();
+      LogOut();
+
+      cy.login(integrityAdmin);
+      GoToClientArticles(companyName);
+      AddArticle(true,true);
+      cy.getByData(modalIds.closeModalButton).click();
+
+      LogOut();
+
+      cy.login(clientAdmin);
+      GoToClientArticles();
+      cy.getByData(articleToAdd.title).should('not.exist');
+    });
+  })
 });
 
 describe('add initiative-level article', () => {
@@ -265,6 +285,28 @@ describe('add initiative-level article', () => {
     AddArticle();
     GoToInitiativeArticles();
     //TOOD: implement this
+  })
+
+  specify.only('Client cannot see Integrity-only articles', () => {
+    cy.login(clientAdmin);
+    GoToInitiativeArticles();
+    cy.getByData(modalIds.closeModalButton).click();
+    cy.getByData(initTableIds.initiativeTitle).first().then(($txt) => {
+      let initiativeName = $txt.text();
+
+      LogOut();
+
+      cy.login(integrityAdmin);
+      GoToInitiativeArticles(initiativeName,"MBPI");  //TODO: figure out how to extract company name from view of client admin
+      AddArticle(true,true);
+      cy.getByData(modalIds.closeModalButton).click();
+
+      LogOut();
+
+      cy.login(clientAdmin);
+      GoToInitiativeArticles();
+      cy.getByData(articleToAdd.title).should('not.exist');
+    });
   })
 });
 
