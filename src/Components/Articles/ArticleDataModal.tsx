@@ -90,17 +90,28 @@ export default function ArticleDataModal(props: ArticleDataProps) {
     }, [props.isOpen]);
 
     useEffect(() => {
+      if(props.initiative)
+          setSelectedInitiative(props.initiative);
+        
+      setSelectedCompany(props.company);
+      setIsLoading(false);
+      LeaveEditMode();
+    },[props.isOpen])
+
+    useEffect(() => {
+      let sortedArticles = MakeClone(allArticles);
+      console.log("all articles: " + allArticles.length);
       let articles: Article[] = [];
       if(props.currentUser.companyId === IntegrityId)
       { 
         if(props.initiative !== undefined)
         {
-          articles = allArticles.filter(
+          articles = sortedArticles.filter(
           a => a.initiativeId === selectedInitiative?.id);
         }
         else
         {
-          articles = allArticles.filter(
+          articles = sortedArticles.filter(
           a => a.companyId === selectedCompany.id && !a.initiativeId);
         }
       }
@@ -108,12 +119,12 @@ export default function ArticleDataModal(props: ArticleDataProps) {
       {
         if(props.initiative !== undefined)
         {
-          articles = allArticles.filter(
+          articles = sortedArticles.filter(
           a => a.initiativeId === selectedInitiative?.id && a.isIntegrityOnly === false);
         }
         else
         {
-          articles = allArticles.filter(
+          articles = sortedArticles.filter(
           a => a.companyId === selectedCompany.id && !a.initiativeId && a.isIntegrityOnly === false);
         }
       }
@@ -122,15 +133,6 @@ export default function ArticleDataModal(props: ArticleDataProps) {
       || a.title.toUpperCase().includes(searchedKeyword.toUpperCase())));
 
     },[selectedInitiative,selectedCompany,searchedKeyword])
-    
-    useEffect(() => {
-      if(props.initiative)
-          setSelectedInitiative(props.initiative);
-        
-      setSelectedCompany(props.company);
-      setIsLoading(false);
-      LeaveEditMode();
-    },[props.isOpen])
 
     function HandleEmptyArticle(){
         if(modalState === stateEnum.start)
@@ -142,7 +144,7 @@ export default function ArticleDataModal(props: ArticleDataProps) {
                 title: "", 
                 text: "", 
                 updatedBy: "", 
-                updatedDate: { month: -1, day: -1, year: -1},
+                updatedDate: todayInfo,
                 companyId: selectedCompany.id,
                 initiativeId: selectedInitiative?.id,
                 isIntegrityOnly: false
