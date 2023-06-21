@@ -1,4 +1,4 @@
-import { Button, IconButton, Menu, MenuItem, ThemeProvider } from "@mui/material";
+import { Button, IconButton, Menu, MenuItem, ThemeProvider, Typography } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import { useState } from "react";
 import { Company, Initiative, upsertThroughputData } from "../../Store/CompanySlice";
@@ -13,6 +13,7 @@ import { enqueueSnackbar } from "notistack";
 import { IntegrityTheme } from "../../Styles";
 import ArticleDataModal from "../Articles/ArticleDataModal";
 import { User } from "../../Store/UserSlice";
+import { ActionsMenuItem } from "../ActionsMenuItem";
 
 interface InitiativeActionsMenuProps {
   cypressData: {
@@ -43,7 +44,6 @@ export function InitiativeActionsMenu(props: InitiativeActionsMenuProps)
   };
 
   const dispatch = useAppDispatch();
-  const today = new Date();
   const [decisionModalIsOpen, setDecisionModalIsOpen] = useState(false);
   const [articleModalIsOpen, setArticleModalIsOpen] = useState(false);
   const [documentModalIsOpen, setDocumentModalIsOpen] = useState(false);
@@ -124,33 +124,13 @@ export function InitiativeActionsMenu(props: InitiativeActionsMenuProps)
           'aria-labelledby': 'basic-button',
         }}
       >
-        <MenuItem data-cy={props.cypressData.decisionButton} onClick={() => HandleDecisionModal()}>
-          <Button style={{outlineColor: 'blue'}}>
-            Decisions
-          </Button>
-        </MenuItem>
-        <MenuItem data-cy={props.cypressData.articleButton} onClick={() => HandleArticleModal()}>
-          <Button style={{outlineColor: 'blue'}}>
-            Articles
-          </Button>
-        </MenuItem>
-        <MenuItem data-cy={props.cypressData.documentButton} onClick={() => HandleDocumentModal()}>
-          <Button style={{outlineColor: 'blue'}}>
-            Documents
-          </Button>
-        </MenuItem>
+        <ActionsMenuItem cypressData={props.cypressData.decisionButton} text="Decisions" handleClick={HandleDecisionModal}/>
+        <ActionsMenuItem cypressData={props.cypressData.articleButton} text="Articles" handleClick={HandleArticleModal}/>
+        <ActionsMenuItem cypressData={props.cypressData.decisionButton} text="Documents" handleClick={HandleDocumentModal}/>
         {props.currentUser.isAdmin &&
-          <MenuItem data-cy={props.cypressData.uploadThroughputButton} onClick={() => HandleUploadThroughputModal()}>
-            <Button style={{outlineColor: 'blue'}}>
-              Upload Throughput
-            </Button>
-          </MenuItem>
+          <ActionsMenuItem cypressData={props.cypressData.uploadThroughputButton} text="Upload Throughput" handleClick={HandleUploadThroughputModal}/>
         }
-        <MenuItem data-cy={props.cypressData.editThroughputButton} onClick={() => HandleEditThroughputModal()}>
-          <Button style={{outlineColor: 'blue'}}>
-            View Throughput
-          </Button>
-        </MenuItem>
+        <ActionsMenuItem cypressData={props.cypressData.editThroughputButton} text="View Throughput" handleClick={HandleEditThroughputModal}/>
       </Menu>
       <DecisionDataModal title='View Decision Data' isOpen={decisionModalIsOpen} setDecisionModalIsOpen={setDecisionModalIsOpen} initiative={props.initiative} company={props.company} isAdmin={props.currentUser.isAdmin}/>
       <ArticleDataModal initiative={props.initiative} company={props.company} isOpen={articleModalIsOpen} currentUser={props.currentUser} setArticleModalIsOpen={setArticleModalIsOpen }></ArticleDataModal>

@@ -8,6 +8,7 @@ import { useState } from "react"
 import { DateInfo } from "../Services/CompanyService";
 import { DateToDateInfo } from "../Services/DateHelpers";
 import { User } from "../Store/UserSlice";
+import { ActionsMenuItem } from "./ActionsMenuItem";
 
 interface ClientActionsMenuProps {
   cypressData: {
@@ -71,17 +72,9 @@ export function ClientActionsMenu(props: ClientActionsMenuProps)
             'aria-labelledby': 'basic-button',
           }}
         >
-          <MenuItem data-cy={props.cypressData.articleButton} onClick={() => HandleArticleModal()}>
-            <Button style={{outlineColor: 'blue'}}>
-              Articles
-            </Button>
-          </MenuItem>
+          <ActionsMenuItem cypressData={props.cypressData.articleButton} text="Articles" handleClick={HandleArticleModal}/>
           {props.currentUser.companyId === IntegrityId &&
-            <MenuItem data-cy={props.cypressData.documentButton} onClick={() => HandleDocumentModal()}>
-              <Button style={{outlineColor: 'blue'}}>
-                Documents
-              </Button>
-            </MenuItem>
+            <ActionsMenuItem cypressData={props.cypressData.documentButton} text="Documents" handleClick={HandleDocumentModal}/>
           }
         </Menu>
         <ArticleDataModal company={props.company} isOpen={articleModalIsOpen} currentUser={props.currentUser} setArticleModalIsOpen={setArticleModalIsOpen }></ArticleDataModal>
