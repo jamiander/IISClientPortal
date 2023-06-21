@@ -251,9 +251,6 @@ export default function InitiativesTable(props: InitiativesProps) {
   return (
     <>
       <div className="grid grid-cols-1 w-full h-auto">
-        <div className="col-span-1 h-[4vh] space-x-4 mb-2">
-
-        </div>
         {totalInits !== 0 &&
         <div className="col-span-1 mt-2">
           <TableContainer elevation={12} component={Paper}>

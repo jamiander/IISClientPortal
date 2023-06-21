@@ -40,21 +40,17 @@ export default function InitiativesPage(){
           <Grid container sx={{ display: 'flex',
               flexDirection: 'row',
               placeItems: 'center',
-              px: 1,
-              pt: 1,
+              p: 1,
               mt: 2,
+              mb: 1,
               ml: 2,
               mr: 2,
               borderRadius: 1 }}>
             <Grid item xs={3}>
               {currentUser?.companyId === IntegrityId && 
-                <div className="mb-1">
                   <SearchBar cypressData={InitiativesPageIds.companyNameFilter} placeholder="Filter by Company" value={searchedComp} setValue={setSearchedComp} />
-                </div>
               }
-              <div className="mt-1">
                 <SearchBar cypressData={InitiativesPageIds.initiativeTitleFilter} placeholder="Filter by Title" value={searchedInit} setValue={setSearchedInit} />
-              </div>
             </Grid>
             <RadioSet dark={true} setter={setRadioValue} name="initiativesDisplay" options={[
             { cypressData: InitiativeDisplayRadioIds.all, label: "Show All", value: "all" },

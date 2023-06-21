@@ -1,7 +1,7 @@
 import { Company, Initiative, deleteDecisionData, upsertDecisionData } from "../../Store/CompanySlice";
 import Grid from "@mui/material/Grid";
 import { useEffect, useState } from "react";
-import { Item, StyledCard, StyledCardActions, StyledCardContent, StyledTextField, StyledTextarea, UserTextField, labelStyle} from "../../Styles";
+import { Item, StyledCard, StyledCardActions, StyledCardContent, StyledTextField, StyledTextarea, labelStyle} from "../../Styles";
 import { DateInfo, DecisionData } from "../../Services/CompanyService";
 import { ValidateDecisions, ValidationFailedPrefix } from "../../Services/Validation";
 import { useAppDispatch } from "../../Store/Hooks";
@@ -13,11 +13,11 @@ import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
 import DeleteIcon from '@mui/icons-material/Delete';
-import SearchIcon from '@mui/icons-material/Search';
-import { CircularProgress, IconButton, InputAdornment } from "@mui/material";
+import { CircularProgress, IconButton } from "@mui/material";
 import { BaseInitiativeModal } from "./BaseInitiativeModal";
 import { AddButton } from "../AddButton";
 import { MakeClone } from "../../Services/Cloning";
+import { SearchBar } from "../SearchBar";
 
 export const DecisionModalIds = {
   modal: "decisionModal",
@@ -242,16 +242,7 @@ export default function DecisionDataModal(props: DecisionDataProps) {
                 justifyContent: 'flex-start',
               }}>
               {selectedInitiative.decisions.length !== 0 &&
-                <UserTextField data-cy={DecisionModalIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)}
-                  
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <SearchIcon />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
+                <SearchBar cypressData={DecisionModalIds.keywordFilter} placeholder="Keyword" value={searchedKeyword} setValue={setSearchedKeyword} />
               }
               </Grid>
               <Grid item xs={4} sx={{ display: "flex",

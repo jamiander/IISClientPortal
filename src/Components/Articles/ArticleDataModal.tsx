@@ -1,7 +1,7 @@
-import { Grid, InputAdornment, CircularProgress, IconButton, Checkbox, TableCell } from "@mui/material";
+import { Grid, CircularProgress, IconButton, Checkbox } from "@mui/material";
 import { DateInfo } from "../../Services/CompanyService";
 import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
-import { UserTextField, Item, StyledCard, StyledCardContent, labelStyle, StyledTextarea, StyledTextField, StyledCardActions } from "../../Styles";
+import { Item, StyledCard, StyledCardContent, labelStyle, StyledTextarea, StyledCardActions } from "../../Styles";
 import { AddButton } from "../AddButton";
 import { DateInput } from "../DateInput";
 import { BaseInitiativeModal } from "../Initiative/BaseInitiativeModal";
@@ -10,13 +10,13 @@ import { Company, Initiative, IntegrityId } from "../../Store/CompanySlice";
 import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
-import SearchIcon from '@mui/icons-material/Search';
 import { MakeClone } from "../../Services/Cloning";
 import {v4 as UuidV4} from "uuid";
 import { enqueueSnackbar } from "notistack";
 import { Article, clearArticles, getArticle, selectAllArticles, upsertArticle } from "../../Store/ArticleSlice";
 import { ValidateArticle, ValidationFailedPrefix } from "../../Services/Validation";
 import { User } from "../../Store/UserSlice";
+import { SearchBar } from "../SearchBar";
 
 enum stateEnum {
     start,
@@ -242,15 +242,7 @@ export default function ArticleDataModal(props: ArticleDataProps) {
                 justifyContent: 'flex-start',
               }}>
                 {filteredArticles.length > 0 &&
-                <UserTextField data-cy={ArticleModalIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <SearchIcon />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
+                  <SearchBar cypressData={ArticleModalIds.keywordFilter} placeholder="Keyword" value={searchedKeyword} setValue={setSearchedKeyword} />
                 }
               </Grid>
               <Grid item xs={4} sx={{ display: "flex",
@@ -341,7 +333,7 @@ export default function ArticleDataModal(props: ArticleDataProps) {
             }
           </Grid>
           {
-            filteredArticles.length === 0 && <Grid item className="m-2 p-2 text-3xl font-bold">No articles to display.</Grid>
+            filteredArticles.length === 0 && !loadingModal && <Grid item className="m-2 p-2 text-3xl font-bold">No articles to display.</Grid>
           }
         </div>
         }
