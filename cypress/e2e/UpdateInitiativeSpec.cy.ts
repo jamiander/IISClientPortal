@@ -10,10 +10,6 @@ describe('update initiative spec', () => {
     totalItems: "3"
   }
 
-  const existingInit = {
-    title: "IIS Initiative"
-  }
-
   const consts = TestConstants;
   const failMessage = consts.validationFailedMessage;
   const snackbarId = consts.snackbarId;

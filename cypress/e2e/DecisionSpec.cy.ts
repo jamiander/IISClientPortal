@@ -14,7 +14,7 @@ const user = AdminUser;
 
 const init = {
   companyName: 'Integrity Inspired Solutions',
-  title: "IIS Initiative"
+  title: "Client Portal"
 }
 
 const decision = {
