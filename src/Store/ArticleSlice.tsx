@@ -49,6 +49,9 @@ export const articleSlice = createSlice({
   name: "articles",
   initialState: initialState,
   reducers: {
+    clearArticles: (state) => {
+      state.articles = [];
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -70,7 +73,7 @@ export const articleSlice = createSlice({
   }
 });
 
-export const {  } = articleSlice.actions;
+export const { clearArticles } = articleSlice.actions;
 
 export const selectAllArticles = (state: RootState) => state.articles.articles;
 

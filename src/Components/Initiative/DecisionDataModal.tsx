@@ -238,10 +238,10 @@ export default function DecisionDataModal(props: DecisionDataProps) {
               mr: 2,
               borderRadius: 1, 
               }}>
-              {selectedInitiative.decisions.length !== 0 &&
               <Grid item xs={4} sx={{ display: 'flex',
                 justifyContent: 'flex-start',
               }}>
+              {selectedInitiative.decisions.length !== 0 &&
                 <UserTextField data-cy={DecisionModalIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)}
                   
                   InputProps={{
@@ -252,8 +252,8 @@ export default function DecisionDataModal(props: DecisionDataProps) {
                     ),
                   }}
                 />
-              </Grid>
               }
+              </Grid>
               <Grid item xs={4} sx={{ display: "flex",
                 justifyContent: "center"}}>
                 {isLoading &&

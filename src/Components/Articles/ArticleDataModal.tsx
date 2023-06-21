@@ -14,7 +14,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import { MakeClone } from "../../Services/Cloning";
 import {v4 as UuidV4} from "uuid";
 import { enqueueSnackbar } from "notistack";
-import { Article, getArticle, selectAllArticles, upsertArticle } from "../../Store/ArticleSlice";
+import { Article, clearArticles, getArticle, selectAllArticles, upsertArticle } from "../../Store/ArticleSlice";
 import { ValidateArticle, ValidationFailedPrefix } from "../../Services/Validation";
 import { User } from "../../Store/UserSlice";
 
@@ -88,15 +88,22 @@ export default function ArticleDataModal(props: ArticleDataProps) {
     useEffect(() => {
       if(props.isOpen)
       {
-        callDispatch();
+        CallDispatch();
       }
-      }, [props.isOpen]);
+      
+    }, [props.isOpen]);
 
-      async function callDispatch() {
-        setLoadingModal(true);
-        await dispatch(getArticle({companyId: props.company.id, initiativeId: props.initiative?.id, userCompanyId: props.currentUser.companyId}))
-        setLoadingModal(false);
-      }
+    function CloseModalAndReset()
+    {
+      dispatch(clearArticles());
+      props.setArticleModalIsOpen(false);
+    }
+
+    async function CallDispatch() {
+      setLoadingModal(true);
+      await dispatch(getArticle({companyId: props.company.id, initiativeId: props.initiative?.id, userCompanyId: props.currentUser.companyId}))
+      setLoadingModal(false);
+    } 
 
     useEffect(() => {
       if(props.initiative)
@@ -216,7 +223,7 @@ export default function ArticleDataModal(props: ArticleDataProps) {
     <>
       <BaseInitiativeModal
         open={props.isOpen}
-        onClose={()=>props.setArticleModalIsOpen(false)}
+        onClose={()=>CloseModalAndReset()}
         cypressData={{modal: ArticleModalIds.modal, closeModalButton: ArticleModalIds.closeModalButton}}
         title="Articles"
         subtitle={selectedCompany?.name + " - " + selectedInitiative?.title}
@@ -235,10 +242,10 @@ export default function ArticleDataModal(props: ArticleDataProps) {
               mr: 2,
               borderRadius: 1, 
               }}>
-              {filteredArticles.length > 0 && 
               <Grid item xs={4} sx={{ display: 'flex',
                 justifyContent: 'flex-start',
               }}>
+                {filteredArticles.length > 0 &&
                 <UserTextField data-cy={ArticleModalIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword" label="Search" value={searchedKeyword} onChange={(e) => setSearchedKeyword(e.target.value)}
                   InputProps={{
                     startAdornment: (
@@ -248,8 +255,8 @@ export default function ArticleDataModal(props: ArticleDataProps) {
                     ),
                   }}
                 />
+                }
               </Grid>
-              }
               <Grid item xs={4} sx={{ display: "flex",
                 justifyContent: "center"}}>
                 {isLoading &&
