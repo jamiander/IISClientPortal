@@ -39,8 +39,10 @@ function GoToClientArticles(companyName?: string)
   cy.getByData(clientPageIds.actionMenu.articleButton).click();
 }
 
-function GoToInitiativeArticles(initiativeName?: string, companyName?: string)
+function GoToInitiativeArticles(companyName?: string, initiativeName?: string)
 {
+  cy.getByData(navIds.menuButton).click();
+  cy.getByData(navIds.initiatives).click();
   if(companyName)
     cy.getByData(initPageIds.companyNameFilter).type(companyName);
   if(initiativeName)
@@ -245,13 +247,12 @@ describe('add client-level article', () => {
 
   specify('Cannot see initiative-level articles from client view', () => {
     cy.login(integrityAdmin);
-    GoToInitiativeArticles();
+    GoToInitiativeArticles("MBPI");
     AddArticle();
-    GoToClientArticles();
-
-    //TODO: implement this
-    //add an initative article
-    //go to client articles and verify that it's not there
+    cy.contains(articleToAdd.title).should('exist');
+    CloseModal();
+    GoToClientArticles("MBPI");
+    cy.contains(articleToAdd.title).should('not.exist');
   })
 
   specify('Client cannot see Integrity-only articles', () => {
@@ -260,6 +261,7 @@ describe('add client-level article', () => {
     cy.getByData(modalIds.closeModalButton).click();
     cy.getByData(clientPageIds.name).then(($txt) => {
       let companyName = $txt.text();
+
       LogOut();
 
       cy.login(integrityAdmin);
@@ -271,7 +273,7 @@ describe('add client-level article', () => {
 
       cy.login(clientAdmin);
       GoToClientArticles();
-      cy.getByData(articleToAdd.title).should('not.exist');
+      cy.getByData(articleToAdd.title).should('not.exist'); //TODO: make sure that this does what we think it does
     });
   })
 });
@@ -281,13 +283,15 @@ describe('add initiative-level article', () => {
 
   specify('Cannot see client-level articles from initiative view', () => {
     cy.login(integrityAdmin);
-    GoToClientArticles();
+    GoToClientArticles("MBPI");
     AddArticle();
-    GoToInitiativeArticles();
-    //TOOD: implement this
+    cy.contains(articleToAdd.title).should('exist');
+    CloseModal();
+    GoToInitiativeArticles("MBPI");
+    cy.contains(articleToAdd.title).should('not.exist');
   })
 
-  specify.only('Client cannot see Integrity-only articles', () => {
+  specify('Client cannot see Integrity-only articles', () => {
     cy.login(clientAdmin);
     GoToInitiativeArticles();
     cy.getByData(modalIds.closeModalButton).click();
