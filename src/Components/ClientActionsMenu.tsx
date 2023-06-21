@@ -32,7 +32,6 @@ export function ClientActionsMenu(props: ClientActionsMenuProps)
     setAnchorEl(null);
   };
 
-  const todayInfo: DateInfo = DateToDateInfo(new Date());
   const [articleModalIsOpen, setArticleModalIsOpen] = useState(false);
   const [documentModalIsOpen, setDocumentModalIsOpen] = useState(false);
  
@@ -85,7 +84,7 @@ export function ClientActionsMenu(props: ClientActionsMenuProps)
             </MenuItem>
           }
         </Menu>
-        <ArticleDataModal title={""} text={""} updatedDate={todayInfo} updatedBy={""} isIntegrityOnly={false} company={props.company} isOpen={articleModalIsOpen} currentUser={props.currentUser} setArticleModalIsOpen={setArticleModalIsOpen }></ArticleDataModal>
+        <ArticleDataModal company={props.company} isOpen={articleModalIsOpen} currentUser={props.currentUser} setArticleModalIsOpen={setArticleModalIsOpen }></ArticleDataModal>
         <DocumentManagementModal isOpen={documentModalIsOpen} setIsOpen={setDocumentModalIsOpen} company={props.company} isAdmin={props.currentUser.isAdmin} />
       </ThemeProvider>
     }

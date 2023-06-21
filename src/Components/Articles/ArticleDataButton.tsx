@@ -22,7 +22,6 @@ interface ArticleDataButtonProps {
   export function ArticleDataButton(props: ArticleDataButtonProps)
   {
     const [isOpen, setIsOpen] = useState(false);
-    const today = new Date();
 
     return (
       <div>
@@ -31,7 +30,7 @@ interface ArticleDataButtonProps {
             Articles
           </Button>
         </ThemeProvider>
-        <ArticleDataModal title={""} text={""} updatedDate={{month: today.getMonth()+1, day: today.getDate(), year: today.getFullYear()}} updatedBy={""} isIntegrityOnly={false} initiative={props.initiative} company={props.company} isOpen={isOpen} currentUser={props.currentUser} setArticleModalIsOpen={setIsOpen }></ArticleDataModal>
+        <ArticleDataModal initiative={props.initiative} company={props.company} isOpen={isOpen} currentUser={props.currentUser} setArticleModalIsOpen={setIsOpen }></ArticleDataModal>
       </div>
     )
   }

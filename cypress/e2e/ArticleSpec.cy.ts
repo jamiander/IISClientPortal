@@ -6,6 +6,7 @@ const clientUser = MBPIUser;
 const clientAdmin = MBPIAdminUser;
 
 const consts = TestConstants;
+const initPageIds = consts.initiativesPageIds;
 const initTableIds = consts.initiativeTableIds;
 const clientPageIds = consts.clientPageIds;
 const modalIds = consts.articleModalIds;
@@ -28,16 +29,24 @@ const editedArticle = {
   updatedBy: "Jimmy Toast"
 }
 
-function GoToClientArticles()
+function GoToClientArticles(companyName?: string)
 {
   cy.getByData(navIds.menuButton).click();
   cy.getByData(navIds.client).click();
+  if(companyName)
+    cy.getByData(clientPageIds.keywordFilter).type(companyName);
   cy.getByData(clientPageIds.actionMenu.menuButton).first().click();
   cy.getByData(clientPageIds.actionMenu.articleButton).click();
 }
 
-function GoToInitiativeArticles()
+function GoToInitiativeArticles(companyName?: string, initiativeName?: string)
 {
+  cy.getByData(navIds.menuButton).click();
+  cy.getByData(navIds.initiatives).click();
+  if(companyName)
+    cy.getByData(initPageIds.companyNameFilter).type(companyName);
+  if(initiativeName)
+    cy.getByData(initPageIds.initiativeTitleFilter).type(initiativeName);
   cy.getByData(initTableIds.actionMenu.menuButton).first().click();
   cy.getByData(initTableIds.actionMenu.articleButton).click();
 }
@@ -63,10 +72,7 @@ function EditArticle(submit: boolean = true, integrityOnly?: boolean, add?: bool
   cy.getByData(modalIds.editUpdatedBy).clear().type(article.updatedBy);
   cy.getByData(modalIds.editUpdatedDate).setDatePicker(article.updatedDate);
   if(integrityOnly)
-  {
-    //TODO: see what the value of this is before checking it?
     cy.getByData(modalIds.isIntegrityOnly).find('input').check();
-  }
   
   if(submit)
   {
@@ -147,18 +153,23 @@ function CloseModal()
   cy.getByData(modalIds.modal).should('not.exist');
 }
 
-function Specs(GoToArticles: () => void)
+function LogOut()
+{
+  cy.get('button').contains("Log Out").click();
+}
+
+function Specs(GoToArticles: (companyName?: string) => void)
 {
   specify('Client users cannot add/edit articles', () => {
-    //TODO: for editing, we need to ensure an article is there in the first place
     cy.login(clientUser);
     GoToArticles();
     CannotAdd();
     CannotEdit();
+    //We can't actually test for existing articles to edit because adding an article as an Integrity user doesn't persist
+    //when we log in as a client user.
   })
 
   specify('Client admins cannot add/edit articles', () => {
-    //TODO: same here
     cy.login(clientAdmin);
     GoToArticles();
     CannotAdd();
@@ -183,14 +194,9 @@ function Specs(GoToArticles: () => void)
     cy.login(integrityAdmin);
     GoToArticles();
     AddArticle(false);
-    cy.getByData(modalIds.grid).its('length').then(($length) => {
-      let length = $length;
-      cy.getByData(modalIds.cancelChangesButton).click();
-      if(length === 1)
-        cy.getByData(modalIds.grid).children().should('not.exist');
-      else
-        cy.getByData(modalIds.grid).children().its('length').should('equal',length-1);
-    });
+    cy.contains(articleToAdd.title).should('exist');
+    cy.getByData(modalIds.cancelChangesButton).click();
+    cy.contains(articleToAdd.title).should('not.exist');
   })
 
   specify('Cannot add/edit article with invalid input', () => {
@@ -199,19 +205,6 @@ function Specs(GoToArticles: () => void)
     CannotAddInvalidArticle();
     AddArticle();
     CannotEditInvalidArticle();
-  })
-
-  specify.only('Client cannot see Integrity-only articles', () => {
-    cy.login(integrityAdmin);
-    GoToArticles();   //TODO: make sure we're looking in the same place for the article
-    AddArticle(true,true);
-    cy.getByData(modalIds.closeModalButton).click();
-
-    cy.get('button').contains("Log Out").click();
-
-    cy.login(clientAdmin);
-    GoToArticles();
-    cy.getByData(articleToAdd.title).should('not.exist');
   })
 
   specify('Close button closes the modal', () => {
@@ -246,13 +239,35 @@ describe('add client-level article', () => {
 
   specify('Cannot see initiative-level articles from client view', () => {
     cy.login(integrityAdmin);
-    GoToInitiativeArticles();
+    GoToInitiativeArticles("MBPI");
     AddArticle();
-    GoToClientArticles();
+    cy.contains(articleToAdd.title).should('exist');
+    CloseModal();
+    GoToClientArticles("MBPI");
+    cy.contains(articleToAdd.title).should('not.exist');
+  })
 
-    //TODO: implement this
-    //add an initative article
-    //go to client articles and verify that it's not there
+  specify('Client cannot see Integrity-only articles', () => {
+    cy.login(clientAdmin);
+    GoToClientArticles();
+    cy.getByData(modalIds.closeModalButton).click();
+    cy.getByData(clientPageIds.name).then(($txt) => {
+      let companyName = $txt.text();
+
+      LogOut(); //This clears the store, so this test will always pass; not sure how to work around this without having
+                //an existing Integrity-only article created outside of the tests.
+
+      cy.login(integrityAdmin);
+      GoToClientArticles(companyName);
+      AddArticle(true,true);
+      CloseModal();
+
+      LogOut();
+
+      cy.login(clientAdmin);
+      GoToClientArticles();
+      cy.contains(articleToAdd.title).should('not.exist');
+    });
   })
 });
 
@@ -261,10 +276,34 @@ describe('add initiative-level article', () => {
 
   specify('Cannot see client-level articles from initiative view', () => {
     cy.login(integrityAdmin);
-    GoToClientArticles();
+    GoToClientArticles("MBPI");
     AddArticle();
+    cy.contains(articleToAdd.title).should('exist');
+    CloseModal();
+    GoToInitiativeArticles("MBPI");
+    cy.contains(articleToAdd.title).should('not.exist');
+  })
+
+  specify('Client cannot see Integrity-only articles', () => {
+    cy.login(clientAdmin);
     GoToInitiativeArticles();
-    //TOOD: implement this
+    cy.getByData(modalIds.closeModalButton).click();
+    cy.getByData(initTableIds.initiativeTitle).first().then(($txt) => {
+      let initiativeName = $txt.text();
+
+      LogOut();
+
+      cy.login(integrityAdmin);
+      GoToInitiativeArticles("MBPI",initiativeName);
+      AddArticle(true,true);
+      CloseModal();
+
+      LogOut();
+
+      cy.login(clientAdmin);
+      GoToInitiativeArticles();
+      cy.contains(articleToAdd.title).should('not.exist');
+    });
   })
 });
 

@@ -41,20 +41,22 @@ export default function ValidateNewInitiative(initiative: Initiative, companyId:
 
 export function ValidateDate(date: DateInfo | undefined) : Validation
 {
+  const invalidDateMessage = "A valid date must be provided.";
+
   if(date === null || date === undefined)
     return {success: false, message: "A date was not provided."};
   
   let month = date.month;
   if(!month || month < 1 || month > 12 || Number.isNaN(month))
-    return {success: false, message: "A date must have a month between 1 and 12."};
+    return {success: false, message: invalidDateMessage};//"A date must have a month between 1 and 12."};
 
   let day = date.day;
   if(!day || day < 1 || day > 31 || Number.isNaN(day))
-    return {success: false, message: "A date must have a day between 1 and 31."};
+    return {success: false, message: invalidDateMessage};//"A date must have a day between 1 and 31."};
 
   let year = date.year;    //TODO: there's probably a better way to validate years
   if(!year || year < 1900 || year > 2100 || Number.isNaN(year))
-    return {success: false, message: "A date must have a year between 1900 and 2100."};
+    return {success: false, message: invalidDateMessage};//"A date must have a year between 1900 and 2100."};
 
   return {success: true, message: "Date is all good!"}
 }
