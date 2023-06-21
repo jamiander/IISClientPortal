@@ -82,12 +82,21 @@ export default function ArticleDataModal(props: ArticleDataProps) {
     const todayInfo: DateInfo = {month: today.getMonth()+1, day: today.getDate(), year: today.getFullYear()}
     const [searchedKeyword, setSearchedKeyword] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+    const [loadingModal, setLoadingModal] = useState(true);
     const [filteredArticles, setFilteredArticles] = useState<Article[]>([]);
 
     useEffect(() => {
       if(props.isOpen)
-        dispatch(getArticle({companyId: props.company.id, initiativeId: props.initiative?.id, userCompanyId: props.currentUser.companyId}))
-    }, [props.isOpen]);
+      {
+        callDispatch();
+      }
+      }, [props.isOpen]);
+
+      async function callDispatch() {
+        setLoadingModal(true);
+        await dispatch(getArticle({companyId: props.company.id, initiativeId: props.initiative?.id, userCompanyId: props.currentUser.companyId}))
+        setLoadingModal(false);
+      }
 
     useEffect(() => {
       if(props.initiative)
@@ -99,40 +108,10 @@ export default function ArticleDataModal(props: ArticleDataProps) {
     },[props.isOpen])
 
     useEffect(() => {
-      let sortedArticles = MakeClone(allArticles);
-      console.log("all articles: " + allArticles.length);
-      let articles: Article[] = [];
-      if(props.currentUser.companyId === IntegrityId)
-      { 
-        if(props.initiative !== undefined)
-        {
-          articles = sortedArticles.filter(
-          a => a.initiativeId === selectedInitiative?.id);
-        }
-        else
-        {
-          articles = sortedArticles.filter(
-          a => a.companyId === selectedCompany.id && !a.initiativeId);
-        }
-      }
-      else
-      {
-        if(props.initiative !== undefined)
-        {
-          articles = sortedArticles.filter(
-          a => a.initiativeId === selectedInitiative?.id && a.isIntegrityOnly === false);
-        }
-        else
-        {
-          articles = sortedArticles.filter(
-          a => a.companyId === selectedCompany.id && !a.initiativeId && a.isIntegrityOnly === false);
-        }
-      }
-        
-      setFilteredArticles(articles.filter(a => a.title.toUpperCase().includes(searchedKeyword.toUpperCase())
-      || a.title.toUpperCase().includes(searchedKeyword.toUpperCase())));
-
-    },[selectedInitiative,selectedCompany,searchedKeyword])
+      const articles = allArticles.filter(a => a.title.toUpperCase().includes(searchedKeyword.toUpperCase())
+      || a.title.toUpperCase().includes(searchedKeyword.toUpperCase()));
+      setFilteredArticles(articles);
+    },[searchedKeyword,allArticles])
 
     function HandleEmptyArticle(){
         if(modalState === stateEnum.start)
@@ -243,6 +222,7 @@ export default function ArticleDataModal(props: ArticleDataProps) {
         subtitle={selectedCompany?.name + (selectedInitiative ? " - " + selectedInitiative.title : "")}
         maxWidth={false}
         >
+        {!loadingModal &&
         <div className="mx-1 mb-2">
           <div className="flex flex-row justify-content:space-between">
             <Grid container sx={{ display: 'flex',
@@ -361,6 +341,7 @@ export default function ArticleDataModal(props: ArticleDataProps) {
             filteredArticles.length === 0 && <Grid item className="m-2 p-2 text-3xl font-bold">No articles to display.</Grid>
           }
         </div>
+        }
       </BaseInitiativeModal>
     </>
   );

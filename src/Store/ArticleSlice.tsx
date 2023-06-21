@@ -54,14 +54,7 @@ export const articleSlice = createSlice({
     builder
       .addCase(getArticle.fulfilled, (state, action) => {
         const newArticles = action.payload;
-        for(const article of newArticles)
-        {
-          const articleIndex = state.articles.findIndex(a => a.id === article.id);
-          if(articleIndex > -1)
-            state.articles.splice(articleIndex,1,article);
-          else
-            state.articles.push(article);
-        }
+        state.articles = newArticles;
       })
       .addCase(upsertArticle.fulfilled, (state, action) => {
         const newArticles = action.payload;
