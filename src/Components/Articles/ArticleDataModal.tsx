@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { Company, Initiative, IntegrityId } from "../../Store/CompanySlice";
 import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
+import FlagIcon from "@mui/icons-material/Flag";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { MakeClone } from "../../Services/Cloning";
 import {v4 as UuidV4} from "uuid";
@@ -58,7 +59,9 @@ interface ArticleDataProps {
 
 export default function ArticleDataModal(props: ArticleDataProps) {
     const dispatch = useAppDispatch();
-    const allArticles = useAppSelector(selectAllArticles);    
+    const allArticles = useAppSelector(selectAllArticles);  
+    const today = new Date();
+    const todayInfo: DateInfo = {month: today.getMonth()+1, day: today.getDate(), year: today.getFullYear()}  
     
     const [modalState, setModalState] = useState(stateEnum.start);
     const [currentTitle, setCurrentTitle] = useState("");
@@ -103,14 +106,7 @@ export default function ArticleDataModal(props: ArticleDataProps) {
       setSelectedCompany(props.company);
       setIsLoading(false);
       LeaveEditMode();
-
     },[props.isOpen]);
-
-    async function callDispatch() {
-      setLoadingModal(true);
-      await dispatch(getArticle({companyId: props.company.id, initiativeId: props.initiative?.id, userCompanyId: props.currentUser.companyId}))
-      setLoadingModal(false);
-    }
 
     useEffect(() => {
       const articles = allArticles.filter(a => a.title.toUpperCase().includes(searchedKeyword.toUpperCase())
@@ -129,7 +125,7 @@ export default function ArticleDataModal(props: ArticleDataProps) {
           title: "", 
           text: "", 
           updatedBy: "", 
-          updatedDate: {month: -1, day: -1, year: -1},
+          updatedDate: todayInfo,
           companyId: selectedCompany.id,
           initiativeId: selectedInitiative?.id,
           isIntegrityOnly: false
@@ -277,6 +273,7 @@ export default function ArticleDataModal(props: ArticleDataProps) {
                       <StyledCardContent>
                           {isEdit ?
                           <>
+                            <div className="ml-[75%]"><Checkbox data-cy={ArticleModalIds.isIntegrityOnly} color="darkBlue" checked={isIntegrityOnly} onChange={e => setIsIntegrityOnly(e.target.checked)}/>Integrity Only</div>
                             <label className={labelStyle} htmlFor="title">Title</label>
                             <StyledTextarea id="title" data-cy={ArticleModalIds.editTitle} value={currentTitle} onChange={e => setCurrentTitle(e.target.value)}/>
                             <label className={labelStyle} htmlFor="text">Content</label>
@@ -284,10 +281,11 @@ export default function ArticleDataModal(props: ArticleDataProps) {
                             <label className={labelStyle} htmlFor="updatedby">Updated By</label>
                             <StyledTextarea id="updatedby" data-cy={ArticleModalIds.editUpdatedBy} value={currentUpdatedBy} onChange={e => setCurrentUpdatedBy(e.target.value)}/>
                             <DateInput cypressData={ArticleModalIds.editUpdatedDate} label="Date Updated" date={currentUpdatedDate} setDate={setCurrentUpdatedDate}/>
-                            <div><Checkbox data-cy={ArticleModalIds.isIntegrityOnly} color="darkBlue" checked={isIntegrityOnly} onChange={e => setIsIntegrityOnly(e.target.checked)}/>Integrity Only</div>
                           </>
                           :
                           <>
+                          {displayItem.isIntegrityOnly &&
+                            <div className="ml-[75%]"><FlagIcon sx={{ color: "red" }}></FlagIcon>&nbsp;&nbsp;Integrity Only</div>}
                             <label className={labelStyle} htmlFor="description">Title</label>
                             <StyledTextarea id="title" data-cy={ArticleModalIds.title} disabled value={displayItem.title}/>
                             <label className={labelStyle} htmlFor="text">Content</label>
