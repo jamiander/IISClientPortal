@@ -64,6 +64,8 @@ describe('valid upload throughput tests', () => {
     cy.wait(waitTime);
     cy.getByData(uploadIds.submitButton).click();
     cy.wait(waitTime);
+    cy.getByData(modalIds.modal).should('not.exist');
+    cy.get('body').click(0,0);
     cy.getByData(radioIds.all).click();
     cy.getByData(pageIds.initiativeTitleFilter).clear().type(initiativeTitle);
     cy.contains('tr', initiativeTitle).findByData(tableIds.remainingItems).then(($span) => {

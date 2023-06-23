@@ -1,5 +1,4 @@
 import { useState } from "react"
-import { DateInfo } from "../../Services/CompanyService"
 import { Company, Initiative } from "../../Store/CompanySlice"
 import ArticleDataModal from "./ArticleDataModal"
 import { User } from "../../Store/UserSlice"

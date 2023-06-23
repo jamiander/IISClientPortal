@@ -31,6 +31,14 @@ const editedDecision = {
   date: "04292023"//"2023-04-29"
 }
 
+function CloseModal()
+{
+  cy.getByData(modalIds.modal).should('exist');
+  cy.getByData(modalIds.closeModalButton).click();
+  cy.getByData(modalIds.modal).should('not.exist');
+  cy.get('body').click(0,0);
+}
+
 beforeEach(() => {
   cy.login(user);
 
@@ -58,7 +66,7 @@ describe("add decision spec", () => {
     cy.getByData(modalIds.saveChangesButton).click();
     cy.wait(waitTime);
     cy.getByData(modalIds.description).contains(decision.description);
-    cy.getByData(modalIds.closeModalButton).click();
+    CloseModal();
     
     cy.getByData(tableIds.actionMenu.menuButton).click();
     cy.getByData(tableIds.actionMenu.decisionButton).click();
@@ -96,9 +104,7 @@ describe("add decision spec", () => {
   })
 
   specify("close button closes the modal", () => {
-    cy.getByData(modalIds.modal).should('exist');
-    cy.getByData(modalIds.closeModalButton).click();
-    cy.getByData(modalIds.modal).should('not.exist');
+    CloseModal();
   })
 
   specify("cannot add multiple decisions at once", () => {

@@ -49,7 +49,6 @@ export function InitiativeActionsMenu(props: InitiativeActionsMenuProps)
   };
 
   const dispatch = useAppDispatch();
-  const [uploadThroughputModalIsOpen, setUploadThroughputModalIsOpen] = useState(false);
 
   async function SubmitUpdateThroughput(companyId: string, initiativeId: string, dataList: ThroughputData[], emptyDataCheck: boolean = true) : Promise<boolean>
   {
@@ -61,7 +60,6 @@ export function InitiativeActionsMenu(props: InitiativeActionsMenuProps)
     if(validation.success)
     {
       await dispatch(upsertThroughputData({companyId: companyId, initiativeId: initiativeId, itemsCompletedOnDate: dataList, isTest: isTest}));
-      setUploadThroughputModalIsOpen(false);
       enqueueSnackbar("Throughput data changes have been saved.", {variant:'success'});
       return true;
     }
@@ -69,12 +67,6 @@ export function InitiativeActionsMenu(props: InitiativeActionsMenuProps)
       enqueueSnackbar(ValidationFailedPrefix + validation.message, {variant:'error'});
     
     return false;
-  }
-
-  function HandleUploadThroughputModal()
-  {
-    setUploadThroughputModalIsOpen(true);
-    handleClose();
   }
 
   return (
@@ -99,9 +91,9 @@ export function InitiativeActionsMenu(props: InitiativeActionsMenuProps)
           'aria-labelledby': 'basic-button',
         }}
       >
-        <DecisionMenuItem cypressData={props.cypressData.decisionButton} company={props.company} initiative={props.initiative}/>
+        <DecisionMenuItem cypressData={props.cypressData.decisionButton} company={props.company} initiative={props.initiative} currentUser={props.currentUser}/>
         <ArticleMenuItem cypressData={props.cypressData.articleButton} company={props.company} initiative={props.initiative} currentUser={props.currentUser}/>
-        <DocumentMenuItem cypressData={props.cypressData.decisionButton} company={props.company} initiative={props.initiative} isAdmin={props.currentUser.isAdmin} />
+        <DocumentMenuItem cypressData={props.cypressData.documentButton} company={props.company} initiative={props.initiative} isAdmin={props.currentUser.isAdmin} />
         {props.currentUser.isAdmin &&
           <UploadThroughputMenuItem cypressData={props.cypressData.uploadThroughputButton} company={props.company} initiative={props.initiative} SubmitUpdateThroughput={SubmitUpdateThroughput}/>
         }

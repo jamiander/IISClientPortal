@@ -151,6 +151,7 @@ function CloseModal()
   cy.getByData(modalIds.modal).should('exist');
   cy.getByData(modalIds.closeModalButton).click();
   cy.getByData(modalIds.modal).should('not.exist');
+  cy.get('body').click(0,0);
 }
 
 function LogOut()
@@ -250,7 +251,7 @@ describe('add client-level article', () => {
   specify('Client cannot see Integrity-only articles', () => {
     cy.login(clientAdmin);
     GoToClientArticles();
-    cy.getByData(modalIds.closeModalButton).click();
+    CloseModal();
     cy.getByData(clientPageIds.name).then(($txt) => {
       let companyName = $txt.text();
 
@@ -287,7 +288,7 @@ describe('add initiative-level article', () => {
   specify('Client cannot see Integrity-only articles', () => {
     cy.login(clientAdmin);
     GoToInitiativeArticles();
-    cy.getByData(modalIds.closeModalButton).click();
+    CloseModal();
     cy.getByData(initTableIds.initiativeTitle).first().then(($txt) => {
       let initiativeName = $txt.text();
 

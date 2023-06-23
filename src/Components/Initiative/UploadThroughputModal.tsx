@@ -114,8 +114,10 @@ export default function UploadThroughputModal(props:ThroughputModalProps){
   async function UploadFile()
   {
     setIsUploading(true);
-    await props.Submit(props.company.id, props.initiative.id, fileData, true);
+    const response = await props.Submit(props.company.id, props.initiative.id, fileData, true);
     setIsUploading(false);
+    if(response)
+      props.setUploadIsOpen(false);
   }
 
   return(

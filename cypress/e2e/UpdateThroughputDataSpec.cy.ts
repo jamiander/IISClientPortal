@@ -15,6 +15,14 @@ const user = AdminUser;
 
 const newDate = "01012020";//"2020-01-01";
 
+function CloseModal()
+{
+  cy.getByData(modalIds.modal).should('exist');
+  cy.getByData(modalIds.closeModalButton).click();
+  cy.getByData(modalIds.modal).should('not.exist');
+  cy.get('body').click(0,0);
+}
+
 describe('add throughput data by manual entry', () => {
   let remainingItemsBefore: number;
 
@@ -40,7 +48,8 @@ describe('add throughput data by manual entry', () => {
       cy.getByData(modalIds.saveChangesButton).click();
     });
     
-    cy.getByData(modalIds.closeModalButton).click();
+    CloseModal();
+    
     cy.wait(waitTime);
     cy.getByData(radioIds.all).click();
     cy.getByData(pageIds.initiativeTitleFilter).clear().type(initiativeTitle);
@@ -104,11 +113,7 @@ describe('update throughput data', () => {
   })
 
   specify('close button closes modal', () => {
-    cy.getByData(modalIds.modal).should('exist');
-    cy.getByData(modalIds.closeModalButton).click();
-    cy.wait(waitTime);
-
-    cy.getByData(modalIds.modal).should('not.exist');
+    CloseModal();
   })
 
   specify('cannot update throughput data to an invalid completed amount', () => {
