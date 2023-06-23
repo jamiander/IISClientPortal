@@ -307,7 +307,7 @@ export default function InitiativesTable(props: InitiativesProps) {
               <TableBody data-cy={InitiativeTableIds.table}>
                 {displayItems.map((displayItem, index) => {
                   let probability = { value: displayItem.probabilityValue, status: displayItem.probabilityStatus };
-                  let healthIndicator =  getHealthIndicator(probability.value);
+                  let healthIndicator = getHealthIndicator(probability.value);
                   let tooltipMessage = probability.value === undefined ? probability.status :
                     probability.value === 0 ? "Data may be insufficient or may indicate a very low probability of success" :
                       probability.value + "%";

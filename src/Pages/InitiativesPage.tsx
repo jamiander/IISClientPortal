@@ -48,7 +48,7 @@ export default function InitiativesPage(){
               borderRadius: 1 }}>
             <Grid item xs={3}>
               {currentUser?.companyId === IntegrityId && 
-                  <SearchBar cypressData={InitiativesPageIds.companyNameFilter} placeholder="Filter by Company" value={searchedComp} setValue={setSearchedComp} />
+                <SearchBar cypressData={InitiativesPageIds.companyNameFilter} placeholder="Filter by Company" value={searchedComp} setValue={setSearchedComp} />
               }
                 <SearchBar cypressData={InitiativesPageIds.initiativeTitleFilter} placeholder="Filter by Title" value={searchedInit} setValue={setSearchedInit} />
             </Grid>

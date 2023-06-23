@@ -65,6 +65,9 @@ export function ClientPage()
 
   const paginator = usePaginator();
 
+  const isIntegrityUser = currentUser?.companyId === IntegrityId;
+  const isReadOnly = !isIntegrityUser || !currentUser?.isAdmin;
+
   useEffect(() => {
     const filteredCompanies = CompanyFilter(allCompanies,radioValue).filter(c =>  c.name?.toUpperCase().includes(searchedKeyword.toUpperCase()));
     filteredCompanies.sort((a: Company, b: Company) => a.name.toUpperCase() > b.name.toUpperCase() ? 1 : -1);
@@ -72,6 +75,11 @@ export function ClientPage()
     setDisplayCompanies(paginatedCompanies);
     LeaveEditMode();
   },[allCompanies, radioValue, paginator.page, paginator.rowsPerPage, searchedKeyword]);
+
+  useEffect(() => {
+    if(!isIntegrityUser)
+      setRadioValue("all");
+  },[])
 
   function InEditMode()
   {
@@ -152,11 +160,7 @@ export function ClientPage()
     }
     LeaveEditMode();
   }
-
-  function IsReadOnly()
-  {
-    return currentUser?.companyId !== IntegrityId || !currentUser?.isAdmin;
-  }
+  
 
   return (
     <>
@@ -175,15 +179,17 @@ export function ClientPage()
               sx={{ display: 'flex',
               justifyContent: 'flex-start'
               }}> 
-              {currentUser?.companyId === IntegrityId &&
+              {isIntegrityUser &&
               <SearchBar cypressData={ClientPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in Name" value={searchedKeyword} setValue={setSearchedKeyword} />}
             </Grid>
-            <RadioSet dark={true} setter={setRadioValue} name="clientPage" options={[
-            {cypressData: ClientPageIds.radioIds.all, label: "Show All", value: "all"},
-            {cypressData: ClientPageIds.radioIds.active, label: "Active", value: "active", default: true},
-            {cypressData: ClientPageIds.radioIds.inactive, label: "Inactive", value: "inactive"}
-            ]} />
-            {allCompanies.length !== 0 && !IsReadOnly() &&
+            {isIntegrityUser &&
+              <RadioSet dark={true} setter={setRadioValue} name="clientPage" options={[
+              {cypressData: ClientPageIds.radioIds.all, label: "Show All", value: "all"},
+              {cypressData: ClientPageIds.radioIds.active, label: "Active", value: "active", default: true},
+              {cypressData: ClientPageIds.radioIds.inactive, label: "Inactive", value: "inactive"}
+              ]} />
+            }
+            {allCompanies.length !== 0 && !isReadOnly &&
             <Grid item xs={3}
               sx={{ display: 'flex',
               justifyContent: 'flex-end'
@@ -199,7 +205,7 @@ export function ClientPage()
             <colgroup>
                 <col style={{ width: '25vw' }} />
                 <col style={{ width: '10vw' }} />
-                {!IsReadOnly() &&
+                {!isReadOnly &&
                   <col style={{ width: '15vw' }} />
                 }
             </colgroup>
@@ -214,7 +220,7 @@ export function ClientPage()
                 }}>
                   <TableHeaderStyle>Name</TableHeaderStyle>
                   <TableHeaderStyle>Actions</TableHeaderStyle>
-                  {!IsReadOnly() &&
+                  {!isReadOnly &&
                     <TableHeaderStyle>Edit Client</TableHeaderStyle>
                   }
                 </TableRow>
@@ -259,7 +265,7 @@ export function ClientPage()
                         <TableCell>
                           <ClientActionsMenu {...clientActionsMenuProps}/>
                         </TableCell>
-                        {!IsReadOnly() &&
+                        {!isReadOnly &&
                         <TableCell>
                           <IconButton data-cy={ClientPageIds.editClientButton} disabled={InEditMode()} onClick={() => EnterEditMode(displayItem.id, displayCompanies, false)}>
                             <EditIcon sx={{fontSize: tableButtonFontSize}}/>
