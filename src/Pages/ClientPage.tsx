@@ -1,6 +1,6 @@
 import { Grid, IconButton, Input, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { TableHeaderStyle, defaultRowStyle, tableButtonFontSize, tableCellFontSize, tableHeaderFontSize } from "../Styles";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
@@ -9,7 +9,6 @@ import { Company, IntegrityId, selectAllCompanies, upsertCompanyInfo } from "../
 import { enqueueSnackbar } from "notistack";
 import { v4 } from "uuid";
 import { ValidateCompany, ValidationFailedPrefix } from "../Services/Validation";
-import { RadioSet } from "../Components/RadioSet";
 import { CompanyFilter } from "../Services/Filters";
 import { selectCurrentUser } from "../Store/UserSlice";
 import { AddButton } from "../Components/AddButton";
@@ -18,7 +17,7 @@ import { Paginator } from "../Components/Paginator";
 import { MakeClone } from "../Services/Cloning";
 import { usePaginator } from "../Services/usePaginator";
 import { ClientActionsMenu } from "../Components/ClientActionsMenu";
-import { useActiveCounter } from "../Services/useActiveCounter";
+import { ActiveRadioSet } from "../Components/ActiveRadioSet";
 
 export const ClientPageIds = {
   modal: "clientPageModal",
@@ -68,8 +67,6 @@ export function ClientPage()
 
   const isIntegrityUser = currentUser?.companyId === IntegrityId;
   const isReadOnly = !isIntegrityUser || !currentUser?.isAdmin;
-
-  const {allCount, activeCount, inactiveCount} = useActiveCounter(allCompanies,CompanyFilter);
 
   useEffect(() => {
     const filteredCompanies = CompanyFilter(allCompanies,radioValue).filter(c =>  c.name?.toUpperCase().includes(searchedKeyword.toUpperCase()));
@@ -186,11 +183,7 @@ export function ClientPage()
               <SearchBar cypressData={ClientPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in Name" value={searchedKeyword} setValue={setSearchedKeyword} />}
             </Grid>
             {isIntegrityUser &&
-              <RadioSet dark={true} setter={setRadioValue} name="clientPage" options={[
-              {cypressData: ClientPageIds.radioIds.all, label: `Show All (${allCount})`, value: "all"},
-              {cypressData: ClientPageIds.radioIds.active, label: `Active (${activeCount})`, value: "active", default: true},
-              {cypressData: ClientPageIds.radioIds.inactive, label: `Inactive (${inactiveCount})`, value: "inactive"}
-              ]} />
+              <ActiveRadioSet cypressData={ClientPageIds.radioIds} name="clientPage" setRadioValue={setRadioValue} listItems={allCompanies} filterFunc={CompanyFilter}/>
             }
             {allCompanies.length !== 0 && !isReadOnly &&
             <Grid item xs={3}

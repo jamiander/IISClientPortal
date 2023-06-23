@@ -10,6 +10,7 @@ import { AddButton } from "../Components/AddButton";
 import { SearchBar } from "../Components/SearchBar";
 import { InitiativeFilter } from "../Services/Filters";
 import { useActiveCounter } from "../Services/useActiveCounter";
+import { ActiveRadioSet } from "../Components/ActiveRadioSet";
 
 export const InitiativeDisplayRadioIds = {
   all: "initDisplayShowAll",
@@ -36,7 +37,6 @@ export default function InitiativesPage(){
   const [radioValue, setRadioValue] = useState('active');
 
   const allInitiatives = useMemo(() => allCompanies.flatMap(c => c.initiatives),[allCompanies]);
-  const {allCount, activeCount, inactiveCount} = useActiveCounter(allInitiatives,InitiativeFilter);
 
   return (
     <>
@@ -57,11 +57,7 @@ export default function InitiativesPage(){
               }
                 <SearchBar cypressData={InitiativesPageIds.initiativeTitleFilter} placeholder="Filter by Title" value={searchedInit} setValue={setSearchedInit} />
             </Grid>
-            <RadioSet dark={true} setter={setRadioValue} name="initiativesDisplay" options={[
-            { cypressData: InitiativeDisplayRadioIds.all, label: `Show All (${allCount})`, value: "all" },
-            { cypressData: InitiativeDisplayRadioIds.active, label: `Active (${activeCount})`, value: "active", default: true },
-            { cypressData: InitiativeDisplayRadioIds.inactive, label: `Inactive (${inactiveCount})`, value: "inactive" }
-            ]} />
+            <ActiveRadioSet cypressData={InitiativeDisplayRadioIds} name="initiativesPage" setRadioValue={setRadioValue} listItems={allInitiatives} filterFunc={InitiativeFilter}/>
             {currentUser?.isAdmin ?
               <Grid item xs={3} sx={{ display: 'flex',
                 justifyContent: 'flex-end'

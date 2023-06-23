@@ -1,5 +1,5 @@
 import { IntegrityTheme, TableHeaderStyle, defaultRowStyle, tableButtonFontSize, tableCellFontSize, tableHeaderFontSize } from "../Styles";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { User, getUserById, selectAllUsers, selectCurrentUser } from "../Store/UserSlice";
 import { Company, IntegrityId, selectAllCompanies } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
@@ -16,14 +16,13 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { useEditUser } from "../Services/useEditUser";
 import { EditUserInitiativesButton } from "../Components/User/EditUserInitiativesButton";
-import { RadioSet } from "../Components/RadioSet";
 import { UserFilter } from "../Services/Filters";
 import { AddButton } from "../Components/AddButton";
 import { MakeClone } from "../Services/Cloning";
 import { SearchBar } from "../Components/SearchBar";
 import { Paginator } from "../Components/Paginator";
 import { usePaginator } from "../Services/usePaginator";
-import { useActiveCounter } from "../Services/useActiveCounter";
+import { ActiveRadioSet } from "../Components/ActiveRadioSet";
 
 export const UsersPageIds = {
   company: "usersPageCompany",
@@ -94,8 +93,6 @@ export default function UsersPage(){
 
   const paginator = usePaginator();
 
-  const {allCount, activeCount, inactiveCount} = useActiveCounter(allUsers,UserFilter);
-
   useEffect(() => 
   {
     SetupEditUser(allUsers);
@@ -150,24 +147,21 @@ export default function UsersPage(){
       <div className="mx-[2%] mb-2">
         <div className="flex flex-row justify-content:space-between">
           <Grid container sx={{ display: 'flex',
-              placeItems: 'center',
-              flexDirection: 'row',
-              p: 1,
-              mt: 2,
-              mb: 1,
-              ml: 2,
-              mr: 2,
-              borderRadius: 1, }}> 
-              <Grid item xs={3} sx={{ display: 'flex',
-              justifyContent: 'flex-start',
-              }}>
-                <SearchBar cypressData={UsersPageIds.keywordFilter} disabled={InEditMode()} value={searchedKeyword} setValue={setSearchedKeyword} placeholder={"Keyword in Name or Email"}/>
-              </Grid>
-              <RadioSet dark={true} setter={setRadioValue} name="userPage" options={[
-              { cypressData: UsersPageIds.radioIds.all, label: `Show All (${allCount})`, value: "all" },
-              { cypressData: UsersPageIds.radioIds.active, label: `Active (${activeCount})`, value: "active", default: true },
-              { cypressData: UsersPageIds.radioIds.inactive, label: `Inactive (${inactiveCount})`, value: "inactive" }
-            ]} />
+            placeItems: 'center',
+            flexDirection: 'row',
+            p: 1,
+            mt: 2,
+            mb: 1,
+            ml: 2,
+            mr: 2,
+            borderRadius: 1
+          }}>
+            <Grid item xs={3} sx={{ display: 'flex',
+            justifyContent: 'flex-start',
+            }}>
+              <SearchBar cypressData={UsersPageIds.keywordFilter} disabled={InEditMode()} value={searchedKeyword} setValue={setSearchedKeyword} placeholder={"Keyword in Name or Email"}/>
+            </Grid>
+            <ActiveRadioSet cypressData={UsersPageIds.radioIds} name="usersPage" setRadioValue={setRadioValue} listItems={allUsers} filterFunc={UserFilter}/>
             <Grid item xs={3} sx={{ display: 'flex',
               justifyContent: 'flex-end'
               }}> 
