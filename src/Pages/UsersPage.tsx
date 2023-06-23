@@ -1,5 +1,5 @@
 import { IntegrityTheme, TableHeaderStyle, defaultRowStyle, tableButtonFontSize, tableCellFontSize, tableHeaderFontSize } from "../Styles";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { User, getUserById, selectAllUsers, selectCurrentUser } from "../Store/UserSlice";
 import { Company, IntegrityId, selectAllCompanies } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
@@ -93,6 +93,12 @@ export default function UsersPage(){
 
   const paginator = usePaginator();
 
+  const {allCount, activeCount, inactiveCount} = useMemo(() => {
+    const activeUsersCount = allUsers.filter(u => u.isActive).length;
+
+    return {allCount: allUsers.length, activeCount: activeUsersCount, inactiveCount: allUsers.length - activeUsersCount}
+  },[allUsers]);
+
   useEffect(() => 
   {
     SetupEditUser(allUsers);
@@ -161,9 +167,9 @@ export default function UsersPage(){
                 <SearchBar cypressData={UsersPageIds.keywordFilter} disabled={InEditMode()} value={searchedKeyword} setValue={setSearchedKeyword} placeholder={"Keyword in Name or Email"}/>
               </Grid>
               <RadioSet dark={true} setter={setRadioValue} name="userPage" options={[
-              { cypressData: UsersPageIds.radioIds.all, label: "Show All", value: "all" },
-              { cypressData: UsersPageIds.radioIds.active, label: "Active", value: "active", default: true },
-              { cypressData: UsersPageIds.radioIds.inactive, label: "Inactive", value: "inactive" }
+              { cypressData: UsersPageIds.radioIds.all, label: `Show All (${allCount})`, value: "all" },
+              { cypressData: UsersPageIds.radioIds.active, label: `Active (${activeCount})`, value: "active", default: true },
+              { cypressData: UsersPageIds.radioIds.inactive, label: `Inactive (${inactiveCount})`, value: "inactive" }
             ]} />
             <Grid item xs={3} sx={{ display: 'flex',
               justifyContent: 'flex-end'

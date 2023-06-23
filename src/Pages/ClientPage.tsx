@@ -1,6 +1,6 @@
 import { Grid, IconButton, Input, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { TableHeaderStyle, defaultRowStyle, tableButtonFontSize, tableCellFontSize, tableHeaderFontSize } from "../Styles";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
@@ -67,6 +67,12 @@ export function ClientPage()
 
   const isIntegrityUser = currentUser?.companyId === IntegrityId;
   const isReadOnly = !isIntegrityUser || !currentUser?.isAdmin;
+
+  const {allCount, activeCount, inactiveCount} = useMemo(() => {
+    const activeCompaniesCount = CompanyFilter(allCompanies,"active").length;
+
+    return {allCount: allCompanies.length, activeCount: activeCompaniesCount, inactiveCount: allCompanies.length - activeCompaniesCount}
+  },[allCompanies]);
 
   useEffect(() => {
     const filteredCompanies = CompanyFilter(allCompanies,radioValue).filter(c =>  c.name?.toUpperCase().includes(searchedKeyword.toUpperCase()));
@@ -184,9 +190,9 @@ export function ClientPage()
             </Grid>
             {isIntegrityUser &&
               <RadioSet dark={true} setter={setRadioValue} name="clientPage" options={[
-              {cypressData: ClientPageIds.radioIds.all, label: "Show All", value: "all"},
-              {cypressData: ClientPageIds.radioIds.active, label: "Active", value: "active", default: true},
-              {cypressData: ClientPageIds.radioIds.inactive, label: "Inactive", value: "inactive"}
+              {cypressData: ClientPageIds.radioIds.all, label: `Show All (${allCount})`, value: "all"},
+              {cypressData: ClientPageIds.radioIds.active, label: `Active (${activeCount})`, value: "active", default: true},
+              {cypressData: ClientPageIds.radioIds.inactive, label: `Inactive (${inactiveCount})`, value: "inactive"}
               ]} />
             }
             {allCompanies.length !== 0 && !isReadOnly &&

@@ -37,9 +37,8 @@ export default function InitiativesPage(){
   const {allCount, activeCount, inactiveCount} = useMemo(() => {
     const allInitiatives = allCompanies.flatMap(c => c.initiatives);
     const activeInitiativesCount = InitiativeFilter(allInitiatives,"active").length;
-    const inactiveInitiativesCount = InitiativeFilter(allInitiatives,"inactive").length;
 
-    return {allCount: activeInitiativesCount + inactiveInitiativesCount, activeCount: activeInitiativesCount, inactiveCount: inactiveInitiativesCount}
+    return {allCount: allInitiatives.length, activeCount: activeInitiativesCount, inactiveCount: allInitiatives.length - activeInitiativesCount}
   },[allCompanies]);
 
   return (
