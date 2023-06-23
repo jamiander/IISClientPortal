@@ -23,6 +23,7 @@ import { MakeClone } from "../Services/Cloning";
 import { SearchBar } from "../Components/SearchBar";
 import { Paginator } from "../Components/Paginator";
 import { usePaginator } from "../Services/usePaginator";
+import { useActiveCounter } from "../Services/useActiveCounter";
 
 export const UsersPageIds = {
   company: "usersPageCompany",
@@ -93,11 +94,7 @@ export default function UsersPage(){
 
   const paginator = usePaginator();
 
-  const {allCount, activeCount, inactiveCount} = useMemo(() => {
-    const activeUsersCount = allUsers.filter(u => u.isActive).length;
-
-    return {allCount: allUsers.length, activeCount: activeUsersCount, inactiveCount: allUsers.length - activeUsersCount}
-  },[allUsers]);
+  const {allCount, activeCount, inactiveCount} = useActiveCounter(allUsers,UserFilter);
 
   useEffect(() => 
   {

@@ -9,6 +9,7 @@ import { selectCurrentUser } from "../Store/UserSlice";
 import { AddButton } from "../Components/AddButton";
 import { SearchBar } from "../Components/SearchBar";
 import { InitiativeFilter } from "../Services/Filters";
+import { useActiveCounter } from "../Services/useActiveCounter";
 
 export const InitiativeDisplayRadioIds = {
   all: "initDisplayShowAll",
@@ -34,12 +35,8 @@ export default function InitiativesPage(){
   const [addInitiative, setAddInitiative] = useState(false);
   const [radioValue, setRadioValue] = useState('active');
 
-  const {allCount, activeCount, inactiveCount} = useMemo(() => {
-    const allInitiatives = allCompanies.flatMap(c => c.initiatives);
-    const activeInitiativesCount = InitiativeFilter(allInitiatives,"active").length;
-
-    return {allCount: allInitiatives.length, activeCount: activeInitiativesCount, inactiveCount: allInitiatives.length - activeInitiativesCount}
-  },[allCompanies]);
+  const allInitiatives = useMemo(() => allCompanies.flatMap(c => c.initiatives),[allCompanies]);
+  const {allCount, activeCount, inactiveCount} = useActiveCounter(allInitiatives,InitiativeFilter);
 
   return (
     <>

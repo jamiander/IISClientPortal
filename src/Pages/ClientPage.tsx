@@ -18,6 +18,7 @@ import { Paginator } from "../Components/Paginator";
 import { MakeClone } from "../Services/Cloning";
 import { usePaginator } from "../Services/usePaginator";
 import { ClientActionsMenu } from "../Components/ClientActionsMenu";
+import { useActiveCounter } from "../Services/useActiveCounter";
 
 export const ClientPageIds = {
   modal: "clientPageModal",
@@ -68,11 +69,7 @@ export function ClientPage()
   const isIntegrityUser = currentUser?.companyId === IntegrityId;
   const isReadOnly = !isIntegrityUser || !currentUser?.isAdmin;
 
-  const {allCount, activeCount, inactiveCount} = useMemo(() => {
-    const activeCompaniesCount = CompanyFilter(allCompanies,"active").length;
-
-    return {allCount: allCompanies.length, activeCount: activeCompaniesCount, inactiveCount: allCompanies.length - activeCompaniesCount}
-  },[allCompanies]);
+  const {allCount, activeCount, inactiveCount} = useActiveCounter(allCompanies,CompanyFilter);
 
   useEffect(() => {
     const filteredCompanies = CompanyFilter(allCompanies,radioValue).filter(c =>  c.name?.toUpperCase().includes(searchedKeyword.toUpperCase()));

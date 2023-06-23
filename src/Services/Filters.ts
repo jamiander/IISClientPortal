@@ -1,36 +1,36 @@
-import { filter } from "cypress/types/bluebird";
 import { Company, Initiative } from "../Store/CompanySlice";
 import { User } from "../Store/UserSlice";
 import { FindItemsRemaining } from "./CompanyService";
 
-export function CompanyFilter(companyList: Company[], isActive: string){
-    let filteredInitiatives: Initiative[] = [];
-    let filteredCompanies: Company[] = [];
-    
-    companyList.forEach(company => {
-      if(company !== undefined)
+export function CompanyFilter(companyList: Company[], activeStatus: string){
+  let filteredInitiatives: Initiative[] = [];
+  let filteredCompanies: Company[] = [];
+  
+  companyList.forEach(company => {
+    if(company !== undefined)
+    {
+      filteredInitiatives = InitiativeFilter(company.initiatives, activeStatus);
+      
+      switch(activeStatus)
       {
-        filteredInitiatives = InitiativeFilter(company.initiatives, isActive);
-        
-        if(isActive === 'all'){
+        case 'all':
+          filteredCompanies.push(company);
+        break;
+        case 'active':
+          if(filteredInitiatives.length !== 0)
             filteredCompanies.push(company);
-        }
-        else if(isActive === 'inactive'){
-            if(filteredInitiatives.length === company.initiatives.length){
-                filteredCompanies.push(company);
-            }
-        }
-        else if(isActive === 'active'){
-            if(filteredInitiatives.length !== 0){
-                filteredCompanies.push(company);
-            }
-        }
+        break;
+        case 'inactive':
+          if(filteredInitiatives.length === company.initiatives.length)
+            filteredCompanies.push(company);
+        break;
       }
-    })
-    return filteredCompanies;
+    }
+  })
+  return filteredCompanies;
 }
 
-export function InitiativeFilter(initiativesList: Initiative[], isActive: String) {
+export function InitiativeFilter(initiativesList: Initiative[], isActive: string) {
   let filteredInitiatives: Initiative[] = [];
   
   filteredInitiatives = initiativesList.filter((initiative) => {
@@ -47,7 +47,7 @@ export function InitiativeFilter(initiativesList: Initiative[], isActive: String
   return filteredInitiatives;
 }
 
-export function UserFilter(usersList: User[], isActive: String) {
+export function UserFilter(usersList: User[], isActive: string) {
   let filteredUsers: User[] = [];
     usersList.forEach((user) => {
       if(isActive === 'all') {
