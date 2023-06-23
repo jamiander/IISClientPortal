@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import InitiativesTable from "../Components/Initiative/InitiativesTable";
 import { RadioSet } from "../Components/RadioSet";
 import ValidateNewInitiative, {  } from "../Services/Validation";
@@ -8,6 +8,7 @@ import { Grid } from "@mui/material";
 import { selectCurrentUser } from "../Store/UserSlice";
 import { AddButton } from "../Components/AddButton";
 import { SearchBar } from "../Components/SearchBar";
+import { InitiativeFilter } from "../Services/Filters";
 
 export const InitiativeDisplayRadioIds = {
   all: "initDisplayShowAll",
@@ -25,13 +26,21 @@ export const InitiativesPageIds = {
 
 export default function InitiativesPage(){
   
-  const companyList : Company[] = useAppSelector(selectAllCompanies);
+  const allCompanies : Company[] = useAppSelector(selectAllCompanies);
   const currentUser = useAppSelector(selectCurrentUser);
 
   const [searchedComp, setSearchedComp] = useState("");
   const [searchedInit, setSearchedInit] = useState("");
   const [addInitiative, setAddInitiative] = useState(false);
   const [radioValue, setRadioValue] = useState('active');
+
+  const {allCount, activeCount, inactiveCount} = useMemo(() => {
+    const allInitiatives = allCompanies.flatMap(c => c.initiatives);
+    const activeInitiativesCount = InitiativeFilter(allInitiatives,"active").length;
+    const inactiveInitiativesCount = InitiativeFilter(allInitiatives,"inactive").length;
+
+    return {allCount: activeInitiativesCount + inactiveInitiativesCount, activeCount: activeInitiativesCount, inactiveCount: inactiveInitiativesCount}
+  },[allCompanies]);
 
   return (
     <>
@@ -53,9 +62,9 @@ export default function InitiativesPage(){
                 <SearchBar cypressData={InitiativesPageIds.initiativeTitleFilter} placeholder="Filter by Title" value={searchedInit} setValue={setSearchedInit} />
             </Grid>
             <RadioSet dark={true} setter={setRadioValue} name="initiativesDisplay" options={[
-            { cypressData: InitiativeDisplayRadioIds.all, label: "Show All", value: "all" },
-            { cypressData: InitiativeDisplayRadioIds.active, label: "Active", value: "active", default: true },
-            { cypressData: InitiativeDisplayRadioIds.inactive, label: "Inactive", value: "inactive" }
+            { cypressData: InitiativeDisplayRadioIds.all, label: `Show All (${allCount})`, value: "all" },
+            { cypressData: InitiativeDisplayRadioIds.active, label: `Active (${activeCount})`, value: "active", default: true },
+            { cypressData: InitiativeDisplayRadioIds.inactive, label: `Inactive (${inactiveCount})`, value: "inactive" }
             ]} />
             {currentUser?.isAdmin ?
               <Grid item xs={3} sx={{ display: 'flex',
@@ -68,8 +77,8 @@ export default function InitiativesPage(){
             }
           </Grid>
         </div>
-        {companyList.length > 0 && currentUser &&
-        <InitiativesTable addInitiative={addInitiative} currentUser={currentUser} companyList={companyList} radioStatus={radioValue}
+        {allCompanies.length > 0 && currentUser &&
+        <InitiativesTable addInitiative={addInitiative} currentUser={currentUser} companyList={allCompanies} radioStatus={radioValue}
           ValidateInitiative={ValidateNewInitiative} setAddInitiative={setAddInitiative}
           searchedComp={searchedComp} setSearchedComp={setSearchedComp}
           searchedInit={searchedInit} setSearchedInit={setSearchedInit}
