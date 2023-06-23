@@ -40,7 +40,8 @@ describe('update company spec', () => {
       cy.getByData(pageIds.saveClientChangesButton).click();
     });
 
-    cy.getByData(pageIds.keywordFilter).clear().type(company.name);
+    cy.get(snackbarId);
+    cy.getByData(pageIds.keywordFilter).find('input').clear().type(company.name);
     cy.getByData(pageIds.table).should('contain',company.name);
   })
 

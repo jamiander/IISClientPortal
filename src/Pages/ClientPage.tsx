@@ -11,9 +11,7 @@ import { v4 } from "uuid";
 import { ValidateCompany, ValidationFailedPrefix } from "../Services/Validation";
 import { RadioSet } from "../Components/RadioSet";
 import { CompanyFilter } from "../Services/Filters";
-import { DateInfo } from "../Services/CompanyService";
 import { selectCurrentUser } from "../Store/UserSlice";
-import { DateToDateInfo } from "../Services/DateHelpers";
 import { AddButton } from "../Components/AddButton";
 import { SearchBar } from "../Components/SearchBar";
 import { Paginator } from "../Components/Paginator";
@@ -56,8 +54,6 @@ export function ClientPage()
   const dispatch = useAppDispatch();
   const allCompanies = useAppSelector(selectAllCompanies);
   const currentUser = useAppSelector(selectCurrentUser);
-  const today = new Date();
-  const todayInfo = DateToDateInfo(today);
 
   const [state, setState] = useState<State>(State.start);
   const [searchedKeyword, setSearchedKeyword] = useState("");
@@ -65,9 +61,6 @@ export function ClientPage()
   const [companyToEdit, setCompanyToEdit] = useState<Company>();
 
   const [currentName, setCurrentName] = useState("");
-  const [currentInitiativeTitle, setCurrentInitiativeTitle] = useState("");
-  const [currentTargetDate, setCurrentTargetDate] = useState<DateInfo>();
-  const [currentTotalItems, setCurrentTotalItems] = useState<number>();
   const [radioValue,setRadioValue] = useState("active");
 
   const paginator = usePaginator();
@@ -94,7 +87,6 @@ export function ClientPage()
       {
         setCompanyToEdit(foundCompany);
         setCurrentName(foundCompany.name);
-        setCurrentInitiativeTitle("");
         setState(isNew ? State.add : State.edit);
       }
     }
@@ -104,11 +96,6 @@ export function ClientPage()
 
   function LeaveEditMode()
   {
-    if(state === State.add) 
-    {
-      setCurrentTargetDate(todayInfo);
-      setCurrentTotalItems(1);
-    }
     setState(State.start);
     setCompanyToEdit(undefined);
   }
@@ -211,7 +198,6 @@ export function ClientPage()
             <Table className="table-auto w-full outline outline-3 bg-gray-100">
             <colgroup>
                 <col style={{ width: '25vw' }} />
-                <col style={{ width: '25vw' }} />
                 <col style={{ width: '10vw' }} />
                 {!IsReadOnly() &&
                   <col style={{ width: '15vw' }} />
@@ -227,7 +213,6 @@ export function ClientPage()
                   }
                 }}>
                   <TableHeaderStyle>Name</TableHeaderStyle>
-                  <TableHeaderStyle>Initiatives Count</TableHeaderStyle>
                   <TableHeaderStyle>Actions</TableHeaderStyle>
                   {!IsReadOnly() &&
                     <TableHeaderStyle>Edit Client</TableHeaderStyle>
@@ -256,7 +241,6 @@ export function ClientPage()
                       {isEdit ? 
                       <>
                         <TableCell><Input sx={{fontSize: tableCellFontSize}} data-cy={ClientPageIds.editName} value={currentName} onChange={e => setCurrentName(e.target.value)}/></TableCell>
-                        <TableCell>{displayItem.initiatives.length}</TableCell>
                         <TableCell>
                           <ClientActionsMenu disabled={true} {...clientActionsMenuProps}/>
                         </TableCell>
@@ -272,7 +256,6 @@ export function ClientPage()
                       : 
                       <>
                         <TableCell data-cy={ClientPageIds.name}>{displayItem.name}</TableCell>
-                        <TableCell>{displayItem.initiatives.length}</TableCell>
                         <TableCell>
                           <ClientActionsMenu {...clientActionsMenuProps}/>
                         </TableCell>
