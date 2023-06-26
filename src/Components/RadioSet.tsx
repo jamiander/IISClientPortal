@@ -44,7 +44,11 @@ export function RadioSet(props: RadioSetProps)
             props.options.map((radio,index) => {
               return (
                 <FormControlLabel key={index} value={radio.value} control={<Radio data-cy={radio.cypressData}/>} label={radio.label} 
-                  onClick={() => HandleClick(radio.value)}
+                  onClick={() => {
+                    if(!props.disabled)
+                      HandleClick(radio.value);
+                  }}
+                  disabled={props.disabled}
                 />
               )
             })

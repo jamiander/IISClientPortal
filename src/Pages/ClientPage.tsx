@@ -184,7 +184,7 @@ export function ClientPage()
               <SearchBar cypressData={ClientPageIds.keywordFilter} disabled={InEditMode()} placeholder="Keyword in Name" value={searchedKeyword} setValue={setSearchedKeyword} />}
             </Grid>
             {isIntegrityUser &&
-              <ActiveRadioSet cypressData={ClientPageIds.radioIds} name="clientPage" setRadioValue={setRadioValue} listItems={allCompanies} filterFunc={CompanyFilter}/>
+              <ActiveRadioSet cypressData={ClientPageIds.radioIds} name="clientPage" setRadioValue={setRadioValue} listItems={allCompanies} filterFunc={CompanyFilter} disabled={InEditMode()}/>
             }
             {allCompanies.length !== 0 && !isReadOnly &&
             <Grid item xs={3}

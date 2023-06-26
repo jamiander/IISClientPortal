@@ -161,7 +161,7 @@ export default function UsersPage(){
             }}>
               <SearchBar cypressData={UsersPageIds.keywordFilter} disabled={InEditMode()} value={searchedKeyword} setValue={setSearchedKeyword} placeholder={"Keyword in Name or Email"}/>
             </Grid>
-            <ActiveRadioSet cypressData={UsersPageIds.radioIds} name="usersPage" setRadioValue={setRadioValue} listItems={allUsers} filterFunc={UserFilter}/>
+            <ActiveRadioSet cypressData={UsersPageIds.radioIds} name="usersPage" setRadioValue={setRadioValue} listItems={allUsers} filterFunc={UserFilter} disabled={InEditMode()}/>
             <Grid item xs={3} sx={{ display: 'flex',
               justifyContent: 'flex-end'
               }}> 
