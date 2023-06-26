@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 import { FindItemsRemaining } from "../../Services/CompanyService";
 import { InitiativeFilter } from "../../Services/Filters";
 import { Company, Initiative, IntegrityId } from "../../Store/CompanySlice";
@@ -24,7 +24,7 @@ import { User } from "../../Store/UserSlice";
 import { InitiativeActionsMenu } from "./InitiativeActionsMenu";
 import { DateToDateInfo, MakeDate } from "../../Services/DateHelpers";
 import { MakeClone } from "../../Services/Cloning";
-import { useSorter } from "../../Services/Sorter";
+import { useSorter } from "../../Services/useSorter";
 import { useEditInitiative } from "../../Services/useEditInitiative";
 import { usePaginator } from "../../Services/usePaginator";
 import { Paginator } from "../Paginator";
@@ -93,9 +93,8 @@ export default function InitiativesTable(props: InitiativesProps) {
   const [isSavingEdit, setIsSavingEdit] = useState(false);
 
   const {
-    SetupSortItems,
+    UpdateSortConfig,
     SortItems,
-    sortedDisplayItems,
     sortConfig
   } = useSorter();
 
@@ -120,20 +119,47 @@ export default function InitiativesTable(props: InitiativesProps) {
     displayItems
   } = useEditInitiative(props.setAddInitiative, props.state, props.setState);
 
-  useEffect(() => 
-  {
-    const paginatedItems = paginator.PaginateItems(sortedDisplayItems);
-    SetupEditInitiative(paginatedItems);
-  }, [sortedDisplayItems,paginator.page,paginator.rowsPerPage])
+  const filteredInitiatives = useMemo(() => {
+    const initiativeList: InitCompanyDisplay[] = [];
+    const filteredCompanies = props.companyList.filter(e => e.name.toLowerCase().includes(props.searchedComp.toLowerCase()))
+      .sort((a, b) => a.name.localeCompare(b.name));
+    for(let company of filteredCompanies)
+    {
+      let initiatives = InitiativeFilter(company.initiatives.filter(e => e.title.toLowerCase().includes(props.searchedInit.toLowerCase()))
+        .sort((a, b) => a.title.localeCompare(b.title)),props.radioStatus);
+      initiatives.map((init) => {
+        let itemsRemaining = FindItemsRemaining(init);
+        let probability = GenerateProbability(init, itemsRemaining);
+        initiativeList.push({
+          ...init, company: company, itemsRemaining: itemsRemaining, probabilityValue: probability.value, probabilityStatus: probability.status,
+          companyName: company.name,
+          startDateTime: MakeDate(init.startDate),
+          targetDateTime: MakeDate(init.targetDate)
+        });
+      });
+    }
 
-  useEffect(() => {
-    UpdateDisplayItems();
-  },[props.companyList,props.searchedInit,props.searchedComp,props.radioStatus]);
+    setInitiativesLoaded(true);
+    return initiativeList;
+    
+  },[props.companyList, props.searchedComp, props.searchedInit, props.radioStatus]);
+
+
+  const sortedInitiatives = useMemo(() => {
+    return SortItems(filteredInitiatives);
+  }, [filteredInitiatives, sortConfig]);
+
+
+  useEffect(() =>
+  {
+    const paginatedItems = paginator.PaginateItems(sortedInitiatives);
+    SetupEditInitiative(paginatedItems);
+  },[sortedInitiatives,paginator.page,paginator.rowsPerPage]);
 
   useEffect(() => {
     if(!InEditMode() && props.addInitiative === true)
     {
-      const displayClone = MakeClone(sortedDisplayItems);
+      let displayClone = MakeClone(sortedInitiatives);
       const myUuid = v4();
       const todayInfo = DateToDateInfo(new Date());
       const date = new Date();
@@ -156,51 +182,31 @@ export default function InitiativesTable(props: InitiativesProps) {
           startDateTime: date,
           targetDateTime: date
         };
-        displayClone.unshift(newInitiative);
-        SetupSortItems(displayClone);
-        props.setSearchedComp("");
-        props.setSearchedInit("");
-        ResetPageNumber();
-        if(props.currentUser !== undefined)
-          EnterEditMode(myUuid,matchingCompany.id,displayClone,true);
+        const topRow = (paginator.page-1) * paginator.rowsPerPage;
+        displayClone = ArrayInsert(displayClone,topRow,newInitiative);
+        //SortItems(displayClone);
+        //props.setSearchedComp("");
+        //props.setSearchedInit("");
+        //ResetPageNumber();
+        SetupEditInitiative(paginator.PaginateItems(displayClone))
+        EnterEditMode(myUuid,matchingCompany.id,displayClone,true);
       }
     }
   },[props.addInitiative]);
   
-  const requestSort = (key: string) => {
-    let direction: 'desc' | 'asc' = 'desc';
-    if (sortConfig.key === key && sortConfig.direction === 'desc') {
-      direction = 'asc';
-    }
-    if (sortConfig.key != key) sortConfig.key = key;
-    sortConfig.direction = direction;
-    SortItems(sortConfig, sortedDisplayItems);
-    ResetPageNumber();
+
+  function ArrayInsert<T>(arr: T[], index: number, ...newItems: T[])
+  {
+    return [
+      ...arr.slice(0, index),
+      ...newItems,
+      ...arr.slice(index)
+    ];
   }
 
-  function UpdateDisplayItems()
-  {
-    const displayList: InitCompanyDisplay[] = [];
-    const filteredCompanies = props.companyList.filter(e => e.name.toLowerCase().includes(props.searchedComp.toLowerCase()))
-      .sort((a, b) => a.name.localeCompare(b.name));
-    for(let company of filteredCompanies)
-    {
-      let initiatives = InitiativeFilter(company.initiatives.filter(e => e.title.toLowerCase().includes(props.searchedInit.toLowerCase()))
-        .sort((a, b) => a.title.localeCompare(b.title)),props.radioStatus);
-      initiatives.map((init) => {
-        let itemsRemaining = FindItemsRemaining(init);
-        let probability = GenerateProbability(init, itemsRemaining);
-        displayList.push({
-          ...init, company: company, itemsRemaining: itemsRemaining, probabilityValue: probability.value, probabilityStatus: probability.status,
-          companyName: company.name,
-          startDateTime: MakeDate(init.startDate),
-          targetDateTime: MakeDate(init.targetDate)
-        });
-      });
-    }
-    SetupSortItems(displayList);
-    setInitiativesLoaded(true);
-    LeaveEditMode();
+  const requestSort = (key: string) => {
+    UpdateSortConfig(key);
+    ResetPageNumber();
   }
 
   function getHealthIndicator(probability: number | undefined)
