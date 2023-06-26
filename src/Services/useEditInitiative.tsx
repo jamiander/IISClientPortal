@@ -17,7 +17,7 @@ type EditInitiative = {
   EnterEditMode: (initId: string, companyId: string, displayList: InitCompanyDisplay[], newInit: boolean) => void
   InEditMode: () => boolean
   LeaveEditMode: () => void
-  SaveEdit: (companyList: Company[]) => void
+  SaveEdit: (companyList: Company[]) => Promise<void>
   CancelEdit: () => void
   initToEditId: string
   currentTitle: string
@@ -83,7 +83,7 @@ export function useEditInitiative(setAddInitiative: (value: boolean) => void) : 
     setCompanyToEditId("");
   }
 
-  function SaveEdit(companyList: Company[])
+  async function SaveEdit(companyList: Company[])
   {
     let isTest = false;
     if((window as any).Cypress)
@@ -117,7 +117,7 @@ export function useEditInitiative(setAddInitiative: (value: boolean) => void) : 
           if(state === stateEnum.add)
             saveMessage = "New initiative added!";
             
-          dispatch(upsertInitiativeInfo({isTest: isTest, initiative: newInitiative, companyId: companyToEditId}));
+          await dispatch(upsertInitiativeInfo({isTest: isTest, initiative: newInitiative, companyId: companyToEditId}));
           setAddInitiative(false);
           LeaveEditMode();
           enqueueSnackbar(saveMessage, {variant: "success"});

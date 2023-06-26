@@ -1,15 +1,13 @@
 import { useMemo, useState } from "react";
 import InitiativesTable from "../Components/Initiative/InitiativesTable";
-import { RadioSet } from "../Components/RadioSet";
 import ValidateNewInitiative, {  } from "../Services/Validation";
-import { useAppSelector, useAppDispatch } from "../Store/Hooks";
+import { useAppSelector } from "../Store/Hooks";
 import { Company, IntegrityId, selectAllCompanies } from "../Store/CompanySlice";
 import { Grid } from "@mui/material";
 import { selectCurrentUser } from "../Store/UserSlice";
 import { AddButton } from "../Components/AddButton";
 import { SearchBar } from "../Components/SearchBar";
 import { InitiativeFilter } from "../Services/Filters";
-import { useActiveCounter } from "../Services/useActiveCounter";
 import { ActiveRadioSet } from "../Components/ActiveRadioSet";
 
 export const InitiativeDisplayRadioIds = {
@@ -26,9 +24,10 @@ export const InitiativesPageIds = {
   initiativeTitleFilter: "initiativesPageInitiativeTitleFilter"
 }
 
-export default function InitiativesPage(){
-  
-  const allCompanies : Company[] = useAppSelector(selectAllCompanies);
+export default function InitiativesPage()
+{
+  const companiesFromStore = useAppSelector(selectAllCompanies);
+  const [allCompanies, setAllCompanies] = useState<Company[]>(companiesFromStore);
   const currentUser = useAppSelector(selectCurrentUser);
 
   const [searchedComp, setSearchedComp] = useState("");
@@ -37,6 +36,14 @@ export default function InitiativesPage(){
   const [radioValue, setRadioValue] = useState('active');
 
   const allInitiatives = useMemo(() => allCompanies.flatMap(c => c.initiatives),[allCompanies]);
+
+  //This exists because we need to be able to prevent the initiatives from updating automatically when editing throughput.
+  //Without this, changes to the throughput can alter the initiative's position in the table, which causes the modal to
+  //no longer refer to the correct initiative.
+  function RefreshTable()
+  {
+    setAllCompanies(companiesFromStore);
+  }
 
   return (
     <>
@@ -71,9 +78,10 @@ export default function InitiativesPage(){
         </div>
         {allCompanies.length > 0 && currentUser &&
         <InitiativesTable addInitiative={addInitiative} currentUser={currentUser} companyList={allCompanies} radioStatus={radioValue}
-          ValidateInitiative={ValidateNewInitiative} setAddInitiative={setAddInitiative}
+          setAddInitiative={setAddInitiative}
           searchedComp={searchedComp} setSearchedComp={setSearchedComp}
           searchedInit={searchedInit} setSearchedInit={setSearchedInit}
+          RefreshTable={RefreshTable}
         />}
       </div>
      </>

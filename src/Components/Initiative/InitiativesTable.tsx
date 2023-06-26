@@ -15,7 +15,7 @@ import Paper from '@mui/material/Paper';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import ImportExportIcon from '@mui/icons-material/ImportExport';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import { FormControl, IconButton, Input, InputLabel, MenuItem, Select } from "@mui/material";
+import { CircularProgress, FormControl, IconButton, Input, InputLabel, MenuItem, Select } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
@@ -60,13 +60,13 @@ interface InitiativesProps {
   companyList: Company[]
   currentUser: User
   radioStatus: string
-  ValidateInitiative: (initiative: Initiative, companyId: string, allCompanies: Company[]) => {success: boolean, message: string}
   addInitiative: boolean
   setAddInitiative: (value: boolean) => void
   searchedComp: string
   setSearchedComp: (value: string) => void
   searchedInit: string
   setSearchedInit: (value: string) => void
+  RefreshTable: () => void
 }
 
 export interface InitCompanyDisplay extends Initiative {
@@ -87,6 +87,7 @@ export interface SortConfig {
 export default function InitiativesTable(props: InitiativesProps) {
   const paginator = usePaginator();
   const [initiativesLoaded, setInitiativesLoaded] = useState(false);
+  const [isSavingEdit, setIsSavingEdit] = useState(false);
 
   const {
     SetupSortItems,
@@ -239,10 +240,18 @@ export default function InitiativesTable(props: InitiativesProps) {
         {props.heading}
       </TableSortLabel>
     )
-  } 
+  }
 
-  let companyInits: Initiative[] = displayItems;
-  let totalInits: number = companyInits.length;
+  async function HandleSaveEdit(companyList: Company[])
+  {
+    setIsSavingEdit(true);
+    await SaveEdit(companyList);
+    props.RefreshTable();
+    setIsSavingEdit(false);
+  }
+
+  const companyInits: Initiative[] = displayItems;
+  const totalInits: number = companyInits.length;
 
   const userCompanyId = props.currentUser?.companyId;
   const isAdmin = props.currentUser?.isAdmin;
@@ -312,7 +321,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                     probability.value === 0 ? "Data may be insufficient or may indicate a very low probability of success" :
                       probability.value + "%";
                   
-                  let isEdit = InEditMode() && initToEditId === displayItem.id;
+                  const isEdit = InEditMode() && initToEditId === displayItem.id;
                   return (
                     <Fragment key={index}>
                       <TableRow key={index} className={healthIndicator} sx={{
@@ -323,7 +332,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                           color: "#21345b"
                         }
                       }}>
-                        { isEdit ?
+                        {isEdit ?
                           <>
                             {isIntegrityUser &&
                               <TableCell data-cy={InitiativeTableIds.companyName}>
@@ -366,12 +375,21 @@ export default function InitiativesTable(props: InitiativesProps) {
                               <InitiativeActionsMenu cypressData={InitiativeTableIds.actionMenu} disabled={true} allCompanies={props.companyList} company={displayItem.company} initiative={displayItem} currentUser={props.currentUser}/>
                             </TableCell>
                             <TableCell className="w-1/12">
-                              <IconButton data-cy={InitiativeTableIds.saveChangesButton} onClick={() => SaveEdit(props.companyList)}>
-                                <DoneIcon sx={{fontSize: tableButtonFontSize}}/>
-                              </IconButton>
-                              <IconButton data-cy={InitiativeTableIds.cancelChangesButton} onClick={() => CancelEdit()}>
-                                <CancelIcon sx={{fontSize: tableButtonFontSize}}/>
-                              </IconButton>
+                              {!isSavingEdit &&
+                              <>
+                                <IconButton data-cy={InitiativeTableIds.saveChangesButton} onClick={() => HandleSaveEdit(props.companyList)}>
+                                  <DoneIcon sx={{fontSize: tableButtonFontSize}}/>
+                                </IconButton>
+                                <IconButton data-cy={InitiativeTableIds.cancelChangesButton} onClick={() => CancelEdit()}>
+                                  <CancelIcon sx={{fontSize: tableButtonFontSize}}/>
+                                </IconButton>
+                              </>
+                              }
+                              {isSavingEdit &&
+                                <>
+                                  <CircularProgress />
+                                </>
+                              }
                             </TableCell>
                           </>
                           :

@@ -157,7 +157,7 @@ export default function UsersPage(){
             borderRadius: 1
           }}>
             <Grid item xs={3} sx={{ display: 'flex',
-            justifyContent: 'flex-start',
+              justifyContent: 'flex-start',
             }}>
               <SearchBar cypressData={UsersPageIds.keywordFilter} disabled={InEditMode()} value={searchedKeyword} setValue={setSearchedKeyword} placeholder={"Keyword in Name or Email"}/>
             </Grid>
