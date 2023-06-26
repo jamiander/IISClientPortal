@@ -78,7 +78,13 @@ export default function InitiativesPage()
               <Grid item xs={3} sx={{ display: 'flex',
                 justifyContent: 'flex-end'
                 }}>   
-                <AddButton cypressData={InitiativesPageIds.addInitiativeButton} HandleClick={() => setAddInitiative(true)} disabled={isEditing}/>     
+                <AddButton cypressData={InitiativesPageIds.addInitiativeButton} 
+                  HandleClick={() => {
+                    setAddInitiative(true);
+                    setSearchedComp("");
+                    setSearchedInit("");
+                  }} 
+                disabled={isEditing}/>     
               </Grid>
               :
               <Grid item xs={3}></Grid>
