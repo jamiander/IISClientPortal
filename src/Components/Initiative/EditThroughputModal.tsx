@@ -52,7 +52,7 @@ interface ThroughputModalProps{
 }
 
 export default function EditThroughputModal(this: any, props: ThroughputModalProps){
-  const invalidDate: DateInfo = {day: NaN, month: NaN, year: NaN};
+  const invalidDate: DateInfo = {day: -1, month: -1, year: -1};
   const [currentItems, setCurrentItems] = useState<number>();
   const [currentDate, setCurrentDate] = useState<DateInfo>();
   const [state, setState] = useState(stateEnum.start);
@@ -97,49 +97,52 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
     }
 
     const validation = ValidateCompanyAndInitiative(props.allCompanies, props.company.id, props.initiative.id);
-    if(validation.success)
+    if(!validation.success)
     {
-      const dateValidation = ValidateDate(currentDate);
-      if(dateValidation.success && currentDate)
-      {
-        const throughputClone = MakeClone(props.initiative.itemsCompletedOnDate);
-        if(throughputClone)
-        {
-          let matchingThroughputIndex = throughputClone.findIndex(t => EqualDateInfos(t.date,currentDate));
-          if(matchingThroughputIndex <= -1)
-          {
-            let newItem: ThroughputData = {date: currentDate, itemsCompleted: 1};
-            
-            throughputClone.unshift(newItem);
-            throughputClone.sort((a:ThroughputData, b:ThroughputData) => CompareDateInfos(b.date,a.date));
-            const newIndex = throughputClone.findIndex(t => EqualDateInfos(t.date,currentDate));
-            CorrectPageOnAdd(newIndex);
+      enqueueSnackbar(ValidationFailedPrefix + validation.message, {variant: "error"});
+      return;
+    }
+    
+    const dateValidation = ValidateDate(currentDate);
+    if(!dateValidation.success || !currentDate)
+    {
+      enqueueSnackbar(ValidationFailedPrefix + dateValidation.message, {variant: "error"});
+      return;
+    }
 
-            setThroughputList(throughputClone);
-            EnterEditMode(newItem.date, throughputClone, true);
-          }
-          else
-          {
-            throughputClone.sort((a:ThroughputData, b:ThroughputData) => CompareDateInfos(b.date,a.date));
-            const newIndex = throughputClone.findIndex(t => EqualDateInfos(t.date,currentDate));
-            CorrectPageOnAdd(newIndex);
+    const throughputClone = MakeClone(throughputList);
+    if(!throughputClone)
+    {
+      enqueueSnackbar(ValidationFailedPrefix + "A valid initiative must be selected.", {variant: "error"});
+      return;
+    }
 
-            setThroughputList(throughputClone);
-            EnterEditMode(currentDate, throughputClone, false);
-          }
+    let matchingThroughputIndex = throughputClone.findIndex(t => EqualDateInfos(t.date,currentDate));
+    if(matchingThroughputIndex <= -1)
+    {
+      let newItem: ThroughputData = {date: currentDate, itemsCompleted: 1};
+      
+      throughputClone.unshift(newItem);
+      throughputClone.sort((a:ThroughputData, b:ThroughputData) => CompareDateInfos(b.date,a.date));
+      const newIndex = throughputClone.findIndex(t => EqualDateInfos(t.date,currentDate));
+      CorrectPageOnAdd(newIndex);
 
-          setTimeout(() => {
-            throughputRef.current?.scrollIntoView()
-          },1);
-        }
-        else
-          enqueueSnackbar(ValidationFailedPrefix + "A valid initiative must be selected.", {variant: "error"});
-      }
-      else
-        enqueueSnackbar(ValidationFailedPrefix + dateValidation.message, {variant: "error"});
+      setThroughputList(throughputClone);
+      EnterEditMode(newItem.date, throughputClone, true);
     }
     else
-      enqueueSnackbar(ValidationFailedPrefix + validation.message, {variant: "error"});
+    {
+      throughputClone.sort((a:ThroughputData, b:ThroughputData) => CompareDateInfos(b.date,a.date));
+      const newIndex = throughputClone.findIndex(t => EqualDateInfos(t.date,currentDate));
+      CorrectPageOnAdd(newIndex);
+
+      setThroughputList(throughputClone);
+      EnterEditMode(currentDate, throughputClone, false);
+    }
+
+    setTimeout(() => {
+      throughputRef.current?.scrollIntoView()
+    },1);
   }
 
   const InEditMode = () => state === stateEnum.edit || state === stateEnum.add;
