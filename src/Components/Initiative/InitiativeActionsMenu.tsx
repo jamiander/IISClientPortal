@@ -1,19 +1,13 @@
-import { Button, IconButton, Menu, MenuItem, ThemeProvider, Typography } from "@mui/material";
+import { IconButton, Menu, ThemeProvider } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import { useState } from "react";
 import { Company, Initiative, upsertThroughputData } from "../../Store/CompanySlice";
-import DecisionDataModal from "./DecisionDataModal";
-import { DocumentManagementModal } from "../Documents/DocumentManagementModal";
-import UploadThroughputModal from "./UploadThroughputModal";
-import EditThroughputModal from "./EditThroughputModal";
 import { ValidateEditThroughputData, ValidateFileThroughputData, ValidationFailedPrefix } from "../../Services/Validation";
 import { ThroughputData } from "../../Services/CompanyService";
 import { useAppDispatch } from "../../Store/Hooks";
 import { enqueueSnackbar } from "notistack";
 import { IntegrityTheme } from "../../Styles";
-import ArticleDataModal from "../Articles/ArticleDataModal";
 import { User } from "../../Store/UserSlice";
-import { ActionsMenuItem } from "../ActionsMenuItem";
 import { DocumentMenuItem } from "../Documents/DocumentMenuItem";
 import { ArticleMenuItem } from "../Articles/ArticleMenuItem";
 import { DecisionMenuItem } from "./DecisionMenuItem";
@@ -35,6 +29,7 @@ interface InitiativeActionsMenuProps {
   disabled?: boolean
   size?: string
   currentUser: User
+  SetIsTableLocked: (value: boolean) => void
 }
 
 export function InitiativeActionsMenu(props: InitiativeActionsMenuProps)
@@ -69,6 +64,12 @@ export function InitiativeActionsMenu(props: InitiativeActionsMenuProps)
     return false;
   }
 
+  const commonMenuProps = {
+    company: props.company,
+    initiative: props.initiative,
+    currentUser: props.currentUser
+  };
+
   return (
     <ThemeProvider theme={IntegrityTheme}>
       <IconButton
@@ -91,13 +92,13 @@ export function InitiativeActionsMenu(props: InitiativeActionsMenuProps)
           'aria-labelledby': 'basic-button',
         }}
       >
-        <DecisionMenuItem cypressData={props.cypressData.decisionButton} company={props.company} initiative={props.initiative} currentUser={props.currentUser}/>
-        <ArticleMenuItem cypressData={props.cypressData.articleButton} company={props.company} initiative={props.initiative} currentUser={props.currentUser}/>
-        <DocumentMenuItem cypressData={props.cypressData.documentButton} company={props.company} initiative={props.initiative} isAdmin={props.currentUser.isAdmin} />
+        <DecisionMenuItem {...commonMenuProps} cypressData={props.cypressData.decisionButton}/>
+        <ArticleMenuItem {...commonMenuProps} cypressData={props.cypressData.articleButton}/>
+        <DocumentMenuItem {...commonMenuProps} cypressData={props.cypressData.documentButton}/>
         {props.currentUser.isAdmin &&
-          <UploadThroughputMenuItem cypressData={props.cypressData.uploadThroughputButton} company={props.company} initiative={props.initiative} SubmitUpdateThroughput={SubmitUpdateThroughput}/>
+          <UploadThroughputMenuItem {...commonMenuProps} cypressData={props.cypressData.uploadThroughputButton} SubmitUpdateThroughput={SubmitUpdateThroughput}/>
         }
-        <EditThroughputMenuItem cypressData={props.cypressData.editThroughputButton} allCompanies={props.allCompanies} company={props.company} initiative={props.initiative} currentUser={props.currentUser} SubmitUpdateThroughput={SubmitUpdateThroughput}/>
+        <EditThroughputMenuItem {...commonMenuProps} cypressData={props.cypressData.editThroughputButton} allCompanies={props.allCompanies} SubmitUpdateThroughput={SubmitUpdateThroughput} SetIsTableLocked={props.SetIsTableLocked}/>
       </Menu>
     </ThemeProvider>
   )

@@ -12,6 +12,7 @@ interface EditThroughputMenuItemProps {
   initiative: Initiative
   currentUser: User
   SubmitUpdateThroughput: (companyId: string, initiativeId: string, dataList: ThroughputData[], emptyDataCheck: boolean) => Promise<boolean>
+  SetIsTableLocked: (value: boolean) => void
 }
 
 export function EditThroughputMenuItem(props: EditThroughputMenuItemProps)
@@ -21,7 +22,7 @@ export function EditThroughputMenuItem(props: EditThroughputMenuItemProps)
   return (
     <>
       <ActionsMenuItem cypressData={props.cypressData} text="View Throughput" handleClick={() => setIsOpen(true)}/>
-      <EditThroughputModal allCompanies={props.allCompanies} company={props.company} initiative={props.initiative} editIsOpen={isOpen} setEditIsOpen={setIsOpen} Submit={props.SubmitUpdateThroughput} isAdmin={props.currentUser.isAdmin}/>
+      <EditThroughputModal {...props} editIsOpen={isOpen} setEditIsOpen={setIsOpen} isAdmin={props.currentUser.isAdmin}/>
     </>
   )
 }

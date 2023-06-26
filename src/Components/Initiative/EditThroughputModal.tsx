@@ -48,7 +48,8 @@ interface ThroughputModalProps{
   isAdmin: boolean
   editIsOpen: boolean
   setEditIsOpen: (value: boolean) => void
-  Submit: (companyId: string, initiativeId: string, dataList: ThroughputData[], emptyDataCheck: boolean) => Promise<boolean>
+  SubmitUpdateThroughput: (companyId: string, initiativeId: string, dataList: ThroughputData[], emptyDataCheck: boolean) => Promise<boolean>
+  SetIsTableLocked: (value: boolean) => void
 }
 
 export default function EditThroughputModal(this: any, props: ThroughputModalProps){
@@ -80,6 +81,8 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
     setCurrentDate(undefined);
     setCurrentItems(0);
     setState(stateEnum.start);
+    if(props.editIsOpen)
+      props.SetIsTableLocked(true);
   },[props.editIsOpen]);
 
   useEffect(() => {
@@ -184,7 +187,7 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
       {
         newItem.itemsCompleted = currentItems ?? -1;
         setIsLoading(true);
-        const successful = await props.Submit(props.company.id, props.initiative.id, selectedThroughputClone, false);
+        const successful = await props.SubmitUpdateThroughput(props.company.id, props.initiative.id, selectedThroughputClone, false);
         if(successful)
         {
           selectedThroughputClone.sort((a:ThroughputData, b:ThroughputData) => CompareDateInfos(b.date,a.date));
@@ -206,7 +209,7 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
     <BaseInitiativeModal
       data-cy={EditThroughputIds.modal}
       open={props.editIsOpen}
-      onClose={() => props.setEditIsOpen(false)}
+      onClose={() => {props.SetIsTableLocked(false); props.setEditIsOpen(false)}}
       cypressData={{modal: EditThroughputIds.modal, closeModalButton: EditThroughputIds.closeModalButton}}
       title="View Throughput"
       subtitle={`${props.company.name}${props.initiative ? ` - ${props.initiative.title}` : ``}`}

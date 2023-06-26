@@ -164,6 +164,7 @@ export function ClientPage()
 
   return (
     <>
+    {currentUser &&
       <div className="mx-[2%] mb-2">
         <div className="flex flex-row justify-content:space-between">
           <Grid container sx={{ display: 'flex',
@@ -280,6 +281,7 @@ export function ClientPage()
           <Paginator paginator={paginator}/>}
         </div>
       </div>
+    }
     </>
   )
 }

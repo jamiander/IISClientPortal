@@ -15,7 +15,7 @@ interface ClientActionsMenuProps {
     articleButton: string
   }
   company: Company
-  currentUser: User | undefined
+  currentUser: User
   disabled?: boolean
   size?: string
 }
@@ -30,6 +30,11 @@ export function ClientActionsMenu(props: ClientActionsMenuProps)
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const commonMenuProps = {
+    company: props.company,
+    currentUser: props.currentUser
+  }
 
   return (
     <>
@@ -55,9 +60,9 @@ export function ClientActionsMenu(props: ClientActionsMenuProps)
             'aria-labelledby': 'basic-button',
           }}
         >
-          <ArticleMenuItem cypressData={props.cypressData.articleButton} company={props.company} currentUser={props.currentUser}/>
+          <ArticleMenuItem {...commonMenuProps} cypressData={props.cypressData.articleButton}/>
           {props.currentUser.companyId === IntegrityId &&
-            <DocumentMenuItem cypressData={props.cypressData.documentButton} company={props.company} isAdmin={props.currentUser.isAdmin}/>
+            <DocumentMenuItem {...commonMenuProps} cypressData={props.cypressData.documentButton}/>
           }
         </Menu>
       </ThemeProvider>

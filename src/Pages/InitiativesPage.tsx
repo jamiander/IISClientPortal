@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import InitiativesTable from "../Components/Initiative/InitiativesTable";
 import ValidateNewInitiative, {  } from "../Services/Validation";
 import { useAppSelector } from "../Store/Hooks";
@@ -40,10 +40,12 @@ export default function InitiativesPage()
   //This exists because we need to be able to prevent the initiatives from updating automatically when editing throughput.
   //Without this, changes to the throughput can alter the initiative's position in the table, which causes the modal to
   //no longer refer to the correct initiative.
-  function RefreshTable()
-  {
-    setAllCompanies(companiesFromStore);
-  }
+  const [isTableLocked, setIsTableLocked] = useState(false);
+  
+  useEffect(() => {
+    if(!isTableLocked)
+      setAllCompanies(companiesFromStore);
+  },[companiesFromStore, isTableLocked])
 
   return (
     <>
@@ -81,7 +83,7 @@ export default function InitiativesPage()
           setAddInitiative={setAddInitiative}
           searchedComp={searchedComp} setSearchedComp={setSearchedComp}
           searchedInit={searchedInit} setSearchedInit={setSearchedInit}
-          RefreshTable={RefreshTable}
+          SetIsTableLocked={setIsTableLocked}
         />}
       </div>
      </>

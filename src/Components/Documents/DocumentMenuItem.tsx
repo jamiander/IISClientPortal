@@ -2,12 +2,13 @@ import { useState } from 'react';
 import { DocumentManagementModal } from './DocumentManagementModal';
 import { Company, Initiative } from '../../Store/CompanySlice';
 import { ActionsMenuItem } from '../ActionsMenuItem';
+import { User } from '../../Store/UserSlice';
 
 interface DocumentManagementButtonProps {
   cypressData: string
   company: Company
   initiative?: Initiative
-  isAdmin: boolean
+  currentUser: User
 }
 
 export function DocumentMenuItem(props: DocumentManagementButtonProps)
@@ -17,7 +18,7 @@ export function DocumentMenuItem(props: DocumentManagementButtonProps)
   return (
     <>
       <ActionsMenuItem cypressData={props.cypressData} text="Documents" handleClick={() => setIsOpen(true)}/>
-      <DocumentManagementModal company={props.company} initiative={props.initiative} isAdmin={props.isAdmin} isOpen={isOpen} setIsOpen={setIsOpen}/>
+      <DocumentManagementModal company={props.company} initiative={props.initiative} isAdmin={props.currentUser.isAdmin} isOpen={isOpen} setIsOpen={setIsOpen}/>
     </>
   )
 }

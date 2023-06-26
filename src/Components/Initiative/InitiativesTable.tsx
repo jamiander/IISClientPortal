@@ -66,7 +66,7 @@ interface InitiativesProps {
   setSearchedComp: (value: string) => void
   searchedInit: string
   setSearchedInit: (value: string) => void
-  RefreshTable: () => void
+  SetIsTableLocked: (value: boolean) => void
 }
 
 export interface InitCompanyDisplay extends Initiative {
@@ -246,7 +246,6 @@ export default function InitiativesTable(props: InitiativesProps) {
   {
     setIsSavingEdit(true);
     await SaveEdit(companyList);
-    props.RefreshTable();
     setIsSavingEdit(false);
   }
 
@@ -315,13 +314,22 @@ export default function InitiativesTable(props: InitiativesProps) {
               </TableHead>
               <TableBody data-cy={InitiativeTableIds.table}>
                 {displayItems.map((displayItem, index) => {
-                  let probability = { value: displayItem.probabilityValue, status: displayItem.probabilityStatus };
-                  let healthIndicator = getHealthIndicator(probability.value);
-                  let tooltipMessage = probability.value === undefined ? probability.status :
+                  const probability = { value: displayItem.probabilityValue, status: displayItem.probabilityStatus };
+                  const healthIndicator = getHealthIndicator(probability.value);
+                  const tooltipMessage = probability.value === undefined ? probability.status :
                     probability.value === 0 ? "Data may be insufficient or may indicate a very low probability of success" :
                       probability.value + "%";
                   
                   const isEdit = InEditMode() && initToEditId === displayItem.id;
+                  const initiativeMenuProps = {
+                    cypressData: InitiativeTableIds.actionMenu,
+                    allCompanies: props.companyList,
+                    company: displayItem.company,
+                    initiative: displayItem,
+                    currentUser: props.currentUser,
+                    size: tableButtonFontSize,
+                    SetIsTableLocked: props.SetIsTableLocked
+                  };
                   return (
                     <Fragment key={index}>
                       <TableRow key={index} className={healthIndicator} sx={{
@@ -372,7 +380,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                             <TableCell sx={{fontSize: tableCellFontSize}} data-cy={InitiativeTableIds.remainingItems}>{displayItem.itemsRemaining}</TableCell>
                             <TableCell></TableCell>
                             <TableCell className="w-1/12">
-                              <InitiativeActionsMenu cypressData={InitiativeTableIds.actionMenu} disabled={true} allCompanies={props.companyList} company={displayItem.company} initiative={displayItem} currentUser={props.currentUser}/>
+                              <InitiativeActionsMenu {...initiativeMenuProps} disabled={true}/>
                             </TableCell>
                             <TableCell className="w-1/12">
                               {!isSavingEdit &&
@@ -406,7 +414,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                               <i className="material-icons" style={{ fontSize: '15px', marginLeft: '15px', marginTop: '10px' }}>info_outline</i>
                             </TableCell>
                             <TableCell className="w-1/12">
-                              <InitiativeActionsMenu cypressData={InitiativeTableIds.actionMenu} allCompanies={props.companyList} company={displayItem.company} initiative={displayItem} currentUser={props.currentUser} size={tableButtonFontSize}/>
+                              <InitiativeActionsMenu {...initiativeMenuProps}/>
                             </TableCell>
                             {isAdmin &&
                               <TableCell className="w-1/12">
