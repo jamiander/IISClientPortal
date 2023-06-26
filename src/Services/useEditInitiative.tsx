@@ -5,12 +5,7 @@ import ValidateNewInitiative, { ValidationFailedPrefix } from "./Validation";
 import { enqueueSnackbar } from "notistack";
 import { InitCompanyDisplay } from "../Components/Initiative/InitiativesTable";
 import { DateInfo } from "./CompanyService";
-
-enum stateEnum {
-  start,
-  edit,
-  add
-}
+import { initPageStateEnum } from "../Pages/InitiativesPage";
 
 type EditInitiative = {
   SetupEditInitiative: (initiatives: InitCompanyDisplay[]) => void
@@ -33,10 +28,9 @@ type EditInitiative = {
   displayItems: InitCompanyDisplay[]
 }
 
-export function useEditInitiative(setAddInitiative: (value: boolean) => void) : EditInitiative
+export function useEditInitiative(setAddInitiative: (value: boolean) => void, state: initPageStateEnum, setState: (newState: initPageStateEnum) => void) : EditInitiative
 {
   const dispatch = useAppDispatch();
-  const [state, setState] = useState(stateEnum.start);
   const [initToEditId, setInitToEditId] = useState("");
   const [currentTitle, setCurrentTitle] = useState("");
   const [currentStartDate, setCurrentStartDate] = useState<DateInfo>();
@@ -53,7 +47,7 @@ export function useEditInitiative(setAddInitiative: (value: boolean) => void) : 
   
   function InEditMode()
   {
-    return state === stateEnum.edit || state === stateEnum.add;
+    return state === initPageStateEnum.edit || state === initPageStateEnum.add;
   }
 
   function EnterEditMode(initId: string, companyId: string, displayList: InitCompanyDisplay[], newInit: boolean)
@@ -63,7 +57,7 @@ export function useEditInitiative(setAddInitiative: (value: boolean) => void) : 
       const currentItem = displayList.find(i => i.id === initId);
       if(currentItem)
       {
-        setState(newInit ? stateEnum.add : stateEnum.edit);
+        setState(newInit ? initPageStateEnum.add : initPageStateEnum.edit);
         setInitToEditId(initId);
         setCompanyToEditId(companyId);  //might not need this
         setCurrentTitle(currentItem.title);
@@ -78,7 +72,7 @@ export function useEditInitiative(setAddInitiative: (value: boolean) => void) : 
 
   function LeaveEditMode()
   {
-    setState(stateEnum.start);
+    setState(initPageStateEnum.start);
     setInitToEditId("");
     setCompanyToEditId("");
   }
@@ -114,7 +108,7 @@ export function useEditInitiative(setAddInitiative: (value: boolean) => void) : 
         if(validation.success)
         {
           let saveMessage = "Changes have been saved.";
-          if(state === stateEnum.add)
+          if(state === initPageStateEnum.add)
             saveMessage = "New initiative added!";
             
           await dispatch(upsertInitiativeInfo({isTest: isTest, initiative: newInitiative, companyId: companyToEditId}));
@@ -130,7 +124,7 @@ export function useEditInitiative(setAddInitiative: (value: boolean) => void) : 
 
   function CancelEdit()
   {
-    if(state === stateEnum.add && initToEditId !== "")
+    if(state === initPageStateEnum.add && initToEditId !== "")
     {
       const displayClone: InitCompanyDisplay[] = displayItems.filter(i => i.id !== initToEditId);
       setDisplayItems(displayClone);

@@ -28,6 +28,7 @@ import { useSorter } from "../../Services/Sorter";
 import { useEditInitiative } from "../../Services/useEditInitiative";
 import { usePaginator } from "../../Services/usePaginator";
 import { Paginator } from "../Paginator";
+import { initPageStateEnum } from "../../Pages/InitiativesPage";
 
 export const InitiativeTableIds = {
   table: "initiativesTable",
@@ -67,6 +68,8 @@ interface InitiativesProps {
   searchedInit: string
   setSearchedInit: (value: string) => void
   SetIsTableLocked: (value: boolean) => void
+  state: initPageStateEnum
+  setState: (newState: initPageStateEnum) => void
 }
 
 export interface InitCompanyDisplay extends Initiative {
@@ -115,7 +118,7 @@ export default function InitiativesTable(props: InitiativesProps) {
     companyToEditId,
     setCompanyToEditId,
     displayItems
-  } = useEditInitiative(props.setAddInitiative);
+  } = useEditInitiative(props.setAddInitiative, props.state, props.setState);
 
   useEffect(() => 
   {

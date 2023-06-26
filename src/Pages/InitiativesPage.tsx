@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
 import InitiativesTable from "../Components/Initiative/InitiativesTable";
-import ValidateNewInitiative, {  } from "../Services/Validation";
 import { useAppSelector } from "../Store/Hooks";
 import { Company, IntegrityId, selectAllCompanies } from "../Store/CompanySlice";
 import { Grid } from "@mui/material";
@@ -24,6 +23,12 @@ export const InitiativesPageIds = {
   initiativeTitleFilter: "initiativesPageInitiativeTitleFilter"
 }
 
+export enum initPageStateEnum {
+  start,
+  edit,
+  add
+}
+
 export default function InitiativesPage()
 {
   const companiesFromStore = useAppSelector(selectAllCompanies);
@@ -33,7 +38,9 @@ export default function InitiativesPage()
   const [searchedComp, setSearchedComp] = useState("");
   const [searchedInit, setSearchedInit] = useState("");
   const [addInitiative, setAddInitiative] = useState(false);
+  const [state, setState] = useState(initPageStateEnum.start);
   const [radioValue, setRadioValue] = useState('active');
+  const isEditing = state !== initPageStateEnum.start;
 
   const allInitiatives = useMemo(() => allCompanies.flatMap(c => c.initiatives),[allCompanies]);
 
@@ -62,16 +69,16 @@ export default function InitiativesPage()
               borderRadius: 1 }}>
             <Grid item xs={3}>
               {currentUser?.companyId === IntegrityId && 
-                <SearchBar cypressData={InitiativesPageIds.companyNameFilter} placeholder="Filter by Company" value={searchedComp} setValue={setSearchedComp} />
+                <SearchBar cypressData={InitiativesPageIds.companyNameFilter} placeholder="Filter by Company" value={searchedComp} setValue={setSearchedComp} disabled={isEditing}/>
               }
-                <SearchBar cypressData={InitiativesPageIds.initiativeTitleFilter} placeholder="Filter by Title" value={searchedInit} setValue={setSearchedInit} />
+                <SearchBar cypressData={InitiativesPageIds.initiativeTitleFilter} placeholder="Filter by Title" value={searchedInit} setValue={setSearchedInit} disabled={isEditing}/>
             </Grid>
             <ActiveRadioSet cypressData={InitiativeDisplayRadioIds} name="initiativesPage" setRadioValue={setRadioValue} listItems={allInitiatives} filterFunc={InitiativeFilter}/>
             {currentUser?.isAdmin ?
               <Grid item xs={3} sx={{ display: 'flex',
                 justifyContent: 'flex-end'
                 }}>   
-                <AddButton cypressData={InitiativesPageIds.addInitiativeButton} HandleClick={() => setAddInitiative(true)}/>     
+                <AddButton cypressData={InitiativesPageIds.addInitiativeButton} HandleClick={() => setAddInitiative(true)} disabled={isEditing}/>     
               </Grid>
               :
               <Grid item xs={3}></Grid>
@@ -84,6 +91,7 @@ export default function InitiativesPage()
           searchedComp={searchedComp} setSearchedComp={setSearchedComp}
           searchedInit={searchedInit} setSearchedInit={setSearchedInit}
           SetIsTableLocked={setIsTableLocked}
+          state={state} setState={setState}
         />}
       </div>
      </>
