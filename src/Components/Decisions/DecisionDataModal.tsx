@@ -14,10 +14,11 @@ import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
 import DeleteIcon from '@mui/icons-material/Delete';
 import { CircularProgress, IconButton } from "@mui/material";
-import { BaseInitiativeModal } from "./BaseInitiativeModal";
+import { BaseInitiativeModal } from "../Initiative/BaseInitiativeModal";
 import { AddButton } from "../AddButton";
 import { MakeClone } from "../../Services/Cloning";
 import { SearchBar } from "../SearchBar";
+import { User } from "../../Store/UserSlice";
 
 export const DecisionModalIds = {
   modal: "decisionModal",
@@ -40,12 +41,12 @@ export const DecisionModalIds = {
 }
 
 interface DecisionDataProps {
-    title: string
-    company: Company
-    initiative: Initiative 
-    isOpen: boolean
-    setDecisionModalIsOpen: (value: boolean) => void
-    isAdmin: boolean
+  title: string
+  company: Company
+  initiative: Initiative 
+  isOpen: boolean
+  HandleClose: () => void
+  currentUser: User
 }
 
 export default function DecisionDataModal(props: DecisionDataProps) {
@@ -220,7 +221,7 @@ export default function DecisionDataModal(props: DecisionDataProps) {
     <>
       <BaseInitiativeModal
         open={props.isOpen}
-        onClose={()=>props.setDecisionModalIsOpen(false)}
+        onClose={()=>props.HandleClose()}
         cypressData={{modal: DecisionModalIds.modal, closeModalButton: DecisionModalIds.closeModalButton}}
         title="Decisions"
         subtitle={`${props.company.name}${props.initiative ? ` - ${props.initiative.title}` : ``}`}
@@ -251,7 +252,7 @@ export default function DecisionDataModal(props: DecisionDataProps) {
                   <CircularProgress color={"warning"}/>
                 }
               </Grid>
-              {props.isAdmin &&
+              {props.currentUser.isAdmin &&
               <Grid item xs={4} sx={{ display: 'flex',
               justifyContent: 'flex-end'
               }}> 
@@ -312,7 +313,7 @@ export default function DecisionDataModal(props: DecisionDataProps) {
                             </div>
                           }
                           {
-                            !isEdit && !InEditMode() && props.isAdmin &&
+                            !isEdit && !InEditMode() && props.currentUser.isAdmin &&
                             <div className="flex w-full justify-between">
                               <IconButton disabled={isLoading} data-cy={DecisionModalIds.editButton} onClick={() => EnterEditMode(displayItem.id, selectedInitiative, false)}>
                                 <EditIcon sx={{fontSize: "inherit"}}/>

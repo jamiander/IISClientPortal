@@ -33,7 +33,8 @@ export function ClientActionsMenu(props: ClientActionsMenuProps)
 
   const commonMenuProps = {
     company: props.company,
-    currentUser: props.currentUser
+    currentUser: props.currentUser,
+    CloseMenu: handleClose
   }
 
   return (

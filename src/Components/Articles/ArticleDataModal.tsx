@@ -54,7 +54,7 @@ interface ArticleDataProps {
   initiative?: Initiative | undefined
   isOpen: boolean
   currentUser: User
-  setArticleModalIsOpen: (value: boolean) => void
+  HandleClose: () => void
 }
 
 export default function ArticleDataModal(props: ArticleDataProps) {
@@ -81,16 +81,14 @@ export default function ArticleDataModal(props: ArticleDataProps) {
 
     useEffect(() => {
       if(props.isOpen)
-      {
         CallDispatch();
-      }
       
     }, [props.isOpen]);
 
     function CloseModalAndReset()
     {
       dispatch(clearArticles());
-      props.setArticleModalIsOpen(false);
+      props.HandleClose();
     }
 
     async function CallDispatch() {

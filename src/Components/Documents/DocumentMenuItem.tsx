@@ -4,21 +4,28 @@ import { Company, Initiative } from '../../Store/CompanySlice';
 import { ActionsMenuItem } from '../ActionsMenuItem';
 import { User } from '../../Store/UserSlice';
 
-interface DocumentManagementButtonProps {
+interface DocumentMenuItemProps {
   cypressData: string
   company: Company
   initiative?: Initiative
   currentUser: User
+  CloseMenu: () => void
 }
 
-export function DocumentMenuItem(props: DocumentManagementButtonProps)
+export function DocumentMenuItem(props: DocumentMenuItemProps)
 {
   const [isOpen, setIsOpen] = useState(false);
+
+  function HandleClose()
+  {
+    setIsOpen(false);
+    props.CloseMenu();
+  }
 
   return (
     <>
       <ActionsMenuItem cypressData={props.cypressData} text="Documents" handleClick={() => setIsOpen(true)}/>
-      <DocumentManagementModal company={props.company} initiative={props.initiative} isAdmin={props.currentUser.isAdmin} isOpen={isOpen} setIsOpen={setIsOpen}/>
+      <DocumentManagementModal {...props} isOpen={isOpen} HandleClose={HandleClose}/>
     </>
   )
 }

@@ -23,8 +23,8 @@ export const UploadThroughputIds = {
 interface ThroughputModalProps{
   company: Company
   initiative: Initiative
-  uploadIsOpen: boolean
-  setUploadIsOpen: (value: boolean) => void
+  isOpen: boolean
+  HandleClose: () => void
   Submit: (companyId: string, initiativeId: string, dataList: ThroughputData[], emptyDataCheck: boolean) => Promise<boolean>
 }
 
@@ -39,7 +39,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){
     setFileData([]);
     setFileWarning("");
     setFile(null);
-  },[props.uploadIsOpen])
+  },[props.isOpen])
 
   function ReceiveFile(file: File | null)
   {
@@ -117,14 +117,14 @@ export default function UploadThroughputModal(props:ThroughputModalProps){
     const response = await props.Submit(props.company.id, props.initiative.id, fileData, true);
     setIsUploading(false);
     if(response)
-      props.setUploadIsOpen(false);
+      props.HandleClose();
   }
 
   return(
     <BaseInitiativeModal
       cypressData={{modal: UploadThroughputIds.modal, closeModalButton: UploadThroughputIds.closeModalButton}}
-      open={props.uploadIsOpen}
-      onClose={()=>props.setUploadIsOpen(false)}
+      open={props.isOpen}
+      onClose={()=>props.HandleClose()}
       title="Upload Throughput"
       subtitle={`${props.company.name}${props.initiative ? ` - ${props.initiative.title}` : ``}`}
     >

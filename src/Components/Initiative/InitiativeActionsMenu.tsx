@@ -10,7 +10,7 @@ import { IntegrityTheme } from "../../Styles";
 import { User } from "../../Store/UserSlice";
 import { DocumentMenuItem } from "../Documents/DocumentMenuItem";
 import { ArticleMenuItem } from "../Articles/ArticleMenuItem";
-import { DecisionMenuItem } from "./DecisionMenuItem";
+import { DecisionMenuItem } from "../Decisions/DecisionMenuItem";
 import { EditThroughputMenuItem } from "./EditThroughputMenuItem";
 import { UploadThroughputMenuItem } from "./UploadThroughputMenuItem";
 
@@ -67,7 +67,8 @@ export function InitiativeActionsMenu(props: InitiativeActionsMenuProps)
   const commonMenuProps = {
     company: props.company,
     initiative: props.initiative,
-    currentUser: props.currentUser
+    currentUser: props.currentUser,
+    CloseMenu: handleClose
   };
 
   return (

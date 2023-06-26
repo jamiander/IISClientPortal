@@ -9,24 +9,31 @@ interface ViewDecisionDataProps {
   company: Company
   initiative: Initiative
   currentUser: User
+  CloseMenu: () => void
 }
 
 export function DecisionMenuItem(props: ViewDecisionDataProps){
   const [selectedCompany, setSelectedCompany] = useState<Company>(props.company);
   const [selectedInitiative, setSelectedInitiative] = useState<Initiative>(props.initiative);
-  const [ViewDecisionDataIsOpen, setViewDecisionDataIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   function handleViewDecisionData(company: Company, initiative: Initiative)
   {
-    setViewDecisionDataIsOpen(true);
+    setIsOpen(true);
     setSelectedInitiative(initiative);
     setSelectedCompany(company);
+  }
+
+  function HandleClose()
+  {
+    setIsOpen(false);
+    props.CloseMenu();
   }
 
   return (
     <>
       <ActionsMenuItem cypressData={props.cypressData} text="Decisions" handleClick={() => handleViewDecisionData(props.company,props.initiative)}/>
-      <DecisionDataModal title='View Decision Data' isOpen={ViewDecisionDataIsOpen} setDecisionModalIsOpen={setViewDecisionDataIsOpen} initiative={selectedInitiative} company={selectedCompany} isAdmin={props.currentUser.isAdmin}/>
+      <DecisionDataModal {...props} title='View Decision Data' isOpen={isOpen} HandleClose={HandleClose}/>
     </>
   );
 }

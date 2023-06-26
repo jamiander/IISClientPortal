@@ -7,6 +7,7 @@ import { DocumentInfo, getDocumentUrls } from '../../Store/DocumentSlice';
 import { useAppDispatch } from '../../Store/Hooks';
 import { DocumentDownload } from './DocumentDownload';
 import { BaseInitiativeModal } from '../Initiative/BaseInitiativeModal';
+import { User } from '../../Store/UserSlice';
 
 export const DocumentManagementModalIds = {
   modal: "documentManagementModal",
@@ -21,9 +22,9 @@ export const DocumentManagementModalIds = {
 interface DocumentManagementModalProps {
   company: Company
   initiative?: Initiative
-  isAdmin: boolean
+  currentUser: User
   isOpen: boolean
-  setIsOpen: (value: boolean) => void
+  HandleClose: () => void
 }
 
 export function DocumentManagementModal(props: DocumentManagementModalProps)
@@ -64,12 +65,12 @@ export function DocumentManagementModal(props: DocumentManagementModalProps)
     <BaseInitiativeModal
       cypressData={{modal: DocumentManagementModalIds.modal, closeModalButton: DocumentManagementModalIds.closeModalButton}}
       open={props.isOpen}
-      onClose={() => props.setIsOpen(false)}
+      onClose={() => props.HandleClose()}
       title="Documents"
       subtitle={`${props.company.name}${props.initiative ? ` - ${props.initiative.title}` : ``}`}
     >
       <div className="flex flex-col col-span-4 ">
-        {props.isAdmin &&
+        {props.currentUser.isAdmin &&
           <DocumentUpload cypressData={DocumentManagementModalIds.documentUpload} company={props.company} initiative={props.initiative} GetData={GetData}/>
         }
         {isLoading && docInfos.length === 0 &&
