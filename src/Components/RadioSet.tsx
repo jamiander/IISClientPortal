@@ -1,3 +1,4 @@
+import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from "@mui/material"
 import Grid from "@mui/material/Grid"
 
 export interface RadioInstance {
@@ -13,6 +14,7 @@ interface RadioSetProps {
   name: string
   dark?: boolean
   onClick?: Function
+  disabled?: boolean
 }
 
 export function RadioSet(props: RadioSetProps)
@@ -32,16 +34,23 @@ export function RadioSet(props: RadioSetProps)
     justifyContent: "center",
     fontSize: "calc(10px + 0.390625vw)",
     }}>
-      {
-        props.options.map((radio,index) => {
-          return (
-            <label key={index} className="mr-8 ml-2 hover:text-[#879794]" onClick={()=>HandleClick(radio.value)}>
-              <input className="mr-2" type='radio' data-cy={radio.cypressData} value={radio.value} name={props.name} defaultChecked={radio.default}/>
-              {radio.label}
-            </label>
-          )
-        })
-      }
+      <FormControl>
+        <RadioGroup
+          defaultValue={props.options.find(r => r.default)?.value}
+          name={props.name}
+          row
+        >
+          {
+            props.options.map((radio,index) => {
+              return (
+                <FormControlLabel key={index} value={radio.value} control={<Radio data-cy={radio.cypressData}/>} label={radio.label} 
+                  onClick={() => HandleClick(radio.value)}
+                />
+              )
+            })
+          }
+        </RadioGroup>
+      </FormControl>
     </Grid>
   );
 }

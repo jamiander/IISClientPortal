@@ -73,16 +73,16 @@ export default function InitiativesPage()
               }
                 <SearchBar cypressData={InitiativesPageIds.initiativeTitleFilter} placeholder="Filter by Title" value={searchedInit} setValue={setSearchedInit} disabled={isEditing}/>
             </Grid>
-            <ActiveRadioSet cypressData={InitiativeDisplayRadioIds} name="initiativesPage" setRadioValue={setRadioValue} listItems={allInitiatives} filterFunc={InitiativeFilter}/>
+            <ActiveRadioSet cypressData={InitiativeDisplayRadioIds} name="initiativesPage" setRadioValue={setRadioValue} listItems={allInitiatives} filterFunc={InitiativeFilter} disabled={isEditing}/>
             {currentUser?.isAdmin ?
               <Grid item xs={3} sx={{ display: 'flex',
                 justifyContent: 'flex-end'
                 }}>   
-                <AddButton cypressData={InitiativesPageIds.addInitiativeButton} 
+                <AddButton cypressData={InitiativesPageIds.addInitiativeButton}
                   HandleClick={() => {
-                    setAddInitiative(true);
                     setSearchedComp("");
                     setSearchedInit("");
+                    setAddInitiative(true);
                   }} 
                 disabled={isEditing}/>     
               </Grid>
