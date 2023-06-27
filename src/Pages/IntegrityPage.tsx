@@ -183,10 +183,10 @@ export function IntegrityPage(){
                     >
                       {isEdit ? 
                       <>
-                        <TableCell><Input sx={{fontSize: "calc(12px + 0.390625vw)"}} data-cy={IntegrityPageIds.editName}value={currentName} onChange={e => setCurrentName(e.target.value)}/></TableCell>
-                        <TableCell><Input sx={{fontSize: "calc(12px + 0.390625vw)"}} data-cy={IntegrityPageIds.editEmail} value={currentEmail} onChange={e => setCurrentEmail(e.target.value)}/></TableCell>
-                        <TableCell><Input sx={{fontSize: "calc(12px + 0.390625vw)"}} data-cy={IntegrityPageIds.editPassword} value={currentPassword} onChange={e => setCurrentPassword(e.target.value)}/></TableCell>
-                        <TableCell><Input sx={{fontSize: "calc(12px + 0.390625vw)"}} data-cy={IntegrityPageIds.editPhone} value={currentPhone} onChange={e => setCurrentPhone(e.target.value)}/></TableCell>
+                        <TableCell><Input sx={{fontSize: tableCellFontSize}} data-cy={IntegrityPageIds.editName}value={currentName} onChange={e => setCurrentName(e.target.value)}/></TableCell>
+                        <TableCell><Input sx={{fontSize: tableCellFontSize}} data-cy={IntegrityPageIds.editEmail} value={currentEmail} onChange={e => setCurrentEmail(e.target.value)}/></TableCell>
+                        <TableCell><Input sx={{fontSize: tableCellFontSize}} data-cy={IntegrityPageIds.editPassword} value={currentPassword} onChange={e => setCurrentPassword(e.target.value)}/></TableCell>
+                        <TableCell><Input sx={{fontSize: tableCellFontSize}} data-cy={IntegrityPageIds.editPhone} value={currentPhone} onChange={e => setCurrentPhone(e.target.value)}/></TableCell>
                         {(!displayItem.isAdmin || admins.length > 1) ?
                         <TableCell>
                           <Checkbox data-cy={IntegrityPageIds.editIsAdmin} checked={currentIsAdmin} onChange={e => setCurrentIsAdmin(e.target.checked)}/>Admin

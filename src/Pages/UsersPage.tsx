@@ -236,9 +236,9 @@ export default function UsersPage(){
                                   <TableCell data-cy={UsersPageIds.company}>{displayCompany?.name}</TableCell>}
                               </TableCell>
                               <TableCell data-cy={UsersPageIds.editName}> <Input value={currentName} onChange={e => setCurrentName(e.target.value)} /></TableCell>
-                              <TableCell><Input data-cy={UsersPageIds.editEmail} value={currentEmail} onChange={e => setCurrentEmail(e.target.value)} /></TableCell>
-                              <TableCell data-cy={UsersPageIds.editPassword}><Input value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} /></TableCell>
-                              <TableCell data-cy={UsersPageIds.editPhone}><Input value={currentPhone} onChange={e => setCurrentPhone(e.target.value)} /></TableCell>
+                              <TableCell><Input sx={{fontSize: tableCellFontSize}} data-cy={UsersPageIds.editEmail} value={currentEmail} onChange={e => setCurrentEmail(e.target.value)} /></TableCell>
+                              <TableCell data-cy={UsersPageIds.editPassword}><Input sx={{fontSize: tableCellFontSize}} value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} /></TableCell>
+                              <TableCell data-cy={UsersPageIds.editPhone}><Input sx={{fontSize: tableCellFontSize}} value={currentPhone} onChange={e => setCurrentPhone(e.target.value)} /></TableCell>
                               <TableCell><Checkbox color="darkBlue" data-cy={UsersPageIds.editIsAdmin} checked={currentIsAdmin} onChange={e => setCurrentIsAdmin(e.target.checked)} />Admin</TableCell>
                               <TableCell><Checkbox color="darkBlue" data-cy={UsersPageIds.editIsActive} checked={currentIsActive} onChange={e => setCurrentIsActive(e.target.checked)} />Active</TableCell>
                               <TableCell data-cy={UsersPageIds.initiativeIds}></TableCell>
