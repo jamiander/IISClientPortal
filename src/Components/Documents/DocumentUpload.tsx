@@ -14,6 +14,7 @@ interface DocumentUploadProps {
   }
   company: Company
   initiative?: Initiative
+  articleId?: string
   GetData: () => Promise<void>
 }
 
@@ -37,7 +38,7 @@ export function DocumentUpload(props: DocumentUploadProps)
     {
       setIsUploading(true);
       let documentId = v4();
-      await dispatch(uploadDocument({file: file, companyId: props.company.id, initiativeId: props.initiative?.id, documentId: documentId}));
+      await dispatch(uploadDocument({file: file, companyId: props.company.id, initiativeId: props.initiative?.id, articleId: props.articleId, documentId: documentId}));
 
       setTimeout(async () => {
         await props.GetData();

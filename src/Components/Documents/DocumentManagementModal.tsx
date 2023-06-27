@@ -72,7 +72,7 @@ export function DocumentManagementModal(props: DocumentManagementModalProps)
     >
       <div className="flex flex-col col-span-4 ">
         {props.currentUser.isAdmin &&
-          <DocumentUpload cypressData={DocumentManagementModalIds.documentUpload} company={props.company} initiative={props.initiative} GetData={GetData}/>
+          <DocumentUpload cypressData={DocumentManagementModalIds.documentUpload} company={props.company} initiative={props.initiative} articleId={props.articleWithDocsId} GetData={GetData}/>
         }
         {isLoading && docInfos.length === 0 &&
           <div className="flex justify-center w-full h-full my-2">

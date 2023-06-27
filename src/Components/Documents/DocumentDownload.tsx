@@ -1,5 +1,4 @@
 import DownloadIcon from '@mui/icons-material/Download';
-import { yellowButtonStyle } from '../../Styles';
 import { DocumentInfo, downloadDocument } from '../../Store/DocumentSlice';
 import { useAppDispatch } from '../../Store/Hooks';
 import { IconButton } from '@mui/material';
