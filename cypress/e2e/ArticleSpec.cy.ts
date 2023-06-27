@@ -1,4 +1,4 @@
-import { AdminUser, IntegrityUser, MBPIAdminUser, MBPIUser, TestConstants } from "./TestHelpers";
+import { AdminUser, IntegrityUser, MBPIAdminUser, MBPIUser, SimpleUser, TestConstants } from "./TestHelpers";
 
 const integrityUser = IntegrityUser;
 const integrityAdmin = AdminUser;
@@ -10,6 +10,7 @@ const initPageIds = consts.initiativesPageIds;
 const initTableIds = consts.initiativeTableIds;
 const clientPageIds = consts.clientPageIds;
 const modalIds = consts.articleModalIds;
+const docModalIds = consts.documentModalIds;
 const navIds = consts.navPanelIds;
 const snackbarId = consts.snackbarId;
 const snackbarWaitTime = consts.snackbarWaitTime;
@@ -159,7 +160,8 @@ function LogOut()
   cy.get('button').contains("Log Out").click();
 }
 
-function Specs(GoToArticles: (companyName?: string) => void)
+
+function Specs(GoToArticles: (companyName?: string) => void, GoToDocuments: (login: SimpleUser) => void)
 {
   specify('Client users cannot add/edit articles', () => {
     cy.login(clientUser);
@@ -233,10 +235,59 @@ function Specs(GoToArticles: (companyName?: string) => void)
     cy.getByData(modalIds.addButton).should('not.be.disabled');
     cy.getByData(modalIds.editButton).should('not.be.disabled');
   })
+
+  //We can't test for document upload permissions unless we already have an article to work with in the database
+  //As of 6/27/23, there are two articles under MBPI Test Project called "MBPI" and "Integrity Only" to work with
+  specify.only('Integrity admins can upload files', () => {
+    GoToDocuments(integrityAdmin);
+
+    cy.getByData(docModalIds.documentUpload.chooseFileButton).should('exist');
+  })
+
+  specify.only('Integrity users can upload files', () => {
+    GoToDocuments(integrityUser);
+
+    cy.getByData(docModalIds.documentUpload.chooseFileButton).should('exist');
+  })
+
+  specify.only('Client admins cannot upload files', () => {
+    GoToDocuments(MBPIAdminUser);
+
+    cy.getByData(docModalIds.documentUpload.chooseFileButton).should('not.exist');
+  })
+
+  specify.only('Client users cannot upload files', () => {
+    GoToDocuments(MBPIUser);
+
+    cy.getByData(docModalIds.documentUpload.chooseFileButton).should('not.exist');
+  })
+}
+
+function GoToClientDocuments(loginUser: SimpleUser)
+{
+  cy.login(loginUser);
+  //only Integrity has a view of the client page that allows for filtering
+  if(loginUser.email === integrityAdmin.email || loginUser.email === integrityUser.email)
+    GoToClientArticles("MBPI");
+  else
+    GoToClientArticles();
+
+  cy.getByData(modalIds.keywordFilter).type('MBPI');
+  cy.getByData(modalIds.documents).click();
+  cy.getByData(docModalIds.modal).should('exist');
+}
+
+function GoToInitiativeDocuments(loginUser: SimpleUser)
+{
+  cy.login(loginUser);
+  GoToInitiativeArticles(undefined, "MBPI Test Project");
+  cy.getByData(modalIds.keywordFilter).type('MBPI');
+  cy.getByData(modalIds.documents).click();
+  cy.getByData(docModalIds.modal).should('exist');
 }
 
 describe('add client-level article', () => {
-  Specs(GoToClientArticles);
+  Specs(GoToClientArticles,GoToClientDocuments);
 
   specify('Cannot see initiative-level articles from client view', () => {
     cy.login(integrityAdmin);
@@ -273,7 +324,7 @@ describe('add client-level article', () => {
 });
 
 describe('add initiative-level article', () => {
-  Specs(GoToInitiativeArticles);
+  Specs(GoToInitiativeArticles,GoToInitiativeDocuments);
 
   specify('Cannot see client-level articles from initiative view', () => {
     cy.login(integrityAdmin);

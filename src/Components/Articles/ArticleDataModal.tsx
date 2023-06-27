@@ -48,7 +48,8 @@ export const ArticleModalIds = {
   isIntegrityOnly: "articleModalIntegrityOnly",
   companyId: "articleModalCompanyId",
   initiativeId: "articleInitiativeId",
-  grid: "articleModalGrid"
+  grid: "articleModalGrid",
+  documents: "articleModalDocuments"
 }
 
 interface ArticleDataProps {
@@ -300,8 +301,8 @@ export default function ArticleDataModal(props: ArticleDataProps) {
                             <StyledTextarea id="updatedby" data-cy={ArticleModalIds.updatedBy} disabled value={displayItem.updatedBy}/>
                             <div className="flex flex-row justify-content:space-between">
                               <DateInput cypressData={ArticleModalIds.updatedDate} label="Date Updated" disabled={true} date={displayItem.updatedDate} setDate={setCurrentUpdatedDate}/>
-                              <IconButton onClick={() => {setDocumentModalOpen(true); setArticleWithDocsId(displayItem.id)}} sx={{ fontSize: "1.2rem", width: "50%", alignContent: "right" }}>
-                              <FolderIcon sx={{ color: "blue", fontSize: "inherit",  marginRight: 1 }}></FolderIcon>Related Documentation
+                              <IconButton data-cy={ArticleModalIds.documents} onClick={() => {setDocumentModalOpen(true); setArticleWithDocsId(displayItem.id)}} sx={{ fontSize: "1.2rem", width: "50%", alignContent: "right" }}>
+                                <FolderIcon sx={{ color: "blue", fontSize: "inherit",  marginRight: 1 }}></FolderIcon>Related Documentation
                               </IconButton>
                             </div>
                           </>
