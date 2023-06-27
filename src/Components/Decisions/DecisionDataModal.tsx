@@ -333,7 +333,7 @@ export default function DecisionDataModal(props: DecisionDataProps) {
                 )
               })}
               {
-              filteredDecisions.length === 0 && <Grid item>No decisions to display.</Grid>
+              filteredDecisions.length === 0 && <Grid item className="mt-4 text-2xl font-bold">No decisions to display.</Grid>
               }
             </Grid>
           </div>

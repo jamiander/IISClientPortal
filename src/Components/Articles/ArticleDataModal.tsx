@@ -235,7 +235,7 @@ export default function ArticleDataModal(props: ArticleDataProps) {
               <Grid item xs={4} sx={{ display: 'flex',
                 justifyContent: 'flex-start',
               }}>
-                {filteredArticles.length > 0 &&
+                {allArticles.length !== 0 &&
                   <SearchBar cypressData={ArticleModalIds.keywordFilter} placeholder="Keyword" value={searchedKeyword} setValue={setSearchedKeyword} />
                 }
               </Grid>
@@ -327,10 +327,10 @@ export default function ArticleDataModal(props: ArticleDataProps) {
                 )
               })
             }
+            {
+            filteredArticles.length === 0 && !loadingModal && <Grid item className="mt-4 text-2xl font-bold">No articles to display.</Grid>
+            }
           </Grid>
-          {
-            filteredArticles.length === 0 && !loadingModal && <Grid item className="m-2 p-2 text-3xl font-bold">No articles to display.</Grid>
-          }
         </div>
         }
       </BaseInitiativeModal>
