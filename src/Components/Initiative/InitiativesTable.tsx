@@ -245,6 +245,7 @@ export default function InitiativesTable(props: InitiativesProps) {
         IconComponent={sortConfig.key === props.sortKey ? ArrowDownwardIcon : ImportExportIcon}
         onClick={() => requestSort(props.sortKey)} active={sortConfig.key === props.sortKey} 
         direction={sortConfig.direction}
+        disabled={InEditMode()}
       >
         {props.heading}
       </TableSortLabel>
