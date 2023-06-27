@@ -25,7 +25,7 @@ export function DocumentMenuItem(props: DocumentMenuItemProps)
   return (
     <>
       <ActionsMenuItem cypressData={props.cypressData} text="Documents" handleClick={() => setIsOpen(true)}/>
-      <DocumentManagementModal {...props} isOpen={isOpen} HandleClose={HandleClose}/>
+      <DocumentManagementModal {...props} articleWithDocsId={undefined} isOpen={isOpen} HandleClose={HandleClose}/>
     </>
   )
 }

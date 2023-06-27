@@ -81,6 +81,7 @@ export default function ArticleDataModal(props: ArticleDataProps) {
     const [loadingModal, setLoadingModal] = useState(true);
     const [filteredArticles, setFilteredArticles] = useState<Article[]>([]);
     const [documentModalOpen, setDocumentModalOpen] = useState(false);
+    const [articleWithDocsId, setArticleWithDocsId] = useState("");
 
     useEffect(() => {
       if(props.isOpen)
@@ -299,8 +300,8 @@ export default function ArticleDataModal(props: ArticleDataProps) {
                             <StyledTextarea id="updatedby" data-cy={ArticleModalIds.updatedBy} disabled value={displayItem.updatedBy}/>
                             <div className="flex flex-row justify-content:space-between">
                               <DateInput cypressData={ArticleModalIds.updatedDate} label="Date Updated" disabled={true} date={displayItem.updatedDate} setDate={setCurrentUpdatedDate}/>
-                              <IconButton onClick={() => setDocumentModalOpen(true)} sx={{ fontSize: "1.2rem", width: "50%", alignContent: "right" }}>
-                              <FolderIcon sx={{ color: "blue", fontSize: "inherit",  marginRight: 1 }}></FolderIcon>Attached Documents
+                              <IconButton onClick={() => {setDocumentModalOpen(true); setArticleWithDocsId(displayItem.id)}} sx={{ fontSize: "1.2rem", width: "50%", alignContent: "right" }}>
+                              <FolderIcon sx={{ color: "blue", fontSize: "inherit",  marginRight: 1 }}></FolderIcon>Related Documentation
                               </IconButton>
                             </div>
                           </>
@@ -347,7 +348,7 @@ export default function ArticleDataModal(props: ArticleDataProps) {
         </div>
         }
       </BaseInitiativeModal>
-      <DocumentManagementModal company={props.company} currentUser={props.currentUser} isOpen={documentModalOpen} HandleClose={HandleClose}></DocumentManagementModal>
+      <DocumentManagementModal articleWithDocsId={articleWithDocsId} company={props.company} currentUser={props.currentUser} isOpen={documentModalOpen} HandleClose={HandleClose}></DocumentManagementModal>
     </>
   );
 }

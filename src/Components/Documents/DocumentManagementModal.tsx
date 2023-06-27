@@ -20,6 +20,7 @@ export const DocumentManagementModalIds = {
 }
 
 interface DocumentManagementModalProps {
+  articleWithDocsId: string | undefined
   company: Company
   initiative?: Initiative
   currentUser: User
@@ -46,7 +47,7 @@ export function DocumentManagementModal(props: DocumentManagementModalProps)
   {
     try{
       setIsLoading(true);
-      const response = await dispatch(getDocumentUrls({companyId: props.company.id, initiativeId: props.initiative?.id}));
+      const response = await dispatch(getDocumentUrls({companyId: props.company.id, initiativeId: props.initiative?.id, articleId: props.articleWithDocsId}));
       if(response.payload)
       {
         const docs = response.payload as DocumentInfo[];
