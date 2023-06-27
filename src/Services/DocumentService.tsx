@@ -1,5 +1,4 @@
 import axios from "axios";
-import { BASE_URL } from "./Http";
 import { BlobClient, BlobServiceClient, ContainerClient, Tags } from "@azure/storage-blob";
 import { DocumentInfo } from "../Store/DocumentSlice";
 
@@ -19,9 +18,13 @@ export async function GenerateSASToken(request: GenerateSASTokenRequest) : Promi
   return response.data;
 }
 
+const NO_ARTICLE_ID = "-1"; //Probably a better way to handle this, but we need a way to stop the document modal from retrieving docs that are tied
+                            //to articles; just omitting the article id pulls docs regardless of whether they have the id or not.
+
 export interface GetDocumentUrlsRequest {
   companyId: string
   initiativeId?: string
+  articleId?: string
 }
 
 export interface GetDocumentUrlsResponse {
@@ -45,8 +48,11 @@ export async function GetDocumentUrls(request: GetDocumentUrlsRequest) : Promise
   let query = `companyId='${request.companyId}'`;
   if(request.initiativeId)
     query += ` AND initiativeId='${request.initiativeId}'`;
+  if(request.articleId)
+    query += ` AND articleId='${request.articleId}'`;
+  else
+    query += ` AND articleId='${NO_ARTICLE_ID}'`;
 
-  let i = 1;
   for await (const blob of containerClient.findBlobsByTags(query))
   {
     const url = `https://iisclientstorage.blob.core.windows.net/${containerName}/${blob.name}${sasToken}`
@@ -64,7 +70,8 @@ export async function GetDocumentUrls(request: GetDocumentUrlsRequest) : Promise
       url: url,
       blobName: blob.name,
       fileName: fileName,
-      initiativeId: tags.tags.initiativeId
+      initiativeId: tags.tags.initiativeId,
+      articleId: tags.tags.articleId
     }
     
     docs.push(docItem);
@@ -104,18 +111,13 @@ export async function DownloadDocument(request: DownloadDocumentRequest) : Promi
   if(downloadedBlob)
   {
     const downloadedString = await blobToString(downloadedBlob);
-    /*console.log(
-      "Downloaded blob content",
-      downloadedString
-    );*/
     downloadBlobs.push(downloadedBlob);
     downloadStrings.push(downloadedString);
   }
   
-
   // Create blob link to download
   const url = window.URL.createObjectURL(
-    downloadBlobs[0]//new Blob([blob]),
+    downloadBlobs[0]
   );
   const link = document.createElement('a');
   link.href = url;
@@ -133,12 +135,6 @@ export async function DownloadDocument(request: DownloadDocumentRequest) : Promi
   // Clean up and remove the link
   link.parentNode?.removeChild(link);
 
-  /*const embed = document.createElement('embed');
-  embed.src = url;
-  embed.width = "250";
-  embed.height = "200";
-  document.body.appendChild(embed);*/
-
   window.URL.revokeObjectURL(url);
 
   return {downloadStrings: downloadStrings};
@@ -149,6 +145,7 @@ export interface UploadDocumentRequest {
   documentId: string
   companyId: string
   initiativeId?: string
+  articleId?: string
 }
 
 interface UploadDocumentResponse {
@@ -163,7 +160,6 @@ export async function UploadDocument(request: UploadDocumentRequest) : Promise<U
 
   const containerName = `client-portal-data`;
   const uploadUrl = `https://iisclientstorage.blob.core.windows.net/${sasToken}`;
-  console.log(uploadUrl);
 
   try{
     const file = request.file;
@@ -176,7 +172,12 @@ export async function UploadDocument(request: UploadDocumentRequest) : Promise<U
 
     let tags: any = {companyId: request.companyId};
     if(request.initiativeId)
-      tags = {companyId: request.companyId, initiativeId: request.initiativeId};
+      tags = {...tags, initiativeId: request.initiativeId};
+    if(request.articleId)
+      tags = {...tags, articleId: request.articleId};
+    else
+      tags = {...tags, articleId: NO_ARTICLE_ID};
+      
     await blobClient.setTags(tags);
     await blobClient.setMetadata({fileName: file.name});
   }
@@ -189,13 +190,3 @@ export async function UploadDocument(request: UploadDocumentRequest) : Promise<U
   return {status: status}
 }
 
-//Using Azure function app; don't remove yet
-/*export async function UploadDocument(request: UploadDocumentsRequest) : Promise<UploadDocumentsResponse>
-{
-  let formData = new FormData();
-  formData.append("file",request.files[0]);
-
-  const base_url = BASE_URL + "UploadDocument?code=mFtD4EttHnv1RAnrPlfxPuNoIaalHBoNPhv7bEjJkeOsAzFugcQaWw==";
-  const response = await axios.post(base_url,formData,{headers: {'Content-Type': 'multipart/form-data'}});
-  return response.data;
-}*/
