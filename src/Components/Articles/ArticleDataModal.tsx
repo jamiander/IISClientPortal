@@ -11,6 +11,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
 import FlagIcon from "@mui/icons-material/Flag";
 import CancelIcon from "@mui/icons-material/Cancel";
+import FolderIcon from "@mui/icons-material/Folder";
 import { MakeClone } from "../../Services/Cloning";
 import {v4 as UuidV4} from "uuid";
 import { enqueueSnackbar } from "notistack";
@@ -18,6 +19,7 @@ import { Article, clearArticles, getArticle, selectAllArticles, upsertArticle } 
 import { ValidateArticle, ValidationFailedPrefix } from "../../Services/Validation";
 import { User } from "../../Store/UserSlice";
 import { SearchBar } from "../SearchBar";
+import { DocumentManagementModal } from "../Documents/DocumentManagementModal";
 
 enum stateEnum {
     start,
@@ -78,6 +80,7 @@ export default function ArticleDataModal(props: ArticleDataProps) {
     const [isLoading, setIsLoading] = useState(false);
     const [loadingModal, setLoadingModal] = useState(true);
     const [filteredArticles, setFilteredArticles] = useState<Article[]>([]);
+    const [documentModalOpen, setDocumentModalOpen] = useState(false);
 
     useEffect(() => {
       if(props.isOpen)
@@ -208,6 +211,10 @@ export default function ArticleDataModal(props: ArticleDataProps) {
         setArticleToEdit(undefined);
         setModalState(stateEnum.start);
     }
+
+    function HandleClose() {
+      setDocumentModalOpen(false);
+    }
     
   return (
     <>
@@ -283,16 +290,22 @@ export default function ArticleDataModal(props: ArticleDataProps) {
                           :
                           <>
                           {displayItem.isIntegrityOnly &&
-                            <div className="ml-[75%]"><FlagIcon sx={{ color: "red" }}></FlagIcon>&nbsp;&nbsp;Integrity Only</div>}
+                            <div className="ml-[75%]"><FlagIcon sx={{ color: "red", marginRight: 1 }}></FlagIcon>Integrity Only</div>}
                             <label className={labelStyle} htmlFor="description">Title</label>
                             <StyledTextarea id="title" data-cy={ArticleModalIds.title} disabled value={displayItem.title}/>
                             <label className={labelStyle} htmlFor="text">Content</label>
                             <StyledTextarea id="text" data-cy={ArticleModalIds.text} disabled value={displayItem.text}/>
                             <label className={labelStyle} htmlFor="text">Updated By</label>
                             <StyledTextarea id="updatedby" data-cy={ArticleModalIds.updatedBy} disabled value={displayItem.updatedBy}/>
-                            <DateInput cypressData={ArticleModalIds.updatedDate} label="Date Updated" disabled={true} date={displayItem.updatedDate} setDate={setCurrentUpdatedDate}/>
+                            <div className="flex flex-row justify-content:space-between">
+                              <DateInput cypressData={ArticleModalIds.updatedDate} label="Date Updated" disabled={true} date={displayItem.updatedDate} setDate={setCurrentUpdatedDate}/>
+                              <IconButton onClick={() => setDocumentModalOpen(true)} sx={{ fontSize: "1.2rem", width: "50%", alignContent: "right" }}>
+                              <FolderIcon sx={{ color: "blue", fontSize: "inherit",  marginRight: 1 }}></FolderIcon>Attached Documents
+                              </IconButton>
+                            </div>
                           </>
                           }
+                          
                       </StyledCardContent>
                       <StyledCardActions>
                           {isEdit &&
@@ -334,6 +347,7 @@ export default function ArticleDataModal(props: ArticleDataProps) {
         </div>
         }
       </BaseInitiativeModal>
+      <DocumentManagementModal company={props.company} currentUser={props.currentUser} isOpen={documentModalOpen} HandleClose={HandleClose}></DocumentManagementModal>
     </>
   );
 }
