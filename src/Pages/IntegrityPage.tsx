@@ -227,7 +227,7 @@ export function IntegrityPage(){
               </TableBody>
             </Table>
           </TableContainer>
-          <Paginator paginator={paginator}/>
+          <Paginator paginator={paginator} disabled={InEditMode()}/>
         </div>
       </div>
     </ThemeProvider>

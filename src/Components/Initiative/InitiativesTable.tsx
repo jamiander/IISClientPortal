@@ -442,7 +442,7 @@ export default function InitiativesTable(props: InitiativesProps) {
               </TableBody>
             </Table>
           </TableContainer>
-          <Paginator paginator={paginator}/>
+          <Paginator paginator={paginator} disabled={InEditMode()}/>
         </div>}
       </div>
       {totalInits === 0 && initiativesLoaded === true && <div className="m-2 p-2 text-3xl font-bold">No Initiatives to Display</div>}
