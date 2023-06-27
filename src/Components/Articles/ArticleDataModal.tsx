@@ -343,7 +343,7 @@ export default function ArticleDataModal(props: ArticleDataProps) {
               })
             }
             {
-            filteredArticles.length === 0 && !loadingModal && <Grid item className="mt-4 text-2xl font-bold">No articles to display.</Grid>
+            filteredArticles.length === 0 && <Grid item className="mt-4 text-2xl font-bold">No articles to display.</Grid>
             }
           </Grid>
         </div>
