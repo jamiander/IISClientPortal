@@ -7,6 +7,7 @@ export interface DocumentInfo {
   blobName: string,
   fileName: string,
   initiativeId?: string
+  articleId?: string
 }
 
 export interface DocumentState {
