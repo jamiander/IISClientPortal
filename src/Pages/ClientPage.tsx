@@ -67,6 +67,7 @@ export function ClientPage()
 
   const isIntegrityUser = currentUser?.companyId === IntegrityId;
   const isReadOnly = !isIntegrityUser || !currentUser?.isAdmin;
+  const isIntegrityAdmin = isIntegrityUser && currentUser?.isAdmin;
 
   useEffect(() => {
     const filteredCompanies = CompanyFilter(allCompanies,radioValue).filter(c =>  c.name?.toUpperCase().includes(searchedKeyword.toUpperCase()));
@@ -201,6 +202,9 @@ export function ClientPage()
             <Table className="table-auto w-full outline outline-3 bg-gray-100">
             <colgroup>
                 <col style={{ width: '25vw' }} />
+                {isIntegrityAdmin &&
+                  <col style={{ width: '25vw'}} />
+                }
                 <col style={{ width: '10vw' }} />
                 {!isReadOnly &&
                   <col style={{ width: '15vw' }} />
@@ -216,6 +220,9 @@ export function ClientPage()
                   }
                 }}>
                   <TableHeaderStyle>Name</TableHeaderStyle>
+                  {isIntegrityAdmin &&
+                    <TableHeaderStyle>Initiative Count</TableHeaderStyle>
+                  }
                   <TableHeaderStyle>Actions</TableHeaderStyle>
                   {!isReadOnly &&
                     <TableHeaderStyle>Edit Client</TableHeaderStyle>
@@ -244,6 +251,9 @@ export function ClientPage()
                       {isEdit ? 
                       <>
                         <TableCell><Input sx={{fontSize: tableCellFontSize}} data-cy={ClientPageIds.editName} value={currentName} onChange={e => setCurrentName(e.target.value)}/></TableCell>
+                        {isIntegrityAdmin &&
+                          <TableCell></TableCell>
+                        }
                         <TableCell>
                           <ClientActionsMenu disabled={true} {...clientActionsMenuProps}/>
                         </TableCell>
@@ -259,6 +269,9 @@ export function ClientPage()
                       : 
                       <>
                         <TableCell data-cy={ClientPageIds.name}>{displayItem.name}</TableCell>
+                        {isIntegrityAdmin &&
+                          <TableCell>{displayItem.initiatives.length}</TableCell>
+                        }
                         <TableCell>
                           <ClientActionsMenu {...clientActionsMenuProps}/>
                         </TableCell>
