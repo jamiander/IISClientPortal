@@ -47,6 +47,7 @@ interface ThroughputModalProps{
   initiative: Initiative
   isAdmin: boolean
   isOpen: boolean
+  title: string
   HandleClose: () => void
   SubmitUpdateThroughput: (companyId: string, initiativeId: string, dataList: ThroughputData[], emptyDataCheck: boolean) => Promise<boolean>
 }
@@ -211,39 +212,43 @@ export default function EditThroughputModal(this: any, props: ThroughputModalPro
       open={props.isOpen}
       onClose={() => props.HandleClose()}
       cypressData={{modal: EditThroughputIds.modal, closeModalButton: EditThroughputIds.closeModalButton}}
-      title="View Throughput"
+      title={props.title}
       subtitle={`${props.company.name}${props.initiative ? ` - ${props.initiative.title}` : ``}`}
       maxWidth="md"
       >
+      {props.isAdmin &&
       <div className="mb-4">
-      <div className="flex flex-row justify-content:space-between">
-        <Grid container sx={{ display: 'flex',
-              placeItems: 'center',
-              flexDirection: 'row',
-              p: 1,
-              mt: 2,
-              mb: 1,
-              ml: 2,
-              mr: 2,
-              borderRadius: 1, }}> 
-          <Grid item xs={4} sx={{ display: 'flex',
-              justifyContent: 'flex-start'}}>
-            <DateInput cypressData={EditThroughputIds.addDate} label={"New Date"} disabled={InEditMode()} date={currentDate} setDate={setCurrentDate}/>
-          </Grid>
-          <Grid item xs={4} sx={{ display: "flex",
-            justifyContent: "center"}}>
-            {isLoading &&
-              <CircularProgress color={"warning"}/>
-            }
-          </Grid>
-          <Grid item xs={4} sx={{ display: 'flex',
-              justifyContent: 'flex-end'
-              }}>
-            <AddButton cypressData={EditThroughputIds.addNewEntryButton} disabled={InEditMode() || !currentDate} HandleClick={AddItem}/>
-          </Grid>
+        <div className="flex flex-row justify-content:space-between">
+          <Grid container sx={{ display: 'flex',
+                placeItems: 'center',
+                flexDirection: 'row',
+                p: 1,
+                mt: 2,
+                mb: 1,
+                ml: 2,
+                mr: 2,
+                borderRadius: 1, }}> 
+            <Grid item xs={4} sx={{ display: 'flex',
+                justifyContent: 'flex-start'}}>
+              <DateInput cypressData={EditThroughputIds.addDate} label={"New Date"} disabled={InEditMode()} date={currentDate} setDate={setCurrentDate}/>
+            </Grid>
+            <Grid item xs={4} sx={{ display: "flex",
+              justifyContent: "center"}}>
+              {isLoading &&
+                <CircularProgress color={"warning"}/>
+              }
+            </Grid>
+            <Grid item xs={4} sx={{
+                display: 'flex',
+                justifyContent: 'flex-end'
+              }}
+            >
+              <AddButton cypressData={EditThroughputIds.addNewEntryButton} disabled={InEditMode() || !currentDate} HandleClick={AddItem}/>
+            </Grid>
           </Grid>
         </div>
       </div>
+      }
       <div className="outline outline-[#879794] rounded space-y-2 p-2">
         <div className="rounded overflow-y-auto max-h-60">
           <TableContainer component={Paper} >

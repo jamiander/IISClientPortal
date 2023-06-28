@@ -78,7 +78,7 @@ export default function ArticleDataModal(props: ArticleDataProps) {
 
     const InEditMode = () => modalState === stateEnum.edit || modalState === stateEnum.add;
     const [searchedKeyword, setSearchedKeyword] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const [loadingModal, setLoadingModal] = useState(true);
     const [filteredArticles, setFilteredArticles] = useState<Article[]>([]);
     const [documentModalOpen, setDocumentModalOpen] = useState(false);
@@ -109,7 +109,7 @@ export default function ArticleDataModal(props: ArticleDataProps) {
         setSelectedInitiative(props.initiative);
         
       setSelectedCompany(props.company);
-      setIsLoading(false);
+      setIsSubmitting(false);
       LeaveEditMode();
     },[props.isOpen]);
 
@@ -173,11 +173,11 @@ export default function ArticleDataModal(props: ArticleDataProps) {
         newArticle.updatedDate = newUpdatedDate;
         newArticle.isIntegrityOnly = newIsIntegrityOnly;
 
-        setIsLoading(true);
+        setIsSubmitting(true);
         let successfulSubmit = await SubmitArticle(newArticle);
         if(successfulSubmit)
           setFilteredArticles(selectedArticlesClone);
-        setIsLoading(false);
+        setIsSubmitting(false);
       }
     }
 
@@ -252,10 +252,10 @@ export default function ArticleDataModal(props: ArticleDataProps) {
               </Grid>
               <Grid item xs={4} sx={{ display: "flex",
                 justifyContent: "center"}}>
-                {isLoading &&
+                {isSubmitting &&
                   <CircularProgress color={"warning"}/>
                 }
-                {!isLoading && filteredArticles.length === 0 &&
+                {!isSubmitting && filteredArticles.length === 0 &&
                   <p className="m-2 p-2 text-2xl font-bold">There are no articles to display</p>
                 }
               </Grid>
@@ -321,14 +321,14 @@ export default function ArticleDataModal(props: ArticleDataProps) {
                       <StyledCardActions>
                           {isEdit &&
                             <div className="flex w-full justify-between">
-                              <IconButton disabled={isLoading} data-cy={ArticleModalIds.saveChangesButton}
+                              <IconButton disabled={isSubmitting} data-cy={ArticleModalIds.saveChangesButton}
                                 onClick={() => HandleEditArticle(displayItem.id, currentTitle, currentText, currentUpdatedBy, currentUpdatedDate ?? {month: -1, day: -1, year: -1}, isIntegrityOnly)}>
                                 <DoneIcon sx={{fontSize: "inherit"}}/>
                               </IconButton>
-                              {isLoading &&
+                              {isSubmitting &&
                                 <CircularProgress color={"warning"}/>
                               }
-                              <IconButton disabled={isLoading} data-cy={ArticleModalIds.cancelChangesButton} onClick={() => HandleCancelEdit()}>
+                              <IconButton disabled={isSubmitting} data-cy={ArticleModalIds.cancelChangesButton} onClick={() => HandleCancelEdit()}>
                                 <CancelIcon sx={{fontSize: "inherit"}}/>
                               </IconButton>
                             </div>
@@ -336,10 +336,10 @@ export default function ArticleDataModal(props: ArticleDataProps) {
                           {
                             !isEdit && !InEditMode() && props.currentUser.companyId === IntegrityId &&
                             <div className="flex w-full justify-between">
-                              <IconButton disabled={isLoading} data-cy={ArticleModalIds.editButton} onClick={() => EnterEditMode(displayItem.id, filteredArticles, false)}>
+                              <IconButton disabled={isSubmitting} data-cy={ArticleModalIds.editButton} onClick={() => EnterEditMode(displayItem.id, filteredArticles, false)}>
                                 <EditIcon sx={{fontSize: "inherit"}}/>
                               </IconButton>
-                              {isLoading && matched &&
+                              {isSubmitting && matched &&
                                 <CircularProgress color={"warning"}/>
                               }
                             </div>
@@ -353,6 +353,11 @@ export default function ArticleDataModal(props: ArticleDataProps) {
             }
           </Grid>
         </div>
+        }
+        {loadingModal &&
+          <div className="flex justify-center">
+            <CircularProgress color="warning"/>
+          </div>
         }
       </BaseInitiativeModal>
       <DocumentManagementModal articleWithDocsId={articleWithDocsId} userHasPermission={userHasPermission} company={props.company} currentUser={props.currentUser} title={"Related Documentation"} isOpen={documentModalOpen} HandleClose={HandleClose}></DocumentManagementModal>
