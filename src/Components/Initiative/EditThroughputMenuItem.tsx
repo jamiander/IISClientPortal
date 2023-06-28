@@ -33,10 +33,12 @@ export function EditThroughputMenuItem(props: EditThroughputMenuItemProps)
     props.CloseMenu();
   }
 
+  const text = (props.currentUser.isAdmin ? "Edit" : "View") + " Throughput";
+
   return (
     <>
-      <ActionsMenuItem cypressData={props.cypressData} text="View Throughput" handleClick={() => HandleClick()}/>
-      <EditThroughputModal {...props} isOpen={isOpen} HandleClose={HandleClose} isAdmin={props.currentUser.isAdmin}/>
+      <ActionsMenuItem cypressData={props.cypressData} text={text} handleClick={() => HandleClick()}/>
+      <EditThroughputModal {...props} title={text} isOpen={isOpen} HandleClose={HandleClose} isAdmin={props.currentUser.isAdmin}/>
     </>
   )
 }
