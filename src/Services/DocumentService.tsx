@@ -18,9 +18,9 @@ export async function GenerateSASToken(request: GenerateSASTokenRequest) : Promi
   return response.data;
 }
 
-const NO_ARTICLE_ID = "-1"; //Probably a better way to handle this, but we need a way to stop the document modal from retrieving docs that are tied
+const NO_ARTICLE_ID = ""; //Probably a better way to handle this, but we need a way to stop the document modal from retrieving docs that are tied
                             //to articles; just omitting the article id pulls docs regardless of whether they have the id or not.
-
+const NO_INITIATIVE_ID = ""; 
 export interface GetDocumentUrlsRequest {
   companyId: string
   initiativeId?: string
@@ -32,7 +32,7 @@ export interface GetDocumentUrlsResponse {
 }
 
 export async function GetDocumentUrls(request: GetDocumentUrlsRequest) : Promise<GetDocumentUrlsResponse>
-{
+{ 
   const docs: DocumentInfo[] = [];
   const containerName = `client-portal-data`;
 
@@ -48,6 +48,9 @@ export async function GetDocumentUrls(request: GetDocumentUrlsRequest) : Promise
   let query = `companyId='${request.companyId}'`;
   if(request.initiativeId)
     query += ` AND initiativeId='${request.initiativeId}'`;
+  else
+    query += ` AND initiativeId='${NO_INITIATIVE_ID}'`;
+
   if(request.articleId)
     query += ` AND articleId='${request.articleId}'`;
   else
@@ -73,10 +76,8 @@ export async function GetDocumentUrls(request: GetDocumentUrlsRequest) : Promise
       initiativeId: tags.tags.initiativeId,
       articleId: tags.tags.articleId
     }
-    
     docs.push(docItem);
   }
-
   return {documents: docs};
 }
 
@@ -173,6 +174,9 @@ export async function UploadDocument(request: UploadDocumentRequest) : Promise<U
     let tags: any = {companyId: request.companyId};
     if(request.initiativeId)
       tags = {...tags, initiativeId: request.initiativeId};
+    else
+      tags = {...tags, initiativeId: NO_INITIATIVE_ID};
+
     if(request.articleId)
       tags = {...tags, articleId: request.articleId};
     else
