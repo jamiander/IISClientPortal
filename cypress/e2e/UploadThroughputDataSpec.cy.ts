@@ -26,11 +26,11 @@ const user = AdminUser;
 
 function SelectFile(file: any, fileName: string)
 {
-  cy.getByData(uploadIds.chooseFileButton).click()
-      cy.getByData(uploadIds.fileInput).selectFile({
-        contents: Cypress.Buffer.from(file),
-        fileName: fileName 
-      }, {action: 'select', force:true}); 
+  cy.getByData(uploadIds.chooseFileButton).click();
+  cy.getByData(uploadIds.fileInput).selectFile({
+    contents: Cypress.Buffer.from(file),
+    fileName: fileName 
+  }, {action: 'select', force:true}); 
 }
 
 describe('valid upload throughput tests', () => {

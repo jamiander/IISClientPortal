@@ -1,4 +1,4 @@
-import { AdminUser, IntegrityUser, MBPIAdminUser, MBPIUser, SimpleUser, TestConstants } from "./TestHelpers";
+import { AdminUser, IntegrityUser, MBPIAdminUser, MBPIInitiative, MBPIUser, SimpleUser, TestConstants } from "./TestHelpers";
 
 const integrityUser = IntegrityUser;
 const integrityAdmin = AdminUser;
@@ -29,6 +29,8 @@ const editedArticle = {
   updatedDate: "01022023",
   updatedBy: "Jimmy Toast"
 }
+
+const existingInitiative = MBPIInitiative;
 
 function GoToClientArticles(companyName?: string)
 {
@@ -160,22 +162,21 @@ function LogOut()
   cy.get('button').contains("Log Out").click();
 }
 
-
 function Specs(GoToArticles: (companyName?: string) => void, GoToDocuments: (login: SimpleUser) => void)
 {
   specify('Client users cannot add/edit articles', () => {
     cy.login(clientUser);
     GoToArticles();
     CannotAdd();
+    cy.getByData(modalIds.title).should('exist'); //This assumes that we have articles on the initiative that this user can see
     CannotEdit();
-    //We can't actually test for existing articles to edit because adding an article as an Integrity user doesn't persist
-    //when we log in as a client user.
   })
 
   specify('Client admins cannot add/edit articles', () => {
     cy.login(clientAdmin);
     GoToArticles();
     CannotAdd();
+    cy.getByData(modalIds.title).should('exist');
     CannotEdit();
   })
 
@@ -236,8 +237,8 @@ function Specs(GoToArticles: (companyName?: string) => void, GoToDocuments: (log
     cy.getByData(modalIds.editButton).should('not.be.disabled');
   })
 
-  //We can't test for document upload permissions unless we already have an article to work with in the database
-  //As of 6/27/23, there are two articles under MBPI Test Project called "MBPI" and "Integrity Only" to work with
+  //We can't test for document upload permissions unless we already have an article to work with in the database.
+  //As of 6/27/23, there are two articles under MBPI Test Project called "MBPI" and "Integrity Only" to work with.
   specify('Integrity admins can upload files', () => {
     GoToDocuments(integrityAdmin);
 
@@ -268,11 +269,11 @@ function GoToClientDocuments(loginUser: SimpleUser)
   cy.login(loginUser);
   //only Integrity has a view of the client page that allows for filtering
   if(loginUser.email === integrityAdmin.email || loginUser.email === integrityUser.email)
-    GoToClientArticles("MBPI");
+    GoToClientArticles(existingInitiative.companyName);
   else
     GoToClientArticles();
 
-  cy.getByData(modalIds.keywordFilter).type('MBPI');
+  cy.getByData(modalIds.keywordFilter).type(existingInitiative.companyName);
   cy.getByData(modalIds.documents).click();
   cy.getByData(docModalIds.modal).should('exist');
 }
@@ -280,8 +281,8 @@ function GoToClientDocuments(loginUser: SimpleUser)
 function GoToInitiativeDocuments(loginUser: SimpleUser)
 {
   cy.login(loginUser);
-  GoToInitiativeArticles(undefined, "MBPI Test Project");
-  cy.getByData(modalIds.keywordFilter).type('MBPI');
+  GoToInitiativeArticles(undefined, existingInitiative.title);
+  cy.getByData(modalIds.keywordFilter).type(existingInitiative.companyName);
   cy.getByData(modalIds.documents).click();
   cy.getByData(docModalIds.modal).should('exist');
 }
@@ -291,36 +292,30 @@ describe('add client-level article', () => {
 
   specify('Cannot see initiative-level articles from client view', () => {
     cy.login(integrityAdmin);
-    GoToInitiativeArticles("MBPI");
+    GoToInitiativeArticles(existingInitiative.companyName);
     AddArticle();
     cy.contains(articleToAdd.title).should('exist');
     CloseModal();
-    GoToClientArticles("MBPI");
+    GoToClientArticles(existingInitiative.companyName);
     cy.contains(articleToAdd.title).should('not.exist');
   })
 
   specify('Client cannot see Integrity-only articles', () => {
-    cy.login(clientAdmin);
-    GoToClientArticles();
-    CloseModal();
-    cy.getByData(clientPageIds.name).then(($txt) => {
-      let companyName = $txt.text();
+    cy.login(IntegrityUser);
+    GoToClientArticles(existingInitiative.companyName);
+    cy.contains("Integrity Only").then(($flag) => {
+      cy.wrap($flag).parent().findByData(modalIds.title).then(($txt) => {
+        let articleTitle = $txt.text();
 
-      LogOut(); //This clears the store, so this test will always pass; not sure how to work around this without having
-                //an existing Integrity-only article created outside of the tests.
-
-      cy.login(integrityAdmin);
-      GoToClientArticles(companyName);
-      AddArticle(true,true);
-      CloseModal();
-
-      LogOut();
-
-      cy.login(clientAdmin);
-      GoToClientArticles();
-      cy.contains(articleToAdd.title).should('not.exist');
+        CloseModal();
+        LogOut();
+    
+        cy.login(clientAdmin);
+        GoToClientArticles();
+        cy.contains(articleTitle).should('not.exist');
+      });
     });
-  })
+  });
 });
 
 describe('add initiative-level article', () => {
@@ -328,33 +323,28 @@ describe('add initiative-level article', () => {
 
   specify('Cannot see client-level articles from initiative view', () => {
     cy.login(integrityAdmin);
-    GoToClientArticles("MBPI");
+    GoToClientArticles(existingInitiative.companyName);
     AddArticle();
     cy.contains(articleToAdd.title).should('exist');
     CloseModal();
-    GoToInitiativeArticles("MBPI");
+    GoToInitiativeArticles(existingInitiative.companyName);
     cy.contains(articleToAdd.title).should('not.exist');
   })
 
   specify('Client cannot see Integrity-only articles', () => {
-    cy.login(clientAdmin);
-    GoToInitiativeArticles();
-    CloseModal();
-    cy.getByData(initTableIds.initiativeTitle).first().then(($txt) => {
-      let initiativeName = $txt.text();
+    cy.login(IntegrityUser);
+    GoToInitiativeArticles(existingInitiative.companyName,existingInitiative.title);
+    cy.contains("Integrity Only").then(($flag) => {
+      cy.wrap($flag).parent().findByData(modalIds.title).then(($txt) => {
+        let articleTitle = $txt.text();
 
-      LogOut();
-
-      cy.login(integrityAdmin);
-      GoToInitiativeArticles("MBPI",initiativeName);
-      AddArticle(true,true);
-      CloseModal();
-
-      LogOut();
-
-      cy.login(clientAdmin);
-      GoToInitiativeArticles();
-      cy.contains(articleToAdd.title).should('not.exist');
+        CloseModal();
+        LogOut();
+    
+        cy.login(clientAdmin);
+        GoToInitiativeArticles();
+        cy.contains(articleTitle).should('not.exist');
+      });
     });
   })
 });
