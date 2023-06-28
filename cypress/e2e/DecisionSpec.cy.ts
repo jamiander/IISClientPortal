@@ -1,4 +1,4 @@
-import { AdminUser, IntegrityUser, TestConstants } from "./TestHelpers";
+import { AdminUser, IntegrityUser, MBPIInitiative, TestConstants } from "./TestHelpers";
 
 const consts = TestConstants;
 const failMessage = consts.validationFailedMessage;
@@ -12,10 +12,7 @@ const snackbarWaitTime = consts.snackbarWaitTime;
 const waitTime = 500;
 const user = AdminUser;
 
-const init = {
-  companyName: 'Integrity Inspired Solutions',
-  title: "Client Portal"
-}
+const init = MBPIInitiative;
 
 const decision = {
   names: "Johnny Test" ,
@@ -98,9 +95,7 @@ describe("add decision spec", () => {
   specify("must be able to cancel adding", () => {
     cy.getByData(modalIds.cancelChangesButton).click();
     cy.getByData(modalIds.saveChangesButton).should('not.exist');
-    cy.getByData(modalIds.description)
-      .invoke('val')
-      .should('not.eq', decision.description);
+    cy.contains(decision.description).should('not.exist');
   })
 
   specify("close button closes the modal", () => {

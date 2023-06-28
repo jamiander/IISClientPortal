@@ -1,4 +1,4 @@
-import { AdminUser } from "./TestHelpers";
+import { AdminUser, MBPIInitiative } from "./TestHelpers";
 import { IntegrityUser, TestConstants } from "./TestHelpers";
 
 function findItemsCompleted(file: string) : number {
@@ -20,8 +20,7 @@ const snackbarId = consts.snackbarId;
 const radioIds = consts.initiativeDisplayRadioIds;
 const failMessage = consts.validationFailedMessage;
 
-const initiativeTitle = 'Client Portal';
-const companyName = 'Integrity Inspired Solutions';
+const initiative = MBPIInitiative;
 const waitTime = 500;
 const user = AdminUser;
 
@@ -42,9 +41,9 @@ describe('valid upload throughput tests', () => {
     cy.login(user);
 
     cy.getByData(radioIds.all).click();
-    cy.getByData(pageIds.initiativeTitleFilter).type(initiativeTitle);
+    cy.getByData(pageIds.initiativeTitleFilter).type(initiative.title);
 
-    cy.contains('tr', initiativeTitle).findByData(tableIds.remainingItems).then(($span) => {
+    cy.contains('tr', initiative.title).findByData(tableIds.remainingItems).then(($span) => {
       remainingItemsBefore = Number($span.text());
     });
 
@@ -67,8 +66,8 @@ describe('valid upload throughput tests', () => {
     cy.getByData(modalIds.modal).should('not.exist');
     cy.get('body').click(0,0);
     cy.getByData(radioIds.all).click();
-    cy.getByData(pageIds.initiativeTitleFilter).clear().type(initiativeTitle);
-    cy.contains('tr', initiativeTitle).findByData(tableIds.remainingItems).then(($span) => {
+    cy.getByData(pageIds.initiativeTitleFilter).clear().type(initiative.title);
+    cy.contains('tr', initiative.title).findByData(tableIds.remainingItems).then(($span) => {
       let remainingItemsAfter = Number($span.text());
       expect(remainingItemsBefore-itemsCompletedInUpload).to.be.equal(remainingItemsAfter);
     })
@@ -89,7 +88,7 @@ describe('invalid upload throughput tests', () => {
   beforeEach(() => {
     cy.login(user);
 
-    cy.getByData(pageIds.initiativeTitleFilter).type(initiativeTitle);
+    cy.getByData(pageIds.initiativeTitleFilter).type(initiative.title);
     
     cy.getByData(tableIds.actionMenu.menuButton).click();
     cy.getByData(tableIds.actionMenu.uploadThroughputButton).click();

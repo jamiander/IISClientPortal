@@ -291,8 +291,11 @@ export default function ArticleDataModal(props: ArticleDataProps) {
                           </>
                           :
                           <>
-                          {displayItem.isIntegrityOnly &&
-                            <div className="ml-[75%]"><FlagIcon sx={{ color: "red", marginRight: 1 }}></FlagIcon>Integrity Only</div>}
+                            {displayItem.isIntegrityOnly &&
+                              <div className="ml-[75%]">
+                                <FlagIcon sx={{ color: "red", marginRight: 1 }}/>Integrity Only
+                              </div>
+                            }
                             <label className={labelStyle} htmlFor="description">Title</label>
                             <StyledTextarea id="title" data-cy={ArticleModalIds.title} disabled value={displayItem.title}/>
                             <label className={labelStyle} htmlFor="text">Content</label>
