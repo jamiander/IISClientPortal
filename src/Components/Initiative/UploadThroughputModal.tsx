@@ -5,7 +5,8 @@ import { ValidationFailedPrefix } from "../../Services/Validation";
 import { enqueueSnackbar } from "notistack";
 import { BaseInitiativeModal } from "./BaseInitiativeModal";
 import { FileUpload } from "../FileUpload";
-import { Typography } from "@mui/material";
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import { TableHeaderStyle, tableHeaderFontSize } from "../../Styles";
 
 export const UploadThroughputIds = {
   modal: "uploadThroughputModal",
@@ -130,7 +131,57 @@ export default function UploadThroughputModal(props:ThroughputModalProps){
     >
       <div className="space-y-5">
         <Typography>Submit a .csv file formatted as follows:</Typography>
-        <Typography>Date, ItemsCompleted<br/>MM/DD/YYYY, #itemsCompleted<br/>MM/DD/YYYY, #itemsCompleted<br/>...</Typography>
+        <TableContainer>
+          <Table className="table-auto w-full outline outline-3 bg-gray-100">
+            <colgroup>
+              <col style={{ width: '24vw' }} />
+              <col style={{ width: '16vw' }} />
+            </colgroup>
+            <TableHead className="outline outline-1">
+              <TableRow sx={{
+                  borderBottom: "2px solid black",
+                  "& th": {
+                    fontSize: tableHeaderFontSize,
+                    fontFamily: "Arial, Helvetica"
+                  }
+                }}>
+                <TableHeaderStyle>
+                  Date
+                </TableHeaderStyle>
+                <TableHeaderStyle>
+                  ItemsCompleted
+                </TableHeaderStyle>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              <TableRow>
+                <TableCell>
+                  MM/DD/YYYY
+                </TableCell>
+                <TableCell>
+                  #itemsCompleted
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>
+                  MM/DD/YYYY
+                </TableCell>
+                <TableCell>
+                  #itemsCompleted
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>
+                  ...
+                </TableCell>
+                <TableCell>
+                  ...
+                </TableCell>
+              </TableRow>
+            </TableBody>
+            
+          </Table>
+        </TableContainer>
         <Typography>{fileWarning}</Typography>
         <div className="flex">
           <FileUpload cypressData={UploadThroughputIds.fileUpload} accept={'.csv'} file={file} setFile={ReceiveFile} isUploading={isUploading} UploadFile={UploadFile}/>
