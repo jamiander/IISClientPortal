@@ -12,9 +12,10 @@ export function AddButton(props: AddButtonProps)
 {
   return (
     <ThemeProvider theme={IntegrityTheme}>
-      <Button data-cy={props.cypressData} style={{outlineColor: 'blue'}} variant="contained" disabled={props.disabled} onClick={() => props.HandleClick()} size="large">
-        <AddIcon sx={{fontSize:"large", marginRight: 0.25}}/>
-        <Typography variant="button" sx={{marginLeft: 0.25}}>Add</Typography>
+      <Button data-cy={props.cypressData} variant="contained" disabled={props.disabled} onClick={() => props.HandleClick()}
+        style={{outlineColor: 'blue'}} size="large" startIcon={<AddIcon sx={{fontSize:"inherit"}}/>}  
+      >
+        <Typography variant="button">Add</Typography>
       </Button>
     </ThemeProvider>
   )

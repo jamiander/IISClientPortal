@@ -50,22 +50,25 @@ export const TestConstants = {
   snackbarWaitTime: 1000,   //how long it should wait for the snackbar to go away after requesting a new one
 }
 
-export const IntegrityUser = {
+
+export type SimpleUser = {email: string, password: string}
+
+export const IntegrityUser: SimpleUser = {
   email: "notanadmin@integrityinspired.com",
   password: "notadmin"
 }
 
-export const AdminUser = {
+export const AdminUser: SimpleUser = {
   email: "admin@integrityinspired.com",
   password: "admin"
 }
 
-export const MBPIUser = {
+export const MBPIUser: SimpleUser = {
   email: "info@mbpi.com",
   password: "testingMBPI"
 }
 
-export const MBPIAdminUser = {
+export const MBPIAdminUser: SimpleUser = {
   email: "admin@mbpi.com",
   password: "testingMBPI"
 }
