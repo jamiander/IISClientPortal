@@ -53,7 +53,7 @@ export default function NavPanel(){
 
   return(
     <div className="ml-4 mr-4 space-x-2 flex mt-4 mb-4">
-    {currentUser?.isActive &&
+    {currentUser?.isActive && currentUser.isAdmin && currentUser.companyId === IntegrityId &&
     <>
       <IconButton className="text-xl"
           id="basic-button"

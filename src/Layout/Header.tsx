@@ -25,6 +25,9 @@ export default function Header(){
     case '/Login':
       title = "Welcome to the Integrity Inspired Solutions Client Portal!";
     break;
+    case '/Dashboard':
+      title = `${company?.name} Dashboard`;
+    break;
     case '/Initiatives':
       title = "Initiatives Management";
     break;
@@ -47,6 +50,7 @@ export default function Header(){
     dispatch(clearCompanies());
     dispatch(clearArticles());
     dispatch(signOut());
+    navigate('/Login');
   }
 
   return(

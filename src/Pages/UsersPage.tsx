@@ -146,6 +146,7 @@ export default function UsersPage(){
     <ThemeProvider theme={IntegrityTheme}>
       <div className="mx-[2%] mb-2">
         <div className="flex flex-row justify-content:space-between">
+        {currentUser?.companyId === IntegrityId && 
           <Grid container sx={{ display: 'flex',
             placeItems: 'center',
             flexDirection: 'row',
@@ -167,7 +168,8 @@ export default function UsersPage(){
               }}> 
               <AddButton cypressData={UsersPageIds.addButton} HandleClick={() => AddEmptyUser(currentUserCompanyId, false)} disabled={InEditMode()}/>            
             </Grid>  
-          </Grid>         
+          </Grid> 
+        }        
         </div>
         <div className="col-span-1 py-2">
           <TableContainer elevation={12} component={Paper}>
@@ -191,7 +193,9 @@ export default function UsersPage(){
                     fontFamily: "Arial, Helvetica"
                   }
                 }}>
-                  <TableHeaderStyle>Company</TableHeaderStyle>
+                  {currentUser?.companyId === IntegrityId &&
+                    <TableHeaderStyle>Company</TableHeaderStyle>
+                  }
                   <TableHeaderStyle>Name</TableHeaderStyle>
                   <TableHeaderStyle>Email</TableHeaderStyle>
                   <TableHeaderStyle>Password</TableHeaderStyle>
@@ -253,7 +257,9 @@ export default function UsersPage(){
                             </>
                             :
                             <>
+                            {currentUser?.companyId === IntegrityId &&
                               <TableCell data-cy={UsersPageIds.company}>{displayCompany?.name}</TableCell>
+                            }
                               <TableCell data-cy={UsersPageIds.name}>{companyUser.name}</TableCell>
                               <TableCell data-cy={UsersPageIds.email}>{companyUser.email}</TableCell>
                               <TableCell data-cy={UsersPageIds.password}>{companyUser.password}</TableCell>
@@ -275,7 +281,8 @@ export default function UsersPage(){
               </TableBody>
             </Table>
           </TableContainer>
-          <Paginator paginator={paginator} disabled={InEditMode()}/>
+          {currentUser?.companyId === IntegrityId && currentUser.isAdmin &&
+          <Paginator paginator={paginator} disabled={InEditMode()}/>}
         </div>
       </div>
     </ThemeProvider>

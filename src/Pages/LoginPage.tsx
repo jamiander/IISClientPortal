@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks"
-import { authenticateUser, selectCurrentUserId, selectLogInAttempts } from "../Store/UserSlice";
+import { authenticateUser, selectCurrentUser, selectCurrentUserId, selectLogInAttempts } from "../Store/UserSlice";
 import { IntegrityTheme, tableCellFontSize, tableHeaderFontSize } from "../Styles";
 import { Box, Button, Checkbox, CircularProgress, Container, FormControlLabel, TextField, Typography } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
+import { IntegrityId } from "../Store/CompanySlice";
 
 export const LoginPageIds = {
   email: "email",
@@ -15,7 +16,7 @@ export const LoginPageIds = {
 export default function LoginPage(){
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const currentUserId = useAppSelector(selectCurrentUserId);
+  const currentUser = useAppSelector(selectCurrentUser);
   const [userEmail, setUserEmail] = useState('admin@integrityinspired.com');
   const [password, setPassword] = useState('admin');
   const [passwordShown,setPasswordShown] = useState(false);
@@ -53,11 +54,19 @@ export default function LoginPage(){
   }
 
   useEffect(() => {
-    if(currentUserId !== "-1")
+    if(currentUser?.id !== "-1" && currentUser?.companyId === IntegrityId)
     {
       navigate('/Initiatives');
     }
-  },[currentUserId]);
+    else if(currentUser?.id !== "-1" && currentUser?.companyId !== IntegrityId)
+    {
+      navigate('/Dashboard');
+    }
+    else
+    {
+      navigate('/Login');
+    }
+  },[currentUser?.id]);
 
   return (
     <ThemeProvider theme={IntegrityTheme}>

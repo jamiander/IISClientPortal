@@ -58,6 +58,7 @@ export default function InitiativesPage()
     <>
       <div className="mx-[2%] mb-2">
         <div className="flex flex-row justify-content:space-between">
+        {currentUser?.companyId === IntegrityId && 
           <Grid container sx={{ display: 'flex',
               flexDirection: 'row',
               placeItems: 'center',
@@ -68,10 +69,9 @@ export default function InitiativesPage()
               mr: 2,
               borderRadius: 1 }}>
             <Grid item xs={3}>
-              {currentUser?.companyId === IntegrityId && 
-                <SearchBar cypressData={InitiativesPageIds.companyNameFilter} placeholder="Filter by Company" value={searchedComp} setValue={setSearchedComp} disabled={isEditing}/>
-              }
-                <SearchBar cypressData={InitiativesPageIds.initiativeTitleFilter} placeholder="Filter by Title" value={searchedInit} setValue={setSearchedInit} disabled={isEditing}/>
+                <>
+                  <SearchBar cypressData={InitiativesPageIds.companyNameFilter} placeholder="Filter by Company" value={searchedComp} setValue={setSearchedComp} disabled={isEditing} /><SearchBar cypressData={InitiativesPageIds.initiativeTitleFilter} placeholder="Filter by Title" value={searchedInit} setValue={setSearchedInit} disabled={isEditing} />
+                </>
             </Grid>
             <ActiveRadioSet cypressData={InitiativeDisplayRadioIds} name="initiativesPage" setRadioValue={setRadioValue} listItems={allInitiatives} filterFunc={InitiativeFilter} disabled={isEditing}/>
             {currentUser?.isAdmin ?
@@ -90,6 +90,7 @@ export default function InitiativesPage()
               <Grid item xs={3}></Grid>
             }
           </Grid>
+        }
         </div>
         {allCompanies.length > 0 && currentUser &&
         <InitiativesTable addInitiative={addInitiative} currentUser={currentUser} companyList={allCompanies} radioStatus={radioValue}

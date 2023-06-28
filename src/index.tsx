@@ -11,6 +11,7 @@ import LoginPage from './Pages/LoginPage';
 import UsersPage from './Pages/UsersPage';
 import { ClientPage } from './Pages/ClientPage';
 import { IntegrityPage } from './Pages/IntegrityPage';
+import { DashboardPage } from './Pages/DashboardPage';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -46,6 +47,11 @@ const router = createBrowserRouter([
       {
         path: '/ClientPage',
         element: <ClientPage/>,
+        errorElement: <ErrorPage/>
+      },
+      {
+        path: '/Dashboard',
+        element: <DashboardPage/>,
         errorElement: <ErrorPage/>
       }
     ]

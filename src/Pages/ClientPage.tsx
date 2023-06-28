@@ -290,7 +290,7 @@ export function ClientPage()
               </TableBody>
             </Table>
           </TableContainer>
-          {currentUser?.companyId === IntegrityId &&
+          {currentUser?.companyId === IntegrityId && currentUser.isAdmin &&
           <Paginator paginator={paginator} disabled={InEditMode()}/>}
         </div>
       </div>
