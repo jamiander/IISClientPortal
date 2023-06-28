@@ -15,6 +15,7 @@ interface DocumentMenuItemProps {
 export function DocumentMenuItem(props: DocumentMenuItemProps)
 {
   const [isOpen, setIsOpen] = useState(false);
+  let userHasPermission = props.currentUser.isAdmin;
 
   function HandleClose()
   {
@@ -25,7 +26,7 @@ export function DocumentMenuItem(props: DocumentMenuItemProps)
   return (
     <>
       <ActionsMenuItem cypressData={props.cypressData} text="Documents" handleClick={() => setIsOpen(true)}/>
-      <DocumentManagementModal {...props} articleWithDocsId={undefined} isOpen={isOpen} HandleClose={HandleClose}/>
+      <DocumentManagementModal {...props} userHasPermission={userHasPermission} articleWithDocsId={undefined} title={"Documents"} isOpen={isOpen} HandleClose={HandleClose}/>
     </>
   )
 }

@@ -84,6 +84,8 @@ export default function ArticleDataModal(props: ArticleDataProps) {
     const [documentModalOpen, setDocumentModalOpen] = useState(false);
     const [articleWithDocsId, setArticleWithDocsId] = useState("");
 
+    let userHasPermission = props.currentUser.companyId === IntegrityId;
+
     useEffect(() => {
       if(props.isOpen)
         CallDispatch();
@@ -353,7 +355,7 @@ export default function ArticleDataModal(props: ArticleDataProps) {
         </div>
         }
       </BaseInitiativeModal>
-      <DocumentManagementModal articleWithDocsId={articleWithDocsId} company={props.company} currentUser={props.currentUser} isOpen={documentModalOpen} HandleClose={HandleClose}></DocumentManagementModal>
+      <DocumentManagementModal articleWithDocsId={articleWithDocsId} userHasPermission={userHasPermission} company={props.company} currentUser={props.currentUser} title={"Related Documentation"} isOpen={documentModalOpen} HandleClose={HandleClose}></DocumentManagementModal>
     </>
   );
 }
