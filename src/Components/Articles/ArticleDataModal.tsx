@@ -1,4 +1,4 @@
-import { Grid, CircularProgress, IconButton, Checkbox } from "@mui/material";
+import { Grid, CircularProgress, IconButton, Checkbox, Button, Typography } from "@mui/material";
 import { DateInfo } from "../../Services/CompanyService";
 import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
 import { Item, StyledCard, StyledCardContent, labelStyle, StyledTextarea, StyledCardActions } from "../../Styles";
@@ -210,8 +210,8 @@ export default function ArticleDataModal(props: ArticleDataProps) {
     }
 
     function LeaveEditMode() {
-        setArticleToEdit(undefined);
-        setModalState(stateEnum.start);
+      setArticleToEdit(undefined);
+      setModalState(stateEnum.start);
     }
 
     function HandleClose() {
@@ -278,7 +278,7 @@ export default function ArticleDataModal(props: ArticleDataProps) {
                   <Item>
                     <StyledCard>
                       <StyledCardContent>
-                          {isEdit ?
+                        {isEdit ?
                           <>
                             <div className="ml-[75%]"><Checkbox data-cy={ArticleModalIds.isIntegrityOnly} color="darkBlue" checked={isIntegrityOnly} onChange={e => setIsIntegrityOnly(e.target.checked)}/>Integrity Only</div>
                             <label className={labelStyle} htmlFor="title">Title</label>
@@ -299,14 +299,15 @@ export default function ArticleDataModal(props: ArticleDataProps) {
                             <StyledTextarea id="text" data-cy={ArticleModalIds.text} disabled value={displayItem.text}/>
                             <label className={labelStyle} htmlFor="text">Updated By</label>
                             <StyledTextarea id="updatedby" data-cy={ArticleModalIds.updatedBy} disabled value={displayItem.updatedBy}/>
-                            <div className="flex flex-row justify-content:space-between">
+                            <div className="flex flex-row justify-between space-x-2">
                               <DateInput cypressData={ArticleModalIds.updatedDate} label="Date Updated" disabled={true} date={displayItem.updatedDate} setDate={setCurrentUpdatedDate}/>
-                              <IconButton data-cy={ArticleModalIds.documents} onClick={() => {setDocumentModalOpen(true); setArticleWithDocsId(displayItem.id)}} sx={{ fontSize: "1.2rem", width: "50%", alignContent: "right" }}>
-                                <FolderIcon sx={{ color: "blue", fontSize: "inherit",  marginRight: 1 }}></FolderIcon>Related Documentation
-                              </IconButton>
+                              <Button data-cy={ArticleModalIds.documents} onClick={() => {setDocumentModalOpen(true); setArticleWithDocsId(displayItem.id)}} sx={{ fontSize: "1.2rem" }}>
+                                <FolderIcon sx={{ color: "blue", fontSize: "inherit" }}/>
+                                <Typography variant="button">Related Docs</Typography>
+                              </Button>
                             </div>
                           </>
-                          }
+                        }
                           
                       </StyledCardContent>
                       <StyledCardActions>
