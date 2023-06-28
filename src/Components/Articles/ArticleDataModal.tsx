@@ -255,6 +255,9 @@ export default function ArticleDataModal(props: ArticleDataProps) {
                 {isLoading &&
                   <CircularProgress color={"warning"}/>
                 }
+                {!isLoading && filteredArticles.length === 0 &&
+                  <p className="m-2 p-2 text-2xl font-bold">There are no articles to display</p>
+                }
               </Grid>
               {props.currentUser.companyId === IntegrityId && 
               <Grid item xs={4} sx={{ display: 'flex',
@@ -305,7 +308,7 @@ export default function ArticleDataModal(props: ArticleDataProps) {
                             <div className="flex flex-row justify-between space-x-2">
                               <DateInput cypressData={ArticleModalIds.updatedDate} label="Date Updated" disabled={true} date={displayItem.updatedDate} setDate={setCurrentUpdatedDate}/>
                               <Button data-cy={ArticleModalIds.documents} onClick={() => {setDocumentModalOpen(true); setArticleWithDocsId(displayItem.id)}} sx={{ fontSize: "1.2rem" }}>
-                                <FolderIcon sx={{ color: "blue", fontSize: "inherit" }}/>
+                                <FolderIcon sx={{ color: "blue", fontSize: "inherit", marginRight: 1 }}/>
                                 <Typography variant="button">Related Docs</Typography>
                               </Button>
                             </div>
@@ -345,9 +348,6 @@ export default function ArticleDataModal(props: ArticleDataProps) {
                 </Grid>
                 )
               })
-            }
-            {
-            filteredArticles.length === 0 && <Grid item className="mt-4 text-2xl font-bold">No articles to display.</Grid>
             }
           </Grid>
         </div>

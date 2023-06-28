@@ -82,7 +82,7 @@ export function DocumentManagementModal(props: DocumentManagementModalProps)
           </div>
         }
         {!isLoading && docInfos.length === 0 &&
-          <p className="m-2">There are no files to display</p>
+          <p className="m-2 p-2 text-2xl font-bold">There are no documents to display</p>
         }
         {docInfos.length !== 0 &&
           <TableContainer component={Paper} className="my-2">

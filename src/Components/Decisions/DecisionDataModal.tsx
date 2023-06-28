@@ -251,6 +251,9 @@ export default function DecisionDataModal(props: DecisionDataProps) {
                 {isLoading &&
                   <CircularProgress color={"warning"}/>
                 }
+                {!isLoading && filteredDecisions.length === 0 &&
+                  <p className="m-2 p-2 text-2xl font-bold">There are no decisions to display</p>
+                }
               </Grid>
               {props.currentUser.isAdmin &&
               <Grid item xs={4} sx={{ display: 'flex',
@@ -332,9 +335,6 @@ export default function DecisionDataModal(props: DecisionDataProps) {
                   </Grid>
                 )
               })}
-              {
-              filteredDecisions.length === 0 && <Grid item className="mt-4 text-2xl font-bold">No decisions to display.</Grid>
-              }
             </Grid>
           </div>
         </BaseInitiativeModal>
