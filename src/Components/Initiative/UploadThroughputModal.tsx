@@ -129,7 +129,7 @@ export default function UploadThroughputModal(props:ThroughputModalProps){
       title="Upload Throughput"
       subtitle={`${props.company.name}${props.initiative ? ` - ${props.initiative.title}` : ``}`}
     >
-      <div className="space-y-5">
+      <div className="space-y-2">
         <Typography>Submit a .csv file formatted as follows:</Typography>
         <TableContainer>
           <Table className="table-auto w-full outline outline-3 bg-gray-100">
