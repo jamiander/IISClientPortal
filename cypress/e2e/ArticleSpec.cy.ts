@@ -238,25 +238,25 @@ function Specs(GoToArticles: (companyName?: string) => void, GoToDocuments: (log
 
   //We can't test for document upload permissions unless we already have an article to work with in the database
   //As of 6/27/23, there are two articles under MBPI Test Project called "MBPI" and "Integrity Only" to work with
-  specify.only('Integrity admins can upload files', () => {
+  specify('Integrity admins can upload files', () => {
     GoToDocuments(integrityAdmin);
 
     cy.getByData(docModalIds.documentUpload.chooseFileButton).should('exist');
   })
 
-  specify.only('Integrity users can upload files', () => {
+  specify('Integrity users can upload files', () => {
     GoToDocuments(integrityUser);
 
     cy.getByData(docModalIds.documentUpload.chooseFileButton).should('exist');
   })
 
-  specify.only('Client admins cannot upload files', () => {
+  specify('Client admins cannot upload files', () => {
     GoToDocuments(MBPIAdminUser);
 
     cy.getByData(docModalIds.documentUpload.chooseFileButton).should('not.exist');
   })
 
-  specify.only('Client users cannot upload files', () => {
+  specify('Client users cannot upload files', () => {
     GoToDocuments(MBPIUser);
 
     cy.getByData(docModalIds.documentUpload.chooseFileButton).should('not.exist');
