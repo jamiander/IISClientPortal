@@ -21,6 +21,11 @@ interface BaseInitiativeModalProps {
   }
 }
 
+const stopPropagationForTab = (event: any) => {
+  
+    event.stopPropagation();
+  
+};
 
 export function BaseInitiativeModal(props: BaseInitiativeModalProps)
 {
@@ -28,6 +33,7 @@ export function BaseInitiativeModal(props: BaseInitiativeModalProps)
     <ThemeProvider theme={IntegrityTheme}>
       <Container>
         <Dialog
+          onKeyDown={stopPropagationForTab}
           open={props.open}
           onClose={() => props.onClose()}
           fullWidth
