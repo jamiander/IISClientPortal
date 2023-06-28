@@ -99,11 +99,6 @@ export function DocumentManagementModal(props: DocumentManagementModalProps)
                   <TableHeaderStyle>
                     File Name
                   </TableHeaderStyle>
-                  {!props.initiative &&
-                  <TableHeaderStyle>
-                    Initiative
-                  </TableHeaderStyle>
-                  }
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -126,13 +121,6 @@ export function DocumentManagementModal(props: DocumentManagementModalProps)
                           <DocumentDownload docInfo={doc}/>
                         </div>
                       </TableCell>
-                      {!props.initiative &&
-                      <TableCell>
-                        {
-                          doc.initiativeId ? (props.company.initiatives.find(i => i.id === doc.initiativeId)?.title ?? "N/A") : "N/A"
-                        }
-                      </TableCell>
-                      }
                     </TableRow>
                   )
                 })
