@@ -84,6 +84,8 @@ export default function ArticleDataModal(props: ArticleDataProps) {
     const [documentModalOpen, setDocumentModalOpen] = useState(false);
     const [articleWithDocsId, setArticleWithDocsId] = useState("");
 
+    let userHasPermission = props.currentUser.companyId === IntegrityId;
+
     useEffect(() => {
       if(props.isOpen)
         CallDispatch();
@@ -292,7 +294,8 @@ export default function ArticleDataModal(props: ArticleDataProps) {
                           :
                           <>
                           {displayItem.isIntegrityOnly &&
-                            <div className="ml-[75%]"><FlagIcon sx={{ color: "red", marginRight: 1 }}></FlagIcon>Integrity Only</div>}
+                            <div className="ml-[75%]"><FlagIcon sx={{ color: "red", marginRight: 1 }}></FlagIcon>Integrity Only</div>
+                          }
                             <label className={labelStyle} htmlFor="description">Title</label>
                             <StyledTextarea id="title" data-cy={ArticleModalIds.title} disabled value={displayItem.title}/>
                             <label className={labelStyle} htmlFor="text">Content</label>
@@ -350,7 +353,7 @@ export default function ArticleDataModal(props: ArticleDataProps) {
         </div>
         }
       </BaseInitiativeModal>
-      <DocumentManagementModal articleWithDocsId={articleWithDocsId} company={props.company} currentUser={props.currentUser} isOpen={documentModalOpen} HandleClose={HandleClose}></DocumentManagementModal>
+      <DocumentManagementModal articleWithDocsId={articleWithDocsId} userHasPermission={userHasPermission} company={props.company} currentUser={props.currentUser} title={"Related Documentation"} isOpen={documentModalOpen} HandleClose={HandleClose}></DocumentManagementModal>
     </>
   );
 }
