@@ -82,3 +82,8 @@ export const StaplesCompany = {
   name: "Staples",
   id: "a9093993-0295-47b8-8a7a-4237094da43f"
 }
+
+export const MBPIInitiative = {
+  title: "MBPI Test Project - Do not remove!",
+  companyName: "MBPI"
+}

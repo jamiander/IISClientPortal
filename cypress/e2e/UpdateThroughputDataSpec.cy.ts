@@ -1,4 +1,4 @@
-import { AdminUser, IntegrityUser, TestConstants } from "./TestHelpers";
+import { AdminUser, IntegrityUser, MBPIInitiative, TestConstants } from "./TestHelpers";
 
 const consts = TestConstants;
 const modalIds = consts.editThroughputIds;
@@ -8,8 +8,7 @@ const tableIds = consts.initiativeTableIds;
 const radioIds = consts.initiativeDisplayRadioIds;
 const pageIds = consts.initiativesPageIds;
 const snackbarWaitTime = consts.snackbarWaitTime;
-const initiativeTitle = 'Client Portal';
-const company = 'Integrity Inspired Solutions';
+const initiative = MBPIInitiative;
 const waitTime = 500;
 const user = AdminUser;
 
@@ -30,9 +29,9 @@ describe('add throughput data by manual entry', () => {
     cy.login(user);
 
     cy.getByData(radioIds.all).click();
-    cy.getByData(pageIds.initiativeTitleFilter).type(initiativeTitle);
+    cy.getByData(pageIds.initiativeTitleFilter).type(initiative.title);
 
-    cy.contains('tr', initiativeTitle).findByData(tableIds.remainingItems).then(($span) => {
+    cy.contains('tr', initiative.title).findByData(tableIds.remainingItems).then(($span) => {
       remainingItemsBefore = Number($span.text());
     });
 
@@ -52,8 +51,8 @@ describe('add throughput data by manual entry', () => {
     
     cy.wait(waitTime);
     cy.getByData(radioIds.all).click();
-    cy.getByData(pageIds.initiativeTitleFilter).clear().type(initiativeTitle);
-    cy.contains('tr', initiativeTitle).findByData(tableIds.remainingItems).then(($span) => {
+    cy.getByData(pageIds.initiativeTitleFilter).clear().type(initiative.title);
+    cy.contains('tr', initiative.title).findByData(tableIds.remainingItems).then(($span) => {
       let remainingItemsAfter = Number($span.text());
       expect(remainingItemsBefore-2).to.be.equal(remainingItemsAfter);
     });
