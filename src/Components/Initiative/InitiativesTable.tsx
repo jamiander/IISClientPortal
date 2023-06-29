@@ -274,15 +274,15 @@ export default function InitiativesTable(props: InitiativesProps) {
             <Table className="table-auto w-full outline outline-3 bg-gray-100">
               <colgroup>
                 {isIntegrityUser &&
-                  <col style={{ width: '24vw' }} />
+                  <col style={{ width: '20vw' }} />
                 }
-                <col style={{ width: '24vw' }} />
-                <col style={{ width: '16vw' }} />
                 <col style={{ width: '16vw' }} />
                 <col style={{ width: '12vw' }} />
-                <col style={{ width: '12vw' }} />
-                <col style={{ width: '12vw' }} />
-                <col style={{ width: '3vw' }} />
+                <col style={{ width: '11vw' }} />
+                <col style={{ width: '11vw' }} />
+                <col style={{ width: '18vw' }} />
+                <col style={{ width: '16vw' }} />
+                <col style={{ width: '8vw' }} />
                 {isAdmin &&
                   <col style={{ width: '3vw' }} />
                 } 
@@ -310,7 +310,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                   <TableHeaderStyle>
                     <SortLabel heading="Target Completion" sortKey='targetDateTime'/>
                   </TableHeaderStyle>
-                  <TableHeaderStyle>Total Items</TableHeaderStyle>
+                  <TableHeaderStyle>Total Items / Completed Items</TableHeaderStyle>
                   <TableHeaderStyle>Percent Completed</TableHeaderStyle>
                   <TableHeaderStyle>
                     <SortLabel heading="On-Time Completion Probability" sortKey='probabilityValue'/>
@@ -342,7 +342,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                   };
                   return (
                     <Fragment key={index}>
-                      <TableRow key={index} sx={{
+                      <TableRow key={index} className={defaultRowStyle} sx={{
                         borderBottom: "1px solid black",
                         "& td": {
                           fontSize: tableCellFontSize,
@@ -418,7 +418,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                             <TableCell data-cy={InitiativeTableIds.initiativeTitle}>{displayItem.title}</TableCell>
                             <TableCell data-cy={InitiativeTableIds.startDate}>{displayItem.startDate.month + "/" + displayItem.startDate.day + "/" + displayItem.startDate.year}</TableCell>
                             <TableCell data-cy={InitiativeTableIds.targetDate}>{displayItem.targetDate.month + "/" + displayItem.targetDate.day + "/" + displayItem.targetDate.year}</TableCell>
-                            <TableCell data-cy={InitiativeTableIds.totalItems}>{displayItem.totalItems}</TableCell>
+                            <TableCell data-cy={InitiativeTableIds.totalItems}>{displayItem.totalItems} / {itemsCompleted}</TableCell>
                             <TableCell>
                               <ProgressBar key={index} bgcolor="blue" completed={Math.round((itemsCompleted/displayItem.totalItems)*100)} />
                             </TableCell>

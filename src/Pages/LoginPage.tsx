@@ -56,7 +56,7 @@ export default function LoginPage(){
   useEffect(() => {
     if(currentUser)
     {
-      if(currentUser.companyId === IntegrityId)
+      if(currentUser.companyId === IntegrityId && currentUser.isAdmin)
         navigate('/Initiatives');
       else
         navigate('/Dashboard');

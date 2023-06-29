@@ -58,7 +58,7 @@ export default function InitiativesPage()
     <>
       <div className="mx-[2%] mb-2">
         <div className="flex flex-row justify-content:space-between">
-        {currentUser?.companyId === IntegrityId && 
+        {currentUser?.isAdmin && 
           <Grid container sx={{ display: 'flex',
               flexDirection: 'row',
               placeItems: 'center',
@@ -68,14 +68,21 @@ export default function InitiativesPage()
               ml: 2,
               mr: 2,
               borderRadius: 1 }}>
-            <Grid item xs={3}>
-                <>
+            {currentUser?.companyId === IntegrityId ?
+            <><Grid item xs={3} sx={{
+                  display: 'flex',
+                  justifyContent: 'flex-start',
+                }}>
                   <SearchBar cypressData={InitiativesPageIds.companyNameFilter} placeholder="Filter by Company" value={searchedComp} setValue={setSearchedComp} disabled={isEditing} /><SearchBar cypressData={InitiativesPageIds.initiativeTitleFilter} placeholder="Filter by Title" value={searchedInit} setValue={setSearchedInit} disabled={isEditing} />
-                </>
-            </Grid>
-            <ActiveRadioSet cypressData={InitiativeDisplayRadioIds} name="initiativesPage" setRadioValue={setRadioValue} listItems={allInitiatives} filterFunc={InitiativeFilter} disabled={isEditing}/>
-            {currentUser?.isAdmin ?
-              <Grid item xs={3} sx={{ display: 'flex',
+                </Grid><ActiveRadioSet cypressData={InitiativeDisplayRadioIds} name="initiativesPage" setRadioValue={setRadioValue} listItems={allInitiatives} filterFunc={InitiativeFilter} disabled={isEditing} /></>
+              :
+              <Grid item xs={9} sx={{
+                display: 'flex',
+                justifyContent: 'flex-start',
+              }}></Grid>
+            }
+              <Grid item xs={3} sx={{ 
+                display: 'flex',
                 justifyContent: 'flex-end'
                 }}>   
                 <AddButton cypressData={InitiativesPageIds.addInitiativeButton}
@@ -86,9 +93,6 @@ export default function InitiativesPage()
                   }} 
                 disabled={isEditing}/>     
               </Grid>
-              :
-              <Grid item xs={3}></Grid>
-            }
           </Grid>
         }
         </div>

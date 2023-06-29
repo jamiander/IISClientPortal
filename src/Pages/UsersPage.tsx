@@ -146,144 +146,150 @@ export default function UsersPage(){
     <ThemeProvider theme={IntegrityTheme}>
       <div className="mx-[2%] mb-2">
         <div className="flex flex-row justify-content:space-between">
-        {currentUser?.companyId === IntegrityId && 
-          <Grid container sx={{ display: 'flex',
-            placeItems: 'center',
-            flexDirection: 'row',
-            p: 1,
-            mt: 2,
-            mb: 1,
-            ml: 2,
-            mr: 2,
-            borderRadius: 1
-          }}>
-            <Grid item xs={3} sx={{ display: 'flex',
-              justifyContent: 'flex-start',
+        {currentUser?.isAdmin && 
+          <><Grid container sx={{
+              display: 'flex',
+              placeItems: 'center',
+              flexDirection: 'row',
+              p: 1,
+              mt: 2,
+              mb: 1,
+              ml: 2,
+              mr: 2,
+              borderRadius: 1
             }}>
-              <SearchBar cypressData={UsersPageIds.keywordFilter} disabled={InEditMode()} value={searchedKeyword} setValue={setSearchedKeyword} placeholder={"Keyword in Name or Email"}/>
-            </Grid>
-            <ActiveRadioSet cypressData={UsersPageIds.radioIds} name="usersPage" setRadioValue={setRadioValue} listItems={allUsers} filterFunc={UserFilter} disabled={InEditMode()}/>
-            <Grid item xs={3} sx={{ display: 'flex',
-              justifyContent: 'flex-end'
-              }}> 
-              <AddButton cypressData={UsersPageIds.addButton} HandleClick={() => AddEmptyUser(currentUserCompanyId, false)} disabled={InEditMode()}/>            
-            </Grid>  
-          </Grid> 
-        }        
-        </div>
-        <div className="col-span-1 py-2">
-          <TableContainer elevation={12} component={Paper}>
-            <Table className="table-auto w-full outline outline-3 bg-gray-100">
-              <colgroup>
-                <col style={{ width: '13vw' }} />
-                <col style={{ width: '15vw' }} />
-                <col style={{ width: '15vw' }} />
-                <col style={{ width: '10vw' }} />
-                <col style={{ width: '8vw' }} />
-                <col style={{ width: '10vw' }} />
-                <col style={{ width: '6vw' }} />
-                <col style={{ width: '10vw' }} />
-              </colgroup>
-              <TableHead className="outline outline-1">
-                <TableRow sx={{
-                  borderBottom: "2px solid black",
-                  "& th": {
-                    fontSize: tableHeaderFontSize,
-                    fontWeight: "bold",
-                    fontFamily: "Arial, Helvetica"
-                  }
+              {currentUser?.companyId === IntegrityId ?
+                <><Grid item xs={3} sx={{
+                  display: 'flex',
+                  justifyContent: 'flex-start',
                 }}>
-                  {currentUser?.companyId === IntegrityId &&
-                    <TableHeaderStyle>Company</TableHeaderStyle>
-                  }
-                  <TableHeaderStyle>Name</TableHeaderStyle>
-                  <TableHeaderStyle>Email</TableHeaderStyle>
-                  <TableHeaderStyle>Password</TableHeaderStyle>
-                  <TableHeaderStyle>Phone</TableHeaderStyle>
-                  <TableHeaderStyle>Admin Status</TableHeaderStyle>
-                  <TableHeaderStyle>Active Status</TableHeaderStyle>
-                  <TableHeaderStyle>Initiatives</TableHeaderStyle>
-                  <TableHeaderStyle>Edit User</TableHeaderStyle>
-                </TableRow>
-              </TableHead>
-              <TableBody data-cy={UsersPageIds.table}>
-                {
-                  usersList.map((companyUser, key) => {
-                      let isEdit = InEditMode() && companyUser.id === userToEdit?.id;
-                      let displayCompany = allCompanies.find(c => c.id === companyUser.companyId);
-                      return (
-                        <TableRow className={defaultRowStyle} key={key} sx={{
-                          borderBottom: "1px solid black",
-                          "& td": {
-                            fontSize: tableCellFontSize,
-                            fontFamily: "Arial, Helvetica",
-                            color: "#21345b"
+                  <SearchBar cypressData={UsersPageIds.keywordFilter} disabled={InEditMode()} value={searchedKeyword} setValue={setSearchedKeyword} placeholder={"Keyword in Name or Email"} />
+                </Grid>
+                  <ActiveRadioSet cypressData={UsersPageIds.radioIds} name="usersPage" setRadioValue={setRadioValue} listItems={allUsers} filterFunc={UserFilter} disabled={InEditMode()} /></>
+                :
+                <Grid item xs={9} sx={{
+                  display: 'flex',
+                  justifyContent: 'flex-start',
+                }}></Grid>
+              }
+                  <Grid item xs={3} sx={{
+                    display: 'flex',
+                    justifyContent: 'flex-end'
+                  }}>
+                    <AddButton cypressData={UsersPageIds.addButton} HandleClick={() => AddEmptyUser(currentUserCompanyId, false)} disabled={InEditMode()} />
+                  </Grid>
+                </Grid></>}
+            </div>
+            <div className="grid grid-cols-1 w-full h-auto">
+                <div className="col-span-1 py-2">
+                  <TableContainer elevation={12} component={Paper}>
+                    <Table className="table-auto w-full outline outline-3 bg-gray-100">
+                      <colgroup>
+                        <col style={{ width: '13vw' }} />
+                        <col style={{ width: '15vw' }} />
+                        <col style={{ width: '15vw' }} />
+                        <col style={{ width: '10vw' }} />
+                        <col style={{ width: '8vw' }} />
+                        <col style={{ width: '10vw' }} />
+                        <col style={{ width: '6vw' }} />
+                        <col style={{ width: '10vw' }} />
+                      </colgroup>
+                      <TableHead className="outline outline-1">
+                        <TableRow sx={{
+                          borderBottom: "2px solid black",
+                          "& th": {
+                            fontSize: tableHeaderFontSize,
+                            fontWeight: "bold",
+                            fontFamily: "Arial, Helvetica"
                           }
                         }}>
-                          {isEdit ?
-                            <>
-                              <TableCell data-cy={UsersPageIds.company}>
-                                {currentUserCompanyId === IntegrityId ?
-                                  <FormControl fullWidth>
-                                    <InputLabel id="company-select-label">Select Company</InputLabel>
-                                    <Select sx={{fontSize: tableCellFontSize}} data-cy={UsersPageIds.selectCompany} labelId="company-select-label" label="Select company" value={currentCompanyId} onChange={(e) => setCurrentCompanyId(e.target.value)}>
-                                      {displayCompanies.map((company, index) => {
-                                        return (
-                                          <MenuItem sx={{fontSize: tableCellFontSize}} key={index} value={company.id}>
-                                            {company.name}
-                                          </MenuItem>
-                                        );
-                                      })}
-                                    </Select>
-                                  </FormControl>
-                                  :
-                                  <TableCell data-cy={UsersPageIds.company}>{displayCompany?.name}</TableCell>}
-                              </TableCell>
-                              <TableCell data-cy={UsersPageIds.editName}> <Input value={currentName} onChange={e => setCurrentName(e.target.value)} /></TableCell>
-                              <TableCell><Input sx={{fontSize: tableCellFontSize}} data-cy={UsersPageIds.editEmail} value={currentEmail} onChange={e => setCurrentEmail(e.target.value)} /></TableCell>
-                              <TableCell data-cy={UsersPageIds.editPassword}><Input sx={{fontSize: tableCellFontSize}} value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} /></TableCell>
-                              <TableCell data-cy={UsersPageIds.editPhone}><Input sx={{fontSize: tableCellFontSize}} value={currentPhone} onChange={e => setCurrentPhone(e.target.value)} /></TableCell>
-                              <TableCell><Checkbox color="darkBlue" data-cy={UsersPageIds.editIsAdmin} checked={currentIsAdmin} onChange={e => setCurrentIsAdmin(e.target.checked)} />Admin</TableCell>
-                              <TableCell><Checkbox color="darkBlue" data-cy={UsersPageIds.editIsActive} checked={currentIsActive} onChange={e => setCurrentIsActive(e.target.checked)} />Active</TableCell>
-                              <TableCell data-cy={UsersPageIds.initiativeIds}></TableCell>
-                              <TableCell>
-                                <IconButton data-cy={UsersPageIds.saveChangesButton} onClick={() => SaveEdit()}>
-                                  <DoneIcon sx={{fontSize: tableButtonFontSize}}/>
-                                </IconButton>
-                                <IconButton data-cy={UsersPageIds.cancelChangesButton} onClick={() => CancelEdit()}>
-                                  <CancelIcon sx={{fontSize: tableButtonFontSize}}/>
-                                </IconButton>
-                              </TableCell>
-                            </>
-                            :
-                            <>
-                            {currentUser?.companyId === IntegrityId &&
-                              <TableCell data-cy={UsersPageIds.company}>{displayCompany?.name}</TableCell>
-                            }
-                              <TableCell data-cy={UsersPageIds.name}>{companyUser.name}</TableCell>
-                              <TableCell data-cy={UsersPageIds.email}>{companyUser.email}</TableCell>
-                              <TableCell data-cy={UsersPageIds.password}>{companyUser.password}</TableCell>
-                              <TableCell data-cy={UsersPageIds.phone}>{companyUser.phoneNumber}</TableCell>
-                              <TableCell data-cy={UsersPageIds.isAdmin}>{companyUser.isAdmin ? "Admin" : "User"}</TableCell>
-                              <TableCell data-cy={UsersPageIds.isActive}>{companyUser.isActive ? "Active" : "Inactive"}</TableCell>
-                              <TableCell data-cy={UsersPageIds.initiativeIds}><EditUserInitiativesButton user={companyUser} allCompanies={displayCompany ? [displayCompany] : []} SubmitUserData={SubmitUserData} expanded={true} /></TableCell>
-                              <TableCell>
-                                <IconButton data-cy={UsersPageIds.editButton} disabled={InEditMode()} onClick={() => EnterEditMode(companyUser.id, companyUsers, false)}>
-                                  <EditIcon sx={{fontSize: tableButtonFontSize}}/>
-                                </IconButton>
-                              </TableCell>
-                            </>}
+                          {currentUser?.companyId === IntegrityId &&
+                            <TableHeaderStyle>Company</TableHeaderStyle>}
+                          <TableHeaderStyle>Name</TableHeaderStyle>
+                          <TableHeaderStyle>Email</TableHeaderStyle>
+                          <TableHeaderStyle>Password</TableHeaderStyle>
+                          <TableHeaderStyle>Phone</TableHeaderStyle>
+                          <TableHeaderStyle>Admin Status</TableHeaderStyle>
+                          <TableHeaderStyle>Active Status</TableHeaderStyle>
+                          <TableHeaderStyle>Initiatives</TableHeaderStyle>
+                          <TableHeaderStyle>Edit User</TableHeaderStyle>
                         </TableRow>
-                      );
-                    })
-                  
-                }
-              </TableBody>
-            </Table>
-          </TableContainer>
-          {currentUser?.companyId === IntegrityId && currentUser.isAdmin &&
-          <Paginator paginator={paginator} disabled={InEditMode()}/>}
-        </div>
+                      </TableHead>
+                      <TableBody data-cy={UsersPageIds.table}>
+                        {usersList.map((companyUser, key) => {
+                          let isEdit = InEditMode() && companyUser.id === userToEdit?.id;
+                          let displayCompany = allCompanies.find(c => c.id === companyUser.companyId);
+                          return (
+                            <TableRow className={defaultRowStyle} key={key} sx={{
+                              borderBottom: "1px solid black",
+                              "& td": {
+                                fontSize: tableCellFontSize,
+                                fontFamily: "Arial, Helvetica",
+                                color: "#21345b"
+                              }
+                            }}>
+                              {isEdit ?
+                                <>
+                                  <TableCell data-cy={UsersPageIds.company}>
+                                    {currentUserCompanyId === IntegrityId ?
+                                      <FormControl fullWidth>
+                                        <InputLabel id="company-select-label">Select Company</InputLabel>
+                                        <Select sx={{ fontSize: tableCellFontSize }} data-cy={UsersPageIds.selectCompany} labelId="company-select-label" label="Select company" value={currentCompanyId} onChange={(e) => setCurrentCompanyId(e.target.value)}>
+                                          {displayCompanies.map((company, index) => {
+                                            return (
+                                              <MenuItem sx={{ fontSize: tableCellFontSize }} key={index} value={company.id}>
+                                                {company.name}
+                                              </MenuItem>
+                                            );
+                                          })}
+                                        </Select>
+                                      </FormControl>
+                                      :
+                                      <TableCell data-cy={UsersPageIds.company}>{displayCompany?.name}</TableCell>}
+                                  </TableCell>
+                                  <TableCell data-cy={UsersPageIds.editName}> <Input value={currentName} onChange={e => setCurrentName(e.target.value)} /></TableCell>
+                                  <TableCell><Input sx={{ fontSize: tableCellFontSize }} data-cy={UsersPageIds.editEmail} value={currentEmail} onChange={e => setCurrentEmail(e.target.value)} /></TableCell>
+                                  <TableCell data-cy={UsersPageIds.editPassword}><Input sx={{ fontSize: tableCellFontSize }} value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} /></TableCell>
+                                  <TableCell data-cy={UsersPageIds.editPhone}><Input sx={{ fontSize: tableCellFontSize }} value={currentPhone} onChange={e => setCurrentPhone(e.target.value)} /></TableCell>
+                                  <TableCell><Checkbox color="darkBlue" data-cy={UsersPageIds.editIsAdmin} checked={currentIsAdmin} onChange={e => setCurrentIsAdmin(e.target.checked)} />Admin</TableCell>
+                                  <TableCell><Checkbox color="darkBlue" data-cy={UsersPageIds.editIsActive} checked={currentIsActive} onChange={e => setCurrentIsActive(e.target.checked)} />Active</TableCell>
+                                  <TableCell data-cy={UsersPageIds.initiativeIds}></TableCell>
+                                  <TableCell>
+                                    <IconButton data-cy={UsersPageIds.saveChangesButton} onClick={() => SaveEdit()}>
+                                      <DoneIcon sx={{ fontSize: tableButtonFontSize }} />
+                                    </IconButton>
+                                    <IconButton data-cy={UsersPageIds.cancelChangesButton} onClick={() => CancelEdit()}>
+                                      <CancelIcon sx={{ fontSize: tableButtonFontSize }} />
+                                    </IconButton>
+                                  </TableCell>
+                                </>
+                                :
+                                <>
+                                  {currentUser?.companyId === IntegrityId &&
+                                    <TableCell data-cy={UsersPageIds.company}>{displayCompany?.name}</TableCell>}
+                                  <TableCell data-cy={UsersPageIds.name}>{companyUser.name}</TableCell>
+                                  <TableCell data-cy={UsersPageIds.email}>{companyUser.email}</TableCell>
+                                  <TableCell data-cy={UsersPageIds.password}>{companyUser.password}</TableCell>
+                                  <TableCell data-cy={UsersPageIds.phone}>{companyUser.phoneNumber}</TableCell>
+                                  <TableCell data-cy={UsersPageIds.isAdmin}>{companyUser.isAdmin ? "Admin" : "User"}</TableCell>
+                                  <TableCell data-cy={UsersPageIds.isActive}>{companyUser.isActive ? "Active" : "Inactive"}</TableCell>
+                                  <TableCell data-cy={UsersPageIds.initiativeIds}><EditUserInitiativesButton user={companyUser} allCompanies={displayCompany ? [displayCompany] : []} SubmitUserData={SubmitUserData} expanded={true} /></TableCell>
+                                  <TableCell>
+                                    <IconButton data-cy={UsersPageIds.editButton} disabled={InEditMode()} onClick={() => EnterEditMode(companyUser.id, companyUsers, false)}>
+                                      <EditIcon sx={{ fontSize: tableButtonFontSize }} />
+                                    </IconButton>
+                                  </TableCell>
+                                </>}
+                            </TableRow>
+                          );
+                        })}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                  {currentUser?.companyId === IntegrityId && currentUser.isAdmin &&
+                    <Paginator paginator={paginator} disabled={InEditMode()} />}
+                </div>
+              </div>
       </div>
     </ThemeProvider>
   )
