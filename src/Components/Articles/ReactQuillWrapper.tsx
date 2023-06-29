@@ -5,6 +5,7 @@ import 'react-quill/dist/quill.snow.css';
 interface ReactQuillWrapperProps {
   initialValue: string
   valueSetter: (value: string) => void
+  theme?: "bubble" | "snow"
 }
 
 export function ReactQuillWrapper(props: ReactQuillWrapperProps)
@@ -35,7 +36,8 @@ export function ReactQuillWrapper(props: ReactQuillWrapperProps)
       <ReactQuill value={text}
         modules={modules}
         formats={formats}
-        onChange={handleChange} />
+        onChange={handleChange}
+        theme={props.theme}/>
     </div>
   )
 }
