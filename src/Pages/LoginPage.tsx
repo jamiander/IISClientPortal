@@ -54,13 +54,12 @@ export default function LoginPage(){
   }
 
   useEffect(() => {
-    if(currentUser?.id !== "-1" && currentUser?.companyId === IntegrityId)
+    if(currentUser)
     {
-      navigate('/Initiatives');
-    }
-    else if(currentUser?.id !== "-1" && currentUser?.companyId !== IntegrityId)
-    {
-      navigate('/Dashboard');
+      if(currentUser.companyId === IntegrityId)
+        navigate('/Initiatives');
+      else
+        navigate('/Dashboard');
     }
     else
     {
