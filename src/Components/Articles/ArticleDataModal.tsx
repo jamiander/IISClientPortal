@@ -1,7 +1,7 @@
-import { Grid, CircularProgress, IconButton, Checkbox, Button, Typography } from "@mui/material";
+import { Grid, CircularProgress, IconButton, Checkbox, Button, Typography, TextField } from "@mui/material";
 import { DateInfo } from "../../Services/CompanyService";
 import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
-import { Item, StyledCard, StyledCardContent, labelStyle, StyledTextarea, StyledCardActions } from "../../Styles";
+import { Item, StyledCard, StyledCardContent, labelStyle, StyledTextarea, StyledCardActions, StyledTextField } from "../../Styles";
 import { AddButton } from "../AddButton";
 import { DateInput } from "../DateInput";
 import { BaseInitiativeModal } from "../Initiative/BaseInitiativeModal";
@@ -22,6 +22,7 @@ import { SearchBar } from "../SearchBar";
 import { DocumentManagementModal } from "../Documents/DocumentManagementModal";
 import { ReactQuillWrapper } from "./ReactQuillWrapper";
 import { DateToDateInfo, MakeDateString } from "../../Services/DateHelpers";
+import ReactQuill from "react-quill";
 
 enum stateEnum {
     start,
@@ -281,34 +282,31 @@ export default function ArticleDataModal(props: ArticleDataProps) {
                   <Item>
                     <StyledCard>
                       <StyledCardContent>
-                        {/*<ReactQuillWrapper initialValue={displayItem.title}/>*/}
                         {isEdit ?
                           <>
-                            <div className="ml-[75%]"><Checkbox data-cy={ArticleModalIds.isIntegrityOnly} color="darkBlue" checked={isIntegrityOnly} onChange={e => setIsIntegrityOnly(e.target.checked)}/>Integrity Only</div>
-                            <label className={labelStyle} htmlFor="title">Title</label>
-                            <StyledTextarea id="title" data-cy={ArticleModalIds.editTitle} value={currentTitle} onChange={e => setCurrentTitle(e.target.value)}/>
-                            <label className={labelStyle} htmlFor="text">Content</label>
-                            <StyledTextarea id="text" data-cy={ArticleModalIds.editText} value={currentText} onChange={e => setCurrentText(e.target.value)}/>
-                            
+                            <TextField data-cy={ArticleModalIds.editTitle} label="Title" sx={{width: "100%"}} value={currentTitle} onChange={e => setCurrentTitle(e.target.value)}/>
+                            <div className="flex items-center justify-end">
+                              <Checkbox data-cy={ArticleModalIds.isIntegrityOnly} color="darkBlue" checked={isIntegrityOnly} onChange={e => setIsIntegrityOnly(e.target.checked)}/>
+                              <Typography variant="subtitle2">Integrity Only</Typography>
+                            </div>
+                            <ReactQuillWrapper data-cy={ArticleModalIds.editText} initialValue={displayItem.text} valueSetter={setCurrentText}/>
                           </>
                           :
                           <>
                             <Typography data-cy={ArticleModalIds.title} variant="h5">{displayItem.title}</Typography>
-                            
                             <div className="flex justify-between">
                               <Button data-cy={ArticleModalIds.documents} onClick={() => {setDocumentModalOpen(true); setArticleWithDocsId(displayItem.id)}} sx={{ fontSize: "1.2rem" }}>
                                 <FolderIcon sx={{ color: "blue", fontSize: "inherit", marginRight: 1 }}/>
                                 <Typography variant="button">Related Docs</Typography>
                               </Button>
                               {displayItem.isIntegrityOnly &&
-                                <div className="flex ">
+                                <div className="flex items-center">
                                   <FlagIcon sx={{ color: "red", marginRight: 1 }}/>
                                   <Typography variant="subtitle2">Integrity Only</Typography>
                                 </div>
                               }
                             </div>
-
-                            <StyledTextarea id="text" data-cy={ArticleModalIds.text} disabled value={displayItem.text}/>
+                            <ReactQuill data-cy={ArticleModalIds.text} value={displayItem.text} readOnly={true} modules={{toolbar: false}}/>
                           </>
                         }
                           

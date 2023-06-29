@@ -3,12 +3,13 @@ import ReactQuill from "react-quill"
 import 'react-quill/dist/quill.snow.css'
 
 interface ReactQuillWrapperProps {
-  initialValue?: string
+  initialValue: string
+  valueSetter: (value: string) => void
 }
 
 export function ReactQuillWrapper(props: ReactQuillWrapperProps)
 {
-  const [text, setText] = useState(props.initialValue ?? "");
+  const [text, setText] = useState(props.initialValue);
 
   const modules = {
     toolbar: [
@@ -21,11 +22,11 @@ export function ReactQuillWrapper(props: ReactQuillWrapperProps)
   formats = [
     'header',
     'bold', 'italic', 'underline', 'strike', 'blockquote',
-    'list', 'bullet', 'indent',
-    'link', 'image'
+    'list', 'bullet', 'indent'
   ]
   
   function handleChange(value: string){
+    props.valueSetter(value);
     setText(value);
   }
 
