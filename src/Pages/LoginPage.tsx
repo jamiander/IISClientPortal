@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks"
-import { authenticateUser, selectCurrentUser, selectCurrentUserId, selectLogInAttempts } from "../Store/UserSlice";
+import { authenticateUser, selectCurrentUser, selectLogInAttempts } from "../Store/UserSlice";
 import { IntegrityTheme, tableCellFontSize, tableHeaderFontSize } from "../Styles";
 import { Box, Button, Checkbox, CircularProgress, Container, FormControlLabel, TextField, Typography } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";

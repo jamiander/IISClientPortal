@@ -2,7 +2,7 @@ import { Fragment, useEffect, useMemo, useState } from "react";
 import { FindItemsRemaining } from "../../Services/CompanyService";
 import { InitiativeFilter } from "../../Services/Filters";
 import { Company, Initiative, IntegrityId } from "../../Store/CompanySlice";
-import { defaultRowStyle, greenProbabilityStyle, redProbabilityStyle, tableButtonFontSize, tableCellFontSize, tableHeaderFontSize, TableHeaderStyle, tooltipStyle } from "../../Styles";
+import { defaultRowStyle, greenProbabilityStyle, labelStyle, redProbabilityStyle, tableButtonFontSize, tableCellFontSize, tableHeaderFontSize, TableHeaderStyle, tooltipStyle } from "../../Styles";
 import { GenerateProbability } from "../../Services/ProbabilitySimulationService";
 import { DateInput } from "../DateInput";
 import Table from '@mui/material/Table';
@@ -29,6 +29,7 @@ import { useEditInitiative } from "../../Services/useEditInitiative";
 import { usePaginator } from "../../Services/usePaginator";
 import { Paginator } from "../Paginator";
 import { initPageStateEnum } from "../../Pages/InitiativesPage";
+import { Box, LinearProgress, Typography } from "@material-ui/core";
 
 export const InitiativeTableIds = {
   table: "initiativesTable",
@@ -149,7 +150,6 @@ export default function InitiativesTable(props: InitiativesProps) {
     return SortItems(filteredInitiatives);
   }, [filteredInitiatives, sortConfig]);
 
-
   useEffect(() =>
   {
     const paginatedItems = paginator.PaginateItems(sortedInitiatives);
@@ -208,6 +208,39 @@ export default function InitiativesTable(props: InitiativesProps) {
     UpdateSortConfig(key);
     ResetPageNumber();
   }
+
+  const ProgressBar = (props: { bgcolor: any; completed: any; }) => {
+    const { bgcolor, completed } = props;
+  
+    const containerStyles = {
+      height: 20,
+      width: '100%',
+      backgroundColor: "#e0e0de",
+      borderRadius: 50,
+    }
+  
+    const fillerStyles = {
+      height: 20,
+      width: `${completed}%`,
+      backgroundColor: bgcolor,
+      borderRadius: "inherit",
+    }
+  
+    const labelStyles = {
+      padding: 5,
+      color: 'white',
+      fontWeight: 'bold'
+    }
+  
+    return (
+      <div style={containerStyles}>
+        <div style={fillerStyles}>
+          <span style={labelStyles}>{`${completed}%`}</span>
+        </div>
+      </div>
+    );
+  };
+  
 
   function getHealthIndicator(probability: number | undefined)
   {
@@ -312,7 +345,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                     <SortLabel heading="Target Completion" sortKey='targetDateTime'/>
                   </TableHeaderStyle>
                   <TableHeaderStyle>Total Items</TableHeaderStyle>
-                  <TableHeaderStyle>Items Remaining</TableHeaderStyle>
+                  <TableHeaderStyle>Percent Completed</TableHeaderStyle>
                   <TableHeaderStyle>
                     <SortLabel heading="Probability" sortKey='probabilityValue'/>
                   </TableHeaderStyle>
@@ -324,6 +357,7 @@ export default function InitiativesTable(props: InitiativesProps) {
               </TableHead>
               <TableBody data-cy={InitiativeTableIds.table}>
                 {displayItems.map((displayItem, index) => {
+                  let itemsCompleted = displayItem.totalItems-displayItem.itemsRemaining;
                   const probability = { value: displayItem.probabilityValue, status: displayItem.probabilityStatus };
                   const healthIndicator = getHealthIndicator(probability.value);
                   const tooltipMessage = probability.value === undefined ? probability.status :
@@ -387,7 +421,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                             <TableCell>
                               <Input sx={{fontSize: tableCellFontSize}} data-cy={InitiativeTableIds.editTotalItems} type="number" value={currentTotalItems} onChange={(e) => setCurrentTotalItems(parseInt(e.target.value))}/>
                             </TableCell>
-                            <TableCell sx={{fontSize: tableCellFontSize}} data-cy={InitiativeTableIds.remainingItems}>{displayItem.itemsRemaining}</TableCell>
+                            <TableCell sx={{fontSize: tableCellFontSize}} data-cy={InitiativeTableIds.remainingItems}>{itemsCompleted}</TableCell>
                             <TableCell></TableCell>
                             <TableCell className="w-1/12">
                               <InitiativeActionsMenu {...initiativeMenuProps} disabled={true}/>
@@ -419,7 +453,13 @@ export default function InitiativesTable(props: InitiativesProps) {
                             <TableCell data-cy={InitiativeTableIds.startDate}>{displayItem.startDate.month + "/" + displayItem.startDate.day + "/" + displayItem.startDate.year}</TableCell>
                             <TableCell data-cy={InitiativeTableIds.targetDate}>{displayItem.targetDate.month + "/" + displayItem.targetDate.day + "/" + displayItem.targetDate.year}</TableCell>
                             <TableCell data-cy={InitiativeTableIds.totalItems}>{displayItem.totalItems}</TableCell>
-                            <TableCell data-cy={InitiativeTableIds.remainingItems}>{displayItem.itemsRemaining}</TableCell>
+                            <TableCell>
+                            <ProgressBar key={index} bgcolor="blue" completed={Math.round((itemsCompleted/displayItem.totalItems)*100)} />
+                            </TableCell>
+                            {/* <TableCell>
+                              <LinearProgress color="primary" value={itemsCompleted} valueBuffer={displayItem.totalItems} variant="determinate" />
+                              <label className={labelStyle} htmlFor="items">{itemsCompleted}</label>
+                            </TableCell> */}
                             <TableCell className={tooltipStyle} title={tooltipMessage}>{probability.value === undefined ? "NA" : probability.value + "%"}
                               <i className="material-icons" style={{ fontSize: '15px', marginLeft: '15px', marginTop: '10px' }}>info_outline</i>
                             </TableCell>
