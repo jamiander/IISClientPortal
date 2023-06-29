@@ -302,28 +302,27 @@ export default function DecisionDataModal(props: DecisionDataProps) {
                         </StyledCardContent>
                         <StyledCardActions>
                           {isEdit &&
-                            <div className="flex w-full justify-between">
-                              <IconButton disabled={isLoading} data-cy={DecisionModalIds.saveChangesButton}
-                                onClick={() => HandleEditDecision(displayItem.id, currentDescription, currentResolution, currentParticipants, currentDate ?? displayItem.date)}>
-                                <DoneIcon sx={{fontSize: "inherit"}}/>
-                              </IconButton>
+                            <>
                               {isLoading &&
                                 <CircularProgress color={"warning"}/>
                               }
-                              <IconButton disabled={isLoading} data-cy={DecisionModalIds.cancelChangesButton} onClick={() => HandleCancelEdit()}>
-                                <CancelIcon sx={{fontSize: "inherit"}}/>
-                              </IconButton>
-                            </div>
+                              <div className="flex w-full justify-end">
+                                <IconButton disabled={isLoading} data-cy={DecisionModalIds.saveChangesButton}
+                                  onClick={() => HandleEditDecision(displayItem.id, currentDescription, currentResolution, currentParticipants, currentDate ?? displayItem.date)}>
+                                  <DoneIcon sx={{fontSize: "inherit"}}/>
+                                </IconButton>
+                                <IconButton disabled={isLoading} data-cy={DecisionModalIds.cancelChangesButton} onClick={() => HandleCancelEdit()}>
+                                  <CancelIcon sx={{fontSize: "inherit"}}/>
+                                </IconButton>
+                              </div>
+                            </>
                           }
                           {
                             !isEdit && !InEditMode() && props.currentUser.isAdmin &&
-                            <div className="flex w-full justify-between">
+                            <div className="flex w-full justify-end">
                               <IconButton disabled={isLoading} data-cy={DecisionModalIds.editButton} onClick={() => EnterEditMode(displayItem.id, selectedInitiative, false)}>
                                 <EditIcon sx={{fontSize: "inherit"}}/>
                               </IconButton>
-                              {isLoading && matched &&
-                                <CircularProgress color={"warning"}/>
-                              }
                               <IconButton disabled={isLoading} data-cy={DecisionModalIds.deleteButton} onClick={() => HandleAttemptDelete(displayItem.id)}>
                                 <DeleteIcon sx={{fontSize: "inherit"}}/>
                               </IconButton>
