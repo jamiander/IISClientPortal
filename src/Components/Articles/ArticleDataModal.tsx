@@ -21,6 +21,7 @@ import { User } from "../../Store/UserSlice";
 import { SearchBar } from "../SearchBar";
 import { DocumentManagementModal } from "../Documents/DocumentManagementModal";
 import { ReactQuillWrapper } from "./ReactQuillWrapper";
+import { DateToDateInfo, MakeDateString } from "../../Services/DateHelpers";
 
 enum stateEnum {
     start,
@@ -70,8 +71,6 @@ export default function ArticleDataModal(props: ArticleDataProps) {
     const [modalState, setModalState] = useState(stateEnum.start);
     const [currentTitle, setCurrentTitle] = useState("");
     const [currentText, setCurrentText] = useState("");
-    const [currentUpdatedDate, setCurrentUpdatedDate] = useState<DateInfo>();
-    const [currentUpdatedBy, setCurrentUpdatedBy] = useState("");
     const [isIntegrityOnly, setIsIntegrityOnly] = useState(false);
     const [selectedInitiative, setSelectedInitiative] = useState<Initiative>();
     const [selectedCompany, setSelectedCompany] = useState<Company>(props.company);
@@ -156,22 +155,20 @@ export default function ArticleDataModal(props: ArticleDataProps) {
           setArticleToEdit(currentArticle);
           setCurrentTitle(currentArticle.title);
           setCurrentText(currentArticle.text);
-          setCurrentUpdatedBy(currentArticle.updatedBy);
-          setCurrentUpdatedDate(currentArticle.updatedDate);
           setIsIntegrityOnly(currentArticle.isIntegrityOnly);
         }
       }
     }
 
-    async function HandleEditArticle(id: string, newTitle: string, newText: string, newUpdatedBy: string, newUpdatedDate: DateInfo, newIsIntegrityOnly: boolean) {
+    async function HandleEditArticle(id: string, newTitle: string, newText: string, newIsIntegrityOnly: boolean) {
       let selectedArticlesClone: Article[] = MakeClone(filteredArticles);
       let newArticle = selectedArticlesClone.find(a => a.id === id);
       if(newArticle)
       {
         newArticle.title = newTitle;
         newArticle.text = newText;
-        newArticle.updatedBy = newUpdatedBy;
-        newArticle.updatedDate = newUpdatedDate;
+        newArticle.updatedBy = props.currentUser.name ?? props.currentUser.email;
+        newArticle.updatedDate = DateToDateInfo(new Date());
         newArticle.isIntegrityOnly = newIsIntegrityOnly;
 
         setIsSubmitting(true);
@@ -284,7 +281,7 @@ export default function ArticleDataModal(props: ArticleDataProps) {
                   <Item>
                     <StyledCard>
                       <StyledCardContent>
-                        <ReactQuillWrapper initialValue={displayItem.title}/>
+                        {/*<ReactQuillWrapper initialValue={displayItem.title}/>*/}
                         {isEdit ?
                           <>
                             <div className="ml-[75%]"><Checkbox data-cy={ArticleModalIds.isIntegrityOnly} color="darkBlue" checked={isIntegrityOnly} onChange={e => setIsIntegrityOnly(e.target.checked)}/>Integrity Only</div>
@@ -292,30 +289,26 @@ export default function ArticleDataModal(props: ArticleDataProps) {
                             <StyledTextarea id="title" data-cy={ArticleModalIds.editTitle} value={currentTitle} onChange={e => setCurrentTitle(e.target.value)}/>
                             <label className={labelStyle} htmlFor="text">Content</label>
                             <StyledTextarea id="text" data-cy={ArticleModalIds.editText} value={currentText} onChange={e => setCurrentText(e.target.value)}/>
-                            <label className={labelStyle} htmlFor="updatedby">Updated By</label>
-                            <StyledTextarea id="updatedby" data-cy={ArticleModalIds.editUpdatedBy} value={currentUpdatedBy} onChange={e => setCurrentUpdatedBy(e.target.value)}/>
-                            <DateInput cypressData={ArticleModalIds.editUpdatedDate} label="Date Updated" date={currentUpdatedDate} setDate={setCurrentUpdatedDate}/>
+                            
                           </>
                           :
                           <>
-                            {displayItem.isIntegrityOnly &&
-                              <div className="ml-[75%]">
-                                <FlagIcon sx={{ color: "red", marginRight: 1 }}/>Integrity Only
-                              </div>
-                            }
-                            <label className={labelStyle} htmlFor="description">Title</label>
-                            <StyledTextarea id="title" data-cy={ArticleModalIds.title} disabled value={displayItem.title}/>
-                            <label className={labelStyle} htmlFor="text">Content</label>
-                            <StyledTextarea id="text" data-cy={ArticleModalIds.text} disabled value={displayItem.text}/>
-                            <label className={labelStyle} htmlFor="text">Updated By</label>
-                            <StyledTextarea id="updatedby" data-cy={ArticleModalIds.updatedBy} disabled value={displayItem.updatedBy}/>
-                            <div className="flex flex-row justify-between space-x-2">
-                              <DateInput cypressData={ArticleModalIds.updatedDate} label="Date Updated" disabled={true} date={displayItem.updatedDate} setDate={setCurrentUpdatedDate}/>
+                            <Typography data-cy={ArticleModalIds.title} variant="h5">{displayItem.title}</Typography>
+                            
+                            <div className="flex justify-between">
                               <Button data-cy={ArticleModalIds.documents} onClick={() => {setDocumentModalOpen(true); setArticleWithDocsId(displayItem.id)}} sx={{ fontSize: "1.2rem" }}>
                                 <FolderIcon sx={{ color: "blue", fontSize: "inherit", marginRight: 1 }}/>
                                 <Typography variant="button">Related Docs</Typography>
                               </Button>
+                              {displayItem.isIntegrityOnly &&
+                                <div className="flex ">
+                                  <FlagIcon sx={{ color: "red", marginRight: 1 }}/>
+                                  <Typography variant="subtitle2">Integrity Only</Typography>
+                                </div>
+                              }
                             </div>
+
+                            <StyledTextarea id="text" data-cy={ArticleModalIds.text} disabled value={displayItem.text}/>
                           </>
                         }
                           
@@ -324,7 +317,7 @@ export default function ArticleDataModal(props: ArticleDataProps) {
                           {isEdit &&
                             <div className="flex w-full justify-between">
                               <IconButton disabled={isSubmitting} data-cy={ArticleModalIds.saveChangesButton}
-                                onClick={() => HandleEditArticle(displayItem.id, currentTitle, currentText, currentUpdatedBy, currentUpdatedDate ?? {month: -1, day: -1, year: -1}, isIntegrityOnly)}>
+                                onClick={() => HandleEditArticle(displayItem.id, currentTitle, currentText, isIntegrityOnly)}>
                                 <DoneIcon sx={{fontSize: "inherit"}}/>
                               </IconButton>
                               {isSubmitting &&
@@ -344,6 +337,9 @@ export default function ArticleDataModal(props: ArticleDataProps) {
                               {isSubmitting && matched &&
                                 <CircularProgress color={"warning"}/>
                               }
+                              <Typography variant="subtitle2" className="w-2/3" color="gray">
+                                Last updated on {MakeDateString(displayItem.updatedDate)} ({displayItem.updatedBy.split(" ").join("\u00a0")})
+                              </Typography>
                             </div>
                           }
                       </StyledCardActions>
