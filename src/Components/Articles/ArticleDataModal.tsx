@@ -285,7 +285,7 @@ export default function ArticleDataModal(props: ArticleDataProps) {
                         {isEdit ?
                           <>
                             <TextField data-cy={ArticleModalIds.editTitle} label="Title" sx={{width: "100%"}} value={currentTitle} onChange={e => setCurrentTitle(e.target.value)}/>
-                            <div className="flex items-center justify-end">
+                            <div className="flex items-center justify-start">
                               <Checkbox data-cy={ArticleModalIds.isIntegrityOnly} color="darkBlue" checked={isIntegrityOnly} onChange={e => setIsIntegrityOnly(e.target.checked)}/>
                               <Typography variant="subtitle2">Integrity Only</Typography>
                             </div>
@@ -295,49 +295,57 @@ export default function ArticleDataModal(props: ArticleDataProps) {
                           <>
                             <Typography data-cy={ArticleModalIds.title} variant="h5">{displayItem.title}</Typography>
                             <div className="flex justify-between">
+                              <div className="flex items-center">
+                                {displayItem.isIntegrityOnly &&
+                                  <>
+                                    <FlagIcon sx={{ color: "red", marginRight: 1 }}/>
+                                    <Typography variant="subtitle2">Integrity Only</Typography>
+                                  </>
+                                }
+                              </div>
                               <Button data-cy={ArticleModalIds.documents} onClick={() => {setDocumentModalOpen(true); setArticleWithDocsId(displayItem.id)}} sx={{ fontSize: "1.2rem" }}>
                                 <FolderIcon sx={{ color: "blue", fontSize: "inherit", marginRight: 1 }}/>
                                 <Typography variant="button">Related Docs</Typography>
                               </Button>
-                              {displayItem.isIntegrityOnly &&
-                                <div className="flex items-center">
-                                  <FlagIcon sx={{ color: "red", marginRight: 1 }}/>
-                                  <Typography variant="subtitle2">Integrity Only</Typography>
-                                </div>
-                              }
                             </div>
-                            <ReactQuill data-cy={ArticleModalIds.text} value={displayItem.text} readOnly={true} modules={{toolbar: false}}/>
+                            <ReactQuill data-cy={ArticleModalIds.text} value={displayItem.text} readOnly={true} modules={{toolbar: false}}
+                              style={{
+                                maxHeight: "100px",
+                                overflow: "auto"
+                              }}/>
                           </>
                         }
                           
                       </StyledCardContent>
                       <StyledCardActions>
                           {isEdit &&
-                            <div className="flex w-full justify-between">
-                              <IconButton disabled={isSubmitting} data-cy={ArticleModalIds.saveChangesButton}
-                                onClick={() => HandleEditArticle(displayItem.id, currentTitle, currentText, isIntegrityOnly)}>
-                                <DoneIcon sx={{fontSize: "inherit"}}/>
-                              </IconButton>
+                            <>
                               {isSubmitting &&
                                 <CircularProgress color={"warning"}/>
                               }
-                              <IconButton disabled={isSubmitting} data-cy={ArticleModalIds.cancelChangesButton} onClick={() => HandleCancelEdit()}>
-                                <CancelIcon sx={{fontSize: "inherit"}}/>
-                              </IconButton>
-                            </div>
+                              <div className="flex w-full justify-end">
+                                <IconButton disabled={isSubmitting} data-cy={ArticleModalIds.saveChangesButton}
+                                  onClick={() => HandleEditArticle(displayItem.id, currentTitle, currentText, isIntegrityOnly)}>
+                                  <DoneIcon sx={{fontSize: "inherit"}}/>
+                                </IconButton>
+                                <IconButton disabled={isSubmitting} data-cy={ArticleModalIds.cancelChangesButton} onClick={() => HandleCancelEdit()}>
+                                  <CancelIcon sx={{fontSize: "inherit"}}/>
+                                </IconButton>
+                              </div>
+                            </>
                           }
                           {
                             !isEdit && !InEditMode() && props.currentUser.companyId === IntegrityId &&
                             <div className="flex w-full justify-between">
-                              <IconButton disabled={isSubmitting} data-cy={ArticleModalIds.editButton} onClick={() => EnterEditMode(displayItem.id, filteredArticles, false)}>
-                                <EditIcon sx={{fontSize: "inherit"}}/>
-                              </IconButton>
-                              {isSubmitting && matched &&
-                                <CircularProgress color={"warning"}/>
-                              }
                               <Typography variant="subtitle2" className="w-2/3" color="gray">
                                 Last updated on {MakeDateString(displayItem.updatedDate)} ({displayItem.updatedBy.split(" ").join("\u00a0")})
                               </Typography>
+                              {isSubmitting && matched &&
+                                <CircularProgress color={"warning"}/>
+                              }
+                              <IconButton disabled={isSubmitting} data-cy={ArticleModalIds.editButton} onClick={() => EnterEditMode(displayItem.id, filteredArticles, false)}>
+                                <EditIcon sx={{fontSize: "inherit"}}/>
+                              </IconButton>
                             </div>
                           }
                       </StyledCardActions>
