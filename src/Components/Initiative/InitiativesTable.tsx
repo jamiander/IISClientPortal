@@ -29,7 +29,7 @@ import { useEditInitiative } from "../../Services/useEditInitiative";
 import { usePaginator } from "../../Services/usePaginator";
 import { Paginator } from "../Paginator";
 import { initPageStateEnum } from "../../Pages/InitiativesPage";
-import { Box, LinearProgress, Typography } from "@material-ui/core";
+import { ProgressBar } from "./ProgressBar";
 
 export const InitiativeTableIds = {
   table: "initiativesTable",
@@ -209,51 +209,17 @@ export default function InitiativesTable(props: InitiativesProps) {
     ResetPageNumber();
   }
 
-  const ProgressBar = (props: { bgcolor: any; completed: any; }) => {
-    const { bgcolor, completed } = props;
-  
-    const containerStyles = {
-      height: 20,
-      width: '100%',
-      backgroundColor: "#e0e0de",
-      borderRadius: 50,
-    }
-  
-    const fillerStyles = {
-      height: 20,
-      width: `${completed}%`,
-      backgroundColor: bgcolor,
-      borderRadius: "inherit",
-    }
-  
-    const labelStyles = {
-      padding: 5,
-      color: 'white',
-      fontWeight: 'bold'
-    }
-  
-    return (
-      <div style={containerStyles}>
-        <div style={fillerStyles}>
-          <span style={labelStyles}>{`${completed}%`}</span>
-        </div>
-      </div>
-    );
-  };
-  
-
   function getHealthIndicator(probability: number | undefined)
   {
-    if (probability === undefined || probability < 0) return defaultRowStyle;
-    if (probability < 50 && probability >= 0) return redProbabilityStyle;
-    else if (probability > 90) return greenProbabilityStyle;
+    if (probability === undefined || probability < 0) return "gray-200";
+    if (probability < 50 && probability >= 0) return "#FF6464";
+    else if (probability > 90) return "#69D5C3";
   }
 
   function ResetPageNumber()
   {
     paginator.HandlePaginationChange(null,1);
   }
-
 
   interface SortProps {
     sortKey: string
@@ -347,7 +313,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                   <TableHeaderStyle>Total Items</TableHeaderStyle>
                   <TableHeaderStyle>Percent Completed</TableHeaderStyle>
                   <TableHeaderStyle>
-                    <SortLabel heading="Probability" sortKey='probabilityValue'/>
+                    <SortLabel heading="On-Time Completion Probability" sortKey='probabilityValue'/>
                   </TableHeaderStyle>
                   <TableHeaderStyle>Actions</TableHeaderStyle>
                   {isAdmin &&
@@ -376,7 +342,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                   };
                   return (
                     <Fragment key={index}>
-                      <TableRow key={index} className={healthIndicator} sx={{
+                      <TableRow key={index} sx={{
                         borderBottom: "1px solid black",
                         "& td": {
                           fontSize: tableCellFontSize,
@@ -454,14 +420,15 @@ export default function InitiativesTable(props: InitiativesProps) {
                             <TableCell data-cy={InitiativeTableIds.targetDate}>{displayItem.targetDate.month + "/" + displayItem.targetDate.day + "/" + displayItem.targetDate.year}</TableCell>
                             <TableCell data-cy={InitiativeTableIds.totalItems}>{displayItem.totalItems}</TableCell>
                             <TableCell>
-                            <ProgressBar key={index} bgcolor="blue" completed={Math.round((itemsCompleted/displayItem.totalItems)*100)} />
+                              <ProgressBar key={index} bgcolor="blue" completed={Math.round((itemsCompleted/displayItem.totalItems)*100)} />
                             </TableCell>
-                            {/* <TableCell>
-                              <LinearProgress color="primary" value={itemsCompleted} valueBuffer={displayItem.totalItems} variant="determinate" />
-                              <label className={labelStyle} htmlFor="items">{itemsCompleted}</label>
-                            </TableCell> */}
-                            <TableCell className={tooltipStyle} title={tooltipMessage}>{probability.value === undefined ? "NA" : probability.value + "%"}
-                              <i className="material-icons" style={{ fontSize: '15px', marginLeft: '15px', marginTop: '10px' }}>info_outline</i>
+                            <TableCell className={tooltipStyle} title={tooltipMessage}>
+                              {probability.value !== undefined ?
+                                <ProgressBar key={index} bgcolor={healthIndicator} completed={probability.value} />
+                                :
+                                <><span>NA</span>
+                                <i className="material-icons" style={{ fontSize: '15px', marginLeft: '15px', marginTop: '10px' }}>info_outline</i></>
+                              }
                             </TableCell>
                             <TableCell className="w-1/12">
                               <InitiativeActionsMenu {...initiativeMenuProps}/>
