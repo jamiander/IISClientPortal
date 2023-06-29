@@ -20,6 +20,7 @@ import { ValidateArticle, ValidationFailedPrefix } from "../../Services/Validati
 import { User } from "../../Store/UserSlice";
 import { SearchBar } from "../SearchBar";
 import { DocumentManagementModal } from "../Documents/DocumentManagementModal";
+import { ReactQuillWrapper } from "./ReactQuillWrapper";
 
 enum stateEnum {
     start,
@@ -283,6 +284,7 @@ export default function ArticleDataModal(props: ArticleDataProps) {
                   <Item>
                     <StyledCard>
                       <StyledCardContent>
+                        <ReactQuillWrapper initialValue={displayItem.title}/>
                         {isEdit ?
                           <>
                             <div className="ml-[75%]"><Checkbox data-cy={ArticleModalIds.isIntegrityOnly} color="darkBlue" checked={isIntegrityOnly} onChange={e => setIsIntegrityOnly(e.target.checked)}/>Integrity Only</div>
