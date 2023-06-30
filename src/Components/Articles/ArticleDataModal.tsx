@@ -1,4 +1,4 @@
-import { Grid, CircularProgress, IconButton, Checkbox, Button, Typography } from "@mui/material";
+import { Grid, CircularProgress, IconButton, Checkbox, Button, Typography, Divider } from "@mui/material";
 import { DateInfo } from "../../Services/CompanyService";
 import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
 import { Item, StyledCard, StyledCardContent, labelStyle, StyledTextarea, StyledCardActions } from "../../Styles";
@@ -20,6 +20,8 @@ import { User } from "../../Store/UserSlice";
 import { SearchBar } from "../SearchBar";
 import { DocumentManagementModal } from "../Documents/DocumentManagementModal";
 import { DateToDateInfo, MakeDateString } from "../../Services/DateHelpers";
+import ReactQuill from "react-quill";
+import { ArticleCard } from "./ArticleCard";
 
 enum stateEnum {
     start,
@@ -276,73 +278,14 @@ export default function ArticleDataModal(props: ArticleDataProps) {
               let isEdit = matched && InEditMode();
               return(
                 <Grid item md={6} lg={4} key={key}>
-                  <Item>
-                    <StyledCard>
-                      <StyledCardContent>
-                        {/*<ReactQuillWrapper initialValue={displayItem.title}/>*/}
-                        {isEdit ?
-                          <>
-                            <div className="ml-[75%]"><Checkbox data-cy={ArticleModalIds.isIntegrityOnly} color="darkBlue" checked={isIntegrityOnly} onChange={e => setIsIntegrityOnly(e.target.checked)}/>Integrity Only</div>
-                            <label className={labelStyle} htmlFor="title">Title</label>
-                            <StyledTextarea id="title" data-cy={ArticleModalIds.editTitle} value={currentTitle} onChange={e => setCurrentTitle(e.target.value)}/>
-                            <label className={labelStyle} htmlFor="text">Content</label>
-                            <StyledTextarea id="text" data-cy={ArticleModalIds.editText} value={currentText} onChange={e => setCurrentText(e.target.value)}/>
-                            
-                          </>
-                          :
-                          <>
-                            <Typography data-cy={ArticleModalIds.title} variant="h5">{displayItem.title}</Typography>
-                            
-                            <div className="flex justify-between">
-                              <Button data-cy={ArticleModalIds.documents} onClick={() => {setDocumentModalOpen(true); setArticleWithDocsId(displayItem.id)}} sx={{ fontSize: "1.2rem" }}>
-                                <FolderIcon sx={{ color: "blue", fontSize: "inherit", marginRight: 1 }}/>
-                                <Typography variant="button">Related Docs</Typography>
-                              </Button>
-                              {displayItem.isIntegrityOnly &&
-                                <div className="flex ">
-                                  <FlagIcon sx={{ color: "red", marginRight: 1 }}/>
-                                  <Typography variant="subtitle2">Integrity Only</Typography>
-                                </div>
-                              }
-                            </div>
-
-                            <StyledTextarea id="text" data-cy={ArticleModalIds.text} disabled value={displayItem.text}/>
-                          </>
-                        }
-                          
-                      </StyledCardContent>
-                      <StyledCardActions>
-                          {isEdit &&
-                            <div className="flex w-full justify-between">
-                              <IconButton disabled={isSubmitting} data-cy={ArticleModalIds.saveChangesButton}
-                                onClick={() => HandleEditArticle(displayItem.id, currentTitle, currentText, isIntegrityOnly)}>
-                                <DoneIcon sx={{fontSize: "inherit"}}/>
-                              </IconButton>
-                              {isSubmitting &&
-                                <CircularProgress color={"warning"}/>
-                              }
-                              <IconButton disabled={isSubmitting} data-cy={ArticleModalIds.cancelChangesButton} onClick={() => HandleCancelEdit()}>
-                                <CancelIcon sx={{fontSize: "inherit"}}/>
-                              </IconButton>
-                            </div>
-                          }
-                          {
-                            !isEdit && !InEditMode() && props.currentUser.companyId === IntegrityId &&
-                            <div className="flex w-full justify-between">
-                              <IconButton disabled={isSubmitting} data-cy={ArticleModalIds.editButton} onClick={() => EnterEditMode(displayItem.id, filteredArticles, false)}>
-                                <EditIcon sx={{fontSize: "inherit"}}/>
-                              </IconButton>
-                              {isSubmitting && matched &&
-                                <CircularProgress color={"warning"}/>
-                              }
-                              <Typography variant="subtitle2" className="w-2/3" color="gray">
-                                Last updated on {MakeDateString(displayItem.updatedDate)} ({displayItem.updatedBy.split(" ").join("\u00a0")})
-                              </Typography>
-                            </div>
-                          }
-                      </StyledCardActions>
-                    </StyledCard>
-                  </Item>
+                  <ArticleCard article={displayItem} currentUser={props.currentUser} isEditingAnyone={InEditMode()} isEditingMe={isEdit}
+                    currentTitle={currentTitle} setCurrentTitle={setCurrentTitle} currentText={currentText} setCurrentText={setCurrentText}
+                    isIntegrityOnly={isIntegrityOnly} setIsIntegrityOnly={setIsIntegrityOnly} isSubmitting={isSubmitting}
+                    HandleDocButton={() => {setDocumentModalOpen(true); setArticleWithDocsId(displayItem.id)}}
+                    HandleStartEdit={() => EnterEditMode(displayItem.id, filteredArticles, false)}
+                    HandleCancelEdit={() => HandleCancelEdit()}
+                    HandleSubmit={() => HandleEditArticle(displayItem.id, currentTitle, currentText, isIntegrityOnly)}
+                  />
                 </Grid>
                 )
               })
