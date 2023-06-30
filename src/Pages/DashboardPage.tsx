@@ -11,9 +11,9 @@ import Grid from "@mui/material/Grid";
 
 export function DashboardPage()
 {
-const currentUser = useAppSelector(selectCurrentUser)!;
+const currentUser = useAppSelector(selectCurrentUser);
 const companies = useAppSelector(selectAllCompanies);
-const company = companies.find(c => c.id === currentUser.companyId)!;
+const company = companies.find(c => c.id === currentUser?.companyId);
 const [isOpen, setIsOpen] = useState(false);
 
 function HandleClose()
@@ -50,8 +50,7 @@ function HandleClose()
               ml: 2,
               mr: 2,
               borderRadius: 1 }}>
-            
-            <div className="text-center text-2xl font-bold">Initiatives</div>
+            <span className="text-center text-2xl font-bold">Initiatives</span>
             <Grid item sx={{ display: 'flex',
               justifyContent: 'self-center',
               marginBottom: 6
@@ -59,7 +58,7 @@ function HandleClose()
                 <InitiativesPage></InitiativesPage>
             </Grid>
             {currentUser?.isAdmin &&
-            <><div className="text-center text-2xl font-bold mt-4">Users</div>
+            <><span className="text-center text-2xl font-bold mt-4">Users</span>
             <Grid item sx={{
                 display: 'flex',
                 justifyContent: 'self-center',
@@ -69,7 +68,9 @@ function HandleClose()
             </Grid></>
             }
         </Grid>
-        <ArticleDataModal company={company} isOpen={isOpen} currentUser={currentUser} HandleClose={HandleClose} ></ArticleDataModal>     
+        {currentUser && company &&
+            <ArticleDataModal company={company} isOpen={isOpen} currentUser={currentUser} HandleClose={HandleClose} ></ArticleDataModal>     
+        }
         </>
     )
 }

@@ -185,14 +185,14 @@ export default function UsersPage(){
                   <TableContainer elevation={12} component={Paper}>
                     <Table className="table-auto w-full outline outline-3 bg-gray-100">
                       <colgroup>
-                        <col style={{ width: '13vw' }} />
-                        <col style={{ width: '15vw' }} />
-                        <col style={{ width: '15vw' }} />
-                        <col style={{ width: '10vw' }} />
-                        <col style={{ width: '8vw' }} />
-                        <col style={{ width: '10vw' }} />
-                        <col style={{ width: '6vw' }} />
-                        <col style={{ width: '10vw' }} />
+                      <col style={{ width: '16vw' }} />
+                      <col style={{ width: '14vw' }} />
+                      <col style={{ width: '13vw' }} />
+                      <col style={{ width: '11vw' }} />
+                      <col style={{ width: '13vw' }} />
+                      <col style={{ width: '12vw' }} />
+                      <col style={{ width: '6vw' }} />
+                      <col style={{ width: '8vw' }} />
                       </colgroup>
                       <TableHead className="outline outline-1">
                         <TableRow sx={{
@@ -204,15 +204,16 @@ export default function UsersPage(){
                           }
                         }}>
                           {currentUser?.companyId === IntegrityId &&
-                            <TableHeaderStyle>Company</TableHeaderStyle>}
-                          <TableHeaderStyle>Name</TableHeaderStyle>
-                          <TableHeaderStyle>Email</TableHeaderStyle>
-                          <TableHeaderStyle>Password</TableHeaderStyle>
-                          <TableHeaderStyle>Phone</TableHeaderStyle>
-                          <TableHeaderStyle>Admin Status</TableHeaderStyle>
-                          <TableHeaderStyle>Active Status</TableHeaderStyle>
-                          <TableHeaderStyle>Initiatives</TableHeaderStyle>
-                          <TableHeaderStyle>Edit User</TableHeaderStyle>
+                            <TableHeaderStyle>Company</TableHeaderStyle>
+                          }
+                            <TableHeaderStyle>Name</TableHeaderStyle>
+                            <TableHeaderStyle>Email</TableHeaderStyle>
+                            <TableHeaderStyle>Password</TableHeaderStyle>
+                            <TableHeaderStyle>Phone</TableHeaderStyle>
+                            <TableHeaderStyle>Admin Status</TableHeaderStyle>
+                            <TableHeaderStyle>Active Status</TableHeaderStyle>
+                            <TableHeaderStyle>Initiatives</TableHeaderStyle>
+                            <TableHeaderStyle>Edit</TableHeaderStyle>
                         </TableRow>
                       </TableHead>
                       <TableBody data-cy={UsersPageIds.table}>
@@ -230,8 +231,8 @@ export default function UsersPage(){
                             }}>
                               {isEdit ?
                                 <>
+                                   {currentUserCompanyId === IntegrityId &&
                                   <TableCell data-cy={UsersPageIds.company}>
-                                    {currentUserCompanyId === IntegrityId ?
                                       <FormControl fullWidth>
                                         <InputLabel id="company-select-label">Select Company</InputLabel>
                                         <Select sx={{ fontSize: tableCellFontSize }} data-cy={UsersPageIds.selectCompany} labelId="company-select-label" label="Select company" value={currentCompanyId} onChange={(e) => setCurrentCompanyId(e.target.value)}>
@@ -244,17 +245,16 @@ export default function UsersPage(){
                                           })}
                                         </Select>
                                       </FormControl>
-                                      :
-                                      <TableCell data-cy={UsersPageIds.company}>{displayCompany?.name}</TableCell>}
-                                  </TableCell>
-                                  <TableCell data-cy={UsersPageIds.editName}> <Input value={currentName} onChange={e => setCurrentName(e.target.value)} /></TableCell>
-                                  <TableCell><Input sx={{ fontSize: tableCellFontSize }} data-cy={UsersPageIds.editEmail} value={currentEmail} onChange={e => setCurrentEmail(e.target.value)} /></TableCell>
-                                  <TableCell data-cy={UsersPageIds.editPassword}><Input sx={{ fontSize: tableCellFontSize }} value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} /></TableCell>
-                                  <TableCell data-cy={UsersPageIds.editPhone}><Input sx={{ fontSize: tableCellFontSize }} value={currentPhone} onChange={e => setCurrentPhone(e.target.value)} /></TableCell>
-                                  <TableCell><Checkbox color="darkBlue" data-cy={UsersPageIds.editIsAdmin} checked={currentIsAdmin} onChange={e => setCurrentIsAdmin(e.target.checked)} />Admin</TableCell>
-                                  <TableCell><Checkbox color="darkBlue" data-cy={UsersPageIds.editIsActive} checked={currentIsActive} onChange={e => setCurrentIsActive(e.target.checked)} />Active</TableCell>
-                                  <TableCell data-cy={UsersPageIds.initiativeIds}></TableCell>
-                                  <TableCell>
+                                    </TableCell>
+                                    }
+                                    <TableCell data-cy={UsersPageIds.editName}> <Input value={currentName} onChange={e => setCurrentName(e.target.value)} /></TableCell>
+                                    <TableCell><Input sx={{ fontSize: tableCellFontSize }} data-cy={UsersPageIds.editEmail} value={currentEmail} onChange={e => setCurrentEmail(e.target.value)} /></TableCell>
+                                    <TableCell data-cy={UsersPageIds.editPassword}><Input sx={{ fontSize: tableCellFontSize }} value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} /></TableCell>
+                                    <TableCell data-cy={UsersPageIds.editPhone}><Input sx={{ fontSize: tableCellFontSize }} value={currentPhone} onChange={e => setCurrentPhone(e.target.value)} /></TableCell>
+                                    <TableCell><Checkbox color="darkBlue" data-cy={UsersPageIds.editIsAdmin} checked={currentIsAdmin} onChange={e => setCurrentIsAdmin(e.target.checked)} />Admin</TableCell>
+                                    <TableCell><Checkbox color="darkBlue" data-cy={UsersPageIds.editIsActive} checked={currentIsActive} onChange={e => setCurrentIsActive(e.target.checked)} />Active</TableCell>
+                                    <TableCell data-cy={UsersPageIds.initiativeIds}>Initiatives</TableCell>
+                                    <TableCell className="w-1/12">
                                     <IconButton data-cy={UsersPageIds.saveChangesButton} onClick={() => SaveEdit()}>
                                       <DoneIcon sx={{ fontSize: tableButtonFontSize }} />
                                     </IconButton>
@@ -267,14 +267,14 @@ export default function UsersPage(){
                                 <>
                                   {currentUser?.companyId === IntegrityId &&
                                     <TableCell data-cy={UsersPageIds.company}>{displayCompany?.name}</TableCell>}
-                                  <TableCell data-cy={UsersPageIds.name}>{companyUser.name}</TableCell>
-                                  <TableCell data-cy={UsersPageIds.email}>{companyUser.email}</TableCell>
-                                  <TableCell data-cy={UsersPageIds.password}>{companyUser.password}</TableCell>
-                                  <TableCell data-cy={UsersPageIds.phone}>{companyUser.phoneNumber}</TableCell>
-                                  <TableCell data-cy={UsersPageIds.isAdmin}>{companyUser.isAdmin ? "Admin" : "User"}</TableCell>
-                                  <TableCell data-cy={UsersPageIds.isActive}>{companyUser.isActive ? "Active" : "Inactive"}</TableCell>
-                                  <TableCell data-cy={UsersPageIds.initiativeIds}><EditUserInitiativesButton user={companyUser} allCompanies={displayCompany ? [displayCompany] : []} SubmitUserData={SubmitUserData} expanded={true} /></TableCell>
-                                  <TableCell>
+                                    <TableCell data-cy={UsersPageIds.name}>{companyUser.name}</TableCell>
+                                    <TableCell data-cy={UsersPageIds.email}>{companyUser.email}</TableCell>
+                                    <TableCell data-cy={UsersPageIds.password}>{companyUser.password}</TableCell>
+                                    <TableCell data-cy={UsersPageIds.phone}>{companyUser.phoneNumber}</TableCell>
+                                    <TableCell data-cy={UsersPageIds.isAdmin}>{companyUser.isAdmin ? "Admin" : "User"}</TableCell>
+                                    <TableCell data-cy={UsersPageIds.isActive}>{companyUser.isActive ? "Active" : "Inactive"}</TableCell>
+                                    <TableCell data-cy={UsersPageIds.initiativeIds}><EditUserInitiativesButton user={companyUser} allCompanies={displayCompany ? [displayCompany] : []} SubmitUserData={SubmitUserData} expanded={true} /></TableCell>
+                                    <TableCell className="w-1/12">
                                     <IconButton data-cy={UsersPageIds.editButton} disabled={InEditMode()} onClick={() => EnterEditMode(companyUser.id, companyUsers, false)}>
                                       <EditIcon sx={{ fontSize: tableButtonFontSize }} />
                                     </IconButton>
