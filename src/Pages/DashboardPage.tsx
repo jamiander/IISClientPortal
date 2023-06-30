@@ -52,16 +52,18 @@ function HandleClose()
               borderRadius: 1 }}>
             
             <div className="text-center text-2xl font-bold">Initiatives</div>
-            <Grid item md={12} sx={{ display: 'flex',
-              justifyContent: 'self-center'
+            <Grid item sx={{ display: 'flex',
+              justifyContent: 'self-center',
+              marginBottom: 6
               }}>
                 <InitiativesPage></InitiativesPage>
             </Grid>
             {currentUser?.isAdmin &&
             <><div className="text-center text-2xl font-bold mt-4">Users</div>
-            <Grid item md={12} sx={{
+            <Grid item sx={{
                 display: 'flex',
-                justifyContent: 'self-center'
+                justifyContent: 'self-center',
+                marginBottom: 6
             }}>
                 <UsersPage></UsersPage>
             </Grid></>

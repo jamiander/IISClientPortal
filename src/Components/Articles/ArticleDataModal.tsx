@@ -1,9 +1,8 @@
-import { Grid, CircularProgress, IconButton, Checkbox, Button, Typography, TextField } from "@mui/material";
+import { Grid, CircularProgress, IconButton, Checkbox, Button, Typography } from "@mui/material";
 import { DateInfo } from "../../Services/CompanyService";
 import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
-import { Item, StyledCard, StyledCardContent, labelStyle, StyledTextarea, StyledCardActions, StyledTextField } from "../../Styles";
+import { Item, StyledCard, StyledCardContent, labelStyle, StyledTextarea, StyledCardActions } from "../../Styles";
 import { AddButton } from "../AddButton";
-import { DateInput } from "../DateInput";
 import { BaseInitiativeModal } from "../Initiative/BaseInitiativeModal";
 import { useEffect, useState } from "react";
 import { Company, Initiative, IntegrityId } from "../../Store/CompanySlice";
@@ -20,9 +19,7 @@ import { ValidateArticle, ValidationFailedPrefix } from "../../Services/Validati
 import { User } from "../../Store/UserSlice";
 import { SearchBar } from "../SearchBar";
 import { DocumentManagementModal } from "../Documents/DocumentManagementModal";
-import { ReactQuillWrapper } from "./ReactQuillWrapper";
 import { DateToDateInfo, MakeDateString } from "../../Services/DateHelpers";
-import ReactQuill from "react-quill";
 
 enum stateEnum {
     start,
@@ -282,70 +279,65 @@ export default function ArticleDataModal(props: ArticleDataProps) {
                   <Item>
                     <StyledCard>
                       <StyledCardContent>
+                        {/*<ReactQuillWrapper initialValue={displayItem.title}/>*/}
                         {isEdit ?
                           <>
-                            <TextField data-cy={ArticleModalIds.editTitle} label="Title" sx={{width: "100%"}} value={currentTitle} onChange={e => setCurrentTitle(e.target.value)}/>
-                            <div className="flex items-center justify-start">
-                              <Checkbox data-cy={ArticleModalIds.isIntegrityOnly} color="darkBlue" checked={isIntegrityOnly} onChange={e => setIsIntegrityOnly(e.target.checked)}/>
-                              <Typography variant="subtitle2">Integrity Only</Typography>
-                            </div>
-                            <ReactQuillWrapper data-cy={ArticleModalIds.editText} initialValue={displayItem.text} valueSetter={setCurrentText}/>
+                            <div className="ml-[75%]"><Checkbox data-cy={ArticleModalIds.isIntegrityOnly} color="darkBlue" checked={isIntegrityOnly} onChange={e => setIsIntegrityOnly(e.target.checked)}/>Integrity Only</div>
+                            <label className={labelStyle} htmlFor="title">Title</label>
+                            <StyledTextarea id="title" data-cy={ArticleModalIds.editTitle} value={currentTitle} onChange={e => setCurrentTitle(e.target.value)}/>
+                            <label className={labelStyle} htmlFor="text">Content</label>
+                            <StyledTextarea id="text" data-cy={ArticleModalIds.editText} value={currentText} onChange={e => setCurrentText(e.target.value)}/>
+                            
                           </>
                           :
                           <>
                             <Typography data-cy={ArticleModalIds.title} variant="h5">{displayItem.title}</Typography>
+                            
                             <div className="flex justify-between">
-                              <div className="flex items-center">
-                                {displayItem.isIntegrityOnly &&
-                                  <>
-                                    <FlagIcon sx={{ color: "red", marginRight: 1 }}/>
-                                    <Typography variant="subtitle2">Integrity Only</Typography>
-                                  </>
-                                }
-                              </div>
                               <Button data-cy={ArticleModalIds.documents} onClick={() => {setDocumentModalOpen(true); setArticleWithDocsId(displayItem.id)}} sx={{ fontSize: "1.2rem" }}>
                                 <FolderIcon sx={{ color: "blue", fontSize: "inherit", marginRight: 1 }}/>
                                 <Typography variant="button">Related Docs</Typography>
                               </Button>
+                              {displayItem.isIntegrityOnly &&
+                                <div className="flex ">
+                                  <FlagIcon sx={{ color: "red", marginRight: 1 }}/>
+                                  <Typography variant="subtitle2">Integrity Only</Typography>
+                                </div>
+                              }
                             </div>
-                            <ReactQuill data-cy={ArticleModalIds.text} value={displayItem.text} readOnly={true} modules={{toolbar: false}}
-                              style={{
-                                maxHeight: "100px",
-                                overflow: "auto"
-                              }}/>
+
+                            <StyledTextarea id="text" data-cy={ArticleModalIds.text} disabled value={displayItem.text}/>
                           </>
                         }
                           
                       </StyledCardContent>
                       <StyledCardActions>
                           {isEdit &&
-                            <>
+                            <div className="flex w-full justify-between">
+                              <IconButton disabled={isSubmitting} data-cy={ArticleModalIds.saveChangesButton}
+                                onClick={() => HandleEditArticle(displayItem.id, currentTitle, currentText, isIntegrityOnly)}>
+                                <DoneIcon sx={{fontSize: "inherit"}}/>
+                              </IconButton>
                               {isSubmitting &&
                                 <CircularProgress color={"warning"}/>
                               }
-                              <div className="flex w-full justify-end">
-                                <IconButton disabled={isSubmitting} data-cy={ArticleModalIds.saveChangesButton}
-                                  onClick={() => HandleEditArticle(displayItem.id, currentTitle, currentText, isIntegrityOnly)}>
-                                  <DoneIcon sx={{fontSize: "inherit"}}/>
-                                </IconButton>
-                                <IconButton disabled={isSubmitting} data-cy={ArticleModalIds.cancelChangesButton} onClick={() => HandleCancelEdit()}>
-                                  <CancelIcon sx={{fontSize: "inherit"}}/>
-                                </IconButton>
-                              </div>
-                            </>
+                              <IconButton disabled={isSubmitting} data-cy={ArticleModalIds.cancelChangesButton} onClick={() => HandleCancelEdit()}>
+                                <CancelIcon sx={{fontSize: "inherit"}}/>
+                              </IconButton>
+                            </div>
                           }
                           {
                             !isEdit && !InEditMode() && props.currentUser.companyId === IntegrityId &&
                             <div className="flex w-full justify-between">
-                              <Typography variant="subtitle2" className="w-2/3" color="gray">
-                                Last updated on {MakeDateString(displayItem.updatedDate)} ({displayItem.updatedBy.split(" ").join("\u00a0")})
-                              </Typography>
-                              {isSubmitting && matched &&
-                                <CircularProgress color={"warning"}/>
-                              }
                               <IconButton disabled={isSubmitting} data-cy={ArticleModalIds.editButton} onClick={() => EnterEditMode(displayItem.id, filteredArticles, false)}>
                                 <EditIcon sx={{fontSize: "inherit"}}/>
                               </IconButton>
+                              {isSubmitting && matched &&
+                                <CircularProgress color={"warning"}/>
+                              }
+                              <Typography variant="subtitle2" className="w-2/3" color="gray">
+                                Last updated on {MakeDateString(displayItem.updatedDate)} ({displayItem.updatedBy.split(" ").join("\u00a0")})
+                              </Typography>
                             </div>
                           }
                       </StyledCardActions>

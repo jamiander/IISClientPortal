@@ -181,7 +181,7 @@ export default function UsersPage(){
                 </Grid></>}
             </div>
             <div className="grid grid-cols-1 w-full h-auto">
-                <div className="col-span-1 py-2">
+                <div className="col-span-1 mt-2">
                   <TableContainer elevation={12} component={Paper}>
                     <Table className="table-auto w-full outline outline-3 bg-gray-100">
                       <colgroup>

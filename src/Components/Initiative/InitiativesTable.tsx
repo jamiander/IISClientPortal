@@ -212,8 +212,9 @@ export default function InitiativesTable(props: InitiativesProps) {
   function getHealthIndicator(probability: number | undefined)
   {
     if (probability === undefined || probability < 0) return "gray-200";
+    if (probability < 90 && probability > 50) return "blue";
     if (probability < 50 && probability >= 0) return "#FF6464";
-    else if (probability > 90) return "#69D5C3";
+    else if (probability >= 90) return "#69D5C3";
   }
 
   function ResetPageNumber()
@@ -310,7 +311,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                   <TableHeaderStyle>
                     <SortLabel heading="Target Completion" sortKey='targetDateTime'/>
                   </TableHeaderStyle>
-                  <TableHeaderStyle>Total Items / Completed Items</TableHeaderStyle>
+                  <TableHeaderStyle>Completed Items / Total Items</TableHeaderStyle>
                   <TableHeaderStyle>Percent Completed</TableHeaderStyle>
                   <TableHeaderStyle>
                     <SortLabel heading="On-Time Completion Probability" sortKey='probabilityValue'/>
@@ -385,9 +386,9 @@ export default function InitiativesTable(props: InitiativesProps) {
                             <TableCell><DateInput cypressData={InitiativeTableIds.editStartDate} date={currentStartDate} setDate={setCurrentStartDate}/></TableCell>
                             <TableCell><DateInput cypressData={InitiativeTableIds.editTargetDate} date={currentTargetDate} setDate={setCurrentTargetDate}/></TableCell>
                             <TableCell>
-                              <Input sx={{fontSize: tableCellFontSize}} data-cy={InitiativeTableIds.editTotalItems} type="number" value={currentTotalItems} onChange={(e) => setCurrentTotalItems(parseInt(e.target.value))}/>
+                              <Input sx={{fontSize: tableCellFontSize}} data-cy={InitiativeTableIds.editTotalItems} type="number" value={currentTotalItems} placeholder="Total Items" onChange={(e) => setCurrentTotalItems(parseInt(e.target.value))}/>
                             </TableCell>
-                            <TableCell sx={{fontSize: tableCellFontSize}} data-cy={InitiativeTableIds.remainingItems}>{itemsCompleted}</TableCell>
+                            <TableCell></TableCell>
                             <TableCell></TableCell>
                             <TableCell className="w-1/12">
                               <InitiativeActionsMenu {...initiativeMenuProps} disabled={true}/>
@@ -418,7 +419,7 @@ export default function InitiativesTable(props: InitiativesProps) {
                             <TableCell data-cy={InitiativeTableIds.initiativeTitle}>{displayItem.title}</TableCell>
                             <TableCell data-cy={InitiativeTableIds.startDate}>{displayItem.startDate.month + "/" + displayItem.startDate.day + "/" + displayItem.startDate.year}</TableCell>
                             <TableCell data-cy={InitiativeTableIds.targetDate}>{displayItem.targetDate.month + "/" + displayItem.targetDate.day + "/" + displayItem.targetDate.year}</TableCell>
-                            <TableCell data-cy={InitiativeTableIds.totalItems}>{displayItem.totalItems} / {itemsCompleted}</TableCell>
+                            <TableCell data-cy={InitiativeTableIds.totalItems}>{itemsCompleted} / {displayItem.totalItems}</TableCell>
                             <TableCell>
                               <ProgressBar key={index} bgcolor="blue" completed={Math.round((itemsCompleted/displayItem.totalItems)*100)} />
                             </TableCell>
