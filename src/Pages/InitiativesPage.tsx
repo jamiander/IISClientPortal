@@ -62,7 +62,6 @@ export default function InitiativesPage()
           <Grid container sx={{ display: 'flex',
               flexDirection: 'row',
               placeItems: 'center',
-              p: 1,
               mt: 2,
               mb: 1,
               ml: 2,

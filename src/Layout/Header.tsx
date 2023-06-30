@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { clearCompanies, selectAllCompanies } from "../Store/CompanySlice";
+import { IntegrityId, clearCompanies, selectAllCompanies } from "../Store/CompanySlice";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
 import { selectCurrentUser, selectIsLoggedIn, signOut } from "../Store/UserSlice";
 import { genericButtonStyle } from "../Styles";
@@ -7,6 +7,10 @@ import NavPanel from "./NavPanel";
 import Grid from "@mui/material/Grid";
 import { Typography } from "@mui/material";
 import { clearArticles } from "../Store/ArticleSlice";
+import staplesLogo from "./staples-logo.png";
+import greenLogo from "./green.png";
+import swirlLogo from "./swirl.png";
+import foodLogo from "./food.png";
 
 export default function Header(){
   const logo = 'https://static.wixstatic.com/media/4f8b60_2899998071014662a534db34be03a3d1~mv2.png/v1/fill/w_438,h_118,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/Integrity-Logo_2x%20(3)_edited.png'
@@ -18,6 +22,23 @@ export default function Header(){
   const company = companyList.find(e=>e.id === user?.companyId);
   let imageLink = './Initiatives';
   let title = "";
+  let companyLogo = "";
+
+  switch(company?.name)
+  {
+    case 'Staples':
+      companyLogo = staplesLogo;
+      break;
+    case 'Active Client':
+      companyLogo = greenLogo;
+      break;
+    case 'Evil Inspired Solutions':
+      companyLogo = swirlLogo;
+      break;
+    case 'Barnum and Bailey':
+      companyLogo = foodLogo;
+      break;
+  }
 
   const location = useLocation();
   switch(location.pathname)
@@ -69,9 +90,15 @@ export default function Header(){
       </Link>
       </Grid>
       <Grid item xs={6} sx={{ display: 'flex',
-          justifyContent: 'center'
+          justifyContent: 'center',
+          placeItems: 'center'
           }}>
-          <Typography sx={{fontSize:"min(calc(21px + 0.390625vw),30px)"}} textAlign={"center"} className="text-[#21355B]"><b>{title}</b></Typography>
+            {company?.id !== IntegrityId && location.pathname !== '/Login' &&
+              <img className="w-[20%] py-2 px-2 my-4 mx-6" src={companyLogo} alt="Logo" />
+            }
+          <Typography sx={{fontSize:"min(calc(21px + 0.390625vw),30px)"}} textAlign={"center"} className="text-[#21355B]">          
+            <b>{title}</b>
+          </Typography>
       </Grid>
       <Grid item xs={3} sx={{ display: 'flex',
           justifyContent: 'flex-end',

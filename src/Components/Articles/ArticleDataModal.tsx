@@ -277,7 +277,7 @@ export default function ArticleDataModal(props: ArticleDataProps) {
               let matched = displayItem.id === (articleToEdit?.id ?? -1);
               let isEdit = matched && InEditMode();
               return(
-                <Grid item md={6} lg={4} key={key}>
+                <Grid item md={6} lg={6} key={key}>
                   <ArticleCard article={displayItem} currentUser={props.currentUser} isEditingAnyone={InEditMode()} isEditingMe={isEdit}
                     currentTitle={currentTitle} setCurrentTitle={setCurrentTitle} currentText={currentText} setCurrentText={setCurrentText}
                     isIntegrityOnly={isIntegrityOnly} setIsIntegrityOnly={setIsIntegrityOnly} isSubmitting={isSubmitting}

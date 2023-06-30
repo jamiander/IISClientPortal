@@ -13,7 +13,7 @@ export function AddButton(props: AddButtonProps)
   return (
     <ThemeProvider theme={IntegrityTheme}>
       <Button data-cy={props.cypressData} variant="contained" disabled={props.disabled} onClick={() => props.HandleClick()}
-        style={{outlineColor: 'blue'}} size="large" startIcon={<AddIcon sx={{fontSize:"inherit"}}/>}  
+        style={{outlineColor: 'blue'}} size="small" startIcon={<AddIcon sx={{fontSize:"inherit"}}/>}  
       >
         <Typography variant="button">Add</Typography>
       </Button>

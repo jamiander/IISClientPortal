@@ -30,6 +30,7 @@ import { usePaginator } from "../../Services/usePaginator";
 import { Paginator } from "../Paginator";
 import { initPageStateEnum } from "../../Pages/InitiativesPage";
 import { ProgressBar } from "./ProgressBar";
+import TextField from "@material-ui/core/TextField";
 
 export const InitiativeTableIds = {
   table: "initiativesTable",
@@ -386,7 +387,8 @@ export default function InitiativesTable(props: InitiativesProps) {
                             <TableCell><DateInput cypressData={InitiativeTableIds.editStartDate} date={currentStartDate} setDate={setCurrentStartDate}/></TableCell>
                             <TableCell><DateInput cypressData={InitiativeTableIds.editTargetDate} date={currentTargetDate} setDate={setCurrentTargetDate}/></TableCell>
                             <TableCell>
-                              <Input sx={{fontSize: tableCellFontSize}} data-cy={InitiativeTableIds.editTotalItems} type="number" value={currentTotalItems} placeholder="Total Items" onChange={(e) => setCurrentTotalItems(parseInt(e.target.value))}/>
+                              <label htmlFor="items">Total Items</label>
+                              <TextField id="items" data-cy={InitiativeTableIds.editTotalItems} type="number" value={currentTotalItems} onChange={(e) => setCurrentTotalItems(parseInt(e.target.value))}/>
                             </TableCell>
                             <TableCell></TableCell>
                             <TableCell></TableCell>
